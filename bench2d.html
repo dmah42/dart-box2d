@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Domino Madness</title>
+    <!-- This tag improves the experience on mobile browsers. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=0">
+
+    <!-- These tags improve web apps on ios. -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+  </head>
+
+  <body>
+    <!-- If browser doesn't support dart, redirect to js version. -->
+    <script type="text/javascript">
+      if (!window.document.implementation.hasFeature('dart')) {
+        window.location = "bench2d-js.html";
+      }
+    </script>
+
+    <!-- Browser has the goods, so kick it in to dart gear. -->
+    <script type="application/dart" src="Bench2d.dart"></script>
+  </body>
+</html>
+
