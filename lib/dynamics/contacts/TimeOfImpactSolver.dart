@@ -62,7 +62,7 @@ class TimeOfImpactSolver {
       List<TimeOfImpactConstraint> old = constraints;
       int newLen = Math.max(count, old.length*2);
       constraints = new List<TimeOfImpactConstraint>(newLen);
-      constraints.copyFrom(old, 0, 0, old.length);
+      constraints.setRange(0, old.length, old);
       for(int i=old.length; i<constraints.length; i++){
         constraints[i] = new TimeOfImpactConstraint();
       }

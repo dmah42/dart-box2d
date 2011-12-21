@@ -86,7 +86,7 @@ class Island {
       final List<Velocity> old = velocities == null ?
           new List<Velocity>(0) : velocities;
       velocities = new List<Velocity>(bodyCapacity);
-      velocities.copyFrom(old, 0, 0, old.length);
+      velocities.setRange(0, old.length, old);
       for (int i=old.length; i<velocities.length; i++) {
         velocities[i] = new Velocity();
       }
@@ -97,7 +97,7 @@ class Island {
       List<Position> old = positions == null ?
           new List<Position>(0) : positions;
       positions = new List<Position>(bodyCapacity);
-      positions.copyFrom(old, 0, 0, old.length);
+      positions.setRange(0, old.length, old);
       for (int i=old.length; i<positions.length; i++) {
         positions[i] = new Position();
       }

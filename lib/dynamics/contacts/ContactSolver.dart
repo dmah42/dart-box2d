@@ -92,7 +92,7 @@ class ContactSolver {
       List<ContactConstraint> old = constraints;
       int newLen = Math.max(old.length * 2, constraintCount);
       constraints = new List<ContactConstraint>(newLen);
-      constraints.copyFrom(old, 0, 0, old.length);
+      constraints.setRange(0, old.length, old);
 
       for(int i=old.length; i< constraints.length; i++){
         constraints[i] = new ContactConstraint();
