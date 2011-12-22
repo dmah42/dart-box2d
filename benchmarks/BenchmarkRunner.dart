@@ -1,5 +1,15 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 
+#library('BenchmarkRunner');
+#import('../lib/box2d.dart');
+#import('dart:dom');
+#source('Benchmark.dart');
+#source('BallCageBench.dart');
+#source('BallDropBench.dart');
+#source('CircleStressBench.dart');
+#source('DominoPlatformBench.dart');
+#source('DominoTowerBench.dart');
+
 /**
  * Runs the Dart Box2D benchmarks. Outputs results in browser.
  */
@@ -29,7 +39,7 @@ class BenchmarkRunner {
     solveLoops = const [10, 30],
     steps = const [10, 100, 500, 2000] { }
 
-  static void main(List<String> args) {
+  static void main() {
     final runner = new BenchmarkRunner();
     runner.setupBenchmarks();
     runner.runBenchmarks();
@@ -70,4 +80,8 @@ class BenchmarkRunner {
   void addBenchmark(Benchmark benchmark) {
     benchmarks.add(benchmark);
   }
+}
+
+void main() {
+  BenchmarkRunner.main();
 }

@@ -93,7 +93,7 @@ class Benchmark {
         // Initialize the world to start fresh.
         initialize();
 
-        final watch = new StopWatch();
+        final watch = new Stopwatch();
         watch.start();
 
         // Step the world forward in a nice loop.
