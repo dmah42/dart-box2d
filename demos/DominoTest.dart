@@ -23,7 +23,7 @@
  ******************************************************************************/
 #library('DominoTest');
 #import('dart:dom');
-#import('box2d/box2d.dart');
+#import('../lib/box2d.dart');
 
 #source('Demo.dart');
 
@@ -35,9 +35,7 @@ class DominoTest extends Demo {
 
   DominoTest() : super() { }
 
-  String get name() {
-    return NAME;
-  }
+  String get name() => NAME;
 
   void initialize() {
     { // Floor
