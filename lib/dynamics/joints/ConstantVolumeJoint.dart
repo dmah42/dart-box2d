@@ -88,7 +88,7 @@ class ConstantVolumeJoint extends Joint {
       }
     } else {
       distanceJoints = new List<DistanceJoint>(def.joints.length);
-      distanceJoints.copyFrom(def.joints, 0, 0, def.joints.length);
+      distanceJoints.setRange(0, def.joints.length, def.joints);
     }
 
     frequencyHz = def.frequencyHz;

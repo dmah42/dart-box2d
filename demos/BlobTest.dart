@@ -1,3 +1,8 @@
+#library('BlobTest');
+#import('dart:dom');
+#import('../lib/box2d.dart');
+#source('demo.dart');
+
 /*******************************************************************************
  * Copyright (c) 2011, Daniel Murphy
  * All rights reserved.
@@ -22,6 +27,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * ******************************************************************************/
 class BlobTest extends Demo {
+  static final String NAME = "Blob Test";
+
   /** Constructs a new BlobTest. */
   BlobTest() : super() { }
 
@@ -30,9 +37,11 @@ class BlobTest extends Demo {
     final blob = new BlobTest();
     blob.initialize();
     blob.initializeAnimation();
-    blob.run();
+    blob.runAnimation();
   }
 
+  String get name() => NAME;
+  
   void initialize() {
     Body ground;
     {
@@ -95,10 +104,8 @@ class BlobTest extends Demo {
     bodies.add(fallingBox);
     fallingBox.createFixtureFromShape(psd, 1.0);
   }
+}
 
-  void run() {
-    animationScheduler.requestAnimationFrame((num time) {
-      step(time);
-    }, canvas);
-  }
+void main() {
+  BlobTest.main();
 }

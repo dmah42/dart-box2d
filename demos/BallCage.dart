@@ -29,9 +29,7 @@ class BallCage extends Demo {
     cage.runAnimation();
   }
 
-  String get name() {
-    return NAME;
-  }
+  String get name() => NAME;
 
   void initialize() {
     // Define the circle shape.

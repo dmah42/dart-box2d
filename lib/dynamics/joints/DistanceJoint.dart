@@ -192,8 +192,8 @@ class DistanceJoint extends Joint {
 
     r1.setFrom(localAnchor1).subLocal(b1.localCenter);
     r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(b1.transform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(b2.transform.rotation, r2, r2);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
     d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
     d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
