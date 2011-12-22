@@ -1,3 +1,7 @@
+#library('BallCage');
+#import('dart:dom');
+#import('../lib/box2d.dart');
+#source('demo.dart');
 /*******************************************************************************
  * Copyright (c) 2011, Daniel Murphy
  * All rights reserved.
@@ -180,4 +184,8 @@ class CircleStress extends Demo {
       }
     }
   }
+}
+
+void main() {
+  CircleStress.main();
 }
