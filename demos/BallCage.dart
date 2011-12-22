@@ -1,6 +1,6 @@
 #library('BallCage');
 #import('dart:dom');
-#import('lib/box2d.dart');
+#import('../lib/box2d.dart');
 #source('demo.dart');
 
 // Copyright 2011 Google Inc. All Rights Reserved.
