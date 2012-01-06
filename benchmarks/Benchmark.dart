@@ -27,13 +27,13 @@ class Benchmark {
   /**
    * The different number of world steps to test.
    */
-  List<int> steps;
+  List<int> _steps;
 
   /**
    * Constructs a new Benchmark that will run a loop for the given number of
    * iterations.
    */
-  Benchmark(List<int> this.solveLoops, List<int> this.steps) { }
+  Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
 
   /** Sets up the physics world. */
   //TODO(gregbglw): Make abstract. see b/5015671
@@ -88,7 +88,7 @@ class Benchmark {
    * different combinations of solveLoops and steps.
    */
   void runBenchmark(StringBuffer resultsWriter) {
-    for (int stepCount in steps) {
+    for (int stepCount in _steps) {
       for (int solveCount in solveLoops) {
         // Initialize the world to start fresh.
         initialize();

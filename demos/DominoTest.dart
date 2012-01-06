@@ -25,7 +25,7 @@
 #import('dart:dom');
 #import('../lib/box2d.dart');
 
-#source('Demo.dart');
+#source('demo.dart');
 
 /**
  * Demonstration of dominoes being knocked over.

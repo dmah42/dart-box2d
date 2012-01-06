@@ -42,7 +42,7 @@ class DominoTowerBench extends Benchmark {
     return NAME;
   }
 
-  void makeDomino(num x, num y, bool horizontal, World world) {
+  void makeDomino(num x, num y, bool horizontal, World world_) {
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(.5 * DOMINO_WIDTH, .5 * DOMINO_HEIGHT);
     FixtureDef fd = new FixtureDef();
@@ -54,7 +54,7 @@ class DominoTowerBench extends Benchmark {
     fd.restitution = 0.65;
     bd.position = new Vector(x, y);
     bd.angle = horizontal ? (Math.PI / 2.0) : 0;
-    Body myBody = world.createBody(bd);
+    Body myBody = world_.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);
   }

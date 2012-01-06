@@ -25,7 +25,8 @@
 #import('dart:dom');
 #import('../lib/box2d.dart');
 
-#source('Demo.dart');
+#source('demo.dart');
+
 class DominoTower extends Demo {
   static final num DOMINO_WIDTH = .2;
   static final num DOMINO_FRICTION = 0.1;

@@ -11,9 +11,6 @@ class BallDropBench extends Benchmark {
   static final num X_START = 0;
   static final num Y_START = 0;
 
-  /** The ball being dropped. */
-  Body ballBody;
-
   BallDropBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
