@@ -37,6 +37,12 @@ class Demo {
   /** The physics world. */
   World world;
 
+  /** Frame count for fps */
+  int frameCount;
+
+  /** Current fps */
+  double fps;
+
   Demo() :
     bodies = new List<Body>() {
     // Setup the World.
@@ -52,6 +58,17 @@ class Demo {
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
+    ctx.setFillColor('black');
+    ctx.font = '18pt monospace';
+    ctx.fillText(this.name, 20, 20);
+
+    if (fps != null) {
+      ctx.setFillColor('red');
+      ctx.font = '12pt monospace';
+      ctx.fillText('FPS: ${fps.toStringAsFixed(2)}', 20, 40);
+    }
+    ++frameCount;
+
     window.webkitRequestAnimationFrame((num time) {
       step(time);
     }, canvas);
@@ -79,6 +96,9 @@ class Demo {
 
     // Have the world draw itself for debugging purposes.
     world.debugDraw = debugDraw;
+
+    frameCount = 0;
+    window.setInterval(() { fps = frameCount; frameCount = 0; }, 1000);
   }
 
   abstract void initialize();
