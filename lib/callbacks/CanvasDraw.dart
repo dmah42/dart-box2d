@@ -155,16 +155,16 @@ class CanvasDraw extends DebugDraw {
    * TODO(gregbglw): Replace with toRadixString when that function is
    * implemented.
    */
-  String _toHex(int num) {
+  String _toHex(int n) {
     //TODO(gregbglw): Remove this once my vm is working again.
     // Mysterious, non-reproducible bug.
-    num = num.toInt();
-    int r = (num % 16);
+    n = n.toInt();
+    int r = (n % 16);
     String result;
-    if (num - r == 0) {
+    if (n - r == 0) {
       result = _toChar(r);
     } else {
-      result = _toHex((num - r) / 16);
+      result = _toHex((n - r) ~/ 16);
       result.concat(_toChar(r));
     }
 
