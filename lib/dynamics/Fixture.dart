@@ -68,12 +68,12 @@ class Fixture {
   /**
    * Sets this fixture according to the given body and definition.
    */
-  void create(Body body, FixtureDef def) {
+  void create(Body b, FixtureDef def) {
     userData = def.userData;
     friction = def.friction;
     restitution = def.restitution;
 
-    body = body;
+    body = b;
     next = null;
 
     filter.setFrom(def.filter);

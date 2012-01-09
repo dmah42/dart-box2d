@@ -47,13 +47,11 @@ class Island {
   int positionIterationCount;
 
   // Pool objects to cut down on object creation.
-  Vector temp;
   ContactSolver _contactSolver;
   Vector _translation;
   ContactImpulse impulse;
 
   Island() :
-    temp = new Vector(),
     _contactSolver = new ContactSolver(),
     _translation = new Vector(),
     impulse = new ContactImpulse() { }
@@ -173,6 +171,7 @@ class Island {
     _contactSolver.storeImpulses();
 
     // Integrate positions.
+    Vector temp = new Vector();
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
 

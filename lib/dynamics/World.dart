@@ -102,8 +102,6 @@ class World {
   final Vector axis;
 
   final TimeStep timestep;
-  final Color3 color;
-  final Transform xf;
   final Vector cA;
   final Vector cB;
   final WorldQueryWrapper wqwrapper;
@@ -152,8 +150,6 @@ class World {
     center = new Vector(),
     axis = new Vector(),
     timestep = new TimeStep(),
-    color = new Color3(),
-    xf = new Transform(),
     cA = new Vector(),
     cB = new Vector(),
     wqwrapper = new WorldQueryWrapper(),
@@ -602,6 +598,8 @@ class World {
     int drawFlags = _debugDraw.drawFlags;
 
     if ((drawFlags & DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
+      Transform xf = new Transform();
+      Color3 color = new Color3();
       for (Body b = _bodyList; b != null; b = b.next) {
         xf.setFrom(b.originTransform);
         for (Fixture f = b.fixtureList; f != null; f = f.next) {
@@ -632,7 +630,7 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
-      color.setFromRGB(0.3, 0.9, 0.9);
+      Color3 color = new Color3.fromRGB(0.3, 0.9, 0.9);
       for (Contact c = _contactManager.contactList; c != null; c = c.next) {
         Fixture fixtureA = c.fixtureA;
         Fixture fixtureB = c.fixtureB;
@@ -645,7 +643,7 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
-      color.setFromRGB(0.9, 0.3, 0.9);
+      Color3 color = new Color3.fromRGB(0.9, 0.3, 0.9);
 
       for (Body b = _bodyList; b != null; b = b.next) {
         if (b.active == false) {
@@ -672,6 +670,7 @@ class World {
 
     if ((drawFlags & DebugDraw.e_centerOfMassBit) ==
         DebugDraw.e_centerOfMassBit) {
+      Transform xf = new Transform();
       for (Body b = _bodyList; b != null; b = b.next) {
         xf.setFrom(b.originTransform);
         xf.position.setFrom(b.worldCenter);
@@ -755,7 +754,7 @@ class World {
     return (_flags & CLEAR_FORCES) == CLEAR_FORCES;
   }
 
-  void solve(TimeStep step) {
+  void solve(TimeStep timeStep) {
     // Size the  for the worst case.
     island.init(_bodyCount, _contactManager.contactCount, _jointCount,
         _contactManager.contactListener);
@@ -875,7 +874,7 @@ class World {
         }
       }
 
-      island.solve(step, _gravity, _allowSleep);
+      island.solve(timeStep, _gravity, _allowSleep);
 
       // Post solve cleanup.
       for (int i = 0; i < island.bodyCount; ++i) {
@@ -1182,7 +1181,7 @@ class World {
     joint.getAnchorB(p2);
 
     // Set the drawing color.
-    color.setFromRGB(0.5, 0.8, 0.8);
+    Color3 color = new Color3.fromRGB(0.5, 0.8, 0.8);
 
     switch (joint.type) {
       case JointType.DISTANCE :
