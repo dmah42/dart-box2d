@@ -82,9 +82,9 @@ class CanvasViewportTransform implements IViewportTransform {
    * Sets the transform's center to the given x and y coordinates,
    * and using the given scale.
    */
-  void setCamera(num x, num y, num scale) {
+  void setCamera(num x, num y, num s) {
     center.setCoords(x, y);
-    this.scale = scale;
+    this.scale = s;
   }
 
   /**
