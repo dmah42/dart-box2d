@@ -28,8 +28,8 @@
 class Joint {
   int type;
 
-  Joint prev;
-  Joint next;
+  Joint _prev;
+  Joint _next;
 
   JointEdge edgeA;
   JointEdge edgeB;
@@ -54,8 +54,8 @@ class Joint {
 
   Joint(JointDef def) :
     type = def.type,
-    prev = null,
-    next = null,
+    _prev = null,
+    _next = null,
     bodyA = def.bodyA,
     bodyB = def.bodyB,
     collideConnected = def.collideConnected,

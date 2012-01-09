@@ -311,11 +311,9 @@ class World {
     Joint j = new Joint.create(this, def);
 
     // Connect to the world list.
-    j.prev = null;
-    j.next = _jointList;
-    if (_jointList != null) {
-      _jointList.prev = j;
-    }
+    j._prev = null;
+    j._next = _jointList;
+    if (_jointList != null) _jointList._prev = j;
     _jointList = j;
     ++_jointCount;
 
@@ -374,17 +372,11 @@ class World {
     bool collideConnected = joint.collideConnected;
 
     // Remove from the doubly linked list.
-    if (joint.prev != null) {
-      joint.prev.next = joint.next;
-    }
+    if (joint._prev != null) joint._prev._next = joint._next;
 
-    if (joint.next != null) {
-      joint.next.prev = joint.prev;
-    }
+    if (joint._next != null) joint._next._prev = joint._prev;
 
-    if (joint == _jointList) {
-      _jointList = joint.next;
-    }
+    if (joint == _jointList) _jointList = joint._next;
 
     // Disconnect from island graph.
     Body bodyA = joint.bodyA;
@@ -624,9 +616,8 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
-      for (Joint j = _jointList; j != null; j = j.next) {
+      for (Joint j = _jointList; j != null; j = j._next)
         drawJoint(j);
-      }
     }
 
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
@@ -766,7 +757,7 @@ class World {
     for (Contact c = _contactManager.contactList; c != null; c = c.next) {
       c.flags &= ~Contact.ISLAND_FLAG;
     }
-    for (Joint j = jointList; j != null; j = j.next) {
+    for (Joint j = jointList; j != null; j = j._next) {
       j.islandFlag = false;
     }
 
