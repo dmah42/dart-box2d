@@ -27,10 +27,10 @@ class PolygonContact extends Contact {
   PolygonContact(DefaultWorldPool argPool) :
     super(argPool) { }
 
-  void init(Fixture fixtureA, Fixture fixtureB) {
-    super.init(fixtureA, fixtureB);
-    assert(fixtureA.type == ShapeType.POLYGON);
-    assert(fixtureB.type == ShapeType.POLYGON);
+  void init(Fixture fA, Fixture fB) {
+    Expect.equals(ShapeType.POLYGON, fA.type);
+    Expect.equals(ShapeType.POLYGON, fB.type);
+    super.init(fA, fB);
   }
 
   void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {

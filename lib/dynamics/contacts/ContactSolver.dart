@@ -45,8 +45,6 @@ class ContactSolver {
   final Vector temp2;
   final Vector P;
   final Vector dv;
-  final Vector a;
-  final Vector b;
   final Vector dv1;
   final Vector dv2;
   final Vector x;
@@ -68,8 +66,6 @@ class ContactSolver {
     temp2 = new Vector(),
     P = new Vector(),
     dv = new Vector(),
-    a = new Vector(),
-    b = new Vector(),
     dv1 = new Vector(),
     dv2 = new Vector(),
     x = new Vector(),
@@ -363,8 +359,7 @@ class ContactSolver {
       } else {
         ContactConstraintPoint cp1 = c.points[0];
         ContactConstraintPoint cp2 = c.points[1];
-        a.x = cp1.normalImpulse;
-        a.y = cp2.normalImpulse;
+        Vector a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
 
         assert(a.x >= 0.0 && a.y >= 0.0);
         // Relative velocity at contact
@@ -380,8 +375,7 @@ class ContactSolver {
         num vn1 = dv1.x * c.normal.x + dv1.y * c.normal.y;
         num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
-        b.x = vn1 - cp1.velocityBias;
-        b.y = vn2 - cp2.velocityBias;
+        Vector b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
         temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
         temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
         b.x -= temp2.x;

@@ -25,10 +25,10 @@
 class CircleContact extends Contact {
   CircleContact(DefaultWorldPool argPool) : super(argPool) { }
 
-  void init(Fixture fixtureA, Fixture fixtureB) {
-    super.init(fixtureA, fixtureB);
-    assert(fixtureA.type == ShapeType.CIRCLE);
-    assert(fixtureB.type == ShapeType.CIRCLE);
+  void init(Fixture fA, Fixture fB) {
+    Expect.equals(ShapeType.CIRCLE, fA.type);
+    Expect.equals(ShapeType.CIRCLE, fB.type);
+    super.init(fA, fB);
   }
 
   void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
