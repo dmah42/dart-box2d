@@ -164,7 +164,7 @@ class BroadPhase implements TreeCallback {
 // TODO(jgw): Make sure this is right.
 //    List<Pair> pairBuffer = new List.fromList(_pairBuffer, 0, _pairCount);
     List<Pair> pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
-    pairBuffer.sort(int (Comparable a, Comparable b) => a.compareTo(b));
+    pairBuffer.sort((a, b) => a.compareTo(b));
     _pairBuffer.setRange(0, _pairCount, pairBuffer);
 
     // Send the pairs back to the client.

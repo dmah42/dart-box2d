@@ -39,9 +39,6 @@ class Simplex {
     e13 = new Vector(),
     e12 = new Vector(),
     e23 = new Vector(),
-    w1 = new Vector(),
-    w2 = new Vector(),
-    w3 = new Vector(),
     case2 = new Vector(),
     case22 = new Vector(),
     case3 = new Vector(),
@@ -56,9 +53,6 @@ class Simplex {
   final Vector e13;
   final Vector e23;
   final Vector e12;
-  final Vector w1;
-  final Vector w2;
-  final Vector w3;
   final Vector case2;
   final Vector case22;
   final Vector case3;
@@ -276,9 +270,9 @@ class Simplex {
    * - inside the triangle
    */
   void solve3() {
-    w1.setFrom(v1.w);
-    w2.setFrom(v2.w);
-    w3.setFrom(v3.w);
+    Vector w1 = v1.w;
+    Vector w2 = v2.w;
+    Vector w3 = v3.w;
 
     // Edge12
     e12.setFrom(w2).subLocal(w1);
