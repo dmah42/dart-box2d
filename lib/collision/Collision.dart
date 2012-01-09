@@ -147,14 +147,14 @@ class Collision {
    * Sutherland-Hodgman clipping.
    */
   static int clipSegmentToLine(List<ClipVertex> vOut, List<ClipVertex> vIn,
-      Vector normal, num offset) {
+      Vector norm, num offset) {
 
     // Start with no output points
     int numOut = 0;
 
     // Calculate the distance of end points to the line
-    num distance0 = Vector.dot(normal, vIn[0].v) - offset;
-    num distance1 = Vector.dot(normal, vIn[1].v) - offset;
+    num distance0 = Vector.dot(norm, vIn[0].v) - offset;
+    num distance1 = Vector.dot(norm, vIn[1].v) - offset;
 
     // If the points are behind the plane
     if (distance0 <= 0.0) {
@@ -256,8 +256,8 @@ class Collision {
       final Vector vertex = vertices[i];
       final num tempx = cLocalx - vertex.x;
       final num tempy = cLocaly - vertex.y;
-      final Vector normal = normals[i];
-      final num s = normal.x * tempx + normal.y * tempy;
+      final Vector norm = normals[i];
+      final num s = norm.x * tempx + norm.y * tempy;
 
       if (s > radius) {
         // early out
@@ -281,9 +281,9 @@ class Collision {
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
 
-      Vector normal = normals[normalIndex];
-      manifold.localNormal.x = normal.x;
-      manifold.localNormal.y = normal.y;
+      Vector norm = normals[normalIndex];
+      manifold.localNormal.x = norm.x;
+      manifold.localNormal.y = norm.y;
       manifold.localPoint.x = (v1.x + v2.x) * .5;
       manifold.localPoint.y = (v1.y + v2.y) * .5;
       ManifoldPoint mpoint = manifold.points[0];
@@ -344,8 +344,8 @@ class Collision {
 
       final num tx = cLocalx - fcx;
       final num ty = cLocaly - fcy;
-      final Vector normal = normals[vertIndex1];
-      separation = tx * normal.x + ty * normal.y;
+      final Vector norm = normals[vertIndex1];
+      separation = tx * norm.x + ty * norm.y;
       if(separation > radius){
         return;
       }
@@ -438,8 +438,8 @@ class Collision {
     num dot;
     num maxDot = Settings.SMALL_NUMBER;
     for (int i = 0; i < count1; i++) {
-      final Vector normal = normals1[i];
-      dot = normal.x * dLocal1x + normal.y * dLocal1y;
+      final Vector norm = normals1[i];
+      dot = norm.x * dLocal1x + norm.y * dLocal1y;
       if (dot > maxDot) {
         maxDot = dot;
         edge = i;
