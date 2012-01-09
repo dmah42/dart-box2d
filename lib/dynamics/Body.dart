@@ -68,9 +68,9 @@ class Body {
   JointEdge jointList;
 
   /** Forces applied on the body. */
-  final Vector force;
+  final Vector _force;
 
-  num torque;
+  num _torque;
 
   /** Rotational intertia about the center of mass. */
   num _inertia;
@@ -125,8 +125,8 @@ class Body {
     angularDamping = bd.angularDamping,
 
     // Set force and torque.
-    force = new Vector(),
-    torque = 0,
+    _force = new Vector(),
+    _torque = 0,
 
     _inertia = 0,
     invInertia = 0,
@@ -413,10 +413,10 @@ class Body {
       awake = true;
     }
 
-    force.x += force.x;
-    force.y += force.y;
+    _force.x += force.x;
+    _force.y += force.y;
 
-    torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
+    _torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
         * force.x;
   }
 
@@ -437,7 +437,7 @@ class Body {
       awake = true;
     }
 
-    torque += torque;
+    _torque += torque;
   }
 
   /**
@@ -775,8 +775,8 @@ class Body {
 
     awake = true;
 
-    force.setZero();
-    torque = 0.0;
+    _force.setZero();
+    _torque = 0.0;
 
     // Since the body type changed, we need to flag contacts for filtering.
     for (ContactEdge ce = contactList; ce != null; ce = ce.next) {
@@ -838,8 +838,8 @@ class Body {
       sleepTime = 0.0;
       _linearVelocity.setZero();
       _angularVelocity = 0.0;
-      force.setZero();
-      torque = 0.0;
+      _force.setZero();
+      _torque = 0.0;
     }
   }
 

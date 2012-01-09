@@ -119,11 +119,12 @@ class Island {
         continue;
       }
 
-      final velocityDelta = new Vector((b.force.x * b.invMass + gravity.x) *
-          step.dt, (b.force.y * b.invMass + gravity.y) * step.dt);
+      final velocityDelta = new Vector(
+          (b._force.x * b.invMass + gravity.x) * step.dt,
+          (b._force.y * b.invMass + gravity.y) * step.dt);
       b.linearVelocity.addLocal(velocityDelta);
       num newAngularVelocity = b.angularVelocity +
-          (step.dt * b.invInertia * b.torque);
+          (step.dt * b.invInertia * b._torque);
       b.angularVelocity = newAngularVelocity;
 
       num a = (1.0 - step.dt * b.linearDamping);

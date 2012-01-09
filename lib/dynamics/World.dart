@@ -586,8 +586,8 @@ class World {
    */
   void clearForces() {
     for (Body body = _bodyList; body != null; body = body.next) {
-      body.force.setZero();
-      body.torque = 0.0;
+      body._force.setZero();
+      body._torque = 0.0;
     }
   }
 
