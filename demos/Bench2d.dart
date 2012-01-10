@@ -110,7 +110,7 @@ class Bench2d {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
     window.webkitRequestAnimationFrame((num time) {
-      render(time);
+      render();
     }, canvas);
   }
 
@@ -127,36 +127,34 @@ class Bench2d {
   }
 
   void bench() {
-    Bench2d bench = new Bench2d();
+    Bench2d bench2d = new Bench2d();
 
     final times = new List<int>(FRAMES);
     for (int i = 0; i < FRAMES; ++i) {
       final watch = new Stopwatch();
       watch.start();
-      bench.step();
+      bench2d.step();
       watch.stop();
       times[i] = watch.elapsed() / watch.frequency();
       print(times[i]);
     }
 
     int total = 0;
-    for (int i = 0; i < FRAMES; ++i) {
-      total += times[i];
-    }
+    for (int i = 0; i < FRAMES; ++i) total += times[i];
     print(total);
   }
 }
 
 void main() {
-  final bench = new Bench2d();
-  bench.initialize();
+  final bench2d = new Bench2d();
+  bench2d.initialize();
 
 /*
   bench.initializeAnimation();
   bench.runAnimation();
 */
 
-  bench.warmup();
-  bench.bench();
+  bench2d.warmup();
+  bench2d.bench();
 }
 

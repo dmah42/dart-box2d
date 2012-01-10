@@ -41,7 +41,7 @@ class Demo {
   int frameCount;
 
   /** Current fps */
-  double fps;
+  int fps;
 
   Demo() :
     bodies = new List<Body>() {

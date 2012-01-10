@@ -55,7 +55,7 @@ class DominoTower extends Demo {
     return NAME;
   }
 
-  void makeDomino(num x, num y, bool horizontal, World world) {
+  void makeDomino(num x, num y, bool horizontal) {
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(.5 * DOMINO_WIDTH, .5 * DOMINO_HEIGHT);
     FixtureDef fd = new FixtureDef();
@@ -123,8 +123,8 @@ class DominoTower extends Demo {
       for (int i = 0; i < BASE_COUNT; ++i) {
         currX = i * 1.5 * DOMINO_HEIGHT - (1.5 * DOMINO_HEIGHT *
             BASE_COUNT / 2);
-        makeDomino(currX, DOMINO_HEIGHT / 2.0, false, world);
-        makeDomino(currX, DOMINO_HEIGHT + DOMINO_WIDTH / 2.0, true, world);
+        makeDomino(currX, DOMINO_HEIGHT / 2.0, false);
+        makeDomino(currX, DOMINO_HEIGHT + DOMINO_WIDTH / 2.0, true);
       }
       currX = BASE_COUNT * 1.5 * DOMINO_HEIGHT - (1.5 * DOMINO_HEIGHT *
           BASE_COUNT / 2);
@@ -144,19 +144,17 @@ class DominoTower extends Demo {
           dominoDensity *= 2.5;
           if (i == 0) {
             makeDomino(currX - (1.25 * DOMINO_HEIGHT) + .5 * DOMINO_WIDTH,
-                currY - DOMINO_WIDTH, false, world);
+                currY - DOMINO_WIDTH, false);
           }
           if (i == BASE_COUNT - j - 1) {
             makeDomino(currX + (1.25 * DOMINO_HEIGHT) - .5 * DOMINO_WIDTH,
-                currY - DOMINO_WIDTH, false, world);
+                currY - DOMINO_WIDTH, false);
           }
 
           dominoDensity /= 2.5;
-          makeDomino(currX, currY, false, world);
-          makeDomino(currX, currY + .5 * (DOMINO_WIDTH + DOMINO_HEIGHT),
-              true, world);
-          makeDomino(currX, currY - .5 * (DOMINO_WIDTH + DOMINO_HEIGHT),
-              true, world);
+          makeDomino(currX, currY, false);
+          makeDomino(currX, currY + .5 * (DOMINO_WIDTH + DOMINO_HEIGHT), true);
+          makeDomino(currX, currY - .5 * (DOMINO_WIDTH + DOMINO_HEIGHT), true);
         }
       }
     }
