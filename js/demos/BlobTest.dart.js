@@ -5095,9 +5095,6 @@ Contact.prototype.get$touching = function() {
 Contact.prototype.get$enabled = function() {
   return (this.flags & (4)) == (4);
 }
-Contact.prototype.evaluate = function(argManifold, xfA, xfB) {
-
-}
 Contact.prototype.flagForFiltering = function() {
   this.flags |= (8);
 }

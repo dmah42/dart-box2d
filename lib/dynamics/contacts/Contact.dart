@@ -121,10 +121,7 @@ class Contact {
   }
 
   /** Abstract method. */
-  // TODO(gregbglw) make this abstract once working in both dartc and dartium.
-  // bug 5015671
-  void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
-  }
+  abstract void evaluate(Manifold argManifold, Transform xfA, Transform xfB);
 
   /**
    * Flag this contact for filtering. Filtering will occur the next time step.

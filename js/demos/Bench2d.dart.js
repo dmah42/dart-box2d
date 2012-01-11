@@ -4749,9 +4749,6 @@ Contact.prototype.get$touching = function() {
 Contact.prototype.get$enabled = function() {
   return (this.flags & (4)) == (4);
 }
-Contact.prototype.evaluate = function(argManifold, xfA, xfB) {
-
-}
 Contact.prototype.update = function(listener) {
   this._oldManifold.setFrom(this.manifold);
   this.flags |= (4);

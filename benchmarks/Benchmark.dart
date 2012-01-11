@@ -48,8 +48,7 @@ class Benchmark {
   Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
 
   /** Sets up the physics world. */
-  //TODO(gregbglw): Make abstract. see b/5015671
-  void initialize() { }
+  abstract void initialize();
 
   String get name() {
     return "No Name Provided";

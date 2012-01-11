@@ -4967,9 +4967,6 @@ Contact.prototype.get$touching = function() {
 Contact.prototype.get$enabled = function() {
   return (this.flags & (4)) == (4);
 }
-Contact.prototype.evaluate = function(argManifold, xfA, xfB) {
-
-}
 Contact.prototype.flagForFiltering = function() {
   this.flags |= (8);
 }
@@ -6961,9 +6958,6 @@ BenchmarkRunner.prototype.addBenchmark = function(benchmark) {
 function Benchmark(solveLoops, _steps) {
   this.solveLoops = solveLoops;
   this._steps = _steps;
-}
-Benchmark.prototype.initialize = function() {
-
 }
 Benchmark.prototype.get$name = function() {
   return "No Name Provided";
