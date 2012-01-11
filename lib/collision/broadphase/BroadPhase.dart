@@ -149,10 +149,6 @@ class BroadPhase implements TreeCallback {
     // We only want to sort the first _pairCount items of _pairBuffer,
     // so copy these to a temporary buffer where we do the sorting, then
     // copy back.
-    // TODO(mattsh) http://b/issue?id=5318770, possibly we should
-    // add a method to array to allow sorting just a range of the array.
-// TODO(jgw): Make sure this is right.
-//    List<Pair> pairBuffer = new List.fromList(_pairBuffer, 0, _pairCount);
     List<Pair> pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
     pairBuffer.sort((a, b) => a.compareTo(b));
     _pairBuffer.setRange(0, _pairCount, pairBuffer);

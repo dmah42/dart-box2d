@@ -20,13 +20,6 @@ class DefaultWorldPool {
   TimeOfImpact timeOfImpact;
   Distance distance;
 
-/* TODO(jgw): Can't use 'this' in initializers?
-  DefaultWorldPool() :
-    distance = new Distance._construct(),
-    collision = new Collision._construct(this),
-    timeOfImpact = new TimeOfImpact._construct(this) { }
-*/
-
   DefaultWorldPool() {
     distance = new Distance._construct();
     collision = new Collision._construct(this);
