@@ -61,15 +61,6 @@ function $ne(x, y) {
          (typeof(x) == 'string' && typeof(y) == 'string')
     ? x != y : !x.$eq(y);
 }
-function $truncdiv(x, y) {
-  if (typeof(x) == 'number' && typeof(y) == 'number') {
-    if (y == 0) $throw(new IntegerDivisionByZeroException());
-    var tmp = x / y;
-    return (tmp < 0) ? Math.ceil(tmp) : Math.floor(tmp);
-  } else {
-    return x.$truncdiv(y);
-  }
-}
 Object.prototype.$typeNameOf = function() {
   if ((typeof(window) != 'undefined' && window.constructor.name == 'DOMWindow')
       || typeof(process) != 'undefined') { // fast-path for Chrome and Node
@@ -354,6 +345,9 @@ NumImplementation.prototype.toDouble = function() {
 }
 NumImplementation.prototype.toStringAsFixed = function(fractionDigits) {
   'use strict'; return this.toFixed(fractionDigits);
+}
+NumImplementation.prototype.toRadixString = function(radix) {
+  'use strict'; return this.toString(radix)
 }
 NumImplementation.prototype.compareTo = function(other) {
   var thisValue = this.toDouble();
@@ -3736,31 +3730,14 @@ CanvasDraw.prototype.drawSegment = function(p1, p2, color) {
 CanvasDraw.prototype.drawTransform = function(xf) {
   $throw(new NotImplementedException());
 }
-CanvasDraw.prototype._toHex = function(n) {
-  n = n.toInt();
-  var r = ($mod(n, (16)));
-  var result;
-  if (n - r == (0)) {
-    result = this._toChar(r);
-  }
-  else {
-    result = this._toHex($truncdiv((n - r), (16)));
-    result.concat(this._toChar(r));
-  }
-  return result;
-}
-CanvasDraw.prototype._toChar = function(n) {
-  var alpha = "0123456789ABCDEF";
-  return alpha[n];
-}
 CanvasDraw.prototype.set$_color = function(color) {
   var red = (color.x * (255)).round().toInt();
   var green = (color.y * (255)).round().toInt();
   var blue = (color.z * (255)).round().toInt();
   var colorString = new StringBufferImpl("#");
-  var redString = this._toHex(red);
-  var greenString = this._toHex(green);
-  var blueString = this._toHex(blue);
+  var redString = red.toRadixString((16));
+  var greenString = green.toRadixString((16));
+  var blueString = blue.toRadixString((16));
   colorString.add(redString);
   colorString.add(greenString);
   colorString.add(blueString);

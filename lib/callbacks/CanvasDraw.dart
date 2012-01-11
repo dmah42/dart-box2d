@@ -153,9 +153,9 @@ class CanvasDraw extends DebugDraw {
     //ctx.setFillColor(red, green, blue);
 
     final colorString = new StringBuffer("#");
-    String redString = _toHex(red);
-    String greenString = _toHex(green);
-    String blueString = _toHex(blue);
+    String redString = red.toRadixString(16);
+    String greenString = green.toRadixString(16);
+    String blueString = blue.toRadixString(16);
 
     colorString.add(redString);
     colorString.add(greenString);
@@ -163,37 +163,5 @@ class CanvasDraw extends DebugDraw {
 
     ctx.setStrokeColor(colorString.toString());
     ctx.setFillColor(colorString.toString());
-  }
-
-  /**
-   * Conversion routines to get hex numbers from base 10 numbers. From
-   * en.wikipedia.org/wiki/Hexadecimal.
-   * TODO(gregbglw): Replace with toRadixString when that function is
-   * implemented.
-   */
-  String _toHex(int n) {
-    //TODO(gregbglw): Remove this once my vm is working again.
-    // Mysterious, non-reproducible bug.
-    n = n.toInt();
-    int r = (n % 16);
-    String result;
-    if (n - r == 0) {
-      result = _toChar(r);
-    } else {
-      result = _toHex((n - r) ~/ 16);
-      result.concat(_toChar(r));
-    }
-
-    return result;
-  }
-
-  //TODO(gregbglw): Override getScreenToWorld and getWorldToScreen and just do
-  //context transformations. This should be a performance boost over converting
-  //lots of vectors. Should just do this once and draw everything.
-
-  /** Returns the hex digit corresponding to the given value. */
-  String _toChar(int n) {
-    final alpha = "0123456789ABCDEF";
-    return alpha[n];
   }
 }
