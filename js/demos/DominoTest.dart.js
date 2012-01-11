@@ -5269,4 +5269,1108 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
     cc.normal.y = this.worldManifold.normal.y;
     cc.pointCount = manifold.pointCount;
     cc.friction = friction;
-    cc.restitution = re
+    cc.restitution = restitution;
+    cc.localNormal.x = manifold.localNormal.x;
+    cc.localNormal.y = manifold.localNormal.y;
+    cc.localPoint.x = manifold.localPoint.x;
+    cc.localPoint.y = manifold.localPoint.y;
+    cc.radius = radiusA + radiusB;
+    cc.type = manifold.type;
+    for (var j = (0);
+     j < cc.pointCount; ++j) {
+      var cp = manifold.points.$index(j);
+      var ccp = cc.points.$index(j);
+      ccp.normalImpulse = impulseRatio * cp.normalImpulse;
+      ccp.tangentImpulse = impulseRatio * cp.tangentImpulse;
+      ccp.localPoint.x = cp.localPoint.x;
+      ccp.localPoint.y = cp.localPoint.y;
+      ccp.rA.x = this.worldManifold.points.$index(j).get$x() - bodyA.sweep.center.x;
+      ccp.rA.y = this.worldManifold.points.$index(j).get$y() - bodyA.sweep.center.y;
+      ccp.rB.x = this.worldManifold.points.$index(j).get$x() - bodyB.sweep.center.x;
+      ccp.rB.y = this.worldManifold.points.$index(j).get$y() - bodyB.sweep.center.y;
+      var rnA = ccp.rA.x * cc.normal.y - ccp.rA.y * cc.normal.x;
+      var rnB = ccp.rB.x * cc.normal.y - ccp.rB.y * cc.normal.x;
+      rnA *= rnA;
+      rnB *= rnB;
+      var kNormal = bodyA.invMass + bodyB.invMass + bodyA.invInertia * rnA + bodyB.invInertia * rnB;
+      ccp.normalMass = (1) / kNormal;
+      this.tangent.x = (1) * cc.normal.y;
+      this.tangent.y = (-1) * cc.normal.x;
+      var rtA = ccp.rA.x * this.tangent.y - ccp.rA.y * this.tangent.x;
+      var rtB = ccp.rB.x * this.tangent.y - ccp.rB.y * this.tangent.x;
+      rtA *= rtA;
+      rtB *= rtB;
+      var kTangent = bodyA.invMass + bodyB.invMass + bodyA.invInertia * rtA + bodyB.invInertia * rtB;
+      ccp.tangentMass = (1) / kTangent;
+      ccp.velocityBias = (0);
+      this.temp2.x = -wA * ccp.rA.y;
+      this.temp2.y = wA * ccp.rA.x;
+      this.temp1.x = -wB * ccp.rB.y + vB.x - vA.x - this.temp2.x;
+      this.temp1.y = wB * ccp.rB.x + vB.y - vA.y - this.temp2.y;
+      var a = cc.normal;
+      var vRel = a.x * this.temp1.x + a.y * this.temp1.y;
+      if (vRel < (-1)) {
+        ccp.velocityBias = -restitution * vRel;
+      }
+    }
+    if (cc.pointCount == (2)) {
+      var ccp1 = cc.points.$index((0));
+      var ccp2 = cc.points.$index((1));
+      var invMassA = bodyA.invMass;
+      var invIA = bodyA.invInertia;
+      var invMassB = bodyB.invMass;
+      var invIB = bodyB.invInertia;
+      var rn1A = Vector.crossVectors(ccp1.rA, cc.normal);
+      var rn1B = Vector.crossVectors(ccp1.rB, cc.normal);
+      var rn2A = Vector.crossVectors(ccp2.rA, cc.normal);
+      var rn2B = Vector.crossVectors(ccp2.rB, cc.normal);
+      var k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B * rn1B;
+      var k22 = invMassA + invMassB + invIA * rn2A * rn2A + invIB * rn2B * rn2B;
+      var k12 = invMassA + invMassB + invIA * rn1A * rn2A + invIB * rn1B * rn2B;
+      if (k11 * k11 < (100) * (k11 * k22 - k12 * k12)) {
+        cc.K.col1.x = k11;
+        cc.K.col1.y = k12;
+        cc.K.col2.x = k12;
+        cc.K.col2.y = k22;
+        cc.normalMass.col1.x = cc.K.col1.x;
+        cc.normalMass.col1.y = cc.K.col1.y;
+        cc.normalMass.col2.x = cc.K.col2.x;
+        cc.normalMass.col2.y = cc.K.col2.y;
+        cc.normalMass.invertLocal();
+      }
+      else {
+        cc.pointCount = (1);
+      }
+    }
+  }
+}
+ContactSolver.prototype.warmStart = function() {
+  var $0;
+  for (var i = (0);
+   i < this.constraintCount; ++i) {
+    var c = this.constraints.$index(i);
+    var bodyA = c.bodyA;
+    var bodyB = c.bodyB;
+    var invMassA = bodyA.invMass;
+    var invIA = bodyA.invInertia;
+    var invMassB = bodyB.invMass;
+    var invIB = bodyB.invInertia;
+    var normal = c.normal;
+    Vector.crossVectorAndNumToOut(normal, (1), this.tangent);
+    for (var j = (0);
+     j < c.pointCount; ++j) {
+      var ccp = c.points.$index(j);
+      var Px = ccp.normalImpulse * normal.x + ccp.tangentImpulse * this.tangent.x;
+      var Py = ccp.normalImpulse * normal.y + ccp.tangentImpulse * this.tangent.y;
+      bodyA.set$angularVelocity(bodyA.get$angularVelocity() - (invIA * (ccp.rA.x * Py - ccp.rA.y * Px)));
+      ($0 = bodyA.get$linearVelocity()).x = $0.x - (Px * invMassA);
+      ($0 = bodyA.get$linearVelocity()).y = $0.y - (Py * invMassA);
+      bodyB.set$angularVelocity(bodyB.get$angularVelocity() + (invIB * (ccp.rB.x * Py - ccp.rB.y * Px)));
+      ($0 = bodyB.get$linearVelocity()).x = $0.x + (Px * invMassB);
+      ($0 = bodyB.get$linearVelocity()).y = $0.y + (Py * invMassB);
+    }
+  }
+}
+ContactSolver.prototype.solveVelocityConstraints = function() {
+  for (var i = (0);
+   i < this.constraintCount; ++i) {
+    var c = this.constraints.$index(i);
+    var bodyA = c.bodyA;
+    var bodyB = c.bodyB;
+    var wA = bodyA.get$angularVelocity();
+    var wB = bodyB.get$angularVelocity();
+    var vA = bodyA.get$linearVelocity();
+    var vB = bodyB.get$linearVelocity();
+    var invMassA = bodyA.invMass;
+    var invIA = bodyA.invInertia;
+    var invMassB = bodyB.invMass;
+    var invIB = bodyB.invInertia;
+    this.tangent.x = (1) * c.normal.y;
+    this.tangent.y = (-1) * c.normal.x;
+    var friction = c.friction;
+    for (var j = (0);
+     j < c.pointCount; ++j) {
+      var ccp = c.points.$index(j);
+      var a = ccp.rA;
+      this.dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
+      this.dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
+      var vt = this.dv.x * this.tangent.x + this.dv.y * this.tangent.y;
+      var lambda = ccp.tangentMass * (-vt);
+      var maxFriction = friction * ccp.normalImpulse;
+      var newImpulse = MathBox.clamp(ccp.tangentImpulse + lambda, -maxFriction, maxFriction);
+      lambda = newImpulse - ccp.tangentImpulse;
+      var Px = this.tangent.x * lambda;
+      var Py = this.tangent.y * lambda;
+      vA.x = vA.x - (Px * invMassA);
+      vA.y = vA.y - (Py * invMassA);
+      wA -= (invIA * (ccp.rA.x * Py - ccp.rA.y * Px));
+      vB.x = vB.x + (Px * invMassB);
+      vB.y = vB.y + (Py * invMassB);
+      wB += (invIB * (ccp.rB.x * Py - ccp.rB.y * Px));
+      ccp.tangentImpulse = newImpulse;
+    }
+    if (c.pointCount == (1)) {
+      var ccp = c.points.$index((0));
+      var a1 = ccp.rA;
+      this.dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
+      this.dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
+      var b = c.normal;
+      var vn = this.dv.x * b.x + this.dv.y * b.y;
+      var lambda = -ccp.normalMass * (vn - ccp.velocityBias);
+      var a = ccp.normalImpulse + lambda;
+      var newImpulse = (a > (0) ? a : (0));
+      lambda = newImpulse - ccp.normalImpulse;
+      var Px = c.normal.x * lambda;
+      var Py = c.normal.y * lambda;
+      vA.x = vA.x - (Px * invMassA);
+      vA.y = vA.y - (Py * invMassA);
+      wA -= (invIA * (ccp.rA.x * Py - ccp.rA.y * Px));
+      vB.x = vB.x + (Px * invMassB);
+      vB.y = vB.y + (Py * invMassB);
+      wB += (invIB * (ccp.rB.x * Py - ccp.rB.y * Px));
+      ccp.normalImpulse = newImpulse;
+    }
+    else {
+      var cp1 = c.points.$index((0));
+      var cp2 = c.points.$index((1));
+      var a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
+      this.dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
+      this.dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
+      this.dv2.x = -wB * cp2.rB.y + vB.x - vA.x + wA * cp2.rA.y;
+      this.dv2.y = wB * cp2.rB.x + vB.y - vA.y - wA * cp2.rA.x;
+      var vn1 = this.dv1.x * c.normal.x + this.dv1.y * c.normal.y;
+      var vn2 = this.dv2.x * c.normal.x + this.dv2.y * c.normal.y;
+      var b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
+      this.temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
+      this.temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
+      b.x = b.x - this.temp2.x;
+      b.y = b.y - this.temp2.y;
+      while (true) {
+        Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, this.x);
+        this.x.mulLocal((-1));
+        if (this.x.x >= (0) && this.x.y >= (0)) {
+          this.d.setFrom(this.x).subLocal(a);
+          this.P1.setFrom(c.normal).mulLocal(this.d.x);
+          this.P2.setFrom(c.normal).mulLocal(this.d.y);
+          this.temp1.setFrom(this.P1).addLocal(this.P2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassA);
+          vA.subLocal(this.temp2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassB);
+          vB.addLocal(this.temp2);
+          wA -= (invIA * (Vector.crossVectors(cp1.rA, this.P1) + Vector.crossVectors(cp2.rA, this.P2)));
+          wB += (invIB * (Vector.crossVectors(cp1.rB, this.P1) + Vector.crossVectors(cp2.rB, this.P2)));
+          cp1.normalImpulse = this.x.x;
+          cp2.normalImpulse = this.x.y;
+          break;
+        }
+        this.x.x = -cp1.normalMass * b.x;
+        this.x.y = (0);
+        vn1 = (0);
+        vn2 = c.K.col1.y * this.x.x + b.y;
+        if (this.x.x >= (0) && vn2 >= (0)) {
+          this.d.setFrom(this.x).subLocal(a);
+          this.P1.setFrom(c.normal).mulLocal(this.d.x);
+          this.P2.setFrom(c.normal).mulLocal(this.d.y);
+          this.temp1.setFrom(this.P1).addLocal(this.P2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassA);
+          vA.subLocal(this.temp2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassB);
+          vB.addLocal(this.temp2);
+          wA -= (invIA * (Vector.crossVectors(cp1.rA, this.P1) + Vector.crossVectors(cp2.rA, this.P2)));
+          wB += (invIB * (Vector.crossVectors(cp1.rB, this.P1) + Vector.crossVectors(cp2.rB, this.P2)));
+          cp1.normalImpulse = this.x.x;
+          cp2.normalImpulse = this.x.y;
+          break;
+        }
+        this.x.x = (0);
+        this.x.y = -cp2.normalMass * b.y;
+        vn1 = c.K.col2.x * this.x.y + b.x;
+        vn2 = (0);
+        if (this.x.y >= (0) && vn1 >= (0)) {
+          this.d.setFrom(this.x).subLocal(a);
+          this.P1.setFrom(c.normal).mulLocal(this.d.x);
+          this.P2.setFrom(c.normal).mulLocal(this.d.y);
+          this.temp1.setFrom(this.P1).addLocal(this.P2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassA);
+          vA.subLocal(this.temp2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassB);
+          vB.addLocal(this.temp2);
+          wA -= (invIA * (Vector.crossVectors(cp1.rA, this.P1) + Vector.crossVectors(cp2.rA, this.P2)));
+          wB += (invIB * (Vector.crossVectors(cp1.rB, this.P1) + Vector.crossVectors(cp2.rB, this.P2)));
+          cp1.normalImpulse = this.x.x;
+          cp2.normalImpulse = this.x.y;
+          break;
+        }
+        this.x.x = (0);
+        this.x.y = (0);
+        vn1 = b.x;
+        vn2 = b.y;
+        if (vn1 >= (0) && vn2 >= (0)) {
+          this.d.setFrom(this.x).subLocal(a);
+          this.P1.setFrom(c.normal).mulLocal(this.d.x);
+          this.P2.setFrom(c.normal).mulLocal(this.d.y);
+          this.temp1.setFrom(this.P1).addLocal(this.P2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassA);
+          vA.subLocal(this.temp2);
+          this.temp2.setFrom(this.temp1).mulLocal(invMassB);
+          vB.addLocal(this.temp2);
+          wA -= (invIA * (Vector.crossVectors(cp1.rA, this.P1) + Vector.crossVectors(cp2.rA, this.P2)));
+          wB += (invIB * (Vector.crossVectors(cp1.rB, this.P1) + Vector.crossVectors(cp2.rB, this.P2)));
+          cp1.normalImpulse = this.x.x;
+          cp2.normalImpulse = this.x.y;
+          break;
+        }
+        break;
+      }
+    }
+    bodyA.get$linearVelocity().setFrom(vA);
+    bodyA.set$angularVelocity(wA);
+    bodyB.get$linearVelocity().setFrom(vB);
+    bodyB.set$angularVelocity(wB);
+  }
+}
+ContactSolver.prototype.storeImpulses = function() {
+  for (var i = (0);
+   i < this.constraintCount; i++) {
+    var c = this.constraints.$index(i);
+    var m = c.manifold;
+    for (var j = (0);
+     j < c.pointCount; j++) {
+      m.points.$index(j).set$normalImpulse(c.points.$index(j).get$normalImpulse());
+      m.points.$index(j).set$tangentImpulse(c.points.$index(j).get$tangentImpulse());
+    }
+  }
+}
+ContactSolver.prototype.solvePositionConstraints = function(baumgarte) {
+  var $0;
+  var minSeparation = (0);
+  for (var i = (0);
+   i < this.constraintCount; ++i) {
+    var c = this.constraints.$index(i);
+    var bodyA = c.bodyA;
+    var bodyB = c.bodyB;
+    var invMassA = bodyA.mass * bodyA.invMass;
+    var invIA = bodyA.mass * bodyA.invInertia;
+    var invMassB = bodyB.mass * bodyB.invMass;
+    var invIB = bodyB.mass * bodyB.invInertia;
+    for (var j = (0);
+     j < c.pointCount; ++j) {
+      var psm = this.psolver;
+      psm.initialize(c, j);
+      var normal = psm.normal;
+      var point = psm.point;
+      var separation = psm.separation;
+      this.rA.setFrom(point).subLocal(bodyA.sweep.center);
+      this.rB.setFrom(point).subLocal(bodyB.sweep.center);
+      minSeparation = Math.min(minSeparation, separation);
+      var C = MathBox.clamp(baumgarte * (separation + (0.005)), (-0.2), (0));
+      var rnA = Vector.crossVectors(this.rA, normal);
+      var rnB = Vector.crossVectors(this.rB, normal);
+      var K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
+      var impulse = K > (0) ? -C / K : (0);
+      this.P.setFrom(normal).mulLocal(impulse);
+      this.temp1.setFrom(this.P).mulLocal(invMassA);
+      bodyA.sweep.center.subLocal(this.temp1);
+      ;
+      ($0 = bodyA.sweep).angle = $0.angle - (invIA * Vector.crossVectors(this.rA, this.P));
+      bodyA.synchronizeTransform();
+      this.temp1.setFrom(this.P).mulLocal(invMassB);
+      bodyB.sweep.center.addLocal(this.temp1);
+      ($0 = bodyB.sweep).angle = $0.angle + (invIB * Vector.crossVectors(this.rB, this.P));
+      bodyB.synchronizeTransform();
+    }
+  }
+  return minSeparation >= (-0.0075);
+}
+ContactSolver.prototype.solvePositionConstraints$1 = ContactSolver.prototype.solvePositionConstraints;
+// ********** Code for PositionSolverManifold **************
+function PositionSolverManifold() {
+  this.normal = new Vector((0), (0));
+  this.point = new Vector((0), (0));
+  this.planePoint = new Vector((0), (0));
+  this.pointB = new Vector((0), (0));
+  this.temp = new Vector((0), (0));
+  this.separation = (0);
+  this.clipPoint = new Vector((0), (0));
+  this.pointA = new Vector((0), (0));
+}
+PositionSolverManifold.prototype.initialize = function(cc, index) {
+  switch (cc.type) {
+    case (0):
+
+      cc.bodyA.getWorldPointToOut(cc.localPoint, this.pointA);
+      cc.bodyB.getWorldPointToOut(cc.points.$index((0)).get$localPoint(), this.pointB);
+      if (MathBox.distanceSquared(this.pointA, this.pointB) > (1.4208639999999999e-14)) {
+        this.normal.setFrom(this.pointB).subLocal(this.pointA);
+        this.normal.normalize();
+      }
+      else {
+        this.normal.setCoords((1), (0));
+      }
+      this.point.setFrom(this.pointA).addLocal(this.pointB).mulLocal((0.5));
+      this.temp.setFrom(this.pointB).subLocal(this.pointA);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      break;
+
+    case (1):
+
+      cc.bodyA.getWorldVectorToOut(cc.localNormal, this.normal);
+      cc.bodyA.getWorldPointToOut(cc.localPoint, this.planePoint);
+      cc.bodyB.getWorldPointToOut(cc.points.$index(index).get$localPoint(), this.clipPoint);
+      this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      this.point.setFrom(this.clipPoint);
+      break;
+
+    case (2):
+
+      cc.bodyB.getWorldVectorToOut(cc.localNormal, this.normal);
+      cc.bodyB.getWorldPointToOut(cc.localPoint, this.planePoint);
+      cc.bodyA.getWorldPointToOut(cc.points.$index(index).get$localPoint(), this.clipPoint);
+      this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      this.point.setFrom(this.clipPoint);
+      this.normal.negateLocal();
+
+  }
+}
+// ********** Code for PolygonAndCircleContact **************
+$inherits(PolygonAndCircleContact, Contact);
+function PolygonAndCircleContact(argPool) {
+  Contact.call(this, argPool);
+}
+PolygonAndCircleContact.prototype.init = function(fA, fB) {
+  Expect.equals((1), fA.get$type());
+  Expect.equals((0), fB.get$type());
+  Contact.prototype.init.call(this, fA, fB);
+}
+PolygonAndCircleContact.prototype.evaluate = function(argManifold, xfA, xfB) {
+  this.pool.collision.collidePolygonAndCircle(argManifold, this.fixtureA.shape, xfA, this.fixtureB.shape, xfB);
+}
+// ********** Code for PolygonContact **************
+$inherits(PolygonContact, Contact);
+function PolygonContact(argPool) {
+  Contact.call(this, argPool);
+}
+PolygonContact.prototype.init = function(fA, fB) {
+  Expect.equals((1), fA.get$type());
+  Expect.equals((1), fB.get$type());
+  Contact.prototype.init.call(this, fA, fB);
+}
+PolygonContact.prototype.evaluate = function(argManifold, xfA, xfB) {
+  this.pool.collision.collidePolygons(argManifold, this.fixtureA.shape, xfA, this.fixtureB.shape, xfB);
+}
+// ********** Code for TimeOfImpactSolver **************
+function TimeOfImpactSolver() {
+  this.psm = new TimeOfImpactSolverManifold();
+  this.constraints = new Array((4));
+  this.rB = new Vector((0), (0));
+  this.toiBody = null;
+  this.P = new Vector((0), (0));
+  this.rA = new Vector((0), (0));
+  this.temp = new Vector((0), (0));
+  this.count = (0);
+  for (var i = (0);
+   i < this.constraints.get$length(); i++) {
+    this.constraints.$setindex(i, new TimeOfImpactConstraint());
+  }
+}
+TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBody) {
+  this.count = argCount;
+  this.toiBody = argToiBody;
+  if (this.count >= this.constraints.get$length()) {
+    var old = this.constraints;
+    var newLen = Math.max(this.count, old.get$length() * (2));
+    this.constraints = new Array(newLen);
+    this.constraints.setRange$3((0), old.get$length(), old);
+    for (var i = old.get$length();
+     i < this.constraints.get$length(); i++) {
+      this.constraints.$setindex(i, new TimeOfImpactConstraint());
+    }
+  }
+  for (var i = (0);
+   i < this.count; i++) {
+    var contact = contacts.$index(i);
+    var fixtureA = contact.fixtureA;
+    var fixtureB = contact.fixtureB;
+    var shapeA = fixtureA.shape;
+    var shapeB = fixtureB.shape;
+    var radiusA = shapeA.radius;
+    var radiusB = shapeB.radius;
+    var bodyA = fixtureA.body;
+    var bodyB = fixtureB.body;
+    var manifold = contact.manifold;
+    var constraint = this.constraints.$index(i);
+    constraint.bodyA = bodyA;
+    constraint.bodyB = bodyB;
+    constraint.localNormal.setFrom(manifold.localNormal);
+    constraint.localPoint.setFrom(manifold.localPoint);
+    constraint.type = manifold.type;
+    constraint.pointCount = manifold.pointCount;
+    constraint.radius = radiusA + radiusB;
+    for (var j = (0);
+     j < constraint.pointCount; ++j) {
+      var cp = manifold.points.$index(j);
+      constraint.localPoints.$setindex(j, cp.localPoint);
+    }
+  }
+}
+TimeOfImpactSolver.prototype.solve = function(baumgarte) {
+  var $0;
+  var minSeparation = (0);
+  for (var i = (0);
+   i < this.count; ++i) {
+    var c = this.constraints.$index(i);
+    var bodyA = c.bodyA;
+    var bodyB = c.bodyB;
+    var massA = bodyA.mass;
+    var massB = bodyB.mass;
+    if ($eq(bodyA, this.toiBody)) {
+      massB = (0);
+    }
+    else {
+      massA = (0);
+    }
+    var invMassA = massA * bodyA.invMass;
+    var invIA = massA * bodyA.invInertia;
+    var invMassB = massB * bodyB.invMass;
+    var invIB = massB * bodyB.invInertia;
+    for (var j = (0);
+     j < c.pointCount; ++j) {
+      this.psm.initialize(c, j);
+      var normal = this.psm.normal;
+      var point = this.psm.point;
+      var separation = this.psm.separation;
+      this.rA.setFrom(point).subLocal(bodyA.sweep.center);
+      this.rB.setFrom(point).subLocal(bodyB.sweep.center);
+      minSeparation = Math.min(minSeparation, separation);
+      var C = MathBox.clamp(baumgarte * (separation + (0.005)), (-0.2), (0));
+      var rnA = Vector.crossVectors(this.rA, normal);
+      var rnB = Vector.crossVectors(this.rB, normal);
+      var K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
+      var impulse = K > (0) ? -C / K : (0);
+      this.P.setFrom(normal).mulLocal(impulse);
+      this.temp.setFrom(this.P).mulLocal(invMassA);
+      bodyA.sweep.center.subLocal(this.temp);
+      ($0 = bodyA.sweep).angle = $0.angle - (invIA * Vector.crossVectors(this.rA, this.P));
+      bodyA.synchronizeTransform();
+      this.temp.setFrom(this.P).mulLocal(invMassB);
+      bodyB.sweep.center.addLocal(this.temp);
+      ($0 = bodyB.sweep).angle = $0.angle + (invIB * Vector.crossVectors(this.rB, this.P));
+      bodyB.synchronizeTransform();
+    }
+  }
+  return minSeparation >= (-0.0075);
+}
+// ********** Code for TimeOfImpactSolverManifold **************
+function TimeOfImpactSolverManifold() {
+  this.normal = new Vector((0), (0));
+  this.point = new Vector((0), (0));
+  this.planePoint = new Vector((0), (0));
+  this.pointB = new Vector((0), (0));
+  this.temp = new Vector((0), (0));
+  this.separation = (0);
+  this.clipPoint = new Vector((0), (0));
+  this.pointA = new Vector((0), (0));
+}
+TimeOfImpactSolverManifold.prototype.initialize = function(cc, index) {
+  switch (cc.type) {
+    case (0):
+
+      this.pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+      this.pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints.$index((0))));
+      if (MathBox.distanceSquared(this.pointA, this.pointB) > (1.4208639999999999e-14)) {
+        this.normal.setFrom(this.pointB).subLocal(this.pointA);
+        this.normal.normalize();
+      }
+      else {
+        this.normal.setCoords((1), (0));
+      }
+      this.point.setFrom(this.pointA).addLocal(this.pointB).mulLocal((0.5));
+      this.temp.setFrom(this.pointB).subLocal(this.pointA);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      break;
+
+    case (1):
+
+      this.normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
+      this.planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+      this.clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints.$index(index)));
+      this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      this.point.setFrom(this.clipPoint);
+      break;
+
+    case (2):
+
+      this.normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
+      this.planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+      this.clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints.$index(index)));
+      this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
+      this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
+      this.point.setFrom(this.clipPoint);
+      this.normal.negateLocal();
+      break;
+
+  }
+}
+// ********** Code for TimeOfImpactConstraint **************
+function TimeOfImpactConstraint() {
+  this.bodyB = null;
+  this.pointCount = (0);
+  this.localPoints = new Array((2));
+  this.radius = (0);
+  this.localPoint = new Vector((0), (0));
+  this.bodyA = null;
+  this.type = (0);
+  this.localNormal = new Vector((0), (0));
+  for (var i = (0);
+   i < this.localPoints.get$length(); i++) {
+    this.localPoints.$setindex(i, new Vector((0), (0)));
+  }
+}
+TimeOfImpactConstraint.prototype.get$localPoint = function() { return this.localPoint; };
+TimeOfImpactConstraint.prototype.get$type = function() { return this.type; };
+TimeOfImpactConstraint.prototype.set$type = function(value) { return this.type = value; };
+TimeOfImpactConstraint.prototype.get$radius = function() { return this.radius; };
+TimeOfImpactConstraint.prototype.set$radius = function(value) { return this.radius = value; };
+TimeOfImpactConstraint.prototype.setFrom = function(argOther) {
+  for (var i = (0);
+   i < this.localPoints.get$length(); i++) {
+    this.localPoints.$index(i).setFrom$1(argOther.localPoints.$index(i));
+  }
+  this.localNormal.setFrom(argOther.localNormal);
+  this.localPoint.setFrom(argOther.localPoint);
+  this.type = argOther.type;
+  this.radius = argOther.radius;
+  this.pointCount = argOther.pointCount;
+  this.bodyA = argOther.bodyA;
+  this.bodyB = argOther.bodyB;
+}
+TimeOfImpactConstraint.prototype.setFrom$1 = TimeOfImpactConstraint.prototype.setFrom;
+// ********** Code for JointType **************
+function JointType() {}
+// ********** Code for DefaultWorldPool **************
+function DefaultWorldPool() {
+  this.distance = new Distance._construct$ctor();
+  this.collision = new Collision._construct$ctor(this);
+  this.timeOfImpact = new TimeOfImpact._construct$ctor(this);
+}
+DefaultWorldPool.prototype.getCircleContactStack = function() {
+  var queue = new DoubleLinkedQueue();
+  for (var i = (0);
+   i < (10); i++) {
+    queue.addFirst(new CircleContact(this));
+  }
+  return queue;
+}
+DefaultWorldPool.prototype.getPolyCircleContactStack = function() {
+  var queue = new DoubleLinkedQueue();
+  for (var i = (0);
+   i < (10); i++) {
+    queue.addFirst(new PolygonAndCircleContact(this));
+  }
+  return queue;
+}
+DefaultWorldPool.prototype.getPolyContactStack = function() {
+  var queue = new DoubleLinkedQueue();
+  for (var i = (0);
+   i < (10); i++) {
+    queue.addFirst(new PolygonContact(this));
+  }
+  return queue;
+}
+// ********** Code for Color3 **************
+function Color3() {
+  this.y = (0);
+  this.x = (0);
+  this.z = (0);
+}
+Color3.fromRGB$ctor = function(r, g, b) {
+  this.y = g;
+  this.x = r;
+  this.z = b;
+}
+Color3.fromRGB$ctor.prototype = Color3.prototype;
+Color3.prototype.get$x = function() { return this.x; };
+Color3.prototype.set$x = function(value) { return this.x = value; };
+Color3.prototype.get$y = function() { return this.y; };
+Color3.prototype.set$y = function(value) { return this.y = value; };
+Color3.prototype.setFromRGB = function(r, g, b) {
+  this.x = r;
+  this.y = g;
+  this.z = b;
+}
+Color3.prototype.setFrom = function(argColor) {
+  this.x = argColor.x;
+  this.y = argColor.y;
+  this.z = argColor.z;
+}
+Color3.prototype.setFrom$1 = Color3.prototype.setFrom;
+// ********** Code for MathBox **************
+function MathBox() {}
+MathBox.distanceSquared = function(v1, v2) {
+  var dx = (v1.x - v2.x);
+  var dy = (v1.y - v2.y);
+  return dx * dx + dy * dy;
+}
+MathBox.distance = function(v1, v2) {
+  return Math.sqrt(MathBox.distanceSquared(v1, v2));
+}
+MathBox.clamp = function(a, low, high) {
+  return Math.max(low, Math.min(a, high));
+}
+// ********** Code for CanvasViewportTransform **************
+function CanvasViewportTransform(extents, center) {
+  this.center = new Vector.copy$ctor(center);
+  this.scale = (20);
+  this.extents = new Vector.copy$ctor(extents);
+}
+CanvasViewportTransform.prototype.get$center = function() { return this.center; };
+CanvasViewportTransform.prototype.set$center = function(value) { return this.center = value; };
+CanvasViewportTransform.prototype.get$translation = function() {
+  var result = new Vector.copy$ctor(this.extents);
+  result.subLocal(this.center);
+  return result;
+}
+CanvasViewportTransform.prototype.getWorldToScreen = function(argWorld, argScreen) {
+  var gridCorrectedX = (argWorld.x * this.scale) + this.extents.x;
+  var gridCorrectedY = this.extents.y - (argWorld.y * this.scale);
+  argScreen.setCoords(gridCorrectedX + this.get$translation().x, gridCorrectedY + -this.get$translation().y);
+}
+// ********** Code for Matrix22 **************
+function Matrix22(c1, c2) {
+  if (c1 == null) {
+    c1 = new Vector((0), (0));
+  }
+  if (c2 == null) {
+    c2 = new Vector((0), (0));
+  }
+  this.col1 = c1;
+  this.col2 = c2;
+}
+Matrix22.prototype.get$col1 = function() { return this.col1; };
+Matrix22.prototype.set$col1 = function(value) { return this.col1 = value; };
+Matrix22.prototype.get$col2 = function() { return this.col2; };
+Matrix22.prototype.set$col2 = function(value) { return this.col2 = value; };
+Matrix22.prototype.$eq = function(other) {
+  if (other != null && (other instanceof Matrix22)) {
+    return $eq(this.col1, other.get$col1()) && $eq(this.col2, other.get$col2());
+  }
+  else {
+    return false;
+  }
+}
+Matrix22.prototype.setAngle = function(angle) {
+  var cosin = Math.cos(angle);
+  var sin = Math.sin(angle);
+  this.col1.setCoords(cosin, sin);
+  this.col2.setCoords(-sin, cosin);
+}
+Matrix22.prototype.setFrom = function(matrix) {
+  this.col1.setFrom(matrix.col1);
+  this.col2.setFrom(matrix.col2);
+}
+Matrix22.mulTransMatrixAndVectorToOut = function(matrix, vector, out) {
+  var outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
+  out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
+  out.x = outx;
+}
+Matrix22.mulMatrixAndVectorToOut = function(matrix, vector, out) {
+  var tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
+  out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
+  out.y = tempy;
+}
+Matrix22.prototype.invertLocal = function() {
+  var a = this.col1.x, b = this.col2.x, c = this.col1.y, d = this.col2.y;
+  var det = a * d - b * c;
+  if (det != (0)) {
+    det = (1) / det;
+  }
+  this.col1.x = det * d;
+  this.col2.x = -det * b;
+  this.col1.y = -det * c;
+  this.col2.y = det * a;
+  return this;
+}
+Matrix22.prototype.addLocal = function(other) {
+  var $0;
+  ($0 = this.col1).x = $0.x + other.col1.x;
+  ($0 = this.col1).y = $0.y + other.col1.y;
+  ($0 = this.col2).x = $0.x + other.col2.x;
+  ($0 = this.col2).y = $0.y + other.col2.y;
+  return this;
+}
+Matrix22.prototype.toString = function() {
+  return this.col1.toString() + ", " + this.col2.toString();
+}
+Matrix22.prototype.addLocal$1 = Matrix22.prototype.addLocal;
+Matrix22.prototype.setFrom$1 = Matrix22.prototype.setFrom;
+Matrix22.prototype.toString$0 = Matrix22.prototype.toString;
+// ********** Code for Settings **************
+function Settings() {}
+Settings.mixFriction = function(friction1, friction2) {
+  return Math.sqrt(friction1 * friction2);
+}
+Settings.mixRestitution = function(restitution1, restitution2) {
+  return restitution1 > restitution2 ? restitution1 : restitution2;
+}
+// ********** Code for Sweep **************
+function Sweep() {
+  this.angle = (0);
+  this.angleZero = (0);
+  this.centerZero = new Vector((0), (0));
+  this.center = new Vector((0), (0));
+  this.localCenter = new Vector((0), (0));
+}
+Sweep.prototype.get$localCenter = function() { return this.localCenter; };
+Sweep.prototype.get$centerZero = function() { return this.centerZero; };
+Sweep.prototype.get$center = function() { return this.center; };
+Sweep.prototype.get$angleZero = function() { return this.angleZero; };
+Sweep.prototype.set$angleZero = function(value) { return this.angleZero = value; };
+Sweep.prototype.get$angle = function() { return this.angle; };
+Sweep.prototype.set$angle = function(value) { return this.angle = value; };
+Sweep.prototype.$eq = function(other) {
+  return $eq(this.localCenter, other.get$localCenter()) && $eq(this.centerZero, other.get$centerZero()) && $eq(this.center, other.get$center()) && this.angleZero == other.get$angleZero() && this.angle == other.get$angle();
+}
+Sweep.prototype.setFrom = function(other) {
+  this.localCenter.setFrom(other.localCenter);
+  this.centerZero.setFrom(other.centerZero);
+  this.center.setFrom(other.center);
+  this.angleZero = other.angleZero;
+  this.angle = other.angle;
+}
+Sweep.prototype.normalize = function() {
+  var d = (6.283185307179586) * (this.angleZero / (6.283185307179586)).floor();
+  this.angleZero -= d;
+  this.angle -= d;
+}
+Sweep.prototype.getTransform = function(xf, alpha) {
+  var $0;
+  xf.position.x = ((1) - alpha) * this.centerZero.x + alpha * this.center.x;
+  xf.position.y = ((1) - alpha) * this.centerZero.y + alpha * this.center.y;
+  xf.rotation.setAngle(((1) - alpha) * this.angleZero + alpha * this.angle);
+  ($0 = xf.position).x = $0.x - (xf.rotation.col1.x * this.localCenter.x + xf.rotation.col2.x * this.localCenter.y);
+  ($0 = xf.position).y = $0.y - (xf.rotation.col1.y * this.localCenter.x + xf.rotation.col2.y * this.localCenter.y);
+}
+Sweep.prototype.advance = function(time) {
+  this.centerZero.x = ((1) - time) * this.centerZero.x + time * this.center.x;
+  this.centerZero.y = ((1) - time) * this.centerZero.y + time * this.center.y;
+  this.angleZero = ((1) - time) * this.angleZero + time * this.angle;
+}
+Sweep.prototype.setFrom$1 = Sweep.prototype.setFrom;
+// ********** Code for Transform **************
+function Transform() {
+  this.position = new Vector((0), (0));
+  this.rotation = new Matrix22();
+}
+Transform.prototype.get$position = function() { return this.position; };
+Transform.prototype.get$rotation = function() { return this.rotation; };
+Transform.prototype.$eq = function(other) {
+  if (other == null) {
+    return false;
+  }
+  else {
+    return $eq(this.position, other.get$position()) && $eq(this.rotation, other.get$rotation());
+  }
+}
+Transform.prototype.setFrom = function(other) {
+  this.position.setFrom(other.position);
+  this.rotation.setFrom(other.rotation);
+}
+Transform.mulToOut = function(transform, vector, out) {
+  var tempY = transform.position.y + transform.rotation.col1.y * vector.x + transform.rotation.col2.y * vector.y;
+  out.x = transform.position.x + transform.rotation.col1.x * vector.x + transform.rotation.col2.x * vector.y;
+  out.y = tempY;
+}
+Transform.mulTransToOut = function(T, v, out) {
+  var v1x = v.x - T.position.x;
+  var v1y = v.y - T.position.y;
+  var b = T.rotation.col1;
+  var b1 = T.rotation.col2;
+  var tempy = v1x * b1.x + v1y * b1.y;
+  out.x = v1x * b.x + v1y * b.y;
+  out.y = tempy;
+}
+Transform.prototype.setFrom$1 = Transform.prototype.setFrom;
+// ********** Code for Vector **************
+function Vector(x, y) {
+  this.y = y;
+  this.x = x;
+}
+Vector.copy$ctor = function(other) {
+  this.y = other.y;
+  this.x = other.x;
+}
+Vector.copy$ctor.prototype = Vector.prototype;
+Vector.prototype.get$x = function() { return this.x; };
+Vector.prototype.set$x = function(value) { return this.x = value; };
+Vector.prototype.get$y = function() { return this.y; };
+Vector.prototype.set$y = function(value) { return this.y = value; };
+Vector.prototype.$eq = function(other) {
+  if (other == null) {
+    return false;
+  }
+  else {
+    return this.x == other.get$x() && this.y == other.get$y();
+  }
+}
+Vector.prototype.addLocal = function(v) {
+  this.x += v.x;
+  this.y += v.y;
+  return this;
+}
+Vector.prototype.subLocal = function(other) {
+  this.x -= other.x;
+  this.y -= other.y;
+  return this;
+}
+Vector.prototype.setCoords = function(xCoord, yCoord) {
+  this.x = xCoord;
+  this.y = yCoord;
+  return this;
+}
+Vector.crossVectors = function(v1, v2) {
+  return (v1.x * v2.y - v1.y * v2.x);
+}
+Vector.dot = function(one, two) {
+  return one.x * two.x + one.y * two.y;
+}
+Vector.crossNumAndVectorToOut = function(s, a, out) {
+  var tempY = s * a.x;
+  out.x = -s * a.y;
+  out.y = tempY;
+}
+Vector.crossVectorAndNumToOut = function(a, s, out) {
+  var tempy = -s * a.x;
+  out.x = s * a.y;
+  out.y = tempy;
+}
+Vector.prototype.setFrom = function(v) {
+  this.setCoords(v.x, v.y);
+  return this;
+}
+Vector.prototype.mulLocal = function(d) {
+  this.x *= d;
+  this.y *= d;
+  return this;
+}
+Vector.prototype.setZero = function() {
+  this.setCoords((0), (0));
+  return this;
+}
+Vector.prototype.get$length = function() {
+  return Math.sqrt(this.x * this.x + this.y * this.y);
+}
+Vector.minToOut = function(a, b, out) {
+  out.x = a.x < b.x ? a.x : b.x;
+  out.y = a.y < b.y ? a.y : b.y;
+}
+Vector.maxToOut = function(a, b, out) {
+  out.x = a.x > b.x ? a.x : b.x;
+  out.y = a.y > b.y ? a.y : b.y;
+}
+Vector.prototype.get$lengthSquared = function() {
+  return this.x * this.x + this.y * this.y;
+}
+Vector.prototype.absLocal = function() {
+  this.x = this.x.abs();
+  this.y = this.y.abs();
+}
+Vector.prototype.normalize = function() {
+  var len = this.get$length();
+  if (len < (1.192e-7)) {
+    return (0);
+  }
+  var invLength = (1) / len;
+  this.x *= invLength;
+  this.y *= invLength;
+  return len;
+}
+Vector.prototype.negateLocal = function() {
+  this.x = -this.x;
+  this.y = -this.y;
+  return this;
+}
+Vector.prototype.toString = function() {
+  return "(" + this.x + ", " + this.y + ")";
+}
+Vector.prototype.addLocal$1 = Vector.prototype.addLocal;
+Vector.prototype.mulLocal$1 = Vector.prototype.mulLocal;
+Vector.prototype.setCoords$2 = Vector.prototype.setCoords;
+Vector.prototype.setFrom$1 = Vector.prototype.setFrom;
+Vector.prototype.subLocal$1 = Vector.prototype.subLocal;
+Vector.prototype.toString$0 = Vector.prototype.toString;
+// ********** Code for top level **************
+//  ********** Library DominoTest **************
+// ********** Code for Demo **************
+function Demo() {
+  this.bodies = new Array();
+  var gravity = new Vector((0), (-10));
+  var doSleep = true;
+  this.world = new World(gravity, doSleep, new DefaultWorldPool());
+}
+Demo.prototype.step = function(timestamp) {
+  var $this = this; // closure support
+  this.world.step((0.016666666666666666), (10), (10));
+  this.ctx.clearRect((0), (0), (900), (600));
+  this.world.drawDebugData();
+  this.ctx.setFillColor("black");
+  this.ctx.font = "18pt monospace";
+  this.ctx.fillText(this.get$name(), (20), (20));
+  if (this.fps != null) {
+    this.ctx.setFillColor("red");
+    this.ctx.font = "12pt monospace";
+    this.ctx.fillText(("FPS: " + this.fps.toStringAsFixed((2))), (20), (40));
+  }
+  ++this.frameCount;
+  get$window().webkitRequestAnimationFrame($wrap_call$1((function (time) {
+    $this.step(time);
+  })
+  ), this.canvas);
+}
+Demo.prototype.initializeAnimation = function() {
+  var $this = this; // closure support
+  this.canvas = get$document().createElement("canvas");
+  this.canvas.width = (900);
+  this.canvas.height = (600);
+  get$document().body.appendChild(this.canvas);
+  this.ctx = this.canvas.getContext("2d");
+  var extents = new Vector((450), (300));
+  this.viewport = new CanvasViewportTransform(extents, extents);
+  this.viewport.scale = (10);
+  this.debugDraw = new CanvasDraw(this.viewport, this.ctx);
+  this.world.set$debugDraw(this.debugDraw);
+  this.frameCount = (0);
+  get$window().setInterval($wrap_call$0((function () {
+    $this.fps = $this.frameCount;
+    $this.frameCount = (0);
+  })
+  ), (1000));
+}
+Demo.prototype.get$name = function() {
+  return "No Demo Name";
+}
+Demo.prototype.runAnimation = function() {
+  var $this = this; // closure support
+  get$window().webkitRequestAnimationFrame($wrap_call$1((function (time) {
+    $this.step(time);
+  })
+  ), this.canvas);
+}
+// ********** Code for DominoTest **************
+$inherits(DominoTest, Demo);
+function DominoTest() {
+  Demo.call(this);
+}
+DominoTest.prototype.get$name = function() {
+  return "Domino Platforms";
+}
+DominoTest.prototype.initialize = function() {
+  var $0;
+  {
+    var fd = new FixtureDef();
+    var sd = new PolygonShape();
+    sd.setAsBox((50), (10));
+    fd.shape = sd;
+    var bd = new BodyDef();
+    bd.position = new Vector((0), (-10));
+    var body = this.world.createBody(bd);
+    body.createFixture(fd);
+    this.bodies.add(body);
+  }
+  {
+    for (var i = (0);
+     i < (4); i++) {
+      var fd = new FixtureDef();
+      var sd = new PolygonShape();
+      sd.setAsBox((15), (0.125));
+      fd.shape = sd;
+      var bd = new BodyDef();
+      bd.position = new Vector((0), (5) + (5) * i);
+      var body = this.world.createBody(bd);
+      body.createFixture(fd);
+      this.bodies.add(body);
+    }
+  }
+  {
+    var fd = new FixtureDef();
+    var sd = new PolygonShape();
+    sd.setAsBox((0.125), (2));
+    fd.shape = sd;
+    fd.density = (25);
+    var bd = new BodyDef();
+    bd.type = (2);
+    var friction = (0.5);
+    var numPerRow = (25);
+    for (var i = (0);
+     i < (4); ++i) {
+      for (var j = (0);
+       j < numPerRow; j++) {
+        fd.friction = friction;
+        bd.position = new Vector((-14.75) + j * ((29.5) / (numPerRow - (1))), (7.3) + (5) * i);
+        if (i == (2) && j == (0)) {
+          bd.angle = (-0.1);
+          ($0 = bd.position).x = $0.x + (0.1);
+        }
+        else if (i == (3) && j == numPerRow - (1)) {
+          bd.angle = (0.1);
+          ($0 = bd.position).x = $0.x - (0.1);
+        }
+        else {
+          bd.angle = (0);
+        }
+        var myBody = this.world.createBody(bd);
+        myBody.createFixture(fd);
+        this.bodies.add(myBody);
+      }
+    }
+  }
+}
+// ********** Code for top level **************
+function main() {
+  var domino = new DominoTest();
+  domino.initialize();
+  domino.initializeAnimation();
+  domino.runAnimation();
+}
+// ********** Generic Type Inheritance **************
+/** Implements extends for generic types. */
+function $inheritsMembers(child, parent) {
+  child = child.prototype;
+  parent = parent.prototype;
+  Object.getOwnPropertyNames(parent).forEach(function(name) {
+    if (typeof(child[name]) == 'undefined') child[name] = parent[name];
+  });
+}
+$inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
+// 119 dynamic types.
+// 260 types
+// 16 !leaf
+(function(){
+  var v0/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';
+  var v1/*SVGComponentTransferFunctionElement*/ = 'SVGComponentTransferFunctionElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement';
+  var v2/*SVGTextPositioningElement*/ = 'SVGTextPositioningElement|SVGAltGlyphElement|SVGTRefElement|SVGTSpanElement|SVGTextElement';
+  var table = [
+    // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
+    ['Blob', 'Blob|File'],
+    ['CSSRule', 'CSSRule|CSSCharsetRule|CSSFontFaceRule|CSSImportRule|CSSMediaRule|CSSPageRule|CSSStyleRule|CSSUnknownRule|WebKitCSSKeyframeRule|WebKitCSSKeyframesRule'],
+    ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList'],
+    ['Event', 'Event|AudioProcessingEvent|BeforeLoadEvent|CloseEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|ErrorEvent|HashChangeEvent|IDBVersionChangeEvent|MessageEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|ProgressEvent|XMLHttpRequestProgressEvent|SpeechInputEvent|StorageEvent|TrackEvent|UIEvent|CompositionEvent|KeyboardEvent|MouseEvent|SVGZoomEvent|TextEvent|TouchEvent|WheelEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent'],
+    ['HTMLInputElement', v0/*HTMLInputElement*/],
+    ['HTMLElement', [v0/*HTMLInputElement*/,'HTMLElement|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMediaElement|HTMLAudioElement|HTMLVideoElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement'].join('|')],
+    ['SVGComponentTransferFunctionElement', v1/*SVGComponentTransferFunctionElement*/],
+    ['SVGTextPositioningElement', v2/*SVGTextPositioningElement*/],
+    ['SVGElement', [v1/*SVGComponentTransferFunctionElement*/,v2/*SVGTextPositioningElement*/,'SVGElement|SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimationElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGSetElement|SVGCircleElement|SVGClipPathElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGStopElement|SVGStyleElement|SVGSwitchElement|SVGSymbolElement|SVGTextContentElement|SVGTextPathElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement'].join('|')],
+    ['StyleSheet', 'StyleSheet|CSSStyleSheet'],
+  ];
+  $dynamicSetMetadata(table);
+})();
+//  ********** Globals **************
+function $static_init(){
+}
+var const$0000 = Object.create(EmptyQueueException.prototype, {});
+var const$0001 = Object.create(NoMoreElementsException.prototype, {});
+var $globals = {};
+$static_init();
+main();
