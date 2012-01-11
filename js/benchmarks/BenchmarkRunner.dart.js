@@ -3527,15 +3527,6 @@ Shape.prototype.get$type = function() { return this.type; };
 Shape.prototype.set$type = function(value) { return this.type = value; };
 Shape.prototype.get$radius = function() { return this.radius; };
 Shape.prototype.set$radius = function(value) { return this.radius = value; };
-Shape.prototype.computeAxisAlignedBox = function(box, transform) {
-
-}
-Shape.prototype.computeMass = function(massData, density) {
-
-}
-Shape.prototype.clone = function() {
-
-}
 // ********** Code for CircleShape **************
 $inherits(CircleShape, Shape);
 function CircleShape() {

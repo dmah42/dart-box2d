@@ -38,25 +38,21 @@ class Shape {
    * transform:  the shape world transform.
    * point: a point in world coordinates.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  bool testPoint(Transform transform, Vector point) { }
+  abstract bool testPoint(Transform transform, Vector point);
 
   /**
    * Computes the associated axis aligned bounding box for a child shape
    * given a transform. Returns through the given out paramater.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void computeAxisAlignedBox(AxisAlignedBox box, Transform transform) { }
+  abstract void computeAxisAlignedBox(AxisAlignedBox box, Transform transform);
 
   /**
    * Computes (and returns through the given out parameter massData) the mass
    * properties of this shape using its dimensions and the
    * given density. The inertia tensor is computed about the local origin.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void computeMass(MassData massData, num density) { }
+  abstract void computeMass(MassData massData, num density);
 
   /** Returns a clone of this shape. */
-  // TODO: abstract http://b/issue?id=5015671
-  Shape clone() { }
+  abstract Shape clone();
 }

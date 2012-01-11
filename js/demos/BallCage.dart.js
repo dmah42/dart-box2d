@@ -3410,15 +3410,6 @@ Shape.prototype.get$type = function() { return this.type; };
 Shape.prototype.set$type = function(value) { return this.type = value; };
 Shape.prototype.get$radius = function() { return this.radius; };
 Shape.prototype.set$radius = function(value) { return this.radius = value; };
-Shape.prototype.computeAxisAlignedBox = function(box, transform) {
-
-}
-Shape.prototype.computeMass = function(massData, density) {
-
-}
-Shape.prototype.clone = function() {
-
-}
 // ********** Code for CircleShape **************
 $inherits(CircleShape, Shape);
 function CircleShape() {
@@ -3485,18 +3476,6 @@ DebugDraw.prototype.drawPolygon = function(vertices, vertexCount, color) {
   if (vertexCount > (2)) {
     this.drawSegment(vertices.$index(vertexCount - (1)), vertices.$index((0)), color);
   }
-}
-DebugDraw.prototype.drawSolidPolygon = function(vertices, vertexCount, color) {
-
-}
-DebugDraw.prototype.drawSolidCircle = function(center, radius, axis, color) {
-
-}
-DebugDraw.prototype.drawSegment = function(p1, p2, color) {
-
-}
-DebugDraw.prototype.drawTransform = function(xf) {
-
 }
 DebugDraw.prototype.getWorldToScreenToOut = function(argWorld, argScreen) {
   this.viewportTransform.getWorldToScreen(argWorld, argScreen);

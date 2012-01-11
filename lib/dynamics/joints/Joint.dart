@@ -97,25 +97,21 @@ class Joint {
   /**
    * Get the anchor point on bodyA in world coordinates.
    */
-  // TODO: abstract http://b/issue?id=5015671
   void getAnchorA(Vector argOut) { }
 
   /**
    * Get the anchor point on bodyB in world coordinates.
    */
-  // TODO: abstract http://b/issue?id=5015671
   void getAnchorB(Vector argOut) { }
 
   /**
    * Get the reaction force on body2 at the joint anchor in Newtons.
    */
-  // TODO: abstract http://b/issue?id=5015671
   void getReactionForce(num inv_dt, Vector argOut) { }
 
   /**
    * Get the reaction torque on body2 in N*m.
    */
-  // TODO: abstract http://b/issue?id=5015671
   num getReactionTorque(num inv_dt) { }
 
   /**
@@ -125,21 +121,17 @@ class Joint {
     return bodyA.active && bodyB.active;
   }
 
-  // TODO: abstract http://b/issue?id=5015671
   void initVelocityConstraints(TimeStep step) { }
 
-  // TODO: abstract http://b/issue?id=5015671
   void solveVelocityConstraints(TimeStep step) { }
 
   /**
    * This returns true if the position errors are within tolerance.
    */
-  // TODO: abstract http://b/issue?id=5015671
   bool solvePositionConstraints(num baumgarte) { }
 
   /**
    * Override to handle destruction of joint
    */
-  // TODO: abstract http://b/issue?id=5015671
   void destructor() { }
 }

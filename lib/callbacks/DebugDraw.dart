@@ -73,46 +73,39 @@ class DebugDraw {
   /**
    * Draws the given point with the given radius and color.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor) { }
+  abstract void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor);
 
   /**
    * Draw a solid closed polygon provided in CCW order.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawSolidPolygon(List<Vector> vertices, int vertexCount,
-      Color3 color) { }
+  abstract void drawSolidPolygon(List<Vector> vertices, int vertexCount,
+      Color3 color);
 
   /**
    * Draw a circle.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawCircle(Vector center, num radius, Color3 color) { }
+  abstract void drawCircle(Vector center, num radius, Color3 color);
 
   /**
    * Draw a solid circle.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawSolidCircle(Vector center, num radius, Vector axis,
-      Color3 color) { }
+  abstract void drawSolidCircle(Vector center, num radius, Vector axis,
+      Color3 color);
 
   /**
    * Draw a line segment.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawSegment(Vector p1, Vector p2, Color3 color) { }
+  abstract void drawSegment(Vector p1, Vector p2, Color3 color);
 
   /**
    * Draw a transform.  Choose your own length scale
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawTransform(Transform xf) { }
+  abstract void drawTransform(Transform xf);
 
   /**
    * Draw a string.
    */
-  // TODO: abstract http://b/issue?id=5015671
-  void drawString(num x, num y, String s, Color3 color) { }
+  abstract void drawString(num x, num y, String s, Color3 color);
 
   /**
    * Returns the viewport transform.
