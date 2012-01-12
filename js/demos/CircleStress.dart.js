@@ -9,23 +9,28 @@ function $throw(e) {
   }
   throw e;
 }
-Object.prototype.$index = function(i) {
+Object.defineProperty(Object.prototype, '$index', { value: function(i) {
   var proto = Object.getPrototypeOf(this);
   if (proto !== Object) {
     proto.$index = function(i) { return this[i]; }
   }
   return this[i];
-}
-Array.prototype.$index = function(i) { return this[i]; }
-String.prototype.$index = function(i) { return this[i]; }
-Object.prototype.$setindex = function(i, value) {
+}, enumerable: false, configurable: true});
+Object.defineProperty(Array.prototype, '$index', { value: function(i) { 
+  return this[i]; 
+}, enumerable: false, configurable: true});
+Object.defineProperty(String.prototype, '$index', { value: function(i) { 
+  return this[i]; 
+}, enumerable: false, configurable: true});
+Object.defineProperty(Object.prototype, '$setindex', { value: function(i, value) {
   var proto = Object.getPrototypeOf(this);
   if (proto !== Object) {
     proto.$setindex = function(i, value) { return this[i] = value; }
   }
   return this[i] = value;
-}
-Array.prototype.$setindex = function(i, value) { return this[i] = value; }
+}, enumerable: false, configurable: true});
+Object.defineProperty(Array.prototype, '$setindex', { value: function(i, value) { 
+  return this[i] = value; }, enumerable: false, configurable: true});
 function $wrap_call$0(fn) { return fn; }
 function $wrap_call$1(fn) { return fn; }
 function $eq(x, y) {
@@ -36,7 +41,9 @@ function $eq(x, y) {
     ? x == y : x.$eq(y);
 }
 // TODO(jimhug): Should this or should it not match equals?
-Object.prototype.$eq = function(other) { return this === other; }
+Object.defineProperty(Object.prototype, '$eq', { value: function(other) { 
+  return this === other; 
+}, enumerable: false, configurable: true });
 function $mod(x, y) {
   if (typeof(x) == 'number' && typeof(y) == 'number') {
     var result = x % y;
@@ -61,7 +68,7 @@ function $ne(x, y) {
          (typeof(x) == 'string' && typeof(y) == 'string')
     ? x != y : !x.$eq(y);
 }
-Object.prototype.$typeNameOf = function() {
+Object.defineProperty(Object.prototype, '$typeNameOf', { value: function() {
   if ((typeof(window) != 'undefined' && window.constructor.name == 'DOMWindow')
       || typeof(process) != 'undefined') { // fast-path for Chrome and Node
     return this.constructor.name;
@@ -74,66 +81,66 @@ Object.prototype.$typeNameOf = function() {
     str = 'HTMLDocument';
   }
   return str;
-}
-Object.prototype.get$typeName =  Object.prototype.$typeNameOf;
+}, enumerable: false, configurable: true});
+Object.defineProperty(Object.prototype, "get$typeName", { value: Object.prototype.$typeNameOf, enumerable: false, configurable: true});
 // ********** Code for Object **************
-Object.prototype.noSuchMethod = function(name, args) {
+Object.defineProperty(Object.prototype, "noSuchMethod", { value: function(name, args) {
   $throw(new NoSuchMethodException(this, name, args));
-}
-Object.prototype.addLocal$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "addLocal$1", { value: function($0) {
   return this.noSuchMethod("addLocal", [$0]);
-};
-Object.prototype.compareTo$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "compareTo$1", { value: function($0) {
   return this.noSuchMethod("compareTo", [$0]);
-};
-Object.prototype.drawSegment$3 = function($0, $1, $2) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "drawSegment$3", { value: function($0, $1, $2) {
   return this.noSuchMethod("drawSegment", [$0, $1, $2]);
-};
-Object.prototype.hasNext$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "hasNext$0", { value: function() {
   return this.noSuchMethod("hasNext", []);
-};
-Object.prototype.initVelocityConstraints$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "initVelocityConstraints$1", { value: function($0) {
   return this.noSuchMethod("initVelocityConstraints", [$0]);
-};
-Object.prototype.mulLocal$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "mulLocal$1", { value: function($0) {
   return this.noSuchMethod("mulLocal", [$0]);
-};
-Object.prototype.negateLocal$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "negateLocal$0", { value: function() {
   return this.noSuchMethod("negateLocal", []);
-};
-Object.prototype.next$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "next$0", { value: function() {
   return this.noSuchMethod("next", []);
-};
-Object.prototype.normalize$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "normalize$0", { value: function() {
   return this.noSuchMethod("normalize", []);
-};
-Object.prototype.setCoords$2 = function($0, $1) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "setCoords$2", { value: function($0, $1) {
   return this.noSuchMethod("setCoords", [$0, $1]);
-};
-Object.prototype.setFrom$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "setFrom$1", { value: function($0) {
   return this.noSuchMethod("setFrom", [$0]);
-};
-Object.prototype.setRange$3 = function($0, $1, $2) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "setRange$3", { value: function($0, $1, $2) {
   return this.noSuchMethod("setRange", [$0, $1, $2]);
-};
-Object.prototype.solvePositionConstraints$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "solvePositionConstraints$1", { value: function($0) {
   return this.noSuchMethod("solvePositionConstraints", [$0]);
-};
-Object.prototype.solveVelocityConstraints$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "solveVelocityConstraints$1", { value: function($0) {
   return this.noSuchMethod("solveVelocityConstraints", [$0]);
-};
-Object.prototype.subLocal$1 = function($0) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "subLocal$1", { value: function($0) {
   return this.noSuchMethod("subLocal", [$0]);
-};
-Object.prototype.synchronizeTransform$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "synchronizeTransform$0", { value: function() {
   return this.noSuchMethod("synchronizeTransform", []);
-};
-Object.prototype.toString$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "toString$0", { value: function() {
   return this.toString();
-};
-Object.prototype.zero$0 = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(Object.prototype, "zero$0", { value: function() {
   return this.noSuchMethod("zero", []);
-};
+}, enumerable: false, configurable: true });
 // ********** Code for IndexOutOfRangeException **************
 function IndexOutOfRangeException(_index) {
   this._index = _index;
@@ -247,18 +254,18 @@ ListFactory.ListFactory$from$factory = function(other) {
   }
   return list;
 }
-ListFactory.prototype.get$length = function() { return this.length; };
-ListFactory.prototype.set$length = function(value) { return this.length = value; };
-ListFactory.prototype.add = function(value) {
+Object.defineProperty(ListFactory.prototype, "get$length", { value: function() { return this.length; }, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "set$length", { value: function(value) { return this.length = value; }, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "add", { value: function(value) {
   this.push(value);
-}
-ListFactory.prototype.clear = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "clear", { value: function() {
   this.set$length((0));
-}
-ListFactory.prototype.getRange = function(start, length) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "getRange", { value: function(start, length) {
   return this.slice(start, start + length);
-}
-ListFactory.prototype.setRange = function(start, length, from, startFrom) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "setRange", { value: function(start, length, from, startFrom) {
   if (length == (0)) return;
   if (length < (0)) $throw(new IllegalArgumentException("length is negative"));
   if (start < (0)) $throw(new IndexOutOfRangeException(start));
@@ -269,13 +276,13 @@ ListFactory.prototype.setRange = function(start, length, from, startFrom) {
   if (endFrom > from.get$length()) $throw(new IndexOutOfRangeException(endFrom));
   for (var i = (0);
    i < length; (i = i + (1))) this.$setindex(start + i, from.$index(startFrom + i));
-}
-ListFactory.prototype.iterator = function() {
+}, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "iterator", { value: function() {
   return new ListIterator(this);
-}
-ListFactory.prototype.setRange$3 = function($0, $1, $2) {
+}, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "setRange$3", { value: function($0, $1, $2) {
   return this.setRange($0, $1, $2, (0));
-};
+}, enumerable: false, configurable: true });
 ListFactory_Body = ListFactory;
 ListFactory_ClipVertex = ListFactory;
 ListFactory_Contact = ListFactory;
@@ -607,12 +614,16 @@ function $dynamic(name) {
     // Patch the prototype, but don't overwrite an existing stub, like
     // the one on Object.prototype.
     var proto = Object.getPrototypeOf(obj);
-    if (!proto.hasOwnProperty(name)) proto[name] = method;
+    if (!proto.hasOwnProperty(name)) {
+      Object.defineProperty(proto, name, 
+        { value: method, enumerable: false, configurable: true });
+    }
 
     return method.apply(this, Array.prototype.slice.call(arguments));
   };
   $dynamicBind.methods = methods;
-  Object.prototype[name] = $dynamicBind;
+  Object.defineProperty(Object.prototype, name, { value: $dynamicBind,
+    enumerable: false, configurable: true});
   return methods;
 }
 if (typeof $dynamicMetadata == 'undefined') $dynamicMetadata = [];
@@ -669,6 +680,9 @@ $dynamic("set$type").CSSRule = function(value) { return this.type = value; };
 // ********** Code for Console **************
 Console = (typeof console == 'undefined' ? {} : console);
 // ********** Code for dom_ConvolverNode **************
+$dynamic("normalize$0").ConvolverNode = function() {
+  return this.normalize();
+};
 // ********** Code for dom_Coordinates **************
 // ********** Code for dom_Counter **************
 // ********** Code for dom_Crypto **************
@@ -1451,7 +1465,6 @@ $dynamic("toString$0").WebKitCSSMatrix = function() {
   return this.toString();
 };
 // ********** Code for dom_WebKitCSSTransformValue **************
-// ********** Code for dom_WebKitFlags **************
 // ********** Code for dom_WebKitMutationObserver **************
 // ********** Code for dom_WebKitNamedFlow **************
 // ********** Code for dom_WebKitPoint **************
@@ -7339,8 +7352,8 @@ function $inheritsMembers(child, parent) {
   });
 }
 $inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
-// 120 dynamic types.
-// 276 types
+// 121 dynamic types.
+// 277 types
 // 21 !leaf
 (function(){
   var v0/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';
