@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : IViewportTransform</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">interface <a name='IViewportTransform::IViewportTransform'>IViewportTransform</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+<section class="subtypes">
+<h2>Subtypes:</h2>
+<ul>
+<li><a href='CanvasViewportTransform.html#CanvasViewportTransform::CanvasViewportTransform'>CanvasViewportTransform</a></li>
+</ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ This is the viewport transform used from drawing.
+ Use yFlip if you are drawing from the top-left corner.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='IViewportTransform::center'>center
+</a></code></span>
+</dt>
+<dd>
+
+ center of the viewport.  Not a copy.
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='IViewportTransform::extents'>extents
+</a></code></span>
+</dt>
+<dd>
+
+ This is the half-width and half-height.
+ This should be the actual half-width and 
+ half-height, not anything transformed or scaled.
+ Not a copy.
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='IViewportTransform::scale'>scale
+</a></code></span>
+</dt>
+<dd>
+
+ Returns the scaling factor used in converting from world sizes to rendering
+ sizes.
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='bool.html#bool::bool'>bool</a></code></code></span>
+<span class="field-name"><code><a name='IViewportTransform::yFlip'>yFlip
+</a></code></span>
+</dt>
+<dd>
+
+ return if the transform flips the y axis.
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='IViewportTransform::getScreenToWorld'>getScreenToWorld</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='IViewportTransform::getScreenToWorld::argScreen'>argScreen</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='IViewportTransform::getScreenToWorld::argWorld'>argWorld</a>)</code></dt>
+<dd>
+
+ takes the screen coordinates (argScreen) and puts the
+ corresponding world coordinates in argWorld. It should be safe
+ to give the same object as both parameters.
+</dd>
+<dt>
+<code>void <a name='IViewportTransform::getWorldToScreen'>getWorldToScreen</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='IViewportTransform::getWorldToScreen::argWorld'>argWorld</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='IViewportTransform::getWorldToScreen::argScreen'>argScreen</a>)</code></dt>
+<dd>
+
+ takes the world coordinate (argWorld) puts the corresponding
+ screen coordinate in argScreen.  It should be safe to give the
+ same object as both parameters.
+</dd>
+<dt>
+<code>void <a name='IViewportTransform::setCamera'>setCamera</a>(<code><a href='num.html#num::num'>num</a></code> <a name='IViewportTransform::setCamera::x'>x</a>, <code><a href='num.html#num::num'>num</a></code> <a name='IViewportTransform::setCamera::y'>y</a>, <code><a href='num.html#num::num'>num</a></code> <a name='IViewportTransform::setCamera::scale'>scale</a>)</code></dt>
+<dd>
+
+ Sets the transform's center to the given x and y coordinates,
+ and using the given scale.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : AxisAlignedBox</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ An axis-aligned bounding box.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='AxisAlignedBox::center'>center
+</a></code></span>
+</dt>
+<dd>
+
+ Returns the center of this box.
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='AxisAlignedBox::lowerBound'>lowerBound
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='AxisAlignedBox::upperBound'>upperBound
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a>([<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='AxisAlignedBox::::lowerBound'>lowerBound</a> = null, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='AxisAlignedBox::::upperBound'>upperBound</a> = null])</code>
+</dt>
+<dd>
+
+ Constructs a new box with the given lower and upper bounds. If no bounds
+ are specified, constructs the box with both bounds at the origin.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='AxisAlignedBox::contains'>contains</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::contains::aabb'>aabb</a>)</code></dt>
+<dd>
+
+ Returns true if this box contains the given box.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='AxisAlignedBox::isValid'>isValid</a>()</code></dt>
+<dd>
+
+ Returns true if the lower bound is strictly less than the upper bound and
+ both bounds are themselves valid (Vector.isValid() returns true).
+</dd>
+<dt>
+<code><code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::setBounds'>setBounds</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='AxisAlignedBox::setBounds::lower'>lower</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='AxisAlignedBox::setBounds::upper'>upper</a>)</code></dt>
+<dd>
+
+ Sets the bounds to the given values.
+</dd>
+<dt>
+<code>void <a name='AxisAlignedBox::setFrom'>setFrom</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::setFrom::other'>other</a>)</code></dt>
+<dd>
+
+ Sets this box to be a copy of the given box.
+</dd>
+<dt>
+<code>void <a name='AxisAlignedBox::setFromCombination'>setFromCombination</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::setFromCombination::boxOne'>boxOne</a>, <code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::setFromCombination::boxTwo'>boxTwo</a>)</code></dt>
+<dd>
+
+ Sets this box to be a combination of the two given boxes.
+ The combination is determined by picking and choosing the lowest x and y
+ values from the lowerBounds to form a new lower bound and picking and
+ choosing the largest x and y values from the upperBounds to form a new
+ upperBound.
+</dd>
+<dt>
+<code>static <code><a href='bool.html#bool::bool'>bool</a></code> <a name='AxisAlignedBox::testOverlap'>testOverlap</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::testOverlap::a'>a</a>, <code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='AxisAlignedBox::testOverlap::b'>b</a>)</code></dt>
+<dd>
+
+ Returns true if the given box overlaps with this box.
+</dd>
+<dt>
+<code><code><a href='String.html#String::String'>String</a></code> <a name='AxisAlignedBox::toString'>toString</a>()</code></dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

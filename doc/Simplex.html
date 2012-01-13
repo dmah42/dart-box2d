@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Simplex</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Simplex::Simplex'>Simplex</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+ Class for internal use by Distance.dart. </section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::case2'>case2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::case22'>case22
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::case3'>case3
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::case33'>case33
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::count'>count
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::e12'>e12
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::e13'>e13
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::e23'>e23
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='SimplexVertex.html#SimplexVertex::SimplexVertex'>SimplexVertex</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::v1'>v1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='SimplexVertex.html#SimplexVertex::SimplexVertex'>SimplexVertex</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::v2'>v2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='SimplexVertex.html#SimplexVertex::SimplexVertex'>SimplexVertex</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::v3'>v3
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='Simplex::vertices'>vertices
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='Simplex.html#Simplex::Simplex'>Simplex</a>()</code>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='Simplex::getClosestPoint'>getClosestPoint</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Simplex::getClosestPoint::out'>out</a>)</code></dt>
+<dd>
+
+ this returns pooled objects. don't keep or modify them
+</dd>
+<dt>
+<code><code><a href='num.html#num::num'>num</a></code> <a name='Simplex::getMetric'>getMetric</a>()</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Simplex::getSearchDirection'>getSearchDirection</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Simplex::getSearchDirection::out'>out</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Simplex::getWitnessPoints'>getWitnessPoints</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Simplex::getWitnessPoints::pA'>pA</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Simplex::getWitnessPoints::pB'>pB</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Simplex::readCache'>readCache</a>(<code><a href='SimplexCache.html#SimplexCache::SimplexCache'>SimplexCache</a></code> <a name='Simplex::readCache::cache'>cache</a>, <code><a href='DistanceProxy.html#DistanceProxy::DistanceProxy'>DistanceProxy</a></code> <a name='Simplex::readCache::proxyA'>proxyA</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Simplex::readCache::transformA'>transformA</a>, <code><a href='DistanceProxy.html#DistanceProxy::DistanceProxy'>DistanceProxy</a></code> <a name='Simplex::readCache::proxyB'>proxyB</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Simplex::readCache::transformB'>transformB</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Simplex::solve2'>solve2</a>()</code></dt>
+<dd>
+
+ Solve a line segment using barycentric coordinates.
+</dd>
+<dt>
+<code>void <a name='Simplex::solve3'>solve3</a>()</code></dt>
+<dd>
+
+ Solve a line segment using barycentric coordinates.&lt;br/&gt;
+ Possible regions:&lt;br/&gt;
+ - points[2]&lt;br/&gt;
+ - edge points[0]-points[2]&lt;br/&gt;
+ - edge points[1]-points[2]&lt;br/&gt;
+ - inside the triangle
+</dd>
+<dt>
+<code>void <a name='Simplex::writeCache'>writeCache</a>(<code><a href='SimplexCache.html#SimplexCache::SimplexCache'>SimplexCache</a></code> <a name='Simplex::writeCache::cache'>cache</a>)</code></dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

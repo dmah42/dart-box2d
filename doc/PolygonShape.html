@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : PolygonShape</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='PolygonShape::PolygonShape'>PolygonShape</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li><a href='Shape.html#Shape::Shape'>Shape</a></li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ Convex Polygon Shape. Create using Body.createShape(ShapeDef) rather than the
+ constructor here, which is off-limits to the likes of you.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::POOL_VECTORS'>POOL_VECTORS
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::centroid'>centroid
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::normals'>normals
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Transform.html#Transform::Transform'>Transform</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::poolTransform'>poolTransform
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::vectorPool'>vectorPool
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::vertexCount'>vertexCount
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='PolygonShape::vertices'>vertices
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a>()</code>
+</dt>
+<dd>
+
+ Constructs a new PolygonShape.
+</dd>
+<dt>
+<code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a>.<a name='PolygonShape::copy'>copy</a>(<code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='PolygonShape::copy::other'>other</a>)</code>
+</dt>
+<dd>
+
+ Constructs a new PolygonShape equal to the given shape.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::applyTransformToCentroid'>applyTransformToCentroid</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='PolygonShape::applyTransformToCentroid::xf'>xf</a>)</code></dt>
+<dd>
+
+ Get the centroid and apply the supplied transform.
+</dd>
+<dt>
+<code><code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::centroidToOut'>centroidToOut</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='PolygonShape::centroidToOut::xf'>xf</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::centroidToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Get the centroid and apply the supplied transform. Return the result
+ through the return parameter out.
+</dd>
+<dt>
+<code><code><a href='Shape.html#Shape::Shape'>Shape</a></code> <a name='PolygonShape::clone'>clone</a>()</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='PolygonShape::computeAxisAlignedBox'>computeAxisAlignedBox</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='PolygonShape::computeAxisAlignedBox::argAabb'>argAabb</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='PolygonShape::computeAxisAlignedBox::argXf'>argXf</a>)</code></dt>
+<dd>
+
+ See Shape.computeAxisAlignedBox(AABB, Transform).
+</dd>
+<dt>
+<code>void <a name='PolygonShape::computeCentroidToOut'>computeCentroidToOut</a>(<code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='PolygonShape::computeCentroidToOut::vs'>vs</a>, <code><a href='int.html#int::int'>int</a></code> <a name='PolygonShape::computeCentroidToOut::count'>count</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::computeCentroidToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Compute the centroid and store the value in the given out parameter.
+</dd>
+<dt>
+<code>void <a name='PolygonShape::computeMass'>computeMass</a>(<code><a href='MassData.html#MassData::MassData'>MassData</a></code> <a name='PolygonShape::computeMass::massData'>massData</a>, <code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::computeMass::density'>density</a>)</code></dt>
+<dd>
+
+ See Shape.computeMass(MassData)
+</dd>
+<dt>
+<code><code><a href='int.html#int::int'>int</a></code> <a name='PolygonShape::getSupport'>getSupport</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::getSupport::d'>d</a>)</code></dt>
+<dd>
+
+ Get the supporting vertex index in the given direction.
+</dd>
+<dt>
+<code><code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::getSupportVertex'>getSupportVertex</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::getSupportVertex::d'>d</a>)</code></dt>
+<dd>
+
+ Get the supporting vertex in the given direction.
+</dd>
+<dt>
+<code><code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::getVertex'>getVertex</a>(<code><a href='int.html#int::int'>int</a></code> <a name='PolygonShape::getVertex::index'>index</a>)</code></dt>
+<dd>
+
+ Get a vertex by index.
+</dd>
+<dt>
+<code>void <a name='PolygonShape::setAsBox'>setAsBox</a>(<code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::setAsBox::hx'>hx</a>, <code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::setAsBox::hy'>hy</a>)</code></dt>
+<dd>
+
+ Build vertices to represent an axis-aligned box.
+ hx is the half-width of the body and hy is the half height.
+</dd>
+<dt>
+<code>void <a name='PolygonShape::setAsBoxWithCenterAndAngle'>setAsBoxWithCenterAndAngle</a>(<code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::setAsBoxWithCenterAndAngle::hx'>hx</a>, <code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::setAsBoxWithCenterAndAngle::hy'>hy</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::setAsBoxWithCenterAndAngle::center'>center</a>, <code><a href='num.html#num::num'>num</a></code> <a name='PolygonShape::setAsBoxWithCenterAndAngle::angle'>angle</a>)</code></dt>
+<dd>
+
+ Build vertices to represent an oriented box. hx is the halfwidth, hy the
+ half-height, center is the center of the box in local coordinates and angle
+ is the rotation of the box in local coordinates.
+</dd>
+<dt>
+<code>void <a name='PolygonShape::setAsEdge'>setAsEdge</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::setAsEdge::v1'>v1</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::setAsEdge::v2'>v2</a>)</code></dt>
+<dd>
+
+ Set this as a single edge.
+</dd>
+<dt>
+<code>void <a name='PolygonShape::setFrom'>setFrom</a>(<code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='PolygonShape::setFrom::otherVertices'>otherVertices</a>, <code><a href='int.html#int::int'>int</a></code> <a name='PolygonShape::setFrom::count'>count</a>)</code></dt>
+<dd>
+
+ Copy vertices. This assumes the vertices define a convex polygon.
+ It is assumed that the exterior is the the right of each edge.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='PolygonShape::testPoint'>testPoint</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='PolygonShape::testPoint::xf'>xf</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='PolygonShape::testPoint::p'>p</a>)</code></dt>
+<dd>
+
+ See Shape.testPoint(Transform, Vector).
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

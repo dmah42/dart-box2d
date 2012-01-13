@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Transform</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Transform::Transform'>Transform</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ A transform is a translation and a rotation. It represents the position and
+ orientation of rigid frames.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Transform::position'>position
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code></code></span>
+<span class="field-name"><code><a name='Transform::rotation'>rotation
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='Transform.html#Transform::Transform'>Transform</a>()</code>
+</dt>
+<dd>
+
+ Constructs a new transform with a vector at the origin and no rotation.
+</dd>
+<dt>
+<code><a href='Transform.html#Transform::Transform'>Transform</a>.<a name='Transform::copy'>copy</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Transform::copy::other'>other</a>)</code>
+</dt>
+<dd>
+
+ Constructs a new transform equal to the given transform.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='Transform::6161'>==</a>(&lt;dynamic&gt; <a name='Transform::6161::other'>other</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>static <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mul'>mul</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Transform::mul::T'>T</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mul::v'>v</a>)</code></dt>
+<dd>
+
+ Multiply the given transform and given vector and return a new Vector with
+ the result.
+</dd>
+<dt>
+<code>static void <a name='Transform::mulToOut'>mulToOut</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Transform::mulToOut::transform'>transform</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mulToOut::vector'>vector</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mulToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Multiplies the given transform and the given vector and places the result
+ in the given out parameter.
+</dd>
+<dt>
+<code>static void <a name='Transform::mulTransToOut'>mulTransToOut</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Transform::mulTransToOut::T'>T</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mulTransToOut::v'>v</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::mulTransToOut::out'>out</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Transform::setFrom'>setFrom</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Transform::setFrom::other'>other</a>)</code></dt>
+<dd>
+
+ Sets this transform equal to the given transform.
+</dd>
+<dt>
+<code>void <a name='Transform::setFromPositionAndRotation'>setFromPositionAndRotation</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Transform::setFromPositionAndRotation::argPosition'>argPosition</a>, <code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Transform::setFromPositionAndRotation::argRotation'>argRotation</a>)</code></dt>
+<dd>
+
+ Sets this transform with the given position and rotation.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

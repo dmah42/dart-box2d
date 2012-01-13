@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Fixture</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Fixture::Fixture'>Fixture</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ A fixture is used to attach a shape to a body for collision detection.
+ You cannot reuse fixtures.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Body.html#Body::Body'>Body</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::body'>body
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::box'>box
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::density'>density
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Filter.html#Filter::Filter'>Filter</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::filter'>filter
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::friction'>friction
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='bool.html#bool::bool'>bool</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::isSensor'>isSensor
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Fixture.html#Fixture::Fixture'>Fixture</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::next'>next
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::proxy'>proxy
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::restitution'>restitution
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Shape.html#Shape::Shape'>Shape</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::shape'>shape
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::type'>type
+</a></code></span>
+</dt>
+<dd>
+
+ Get the type of the child shape.
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Object.html#Object::Object'>Object</a></code></code></span>
+<span class="field-name"><code><a name='Fixture::userData'>userData
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='Fixture.html#Fixture::Fixture'>Fixture</a>()</code>
+</dt>
+<dd>
+
+ Constructs a new Fixture with default values.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='Fixture::create'>create</a>(<code><a href='Body.html#Body::Body'>Body</a></code> <a name='Fixture::create::b'>b</a>, <code><a href='FixtureDef.html#FixtureDef::FixtureDef'>FixtureDef</a></code> <a name='Fixture::create::def'>def</a>)</code></dt>
+<dd>
+
+ Sets this fixture according to the given body and definition.
+</dd>
+<dt>
+<code>void <a name='Fixture::createProxy'>createProxy</a>(<code><a href='BroadPhase.html#BroadPhase::BroadPhase'>BroadPhase</a></code> <a name='Fixture::createProxy::broadPhase'>broadPhase</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Fixture::createProxy::xf'>xf</a>)</code></dt>
+<dd>
+ These support body activation/deactivation. </dd>
+<dt>
+<code>void <a name='Fixture::destroy'>destroy</a>()</code></dt>
+<dd>
+
+ Destroys this fixture. Before being called, this shape's proxy must be
+ destroyed. After being called, this fixture's shape is null.
+</dd>
+<dt>
+<code>void <a name='Fixture::destroyProxy'>destroyProxy</a>(<code><a href='BroadPhase.html#BroadPhase::BroadPhase'>BroadPhase</a></code> <a name='Fixture::destroyProxy::broadPhase'>broadPhase</a>)</code></dt>
+<dd>
+
+ Destroys this Fixture's proxy.
+</dd>
+<dt>
+<code>void <a name='Fixture::getMassData'>getMassData</a>(<code><a href='MassData.html#MassData::MassData'>MassData</a></code> <a name='Fixture::getMassData::massData'>massData</a>)</code></dt>
+<dd>
+
+ Get the mass data for this fixture. The mass data is based on the density
+ and the shape. The rotational inertia is about the shape's origin.
+</dd>
+<dt>
+<code>void <a name='Fixture::synchronize'>synchronize</a>(<code><a href='BroadPhase.html#BroadPhase::BroadPhase'>BroadPhase</a></code> <a name='Fixture::synchronize::broadPhase'>broadPhase</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Fixture::synchronize::transformOne'>transformOne</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Fixture::synchronize::transformTwo'>transformTwo</a>)</code></dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

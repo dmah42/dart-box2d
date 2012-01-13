@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : BroadPhase</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='BroadPhase::BroadPhase'>BroadPhase</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+<section class="interfaces">
+<h2>Implemented interfaces:</h2>
+<ul>
+<li><a href='TreeCallback.html#TreeCallback::TreeCallback'>TreeCallback</a></li>
+</ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ The broad-phase is used for computing pairs and performing volume queries
+ and ray casts.
+
+ Uses the Sweep and Prune algorithm in: Collision Detection in Interactive
+ 3D environments by Geno Van Den Bergen. Also some ideas, such integral
+ values comes from Bullet (http://bulletphysics.com).
+
+ This broad-phase does not persist pairs. Instead, this reports potentially
+ new pairs. It is up to the client to consume the new pairs and to track
+ subsequent overlap.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='BroadPhase::MOVE_CAPACITY'>MOVE_CAPACITY
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code>&lt;dynamic&gt;</code></span>
+<span class="field-name"><code><a name='BroadPhase::NULL_PROXY'>NULL_PROXY
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='BroadPhase::PAIR_CAPACITY'>PAIR_CAPACITY
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='BroadPhase::moveBuffer'>moveBuffer
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='BroadPhase::proxyCount'>proxyCount
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code></code></span>
+<span class="field-name"><code><a name='BroadPhase::queryProxy'>queryProxy
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='BroadPhase.html#BroadPhase::BroadPhase'>BroadPhase</a>()</code>
+</dt>
+<dd>
+
+ Constructs a new BroadPhase.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='int.html#int::int'>int</a></code> <a name='BroadPhase::computeHeight'>computeHeight</a>()</code></dt>
+<dd>
+
+ Returns the height of embedded tree.
+</dd>
+<dt>
+<code><code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::createProxy'>createProxy</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='BroadPhase::createProxy::box'>box</a>, &lt;dynamic&gt; <a name='BroadPhase::createProxy::userData'>userData</a>)</code></dt>
+<dd>
+
+ Creates a proxy with an initial bounding box. Pairs are not reported until
+ updatePairs is called.
+</dd>
+<dt>
+<code>void <a name='BroadPhase::destroyProxy'>destroyProxy</a>(<code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::destroyProxy::proxy'>proxy</a>)</code></dt>
+<dd>
+
+ Destroys a proxy. It is up to the client to remove any pairs.
+</dd>
+<dt>
+<code>void <a name='BroadPhase::moveProxy'>moveProxy</a>(<code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::moveProxy::proxy'>proxy</a>, <code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='BroadPhase::moveProxy::box'>box</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='BroadPhase::moveProxy::displacement'>displacement</a>)</code></dt>
+<dd>
+
+ Call MoveProxy as many times as you like, then when you are done
+ call UpdatePairs to constize the proxy pairs (for your time step).
+</dd>
+<dt>
+<code>void <a name='BroadPhase::query'>query</a>(<code><a href='TreeCallback.html#TreeCallback::TreeCallback'>TreeCallback</a></code> <a name='BroadPhase::query::callback'>callback</a>, <code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='BroadPhase::query::box'>box</a>)</code></dt>
+<dd>
+
+ Query an axis aligned box for overlapping proxies. The callback funciton is
+ called for each proxy that overlaps the supplied box.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='BroadPhase::testOverlap'>testOverlap</a>(<code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::testOverlap::proxyA'>proxyA</a>, <code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::testOverlap::proxyB'>proxyB</a>)</code></dt>
+<dd>
+
+ Returns true if the bounding boxes of the given proxies overlap.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='BroadPhase::treeCallback'>treeCallback</a>(<code><a href='DynamicTreeNode.html#DynamicTreeNode::DynamicTreeNode'>DynamicTreeNode</a></code> <a name='BroadPhase::treeCallback::proxy'>proxy</a>)</code></dt>
+<dd>
+
+ The callback function to use for this tree. Is called from
+ DynamicTree.query when we are gathering pairs.
+</dd>
+<dt>
+<code>void <a name='BroadPhase::updatePairs'>updatePairs</a>(<code><a href='PairCallback.html#PairCallback::PairCallback'>PairCallback</a></code> <a name='BroadPhase::updatePairs::callback'>callback</a>)</code></dt>
+<dd>
+
+ Add pairs according to whether we need to keep track of
+ their relationship. Pairs are added by calling the addPair method on the
+ given callback.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : CircleShape</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='CircleShape::CircleShape'>CircleShape</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li><a href='Shape.html#Shape::Shape'>Shape</a></li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ A shape commonly known as the circle.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='CircleShape::pool1'>pool1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='CircleShape::pool2'>pool2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='CircleShape::pool3'>pool3
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='CircleShape::position'>position
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a>()</code>
+</dt>
+<dd>
+
+ A constructor for internal use only. Instead use Body.createShape with a
+ CircleDef.
+</dd>
+<dt>
+<code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a>.<a name='CircleShape::copy'>copy</a>(<code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a></code> <a name='CircleShape::copy::other'>other</a>)</code>
+</dt>
+<dd>
+
+ Constructs a new CircleShape equal to the given CircleShape.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='Shape.html#Shape::Shape'>Shape</a></code> <a name='CircleShape::clone'>clone</a>()</code></dt>
+<dd>
+ Returns a clone of this circle. </dd>
+<dt>
+<code>void <a name='CircleShape::computeAxisAlignedBox'>computeAxisAlignedBox</a>(<code><a href='AxisAlignedBox.html#AxisAlignedBox::AxisAlignedBox'>AxisAlignedBox</a></code> <a name='CircleShape::computeAxisAlignedBox::argBox'>argBox</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='CircleShape::computeAxisAlignedBox::argTransform'>argTransform</a>)</code></dt>
+<dd>
+
+ Compute the axis aligned box for this Shape when the given transform is
+ applied. Stores the result in the given box.
+</dd>
+<dt>
+<code>void <a name='CircleShape::computeMass'>computeMass</a>(<code><a href='MassData.html#MassData::MassData'>MassData</a></code> <a name='CircleShape::computeMass::massData'>massData</a>, <code><a href='num.html#num::num'>num</a></code> <a name='CircleShape::computeMass::density'>density</a>)</code></dt>
+<dd>
+
+ Computes the mass properties of this Circle at the given density and stores
+ the result in the given MassData object.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='CircleShape::testPoint'>testPoint</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='CircleShape::testPoint::transform'>transform</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='CircleShape::testPoint::point'>point</a>)</code></dt>
+<dd>
+
+ Returns true if the point is contained in the given shape when the given
+ rotation transform is applied. Implements superclass abstract method of
+ the same name.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>
