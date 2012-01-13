@@ -148,20 +148,7 @@ class CanvasDraw extends DebugDraw {
     int green = (color.y * 255).round().toInt();
     int blue = (color.z * 255).round().toInt();
 
-    // TODO(dominich): Replace with the following when setStrokeColor works correctly.
-    //ctx.setStrokeColor(red, green, blue);
-    //ctx.setFillColor(red, green, blue);
-
-    final colorString = new StringBuffer("#");
-    String redString = red.toRadixString(16);
-    String greenString = green.toRadixString(16);
-    String blueString = blue.toRadixString(16);
-
-    colorString.add(redString);
-    colorString.add(greenString);
-    colorString.add(blueString);
-
-    ctx.setStrokeColor(colorString.toString());
-    ctx.setFillColor(colorString.toString());
+    ctx.setStrokeColor(red, green, blue);
+    ctx.setFillColor(red, green, blue);
   }
 }
