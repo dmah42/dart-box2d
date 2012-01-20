@@ -15,24 +15,30 @@ Object.defineProperty(Object.prototype, '$index', { value: function(i) {
     proto.$index = function(i) { return this[i]; }
   }
   return this[i];
-}, enumerable: false, configurable: true});
+}, enumerable: false, writable: true, configurable: true});
 Object.defineProperty(Array.prototype, '$index', { value: function(i) { 
   return this[i]; 
-}, enumerable: false, configurable: true});
+}, enumerable: false, writable: true, configurable: true});
 Object.defineProperty(String.prototype, '$index', { value: function(i) { 
   return this[i]; 
-}, enumerable: false, configurable: true});
+}, enumerable: false, writable: true, configurable: true});
 Object.defineProperty(Object.prototype, '$setindex', { value: function(i, value) {
   var proto = Object.getPrototypeOf(this);
   if (proto !== Object) {
     proto.$setindex = function(i, value) { return this[i] = value; }
   }
   return this[i] = value;
-}, enumerable: false, configurable: true});
+}, enumerable: false, writable: true, configurable: true});
 Object.defineProperty(Array.prototype, '$setindex', { value: function(i, value) { 
-  return this[i] = value; }, enumerable: false, configurable: true});
+  return this[i] = value; }, enumerable: false, writable: true, 
+  configurable: true});
 function $wrap_call$0(fn) { return fn; }
 function $wrap_call$1(fn) { return fn; }
+function $add(x, y) {
+  return ((typeof(x) == 'number' && typeof(y) == 'number') ||
+          (typeof(x) == 'string'))
+    ? x + y : x.$add(y);
+}
 function $eq(x, y) {
   if (x == null) return y == null;
   return (typeof(x) == 'number' && typeof(y) == 'number') ||
@@ -42,8 +48,8 @@ function $eq(x, y) {
 }
 // TODO(jimhug): Should this or should it not match equals?
 Object.defineProperty(Object.prototype, '$eq', { value: function(other) { 
-  return this === other; 
-}, enumerable: false, configurable: true });
+  return this === other;
+}, enumerable: false, writable: true, configurable: true });
 function $ne(x, y) {
   if (x == null) return y != null;
   return (typeof(x) == 'number' && typeof(y) == 'number') ||
@@ -64,60 +70,99 @@ Object.defineProperty(Object.prototype, '$typeNameOf', { value: function() {
     str = 'HTMLDocument';
   }
   return str;
-}, enumerable: false, configurable: true});
-Object.defineProperty(Object.prototype, "get$typeName", { value: Object.prototype.$typeNameOf, enumerable: false, configurable: true});
+}, enumerable: false, writable: true, configurable: true});
+Object.defineProperty(Object.prototype, "get$typeName", { value: Object.prototype.$typeNameOf, enumerable: false, writable: true, configurable: true});
 // ********** Code for Object **************
 Object.defineProperty(Object.prototype, "noSuchMethod", { value: function(name, args) {
   $throw(new NoSuchMethodException(this, name, args));
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "add$1", { value: function($0) {
+  return this.noSuchMethod$2("add", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "addFirst$1", { value: function($0) {
+  return this.noSuchMethod$2("addFirst", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "addLocal$1", { value: function($0) {
-  return this.noSuchMethod("addLocal", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("addLocal", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "beginContact$1", { value: function($0) {
+  return this.noSuchMethod$2("beginContact", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "compareTo$1", { value: function($0) {
-  return this.noSuchMethod("compareTo", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("compareTo", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "drawSegment$3", { value: function($0, $1, $2) {
-  return this.noSuchMethod("drawSegment", [$0, $1, $2]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("drawSegment", [$0, $1, $2]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "endContact$1", { value: function($0) {
+  return this.noSuchMethod$2("endContact", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "hasNext$0", { value: function() {
-  return this.noSuchMethod("hasNext", []);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("hasNext", []);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "initVelocityConstraints$1", { value: function($0) {
-  return this.noSuchMethod("initVelocityConstraints", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("initVelocityConstraints", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "initialize$0", { value: function() {
+  return this.noSuchMethod$2("initialize", []);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "initialize$4", { value: function($0, $1, $2, $3) {
+  return this.noSuchMethod$2("initialize", [$0, $1, $2, $3]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "initializeAnimation$0", { value: function() {
+  return this.noSuchMethod$2("initializeAnimation", []);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "iterator$0", { value: function() {
+  return this.noSuchMethod$2("iterator", []);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "mulLocal$1", { value: function($0) {
-  return this.noSuchMethod("mulLocal", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("mulLocal", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "next$0", { value: function() {
-  return this.noSuchMethod("next", []);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("next", []);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "noSuchMethod$2", { value: function($0, $1) {
+  return this.noSuchMethod($0, $1);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "normalize$0", { value: function() {
+  return this.noSuchMethod$2("normalize", []);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "postSolve$2", { value: function($0, $1) {
+  return this.noSuchMethod$2("postSolve", [$0, $1]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "preSolve$2", { value: function($0, $1) {
+  return this.noSuchMethod$2("preSolve", [$0, $1]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "reportFixture$1", { value: function($0) {
+  return this.noSuchMethod$2("reportFixture", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "runAnimation$0", { value: function() {
+  return this.noSuchMethod$2("runAnimation", []);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setCoords$2", { value: function($0, $1) {
-  return this.noSuchMethod("setCoords", [$0, $1]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("setCoords", [$0, $1]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setFrom$1", { value: function($0) {
-  return this.noSuchMethod("setFrom", [$0]);
-}, enumerable: false, configurable: true });
-Object.defineProperty(Object.prototype, "setRange$3", { value: function($0, $1, $2) {
-  return this.noSuchMethod("setRange", [$0, $1, $2]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("setFrom", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "solvePositionConstraints$1", { value: function($0) {
-  return this.noSuchMethod("solvePositionConstraints", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("solvePositionConstraints", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "solveVelocityConstraints$1", { value: function($0) {
-  return this.noSuchMethod("solveVelocityConstraints", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("solveVelocityConstraints", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "subLocal$1", { value: function($0) {
-  return this.noSuchMethod("subLocal", [$0]);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("subLocal", [$0]);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "synchronizeTransform$0", { value: function() {
-  return this.noSuchMethod("synchronizeTransform", []);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("synchronizeTransform", []);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "toString$0", { value: function() {
   return this.toString();
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "zero$0", { value: function() {
-  return this.noSuchMethod("zero", []);
-}, enumerable: false, configurable: true });
+  return this.noSuchMethod$2("zero", []);
+}, enumerable: false, writable: true, configurable: true });
 // ********** Code for IndexOutOfRangeException **************
 function IndexOutOfRangeException(_index) {
   this._index = _index;
@@ -145,6 +190,14 @@ NoSuchMethodException.prototype.toString = function() {
   return ("NoSuchMethodException - receiver: '" + this._receiver + "' ") + ("function name: '" + this._functionName + "' arguments: [" + sb + "]");
 }
 NoSuchMethodException.prototype.toString$0 = NoSuchMethodException.prototype.toString;
+// ********** Code for ClosureArgumentMismatchException **************
+function ClosureArgumentMismatchException() {
+
+}
+ClosureArgumentMismatchException.prototype.toString = function() {
+  return "Closure argument mismatch";
+}
+ClosureArgumentMismatchException.prototype.toString$0 = ClosureArgumentMismatchException.prototype.toString;
 // ********** Code for IllegalArgumentException **************
 function IllegalArgumentException(args) {
   this._args = args;
@@ -206,6 +259,25 @@ ExpectException.prototype.toString = function() {
   return this.message;
 }
 ExpectException.prototype.toString$0 = ExpectException.prototype.toString;
+// ********** Code for dart_core_Function **************
+Function.prototype.to$call$0 = function() {
+  this.call$0 = this._genStub(0);
+  this.to$call$0 = function() { return this.call$0; };
+  return this.call$0;
+};
+Function.prototype.call$0 = function() {
+  return this.to$call$0()();
+};
+function to$call$0(f) { return f && f.to$call$0(); }
+Function.prototype.to$call$1 = function() {
+  this.call$1 = this._genStub(1);
+  this.to$call$1 = function() { return this.call$1; };
+  return this.call$1;
+};
+Function.prototype.call$1 = function($0) {
+  return this.to$call$1()($0);
+};
+function to$call$1(f) { return f && f.to$call$1(); }
 // ********** Code for Math **************
 Math.min = function(a, b) {
   if (a == b) return a;
@@ -225,23 +297,23 @@ Math.max = function(a, b) {
 ListFactory = Array;
 ListFactory.ListFactory$from$factory = function(other) {
   var list = [];
-  for (var $$i = other.iterator(); $$i.hasNext$0(); ) {
+  for (var $$i = other.iterator$0(); $$i.hasNext$0(); ) {
     var e = $$i.next$0();
-    list.add(e);
+    list.add$1(e);
   }
   return list;
 }
-Object.defineProperty(ListFactory.prototype, "get$length", { value: function() { return this.length; }, enumerable: false, configurable: true });
-Object.defineProperty(ListFactory.prototype, "set$length", { value: function(value) { return this.length = value; }, enumerable: false, configurable: true });
+Object.defineProperty(ListFactory.prototype, "get$length", { value: function() { return this.length; }, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "set$length", { value: function(value) { return this.length = value; }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "add", { value: function(value) {
   this.push(value);
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "clear", { value: function() {
   this.set$length((0));
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "getRange", { value: function(start, length) {
   return this.slice(start, start + length);
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "setRange", { value: function(start, length, from, startFrom) {
   if (length == (0)) return;
   if (length < (0)) $throw(new IllegalArgumentException("length is negative"));
@@ -252,14 +324,16 @@ Object.defineProperty(ListFactory.prototype, "setRange", { value: function(start
   var endFrom = startFrom + length;
   if (endFrom > from.get$length()) $throw(new IndexOutOfRangeException(endFrom));
   for (var i = (0);
-   i < length; (i = i + (1))) this.$setindex(start + i, from.$index(startFrom + i));
-}, enumerable: false, configurable: true });
+   i < length; (i = $add(i, (1)))) this.$setindex(start + i, from.$index(startFrom + i));
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "isEmpty", { value: function() {
+  return this.get$length() == (0);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "iterator", { value: function() {
   return new ListIterator(this);
-}, enumerable: false, configurable: true });
-Object.defineProperty(ListFactory.prototype, "setRange$3", { value: function($0, $1, $2) {
-  return this.setRange($0, $1, $2, (0));
-}, enumerable: false, configurable: true });
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "add$1", { value: ListFactory.prototype.add, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "iterator$0", { value: ListFactory.prototype.iterator, enumerable: false, writable: true, configurable: true });
 ListFactory_Body = ListFactory;
 ListFactory_ClipVertex = ListFactory;
 ListFactory_Contact = ListFactory;
@@ -299,6 +373,9 @@ ListIterator.prototype.hasNext$0 = ListIterator.prototype.hasNext;
 ListIterator.prototype.next$0 = ListIterator.prototype.next;
 // ********** Code for NumImplementation **************
 NumImplementation = Number;
+NumImplementation.prototype.$negate = function() {
+  'use strict'; return -this;
+}
 NumImplementation.prototype.isNaN = function() {
   'use strict'; return isNaN(this);
 }
@@ -375,6 +452,9 @@ DoubleLinkedQueueEntry.prototype._link = function(p, n) {
 DoubleLinkedQueueEntry.prototype.append = function(e) {
   new DoubleLinkedQueueEntry_E(e)._link(this, this._next);
 }
+DoubleLinkedQueueEntry.prototype.prepend = function(e) {
+  new DoubleLinkedQueueEntry_E(e)._link(this._previous, this);
+}
 DoubleLinkedQueueEntry.prototype.remove = function() {
   this._previous._next = this._next;
   this._next._previous = this._previous;
@@ -410,6 +490,9 @@ DoubleLinkedQueueEntry_E.prototype._link = function(p, n) {
 DoubleLinkedQueueEntry_E.prototype.append = function(e) {
   new DoubleLinkedQueueEntry_E(e)._link(this, this._next);
 }
+DoubleLinkedQueueEntry_E.prototype.prepend = function(e) {
+  new DoubleLinkedQueueEntry_E(e)._link(this._previous, this);
+}
 DoubleLinkedQueueEntry_E.prototype.remove = function() {
   this._previous._next = this._next;
   this._next._previous = this._previous;
@@ -442,18 +525,43 @@ function _DoubleLinkedQueueEntrySentinel_E() {
 function DoubleLinkedQueue() {
   this._sentinel = new _DoubleLinkedQueueEntrySentinel_E();
 }
+DoubleLinkedQueue.prototype.addLast = function(value) {
+  this._sentinel.prepend(value);
+}
 DoubleLinkedQueue.prototype.addFirst = function(value) {
   this._sentinel.append(value);
+}
+DoubleLinkedQueue.prototype.add = function(value) {
+  this.addLast(value);
 }
 DoubleLinkedQueue.prototype.removeFirst = function() {
   return this._sentinel._next.remove();
 }
+DoubleLinkedQueue.prototype.get$length = function() {
+  var counter = (0);
+  this.forEach(function _(element) {
+    counter++;
+  }
+  );
+  return counter;
+}
 DoubleLinkedQueue.prototype.isEmpty = function() {
   return (this._sentinel._next == this._sentinel);
+}
+DoubleLinkedQueue.prototype.forEach = function(f) {
+  var entry = this._sentinel._next;
+  while (entry != this._sentinel) {
+    var nextEntry = entry._next;
+    f.call$1(entry._element);
+    entry = nextEntry;
+  }
 }
 DoubleLinkedQueue.prototype.iterator = function() {
   return new _DoubleLinkedQueueIterator_E(this._sentinel);
 }
+DoubleLinkedQueue.prototype.add$1 = DoubleLinkedQueue.prototype.add;
+DoubleLinkedQueue.prototype.addFirst$1 = DoubleLinkedQueue.prototype.addFirst;
+DoubleLinkedQueue.prototype.iterator$0 = DoubleLinkedQueue.prototype.iterator;
 // ********** Code for DoubleLinkedQueue_CircleContact **************
 $inherits(DoubleLinkedQueue_CircleContact, DoubleLinkedQueue);
 function DoubleLinkedQueue_CircleContact() {}
@@ -497,11 +605,14 @@ function StringBufferImpl(content) {
   this.clear();
   this.add(content);
 }
+StringBufferImpl.prototype.get$length = function() {
+  return this._length;
+}
 StringBufferImpl.prototype.add = function(obj) {
-  var str = obj.toString();
+  var str = obj.toString$0();
   if (str == null || str.isEmpty()) return this;
   this._buffer.add(str);
-  this._length += str.length;
+  this._length = this._length + str.length;
   return this;
 }
 StringBufferImpl.prototype.clear = function() {
@@ -517,6 +628,7 @@ StringBufferImpl.prototype.toString = function() {
   this._buffer.add(result);
   return result;
 }
+StringBufferImpl.prototype.add$1 = StringBufferImpl.prototype.add;
 StringBufferImpl.prototype.toString$0 = StringBufferImpl.prototype.toString;
 // ********** Code for StringBase **************
 function StringBase() {}
@@ -534,6 +646,7 @@ StringBase.concatAll = function(strings) {
 }
 // ********** Code for StringImplementation **************
 StringImplementation = String;
+StringImplementation.prototype.get$length = function() { return this.length; };
 StringImplementation.prototype.isEmpty = function() {
   return this.length == (0);
 }
@@ -542,30 +655,6 @@ StringImplementation.prototype.compareTo = function(other) {
 }
 StringImplementation.prototype.compareTo$1 = StringImplementation.prototype.compareTo;
 // ********** Code for _Worker **************
-// ********** Code for top level **************
-//  ********** Library dom **************
-// ********** Code for dom_Window **************
-// ********** Code for dom_AbstractWorker **************
-// ********** Code for dom_ArrayBuffer **************
-// ********** Code for dom_ArrayBufferView **************
-// ********** Code for dom_Attr **************
-// ********** Code for dom_AudioBuffer **************
-// ********** Code for dom_AudioBufferSourceNode **************
-// ********** Code for dom_AudioChannelMerger **************
-// ********** Code for dom_AudioChannelSplitter **************
-// ********** Code for dom_AudioContext **************
-// ********** Code for dom_AudioDestinationNode **************
-// ********** Code for dom_AudioGain **************
-// ********** Code for dom_AudioGainNode **************
-// ********** Code for dom_AudioListener **************
-// ********** Code for dom_AudioNode **************
-// ********** Code for dom_AudioPannerNode **************
-// ********** Code for dom_AudioParam **************
-// ********** Code for dom_AudioProcessingEvent **************
-// ********** Code for dom_AudioSourceNode **************
-// ********** Code for dom_BarInfo **************
-// ********** Code for dom_BeforeLoadEvent **************
-// ********** Code for dom_BiquadFilterNode **************
 function $dynamic(name) {
   var f = Object.prototype[name];
   if (f && f.methods) return f.methods;
@@ -588,19 +677,18 @@ function $dynamic(name) {
       }
     }
     method = method || methods.Object;
-    // Patch the prototype, but don't overwrite an existing stub, like
-    // the one on Object.prototype.
     var proto = Object.getPrototypeOf(obj);
     if (!proto.hasOwnProperty(name)) {
-      Object.defineProperty(proto, name, 
-        { value: method, enumerable: false, configurable: true });
+      Object.defineProperty(proto, name,
+        { value: method, enumerable: false, writable: true, 
+        configurable: true });
     }
 
     return method.apply(this, Array.prototype.slice.call(arguments));
   };
   $dynamicBind.methods = methods;
   Object.defineProperty(Object.prototype, name, { value: $dynamicBind,
-    enumerable: false, configurable: true});
+      enumerable: false, writable: true, configurable: true});
   return methods;
 }
 if (typeof $dynamicMetadata == 'undefined') $dynamicMetadata = [];
@@ -620,6 +708,111 @@ function $dynamicSetMetadata(inputTable) {
   }
   $dynamicMetadata = table;
 }
+$dynamic("get$id").Worker = function() {
+  return this.id;
+}
+// ********** Code for _ArgumentMismatchException **************
+$inherits(_ArgumentMismatchException, ClosureArgumentMismatchException);
+function _ArgumentMismatchException(_message) {
+  this._dart_coreimpl_message = _message;
+  ClosureArgumentMismatchException.call(this);
+}
+_ArgumentMismatchException.prototype.toString = function() {
+  return ("Closure argument mismatch: " + this._dart_coreimpl_message);
+}
+_ArgumentMismatchException.prototype.toString$0 = _ArgumentMismatchException.prototype.toString;
+// ********** Code for _FunctionImplementation **************
+_FunctionImplementation = Function;
+_FunctionImplementation.prototype._genStub = function(argsLength, names) {
+      // Fast path #1: if no named arguments and arg count matches
+      if (this.length == argsLength && !names) {
+        return this;
+      }
+
+      var paramsNamed = this.$optional ? (this.$optional.length / 2) : 0;
+      var paramsBare = this.length - paramsNamed;
+      var argsNamed = names ? names.length : 0;
+      var argsBare = argsLength - argsNamed;
+
+      // Check we got the right number of arguments
+      if (argsBare < paramsBare || argsLength > this.length ||
+          argsNamed > paramsNamed) {
+        return function() {
+          $throw(new _ArgumentMismatchException(
+            'Wrong number of arguments to function. Expected ' + paramsBare +
+            ' positional arguments and at most ' + paramsNamed +
+            ' named arguments, but got ' + argsBare +
+            ' positional arguments and ' + argsNamed + ' named arguments.'));
+        };
+      }
+
+      // First, fill in all of the default values
+      var p = new Array(paramsBare);
+      if (paramsNamed) {
+        p = p.concat(this.$optional.slice(paramsNamed));
+      }
+      // Fill in positional args
+      var a = new Array(argsLength);
+      for (var i = 0; i < argsBare; i++) {
+        p[i] = a[i] = '$' + i;
+      }
+      // Then overwrite with supplied values for optional args
+      var lastParameterIndex;
+      var namesInOrder = true;
+      for (var i = 0; i < argsNamed; i++) {
+        var name = names[i];
+        a[i + argsBare] = name;
+        var j = this.$optional.indexOf(name);
+        if (j < 0 || j >= paramsNamed) {
+          return function() {
+            $throw(new _ArgumentMismatchException(
+              'Named argument "' + name + '" was not expected by function.' +
+              ' Did you forget to mark the function parameter [optional]?'));
+          };
+        } else if (lastParameterIndex && lastParameterIndex > j) {
+          namesInOrder = false;
+        }
+        p[j + paramsBare] = name;
+        lastParameterIndex = j;
+      }
+
+      if (this.length == argsLength && namesInOrder) {
+        // Fast path #2: named arguments, but they're in order and all supplied.
+        return this;
+      }
+
+      // Note: using Function instead of 'eval' to get a clean scope.
+      // TODO(jmesserly): evaluate the performance of these stubs.
+      var f = 'function(' + a.join(',') + '){return $f(' + p.join(',') + ');}';
+      return new Function('$f', 'return ' + f + '').call(null, this);
+    
+}
+// ********** Code for top level **************
+//  ********** Library dom **************
+// ********** Code for dom_Window **************
+// ********** Code for dom_AbstractWorker **************
+// ********** Code for dom_ArrayBuffer **************
+// ********** Code for dom_ArrayBufferView **************
+// ********** Code for dom_Attr **************
+// ********** Code for dom_AudioBuffer **************
+$dynamic("get$length").AudioBuffer = function() { return this.length; };
+$dynamic("set$length").AudioBuffer = function(value) { return this.length = value; };
+// ********** Code for dom_AudioBufferSourceNode **************
+// ********** Code for dom_AudioChannelMerger **************
+// ********** Code for dom_AudioChannelSplitter **************
+// ********** Code for dom_AudioContext **************
+// ********** Code for dom_AudioDestinationNode **************
+// ********** Code for dom_AudioGain **************
+// ********** Code for dom_AudioGainNode **************
+// ********** Code for dom_AudioListener **************
+// ********** Code for dom_AudioNode **************
+// ********** Code for dom_AudioPannerNode **************
+// ********** Code for dom_AudioParam **************
+// ********** Code for dom_AudioProcessingEvent **************
+// ********** Code for dom_AudioSourceNode **************
+// ********** Code for dom_BarInfo **************
+// ********** Code for dom_BeforeLoadEvent **************
+// ********** Code for dom_BiquadFilterNode **************
 $dynamic("get$type").BiquadFilterNode = function() { return this.type; };
 $dynamic("set$type").BiquadFilterNode = function(value) { return this.type = value; };
 // ********** Code for dom_Blob **************
@@ -636,20 +829,32 @@ $dynamic("set$type").Blob = function(value) { return this.type = value; };
 $dynamic("get$type").CSSRule = function() { return this.type; };
 $dynamic("set$type").CSSRule = function(value) { return this.type = value; };
 // ********** Code for dom_CSSRuleList **************
+$dynamic("get$length").CSSRuleList = function() { return this.length; };
+$dynamic("set$length").CSSRuleList = function(value) { return this.length = value; };
 // ********** Code for dom_CSSStyleDeclaration **************
+$dynamic("get$length").CSSStyleDeclaration = function() { return this.length; };
+$dynamic("set$length").CSSStyleDeclaration = function(value) { return this.length = value; };
 // ********** Code for dom_CSSStyleRule **************
 // ********** Code for dom_CSSStyleSheet **************
 // ********** Code for dom_CSSUnknownRule **************
 // ********** Code for dom_CSSValue **************
 // ********** Code for dom_CSSValueList **************
+$dynamic("get$length").CSSValueList = function() { return this.length; };
+$dynamic("set$length").CSSValueList = function(value) { return this.length = value; };
 // ********** Code for dom_CanvasGradient **************
 // ********** Code for dom_CanvasPattern **************
 // ********** Code for dom_CanvasPixelArray **************
+$dynamic("get$length").CanvasPixelArray = function() { return this.length; };
+$dynamic("set$length").CanvasPixelArray = function(value) { return this.length = value; };
 // ********** Code for dom_CanvasRenderingContext **************
 // ********** Code for dom_CanvasRenderingContext2D **************
 // ********** Code for dom_CharacterData **************
+$dynamic("get$length").CharacterData = function() { return this.length; };
+$dynamic("set$length").CharacterData = function(value) { return this.length = value; };
 // ********** Code for dom_ClientRect **************
 // ********** Code for dom_ClientRectList **************
+$dynamic("get$length").ClientRectList = function() { return this.length; };
+$dynamic("set$length").ClientRectList = function(value) { return this.length = value; };
 // ********** Code for dom_Clipboard **************
 // ********** Code for dom_CloseEvent **************
 // ********** Code for dom_Comment **************
@@ -657,6 +862,9 @@ $dynamic("set$type").CSSRule = function(value) { return this.type = value; };
 // ********** Code for Console **************
 Console = (typeof console == 'undefined' ? {} : console);
 // ********** Code for dom_ConvolverNode **************
+$dynamic("normalize$0").ConvolverNode = function() {
+  return this.normalize.call$0();
+};
 // ********** Code for dom_Coordinates **************
 // ********** Code for dom_Counter **************
 // ********** Code for dom_Crypto **************
@@ -674,9 +882,15 @@ $dynamic("toString$0").DOMException = function() {
 $dynamic("get$type").DOMMimeType = function() { return this.type; };
 $dynamic("set$type").DOMMimeType = function(value) { return this.type = value; };
 // ********** Code for dom_DOMMimeTypeArray **************
+$dynamic("get$length").DOMMimeTypeArray = function() { return this.length; };
+$dynamic("set$length").DOMMimeTypeArray = function(value) { return this.length = value; };
 // ********** Code for dom_DOMParser **************
 // ********** Code for dom_DOMPlugin **************
+$dynamic("get$length").DOMPlugin = function() { return this.length; };
+$dynamic("set$length").DOMPlugin = function(value) { return this.length = value; };
 // ********** Code for dom_DOMPluginArray **************
+$dynamic("get$length").DOMPluginArray = function() { return this.length; };
+$dynamic("set$length").DOMPluginArray = function(value) { return this.length = value; };
 // ********** Code for dom_DOMSelection **************
 $dynamic("get$type").DOMSelection = function() { return this.type; };
 $dynamic("set$type").DOMSelection = function(value) { return this.type = value; };
@@ -685,15 +899,24 @@ $dynamic("toString$0").DOMSelection = function() {
 };
 // ********** Code for dom_DOMSettableTokenList **************
 // ********** Code for dom_DOMTokenList **************
+$dynamic("get$length").DOMTokenList = function() { return this.length; };
+$dynamic("set$length").DOMTokenList = function(value) { return this.length = value; };
+$dynamic("add$1").DOMTokenList = function($0) {
+  return this.add($0);
+};
 $dynamic("toString$0").DOMTokenList = function() {
   return this.toString();
 };
 // ********** Code for dom_DOMURL **************
 // ********** Code for dom_DOMWindow **************
+$dynamic("get$length").DOMWindow = function() { return this.length; };
+$dynamic("set$length").DOMWindow = function(value) { return this.length = value; };
 // ********** Code for dom_DataTransferItem **************
 $dynamic("get$type").DataTransferItem = function() { return this.type; };
 $dynamic("set$type").DataTransferItem = function(value) { return this.type = value; };
 // ********** Code for dom_DataTransferItemList **************
+$dynamic("get$length").DataTransferItemList = function() { return this.length; };
+$dynamic("set$length").DataTransferItemList = function(value) { return this.length = value; };
 // ********** Code for dom_DataView **************
 // ********** Code for dom_Database **************
 // ********** Code for dom_DatabaseSync **************
@@ -716,7 +939,11 @@ $dynamic("set$type").DataTransferItem = function(value) { return this.type = val
 // ********** Code for dom_EntityReference **************
 // ********** Code for dom_Entry **************
 // ********** Code for dom_EntryArray **************
+$dynamic("get$length").EntryArray = function() { return this.length; };
+$dynamic("set$length").EntryArray = function(value) { return this.length = value; };
 // ********** Code for dom_EntryArraySync **************
+$dynamic("get$length").EntryArraySync = function() { return this.length; };
+$dynamic("set$length").EntryArraySync = function(value) { return this.length = value; };
 // ********** Code for dom_EntrySync **************
 // ********** Code for dom_ErrorEvent **************
 // ********** Code for dom_Event **************
@@ -737,12 +964,18 @@ $dynamic("toString$0").FileException = function() {
   return this.toString();
 };
 // ********** Code for dom_FileList **************
+$dynamic("get$length").FileList = function() { return this.length; };
+$dynamic("set$length").FileList = function(value) { return this.length = value; };
 // ********** Code for dom_FileReader **************
 // ********** Code for dom_FileReaderSync **************
 // ********** Code for dom_FileWriter **************
+$dynamic("get$length").FileWriter = function() { return this.length; };
+$dynamic("set$length").FileWriter = function(value) { return this.length = value; };
 $dynamic("get$position").FileWriter = function() { return this.position; };
 $dynamic("set$position").FileWriter = function(value) { return this.position = value; };
 // ********** Code for dom_FileWriterSync **************
+$dynamic("get$length").FileWriterSync = function() { return this.length; };
+$dynamic("set$length").FileWriterSync = function(value) { return this.length = value; };
 $dynamic("get$position").FileWriterSync = function() { return this.position; };
 $dynamic("set$position").FileWriterSync = function(value) { return this.position = value; };
 // ********** Code for dom_Float32Array **************
@@ -754,6 +987,8 @@ $dynamic("set$length").Float64Array = function(value) { return this.length = val
 // ********** Code for dom_Geolocation **************
 // ********** Code for dom_Geoposition **************
 // ********** Code for dom_HTMLAllCollection **************
+$dynamic("get$length").HTMLAllCollection = function() { return this.length; };
+$dynamic("set$length").HTMLAllCollection = function(value) { return this.length = value; };
 // ********** Code for dom_HTMLAnchorElement **************
 $dynamic("get$type").HTMLAnchorElement = function() { return this.type; };
 $dynamic("set$type").HTMLAnchorElement = function(value) { return this.type = value; };
@@ -772,6 +1007,11 @@ $dynamic("get$type").HTMLButtonElement = function() { return this.type; };
 $dynamic("set$type").HTMLButtonElement = function(value) { return this.type = value; };
 // ********** Code for dom_HTMLCanvasElement **************
 // ********** Code for dom_HTMLCollection **************
+$dynamic("get$length").HTMLCollection = function() { return this.length; };
+$dynamic("set$length").HTMLCollection = function(value) { return this.length = value; };
+$dynamic("$setindex").HTMLCollection = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_HTMLDListElement **************
 // ********** Code for dom_HTMLDataListElement **************
 // ********** Code for dom_HTMLDetailsElement **************
@@ -787,6 +1027,8 @@ $dynamic("set$type").HTMLEmbedElement = function(value) { return this.type = val
 // ********** Code for dom_HTMLFieldSetElement **************
 // ********** Code for dom_HTMLFontElement **************
 // ********** Code for dom_HTMLFormElement **************
+$dynamic("get$length").HTMLFormElement = function() { return this.length; };
+$dynamic("set$length").HTMLFormElement = function(value) { return this.length = value; };
 // ********** Code for dom_HTMLFrameElement **************
 // ********** Code for dom_HTMLFrameSetElement **************
 // ********** Code for dom_HTMLHRElement **************
@@ -830,6 +1072,8 @@ $dynamic("set$type").HTMLObjectElement = function(value) { return this.type = va
 // ********** Code for dom_HTMLOptGroupElement **************
 // ********** Code for dom_HTMLOptionElement **************
 // ********** Code for dom_HTMLOptionsCollection **************
+$dynamic("get$length").HTMLOptionsCollection = function() { return this.length; };
+$dynamic("set$length").HTMLOptionsCollection = function(value) { return this.length = value; };
 // ********** Code for dom_HTMLOutputElement **************
 $dynamic("get$type").HTMLOutputElement = function() { return this.type; };
 $dynamic("set$type").HTMLOutputElement = function(value) { return this.type = value; };
@@ -842,11 +1086,15 @@ $dynamic("set$type").HTMLParamElement = function(value) { return this.type = val
 $dynamic("get$position").HTMLProgressElement = function() { return this.position; };
 $dynamic("set$position").HTMLProgressElement = function(value) { return this.position = value; };
 // ********** Code for dom_HTMLPropertiesCollection **************
+$dynamic("get$length").HTMLPropertiesCollection = function() { return this.length; };
+$dynamic("set$length").HTMLPropertiesCollection = function(value) { return this.length = value; };
 // ********** Code for dom_HTMLQuoteElement **************
 // ********** Code for dom_HTMLScriptElement **************
 $dynamic("get$type").HTMLScriptElement = function() { return this.type; };
 $dynamic("set$type").HTMLScriptElement = function(value) { return this.type = value; };
 // ********** Code for dom_HTMLSelectElement **************
+$dynamic("get$length").HTMLSelectElement = function() { return this.length; };
+$dynamic("set$length").HTMLSelectElement = function(value) { return this.length = value; };
 $dynamic("get$type").HTMLSelectElement = function() { return this.type; };
 $dynamic("set$type").HTMLSelectElement = function(value) { return this.type = value; };
 // ********** Code for dom_HTMLSourceElement **************
@@ -875,6 +1123,8 @@ $dynamic("set$type").HTMLUListElement = function(value) { return this.type = val
 // ********** Code for dom_HashChangeEvent **************
 // ********** Code for dom_HighPass2FilterNode **************
 // ********** Code for dom_History **************
+$dynamic("get$length").History = function() { return this.length; };
+$dynamic("set$length").History = function(value) { return this.length = value; };
 // ********** Code for dom_IDBAny **************
 // ********** Code for dom_IDBCursor **************
 // ********** Code for dom_IDBCursorWithValue **************
@@ -889,6 +1139,9 @@ $dynamic("toString$0").IDBDatabaseException = function() {
 // ********** Code for dom_IDBKey **************
 // ********** Code for dom_IDBKeyRange **************
 // ********** Code for dom_IDBObjectStore **************
+$dynamic("add$1").IDBObjectStore = function($0) {
+  return this.add($0);
+};
 // ********** Code for dom_IDBRequest **************
 // ********** Code for dom_IDBTransaction **************
 // ********** Code for dom_IDBVersionChangeEvent **************
@@ -922,6 +1175,11 @@ $dynamic("toString$0").Location = function() {
 // ********** Code for dom_MediaElementAudioSourceNode **************
 // ********** Code for dom_MediaError **************
 // ********** Code for dom_MediaList **************
+$dynamic("get$length").MediaList = function() { return this.length; };
+$dynamic("set$length").MediaList = function(value) { return this.length = value; };
+$dynamic("$setindex").MediaList = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_MediaQueryList **************
 // ********** Code for dom_MediaQueryListListener **************
 // ********** Code for dom_MemoryInfo **************
@@ -940,11 +1198,24 @@ $dynamic("set$y").MouseEvent = function(value) { return this.y = value; };
 $dynamic("get$type").MutationRecord = function() { return this.type; };
 $dynamic("set$type").MutationRecord = function(value) { return this.type = value; };
 // ********** Code for dom_NamedNodeMap **************
+$dynamic("get$length").NamedNodeMap = function() { return this.length; };
+$dynamic("set$length").NamedNodeMap = function(value) { return this.length = value; };
+$dynamic("$setindex").NamedNodeMap = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_Navigator **************
 // ********** Code for dom_Node **************
+$dynamic("normalize$0").Node = function() {
+  return this.normalize();
+};
 // ********** Code for dom_NodeFilter **************
 // ********** Code for dom_NodeIterator **************
 // ********** Code for dom_NodeList **************
+$dynamic("get$length").NodeList = function() { return this.length; };
+$dynamic("set$length").NodeList = function(value) { return this.length = value; };
+$dynamic("$setindex").NodeList = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_NodeSelector **************
 // ********** Code for dom_Notation **************
 // ********** Code for dom_Notification **************
@@ -984,6 +1255,8 @@ $dynamic("toString$0").RangeException = function() {
 // ********** Code for dom_SQLException **************
 // ********** Code for dom_SQLResultSet **************
 // ********** Code for dom_SQLResultSetRowList **************
+$dynamic("get$length").SQLResultSetRowList = function() { return this.length; };
+$dynamic("set$length").SQLResultSetRowList = function(value) { return this.length = value; };
 // ********** Code for dom_SQLTransaction **************
 // ********** Code for dom_SQLTransactionSync **************
 // ********** Code for dom_SVGAElement **************
@@ -1027,6 +1300,8 @@ $dynamic("get$id").SVGElement = function() { return this.id; };
 $dynamic("set$id").SVGElement = function(value) { return this.id = value; };
 // ********** Code for dom_SVGElementInstance **************
 // ********** Code for dom_SVGElementInstanceList **************
+$dynamic("get$length").SVGElementInstanceList = function() { return this.length; };
+$dynamic("set$length").SVGElementInstanceList = function(value) { return this.length = value; };
 // ********** Code for dom_SVGEllipseElement **************
 // ********** Code for dom_SVGException **************
 $dynamic("toString$0").SVGException = function() {
@@ -1369,7 +1644,11 @@ $dynamic("set$y").SVGUseElement = function(value) { return this.y = value; };
 // ********** Code for dom_SpeechInputEvent **************
 // ********** Code for dom_SpeechInputResult **************
 // ********** Code for dom_SpeechInputResultList **************
+$dynamic("get$length").SpeechInputResultList = function() { return this.length; };
+$dynamic("set$length").SpeechInputResultList = function(value) { return this.length = value; };
 // ********** Code for dom_Storage **************
+$dynamic("get$length").Storage = function() { return this.length; };
+$dynamic("set$length").Storage = function(value) { return this.length = value; };
 // ********** Code for dom_StorageEvent **************
 // ********** Code for dom_StorageInfo **************
 // ********** Code for dom_StyleMedia **************
@@ -1379,6 +1658,11 @@ $dynamic("set$type").StyleMedia = function(value) { return this.type = value; };
 $dynamic("get$type").StyleSheet = function() { return this.type; };
 $dynamic("set$type").StyleSheet = function(value) { return this.type = value; };
 // ********** Code for dom_StyleSheetList **************
+$dynamic("get$length").StyleSheetList = function() { return this.length; };
+$dynamic("set$length").StyleSheetList = function(value) { return this.length = value; };
+$dynamic("$setindex").StyleSheetList = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_Text **************
 // ********** Code for dom_TextEvent **************
 // ********** Code for dom_TextMetrics **************
@@ -1387,11 +1671,22 @@ $dynamic("set$type").StyleSheet = function(value) { return this.type = value; };
 $dynamic("get$id").TextTrackCue = function() { return this.id; };
 $dynamic("set$id").TextTrackCue = function(value) { return this.id = value; };
 // ********** Code for dom_TextTrackCueList **************
+$dynamic("get$length").TextTrackCueList = function() { return this.length; };
+$dynamic("set$length").TextTrackCueList = function(value) { return this.length = value; };
 // ********** Code for dom_TextTrackList **************
+$dynamic("get$length").TextTrackList = function() { return this.length; };
+$dynamic("set$length").TextTrackList = function(value) { return this.length = value; };
 // ********** Code for dom_TimeRanges **************
+$dynamic("get$length").TimeRanges = function() { return this.length; };
+$dynamic("set$length").TimeRanges = function(value) { return this.length = value; };
 // ********** Code for dom_Touch **************
 // ********** Code for dom_TouchEvent **************
 // ********** Code for dom_TouchList **************
+$dynamic("get$length").TouchList = function() { return this.length; };
+$dynamic("set$length").TouchList = function(value) { return this.length = value; };
+$dynamic("$setindex").TouchList = function(index, value) {
+  $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
+}
 // ********** Code for dom_TrackEvent **************
 // ********** Code for dom_TreeWalker **************
 // ********** Code for dom_UIEvent **************
@@ -1427,6 +1722,8 @@ $dynamic("set$type").WebGLActiveInfo = function(value) { return this.type = valu
 // ********** Code for dom_WebKitAnimation **************
 // ********** Code for dom_WebKitAnimationEvent **************
 // ********** Code for dom_WebKitAnimationList **************
+$dynamic("get$length").WebKitAnimationList = function() { return this.length; };
+$dynamic("set$length").WebKitAnimationList = function(value) { return this.length = value; };
 // ********** Code for dom_WebKitBlobBuilder **************
 // ********** Code for dom_WebKitCSSFilterValue **************
 // ********** Code for dom_WebKitCSSKeyframeRule **************
@@ -1450,7 +1747,7 @@ $dynamic("get$x").WheelEvent = function() { return this.x; };
 $dynamic("set$x").WheelEvent = function(value) { return this.x = value; };
 $dynamic("get$y").WheelEvent = function() { return this.y; };
 $dynamic("set$y").WheelEvent = function(value) { return this.y = value; };
-// ********** Code for Worker **************
+// ********** Code for dom_Worker **************
 // ********** Code for dom_WorkerContext **************
 // ********** Code for dom_WorkerLocation **************
 $dynamic("toString$0").WorkerLocation = function() {
@@ -1484,9 +1781,21 @@ function _VariableSizeListIterator_T() {}
 // ********** Code for _FixedSizeListIterator **************
 $inherits(_FixedSizeListIterator, _VariableSizeListIterator_T);
 function _FixedSizeListIterator() {}
+_FixedSizeListIterator.prototype.hasNext = function() {
+  return this._dom_length > this._dom_pos;
+}
 _FixedSizeListIterator.prototype.hasNext$0 = _FixedSizeListIterator.prototype.hasNext;
 // ********** Code for _VariableSizeListIterator **************
 function _VariableSizeListIterator() {}
+_VariableSizeListIterator.prototype.hasNext = function() {
+  return this._dom_array.get$length() > this._dom_pos;
+}
+_VariableSizeListIterator.prototype.next = function() {
+  if (!this.hasNext()) {
+    $throw(const$0001);
+  }
+  return this._dom_array.$index(this._dom_pos++);
+}
 _VariableSizeListIterator.prototype.hasNext$0 = _VariableSizeListIterator.prototype.hasNext;
 _VariableSizeListIterator.prototype.next$0 = _VariableSizeListIterator.prototype.next;
 // ********** Code for _Lists **************
@@ -2526,8 +2835,8 @@ function SimplexCache() {
 SimplexCache.prototype.get$indexA = function() { return this.indexA; };
 SimplexCache.prototype.get$indexB = function() { return this.indexB; };
 SimplexCache.prototype.setFrom = function(sc) {
-  this.indexA.setRange$3((0), this.indexA.get$length(), sc.indexA);
-  this.indexB.setRange$3((0), this.indexB.get$length(), sc.indexB);
+  this.indexA.setRange((0), this.indexA.get$length(), sc.indexA, (0));
+  this.indexB.setRange((0), this.indexB.get$length(), sc.indexB, (0));
   this.metric = sc.metric;
   this.count = sc.count;
 }
@@ -3048,7 +3357,7 @@ BroadPhase.prototype.updatePairs = function(callback) {
     return a.compareTo$1(b);
   })
   );
-  this._pairBuffer.setRange$3((0), this._pairCount, pairBuffer);
+  this._pairBuffer.setRange((0), this._pairCount, pairBuffer, (0));
   var i = (0);
   while (i < this._pairCount) {
     var primaryPair = this._pairBuffer.$index(i);
@@ -3072,7 +3381,7 @@ BroadPhase.prototype.treeCallback = function(proxy) {
   }
   if (this._pairCount == this._pairCapacity) {
     var oldBuffer = this._pairBuffer;
-    this._pairCapacity *= (2);
+    this._pairCapacity = this._pairCapacity * (2);
     this._pairBuffer = new Array(this._pairCapacity);
     for (var i = (0);
      i < oldBuffer.get$length(); i++) {
@@ -3097,7 +3406,7 @@ BroadPhase.prototype.treeCallback = function(proxy) {
 BroadPhase.prototype._bufferMove = function(node) {
   if (this._moveCount == this._moveCapacity) {
     var old = this.moveBuffer;
-    this._moveCapacity *= (2);
+    this._moveCapacity = this._moveCapacity * (2);
     this.moveBuffer = new Array(this._moveCapacity);
     for (var i = (0);
      i < old.get$length(); i++) {
@@ -3147,28 +3456,28 @@ DynamicTree.prototype.createProxy = function(box, userData) {
   return proxy;
 }
 DynamicTree.prototype.moveProxy = function(argProxy, argBox, displacement) {
-  var $0;
+  var $0, $1, $2, $3, $4, $5, $6, $7;
   if (argProxy.box.contains(argBox)) {
     return false;
   }
   this._removeLeaf(argProxy);
   ($0 = argBox.lowerBound).x = $0.x - (0.1);
-  ($0 = argBox.lowerBound).y = $0.y - (0.1);
-  ($0 = argBox.upperBound).x = $0.x + (0.1);
-  ($0 = argBox.upperBound).y = $0.y + (0.1);
+  ($1 = argBox.lowerBound).y = $1.y - (0.1);
+  ($2 = argBox.upperBound).x = $2.x + (0.1);
+  ($3 = argBox.upperBound).y = $3.y + (0.1);
   this._tempVector.setFrom(displacement);
   this._tempVector.mulLocal((2));
   if (this._tempVector.x < (0)) {
-    ($0 = argBox.lowerBound).x = $0.x + this._tempVector.x;
+    ($4 = argBox.lowerBound).x = $4.x + this._tempVector.x;
   }
   else {
-    ($0 = argBox.upperBound).x = $0.x + this._tempVector.x;
+    ($5 = argBox.upperBound).x = $5.x + this._tempVector.x;
   }
   if (this._tempVector.y < (0)) {
-    ($0 = argBox.lowerBound).y = $0.y + this._tempVector.y;
+    ($6 = argBox.lowerBound).y = $6.y + this._tempVector.y;
   }
   else {
-    ($0 = argBox.upperBound).y = $0.y + this._tempVector.y;
+    ($7 = argBox.upperBound).y = $7.y + this._tempVector.y;
   }
   argProxy.box.setFrom(argBox);
   this._insertLeaf(argProxy);
@@ -3387,7 +3696,7 @@ DynamicTreeNode.prototype.toString = function() {
   return this.box.toString();
 }
 DynamicTreeNode.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 DynamicTreeNode.prototype.toString$0 = DynamicTreeNode.prototype.toString;
 // ********** Code for Pair **************
@@ -3711,11 +4020,11 @@ CanvasDraw.prototype.set$_color = function(color) {
   var redString = red.toRadixString((16));
   var greenString = green.toRadixString((16));
   var blueString = blue.toRadixString((16));
-  colorString.add(redString);
-  colorString.add(greenString);
-  colorString.add(blueString);
-  this.ctx.setStrokeColor(colorString.toString());
-  this.ctx.setFillColor(colorString.toString());
+  colorString.add$1(redString);
+  colorString.add$1(greenString);
+  colorString.add$1(blueString);
+  this.ctx.setStrokeColor(colorString.toString$0());
+  this.ctx.setFillColor(colorString.toString$0());
 }
 CanvasDraw.prototype.drawSegment$3 = CanvasDraw.prototype.drawSegment;
 // ********** Code for ContactFilter **************
@@ -3765,19 +4074,19 @@ function Body(bd, world) {
   this.angularDamping = bd.angularDamping;
   this.linearDamping = bd.linearDamping;
   if (bd.bullet) {
-    this.flags |= (8);
+    this.flags = this.flags | (8);
   }
   if (bd.fixedRotation) {
-    this.flags |= (16);
+    this.flags = this.flags | (16);
   }
   if (bd.allowSleep) {
-    this.flags |= (4);
+    this.flags = this.flags | (4);
   }
   if (bd.awake) {
-    this.flags |= (2);
+    this.flags = this.flags | (2);
   }
   if (bd.active) {
-    this.flags |= (32);
+    this.flags = this.flags | (32);
   }
   this.originTransform.position.setFrom(bd.position);
   this.originTransform.rotation.setAngle(bd.angle);
@@ -3799,6 +4108,9 @@ Body.prototype.get$mass = function() { return this.mass; };
 Body.prototype.set$mass = function(value) { return this.mass = value; };
 Body.prototype.get$invMass = function() { return this.invMass; };
 Body.prototype.set$invMass = function(value) { return this.invMass = value; };
+Body.prototype.get$invInertia = function() { return this.invInertia; };
+Body.prototype.set$invInertia = function(value) { return this.invInertia = value; };
+Body.prototype.get$originTransform = function() { return this.originTransform; };
 Body.prototype.get$sweep = function() { return this.sweep; };
 Body.prototype.createFixture = function(def) {
   var $0;
@@ -3868,11 +4180,11 @@ Body.prototype.resetMassData = function() {
       continue;
     }
     f.getMassData(massData);
-    this.mass += massData.mass;
+    this.mass = this.mass + massData.mass;
     var temp = new Vector.copy$ctor(massData.center);
-    temp.mulLocal(massData.mass);
+    temp.mulLocal$1(massData.mass);
     this.tempCenter.addLocal(temp);
-    this._inertia += massData.inertia;
+    this._inertia = this._inertia + massData.inertia;
   }
   if (this.mass > (0)) {
     this.invMass = (1) / this.mass;
@@ -3883,7 +4195,7 @@ Body.prototype.resetMassData = function() {
     this.invMass = (1);
   }
   if (this._inertia > (0) && (this.flags & (16)) == (0)) {
-    this._inertia -= (this.mass * Vector.dot(this.tempCenter, this.tempCenter));
+    this._inertia = this._inertia - (this.mass * Vector.dot(this.tempCenter, this.tempCenter));
     this.invInertia = (1) / this._inertia;
   }
   else {
@@ -3895,7 +4207,7 @@ Body.prototype.resetMassData = function() {
   Transform.mulToOut(this.originTransform, this.sweep.localCenter, this.sweep.centerZero);
   this.sweep.center.setFrom(this.sweep.centerZero);
   var temp = new Vector.copy$ctor(this.sweep.center);
-  temp.subLocal(this.oldCenter);
+  temp.subLocal$1(this.oldCenter);
   Vector.crossNumAndVectorToOut(this._angularVelocity, temp, temp);
   this._linearVelocity.addLocal(temp);
 }
@@ -3935,12 +4247,12 @@ Body.prototype.get$awake = function() {
 Body.prototype.set$awake = function(flag) {
   if (flag) {
     if ((this.flags & (2)) == (0)) {
-      this.flags |= (2);
+      this.flags = this.flags | (2);
       this.sleepTime = (0);
     }
   }
   else {
-    this.flags &= (-3);
+    this.flags = this.flags & (-3);
     this.sleepTime = (0);
     this._linearVelocity.setZero();
     this._angularVelocity = (0);
@@ -3964,7 +4276,7 @@ Body.prototype.synchronizeFixtures = function() {
   }
 }
 Body.prototype.synchronizeTransform = function() {
-  var $0;
+  var $0, $1, $2, $3;
   var c = Math.cos(this.sweep.angle);
   var s = Math.sin(this.sweep.angle);
   this.originTransform.rotation.col1.x = c;
@@ -3974,9 +4286,9 @@ Body.prototype.synchronizeTransform = function() {
   this.originTransform.position.x = this.originTransform.rotation.col1.x * this.sweep.localCenter.x + this.originTransform.rotation.col2.x * this.sweep.localCenter.y;
   this.originTransform.position.y = this.originTransform.rotation.col1.y * this.sweep.localCenter.x + this.originTransform.rotation.col2.y * this.sweep.localCenter.y;
   ($0 = this.originTransform.position).x = $0.x * (-1);
-  ($0 = this.originTransform.position).y = $0.y * (-1);
-  ($0 = this.originTransform.position).x = $0.x + this.sweep.center.x;
-  ($0 = this.originTransform.position).y = $0.y + this.sweep.center.y;
+  ($1 = this.originTransform.position).y = $1.y * (-1);
+  ($2 = this.originTransform.position).x = $2.x + this.sweep.center.x;
+  ($3 = this.originTransform.position).y = $3.y + this.sweep.center.y;
 }
 Body.prototype.shouldCollide = function(other) {
   if (this._type != (2) && other._type != (2)) {
@@ -3991,7 +4303,7 @@ Body.prototype.advance = function(t) {
   this.synchronizeTransform();
 }
 Body.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 Body.prototype.synchronizeTransform$0 = Body.prototype.synchronizeTransform;
 // ********** Code for BodyDef **************
@@ -4093,7 +4405,7 @@ ContactManager.prototype.destroy = function(c) {
   var bodyA = fixtureA.body;
   var bodyB = fixtureB.body;
   if (this.contactListener != null && c.get$touching()) {
-    this.contactListener.endContact(c);
+    this.contactListener.endContact$1(c);
   }
   if (c.prev != null) {
     c.prev.next = c.next;
@@ -4224,7 +4536,7 @@ Fixture.prototype.get$type = function() {
   return this.shape.type;
 }
 Fixture.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 // ********** Code for FixtureDef **************
 function FixtureDef() {
@@ -4264,7 +4576,7 @@ Island.prototype.init = function(argBodyCapacity, argContactCapacity, argJointCa
   if (this.velocities == null || this.bodyCapacity > this.velocities.get$length()) {
     var old = this.velocities == null ? new Array((0)) : this.velocities;
     this.velocities = new Array(this.bodyCapacity);
-    this.velocities.setRange$3((0), old.get$length(), old);
+    this.velocities.setRange((0), old.get$length(), old, (0));
     for (var i = old.get$length();
      i < this.velocities.get$length(); i++) {
       this.velocities.$setindex(i, new Velocity());
@@ -4273,7 +4585,7 @@ Island.prototype.init = function(argBodyCapacity, argContactCapacity, argJointCa
   if (this.positions == null || this.bodyCapacity > this.positions.get$length()) {
     var old = this.positions == null ? new Array((0)) : this.positions;
     this.positions = new Array(this.bodyCapacity);
-    this.positions.setRange$3((0), old.get$length(), old);
+    this.positions.setRange((0), old.get$length(), old, (0));
     for (var i = old.get$length();
      i < this.positions.get$length(); i++) {
       this.positions.$setindex(i, new Position());
@@ -4429,7 +4741,7 @@ Island.prototype.report = function(constraints) {
       this.impulse.normalImpulses.$setindex(j, cc.points.$index(j).get$normalImpulse());
       this.impulse.tangentImpulses.$setindex(j, cc.points.$index(j).get$tangentImpulse());
     }
-    this.listener.postSolve(c, this.impulse);
+    this.listener.postSolve$2(c, this.impulse);
   }
 }
 // ********** Code for Position **************
@@ -4611,9 +4923,9 @@ World.prototype.createJoint = function(def) {
 World.prototype.step = function(dt, velocityIterations, positionIterations) {
   if ((this._flags & (1)) == (1)) {
     this._contactManager.findNewContacts();
-    this._flags &= (-2);
+    this._flags = this._flags & (-2);
   }
-  this._flags |= (2);
+  this._flags = this._flags | (2);
   this.timestep.dt = dt;
   this.timestep.velocityIterations = velocityIterations;
   this.timestep.positionIterations = positionIterations;
@@ -4638,7 +4950,7 @@ World.prototype.step = function(dt, velocityIterations, positionIterations) {
   if ((this._flags & (4)) == (4)) {
     this.clearForces();
   }
-  this._flags &= (-3);
+  this._flags = this._flags & (-3);
 }
 World.prototype.clearForces = function() {
   for (var body = this._bodyList;
@@ -5037,7 +5349,7 @@ World.prototype.drawJoint = function(joint) {
   switch (joint.type) {
     case (3):
 
-      this.noSuchMethod("get:debugDraw", []).drawSegment$3(p1, p2, color);
+      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(p1, p2, color);
       break;
 
     case (4):
@@ -5051,9 +5363,9 @@ World.prototype.drawJoint = function(joint) {
 
     default:
 
-      this.noSuchMethod("get:debugDraw", []).drawSegment$3(x1, p1, color);
-      this.noSuchMethod("get:debugDraw", []).drawSegment$3(p1, p2, color);
-      this.noSuchMethod("get:debugDraw", []).drawSegment$3(x2, p2, color);
+      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(x1, p1, color);
+      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(p1, p2, color);
+      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(x2, p2, color);
 
   }
 }
@@ -5066,7 +5378,7 @@ function WorldQueryWrapper() {
 }
 WorldQueryWrapper.prototype.treeCallback = function(node) {
   var fixture = node.userData;
-  return this.callback.reportFixture(fixture);
+  return this.callback.reportFixture$1(fixture);
 }
 // ********** Code for Contact **************
 function Contact(pool) {
@@ -5106,11 +5418,11 @@ Contact.prototype.get$enabled = function() {
   return (this.flags & (4)) == (4);
 }
 Contact.prototype.flagForFiltering = function() {
-  this.flags |= (8);
+  this.flags = this.flags | (8);
 }
 Contact.prototype.update = function(listener) {
   this._oldManifold.setFrom(this.manifold);
-  this.flags |= (4);
+  this.flags = this.flags | (4);
   var touching = false;
   var wasTouching = (this.flags & (2)) == (2);
   var sensorA = this.fixtureA.isSensor;
@@ -5151,26 +5463,26 @@ Contact.prototype.update = function(listener) {
     }
   }
   if (touching) {
-    this.flags |= (2);
+    this.flags = this.flags | (2);
   }
   else {
-    this.flags &= (-3);
+    this.flags = this.flags & (-3);
   }
   if (listener == null) {
     return;
   }
   if ($eq(wasTouching, false) && $eq(touching, true)) {
-    listener.beginContact(this);
+    listener.beginContact$1(this);
   }
   if ($eq(wasTouching, true) && $eq(touching, false)) {
-    listener.endContact(this);
+    listener.endContact$1(this);
   }
   if ($eq(sensor, false) && touching) {
-    listener.preSolve(this, this._oldManifold);
+    listener.preSolve$2(this, this._oldManifold);
   }
 }
 Contact.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 // ********** Code for ContactConstraint **************
 function ContactConstraint() {
@@ -5256,7 +5568,7 @@ function ContactEdge() {
   this.next = null;
 }
 ContactEdge.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 // ********** Code for CircleContact **************
 $inherits(CircleContact, Contact);
@@ -5308,7 +5620,7 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
     var old = this.constraints;
     var newLen = Math.max(old.get$length() * (2), this.constraintCount);
     this.constraints = new Array(newLen);
-    this.constraints.setRange$3((0), old.get$length(), old);
+    this.constraints.setRange((0), old.get$length(), old, (0));
     for (var i = old.get$length();
      i < this.constraints.get$length(); i++) {
       this.constraints.$setindex(i, new ContactConstraint());
@@ -5417,7 +5729,7 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
   }
 }
 ContactSolver.prototype.warmStart = function() {
-  var $0;
+  var $0, $1, $2, $3;
   for (var i = (0);
    i < this.constraintCount; ++i) {
     var c = this.constraints.$index(i);
@@ -5436,10 +5748,10 @@ ContactSolver.prototype.warmStart = function() {
       var Py = ccp.normalImpulse * normal.y + ccp.tangentImpulse * this.tangent.y;
       bodyA.set$angularVelocity(bodyA.get$angularVelocity() - (invIA * (ccp.rA.x * Py - ccp.rA.y * Px)));
       ($0 = bodyA.get$linearVelocity()).x = $0.x - (Px * invMassA);
-      ($0 = bodyA.get$linearVelocity()).y = $0.y - (Py * invMassA);
+      ($1 = bodyA.get$linearVelocity()).y = $1.y - (Py * invMassA);
       bodyB.set$angularVelocity(bodyB.get$angularVelocity() + (invIB * (ccp.rB.x * Py - ccp.rB.y * Px)));
-      ($0 = bodyB.get$linearVelocity()).x = $0.x + (Px * invMassB);
-      ($0 = bodyB.get$linearVelocity()).y = $0.y + (Py * invMassB);
+      ($2 = bodyB.get$linearVelocity()).x = $2.x + (Px * invMassB);
+      ($3 = bodyB.get$linearVelocity()).y = $3.y + (Py * invMassB);
     }
   }
 }
@@ -5614,7 +5926,7 @@ ContactSolver.prototype.storeImpulses = function() {
   }
 }
 ContactSolver.prototype.solvePositionConstraints = function(baumgarte) {
-  var $0;
+  var $0, $1;
   var minSeparation = (0);
   for (var i = (0);
    i < this.constraintCount; ++i) {
@@ -5648,7 +5960,7 @@ ContactSolver.prototype.solvePositionConstraints = function(baumgarte) {
       bodyA.synchronizeTransform();
       this.temp1.setFrom(this.P).mulLocal(invMassB);
       bodyB.sweep.center.addLocal(this.temp1);
-      ($0 = bodyB.sweep).angle = $0.angle + (invIB * Vector.crossVectors(this.rB, this.P));
+      ($1 = bodyB.sweep).angle = $1.angle + (invIB * Vector.crossVectors(this.rB, this.P));
       bodyB.synchronizeTransform();
     }
   }
@@ -5754,7 +6066,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
     var old = this.constraints;
     var newLen = Math.max(this.count, old.get$length() * (2));
     this.constraints = new Array(newLen);
-    this.constraints.setRange$3((0), old.get$length(), old);
+    this.constraints.setRange((0), old.get$length(), old, (0));
     for (var i = old.get$length();
      i < this.constraints.get$length(); i++) {
       this.constraints.$setindex(i, new TimeOfImpactConstraint());
@@ -5788,7 +6100,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
   }
 }
 TimeOfImpactSolver.prototype.solve = function(baumgarte) {
-  var $0;
+  var $0, $1;
   var minSeparation = (0);
   for (var i = (0);
    i < this.count; ++i) {
@@ -5828,7 +6140,7 @@ TimeOfImpactSolver.prototype.solve = function(baumgarte) {
       bodyA.synchronizeTransform();
       this.temp.setFrom(this.P).mulLocal(invMassB);
       bodyB.sweep.center.addLocal(this.temp);
-      ($0 = bodyB.sweep).angle = $0.angle + (invIB * Vector.crossVectors(this.rB, this.P));
+      ($1 = bodyB.sweep).angle = $1.angle + (invIB * Vector.crossVectors(this.rB, this.P));
       bodyB.synchronizeTransform();
     }
   }
@@ -6005,7 +6317,7 @@ function JointEdge() {
 
 }
 JointEdge.prototype.next$0 = function() {
-  return this.next();
+  return this.next.call$0();
 };
 // ********** Code for JointDef **************
 function JointDef() {
@@ -6050,15 +6362,15 @@ function ConstantVolumeJoint(_world, def) {
     for (var i = (0);
      i < this.targetLengths.get$length(); ++i) {
       var next = (i == this.targetLengths.get$length() - (1)) ? (0) : i + (1);
-      djd.frequencyHz = def.frequencyHz;
-      djd.dampingRatio = def.dampingRatio;
-      djd.initialize(this.bodies.$index(i), this.bodies.$index(next), this.bodies.$index(i).get$worldCenter(), this.bodies.$index(next).get$worldCenter());
+      djd.set$frequencyHz(def.frequencyHz);
+      djd.set$dampingRatio(def.dampingRatio);
+      djd.initialize$4(this.bodies.$index(i), this.bodies.$index(next), this.bodies.$index(i).get$worldCenter(), this.bodies.$index(next).get$worldCenter());
       this.distanceJoints.$setindex(i, this._world.createJoint(djd));
     }
   }
   else {
     this.distanceJoints = new Array(def.joints.get$length());
-    this.distanceJoints.setRange$3((0), def.joints.get$length(), def.joints);
+    this.distanceJoints.setRange((0), def.joints.get$length(), def.joints, (0));
   }
   this.frequencyHz = def.frequencyHz;
   this.dampingRatio = def.dampingRatio;
@@ -6071,6 +6383,10 @@ function ConstantVolumeJoint(_world, def) {
   this.bodyB = this.bodies.$index((1));
   this.collideConnected = false;
 }
+ConstantVolumeJoint.prototype.get$frequencyHz = function() { return this.frequencyHz; };
+ConstantVolumeJoint.prototype.set$frequencyHz = function(value) { return this.frequencyHz = value; };
+ConstantVolumeJoint.prototype.get$dampingRatio = function() { return this.dampingRatio; };
+ConstantVolumeJoint.prototype.set$dampingRatio = function(value) { return this.dampingRatio = value; };
 ConstantVolumeJoint.prototype.get$area = function() {
   var result = (0);
   result += (this.bodies.$index(this.bodies.get$length() - (1)).get$worldCenter().get$x() * this.bodies.$index((0)).get$worldCenter().get$y() - this.bodies.$index((0)).get$worldCenter().get$x() * this.bodies.$index(this.bodies.get$length() - (1)).get$worldCenter().get$y());
@@ -6082,7 +6398,7 @@ ConstantVolumeJoint.prototype.get$area = function() {
   return result;
 }
 ConstantVolumeJoint.prototype.constrainEdges = function(argStep) {
-  var $0;
+  var $0, $1;
   var perimeter = (0);
   for (var i = (0);
    i < this.bodies.get$length(); ++i) {
@@ -6104,22 +6420,22 @@ ConstantVolumeJoint.prototype.constrainEdges = function(argStep) {
   for (var i = (0);
    i < this.bodies.get$length(); ++i) {
     var next = (i == this.bodies.get$length() - (1)) ? (0) : i + (1);
-    delta.setCoords(toExtrude * (this.normals.$index(i).get$x() + this.normals.$index(next).get$x()), toExtrude * (this.normals.$index(i).get$y() + this.normals.$index(next).get$y()));
+    delta.setCoords$2(toExtrude * ($add(this.normals.$index(i).get$x(), this.normals.$index(next).get$x())), toExtrude * ($add(this.normals.$index(i).get$y(), this.normals.$index(next).get$y())));
     var norm = delta.get$length();
     if (norm > (0.2)) {
-      delta.mulLocal((0.2) / norm);
+      delta.mulLocal$1((0.2) / norm);
     }
     if (norm > (0.005)) {
       done = false;
     }
-    ($0 = this.bodies.$index(next).get$sweep().get$center()).set$x($0.get$x() + delta.x);
-    ($0 = this.bodies.$index(next).get$sweep().get$center()).set$y($0.get$y() + delta.y);
+    ($0 = this.bodies.$index(next).get$sweep().get$center()).set$x($add($0.get$x(), delta.get$x()));
+    ($1 = this.bodies.$index(next).get$sweep().get$center()).set$y($add($1.get$y(), delta.get$y()));
     this.bodies.$index(next).synchronizeTransform$0();
   }
   return done;
 }
 ConstantVolumeJoint.prototype.initVelocityConstraints = function(argStep) {
-  var $0;
+  var $0, $1;
   this.step = argStep;
   var d = new Array(this.bodies.get$length());
   for (var i = (0);
@@ -6134,11 +6450,11 @@ ConstantVolumeJoint.prototype.initVelocityConstraints = function(argStep) {
     d.$index(i).subLocal$1(this.bodies.$index(prev).get$worldCenter());
   }
   if (this.step.warmStarting) {
-    this._impulse *= this.step.dtRatio;
+    this._impulse = this._impulse * this.step.dtRatio;
     for (var i = (0);
      i < this.bodies.get$length(); ++i) {
-      ($0 = this.bodies.$index(i).get$linearVelocity()).set$x($0.get$x() + (this.bodies.$index(i).get$invMass() * d.$index(i).get$y() * (0.5) * this._impulse));
-      ($0 = this.bodies.$index(i).get$linearVelocity()).set$y($0.get$y() + (this.bodies.$index(i).get$invMass() * -d.$index(i).get$x() * (0.5) * this._impulse));
+      ($0 = this.bodies.$index(i).get$linearVelocity()).set$x($add($0.get$x(), (this.bodies.$index(i).get$invMass() * d.$index(i).get$y() * (0.5) * this._impulse)));
+      ($1 = this.bodies.$index(i).get$linearVelocity()).set$y($add($1.get$y(), (this.bodies.$index(i).get$invMass() * -d.$index(i).get$x() * (0.5) * this._impulse)));
     }
   }
   else {
@@ -6149,7 +6465,7 @@ ConstantVolumeJoint.prototype.solvePositionConstraints = function(baumgarte) {
   return this.constrainEdges(this.step);
 }
 ConstantVolumeJoint.prototype.solveVelocityConstraints = function(argStep) {
-  var $0;
+  var $0, $1;
   var crossMassSum = (0);
   var dotMassSum = (0);
   var d = new Array(this.bodies.get$length());
@@ -6167,11 +6483,11 @@ ConstantVolumeJoint.prototype.solveVelocityConstraints = function(argStep) {
     crossMassSum += Vector.crossVectors(this.bodies.$index(i).get$linearVelocity(), d.$index(i));
   }
   var lambda = (-2) * crossMassSum / dotMassSum;
-  this._impulse += lambda;
+  this._impulse = this._impulse + lambda;
   for (var i = (0);
    i < this.bodies.get$length(); ++i) {
-    ($0 = this.bodies.$index(i).get$linearVelocity()).set$x($0.get$x() + (this.bodies.$index(i).get$invMass() * d.$index(i).get$y() * (0.5) * lambda));
-    ($0 = this.bodies.$index(i).get$linearVelocity()).set$y($0.get$y() + (this.bodies.$index(i).get$invMass() * -d.$index(i).get$x() * (0.5) * lambda));
+    ($0 = this.bodies.$index(i).get$linearVelocity()).set$x($add($0.get$x(), (this.bodies.$index(i).get$invMass() * d.$index(i).get$y() * (0.5) * lambda)));
+    ($1 = this.bodies.$index(i).get$linearVelocity()).set$y($add($1.get$y(), (this.bodies.$index(i).get$invMass() * -d.$index(i).get$x() * (0.5) * lambda)));
   }
 }
 ConstantVolumeJoint.prototype.getAnchorA = function(argOut) {
@@ -6194,6 +6510,10 @@ function ConstantVolumeJointDef() {
   this.type = (10);
   this.collideConnected = false;
 }
+ConstantVolumeJointDef.prototype.get$frequencyHz = function() { return this.frequencyHz; };
+ConstantVolumeJointDef.prototype.set$frequencyHz = function(value) { return this.frequencyHz = value; };
+ConstantVolumeJointDef.prototype.get$dampingRatio = function() { return this.dampingRatio; };
+ConstantVolumeJointDef.prototype.set$dampingRatio = function(value) { return this.dampingRatio = value; };
 ConstantVolumeJointDef.prototype.addBody = function(argBody) {
   this.bodies.add(argBody);
   if (this.bodies.get$length() == (1)) {
@@ -6219,6 +6539,12 @@ function DistanceJoint(def) {
 }
 DistanceJoint.prototype.get$mass = function() { return this.mass; };
 DistanceJoint.prototype.set$mass = function(value) { return this.mass = value; };
+DistanceJoint.prototype.get$length = function() { return this.length; };
+DistanceJoint.prototype.set$length = function(value) { return this.length = value; };
+DistanceJoint.prototype.get$frequencyHz = function() { return this.frequencyHz; };
+DistanceJoint.prototype.set$frequencyHz = function(value) { return this.frequencyHz = value; };
+DistanceJoint.prototype.get$dampingRatio = function() { return this.dampingRatio; };
+DistanceJoint.prototype.set$dampingRatio = function(value) { return this.dampingRatio = value; };
 DistanceJoint.prototype.getAnchorA = function(argOut) {
   this.bodyA.getWorldPointToOut(this.localAnchor1, argOut);
 }
@@ -6226,7 +6552,7 @@ DistanceJoint.prototype.getAnchorB = function(argOut) {
   this.bodyB.getWorldPointToOut(this.localAnchor2, argOut);
 }
 DistanceJoint.prototype.initVelocityConstraints = function(step) {
-  var $0;
+  var $0, $1, $2, $3, $4, $5;
   var b1 = this.bodyA;
   var b2 = this.bodyB;
   var r1 = new Vector((0), (0));
@@ -6240,7 +6566,7 @@ DistanceJoint.prototype.initVelocityConstraints = function(step) {
   var len = this.u.get$length();
   if (len > (0.005)) {
     ($0 = this.u).x = $0.x * ((1) / len);
-    ($0 = this.u).y = $0.y * ((1) / len);
+    ($1 = this.u).y = $1.y * ((1) / len);
   }
   else {
     this.u.setCoords((0), (0));
@@ -6261,14 +6587,14 @@ DistanceJoint.prototype.initVelocityConstraints = function(step) {
     this.mass = this.mass != (0) ? (1) / this.mass : (0);
   }
   if (step.warmStarting) {
-    this.impulse *= step.dtRatio;
+    this.impulse = this.impulse * step.dtRatio;
     var P = new Vector((0), (0));
     P.setFrom(this.u).mulLocal(this.impulse);
-    ($0 = b1.get$linearVelocity()).x = $0.x - (b1.invMass * P.x);
-    ($0 = b1.get$linearVelocity()).y = $0.y - (b1.invMass * P.y);
+    ($2 = b1.get$linearVelocity()).x = $2.x - (b1.invMass * P.x);
+    ($3 = b1.get$linearVelocity()).y = $3.y - (b1.invMass * P.y);
     b1.set$angularVelocity(b1.get$angularVelocity() - (b1.invInertia * Vector.crossVectors(r1, P)));
-    ($0 = b2.get$linearVelocity()).x = $0.x + (b2.invMass * P.x);
-    ($0 = b2.get$linearVelocity()).y = $0.y + (b2.invMass * P.y);
+    ($4 = b2.get$linearVelocity()).x = $4.x + (b2.invMass * P.x);
+    ($5 = b2.get$linearVelocity()).y = $5.y + (b2.invMass * P.y);
     b2.set$angularVelocity(b2.get$angularVelocity() + (b2.invInertia * Vector.crossVectors(r2, P)));
   }
   else {
@@ -6276,35 +6602,35 @@ DistanceJoint.prototype.initVelocityConstraints = function(step) {
   }
 }
 DistanceJoint.prototype.solveVelocityConstraints = function(step) {
-  var $0;
+  var $0, $1, $2, $3;
   var b1 = this.bodyA;
   var b2 = this.bodyB;
   var r1 = new Vector((0), (0));
   var r2 = new Vector((0), (0));
-  r1.setFrom(this.localAnchor1).subLocal(b1.get$localCenter());
-  r2.setFrom(this.localAnchor2).subLocal(b2.get$localCenter());
+  r1.setFrom$1(this.localAnchor1).subLocal$1(b1.get$localCenter());
+  r2.setFrom$1(this.localAnchor2).subLocal$1(b2.get$localCenter());
   Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
   Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
   var v1 = new Vector((0), (0));
   var v2 = new Vector((0), (0));
   Vector.crossNumAndVectorToOut(b1.get$angularVelocity(), r1, v1);
   Vector.crossNumAndVectorToOut(b2.get$angularVelocity(), r2, v2);
-  v1.addLocal(b1.get$linearVelocity());
-  v2.addLocal(b2.get$linearVelocity());
-  var Cdot = Vector.dot(this.u, v2.subLocal(v1));
+  v1.addLocal$1(b1.get$linearVelocity());
+  v2.addLocal$1(b2.get$linearVelocity());
+  var Cdot = Vector.dot(this.u, v2.subLocal$1(v1));
   var imp = -this.mass * (Cdot + this.bias + this.gamma * this.impulse);
-  this.impulse += imp;
+  this.impulse = this.impulse + imp;
   var Px = imp * this.u.x;
   var Py = imp * this.u.y;
   ($0 = b1.get$linearVelocity()).x = $0.x - (b1.invMass * Px);
-  ($0 = b1.get$linearVelocity()).y = $0.y - (b1.invMass * Py);
-  b1.set$angularVelocity(b1.get$angularVelocity() - (b1.invInertia * (r1.x * Py - r1.y * Px)));
-  ($0 = b2.get$linearVelocity()).x = $0.x + (b2.invMass * Px);
-  ($0 = b2.get$linearVelocity()).y = $0.y + (b2.invMass * Py);
-  b2.set$angularVelocity(b2.get$angularVelocity() + (b2.invInertia * (r2.x * Py - r2.y * Px)));
+  ($1 = b1.get$linearVelocity()).y = $1.y - (b1.invMass * Py);
+  b1.set$angularVelocity(b1.get$angularVelocity() - (b1.invInertia * (r1.get$x() * Py - r1.get$y() * Px)));
+  ($2 = b2.get$linearVelocity()).x = $2.x + (b2.invMass * Px);
+  ($3 = b2.get$linearVelocity()).y = $3.y + (b2.invMass * Py);
+  b2.set$angularVelocity(b2.get$angularVelocity() + (b2.invInertia * (r2.get$x() * Py - r2.get$y() * Px)));
 }
 DistanceJoint.prototype.solvePositionConstraints = function(baumgarte) {
-  var $0;
+  var $0, $1, $2, $3, $4, $5;
   if (this.frequencyHz > (0)) {
     return true;
   }
@@ -6313,27 +6639,27 @@ DistanceJoint.prototype.solvePositionConstraints = function(baumgarte) {
   var r1 = new Vector((0), (0));
   var r2 = new Vector((0), (0));
   var d = new Vector((0), (0));
-  r1.setFrom(this.localAnchor1).subLocal(b1.get$localCenter());
-  r2.setFrom(this.localAnchor2).subLocal(b2.get$localCenter());
-  Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-  Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
-  d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
-  d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
-  var len = d.normalize();
+  r1.setFrom$1(this.localAnchor1).subLocal$1(b1.get$localCenter());
+  r2.setFrom$1(this.localAnchor2).subLocal$1(b2.get$localCenter());
+  Matrix22.mulMatrixAndVectorToOut(b1.get$originTransform().get$rotation(), r1, r1);
+  Matrix22.mulMatrixAndVectorToOut(b2.get$originTransform().get$rotation(), r2, r2);
+  d.set$x($add(b2.get$sweep().get$center().get$x(), r2.get$x()) - b1.get$sweep().get$center().get$x() - r1.get$x());
+  d.set$y($add(b2.get$sweep().get$center().get$y(), r2.get$y()) - b1.get$sweep().get$center().get$y() - r1.get$y());
+  var len = d.normalize$0();
   var C = len - this.length;
   C = MathBox.clamp(C, (-0.2), (0.2));
   var imp = -this.mass * C;
   this.u.setFrom(d);
   var Px = imp * this.u.x;
   var Py = imp * this.u.y;
-  ($0 = b1.sweep.center).x = $0.x - (b1.invMass * Px);
-  ($0 = b1.sweep.center).y = $0.y - (b1.invMass * Py);
-  ($0 = b1.sweep).angle = $0.angle - (b1.invInertia * (r1.x * Py - r1.y * Px));
-  ($0 = b2.sweep.center).x = $0.x + (b2.invMass * Px);
-  ($0 = b2.sweep.center).y = $0.y + (b2.invMass * Py);
-  ($0 = b2.sweep).angle = $0.angle + (b2.invInertia * (r2.x * Py - r2.y * Px));
-  b1.synchronizeTransform();
-  b2.synchronizeTransform();
+  ($0 = b1.get$sweep().get$center()).set$x($0.get$x() - (b1.get$invMass() * Px));
+  ($1 = b1.get$sweep().get$center()).set$y($1.get$y() - (b1.get$invMass() * Py));
+  ($2 = b1.get$sweep()).set$angle($2.get$angle() - (b1.get$invInertia() * (r1.get$x() * Py - r1.get$y() * Px)));
+  ($3 = b2.get$sweep().get$center()).set$x($add($3.get$x(), (b2.get$invMass() * Px)));
+  ($4 = b2.get$sweep().get$center()).set$y($add($4.get$y(), (b2.get$invMass() * Py)));
+  ($5 = b2.get$sweep()).set$angle($add($5.get$angle(), (b2.get$invInertia() * (r2.get$x() * Py - r2.get$y() * Px))));
+  b1.synchronizeTransform$0();
+  b2.synchronizeTransform$0();
   return C.abs() < (0.005);
 }
 DistanceJoint.prototype.initVelocityConstraints$1 = DistanceJoint.prototype.initVelocityConstraints;
@@ -6350,6 +6676,12 @@ function DistanceJointDef() {
   JointDef.call(this);
   this.type = (3);
 }
+DistanceJointDef.prototype.get$length = function() { return this.length; };
+DistanceJointDef.prototype.set$length = function(value) { return this.length = value; };
+DistanceJointDef.prototype.get$frequencyHz = function() { return this.frequencyHz; };
+DistanceJointDef.prototype.set$frequencyHz = function(value) { return this.frequencyHz = value; };
+DistanceJointDef.prototype.get$dampingRatio = function() { return this.dampingRatio; };
+DistanceJointDef.prototype.set$dampingRatio = function(value) { return this.dampingRatio = value; };
 DistanceJointDef.prototype.initialize = function(b1, b2, anchor1, anchor2) {
   this.bodyA = b1;
   this.bodyB = b2;
@@ -6359,6 +6691,7 @@ DistanceJointDef.prototype.initialize = function(b1, b2, anchor1, anchor2) {
   d.subLocal(anchor1);
   this.length = d.get$length();
 }
+DistanceJointDef.prototype.initialize$4 = DistanceJointDef.prototype.initialize;
 // ********** Code for RevoluteJoint **************
 $inherits(RevoluteJoint, Joint);
 function RevoluteJoint(def) {
@@ -6436,7 +6769,7 @@ RevoluteJoint.prototype.initVelocityConstraints = function(step) {
   }
   if (step.warmStarting) {
     this.impulse.mulLocal(step.dtRatio);
-    this._motorImpulse *= step.dtRatio;
+    this._motorImpulse = this._motorImpulse * step.dtRatio;
     var temp = new Vector((0), (0));
     var P = new Vector((0), (0));
     P.setCoords(this.impulse.x, this.impulse.y);
@@ -6453,7 +6786,7 @@ RevoluteJoint.prototype.initVelocityConstraints = function(step) {
   }
 }
 RevoluteJoint.prototype.solveVelocityConstraints = function(step) {
-  var $0;
+  var $0, $1, $2, $3, $4, $5;
   var b1 = this.bodyA;
   var b2 = this.bodyB;
   var v1 = b1.get$linearVelocity();
@@ -6500,7 +6833,7 @@ RevoluteJoint.prototype.solveVelocityConstraints = function(step) {
         imp.y = temp.y;
         imp.z = -this.impulse.z;
         ($0 = this.impulse).x = $0.x + temp.x;
-        ($0 = this.impulse).y = $0.y + temp.y;
+        ($1 = this.impulse).y = $1.y + temp.y;
         this.impulse.z = (0);
       }
     }
@@ -6511,8 +6844,8 @@ RevoluteJoint.prototype.solveVelocityConstraints = function(step) {
         imp.x = temp.x;
         imp.y = temp.y;
         imp.z = -this.impulse.z;
-        ($0 = this.impulse).x = $0.x + temp.x;
-        ($0 = this.impulse).y = $0.y + temp.y;
+        ($2 = this.impulse).x = $2.x + temp.x;
+        ($3 = this.impulse).y = $3.y + temp.y;
         this.impulse.z = (0);
       }
     }
@@ -6536,8 +6869,8 @@ RevoluteJoint.prototype.solveVelocityConstraints = function(step) {
     Vector.crossNumAndVectorToOut(w2, r2, Cdot);
     Cdot.addLocal(v2).subLocal(v1).subLocal(temp);
     this.mass.solve22ToOut(Cdot.negateLocal(), imp);
-    ($0 = this.impulse).x = $0.x + imp.x;
-    ($0 = this.impulse).y = $0.y + imp.y;
+    ($4 = this.impulse).x = $4.x + imp.x;
+    ($5 = this.impulse).y = $5.y + imp.y;
     temp.setFrom(imp).mulLocal(m1);
     v1.subLocal(temp);
     w1 -= (i1 * Vector.crossVectors(r1, imp));
@@ -6549,7 +6882,7 @@ RevoluteJoint.prototype.solveVelocityConstraints = function(step) {
   b2.set$angularVelocity(w2);
 }
 RevoluteJoint.prototype.solvePositionConstraints = function(baumgarte) {
-  var $0;
+  var $0, $1, $2, $3;
   var b1 = this.bodyA;
   var b2 = this.bodyB;
   var angularError = (0);
@@ -6575,7 +6908,7 @@ RevoluteJoint.prototype.solvePositionConstraints = function(baumgarte) {
       limitImpulse = -this.motorMass * C;
     }
     ($0 = b1.sweep).angle = $0.angle - (b1.invInertia * limitImpulse);
-    ($0 = b2.sweep).angle = $0.angle + (b2.invInertia * limitImpulse);
+    ($1 = b2.sweep).angle = $1.angle + (b2.invInertia * limitImpulse);
     b1.synchronizeTransform();
     b2.synchronizeTransform();
   }
@@ -6628,10 +6961,10 @@ RevoluteJoint.prototype.solvePositionConstraints = function(baumgarte) {
     K1.solveToOut(C.negateLocal(), imp);
     C.setFrom(imp).mulLocal(b1.invMass);
     b1.sweep.center.subLocal(C);
-    ($0 = b1.sweep).angle = $0.angle - (b1.invInertia * Vector.crossVectors(r1, imp));
+    ($2 = b1.sweep).angle = $2.angle - (b1.invInertia * Vector.crossVectors(r1, imp));
     C.setFrom(imp).mulLocal(b2.invMass);
     b2.sweep.center.addLocal(C);
-    ($0 = b2.sweep).angle = $0.angle + (b2.invInertia * Vector.crossVectors(r2, imp));
+    ($3 = b2.sweep).angle = $3.angle + (b2.invInertia * Vector.crossVectors(r2, imp));
     b1.synchronizeTransform();
     b2.synchronizeTransform();
   }
@@ -6656,7 +6989,7 @@ DefaultWorldPool.prototype.getCircleContactStack = function() {
   var queue = new DoubleLinkedQueue();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst(new CircleContact(this));
+    queue.addFirst$1(new CircleContact(this));
   }
   return queue;
 }
@@ -6664,7 +6997,7 @@ DefaultWorldPool.prototype.getPolyCircleContactStack = function() {
   var queue = new DoubleLinkedQueue();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst(new PolygonAndCircleContact(this));
+    queue.addFirst$1(new PolygonAndCircleContact(this));
   }
   return queue;
 }
@@ -6672,7 +7005,7 @@ DefaultWorldPool.prototype.getPolyContactStack = function() {
   var queue = new DoubleLinkedQueue();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst(new PolygonContact(this));
+    queue.addFirst$1(new PolygonContact(this));
   }
   return queue;
 }
@@ -6797,11 +7130,11 @@ Matrix22.prototype.invertLocal = function() {
   return this;
 }
 Matrix22.prototype.addLocal = function(other) {
-  var $0;
+  var $0, $1, $2, $3;
   ($0 = this.col1).x = $0.x + other.col1.x;
-  ($0 = this.col1).y = $0.y + other.col1.y;
-  ($0 = this.col2).x = $0.x + other.col2.x;
-  ($0 = this.col2).y = $0.y + other.col2.y;
+  ($1 = this.col1).y = $1.y + other.col1.y;
+  ($2 = this.col2).x = $2.x + other.col2.x;
+  ($3 = this.col2).y = $3.y + other.col2.y;
   return this;
 }
 Matrix22.prototype.solveToOut = function(b, out) {
@@ -6888,22 +7221,23 @@ Sweep.prototype.setFrom = function(other) {
 }
 Sweep.prototype.normalize = function() {
   var d = (6.283185307179586) * (this.angleZero / (6.283185307179586)).floor();
-  this.angleZero -= d;
-  this.angle -= d;
+  this.angleZero = this.angleZero - d;
+  this.angle = this.angle - d;
 }
 Sweep.prototype.getTransform = function(xf, alpha) {
-  var $0;
+  var $0, $1;
   xf.position.x = ((1) - alpha) * this.centerZero.x + alpha * this.center.x;
   xf.position.y = ((1) - alpha) * this.centerZero.y + alpha * this.center.y;
   xf.rotation.setAngle(((1) - alpha) * this.angleZero + alpha * this.angle);
   ($0 = xf.position).x = $0.x - (xf.rotation.col1.x * this.localCenter.x + xf.rotation.col2.x * this.localCenter.y);
-  ($0 = xf.position).y = $0.y - (xf.rotation.col1.y * this.localCenter.x + xf.rotation.col2.y * this.localCenter.y);
+  ($1 = xf.position).y = $1.y - (xf.rotation.col1.y * this.localCenter.x + xf.rotation.col2.y * this.localCenter.y);
 }
 Sweep.prototype.advance = function(time) {
   this.centerZero.x = ((1) - time) * this.centerZero.x + time * this.center.x;
   this.centerZero.y = ((1) - time) * this.centerZero.y + time * this.center.y;
   this.angleZero = ((1) - time) * this.angleZero + time * this.angle;
 }
+Sweep.prototype.normalize$0 = Sweep.prototype.normalize;
 Sweep.prototype.setFrom$1 = Sweep.prototype.setFrom;
 // ********** Code for Transform **************
 function Transform() {
@@ -6962,13 +7296,13 @@ Vector.prototype.$eq = function(other) {
   }
 }
 Vector.prototype.addLocal = function(v) {
-  this.x += v.x;
-  this.y += v.y;
+  this.x = this.x + v.x;
+  this.y = this.y + v.y;
   return this;
 }
 Vector.prototype.subLocal = function(other) {
-  this.x -= other.x;
-  this.y -= other.y;
+  this.x = this.x - other.x;
+  this.y = this.y - other.y;
   return this;
 }
 Vector.prototype.setCoords = function(xCoord, yCoord) {
@@ -6997,8 +7331,8 @@ Vector.prototype.setFrom = function(v) {
   return this;
 }
 Vector.prototype.mulLocal = function(d) {
-  this.x *= d;
-  this.y *= d;
+  this.x = this.x * d;
+  this.y = this.y * d;
   return this;
 }
 Vector.prototype.setZero = function() {
@@ -7029,8 +7363,8 @@ Vector.prototype.normalize = function() {
     return (0);
   }
   var invLength = (1) / len;
-  this.x *= invLength;
-  this.y *= invLength;
+  this.x = this.x * invLength;
+  this.y = this.y * invLength;
   return len;
 }
 Vector.prototype.negateLocal = function() {
@@ -7043,6 +7377,7 @@ Vector.prototype.toString = function() {
 }
 Vector.prototype.addLocal$1 = Vector.prototype.addLocal;
 Vector.prototype.mulLocal$1 = Vector.prototype.mulLocal;
+Vector.prototype.normalize$0 = Vector.prototype.normalize;
 Vector.prototype.setCoords$2 = Vector.prototype.setCoords;
 Vector.prototype.setFrom$1 = Vector.prototype.setFrom;
 Vector.prototype.subLocal$1 = Vector.prototype.subLocal;
@@ -7080,21 +7415,24 @@ Vector3.prototype.setCoords = function(argX, argY, argZ) {
   return this;
 }
 Vector3.prototype.addLocal = function(argVec) {
-  this.x += argVec.x;
-  this.y += argVec.y;
-  this.z += argVec.z;
+  this.x = this.x + argVec.x;
+  this.y = this.y + argVec.y;
+  this.z = this.z + argVec.z;
   return this;
 }
+Vector3.prototype.add = function(argVec) {
+  return new Vector3(this.x + argVec.x, this.y + argVec.y, this.z + argVec.z);
+}
 Vector3.prototype.subLocal = function(argVec) {
-  this.x -= argVec.x;
-  this.y -= argVec.y;
-  this.z -= argVec.z;
+  this.x = this.x - argVec.x;
+  this.y = this.y - argVec.y;
+  this.z = this.z - argVec.z;
   return this;
 }
 Vector3.prototype.mulLocal = function(argScalar) {
-  this.x *= argScalar;
-  this.y *= argScalar;
-  this.z *= argScalar;
+  this.x = this.x * argScalar;
+  this.y = this.y * argScalar;
+  this.z = this.z * argScalar;
   return this;
 }
 Vector3.prototype.negateLocal = function() {
@@ -7121,6 +7459,7 @@ Vector3.crossToOut = function(a, b, out) {
   out.y = tempy;
   out.z = tempz;
 }
+Vector3.prototype.add$1 = Vector3.prototype.add;
 Vector3.prototype.addLocal$1 = Vector3.prototype.addLocal;
 Vector3.prototype.mulLocal$1 = Vector3.prototype.mulLocal;
 Vector3.prototype.setFrom$1 = Vector3.prototype.setFrom;
@@ -7183,6 +7522,9 @@ Demo.prototype.runAnimation = function() {
   })
   ), this.canvas);
 }
+Demo.prototype.initialize$0 = Demo.prototype.initialize;
+Demo.prototype.initializeAnimation$0 = Demo.prototype.initializeAnimation;
+Demo.prototype.runAnimation$0 = Demo.prototype.runAnimation;
 // ********** Code for BlobTest **************
 $inherits(BlobTest, Demo);
 function BlobTest() {
@@ -7190,9 +7532,9 @@ function BlobTest() {
 }
 BlobTest.main = function() {
   var blob = new BlobTest();
-  blob.initialize();
-  blob.initializeAnimation();
-  blob.runAnimation();
+  blob.initialize$0();
+  blob.initializeAnimation$0();
+  blob.runAnimation$0();
 }
 BlobTest.prototype.get$name = function() {
   return "Blob Test";
@@ -7251,6 +7593,7 @@ BlobTest.prototype.initialize = function() {
   this.bodies.add(fallingBox);
   fallingBox.createFixtureFromShape(psd, (1));
 }
+BlobTest.prototype.initialize$0 = BlobTest.prototype.initialize;
 // ********** Code for top level **************
 function main() {
   BlobTest.main();
@@ -7265,24 +7608,32 @@ function $inheritsMembers(child, parent) {
   });
 }
 $inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
-// 119 dynamic types.
-// 260 types
-// 16 !leaf
+// 157 dynamic types.
+// 314 types
+// 24 !leaf
 (function(){
   var v0/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';
   var v1/*SVGComponentTransferFunctionElement*/ = 'SVGComponentTransferFunctionElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement';
   var v2/*SVGTextPositioningElement*/ = 'SVGTextPositioningElement|SVGAltGlyphElement|SVGTRefElement|SVGTSpanElement|SVGTextElement';
+  var v3/*CharacterData*/ = 'CharacterData|Comment|Text|CDATASection';
+  var v4/*HTMLElement*/ = [v0/*HTMLInputElement*/,'HTMLElement|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMediaElement|HTMLAudioElement|HTMLVideoElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement'].join('|');
+  var v5/*SVGElement*/ = [v1/*SVGComponentTransferFunctionElement*/,v2/*SVGTextPositioningElement*/,'SVGElement|SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimationElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGSetElement|SVGCircleElement|SVGClipPathElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGStopElement|SVGStyleElement|SVGSwitchElement|SVGSymbolElement|SVGTextContentElement|SVGTextPathElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement'].join('|');
   var table = [
     // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
     ['Blob', 'Blob|File'],
     ['CSSRule', 'CSSRule|CSSCharsetRule|CSSFontFaceRule|CSSImportRule|CSSMediaRule|CSSPageRule|CSSStyleRule|CSSUnknownRule|WebKitCSSKeyframeRule|WebKitCSSKeyframesRule'],
+    ['CSSValueList', 'CSSValueList|WebKitCSSFilterValue|WebKitCSSTransformValue'],
+    ['CharacterData', v3/*CharacterData*/],
     ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList'],
+    ['DOMWindow', 'DOMWindow|Window'],
     ['Event', 'Event|AudioProcessingEvent|BeforeLoadEvent|CloseEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|ErrorEvent|HashChangeEvent|IDBVersionChangeEvent|MessageEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|ProgressEvent|XMLHttpRequestProgressEvent|SpeechInputEvent|StorageEvent|TrackEvent|UIEvent|CompositionEvent|KeyboardEvent|MouseEvent|SVGZoomEvent|TextEvent|TouchEvent|WheelEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent'],
+    ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLPropertiesCollection'],
     ['HTMLInputElement', v0/*HTMLInputElement*/],
-    ['HTMLElement', [v0/*HTMLInputElement*/,'HTMLElement|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMediaElement|HTMLAudioElement|HTMLVideoElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement'].join('|')],
+    ['HTMLElement', v4/*HTMLElement*/],
     ['SVGComponentTransferFunctionElement', v1/*SVGComponentTransferFunctionElement*/],
     ['SVGTextPositioningElement', v2/*SVGTextPositioningElement*/],
-    ['SVGElement', [v1/*SVGComponentTransferFunctionElement*/,v2/*SVGTextPositioningElement*/,'SVGElement|SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimationElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGSetElement|SVGCircleElement|SVGClipPathElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGStopElement|SVGStyleElement|SVGSwitchElement|SVGSymbolElement|SVGTextContentElement|SVGTextPathElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement'].join('|')],
+    ['SVGElement', v5/*SVGElement*/],
+    ['Node', [v3/*CharacterData*/,v4/*HTMLElement*/,v5/*SVGElement*/,'Node|Attr|Document|HTMLDocument|SVGDocument|DocumentFragment|DocumentType|Element|Entity|EntityReference|Notation|ProcessingInstruction'].join('|')],
     ['StyleSheet', 'StyleSheet|CSSStyleSheet'],
   ];
   $dynamicSetMetadata(table);
