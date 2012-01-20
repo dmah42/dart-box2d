@@ -1,5 +1,5 @@
 #library('Bench2d');
-#import('dart:dom');
+#import('dart:html');
 #import('../lib/box2d.dart');
 
 // Copyright 2012 Google Inc. All Rights Reserved.
@@ -31,7 +31,7 @@ class Bench2d {
   static final int VELOCITY_ITERATIONS = 10;
   static final int POSITION_ITERATIONS = 10;
 
-  HTMLCanvasElement canvas;
+  CanvasElement canvas;
   CanvasRenderingContext2D ctx;
   IViewportTransform viewport;
   DebugDraw debugDraw;
@@ -50,10 +50,10 @@ class Bench2d {
    */
   void initializeAnimation() {
     // Setup the canvas.
-    canvas = document.createElement('canvas');
+    canvas = new Element.tag('canvas');
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
-    document.body.appendChild(canvas);
+    document.body.nodes.add(canvas);
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.

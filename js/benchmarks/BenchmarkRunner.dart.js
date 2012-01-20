@@ -112,6 +112,9 @@ Object.defineProperty(Object.prototype, "addLocal$1", { value: function($0) {
 Object.defineProperty(Object.prototype, "beginContact$1", { value: function($0) {
   return this.noSuchMethod$2("beginContact", [$0]);
 }, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "clear$0", { value: function() {
+  return this.noSuchMethod$2("clear", []);
+}, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "compareTo$1", { value: function($0) {
   return this.noSuchMethod$2("compareTo", [$0]);
 }, enumerable: false, writable: true, configurable: true });
@@ -126,6 +129,9 @@ Object.defineProperty(Object.prototype, "elapsedInMs$0", { value: function() {
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "endContact$1", { value: function($0) {
   return this.noSuchMethod$2("endContact", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "getRange$2", { value: function($0, $1) {
+  return this.noSuchMethod$2("getRange", [$0, $1]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "hasNext$0", { value: function() {
   return this.noSuchMethod$2("hasNext", []);
@@ -174,6 +180,9 @@ Object.defineProperty(Object.prototype, "setCoords$2", { value: function($0, $1)
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setFrom$1", { value: function($0) {
   return this.noSuchMethod$2("setFrom", [$0]);
+}, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(Object.prototype, "setRange$3", { value: function($0, $1, $2) {
+  return this.noSuchMethod$2("setRange", [$0, $1, $2]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setupBenchmarks$0", { value: function() {
   return this.noSuchMethod$2("setupBenchmarks", []);
@@ -392,7 +401,12 @@ Object.defineProperty(ListFactory.prototype, "iterator", { value: function() {
   return new ListIterator(this);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "add$1", { value: ListFactory.prototype.add, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "clear$0", { value: ListFactory.prototype.clear, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "getRange$2", { value: ListFactory.prototype.getRange, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "iterator$0", { value: ListFactory.prototype.iterator, enumerable: false, writable: true, configurable: true });
+Object.defineProperty(ListFactory.prototype, "setRange$3", { value: function($0, $1, $2) {
+  return this.setRange($0, $1, $2, (0));
+}, enumerable: false, writable: true, configurable: true });
 ListFactory_Benchmark = ListFactory;
 ListFactory_Body = ListFactory;
 ListFactory_ClipVertex = ListFactory;
@@ -475,6 +489,10 @@ ImmutableList.prototype.toString = function() {
   return ListFactory.ListFactory$from$factory(this).toString$0();
 }
 ImmutableList.prototype.add$1 = ImmutableList.prototype.add;
+ImmutableList.prototype.clear$0 = ImmutableList.prototype.clear;
+ImmutableList.prototype.setRange$3 = function($0, $1, $2) {
+  return this.setRange($0, $1, $2, (0));
+};
 ImmutableList.prototype.toString$0 = ImmutableList.prototype.toString;
 // ********** Code for NumImplementation **************
 NumImplementation = Number;
@@ -623,6 +641,10 @@ DoubleLinkedQueue.prototype.get$length = function() {
 DoubleLinkedQueue.prototype.isEmpty = function() {
   return (this._sentinel._next == this._sentinel);
 }
+DoubleLinkedQueue.prototype.clear = function() {
+  this._sentinel._next = this._sentinel;
+  this._sentinel._previous = this._sentinel;
+}
 DoubleLinkedQueue.prototype.forEach = function(f) {
   var entry = this._sentinel._next;
   while (entry != this._sentinel) {
@@ -636,6 +658,7 @@ DoubleLinkedQueue.prototype.iterator = function() {
 }
 DoubleLinkedQueue.prototype.add$1 = DoubleLinkedQueue.prototype.add;
 DoubleLinkedQueue.prototype.addFirst$1 = DoubleLinkedQueue.prototype.addFirst;
+DoubleLinkedQueue.prototype.clear$0 = DoubleLinkedQueue.prototype.clear;
 DoubleLinkedQueue.prototype.iterator$0 = DoubleLinkedQueue.prototype.iterator;
 // ********** Code for DoubleLinkedQueue_CircleContact **************
 $inherits(DoubleLinkedQueue_CircleContact, DoubleLinkedQueue);
@@ -723,7 +746,7 @@ StringBufferImpl.prototype.get$length = function() {
 StringBufferImpl.prototype.add = function(obj) {
   var str = obj.toString$0();
   if (str == null || str.isEmpty()) return this;
-  this._buffer.add(str);
+  this._buffer.add$1(str);
   this._length = this._length + str.length;
   return this;
 }
@@ -736,11 +759,12 @@ StringBufferImpl.prototype.toString = function() {
   if (this._buffer.get$length() == (0)) return "";
   if (this._buffer.get$length() == (1)) return this._buffer.$index((0));
   var result = StringBase.concatAll(this._buffer);
-  this._buffer.clear();
-  this._buffer.add(result);
+  this._buffer.clear$0();
+  this._buffer.add$1(result);
   return result;
 }
 StringBufferImpl.prototype.add$1 = StringBufferImpl.prototype.add;
+StringBufferImpl.prototype.clear$0 = StringBufferImpl.prototype.clear;
 StringBufferImpl.prototype.toString$0 = StringBufferImpl.prototype.toString;
 // ********** Code for StringBase **************
 function StringBase() {}
@@ -1036,6 +1060,9 @@ $dynamic("set$type").DataTransferItem = function(value) { return this.type = val
 // ********** Code for dom_DataTransferItemList **************
 $dynamic("get$length").DataTransferItemList = function() { return this.length; };
 $dynamic("set$length").DataTransferItemList = function(value) { return this.length = value; };
+$dynamic("clear$0").DataTransferItemList = function() {
+  return this.clear();
+};
 // ********** Code for dom_DataView **************
 // ********** Code for dom_Database **************
 // ********** Code for dom_DatabaseSync **************
@@ -1122,6 +1149,9 @@ $dynamic("get$shape").HTMLAreaElement = function() { return this.shape; };
 $dynamic("set$shape").HTMLAreaElement = function(value) { return this.shape = value; };
 // ********** Code for dom_HTMLAudioElement **************
 // ********** Code for dom_HTMLBRElement **************
+$dynamic("clear$0").HTMLBRElement = function() {
+  return this.clear.call$0();
+};
 // ********** Code for dom_HTMLBaseElement **************
 // ********** Code for dom_HTMLBaseFontElement **************
 // ********** Code for dom_HTMLBodyElement **************
@@ -1141,6 +1171,9 @@ $dynamic("$setindex").HTMLCollection = function(index, value) {
 // ********** Code for dom_HTMLDirectoryElement **************
 // ********** Code for dom_HTMLDivElement **************
 // ********** Code for dom_HTMLDocument **************
+$dynamic("clear$0").HTMLDocument = function() {
+  return this.clear();
+};
 // ********** Code for dom_HTMLElement **************
 $dynamic("get$id").HTMLElement = function() { return this.id; };
 $dynamic("set$id").HTMLElement = function(value) { return this.id = value; };
@@ -1273,6 +1306,9 @@ $dynamic("toString$0").IDBDatabaseException = function() {
 // ********** Code for dom_IDBObjectStore **************
 $dynamic("add$1").IDBObjectStore = function($0) {
   return this.add($0);
+};
+$dynamic("clear$0").IDBObjectStore = function() {
+  return this.clear();
 };
 // ********** Code for dom_IDBRequest **************
 // ********** Code for dom_IDBTransaction **************
@@ -1591,6 +1627,9 @@ $dynamic("set$y").SVGImageElement = function(value) { return this.y = value; };
 // ********** Code for dom_SVGLangSpace **************
 // ********** Code for dom_SVGLength **************
 // ********** Code for dom_SVGLengthList **************
+$dynamic("clear$0").SVGLengthList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGLineElement **************
 // ********** Code for dom_SVGLinearGradientElement **************
 // ********** Code for dom_SVGLocatable **************
@@ -1606,6 +1645,9 @@ $dynamic("set$y").SVGMaskElement = function(value) { return this.y = value; };
 // ********** Code for dom_SVGMissingGlyphElement **************
 // ********** Code for dom_SVGNumber **************
 // ********** Code for dom_SVGNumberList **************
+$dynamic("clear$0").SVGNumberList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGPaint **************
 // ********** Code for dom_SVGPathElement **************
 // ********** Code for dom_SVGPathSeg **************
@@ -1687,6 +1729,9 @@ $dynamic("set$y").SVGPathSegLinetoVerticalAbs = function(value) { return this.y 
 $dynamic("get$y").SVGPathSegLinetoVerticalRel = function() { return this.y; };
 $dynamic("set$y").SVGPathSegLinetoVerticalRel = function(value) { return this.y = value; };
 // ********** Code for dom_SVGPathSegList **************
+$dynamic("clear$0").SVGPathSegList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGPathSegMovetoAbs **************
 $dynamic("get$x").SVGPathSegMovetoAbs = function() { return this.x; };
 $dynamic("set$x").SVGPathSegMovetoAbs = function(value) { return this.x = value; };
@@ -1708,6 +1753,9 @@ $dynamic("set$x").SVGPoint = function(value) { return this.x = value; };
 $dynamic("get$y").SVGPoint = function() { return this.y; };
 $dynamic("set$y").SVGPoint = function(value) { return this.y = value; };
 // ********** Code for dom_SVGPointList **************
+$dynamic("clear$0").SVGPointList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGPolygonElement **************
 // ********** Code for dom_SVGPolylineElement **************
 // ********** Code for dom_SVGPreserveAspectRatio **************
@@ -1734,6 +1782,9 @@ $dynamic("set$type").SVGScriptElement = function(value) { return this.type = val
 // ********** Code for dom_SVGSetElement **************
 // ********** Code for dom_SVGStopElement **************
 // ********** Code for dom_SVGStringList **************
+$dynamic("clear$0").SVGStringList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGStylable **************
 // ********** Code for dom_SVGStyleElement **************
 $dynamic("get$type").SVGStyleElement = function() { return this.type; };
@@ -1758,6 +1809,9 @@ $dynamic("set$angle").SVGTransform = function(value) { return this.angle = value
 $dynamic("get$type").SVGTransform = function() { return this.type; };
 $dynamic("set$type").SVGTransform = function(value) { return this.type = value; };
 // ********** Code for dom_SVGTransformList **************
+$dynamic("clear$0").SVGTransformList = function() {
+  return this.clear();
+};
 // ********** Code for dom_SVGTransformable **************
 // ********** Code for dom_SVGURIReference **************
 // ********** Code for dom_SVGUnitTypes **************
@@ -1784,6 +1838,9 @@ $dynamic("set$length").SpeechInputResultList = function(value) { return this.len
 // ********** Code for dom_Storage **************
 $dynamic("get$length").Storage = function() { return this.length; };
 $dynamic("set$length").Storage = function(value) { return this.length = value; };
+$dynamic("clear$0").Storage = function() {
+  return this.clear();
+};
 // ********** Code for dom_StorageEvent **************
 // ********** Code for dom_StorageInfo **************
 // ********** Code for dom_StyleMedia **************
@@ -1908,34 +1965,42 @@ $dynamic("toString$0").XPathException = function() {
 // ********** Code for dom_XPathNSResolver **************
 // ********** Code for dom_XPathResult **************
 // ********** Code for dom_XSLTProcessor **************
-// ********** Code for _Collections **************
-function _Collections() {}
+// ********** Code for dom__Collections **************
+function dom__Collections() {}
 // ********** Code for _VariableSizeListIterator_T **************
-$inherits(_VariableSizeListIterator_T, _VariableSizeListIterator);
+$inherits(_VariableSizeListIterator_T, dom__VariableSizeListIterator);
 function _VariableSizeListIterator_T() {}
-// ********** Code for _FixedSizeListIterator **************
-$inherits(_FixedSizeListIterator, _VariableSizeListIterator_T);
-function _FixedSizeListIterator() {}
-_FixedSizeListIterator.prototype.hasNext = function() {
+// ********** Code for dom__FixedSizeListIterator **************
+$inherits(dom__FixedSizeListIterator, _VariableSizeListIterator_T);
+function dom__FixedSizeListIterator() {}
+dom__FixedSizeListIterator.prototype.hasNext = function() {
   return this._dom_length > this._dom_pos;
 }
-_FixedSizeListIterator.prototype.hasNext$0 = _FixedSizeListIterator.prototype.hasNext;
-// ********** Code for _VariableSizeListIterator **************
-function _VariableSizeListIterator() {}
-_VariableSizeListIterator.prototype.hasNext = function() {
+dom__FixedSizeListIterator.prototype.hasNext$0 = dom__FixedSizeListIterator.prototype.hasNext;
+// ********** Code for dom__VariableSizeListIterator **************
+function dom__VariableSizeListIterator() {}
+dom__VariableSizeListIterator.prototype.hasNext = function() {
   return this._dom_array.get$length() > this._dom_pos;
 }
-_VariableSizeListIterator.prototype.next = function() {
+dom__VariableSizeListIterator.prototype.next = function() {
   if (!this.hasNext()) {
     $throw(const$0001);
   }
   return this._dom_array.$index(this._dom_pos++);
 }
-_VariableSizeListIterator.prototype.hasNext$0 = _VariableSizeListIterator.prototype.hasNext;
-_VariableSizeListIterator.prototype.next$0 = _VariableSizeListIterator.prototype.next;
+dom__VariableSizeListIterator.prototype.hasNext$0 = dom__VariableSizeListIterator.prototype.hasNext;
+dom__VariableSizeListIterator.prototype.next$0 = dom__VariableSizeListIterator.prototype.next;
 // ********** Code for _Lists **************
 function _Lists() {}
 // ********** Code for top level **************
+//  ********** Library htmlimpl **************
+// ********** Code for top level **************
+var _pendingRequests;
+var _pendingMeasurementFrameCallbacks;
+//  ********** Library html **************
+// ********** Code for top level **************
+var secretWindow;
+var secretDocument;
 //  ********** Library box2d **************
 // ********** Code for AxisAlignedBox **************
 function AxisAlignedBox(lowerBound, upperBound) {
@@ -2964,8 +3029,8 @@ function SimplexCache() {
 SimplexCache.prototype.get$indexA = function() { return this.indexA; };
 SimplexCache.prototype.get$indexB = function() { return this.indexB; };
 SimplexCache.prototype.setFrom = function(sc) {
-  this.indexA.setRange((0), this.indexA.get$length(), sc.indexA, (0));
-  this.indexB.setRange((0), this.indexB.get$length(), sc.indexB, (0));
+  this.indexA.setRange$3((0), this.indexA.get$length(), sc.indexA);
+  this.indexB.setRange$3((0), this.indexB.get$length(), sc.indexB);
   this.metric = sc.metric;
   this.count = sc.count;
 }
@@ -3481,12 +3546,12 @@ BroadPhase.prototype.updatePairs = function(callback) {
     this._tree.query(this, this.queryProxy.box);
   }
   this._moveCount = (0);
-  var pairBuffer = ListFactory.ListFactory$from$factory(this._pairBuffer.getRange((0), this._pairCount));
+  var pairBuffer = ListFactory.ListFactory$from$factory(this._pairBuffer.getRange$2((0), this._pairCount));
   pairBuffer.sort((function (a, b) {
     return a.compareTo$1(b);
   })
   );
-  this._pairBuffer.setRange((0), this._pairCount, pairBuffer, (0));
+  this._pairBuffer.setRange$3((0), this._pairCount, pairBuffer);
   var i = (0);
   while (i < this._pairCount) {
     var primaryPair = this._pairBuffer.$index(i);
@@ -4659,7 +4724,7 @@ Island.prototype.init = function(argBodyCapacity, argContactCapacity, argJointCa
   if (this.velocities == null || this.bodyCapacity > this.velocities.get$length()) {
     var old = this.velocities == null ? new Array((0)) : this.velocities;
     this.velocities = new Array(this.bodyCapacity);
-    this.velocities.setRange((0), old.get$length(), old, (0));
+    this.velocities.setRange$3((0), old.get$length(), old);
     for (var i = old.get$length();
      i < this.velocities.get$length(); i++) {
       this.velocities.$setindex(i, new Velocity());
@@ -4668,7 +4733,7 @@ Island.prototype.init = function(argBodyCapacity, argContactCapacity, argJointCa
   if (this.positions == null || this.bodyCapacity > this.positions.get$length()) {
     var old = this.positions == null ? new Array((0)) : this.positions;
     this.positions = new Array(this.bodyCapacity);
-    this.positions.setRange((0), old.get$length(), old, (0));
+    this.positions.setRange$3((0), old.get$length(), old);
     for (var i = old.get$length();
      i < this.positions.get$length(); i++) {
       this.positions.$setindex(i, new Position());
@@ -4827,6 +4892,7 @@ Island.prototype.report = function(constraints) {
     this.listener.postSolve$2(c, this.impulse);
   }
 }
+Island.prototype.clear$0 = Island.prototype.clear;
 // ********** Code for Position **************
 function Position() {
   this.x = new Vector((0), (0));
@@ -5557,7 +5623,7 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
     var old = this.constraints;
     var newLen = Math.max(old.get$length() * (2), this.constraintCount);
     this.constraints = new Array(newLen);
-    this.constraints.setRange((0), old.get$length(), old, (0));
+    this.constraints.setRange$3((0), old.get$length(), old);
     for (var i = old.get$length();
      i < this.constraints.get$length(); i++) {
       this.constraints.$setindex(i, new ContactConstraint());
@@ -6003,7 +6069,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
     var old = this.constraints;
     var newLen = Math.max(this.count, old.get$length() * (2));
     this.constraints = new Array(newLen);
-    this.constraints.setRange((0), old.get$length(), old, (0));
+    this.constraints.setRange$3((0), old.get$length(), old);
     for (var i = old.get$length();
      i < this.constraints.get$length(); i++) {
       this.constraints.$setindex(i, new TimeOfImpactConstraint());
@@ -6301,7 +6367,7 @@ function ConstantVolumeJoint(_world, def) {
   }
   else {
     this.distanceJoints = new Array(def.joints.get$length());
-    this.distanceJoints.setRange((0), def.joints.get$length(), def.joints, (0));
+    this.distanceJoints.setRange$3((0), def.joints.get$length(), def.joints);
   }
   this.frequencyHz = def.frequencyHz;
   this.dampingRatio = def.dampingRatio;
@@ -7360,7 +7426,7 @@ BenchmarkRunner.prototype.runBenchmarks = function() {
   }
 }
 BenchmarkRunner.prototype.addBenchmark = function(benchmark) {
-  this.benchmarks.add(benchmark);
+  this.benchmarks.add$1(benchmark);
 }
 BenchmarkRunner.prototype.runBenchmarks$0 = BenchmarkRunner.prototype.runBenchmarks;
 BenchmarkRunner.prototype.setupBenchmarks$0 = BenchmarkRunner.prototype.setupBenchmarks;
@@ -7448,19 +7514,19 @@ BallCageBench.prototype.initialize = function() {
     var shiftY = (-20) + circleShape.get$radius() * (2) * i;
     circleBodyDef.set$position(new Vector(shiftX, (-20)));
     var circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add(circleBody);
+    this.bodies.add$1(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector(shiftX, borderLimitY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add(circleBody);
+    this.bodies.add$1(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector((-20), shiftY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add(circleBody);
+    this.bodies.add$1(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector(borderLimitX, shiftY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add(circleBody);
+    this.bodies.add$1(circleBody);
     circleBody.createFixture(circleFixtureDef);
   }
   var bouncingCircle = new CircleShape();
@@ -7475,7 +7541,7 @@ BallCageBench.prototype.initialize = function() {
   activeBodyDef.set$type((2));
   activeBodyDef.set$bullet(true);
   var activeBody = this.world.createBody(activeBodyDef);
-  this.bodies.add(activeBody);
+  this.bodies.add$1(activeBody);
   activeBody.createFixture$1(activeFixtureDef);
 }
 // ********** Code for BallDropBench **************
@@ -7494,7 +7560,7 @@ BallDropBench.prototype.initialize = function() {
   bodyDef.set$position(new Vector((0), (0)));
   var ballBody = this.world.createBody(bodyDef);
   ballBody.createFixture$1(fd);
-  this.bodies.add(ballBody);
+  this.bodies.add$1(ballBody);
 }
 BallDropBench.prototype.get$name = function() {
   return "Ball Drop";
@@ -7512,7 +7578,7 @@ CircleStressBench.prototype.initialize = function() {
   {
     var bd = new BodyDef();
     var ground = this.world.createBody(bd);
-    this.bodies.add(ground);
+    this.bodies.add$1(ground);
     var shape = new PolygonShape();
     shape.setAsEdge(new Vector((-40), (0)), new Vector((40), (0)));
     ground.createFixtureFromShape$1(shape);
@@ -7526,7 +7592,7 @@ CircleStressBench.prototype.initialize = function() {
     bd.set$type((0));
     bd.set$position(new Vector((0), (-10)));
     var b = this.world.createBody(bd);
-    this.bodies.add(b);
+    this.bodies.add$1(b);
     var fd = new FixtureDef();
     fd.set$shape(sd);
     fd.set$friction((1));
@@ -7535,23 +7601,23 @@ CircleStressBench.prototype.initialize = function() {
     var wallDef = new BodyDef();
     wallDef.set$position(new Vector((45), (25)));
     rightWall = this.world.createBody(wallDef);
-    this.bodies.add(rightWall);
+    this.bodies.add$1(rightWall);
     rightWall.createFixtureFromShape(sd, (0));
     wallDef.set$position(new Vector((-45), (25)));
     leftWall = this.world.createBody(wallDef);
-    this.bodies.add(leftWall);
+    this.bodies.add$1(leftWall);
     leftWall.createFixtureFromShape(sd, (0));
     var cornerDef = new BodyDef();
     sd.setAsBox$2((20), (3));
     cornerDef.set$angle((-0.7853981633974483));
     cornerDef.set$position(new Vector((-35), (8)));
     var myBod = this.world.createBody(cornerDef);
-    this.bodies.add(myBod);
+    this.bodies.add$1(myBod);
     myBod.createFixtureFromShape(sd, (0));
     cornerDef.set$angle((0.7853981633974483));
     cornerDef.set$position(new Vector((35), (8)));
     myBod = this.world.createBody(cornerDef);
-    this.bodies.add(myBod);
+    this.bodies.add$1(myBod);
     myBod.createFixtureFromShape(sd, (0));
     sd.setAsBox$2((50), (10));
     var topDef = new BodyDef();
@@ -7559,7 +7625,7 @@ CircleStressBench.prototype.initialize = function() {
     topDef.set$angle((0));
     topDef.set$position(new Vector((0), (75)));
     var topBody = this.world.createBody(topDef);
-    this.bodies.add(topBody);
+    this.bodies.add$1(topBody);
     fd.set$shape(sd);
     fd.set$friction((1));
     topBody.createFixture$1(fd);
@@ -7571,7 +7637,7 @@ CircleStressBench.prototype.initialize = function() {
     var radius = (6);
     bd.set$position(new Vector((0), (10)));
     var body = this.world.createBody(bd);
-    this.bodies.add(body);
+    this.bodies.add$1(body);
     for (var i = (0);
      i < numPieces; i++) {
       var fd = new FixtureDef();
@@ -7613,7 +7679,7 @@ CircleStressBench.prototype.initialize = function() {
           var yPos = (50) + j;
           bod.position = new Vector(xPos, yPos);
           var myBody = this.world.createBody(bod);
-          this.bodies.add(myBody);
+          this.bodies.add$1(myBody);
           myBody.createFixture(fd2);
         }
       }
@@ -7640,7 +7706,7 @@ DominoPlatformBench.prototype.initialize = function() {
     bd.position = new Vector((0), (-10));
     var body = this.world.createBody(bd);
     body.createFixture$1(fd);
-    this.bodies.add(body);
+    this.bodies.add$1(body);
   }
   {
     for (var i = (0);
@@ -7653,7 +7719,7 @@ DominoPlatformBench.prototype.initialize = function() {
       bd.position = new Vector((0), (5) + (5) * i);
       var body = this.world.createBody(bd);
       body.createFixture$1(fd);
-      this.bodies.add(body);
+      this.bodies.add$1(body);
     }
   }
   {
@@ -7685,7 +7751,7 @@ DominoPlatformBench.prototype.initialize = function() {
         }
         var myBody = this.world.createBody(bd);
         myBody.createFixture(fd);
-        this.bodies.add(myBody);
+        this.bodies.add$1(myBody);
       }
     }
   }
@@ -7712,7 +7778,7 @@ DominoTowerBench.prototype.makeDomino = function(x, y, horizontal, world_) {
   bd.angle = horizontal ? (1.5707963267948966) : (0);
   var myBody = world_.createBody(bd);
   myBody.createFixture(fd);
-  this.bodies.add(myBody);
+  this.bodies.add$1(myBody);
 }
 DominoTowerBench.prototype.initialize = function() {
   this.resetWorld();
@@ -7723,7 +7789,7 @@ DominoTowerBench.prototype.initialize = function() {
     bd.position = new Vector((0), (-10));
     var body = this.world.createBody(bd);
     body.createFixtureFromShape$1(sd);
-    this.bodies.add(body);
+    this.bodies.add$1(body);
   }
   {
     this.dominoDensity = (10);
@@ -7739,14 +7805,14 @@ DominoTowerBench.prototype.initialize = function() {
     bd.bullet = true;
     bd.position = new Vector((30), (50));
     var b = this.world.createBody(bd);
-    this.bodies.add(b);
+    this.bodies.add$1(b);
     b.createFixture(fd);
     b.set$linearVelocity(new Vector((-25), (-25)));
     b.set$angularVelocity((6.7));
     fd.density = (25);
     bd.position = new Vector((-30), (25));
     b = this.world.createBody(bd);
-    this.bodies.add(b);
+    this.bodies.add$1(b);
     b.createFixture(fd);
     b.set$linearVelocity(new Vector((35), (-10)));
     b.set$angularVelocity((-8.3));
@@ -7796,8 +7862,8 @@ function $inheritsMembers(child, parent) {
   });
 }
 $inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
-// 160 dynamic types.
-// 315 types
+// 168 dynamic types.
+// 321 types
 // 24 !leaf
 (function(){
   var v0/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';

@@ -35,7 +35,7 @@ class Demo {
   static final int POSITION_ITERATIONS = 10;
 
   /** The drawing canvas. */
-  HTMLCanvasElement canvas;
+  CanvasElement canvas;
 
   /** The canvas rendering context. */
   CanvasRenderingContext2D ctx;
@@ -92,10 +92,10 @@ class Demo {
    */
   void initializeAnimation() {
     // Setup the canvas.
-    canvas = document.createElement('canvas');
+    canvas = new Element.tag('canvas');
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
-    document.body.appendChild(canvas);
+    document.body.nodes.add(canvas);
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.
