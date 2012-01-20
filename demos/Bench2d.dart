@@ -69,49 +69,49 @@ class Bench2d {
   }
 
   void initialize() {
-		{
-			BodyDef bd = new BodyDef();
-			Body ground = world.createBody(bd);
+    {
+      BodyDef bd = new BodyDef();
+      Body ground = world.createBody(bd);
 
-			PolygonShape shape = new PolygonShape();
-			shape.setAsEdge(new Vector(-40.0, 0), new Vector(40.0, 0));
+      PolygonShape shape = new PolygonShape();
+      shape.setAsEdge(new Vector(-40.0, 0), new Vector(40.0, 0));
 
       final fixDef = new FixtureDef();
       fixDef.shape = shape;
       fixDef.density = 0;
 
-			ground.createFixture(fixDef);
-		}
+      ground.createFixture(fixDef);
+    }
 
-		{
-			num a = .5;
-			PolygonShape shape = new PolygonShape();
-			shape.setAsBox(a, a);
+    {
+      num a = .5;
+      PolygonShape shape = new PolygonShape();
+      shape.setAsBox(a, a);
 
       final fixDef = new FixtureDef();
       fixDef.shape = shape;
       fixDef.density = 5;
 
-			Vector x = new Vector(-7.0, 0.75);
-			Vector y = new Vector();
-			Vector deltaX = new Vector(0.5625, 1);
-			Vector deltaY = new Vector(1.125, 0.0);
+      Vector x = new Vector(-7.0, 0.75);
+      Vector y = new Vector();
+      Vector deltaX = new Vector(0.5625, 1);
+      Vector deltaY = new Vector(1.125, 0.0);
 
-			for (int i = 0; i < PYRAMID_SIZE; ++i){
-				y.setFrom(x);
+      for (int i = 0; i < PYRAMID_SIZE; ++i){
+        y.setFrom(x);
 
-				for (int j = i; j < PYRAMID_SIZE; ++j){
-					BodyDef bd = new BodyDef();
-					bd.type = BodyType.DYNAMIC;
-					bd.position.setFrom(y);
-					Body body = world.createBody(bd);
-					body.createFixture(fixDef);
-					y.addLocal(deltaY);
-				}
+        for (int j = i; j < PYRAMID_SIZE; ++j){
+          BodyDef bd = new BodyDef();
+          bd.type = BodyType.DYNAMIC;
+          bd.position.setFrom(y);
+          Body body = world.createBody(bd);
+          body.createFixture(fixDef);
+          y.addLocal(deltaY);
+        }
 
-				x.addLocal(deltaX);
-			}
-		}
+        x.addLocal(deltaX);
+      }
+    }
   }
 
   void step() {
