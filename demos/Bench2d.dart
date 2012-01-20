@@ -1,5 +1,5 @@
 #library('Bench2d');
-#import('dart:dom');
+#import('dart:html');
 #import('../lib/box2d.dart');
 
 // Copyright 2012 Google Inc. All Rights Reserved.
@@ -31,7 +31,7 @@ class Bench2d {
   static final int VELOCITY_ITERATIONS = 10;
   static final int POSITION_ITERATIONS = 10;
 
-  HTMLCanvasElement canvas;
+  CanvasElement canvas;
   CanvasRenderingContext2D ctx;
   IViewportTransform viewport;
   DebugDraw debugDraw;

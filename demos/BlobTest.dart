@@ -1,5 +1,5 @@
 #library('BlobTest');
-#import('dart:dom');
+#import('dart:html');
 #import('../lib/box2d.dart');
 #source('demo.dart');
 

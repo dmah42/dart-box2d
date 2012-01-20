@@ -1,5 +1,5 @@
 #library('DominoTower');
-#import('dart:dom');
+#import('dart:html');
 #import('../lib/box2d.dart');
 
 // Copyright 2012 Google Inc. All Rights Reserved.
