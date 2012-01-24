@@ -32,19 +32,12 @@ class Pair implements Comparable {
    */
   int compareTo(Pair pair2) {
     assert(proxyA != null && pair2.proxyA != null);
-    if (this.proxyA.key < pair2.proxyA.key) {
+    if (this.proxyA.key < pair2.proxyA.key)
       return -1;
-    }
+
     if (this.proxyA.key == pair2.proxyA.key) {
-      if (proxyB.key < pair2.proxyB.key) {
-        return -1;
-      } else {
-        if (proxyB.key == pair2.proxyB.key) {
-          return 0;
-        } else {
-          return 1;
-        }
-      }
+      return (proxyB.key < pair2.proxyB.key) ? -1 :
+          (proxyB.key == pair2.proxyB.key) ? 0 : 1;
     }
 
     return 1;

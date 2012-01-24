@@ -35,8 +35,6 @@ class BroadPhase implements TreeCallback {
 
   List<DynamicTreeNode> moveBuffer;
 
-  int _moveCapacity;
-
   int _moveCount;
 
   List<Pair> _pairBuffer;
@@ -54,19 +52,16 @@ class BroadPhase implements TreeCallback {
     proxyCount = 0,
     _pairCapacity = PAIR_CAPACITY,
     _pairCount = 0,
-    _moveCapacity = MOVE_CAPACITY,
     _moveCount = 0,
     _tree = new DynamicTree(),
     queryProxy = null {
-
-    moveBuffer = new List<DynamicTreeNode>(_moveCapacity);
+    moveBuffer = new List<DynamicTreeNode>(MOVE_CAPACITY);
     // Put a bunch of pairs into the pair buffer.
-    //TODO(gregbglw): Do a benchmark to see how preallocating the pairs
+    // TODO(dominich): Do a benchmark to see how preallocating the pairs
     // performs against allocating them as we go.
     _pairBuffer = new List<Pair>(_pairCapacity);
-    for (int i = 0; i < _pairCapacity; i++) {
+    for (int i = 0; i < _pairCapacity; ++i)
       _pairBuffer[i] = new Pair();
-    }
   }
 
   /**
@@ -75,7 +70,7 @@ class BroadPhase implements TreeCallback {
    */
   DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
     DynamicTreeNode node = _tree.createProxy(box, userData);
-    proxyCount++;
+    ++proxyCount;
     _bufferMove(node);
     return node;
   }
@@ -85,7 +80,7 @@ class BroadPhase implements TreeCallback {
    */
   void destroyProxy(DynamicTreeNode proxy) {
     _unbufferMove(proxy);
-    proxyCount--;
+    --proxyCount;
     _tree.destroyProxy(proxy);
   }
 
@@ -93,27 +88,24 @@ class BroadPhase implements TreeCallback {
    * Call MoveProxy as many times as you like, then when you are done
    * call UpdatePairs to constize the proxy pairs (for your time step).
    */
-  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box,
-      Vector displacement) {
-    bool buffer = _tree.moveProxy(proxy, box, displacement);
-    if (buffer) {
+  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+    if (_tree.moveProxy(proxy, box, displacement))
       _bufferMove(proxy);
-    }
   }
 
   /**
    * Returns true if the bounding boxes of the given proxies overlap.
    */
   bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
-    AxisAlignedBox a = proxyA.box;
-    AxisAlignedBox b = proxyB.box;
-    if (b.lowerBound.x - a.upperBound.x > 0.0 || b.lowerBound.y -
-        a.upperBound.y > 0.0) {
+    final AxisAlignedBox a = proxyA.box;
+    final AxisAlignedBox b = proxyB.box;
+    if (b.lowerBound.x - a.upperBound.x > 0.0 ||
+        b.lowerBound.y - a.upperBound.y > 0.0) {
       return false;
     }
 
-    if (a.lowerBound.x - b.upperBound.x > 0.0 || a.lowerBound.y -
-        b.upperBound.y > 0.0) {
+    if (a.lowerBound.x - b.upperBound.x > 0.0 ||
+        a.lowerBound.y - b.upperBound.y > 0.0) {
       return false;
     }
 
@@ -132,9 +124,8 @@ class BroadPhase implements TreeCallback {
     // Perform tree queries for all moving proxies.
     for (int i = 0; i < _moveCount; ++i) {
       queryProxy = moveBuffer[i];
-      if (queryProxy == null) {
+      if (queryProxy == null)
         continue;
-      }
 
       // We have to query the tree with the fat AABB so that
       // we don't fail to create a pair that may touch later.
@@ -166,16 +157,16 @@ class BroadPhase implements TreeCallback {
 
       // Call the callback and increment i.
       callback.addPair(userDataA, userDataB);
-      i++;
+      ++i;
 
       // Skip any duplicate pairs.
       while (i < _pairCount) {
         Pair pair = _pairBuffer[i];
-        if (pair.proxyA !== primaryPair.proxyA || pair.proxyB !==
-            primaryPair.proxyB) {
+        if (pair.proxyA !== primaryPair.proxyA ||
+            pair.proxyB !== primaryPair.proxyB) {
           break;
         }
-        i++;
+        ++i;
       }
     }
 
@@ -189,9 +180,8 @@ class BroadPhase implements TreeCallback {
    */
   bool treeCallback(DynamicTreeNode proxy) {
     // A proxy cannot form a pair with itself.
-    if (proxy == queryProxy) {
+    if (proxy == queryProxy)
       return true;
-    }
 
     // Grow the pair buffer as needed.
     if (_pairCount == _pairCapacity) {
@@ -200,13 +190,11 @@ class BroadPhase implements TreeCallback {
       _pairBuffer = new List<Pair>(_pairCapacity);
 
       // Copy over the pairs and fill in any remaining spots in the array.
-      for (int i = 0; i < oldBuffer.length; i++) {
+      for (int i = 0; i < oldBuffer.length; ++i)
         _pairBuffer[i] = oldBuffer[i];
-      }
 
-      for (int i = oldBuffer.length; i < _pairCapacity; i++) {
+      for (int i = oldBuffer.length; i < _pairCapacity; ++i)
         _pairBuffer[i] = new Pair();
-      }
     }
 
     // Store a new pair into the pair buffer, having proxyA be the lesser of
@@ -220,7 +208,7 @@ class BroadPhase implements TreeCallback {
     }
 
     // Increase the pair count and return true.
-    _pairCount++;
+    ++_pairCount;
     return true;
   }
 
@@ -235,32 +223,13 @@ class BroadPhase implements TreeCallback {
   /**
    * Returns the height of embedded tree.
    */
-  int computeHeight() {
-    return _tree.computeHeightFromRoot();
-  }
+  int computeHeight() => _tree.computeHeightFromRoot();
 
-  //TODO(gregbglw): Figure out purpose and write comment.
-  void _bufferMove(DynamicTreeNode node) {
-    if (_moveCount == _moveCapacity) {
-      List<DynamicTreeNode> old = moveBuffer;
-      _moveCapacity *= 2;
-      moveBuffer = new List<DynamicTreeNode>(_moveCapacity);
-      for (int i = 0; i < old.length; i++) {
-        moveBuffer[i] = old[i];
-      }
-    }
+  void _bufferMove(DynamicTreeNode node) { moveBuffer.add(node); }
 
-    moveBuffer[_moveCount] = node;
-    ++_moveCount;
-  }
-
-  //TODO(gregbglw): comment.
   void _unbufferMove(DynamicTreeNode proxy) {
-    for (int i = 0; i < _moveCount; i++) {
-      if (moveBuffer[i] === proxy) {
-        moveBuffer[i] = null;
-        return;
-      }
-    }
+    int index = moveBuffer.indexOf(proxy);
+    if (index !== -1)
+      moveBuffer.removeRange(index, 1);
   }
 }

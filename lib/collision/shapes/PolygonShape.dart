@@ -18,11 +18,6 @@
  */
 class PolygonShape extends Shape {
   /**
-   * num of pooled vectors to use internally.
-   */
-  static final int POOL_VECTORS = 6;
-
-  /**
    * Local position of the shape centroid in parent body frame.
    */
   final Vector centroid;
@@ -41,12 +36,6 @@ class PolygonShape extends Shape {
 
   int vertexCount;
 
-  // A bunch of Vectors in a pool to be used internally as needed.
-  final List<Vector> vectorPool;
-
-  // A pooled transform to be used internally.
-  Transform poolTransform;
-
   /**
    * Constructs a new PolygonShape.
    */
@@ -55,19 +44,12 @@ class PolygonShape extends Shape {
     vertexCount = 0,
     vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
     normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-    centroid = new Vector(),
-    poolTransform = new Transform(),
-    vectorPool = new List<Vector>(6) {
+    centroid = new Vector() {
 
-    for (int i = 0; i < POOL_VECTORS; i++) {
-      vectorPool[i] = new Vector();
-    }
-    for (int i = 0; i < vertices.length; i++) {
+    for (int i = 0; i < vertices.length; ++i)
       vertices[i] = new Vector();
-    }
-    for (int i = 0; i < normals.length; i++) {
+    for (int i = 0; i < normals.length; ++i)
       normals[i] = new Vector();
-    }
   }
 
   /**
@@ -81,18 +63,13 @@ class PolygonShape extends Shape {
     normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
     centroid = new Vector.copy(other.centroid),
     vectorPool = new List<Vector>(6),
-    poolTransform = new Transform() {
-    for (int i = 0; i < POOL_VECTORS; i++) {
-      vectorPool[i] = new Vector();
-    }
-
+    
     // Copy the vertices and normals from the other polygon shape.
-    for (int i = 0; i < other.vertices.length; i++) {
+    for (int i = 0; i < other.vertices.length; ++i)
       vertices[i] = new Vector.copy(other.vertices[i]);
-    }
-    for (int i = 0; i < other.normals.length; i++) {
+
+    for (int i = 0; i < other.normals.length; ++i)
       normals[i] = new Vector.copy(other.normals[i]);
-    }
   }
 
   /**
@@ -101,7 +78,7 @@ class PolygonShape extends Shape {
   int getSupport(Vector d) {
     int bestIndex = 0;
     num bestValue = Vector.dot(vertices[0], d);
-    for (int i = 1; i < vertexCount; i++) {
+    for (int i = 1; i < vertexCount; ++i) {
       num value = Vector.dot(vertices[i], d);
       if (value > bestValue) {
         bestIndex = i;
@@ -111,25 +88,12 @@ class PolygonShape extends Shape {
     return bestIndex;
   }
 
-  Shape clone() {
-    return new PolygonShape.copy(this);
-  }
+  Shape clone() => new PolygonShape.copy(this);
 
   /**
    * Get the supporting vertex in the given direction.
    */
-  Vector getSupportVertex(Vector d) {
-    int bestIndex = 0;
-    num bestValue = Vector.dot(vertices[0], d);
-    for (int i = 1; i < vertexCount; i++) {
-      num value = Vector.dot(vertices[i], d);
-      if (value > bestValue) {
-        bestIndex = i;
-        bestValue = value;
-      }
-    }
-    return vertices[bestIndex];
-  }
+  Vector getSupportVertex(Vector d) => vertices[getSupport(d)];
 
   /**
    * Copy vertices. This assumes the vertices define a convex polygon.
@@ -140,14 +104,12 @@ class PolygonShape extends Shape {
     vertexCount = count;
 
     // Copy vertices.
-    for (int i = 0; i < vertexCount; i++) {
-      if (vertices[i] == null){
-        vertices[i] = new Vector();
-      }
+    for (int i = 0; i < vertexCount; ++i) {
+      assert(vertices[i] !== null);
       vertices[i].setFrom(otherVertices[i]);
     }
 
-    Vector edge = vectorPool[0];
+    Vector edge = new Vector();
 
     // Compute normals. Ensure the edges have non-zero length.
     for (int i = 0; i < vertexCount; ++i) {
@@ -186,8 +148,7 @@ class PolygonShape extends Shape {
    * half-height, center is the center of the box in local coordinates and angle
    * is the rotation of the box in local coordinates.
    */
-  void setAsBoxWithCenterAndAngle(num hx, num hy, Vector center,
-      num angle) {
+  void setAsBoxWithCenterAndAngle(num hx, num hy, Vector center, num angle) {
     vertexCount = 4;
     vertices[0].setCoords(-hx, -hy);
     vertices[1].setCoords(hx, -hy);
@@ -199,7 +160,7 @@ class PolygonShape extends Shape {
     normals[3].setCoords(-1.0, 0.0);
     centroid.setFrom(center);
 
-    Transform xf = poolTransform;
+    Transform xf = new Transform();
     xf.position.setFrom(center);
     xf.rotation.setAngle(angle);
 
@@ -228,19 +189,17 @@ class PolygonShape extends Shape {
    * See Shape.testPoint(Transform, Vector).
    */
   bool testPoint(Transform xf, Vector p) {
-    Vector pLocal = vectorPool[0];
+    Vector pLocal = new Vector();
 
     pLocal.setFrom(p).subLocal(xf.position);
     Matrix22.mulTransMatrixAndVectorToOut(xf.rotation, pLocal, pLocal);
 
-    Vector temp = vectorPool[1];
+    Vector temp = new Vector();
 
     for (int i = 0; i < vertexCount; ++i) {
       temp.setFrom(pLocal).subLocal(vertices[i]);
-      num dot = Vector.dot(normals[i], temp);
-      if (dot > 0) {
+      if (Vector.dot(normals[i], temp) > 0)
         return false;
-      }
     }
 
     return true;
@@ -250,9 +209,9 @@ class PolygonShape extends Shape {
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */
   void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
-    final Vector lower = vectorPool[0];
-    final Vector upper = vectorPool[1];
-    final Vector v = vectorPool[2];
+    final Vector lower = new Vector();
+    final Vector upper = new Vector();
+    final Vector v = new Vector();
 
     Transform.mulToOut(argXf, vertices[0], lower);
     upper.setFrom(lower);
@@ -272,9 +231,7 @@ class PolygonShape extends Shape {
   /**
    * Get a vertex by index.
    */
-  Vector getVertex(int index) {
-    return vertices[index];
-  }
+  Vector getVertex(int index) => vertices[index];
 
   /**
    * Compute the centroid and store the value in the given out parameter.
@@ -292,11 +249,11 @@ class PolygonShape extends Shape {
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = vectorPool[0];
+    final Vector pRef = new Vector();
     pRef.setZero();
 
-    final Vector e1 = vectorPool[1];
-    final Vector e2 = vectorPool[2];
+    final Vector e1 = new Vector();
+    final Vector e2 = new Vector();
 
     final num inv3 = 1.0 / 3.0;
 
@@ -356,27 +313,26 @@ class PolygonShape extends Shape {
     // A line segment has zero mass.
     if (vertexCount == 2) {
       // massData.center = 0.5 * (vertices[0] + vertices[1]);
-      massData.center.setFrom(vertices[0]).addLocal(vertices[1]).
-          mulLocal(0.5);
+      massData.center.setFrom(vertices[0]).addLocal(vertices[1]).mulLocal(0.5);
       massData.mass = 0.0;
       massData.inertia = 0.0;
       return;
     }
 
-    final Vector center = vectorPool[0];
+    final Vector center = new Vector();
     center.setZero();
     num area = 0.0;
     num I = 0.0;
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = vectorPool[1];
+    final Vector pRef = new Vector();
     pRef.setZero();
 
     final num k_inv3 = 1.0 / 3.0;
 
-    final Vector e1 = vectorPool[2];
-    final Vector e2 = vectorPool[3];
+    final Vector e1 = new Vector();
+    final Vector e2 = new Vector();
 
     for (int i = 0; i < vertexCount; ++i) {
       // Triangle vertices.
@@ -429,9 +385,7 @@ class PolygonShape extends Shape {
   /**
    * Get the centroid and apply the supplied transform.
    */
-  Vector applyTransformToCentroid(Transform xf) {
-    return Transform.mul(xf, centroid);
-  }
+  Vector applyTransformToCentroid(Transform xf) => Transform.mul(xf, centroid);
 
   /**
    * Get the centroid and apply the supplied transform. Return the result

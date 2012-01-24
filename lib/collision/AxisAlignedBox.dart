@@ -26,13 +26,7 @@ class AxisAlignedBox {
    * Constructs a new box with the given lower and upper bounds. If no bounds
    * are specified, constructs the box with both bounds at the origin.
    */
-  AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound == null) {
-      lowerBound = new Vector();
-    }
-    if (upperBound == null) {
-      upperBound = new Vector();
-    }
+  AxisAlignedBox([this.lowerBound = new Vector(), this.upperBound = new Vector()]) {
   }
 
   /**
@@ -61,26 +55,16 @@ class AxisAlignedBox {
   /**
    * Returns true if the given box overlaps with this box.
    */
- static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) {
-   if (b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) {
-     return false;
-   }
-
-   if (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y) {
-     return false;
-   }
-
-   return true;
- }
+ static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =>
+   !((b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) ||
+     (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y));
 
   /**
    * Returns true if the lower bound is strictly less than the upper bound and
    * both bounds are themselves valid (Vector.isValid() returns true).
    */
-  bool isValid() {
-    return lowerBound.isValid() && upperBound.isValid()
-        && lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
-  }
+  bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
+                    lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /**
    * Returns the center of this box.
@@ -95,11 +79,9 @@ class AxisAlignedBox {
   /**
    * Returns true if this box contains the given box.
    */
-  bool contains(AxisAlignedBox aabb) {
-    return lowerBound.x > aabb.lowerBound.x &&
-        lowerBound.y > aabb.lowerBound.y && upperBound.y < aabb.upperBound.y
-        && upperBound.x < aabb.upperBound.x;
-  }
+  bool contains(AxisAlignedBox aabb) =>
+      lowerBound.x > aabb.lowerBound.x && lowerBound.y > aabb.lowerBound.y &&
+      upperBound.y < aabb.upperBound.y && upperBound.x < aabb.upperBound.x;
 
   /**
    * Sets this box to be a copy of the given box.
@@ -109,7 +91,5 @@ class AxisAlignedBox {
     upperBound.setFrom(other.upperBound);
   }
 
-  String toString() {
-    return lowerBound.toString() + ", " + upperBound.toString();
-  }
+  String toString() => lowerBound.toString() + ", " + upperBound.toString();
 }

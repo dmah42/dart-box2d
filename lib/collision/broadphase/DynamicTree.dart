@@ -69,9 +69,8 @@ class DynamicTree {
     deltaTwo = new Vector() {
 
     // Place new vectors in the draw vectors array.
-    for (int i = 0; i < _drawVectors.length; i++) {
+    for (int i = 0; i < _drawVectors.length; ++i)
       _drawVectors[i] = new Vector();
-    }
   }
 
   /**
@@ -132,9 +131,8 @@ class DynamicTree {
     assert (argProxy.isLeaf);
 
     // If the given proxies box contains the given box, then return right away.
-    if (argProxy.box.contains(argBox)) {
+    if (argProxy.box.contains(argBox))
       return false;
-    }
 
     // Remove the proxy from the tree.
     _removeLeaf(argProxy);
@@ -148,17 +146,15 @@ class DynamicTree {
     // Predict bounding box displacement.
     _tempVector.setFrom(displacement);
     _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
-    if (_tempVector.x < 0) {
+    if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
-    } else {
+    else
       argBox.upperBound.x += _tempVector.x;
-    }
 
-    if (_tempVector.y < 0) {
+    if (_tempVector.y < 0)
       argBox.lowerBound.y += _tempVector.y;
-    } else {
+    else
       argBox.upperBound.y += _tempVector.y;
-    }
 
     argProxy.box.setFrom(argBox);
 

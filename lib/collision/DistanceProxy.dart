@@ -27,10 +27,9 @@ class DistanceProxy {
     count = 0,
     radius = 0 {
 
-    for(int i = 0; i < vertices.length; i++) {
-      vertices[i] = new Vector();
+      for(int i = 0; i < vertices.length; ++i)
+        vertices[i] = new Vector();
     }
-  }
 
   /**
    * Initialize the proxy using the given shape. The shape
@@ -45,11 +44,11 @@ class DistanceProxy {
 
       // If the shape is a polygon...
     } else if (shape.type == ShapeType.POLYGON) {
-        count = shape.vertexCount;
-        radius = shape.radius;
-        for(int i = 0; i < count; i++) {
-          vertices[i].setFrom(shape.vertices[i]);
-        }
+      count = shape.vertexCount;
+      radius = shape.radius;
+      for(int i = 0; i < count; i++) {
+        vertices[i].setFrom(shape.vertices[i]);
+      }
     } else {
       // Should always be a circle or a polygon.
       assert(false);
@@ -62,7 +61,7 @@ class DistanceProxy {
   int getSupport(Vector direction) {
     int bestIndex = 0;
     num bestValue = Vector.dot(vertices[0], direction);
-    for (int i = 1; i < count; i++) {
+    for (int i = 1; i < count; ++i) {
       num value = Vector.dot(vertices[i], direction);
       if(value > bestValue) {
         bestIndex = i;
@@ -76,7 +75,5 @@ class DistanceProxy {
   /**
    * Get the supporting vertex in the given direction.
    */
-  Vector getSupportVertex(Vector direction) {
-    return vertices[getSupport(direction)];
-  }
+  Vector getSupportVertex(Vector direction) => vertices[getSupport(direction)];
 }

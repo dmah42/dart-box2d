@@ -41,9 +41,8 @@ class WorldManifold {
     pool3 = new Vector(),
     pool4 = new Vector(),
     points = new List<Vector>(Settings.MAX_MANIFOLD_POINTS) {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
+    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new Vector();
-    }
   }
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
@@ -96,7 +95,7 @@ class WorldManifold {
 
         final Vector clipPoint = pool4;
 
-        for (int i = 0; i < manifold.pointCount; i++) {
+        for (int i = 0; i < manifold.pointCount; ++i) {
           clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
               manifold.points[i].localPoint.x + xfB.rotation.col2.x *
               manifold.points[i].localPoint.y;
@@ -134,7 +133,7 @@ class WorldManifold {
 
         final Vector clipPoint = pool4;
 
-        for (int i = 0; i < manifold.pointCount; i++) {
+        for (int i = 0; i < manifold.pointCount; ++i) {
 
           clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
               manifold.points[i].localPoint.x + xfA.rotation.col2.x *
