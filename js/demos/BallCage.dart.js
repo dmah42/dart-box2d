@@ -46,7 +46,6 @@ Object.defineProperty(Object.prototype, '$setindex', { value: function(i, value)
 Object.defineProperty(Array.prototype, '$setindex', { value: function(i, value) { 
   return this[i] = value; }, enumerable: false, writable: true, 
   configurable: true});
-function $wrap_call$0(fn) { return fn; }
 function $wrap_call$1(fn) { return fn; }
 function $add(x, y) {
   return ((typeof(x) == 'number' && typeof(y) == 'number') ||
@@ -64,12 +63,25 @@ function $eq(x, y) {
 Object.defineProperty(Object.prototype, '$eq', { value: function(other) { 
   return this === other;
 }, enumerable: false, writable: true, configurable: true });
+function $lt(x, y) {
+  return (typeof(x) == 'number' && typeof(y) == 'number')
+    ? x < y : x.$lt(y);
+}
 function $ne(x, y) {
   if (x == null) return y != null;
   return (typeof(x) == 'number' && typeof(y) == 'number') ||
          (typeof(x) == 'boolean' && typeof(y) == 'boolean') ||
          (typeof(x) == 'string' && typeof(y) == 'string')
     ? x != y : !x.$eq(y);
+}
+function $truncdiv(x, y) {
+  if (typeof(x) == 'number' && typeof(y) == 'number') {
+    if (y == 0) $throw(new IntegerDivisionByZeroException());
+    var tmp = x / y;
+    return (tmp < 0) ? Math.ceil(tmp) : Math.floor(tmp);
+  } else {
+    return x.$truncdiv(y);
+  }
 }
 Object.defineProperty(Object.prototype, "get$typeName", { value: Object.prototype.$typeNameOf, enumerable: false, writable: true, configurable: true});
 // ********** Code for Object **************
@@ -80,172 +92,43 @@ Object.defineProperty(Object.prototype, "noSuchMethod", { value: function(name, 
   $throw(new NoSuchMethodException(this, name, args));
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "add$1", { value: function($0) {
-  return this.noSuchMethod$2("add", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "addFirst$1", { value: function($0) {
-  return this.noSuchMethod$2("addFirst", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "addLocal$1", { value: function($0) {
-  return this.noSuchMethod$2("addLocal", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "appendChild$1", { value: function($0) {
-  return this.noSuchMethod$2("appendChild", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "arc$6", { value: function($0, $1, $2, $3, $4, $5) {
-  return this.noSuchMethod$2("arc", [$0, $1, $2, $3, $4, $5]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "beginContact$1", { value: function($0) {
-  return this.noSuchMethod$2("beginContact", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "beginPath$0", { value: function() {
-  return this.noSuchMethod$2("beginPath", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "clear$0", { value: function() {
-  return this.noSuchMethod$2("clear", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "clear$1", { value: function($0) {
-  return this.noSuchMethod$2("clear", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "clearRect$4", { value: function($0, $1, $2, $3) {
-  return this.noSuchMethod$2("clearRect", [$0, $1, $2, $3]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "closePath$0", { value: function() {
-  return this.noSuchMethod$2("closePath", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "compareTo$1", { value: function($0) {
-  return this.noSuchMethod$2("compareTo", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "createFixture$1", { value: function($0) {
-  return this.noSuchMethod$2("createFixture", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "drawSegment$3", { value: function($0, $1, $2) {
-  return this.noSuchMethod$2("drawSegment", [$0, $1, $2]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "endContact$1", { value: function($0) {
-  return this.noSuchMethod$2("endContact", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "fill$0", { value: function() {
-  return this.noSuchMethod$2("fill", []);
+  return this.noSuchMethod("add", [$0]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "fillText$3", { value: function($0, $1, $2) {
-  return this.noSuchMethod$2("fillText", [$0, $1, $2]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "fillText$4", { value: function($0, $1, $2, $3) {
-  return this.noSuchMethod$2("fillText", [$0, $1, $2, $3]);
+  return this.noSuchMethod("fillText", [$0, $1, $2]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "getContext$0", { value: function() {
-  return this.noSuchMethod$2("getContext", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "getContext$1", { value: function($0) {
-  return this.noSuchMethod$2("getContext", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "getRange$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("getRange", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "hasChildNodes$0", { value: function() {
-  return this.noSuchMethod$2("hasChildNodes", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "hasNext$0", { value: function() {
-  return this.noSuchMethod$2("hasNext", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "initVelocityConstraints$1", { value: function($0) {
-  return this.noSuchMethod$2("initVelocityConstraints", [$0]);
+  return this.noSuchMethod("getContext", []);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "initialize$0", { value: function() {
-  return this.noSuchMethod$2("initialize", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "initializeAnimation$0", { value: function() {
-  return this.noSuchMethod$2("initializeAnimation", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "iterator$0", { value: function() {
-  return this.noSuchMethod$2("iterator", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "lineTo$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("lineTo", [$0, $1]);
+  return this.noSuchMethod("initialize", []);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "moveTo$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("moveTo", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "mulLocal$1", { value: function($0) {
-  return this.noSuchMethod$2("mulLocal", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "next$0", { value: function() {
-  return this.noSuchMethod$2("next", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "noSuchMethod$2", { value: function($0, $1) {
-  return this.noSuchMethod($0, $1);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "postSolve$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("postSolve", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "preSolve$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("preSolve", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "replaceChild$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("replaceChild", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "reportFixture$1", { value: function($0) {
-  return this.noSuchMethod$2("reportFixture", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "runAnimation$0", { value: function() {
-  return this.noSuchMethod$2("runAnimation", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "setCoords$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("setCoords", [$0, $1]);
+  return this.noSuchMethod("moveTo", [$0, $1]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setFillColor$1", { value: function($0) {
-  return this.noSuchMethod$2("setFillColor", [$0]);
+  return this.noSuchMethod("setFillColor", [$0]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setFillColor$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("setFillColor", [$0, $1]);
+  return this.noSuchMethod("setFillColor", [$0, $1]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setFillColor$4", { value: function($0, $1, $2, $3) {
-  return this.noSuchMethod$2("setFillColor", [$0, $1, $2, $3]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "setFillColor$5", { value: function($0, $1, $2, $3, $4) {
-  return this.noSuchMethod$2("setFillColor", [$0, $1, $2, $3, $4]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "setFrom$1", { value: function($0) {
-  return this.noSuchMethod$2("setFrom", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "setInterval$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("setInterval", [$0, $1]);
+  return this.noSuchMethod("setFillColor", [$0, $1, $2, $3]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setRange$3", { value: function($0, $1, $2) {
-  return this.noSuchMethod$2("setRange", [$0, $1, $2]);
+  return this.noSuchMethod("setRange", [$0, $1, $2]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setStrokeColor$1", { value: function($0) {
-  return this.noSuchMethod$2("setStrokeColor", [$0]);
+  return this.noSuchMethod("setStrokeColor", [$0]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setStrokeColor$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("setStrokeColor", [$0, $1]);
+  return this.noSuchMethod("setStrokeColor", [$0, $1]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "setStrokeColor$4", { value: function($0, $1, $2, $3) {
-  return this.noSuchMethod$2("setStrokeColor", [$0, $1, $2, $3]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "setStrokeColor$5", { value: function($0, $1, $2, $3, $4) {
-  return this.noSuchMethod$2("setStrokeColor", [$0, $1, $2, $3, $4]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "solvePositionConstraints$1", { value: function($0) {
-  return this.noSuchMethod$2("solvePositionConstraints", [$0]);
+  return this.noSuchMethod("setStrokeColor", [$0, $1, $2, $3]);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(Object.prototype, "solveVelocityConstraints$1", { value: function($0) {
-  return this.noSuchMethod$2("solveVelocityConstraints", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "stroke$0", { value: function() {
-  return this.noSuchMethod$2("stroke", []);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "subLocal$1", { value: function($0) {
-  return this.noSuchMethod$2("subLocal", [$0]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "toString$0", { value: function() {
-  return this.toString();
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "webkitRequestAnimationFrame$2", { value: function($0, $1) {
-  return this.noSuchMethod$2("webkitRequestAnimationFrame", [$0, $1]);
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(Object.prototype, "zero$0", { value: function() {
-  return this.noSuchMethod$2("zero", []);
+  return this.noSuchMethod("solveVelocityConstraints", [$0]);
 }, enumerable: false, writable: true, configurable: true });
 // ********** Code for IndexOutOfRangeException **************
 function IndexOutOfRangeException(_index) {
@@ -254,7 +137,6 @@ function IndexOutOfRangeException(_index) {
 IndexOutOfRangeException.prototype.toString = function() {
   return ("IndexOutOfRangeException: " + this._index);
 }
-IndexOutOfRangeException.prototype.toString$0 = IndexOutOfRangeException.prototype.toString;
 // ********** Code for NoSuchMethodException **************
 function NoSuchMethodException(_receiver, _functionName, _arguments) {
   this._receiver = _receiver;
@@ -271,9 +153,8 @@ NoSuchMethodException.prototype.toString = function() {
     sb.add(this._arguments.$index(i));
   }
   sb.add("]");
-  return ("NoSuchMethodException - receiver: '" + this._receiver + "' ") + ("function name: '" + this._functionName + "' arguments: [" + sb + "]");
+  return $add(("NoSuchMethodException - receiver: '" + this._receiver + "' "), ("function name: '" + this._functionName + "' arguments: [" + sb + "]"));
 }
-NoSuchMethodException.prototype.toString$0 = NoSuchMethodException.prototype.toString;
 // ********** Code for ClosureArgumentMismatchException **************
 function ClosureArgumentMismatchException() {
 
@@ -281,7 +162,6 @@ function ClosureArgumentMismatchException() {
 ClosureArgumentMismatchException.prototype.toString = function() {
   return "Closure argument mismatch";
 }
-ClosureArgumentMismatchException.prototype.toString$0 = ClosureArgumentMismatchException.prototype.toString;
 // ********** Code for IllegalArgumentException **************
 function IllegalArgumentException(args) {
   this._args = args;
@@ -289,7 +169,6 @@ function IllegalArgumentException(args) {
 IllegalArgumentException.prototype.toString = function() {
   return ("Illegal argument(s): " + this._args);
 }
-IllegalArgumentException.prototype.toString$0 = IllegalArgumentException.prototype.toString;
 // ********** Code for BadNumberFormatException **************
 function BadNumberFormatException(_s) {
   this._s = _s;
@@ -297,7 +176,6 @@ function BadNumberFormatException(_s) {
 BadNumberFormatException.prototype.toString = function() {
   return ("BadNumberFormatException: '" + this._s + "'");
 }
-BadNumberFormatException.prototype.toString$0 = BadNumberFormatException.prototype.toString;
 // ********** Code for NoMoreElementsException **************
 function NoMoreElementsException() {
 
@@ -305,7 +183,6 @@ function NoMoreElementsException() {
 NoMoreElementsException.prototype.toString = function() {
   return "NoMoreElementsException";
 }
-NoMoreElementsException.prototype.toString$0 = NoMoreElementsException.prototype.toString;
 // ********** Code for EmptyQueueException **************
 function EmptyQueueException() {
 
@@ -313,7 +190,6 @@ function EmptyQueueException() {
 EmptyQueueException.prototype.toString = function() {
   return "EmptyQueueException";
 }
-EmptyQueueException.prototype.toString$0 = EmptyQueueException.prototype.toString;
 // ********** Code for UnsupportedOperationException **************
 function UnsupportedOperationException(_message) {
   this._message = _message;
@@ -321,7 +197,6 @@ function UnsupportedOperationException(_message) {
 UnsupportedOperationException.prototype.toString = function() {
   return ("UnsupportedOperationException: " + this._message);
 }
-UnsupportedOperationException.prototype.toString$0 = UnsupportedOperationException.prototype.toString;
 // ********** Code for NotImplementedException **************
 function NotImplementedException() {
 
@@ -329,7 +204,6 @@ function NotImplementedException() {
 NotImplementedException.prototype.toString = function() {
   return "NotImplementedException";
 }
-NotImplementedException.prototype.toString$0 = NotImplementedException.prototype.toString;
 // ********** Code for Expect **************
 function Expect() {}
 Expect.equals = function(expected, actual, reason) {
@@ -350,7 +224,6 @@ function ExpectException(message) {
 ExpectException.prototype.toString = function() {
   return this.message;
 }
-ExpectException.prototype.toString$0 = ExpectException.prototype.toString;
 // ********** Code for dart_core_Function **************
 Function.prototype.to$call$0 = function() {
   this.call$0 = this._genStub(0);
@@ -389,8 +262,8 @@ Math.max = function(a, b) {
 ListFactory = Array;
 ListFactory.ListFactory$from$factory = function(other) {
   var list = [];
-  for (var $$i = other.iterator$0(); $$i.hasNext$0(); ) {
-    var e = $$i.next$0();
+  for (var $$i = other.iterator(); $$i.hasNext(); ) {
+    var e = $$i.next();
     list.add$1(e);
   }
   return list;
@@ -402,9 +275,6 @@ Object.defineProperty(ListFactory.prototype, "add", { value: function(value) {
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "clear", { value: function() {
   this.set$length((0));
-}, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(ListFactory.prototype, "get$clear", { value: function() {
-  return this.clear.bind(this);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "getRange", { value: function(start, length) {
   return this.slice(start, start + length);
@@ -419,7 +289,7 @@ Object.defineProperty(ListFactory.prototype, "setRange", { value: function(start
   var endFrom = startFrom + length;
   if (endFrom > from.get$length()) $throw(new IndexOutOfRangeException(endFrom));
   for (var i = (0);
-   i < length; (i = $add(i, (1)))) this.$setindex(start + i, from.$index(startFrom + i));
+   $lt(i, length); (i = $add(i, (1)))) this.$setindex($add(start, i), from.$index($add(startFrom, i)));
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "isEmpty", { value: function() {
   return this.get$length() == (0);
@@ -428,32 +298,9 @@ Object.defineProperty(ListFactory.prototype, "iterator", { value: function() {
   return new ListIterator(this);
 }, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "add$1", { value: ListFactory.prototype.add, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(ListFactory.prototype, "clear$0", { value: ListFactory.prototype.clear, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(ListFactory.prototype, "getRange$2", { value: ListFactory.prototype.getRange, enumerable: false, writable: true, configurable: true });
-Object.defineProperty(ListFactory.prototype, "iterator$0", { value: ListFactory.prototype.iterator, enumerable: false, writable: true, configurable: true });
 Object.defineProperty(ListFactory.prototype, "setRange$3", { value: function($0, $1, $2) {
   return this.setRange($0, $1, $2, (0));
 }, enumerable: false, writable: true, configurable: true });
-ListFactory_Body = ListFactory;
-ListFactory_ClipVertex = ListFactory;
-ListFactory_Contact = ListFactory;
-ListFactory_ContactConstraint = ListFactory;
-ListFactory_ContactConstraintPoint = ListFactory;
-ListFactory_ContactRegister = ListFactory;
-ListFactory_DynamicTreeNode = ListFactory;
-ListFactory_E = ListFactory;
-ListFactory_Joint = ListFactory;
-ListFactory_List_ContactRegister = ListFactory;
-ListFactory_ManifoldPoint = ListFactory;
-ListFactory_Pair = ListFactory;
-ListFactory_Position = ListFactory;
-ListFactory_SimplexVertex = ListFactory;
-ListFactory_dart_core_String = ListFactory;
-ListFactory_TimeOfImpactConstraint = ListFactory;
-ListFactory_Vector = ListFactory;
-ListFactory_Velocity = ListFactory;
-ListFactory_int = ListFactory;
-ListFactory_num = ListFactory;
 // ********** Code for ListIterator **************
 function ListIterator(array) {
   this._array = array;
@@ -464,12 +311,10 @@ ListIterator.prototype.hasNext = function() {
 }
 ListIterator.prototype.next = function() {
   if (!this.hasNext()) {
-    $throw(const$0001);
+    $throw(const$0002);
   }
   return this._array.$index(this._pos++);
 }
-ListIterator.prototype.hasNext$0 = ListIterator.prototype.hasNext;
-ListIterator.prototype.next$0 = ListIterator.prototype.next;
 // ********** Code for NumImplementation **************
 NumImplementation = Number;
 NumImplementation.prototype.$negate = function() {
@@ -489,6 +334,9 @@ NumImplementation.prototype.round = function() {
 }
 NumImplementation.prototype.floor = function() {
   'use strict'; return Math.floor(this);
+}
+NumImplementation.prototype.hashCode = function() {
+  'use strict'; return this & 0x1FFFFFFF;
 }
 NumImplementation.prototype.toInt = function() {
     'use strict';
@@ -537,7 +385,154 @@ NumImplementation.prototype.compareTo = function(other) {
     return (-1);
   }
 }
-NumImplementation.prototype.compareTo$1 = NumImplementation.prototype.compareTo;
+// ********** Code for HashMapImplementation **************
+function HashMapImplementation() {}
+HashMapImplementation._computeLoadLimit = function(capacity) {
+  return $truncdiv((capacity * (3)), (4));
+}
+HashMapImplementation._firstProbe = function(hashCode, length) {
+  return hashCode & (length - (1));
+}
+HashMapImplementation._nextProbe = function(currentProbe, numberOfProbes, length) {
+  return (currentProbe + numberOfProbes) & (length - (1));
+}
+HashMapImplementation.prototype._probeForAdding = function(key) {
+  var hash = HashMapImplementation._firstProbe(key.hashCode(), this._keys.get$length());
+  var numberOfProbes = (1);
+  var initialHash = hash;
+  var insertionIndex = (-1);
+  while (true) {
+    var existingKey = this._keys.$index(hash);
+    if (existingKey == null) {
+      if (insertionIndex < (0)) return hash;
+      return insertionIndex;
+    }
+    else if ($eq(existingKey, key)) {
+      return hash;
+    }
+    else if ((insertionIndex < (0)) && (const$0001 == existingKey)) {
+      insertionIndex = hash;
+    }
+    hash = HashMapImplementation._nextProbe(hash, numberOfProbes++, this._keys.get$length());
+  }
+}
+HashMapImplementation.prototype._probeForLookup = function(key) {
+  var hash = HashMapImplementation._firstProbe(key.hashCode(), this._keys.get$length());
+  var numberOfProbes = (1);
+  var initialHash = hash;
+  while (true) {
+    var existingKey = this._keys.$index(hash);
+    if (existingKey == null) return (-1);
+    if ($eq(existingKey, key)) return hash;
+    hash = HashMapImplementation._nextProbe(hash, numberOfProbes++, this._keys.get$length());
+  }
+}
+HashMapImplementation.prototype._ensureCapacity = function() {
+  var newNumberOfEntries = this._numberOfEntries + (1);
+  if (newNumberOfEntries >= this._loadLimit) {
+    this._grow(this._keys.get$length() * (2));
+    return;
+  }
+  var capacity = this._keys.get$length();
+  var numberOfFreeOrDeleted = capacity - newNumberOfEntries;
+  var numberOfFree = numberOfFreeOrDeleted - this._numberOfDeleted;
+  if (this._numberOfDeleted > numberOfFree) {
+    this._grow(this._keys.get$length());
+  }
+}
+HashMapImplementation._isPowerOfTwo = function(x) {
+  return ((x & (x - (1))) == (0));
+}
+HashMapImplementation.prototype._grow = function(newCapacity) {
+  var capacity = this._keys.get$length();
+  this._loadLimit = HashMapImplementation._computeLoadLimit(newCapacity);
+  var oldKeys = this._keys;
+  var oldValues = this._values;
+  this._keys = new Array(newCapacity);
+  this._values = new Array(newCapacity);
+  for (var i = (0);
+   i < capacity; i++) {
+    var key = oldKeys.$index(i);
+    if (key == null || key == const$0001) {
+      continue;
+    }
+    var value = oldValues.$index(i);
+    var newIndex = this._probeForAdding(key);
+    this._keys.$setindex(newIndex, key);
+    this._values.$setindex(newIndex, value);
+  }
+  this._numberOfDeleted = (0);
+}
+HashMapImplementation.prototype.$setindex = function(key, value) {
+  this._ensureCapacity();
+  var index = this._probeForAdding(key);
+  if ((this._keys.$index(index) == null) || (this._keys.$index(index) == const$0001)) {
+    this._numberOfEntries++;
+  }
+  this._keys.$setindex(index, key);
+  this._values.$setindex(index, value);
+}
+HashMapImplementation.prototype.$index = function(key) {
+  var index = this._probeForLookup(key);
+  if (index < (0)) return null;
+  return this._values.$index(index);
+}
+HashMapImplementation.prototype.isEmpty = function() {
+  return this._numberOfEntries == (0);
+}
+HashMapImplementation.prototype.get$length = function() {
+  return this._numberOfEntries;
+}
+// ********** Code for HashSetImplementation **************
+function HashSetImplementation() {}
+HashSetImplementation.prototype.add = function(value) {
+  this._backingMap.$setindex(value, value);
+}
+HashSetImplementation.prototype.isEmpty = function() {
+  return this._backingMap.isEmpty();
+}
+HashSetImplementation.prototype.get$length = function() {
+  return this._backingMap.get$length();
+}
+HashSetImplementation.prototype.iterator = function() {
+  return new HashSetIterator(this);
+}
+HashSetImplementation.prototype.add$1 = HashSetImplementation.prototype.add;
+// ********** Code for HashSetIterator **************
+function HashSetIterator(set_) {
+  this._entries = set_._backingMap._keys;
+  this._nextValidIndex = (-1);
+  this._advance();
+}
+HashSetIterator.prototype.hasNext = function() {
+  if (this._nextValidIndex >= this._entries.get$length()) return false;
+  if (this._entries.$index(this._nextValidIndex) == const$0001) {
+    this._advance();
+  }
+  return this._nextValidIndex < this._entries.get$length();
+}
+HashSetIterator.prototype.next = function() {
+  if (!this.hasNext()) {
+    $throw(const$0002);
+  }
+  var res = this._entries.$index(this._nextValidIndex);
+  this._advance();
+  return res;
+}
+HashSetIterator.prototype._advance = function() {
+  var length = this._entries.get$length();
+  var entry;
+  var deletedKey = const$0001;
+  do {
+    if (++this._nextValidIndex >= length) break;
+    entry = this._entries.$index(this._nextValidIndex);
+  }
+  while ((entry == null) || (entry == deletedKey))
+}
+// ********** Code for _DeletedKeySentinel **************
+function _DeletedKeySentinel() {
+
+}
 // ********** Code for DoubleLinkedQueueEntry **************
 function DoubleLinkedQueueEntry(e) {
   this._element = e;
@@ -549,10 +544,10 @@ DoubleLinkedQueueEntry.prototype._link = function(p, n) {
   n._previous = this;
 }
 DoubleLinkedQueueEntry.prototype.append = function(e) {
-  new DoubleLinkedQueueEntry_E(e)._link(this, this._next);
+  new DoubleLinkedQueueEntry(e)._link(this, this._next);
 }
 DoubleLinkedQueueEntry.prototype.prepend = function(e) {
-  new DoubleLinkedQueueEntry_E(e)._link(this._previous, this);
+  new DoubleLinkedQueueEntry(e)._link(this._previous, this);
 }
 DoubleLinkedQueueEntry.prototype.remove = function() {
   this._previous._next = this._next;
@@ -564,7 +559,7 @@ DoubleLinkedQueueEntry.prototype.remove = function() {
 DoubleLinkedQueueEntry.prototype.get$element = function() {
   return this._element;
 }
-// ********** Code for DoubleLinkedQueueEntry_E **************
+// ********** Code for DoubleLinkedQueueEntry_CircleContact **************
 /** Implements extends for Dart classes on JavaScript prototypes. */
 function $inherits(child, parent) {
   if (child.prototype.__proto__) {
@@ -576,54 +571,60 @@ function $inherits(child, parent) {
     child.prototype.constructor = child;
   }
 }
-$inherits(DoubleLinkedQueueEntry_E, DoubleLinkedQueueEntry);
-function DoubleLinkedQueueEntry_E(e) {
+$inherits(DoubleLinkedQueueEntry_CircleContact, DoubleLinkedQueueEntry);
+function DoubleLinkedQueueEntry_CircleContact(e) {
   this._element = e;
 }
-DoubleLinkedQueueEntry_E.prototype._link = function(p, n) {
-  this._next = n;
-  this._previous = p;
-  p._next = this;
-  n._previous = this;
+// ********** Code for DoubleLinkedQueueEntry_DynamicTreeNode **************
+$inherits(DoubleLinkedQueueEntry_DynamicTreeNode, DoubleLinkedQueueEntry);
+function DoubleLinkedQueueEntry_DynamicTreeNode(e) {
+  this._element = e;
 }
-DoubleLinkedQueueEntry_E.prototype.append = function(e) {
-  new DoubleLinkedQueueEntry_E(e)._link(this, this._next);
+// ********** Code for DoubleLinkedQueueEntry_PolygonAndCircleContact **************
+$inherits(DoubleLinkedQueueEntry_PolygonAndCircleContact, DoubleLinkedQueueEntry);
+function DoubleLinkedQueueEntry_PolygonAndCircleContact(e) {
+  this._element = e;
 }
-DoubleLinkedQueueEntry_E.prototype.prepend = function(e) {
-  new DoubleLinkedQueueEntry_E(e)._link(this._previous, this);
+// ********** Code for DoubleLinkedQueueEntry_PolygonContact **************
+$inherits(DoubleLinkedQueueEntry_PolygonContact, DoubleLinkedQueueEntry);
+function DoubleLinkedQueueEntry_PolygonContact(e) {
+  this._element = e;
 }
-DoubleLinkedQueueEntry_E.prototype.remove = function() {
-  this._previous._next = this._next;
-  this._next._previous = this._previous;
-  this._next = null;
-  this._previous = null;
-  return this._element;
-}
-// ********** Code for DoubleLinkedQueueEntry_KeyValuePair_K$V **************
-$inherits(DoubleLinkedQueueEntry_KeyValuePair_K$V, DoubleLinkedQueueEntry);
-function DoubleLinkedQueueEntry_KeyValuePair_K$V() {}
 // ********** Code for _DoubleLinkedQueueEntrySentinel **************
-$inherits(_DoubleLinkedQueueEntrySentinel, DoubleLinkedQueueEntry_E);
-function _DoubleLinkedQueueEntrySentinel() {
-  DoubleLinkedQueueEntry_E.call(this, null);
-  this._link(this, this);
-}
+$inherits(_DoubleLinkedQueueEntrySentinel, DoubleLinkedQueueEntry);
+function _DoubleLinkedQueueEntrySentinel() {}
 _DoubleLinkedQueueEntrySentinel.prototype.remove = function() {
   $throw(const$0000);
 }
 _DoubleLinkedQueueEntrySentinel.prototype.get$element = function() {
   $throw(const$0000);
 }
-// ********** Code for _DoubleLinkedQueueEntrySentinel_E **************
-$inherits(_DoubleLinkedQueueEntrySentinel_E, _DoubleLinkedQueueEntrySentinel);
-function _DoubleLinkedQueueEntrySentinel_E() {
-  DoubleLinkedQueueEntry_E.call(this, null);
+// ********** Code for _DoubleLinkedQueueEntrySentinel_CircleContact **************
+$inherits(_DoubleLinkedQueueEntrySentinel_CircleContact, _DoubleLinkedQueueEntrySentinel);
+function _DoubleLinkedQueueEntrySentinel_CircleContact() {
+  DoubleLinkedQueueEntry_CircleContact.call(this, null);
+  this._link(this, this);
+}
+// ********** Code for _DoubleLinkedQueueEntrySentinel_DynamicTreeNode **************
+$inherits(_DoubleLinkedQueueEntrySentinel_DynamicTreeNode, _DoubleLinkedQueueEntrySentinel);
+function _DoubleLinkedQueueEntrySentinel_DynamicTreeNode() {
+  DoubleLinkedQueueEntry_DynamicTreeNode.call(this, null);
+  this._link(this, this);
+}
+// ********** Code for _DoubleLinkedQueueEntrySentinel_PolygonAndCircleContact **************
+$inherits(_DoubleLinkedQueueEntrySentinel_PolygonAndCircleContact, _DoubleLinkedQueueEntrySentinel);
+function _DoubleLinkedQueueEntrySentinel_PolygonAndCircleContact() {
+  DoubleLinkedQueueEntry_PolygonAndCircleContact.call(this, null);
+  this._link(this, this);
+}
+// ********** Code for _DoubleLinkedQueueEntrySentinel_PolygonContact **************
+$inherits(_DoubleLinkedQueueEntrySentinel_PolygonContact, _DoubleLinkedQueueEntrySentinel);
+function _DoubleLinkedQueueEntrySentinel_PolygonContact() {
+  DoubleLinkedQueueEntry_PolygonContact.call(this, null);
   this._link(this, this);
 }
 // ********** Code for DoubleLinkedQueue **************
-function DoubleLinkedQueue() {
-  this._sentinel = new _DoubleLinkedQueueEntrySentinel_E();
-}
+function DoubleLinkedQueue() {}
 DoubleLinkedQueue.prototype.addLast = function(value) {
   this._sentinel.prepend(value);
 }
@@ -647,43 +648,38 @@ DoubleLinkedQueue.prototype.get$length = function() {
 DoubleLinkedQueue.prototype.isEmpty = function() {
   return (this._sentinel._next == this._sentinel);
 }
-DoubleLinkedQueue.prototype.clear = function() {
-  this._sentinel._next = this._sentinel;
-  this._sentinel._previous = this._sentinel;
-}
-DoubleLinkedQueue.prototype.get$clear = function() {
-  return this.clear.bind(this);
-}
 DoubleLinkedQueue.prototype.forEach = function(f) {
   var entry = this._sentinel._next;
   while (entry != this._sentinel) {
     var nextEntry = entry._next;
-    f.call$1(entry._element);
+    f(entry._element);
     entry = nextEntry;
   }
 }
 DoubleLinkedQueue.prototype.iterator = function() {
-  return new _DoubleLinkedQueueIterator_E(this._sentinel);
+  return new _DoubleLinkedQueueIterator(this._sentinel);
 }
 DoubleLinkedQueue.prototype.add$1 = DoubleLinkedQueue.prototype.add;
-DoubleLinkedQueue.prototype.addFirst$1 = DoubleLinkedQueue.prototype.addFirst;
-DoubleLinkedQueue.prototype.clear$0 = DoubleLinkedQueue.prototype.clear;
-DoubleLinkedQueue.prototype.iterator$0 = DoubleLinkedQueue.prototype.iterator;
 // ********** Code for DoubleLinkedQueue_CircleContact **************
 $inherits(DoubleLinkedQueue_CircleContact, DoubleLinkedQueue);
-function DoubleLinkedQueue_CircleContact() {}
+function DoubleLinkedQueue_CircleContact() {
+  this._sentinel = new _DoubleLinkedQueueEntrySentinel_CircleContact();
+}
 // ********** Code for DoubleLinkedQueue_DynamicTreeNode **************
 $inherits(DoubleLinkedQueue_DynamicTreeNode, DoubleLinkedQueue);
-function DoubleLinkedQueue_DynamicTreeNode() {}
-// ********** Code for DoubleLinkedQueue_KeyValuePair_K$V **************
-$inherits(DoubleLinkedQueue_KeyValuePair_K$V, DoubleLinkedQueue);
-function DoubleLinkedQueue_KeyValuePair_K$V() {}
+function DoubleLinkedQueue_DynamicTreeNode() {
+  this._sentinel = new _DoubleLinkedQueueEntrySentinel_DynamicTreeNode();
+}
 // ********** Code for DoubleLinkedQueue_PolygonAndCircleContact **************
 $inherits(DoubleLinkedQueue_PolygonAndCircleContact, DoubleLinkedQueue);
-function DoubleLinkedQueue_PolygonAndCircleContact() {}
+function DoubleLinkedQueue_PolygonAndCircleContact() {
+  this._sentinel = new _DoubleLinkedQueueEntrySentinel_PolygonAndCircleContact();
+}
 // ********** Code for DoubleLinkedQueue_PolygonContact **************
 $inherits(DoubleLinkedQueue_PolygonContact, DoubleLinkedQueue);
-function DoubleLinkedQueue_PolygonContact() {}
+function DoubleLinkedQueue_PolygonContact() {
+  this._sentinel = new _DoubleLinkedQueueEntrySentinel_PolygonContact();
+}
 // ********** Code for _DoubleLinkedQueueIterator **************
 function _DoubleLinkedQueueIterator(_sentinel) {
   this._sentinel = _sentinel;
@@ -694,18 +690,10 @@ _DoubleLinkedQueueIterator.prototype.hasNext = function() {
 }
 _DoubleLinkedQueueIterator.prototype.next = function() {
   if (!this.hasNext()) {
-    $throw(const$0001);
+    $throw(const$0002);
   }
   this._currentEntry = this._currentEntry._next;
   return this._currentEntry.get$element();
-}
-_DoubleLinkedQueueIterator.prototype.hasNext$0 = _DoubleLinkedQueueIterator.prototype.hasNext;
-_DoubleLinkedQueueIterator.prototype.next$0 = _DoubleLinkedQueueIterator.prototype.next;
-// ********** Code for _DoubleLinkedQueueIterator_E **************
-$inherits(_DoubleLinkedQueueIterator_E, _DoubleLinkedQueueIterator);
-function _DoubleLinkedQueueIterator_E(_sentinel) {
-  this._sentinel = _sentinel;
-  this._currentEntry = this._sentinel;
 }
 // ********** Code for StringBufferImpl **************
 function StringBufferImpl(content) {
@@ -716,9 +704,9 @@ StringBufferImpl.prototype.get$length = function() {
   return this._length;
 }
 StringBufferImpl.prototype.add = function(obj) {
-  var str = obj.toString$0();
+  var str = obj.toString();
   if (str == null || str.isEmpty()) return this;
-  this._buffer.add$1(str);
+  this._buffer.add(str);
   this._length = this._length + str.length;
   return this;
 }
@@ -727,20 +715,15 @@ StringBufferImpl.prototype.clear = function() {
   this._length = (0);
   return this;
 }
-StringBufferImpl.prototype.get$clear = function() {
-  return this.clear.bind(this);
-}
 StringBufferImpl.prototype.toString = function() {
   if (this._buffer.get$length() == (0)) return "";
   if (this._buffer.get$length() == (1)) return this._buffer.$index((0));
   var result = StringBase.concatAll(this._buffer);
-  this._buffer.clear$0();
-  this._buffer.add$1(result);
+  this._buffer.clear();
+  this._buffer.add(result);
   return result;
 }
 StringBufferImpl.prototype.add$1 = StringBufferImpl.prototype.add;
-StringBufferImpl.prototype.clear$0 = StringBufferImpl.prototype.clear;
-StringBufferImpl.prototype.toString$0 = StringBufferImpl.prototype.toString;
 // ********** Code for StringBase **************
 function StringBase() {}
 StringBase.join = function(strings, separator) {
@@ -748,7 +731,7 @@ StringBase.join = function(strings, separator) {
   var s = strings.$index((0));
   for (var i = (1);
    i < strings.get$length(); i++) {
-    s = s + separator + strings.$index(i);
+    s = $add($add(s, separator), strings.$index(i));
   }
   return s;
 }
@@ -761,67 +744,24 @@ StringImplementation.prototype.get$length = function() { return this.length; };
 StringImplementation.prototype.isEmpty = function() {
   return this.length == (0);
 }
+StringImplementation.prototype.hashCode = function() {
+      'use strict';
+      var hash = 0;
+      for (var i = 0; i < this.length; i++) {
+        hash = 0x1fffffff & (hash + this.charCodeAt(i));
+        hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+        hash ^= hash >> 6;
+      }
+
+      hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+      hash ^= hash >> 11;
+      return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+}
 StringImplementation.prototype.compareTo = function(other) {
   'use strict'; return this == other ? 0 : this < other ? -1 : 1;
 }
-StringImplementation.prototype.compareTo$1 = StringImplementation.prototype.compareTo;
 // ********** Code for _Worker **************
-function $dynamic(name) {
-  var f = Object.prototype[name];
-  if (f && f.methods) return f.methods;
-
-  var methods = {};
-  if (f) methods.Object = f;
-  function $dynamicBind() {
-    // Find the target method
-    var obj = this;
-    var tag = obj.$typeNameOf();
-    var method = methods[tag];
-    if (!method) {
-      var table = $dynamicMetadata;
-      for (var i = 0; i < table.length; i++) {
-        var entry = table[i];
-        if (entry.map.hasOwnProperty(tag)) {
-          method = methods[entry.tag];
-          if (method) break;
-        }
-      }
-    }
-    method = method || methods.Object;
-    var proto = Object.getPrototypeOf(obj);
-    if (!proto.hasOwnProperty(name)) {
-      Object.defineProperty(proto, name,
-        { value: method, enumerable: false, writable: true, 
-        configurable: true });
-    }
-
-    return method.apply(this, Array.prototype.slice.call(arguments));
-  };
-  $dynamicBind.methods = methods;
-  Object.defineProperty(Object.prototype, name, { value: $dynamicBind,
-      enumerable: false, writable: true, configurable: true});
-  return methods;
-}
-if (typeof $dynamicMetadata == 'undefined') $dynamicMetadata = [];
-
-function $dynamicSetMetadata(inputTable) {
-  // TODO: Deal with light isolates.
-  var table = [];
-  for (var i = 0; i < inputTable.length; i++) {
-    var tag = inputTable[i][0];
-    var tags = inputTable[i][1];
-    var map = {};
-    var tagNames = tags.split('|');
-    for (var j = 0; j < tagNames.length; j++) {
-      map[tagNames[j]] = true;
-    }
-    table.push({tag: tag, tags: tags, map: map});
-  }
-  $dynamicMetadata = table;
-}
-$dynamic("get$id").Worker = function() {
-  return this.id;
-}
+var _Worker = {};
 // ********** Code for _ArgumentMismatchException **************
 $inherits(_ArgumentMismatchException, ClosureArgumentMismatchException);
 function _ArgumentMismatchException(_message) {
@@ -831,7 +771,6 @@ function _ArgumentMismatchException(_message) {
 _ArgumentMismatchException.prototype.toString = function() {
   return ("Closure argument mismatch: " + this._dart_coreimpl_message);
 }
-_ArgumentMismatchException.prototype.toString$0 = _ArgumentMismatchException.prototype.toString;
 // ********** Code for _FunctionImplementation **************
 _FunctionImplementation = Function;
 _FunctionImplementation.prototype._genStub = function(argsLength, names) {
@@ -902,6 +841,59 @@ _FunctionImplementation.prototype._genStub = function(argsLength, names) {
 //  ********** Library dom **************
 // ********** Code for Window **************
 // ********** Code for AbstractWorker **************
+function $dynamic(name) {
+  var f = Object.prototype[name];
+  if (f && f.methods) return f.methods;
+
+  var methods = {};
+  if (f) methods.Object = f;
+  function $dynamicBind() {
+    // Find the target method
+    var obj = this;
+    var tag = obj.$typeNameOf();
+    var method = methods[tag];
+    if (!method) {
+      var table = $dynamicMetadata;
+      for (var i = 0; i < table.length; i++) {
+        var entry = table[i];
+        if (entry.map.hasOwnProperty(tag)) {
+          method = methods[entry.tag];
+          if (method) break;
+        }
+      }
+    }
+    method = method || methods.Object;
+    var proto = Object.getPrototypeOf(obj);
+    if (!proto.hasOwnProperty(name)) {
+      Object.defineProperty(proto, name,
+        { value: method, enumerable: false, writable: true, 
+        configurable: true });
+    }
+
+    return method.apply(this, Array.prototype.slice.call(arguments));
+  };
+  $dynamicBind.methods = methods;
+  Object.defineProperty(Object.prototype, name, { value: $dynamicBind,
+      enumerable: false, writable: true, configurable: true});
+  return methods;
+}
+if (typeof $dynamicMetadata == 'undefined') $dynamicMetadata = [];
+
+function $dynamicSetMetadata(inputTable) {
+  // TODO: Deal with light isolates.
+  var table = [];
+  for (var i = 0; i < inputTable.length; i++) {
+    var tag = inputTable[i][0];
+    var tags = inputTable[i][1];
+    var map = {};
+    var tagNames = tags.split('|');
+    for (var j = 0; j < tagNames.length; j++) {
+      map[tagNames[j]] = true;
+    }
+    table.push({tag: tag, tags: tags, map: map});
+  }
+  $dynamicMetadata = table;
+}
 $dynamic("get$dartObjectLocalStorage").AbstractWorker = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").AbstractWorker = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for ArrayBuffer **************
@@ -911,9 +903,11 @@ $dynamic("set$dartObjectLocalStorage").ArrayBuffer = function(value) { return th
 $dynamic("get$dartObjectLocalStorage").ArrayBufferView = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ArrayBufferView = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_Attr **************
+var dom_Attr = {};
 // ********** Code for AudioBuffer **************
-$dynamic("get$length").AudioBuffer = function() { return this.length; };
-$dynamic("set$length").AudioBuffer = function(value) { return this.length = value; };
+$dynamic("get$length").AudioBuffer = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").AudioBuffer = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").AudioBuffer = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for AudioBufferSourceNode **************
@@ -942,11 +936,16 @@ $dynamic("get$dartObjectLocalStorage").BarInfo = function() { return this.dartOb
 $dynamic("set$dartObjectLocalStorage").BarInfo = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for BeforeLoadEvent **************
 // ********** Code for BiquadFilterNode **************
-$dynamic("get$type").BiquadFilterNode = function() { return this.type; };
-$dynamic("set$type").BiquadFilterNode = function(value) { return this.type = value; };
+$dynamic("get$type").BiquadFilterNode = function() {
+  return this.type;
+}
+$dynamic("set$type").BiquadFilterNode = function(value) {
+  this.type = value;
+}
 // ********** Code for Blob **************
-$dynamic("get$type").Blob = function() { return this.type; };
-$dynamic("set$type").Blob = function(value) { return this.type = value; };
+$dynamic("get$type").Blob = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").Blob = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Blob = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CDATASection **************
@@ -957,18 +956,21 @@ $dynamic("set$dartObjectLocalStorage").Blob = function(value) { return this.dart
 // ********** Code for CSSPageRule **************
 // ********** Code for CSSPrimitiveValue **************
 // ********** Code for CSSRule **************
-$dynamic("get$type").CSSRule = function() { return this.type; };
-$dynamic("set$type").CSSRule = function(value) { return this.type = value; };
+$dynamic("get$type").CSSRule = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").CSSRule = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CSSRule = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CSSRuleList **************
-$dynamic("get$length").CSSRuleList = function() { return this.length; };
-$dynamic("set$length").CSSRuleList = function(value) { return this.length = value; };
+$dynamic("get$length").CSSRuleList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").CSSRuleList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CSSRuleList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CSSStyleDeclaration **************
-$dynamic("get$length").CSSStyleDeclaration = function() { return this.length; };
-$dynamic("set$length").CSSStyleDeclaration = function(value) { return this.length = value; };
+$dynamic("get$length").CSSStyleDeclaration = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").CSSStyleDeclaration = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CSSStyleDeclaration = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CSSStyleRule **************
@@ -978,8 +980,9 @@ $dynamic("set$dartObjectLocalStorage").CSSStyleDeclaration = function(value) { r
 $dynamic("get$dartObjectLocalStorage").CSSValue = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CSSValue = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CSSValueList **************
-$dynamic("get$length").CSSValueList = function() { return this.length; };
-$dynamic("set$length").CSSValueList = function(value) { return this.length = value; };
+$dynamic("get$length").CSSValueList = function() {
+  return this.length;
+}
 // ********** Code for CanvasGradient **************
 $dynamic("get$dartObjectLocalStorage").CanvasGradient = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CanvasGradient = function(value) { return this.dartObjectLocalStorage = value; };
@@ -987,39 +990,20 @@ $dynamic("set$dartObjectLocalStorage").CanvasGradient = function(value) { return
 $dynamic("get$dartObjectLocalStorage").CanvasPattern = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CanvasPattern = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CanvasPixelArray **************
-$dynamic("get$length").CanvasPixelArray = function() { return this.length; };
-$dynamic("set$length").CanvasPixelArray = function(value) { return this.length = value; };
+$dynamic("get$length").CanvasPixelArray = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").CanvasPixelArray = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CanvasPixelArray = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CanvasRenderingContext **************
 $dynamic("get$dartObjectLocalStorage").CanvasRenderingContext = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").CanvasRenderingContext = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for CanvasRenderingContext2D **************
-$dynamic("get$font").CanvasRenderingContext2D = function() { return this.font; };
-$dynamic("set$font").CanvasRenderingContext2D = function(value) { return this.font = value; };
-$dynamic("arc$6").CanvasRenderingContext2D = function($0, $1, $2, $3, $4, $5) {
-  return this.arc($0, $1, $2, $3, $4, $5);
-};
-$dynamic("beginPath$0").CanvasRenderingContext2D = function() {
-  return this.beginPath();
-};
-$dynamic("clearRect$4").CanvasRenderingContext2D = function($0, $1, $2, $3) {
-  return this.clearRect($0, $1, $2, $3);
-};
-$dynamic("closePath$0").CanvasRenderingContext2D = function() {
-  return this.closePath();
-};
-$dynamic("fill$0").CanvasRenderingContext2D = function() {
-  return this.fill();
-};
+$dynamic("set$font").CanvasRenderingContext2D = function(value) {
+  this.font = value;
+}
 $dynamic("fillText$3").CanvasRenderingContext2D = function($0, $1, $2) {
   return this.fillText($0, $1, $2);
-};
-$dynamic("fillText$4").CanvasRenderingContext2D = function($0, $1, $2, $3) {
-  return this.fillText($0, $1, $2, $3);
-};
-$dynamic("lineTo$2").CanvasRenderingContext2D = function($0, $1) {
-  return this.lineTo($0, $1);
 };
 $dynamic("moveTo$2").CanvasRenderingContext2D = function($0, $1) {
   return this.moveTo($0, $1);
@@ -1033,9 +1017,6 @@ $dynamic("setFillColor$2").CanvasRenderingContext2D = function($0, $1) {
 $dynamic("setFillColor$4").CanvasRenderingContext2D = function($0, $1, $2, $3) {
   return this.setFillColor($0, $1, $2, $3);
 };
-$dynamic("setFillColor$5").CanvasRenderingContext2D = function($0, $1, $2, $3, $4) {
-  return this.setFillColor($0, $1, $2, $3, $4);
-};
 $dynamic("setStrokeColor$1").CanvasRenderingContext2D = function($0) {
   return this.setStrokeColor($0);
 };
@@ -1045,25 +1026,17 @@ $dynamic("setStrokeColor$2").CanvasRenderingContext2D = function($0, $1) {
 $dynamic("setStrokeColor$4").CanvasRenderingContext2D = function($0, $1, $2, $3) {
   return this.setStrokeColor($0, $1, $2, $3);
 };
-$dynamic("setStrokeColor$5").CanvasRenderingContext2D = function($0, $1, $2, $3, $4) {
-  return this.setStrokeColor($0, $1, $2, $3, $4);
-};
-$dynamic("stroke$0").CanvasRenderingContext2D = function() {
-  return this.stroke();
-};
 // ********** Code for CharacterData **************
-$dynamic("get$length").CharacterData = function() { return this.length; };
-$dynamic("set$length").CharacterData = function(value) { return this.length = value; };
+$dynamic("get$length").CharacterData = function() {
+  return this.length;
+}
 // ********** Code for ClientRect **************
-$dynamic("get$height").ClientRect = function() { return this.height; };
-$dynamic("set$height").ClientRect = function(value) { return this.height = value; };
-$dynamic("get$width").ClientRect = function() { return this.width; };
-$dynamic("set$width").ClientRect = function(value) { return this.width = value; };
 $dynamic("get$dartObjectLocalStorage").ClientRect = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ClientRect = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for ClientRectList **************
-$dynamic("get$length").ClientRectList = function() { return this.length; };
-$dynamic("set$length").ClientRectList = function(value) { return this.length = value; };
+$dynamic("get$length").ClientRectList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").ClientRectList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ClientRectList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Clipboard **************
@@ -1093,9 +1066,6 @@ $dynamic("set$dartObjectLocalStorage").DOMApplicationCache = function(value) { r
 // ********** Code for DOMException **************
 $dynamic("get$dartObjectLocalStorage").DOMException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").DOMException = function() {
-  return this.toString();
-};
 // ********** Code for DOMFileSystem **************
 $dynamic("get$dartObjectLocalStorage").DOMFileSystem = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMFileSystem = function(value) { return this.dartObjectLocalStorage = value; };
@@ -1106,92 +1076,88 @@ $dynamic("set$dartObjectLocalStorage").DOMFileSystemSync = function(value) { ret
 $dynamic("get$dartObjectLocalStorage").DOMFormData = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMFormData = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_DOMImplementation **************
+var dom_DOMImplementation = {};
 $dynamic("get$dartObjectLocalStorage").DOMImplementation = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMImplementation = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMMimeType **************
-$dynamic("get$type").DOMMimeType = function() { return this.type; };
-$dynamic("set$type").DOMMimeType = function(value) { return this.type = value; };
+$dynamic("get$type").DOMMimeType = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").DOMMimeType = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMMimeType = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMMimeTypeArray **************
-$dynamic("get$length").DOMMimeTypeArray = function() { return this.length; };
-$dynamic("set$length").DOMMimeTypeArray = function(value) { return this.length = value; };
+$dynamic("get$length").DOMMimeTypeArray = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").DOMMimeTypeArray = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMMimeTypeArray = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMParser **************
 $dynamic("get$dartObjectLocalStorage").DOMParser = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMParser = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMPlugin **************
-$dynamic("get$length").DOMPlugin = function() { return this.length; };
-$dynamic("set$length").DOMPlugin = function(value) { return this.length = value; };
+$dynamic("get$length").DOMPlugin = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").DOMPlugin = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMPlugin = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMPluginArray **************
-$dynamic("get$length").DOMPluginArray = function() { return this.length; };
-$dynamic("set$length").DOMPluginArray = function(value) { return this.length = value; };
+$dynamic("get$length").DOMPluginArray = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").DOMPluginArray = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMPluginArray = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DOMSelection **************
-$dynamic("get$type").DOMSelection = function() { return this.type; };
-$dynamic("set$type").DOMSelection = function(value) { return this.type = value; };
+$dynamic("get$type").DOMSelection = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").DOMSelection = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMSelection = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").DOMSelection = function() {
-  return this.toString();
-};
 // ********** Code for DOMSettableTokenList **************
 // ********** Code for DOMTokenList **************
-$dynamic("get$length").DOMTokenList = function() { return this.length; };
-$dynamic("set$length").DOMTokenList = function(value) { return this.length = value; };
+$dynamic("get$length").DOMTokenList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").DOMTokenList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMTokenList = function(value) { return this.dartObjectLocalStorage = value; };
 $dynamic("add$1").DOMTokenList = function($0) {
   return this.add($0);
 };
-$dynamic("toString$0").DOMTokenList = function() {
-  return this.toString();
-};
 // ********** Code for DOMURL **************
 $dynamic("get$dartObjectLocalStorage").DOMURL = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMURL = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_DOMWindow **************
-$dynamic("get$length").DOMWindow = function() { return this.length; };
-$dynamic("set$length").DOMWindow = function(value) { return this.length = value; };
+var dom_DOMWindow = {};
+$dynamic("get$length").DOMWindow = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").DOMWindow = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DOMWindow = function(value) { return this.dartObjectLocalStorage = value; };
 $dynamic("moveTo$2").DOMWindow = function($0, $1) {
   return this.moveTo($0, $1);
 };
-$dynamic("setInterval$2").DOMWindow = function($0, $1) {
-  return this.setInterval($wrap_call$0(to$call$0($0)), $1);
-};
-$dynamic("webkitRequestAnimationFrame$2").DOMWindow = function($0, $1) {
-  return this.webkitRequestAnimationFrame($wrap_call$1(to$call$1($0)), $1);
-};
 // ********** Code for DataTransferItem **************
-$dynamic("get$type").DataTransferItem = function() { return this.type; };
-$dynamic("set$type").DataTransferItem = function(value) { return this.type = value; };
+$dynamic("get$type").DataTransferItem = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").DataTransferItem = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DataTransferItem = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for DataTransferItemList **************
-$dynamic("get$length").DataTransferItemList = function() { return this.length; };
-$dynamic("set$length").DataTransferItemList = function(value) { return this.length = value; };
-$dynamic("get$clear").DataTransferItemList = function() {
-  return this.clear.bind(this);
+$dynamic("get$length").DataTransferItemList = function() {
+  return this.length;
 }
 $dynamic("get$dartObjectLocalStorage").DataTransferItemList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DataTransferItemList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").DataTransferItemList = function() {
-  return this.clear();
-};
 // ********** Code for DataView **************
 // ********** Code for dom_Database **************
+var dom_Database = {};
 $dynamic("get$dartObjectLocalStorage").Database = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Database = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_DatabaseSync **************
+var dom_DatabaseSync = {};
 $dynamic("get$dartObjectLocalStorage").DatabaseSync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DatabaseSync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_DedicatedWorkerContext **************
+var dom_DedicatedWorkerContext = {};
 // ********** Code for DelayNode **************
 // ********** Code for DeviceMotionEvent **************
 // ********** Code for DeviceOrientationEvent **************
@@ -1204,18 +1170,22 @@ $dynamic("set$dartObjectLocalStorage").DirectoryReader = function(value) { retur
 $dynamic("get$dartObjectLocalStorage").DirectoryReaderSync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").DirectoryReaderSync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Document **************
-$dynamic("get$body").Document = function() { return this.body; };
-$dynamic("set$body").Document = function(value) { return this.body = value; };
-$dynamic("get$documentElement").Document = function() { return this.documentElement; };
-$dynamic("set$documentElement").Document = function(value) { return this.documentElement = value; };
+$dynamic("get$body").Document = function() {
+  return this.body;
+}
+$dynamic("get$documentElement").Document = function() {
+  return this.documentElement;
+}
 // ********** Code for DocumentFragment **************
 // ********** Code for dom_DocumentType **************
+var dom_DocumentType = {};
 // ********** Code for DynamicsCompressorNode **************
 // ********** Code for Element **************
 // ********** Code for ElementTimeControl **************
 $dynamic("get$dartObjectLocalStorage").ElementTimeControl = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ElementTimeControl = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_ElementTraversal **************
+var dom_ElementTraversal = {};
 $dynamic("get$dartObjectLocalStorage").ElementTraversal = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ElementTraversal = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Entity **************
@@ -1227,13 +1197,15 @@ $dynamic("moveTo$2").Entry = function($0, $1) {
   return this.moveTo($0, $1, $wrap_call$1(to$call$1(null)), $wrap_call$1(to$call$1(null)));
 };
 // ********** Code for EntryArray **************
-$dynamic("get$length").EntryArray = function() { return this.length; };
-$dynamic("set$length").EntryArray = function(value) { return this.length = value; };
+$dynamic("get$length").EntryArray = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").EntryArray = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").EntryArray = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for EntryArraySync **************
-$dynamic("get$length").EntryArraySync = function() { return this.length; };
-$dynamic("set$length").EntryArraySync = function(value) { return this.length = value; };
+$dynamic("get$length").EntryArraySync = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").EntryArraySync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").EntryArraySync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for EntrySync **************
@@ -1244,16 +1216,14 @@ $dynamic("moveTo$2").EntrySync = function($0, $1) {
 };
 // ********** Code for ErrorEvent **************
 // ********** Code for Event **************
-$dynamic("get$type").Event = function() { return this.type; };
-$dynamic("set$type").Event = function(value) { return this.type = value; };
+$dynamic("get$type").Event = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").Event = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Event = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for EventException **************
 $dynamic("get$dartObjectLocalStorage").EventException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").EventException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").EventException = function() {
-  return this.toString();
-};
 // ********** Code for EventSource **************
 $dynamic("get$dartObjectLocalStorage").EventSource = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").EventSource = function(value) { return this.dartObjectLocalStorage = value; };
@@ -1269,12 +1239,10 @@ $dynamic("set$dartObjectLocalStorage").FileError = function(value) { return this
 // ********** Code for FileException **************
 $dynamic("get$dartObjectLocalStorage").FileException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").FileException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").FileException = function() {
-  return this.toString();
-};
 // ********** Code for FileList **************
-$dynamic("get$length").FileList = function() { return this.length; };
-$dynamic("set$length").FileList = function(value) { return this.length = value; };
+$dynamic("get$length").FileList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").FileList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").FileList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for FileReader **************
@@ -1284,25 +1252,31 @@ $dynamic("set$dartObjectLocalStorage").FileReader = function(value) { return thi
 $dynamic("get$dartObjectLocalStorage").FileReaderSync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").FileReaderSync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for FileWriter **************
-$dynamic("get$length").FileWriter = function() { return this.length; };
-$dynamic("set$length").FileWriter = function(value) { return this.length = value; };
-$dynamic("get$position").FileWriter = function() { return this.position; };
-$dynamic("set$position").FileWriter = function(value) { return this.position = value; };
+$dynamic("get$length").FileWriter = function() {
+  return this.length;
+}
+$dynamic("get$position").FileWriter = function() {
+  return this.position;
+}
 $dynamic("get$dartObjectLocalStorage").FileWriter = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").FileWriter = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for FileWriterSync **************
-$dynamic("get$length").FileWriterSync = function() { return this.length; };
-$dynamic("set$length").FileWriterSync = function(value) { return this.length = value; };
-$dynamic("get$position").FileWriterSync = function() { return this.position; };
-$dynamic("set$position").FileWriterSync = function(value) { return this.position = value; };
+$dynamic("get$length").FileWriterSync = function() {
+  return this.length;
+}
+$dynamic("get$position").FileWriterSync = function() {
+  return this.position;
+}
 $dynamic("get$dartObjectLocalStorage").FileWriterSync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").FileWriterSync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Float32Array **************
-$dynamic("get$length").Float32Array = function() { return this.length; };
-$dynamic("set$length").Float32Array = function(value) { return this.length = value; };
+$dynamic("get$length").Float32Array = function() {
+  return this.length;
+}
 // ********** Code for Float64Array **************
-$dynamic("get$length").Float64Array = function() { return this.length; };
-$dynamic("set$length").Float64Array = function(value) { return this.length = value; };
+$dynamic("get$length").Float64Array = function() {
+  return this.length;
+}
 // ********** Code for Geolocation **************
 $dynamic("get$dartObjectLocalStorage").Geolocation = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Geolocation = function(value) { return this.dartObjectLocalStorage = value; };
@@ -1310,217 +1284,351 @@ $dynamic("set$dartObjectLocalStorage").Geolocation = function(value) { return th
 $dynamic("get$dartObjectLocalStorage").Geoposition = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Geoposition = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for HTMLAllCollection **************
-$dynamic("get$length").HTMLAllCollection = function() { return this.length; };
-$dynamic("set$length").HTMLAllCollection = function(value) { return this.length = value; };
+$dynamic("get$length").HTMLAllCollection = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").HTMLAllCollection = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").HTMLAllCollection = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_HTMLAnchorElement **************
-$dynamic("get$shape").HTMLAnchorElement = function() { return this.shape; };
-$dynamic("set$shape").HTMLAnchorElement = function(value) { return this.shape = value; };
-$dynamic("get$type").HTMLAnchorElement = function() { return this.type; };
-$dynamic("set$type").HTMLAnchorElement = function(value) { return this.type = value; };
-$dynamic("toString$0").HTMLAnchorElement = function() {
-  return this.toString();
-};
+var dom_HTMLAnchorElement = {};
+$dynamic("set$shape").HTMLAnchorElement = function(value) {
+  this.shape = value;
+}
+$dynamic("get$type").HTMLAnchorElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLAnchorElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLAppletElement **************
-$dynamic("get$height").HTMLAppletElement = function() { return this.height; };
-$dynamic("set$height").HTMLAppletElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLAppletElement = function() { return this.width; };
-$dynamic("set$width").HTMLAppletElement = function(value) { return this.width = value; };
+var dom_HTMLAppletElement = {};
+$dynamic("set$height").HTMLAppletElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLAppletElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLAreaElement **************
-$dynamic("get$shape").HTMLAreaElement = function() { return this.shape; };
-$dynamic("set$shape").HTMLAreaElement = function(value) { return this.shape = value; };
+var dom_HTMLAreaElement = {};
+$dynamic("set$shape").HTMLAreaElement = function(value) {
+  this.shape = value;
+}
 // ********** Code for dom_HTMLAudioElement **************
+var dom_HTMLAudioElement = {};
 // ********** Code for dom_HTMLBRElement **************
-$dynamic("get$clear").HTMLBRElement = function() { return this.clear; };
-$dynamic("set$clear").HTMLBRElement = function(value) { return this.clear = value; };
-$dynamic("clear$0").HTMLBRElement = function() {
-  return this.clear.call$0();
-};
-$dynamic("clear$1").HTMLBRElement = function($0) {
-  return this.clear.call$1($0);
-};
+var dom_HTMLBRElement = {};
 // ********** Code for dom_HTMLBaseElement **************
+var dom_HTMLBaseElement = {};
 // ********** Code for dom_HTMLBaseFontElement **************
+var dom_HTMLBaseFontElement = {};
 // ********** Code for dom_HTMLBodyElement **************
+var dom_HTMLBodyElement = {};
 // ********** Code for dom_HTMLButtonElement **************
-$dynamic("get$type").HTMLButtonElement = function() { return this.type; };
-$dynamic("set$type").HTMLButtonElement = function(value) { return this.type = value; };
+var dom_HTMLButtonElement = {};
+$dynamic("get$type").HTMLButtonElement = function() {
+  return this.type;
+}
 // ********** Code for dom_HTMLCanvasElement **************
-$dynamic("get$height").HTMLCanvasElement = function() { return this.height; };
-$dynamic("set$height").HTMLCanvasElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLCanvasElement = function() { return this.width; };
-$dynamic("set$width").HTMLCanvasElement = function(value) { return this.width = value; };
-$dynamic("getContext$1").HTMLCanvasElement = function($0) {
-  return this.getContext($0);
-};
+var dom_HTMLCanvasElement = {};
+$dynamic("set$height").HTMLCanvasElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLCanvasElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLCollection **************
-$dynamic("get$length").HTMLCollection = function() { return this.length; };
-$dynamic("set$length").HTMLCollection = function(value) { return this.length = value; };
+var dom_HTMLCollection = {};
+$dynamic("get$length").HTMLCollection = function() {
+  return this.length;
+}
 $dynamic("$setindex").HTMLCollection = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
 $dynamic("get$dartObjectLocalStorage").HTMLCollection = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").HTMLCollection = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_HTMLDListElement **************
+var dom_HTMLDListElement = {};
 // ********** Code for dom_HTMLDataListElement **************
+var dom_HTMLDataListElement = {};
 // ********** Code for dom_HTMLDetailsElement **************
+var dom_HTMLDetailsElement = {};
 // ********** Code for dom_HTMLDirectoryElement **************
+var dom_HTMLDirectoryElement = {};
 // ********** Code for dom_HTMLDivElement **************
+var dom_HTMLDivElement = {};
 // ********** Code for dom_HTMLDocument **************
-$dynamic("get$clear").HTMLDocument = function() {
-  return this.clear.bind(this);
-}
-$dynamic("clear$0").HTMLDocument = function() {
-  return this.clear();
-};
+var dom_HTMLDocument = {};
 // ********** Code for dom_HTMLElement **************
-$dynamic("get$id").HTMLElement = function() { return this.id; };
-$dynamic("set$id").HTMLElement = function(value) { return this.id = value; };
+var dom_HTMLElement = {};
 // ********** Code for dom_HTMLEmbedElement **************
-$dynamic("get$height").HTMLEmbedElement = function() { return this.height; };
-$dynamic("set$height").HTMLEmbedElement = function(value) { return this.height = value; };
-$dynamic("get$type").HTMLEmbedElement = function() { return this.type; };
-$dynamic("set$type").HTMLEmbedElement = function(value) { return this.type = value; };
-$dynamic("get$width").HTMLEmbedElement = function() { return this.width; };
-$dynamic("set$width").HTMLEmbedElement = function(value) { return this.width = value; };
+var dom_HTMLEmbedElement = {};
+$dynamic("set$height").HTMLEmbedElement = function(value) {
+  this.height = value;
+}
+$dynamic("get$type").HTMLEmbedElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLEmbedElement = function(value) {
+  this.type = value;
+}
+$dynamic("set$width").HTMLEmbedElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLFieldSetElement **************
+var dom_HTMLFieldSetElement = {};
 // ********** Code for dom_HTMLFontElement **************
+var dom_HTMLFontElement = {};
 // ********** Code for dom_HTMLFormElement **************
-$dynamic("get$length").HTMLFormElement = function() { return this.length; };
-$dynamic("set$length").HTMLFormElement = function(value) { return this.length = value; };
+var dom_HTMLFormElement = {};
+$dynamic("get$length").HTMLFormElement = function() {
+  return this.length;
+}
 // ********** Code for dom_HTMLFrameElement **************
-$dynamic("get$height").HTMLFrameElement = function() { return this.height; };
-$dynamic("set$height").HTMLFrameElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLFrameElement = function() { return this.width; };
-$dynamic("set$width").HTMLFrameElement = function(value) { return this.width = value; };
+var dom_HTMLFrameElement = {};
 // ********** Code for dom_HTMLFrameSetElement **************
+var dom_HTMLFrameSetElement = {};
 // ********** Code for dom_HTMLHRElement **************
-$dynamic("get$width").HTMLHRElement = function() { return this.width; };
-$dynamic("set$width").HTMLHRElement = function(value) { return this.width = value; };
+var dom_HTMLHRElement = {};
+$dynamic("set$width").HTMLHRElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLHeadElement **************
+var dom_HTMLHeadElement = {};
 // ********** Code for dom_HTMLHeadingElement **************
+var dom_HTMLHeadingElement = {};
 // ********** Code for dom_HTMLHtmlElement **************
+var dom_HTMLHtmlElement = {};
 // ********** Code for dom_HTMLIFrameElement **************
-$dynamic("get$height").HTMLIFrameElement = function() { return this.height; };
-$dynamic("set$height").HTMLIFrameElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLIFrameElement = function() { return this.width; };
-$dynamic("set$width").HTMLIFrameElement = function(value) { return this.width = value; };
+var dom_HTMLIFrameElement = {};
+$dynamic("set$height").HTMLIFrameElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLIFrameElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLImageElement **************
-$dynamic("get$height").HTMLImageElement = function() { return this.height; };
-$dynamic("set$height").HTMLImageElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLImageElement = function() { return this.width; };
-$dynamic("set$width").HTMLImageElement = function(value) { return this.width = value; };
-$dynamic("get$x").HTMLImageElement = function() { return this.x; };
-$dynamic("set$x").HTMLImageElement = function(value) { return this.x = value; };
-$dynamic("get$y").HTMLImageElement = function() { return this.y; };
-$dynamic("set$y").HTMLImageElement = function(value) { return this.y = value; };
+var dom_HTMLImageElement = {};
+$dynamic("set$height").HTMLImageElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLImageElement = function(value) {
+  this.width = value;
+}
+$dynamic("get$x").HTMLImageElement = function() {
+  return this.x;
+}
+$dynamic("get$y").HTMLImageElement = function() {
+  return this.y;
+}
 // ********** Code for dom_HTMLInputElement **************
-$dynamic("get$type").HTMLInputElement = function() { return this.type; };
-$dynamic("set$type").HTMLInputElement = function(value) { return this.type = value; };
+var dom_HTMLInputElement = {};
+$dynamic("get$type").HTMLInputElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLInputElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLIsIndexElement **************
+var dom_HTMLIsIndexElement = {};
 // ********** Code for dom_HTMLKeygenElement **************
-$dynamic("get$type").HTMLKeygenElement = function() { return this.type; };
-$dynamic("set$type").HTMLKeygenElement = function(value) { return this.type = value; };
+var dom_HTMLKeygenElement = {};
+$dynamic("get$type").HTMLKeygenElement = function() {
+  return this.type;
+}
 // ********** Code for dom_HTMLLIElement **************
-$dynamic("get$type").HTMLLIElement = function() { return this.type; };
-$dynamic("set$type").HTMLLIElement = function(value) { return this.type = value; };
+var dom_HTMLLIElement = {};
+$dynamic("get$type").HTMLLIElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLLIElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLLabelElement **************
+var dom_HTMLLabelElement = {};
 // ********** Code for dom_HTMLLegendElement **************
+var dom_HTMLLegendElement = {};
 // ********** Code for dom_HTMLLinkElement **************
-$dynamic("get$type").HTMLLinkElement = function() { return this.type; };
-$dynamic("set$type").HTMLLinkElement = function(value) { return this.type = value; };
+var dom_HTMLLinkElement = {};
+$dynamic("get$type").HTMLLinkElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLLinkElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLMapElement **************
+var dom_HTMLMapElement = {};
 // ********** Code for dom_HTMLMarqueeElement **************
-$dynamic("get$height").HTMLMarqueeElement = function() { return this.height; };
-$dynamic("set$height").HTMLMarqueeElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLMarqueeElement = function() { return this.width; };
-$dynamic("set$width").HTMLMarqueeElement = function(value) { return this.width = value; };
+var dom_HTMLMarqueeElement = {};
+$dynamic("set$height").HTMLMarqueeElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLMarqueeElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLMediaElement **************
+var dom_HTMLMediaElement = {};
 // ********** Code for dom_HTMLMenuElement **************
+var dom_HTMLMenuElement = {};
 // ********** Code for dom_HTMLMetaElement **************
+var dom_HTMLMetaElement = {};
 // ********** Code for dom_HTMLMeterElement **************
+var dom_HTMLMeterElement = {};
 // ********** Code for dom_HTMLModElement **************
+var dom_HTMLModElement = {};
 // ********** Code for dom_HTMLOListElement **************
-$dynamic("get$type").HTMLOListElement = function() { return this.type; };
-$dynamic("set$type").HTMLOListElement = function(value) { return this.type = value; };
+var dom_HTMLOListElement = {};
+$dynamic("get$type").HTMLOListElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLOListElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLObjectElement **************
-$dynamic("get$height").HTMLObjectElement = function() { return this.height; };
-$dynamic("set$height").HTMLObjectElement = function(value) { return this.height = value; };
-$dynamic("get$type").HTMLObjectElement = function() { return this.type; };
-$dynamic("set$type").HTMLObjectElement = function(value) { return this.type = value; };
-$dynamic("get$width").HTMLObjectElement = function() { return this.width; };
-$dynamic("set$width").HTMLObjectElement = function(value) { return this.width = value; };
+var dom_HTMLObjectElement = {};
+$dynamic("set$height").HTMLObjectElement = function(value) {
+  this.height = value;
+}
+$dynamic("get$type").HTMLObjectElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLObjectElement = function(value) {
+  this.type = value;
+}
+$dynamic("set$width").HTMLObjectElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLOptGroupElement **************
+var dom_HTMLOptGroupElement = {};
 // ********** Code for dom_HTMLOptionElement **************
+var dom_HTMLOptionElement = {};
 // ********** Code for dom_HTMLOptionsCollection **************
-$dynamic("get$length").HTMLOptionsCollection = function() { return this.length; };
-$dynamic("set$length").HTMLOptionsCollection = function(value) { return this.length = value; };
+var dom_HTMLOptionsCollection = {};
+$dynamic("get$length").HTMLOptionsCollection = function() {
+  return this.length;
+}
 // ********** Code for dom_HTMLOutputElement **************
-$dynamic("get$type").HTMLOutputElement = function() { return this.type; };
-$dynamic("set$type").HTMLOutputElement = function(value) { return this.type = value; };
+var dom_HTMLOutputElement = {};
+$dynamic("get$type").HTMLOutputElement = function() {
+  return this.type;
+}
 // ********** Code for dom_HTMLParagraphElement **************
+var dom_HTMLParagraphElement = {};
 // ********** Code for dom_HTMLParamElement **************
-$dynamic("get$type").HTMLParamElement = function() { return this.type; };
-$dynamic("set$type").HTMLParamElement = function(value) { return this.type = value; };
+var dom_HTMLParamElement = {};
+$dynamic("get$type").HTMLParamElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLParamElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLPreElement **************
-$dynamic("get$width").HTMLPreElement = function() { return this.width; };
-$dynamic("set$width").HTMLPreElement = function(value) { return this.width = value; };
+var dom_HTMLPreElement = {};
+$dynamic("set$width").HTMLPreElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLProgressElement **************
-$dynamic("get$position").HTMLProgressElement = function() { return this.position; };
-$dynamic("set$position").HTMLProgressElement = function(value) { return this.position = value; };
+var dom_HTMLProgressElement = {};
+$dynamic("get$position").HTMLProgressElement = function() {
+  return this.position;
+}
 // ********** Code for dom_HTMLPropertiesCollection **************
-$dynamic("get$length").HTMLPropertiesCollection = function() { return this.length; };
-$dynamic("set$length").HTMLPropertiesCollection = function(value) { return this.length = value; };
+var dom_HTMLPropertiesCollection = {};
+$dynamic("get$length").HTMLPropertiesCollection = function() {
+  return this.length;
+}
 // ********** Code for dom_HTMLQuoteElement **************
+var dom_HTMLQuoteElement = {};
 // ********** Code for dom_HTMLScriptElement **************
-$dynamic("get$type").HTMLScriptElement = function() { return this.type; };
-$dynamic("set$type").HTMLScriptElement = function(value) { return this.type = value; };
+var dom_HTMLScriptElement = {};
+$dynamic("get$type").HTMLScriptElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLScriptElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLSelectElement **************
-$dynamic("get$length").HTMLSelectElement = function() { return this.length; };
-$dynamic("set$length").HTMLSelectElement = function(value) { return this.length = value; };
-$dynamic("get$type").HTMLSelectElement = function() { return this.type; };
-$dynamic("set$type").HTMLSelectElement = function(value) { return this.type = value; };
+var dom_HTMLSelectElement = {};
+$dynamic("get$length").HTMLSelectElement = function() {
+  return this.length;
+}
+$dynamic("get$type").HTMLSelectElement = function() {
+  return this.type;
+}
 // ********** Code for dom_HTMLSourceElement **************
-$dynamic("get$type").HTMLSourceElement = function() { return this.type; };
-$dynamic("set$type").HTMLSourceElement = function(value) { return this.type = value; };
+var dom_HTMLSourceElement = {};
+$dynamic("get$type").HTMLSourceElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLSourceElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLSpanElement **************
+var dom_HTMLSpanElement = {};
 // ********** Code for dom_HTMLStyleElement **************
-$dynamic("get$type").HTMLStyleElement = function() { return this.type; };
-$dynamic("set$type").HTMLStyleElement = function(value) { return this.type = value; };
+var dom_HTMLStyleElement = {};
+$dynamic("get$type").HTMLStyleElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLStyleElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLTableCaptionElement **************
+var dom_HTMLTableCaptionElement = {};
 // ********** Code for dom_HTMLTableCellElement **************
-$dynamic("get$height").HTMLTableCellElement = function() { return this.height; };
-$dynamic("set$height").HTMLTableCellElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLTableCellElement = function() { return this.width; };
-$dynamic("set$width").HTMLTableCellElement = function(value) { return this.width = value; };
+var dom_HTMLTableCellElement = {};
+$dynamic("set$height").HTMLTableCellElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLTableCellElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLTableColElement **************
-$dynamic("get$width").HTMLTableColElement = function() { return this.width; };
-$dynamic("set$width").HTMLTableColElement = function(value) { return this.width = value; };
+var dom_HTMLTableColElement = {};
+$dynamic("set$width").HTMLTableColElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLTableElement **************
-$dynamic("get$width").HTMLTableElement = function() { return this.width; };
-$dynamic("set$width").HTMLTableElement = function(value) { return this.width = value; };
+var dom_HTMLTableElement = {};
+$dynamic("set$width").HTMLTableElement = function(value) {
+  this.width = value;
+}
 // ********** Code for dom_HTMLTableRowElement **************
+var dom_HTMLTableRowElement = {};
 // ********** Code for dom_HTMLTableSectionElement **************
+var dom_HTMLTableSectionElement = {};
 // ********** Code for dom_HTMLTextAreaElement **************
-$dynamic("get$type").HTMLTextAreaElement = function() { return this.type; };
-$dynamic("set$type").HTMLTextAreaElement = function(value) { return this.type = value; };
+var dom_HTMLTextAreaElement = {};
+$dynamic("get$type").HTMLTextAreaElement = function() {
+  return this.type;
+}
 // ********** Code for dom_HTMLTitleElement **************
+var dom_HTMLTitleElement = {};
 // ********** Code for dom_HTMLTrackElement **************
+var dom_HTMLTrackElement = {};
 // ********** Code for dom_HTMLUListElement **************
-$dynamic("get$type").HTMLUListElement = function() { return this.type; };
-$dynamic("set$type").HTMLUListElement = function(value) { return this.type = value; };
+var dom_HTMLUListElement = {};
+$dynamic("get$type").HTMLUListElement = function() {
+  return this.type;
+}
+$dynamic("set$type").HTMLUListElement = function(value) {
+  this.type = value;
+}
 // ********** Code for dom_HTMLUnknownElement **************
+var dom_HTMLUnknownElement = {};
 // ********** Code for dom_HTMLVideoElement **************
-$dynamic("get$height").HTMLVideoElement = function() { return this.height; };
-$dynamic("set$height").HTMLVideoElement = function(value) { return this.height = value; };
-$dynamic("get$width").HTMLVideoElement = function() { return this.width; };
-$dynamic("set$width").HTMLVideoElement = function(value) { return this.width = value; };
+var dom_HTMLVideoElement = {};
+$dynamic("set$height").HTMLVideoElement = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").HTMLVideoElement = function(value) {
+  this.width = value;
+}
 // ********** Code for HashChangeEvent **************
 // ********** Code for HighPass2FilterNode **************
 // ********** Code for History **************
-$dynamic("get$length").History = function() { return this.length; };
-$dynamic("set$length").History = function(value) { return this.length = value; };
+$dynamic("get$length").History = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").History = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").History = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for IDBAny **************
@@ -1539,9 +1647,6 @@ $dynamic("set$dartObjectLocalStorage").IDBDatabaseError = function(value) { retu
 // ********** Code for IDBDatabaseException **************
 $dynamic("get$dartObjectLocalStorage").IDBDatabaseException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").IDBDatabaseException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").IDBDatabaseException = function() {
-  return this.toString();
-};
 // ********** Code for IDBFactory **************
 $dynamic("get$dartObjectLocalStorage").IDBFactory = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").IDBFactory = function(value) { return this.dartObjectLocalStorage = value; };
@@ -1555,16 +1660,10 @@ $dynamic("set$dartObjectLocalStorage").IDBKey = function(value) { return this.da
 $dynamic("get$dartObjectLocalStorage").IDBKeyRange = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").IDBKeyRange = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for IDBObjectStore **************
-$dynamic("get$clear").IDBObjectStore = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").IDBObjectStore = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").IDBObjectStore = function(value) { return this.dartObjectLocalStorage = value; };
 $dynamic("add$1").IDBObjectStore = function($0) {
   return this.add($0);
-};
-$dynamic("clear$0").IDBObjectStore = function() {
-  return this.clear();
 };
 // ********** Code for IDBRequest **************
 $dynamic("get$dartObjectLocalStorage").IDBRequest = function() { return this.dartObjectLocalStorage; };
@@ -1575,45 +1674,46 @@ $dynamic("set$dartObjectLocalStorage").IDBTransaction = function(value) { return
 // ********** Code for IDBVersionChangeEvent **************
 // ********** Code for IDBVersionChangeRequest **************
 // ********** Code for ImageData **************
-$dynamic("get$height").ImageData = function() { return this.height; };
-$dynamic("set$height").ImageData = function(value) { return this.height = value; };
-$dynamic("get$width").ImageData = function() { return this.width; };
-$dynamic("set$width").ImageData = function(value) { return this.width = value; };
 $dynamic("get$dartObjectLocalStorage").ImageData = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ImageData = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_InjectedScriptHost **************
+var dom_InjectedScriptHost = {};
 $dynamic("get$type").InjectedScriptHost = function() {
   return this.type.bind(this);
 }
 $dynamic("get$dartObjectLocalStorage").InjectedScriptHost = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").InjectedScriptHost = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_InspectorFrontendHost **************
+var dom_InspectorFrontendHost = {};
 $dynamic("get$dartObjectLocalStorage").InspectorFrontendHost = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").InspectorFrontendHost = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Int16Array **************
-$dynamic("get$length").Int16Array = function() { return this.length; };
-$dynamic("set$length").Int16Array = function(value) { return this.length = value; };
+$dynamic("get$length").Int16Array = function() {
+  return this.length;
+}
 // ********** Code for Int32Array **************
-$dynamic("get$length").Int32Array = function() { return this.length; };
-$dynamic("set$length").Int32Array = function(value) { return this.length = value; };
+$dynamic("get$length").Int32Array = function() {
+  return this.length;
+}
 // ********** Code for Int8Array **************
-$dynamic("get$length").Int8Array = function() { return this.length; };
-$dynamic("set$length").Int8Array = function(value) { return this.length = value; };
+$dynamic("get$length").Int8Array = function() {
+  return this.length;
+}
 // ********** Code for JavaScriptAudioNode **************
 // ********** Code for dom_JavaScriptCallFrame **************
-$dynamic("get$type").JavaScriptCallFrame = function() { return this.type; };
-$dynamic("set$type").JavaScriptCallFrame = function(value) { return this.type = value; };
+var dom_JavaScriptCallFrame = {};
+$dynamic("get$type").JavaScriptCallFrame = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").JavaScriptCallFrame = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").JavaScriptCallFrame = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for KeyboardEvent **************
 // ********** Code for Location **************
 $dynamic("get$dartObjectLocalStorage").Location = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Location = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").Location = function() {
-  return this.toString();
-};
 // ********** Code for LowPass2FilterNode **************
 // ********** Code for dom_MediaController **************
+var dom_MediaController = {};
 $dynamic("get$dartObjectLocalStorage").MediaController = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MediaController = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for MediaElementAudioSourceNode **************
@@ -1621,8 +1721,9 @@ $dynamic("set$dartObjectLocalStorage").MediaController = function(value) { retur
 $dynamic("get$dartObjectLocalStorage").MediaError = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MediaError = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for MediaList **************
-$dynamic("get$length").MediaList = function() { return this.length; };
-$dynamic("set$length").MediaList = function(value) { return this.length = value; };
+$dynamic("get$length").MediaList = function() {
+  return this.length;
+}
 $dynamic("$setindex").MediaList = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
@@ -1635,6 +1736,7 @@ $dynamic("set$dartObjectLocalStorage").MediaQueryList = function(value) { return
 $dynamic("get$dartObjectLocalStorage").MediaQueryListListener = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MediaQueryListListener = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_MemoryInfo **************
+var dom_MemoryInfo = {};
 $dynamic("get$dartObjectLocalStorage").MemoryInfo = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MemoryInfo = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for MessageChannel **************
@@ -1648,22 +1750,27 @@ $dynamic("set$dartObjectLocalStorage").MessagePort = function(value) { return th
 $dynamic("get$dartObjectLocalStorage").Metadata = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Metadata = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for MouseEvent **************
-$dynamic("get$x").MouseEvent = function() { return this.x; };
-$dynamic("set$x").MouseEvent = function(value) { return this.x = value; };
-$dynamic("get$y").MouseEvent = function() { return this.y; };
-$dynamic("set$y").MouseEvent = function(value) { return this.y = value; };
+$dynamic("get$x").MouseEvent = function() {
+  return this.x;
+}
+$dynamic("get$y").MouseEvent = function() {
+  return this.y;
+}
 // ********** Code for MutationCallback **************
 $dynamic("get$dartObjectLocalStorage").MutationCallback = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MutationCallback = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for MutationEvent **************
 // ********** Code for MutationRecord **************
-$dynamic("get$type").MutationRecord = function() { return this.type; };
-$dynamic("set$type").MutationRecord = function(value) { return this.type = value; };
+$dynamic("get$type").MutationRecord = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").MutationRecord = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").MutationRecord = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_NamedNodeMap **************
-$dynamic("get$length").NamedNodeMap = function() { return this.length; };
-$dynamic("set$length").NamedNodeMap = function(value) { return this.length = value; };
+var dom_NamedNodeMap = {};
+$dynamic("get$length").NamedNodeMap = function() {
+  return this.length;
+}
 $dynamic("$setindex").NamedNodeMap = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
@@ -1673,38 +1780,33 @@ $dynamic("set$dartObjectLocalStorage").NamedNodeMap = function(value) { return t
 $dynamic("get$dartObjectLocalStorage").Navigator = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Navigator = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Node **************
-$dynamic("get$childNodes").Node = function() { return this.childNodes; };
-$dynamic("set$childNodes").Node = function(value) { return this.childNodes = value; };
-$dynamic("get$parentNode").Node = function() { return this.parentNode; };
-$dynamic("set$parentNode").Node = function(value) { return this.parentNode = value; };
-$dynamic("get$textContent").Node = function() { return this.textContent; };
-$dynamic("set$textContent").Node = function(value) { return this.textContent = value; };
+$dynamic("get$childNodes").Node = function() {
+  return this.childNodes;
+}
+$dynamic("get$parentNode").Node = function() {
+  return this.parentNode;
+}
 $dynamic("get$dartObjectLocalStorage").Node = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Node = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("appendChild$1").Node = function($0) {
-  return this.appendChild($0);
-};
-$dynamic("hasChildNodes$0").Node = function() {
-  return this.hasChildNodes();
-};
-$dynamic("replaceChild$2").Node = function($0, $1) {
-  return this.replaceChild($0, $1);
-};
 // ********** Code for dom_NodeFilter **************
+var dom_NodeFilter = {};
 $dynamic("get$dartObjectLocalStorage").NodeFilter = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").NodeFilter = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_NodeIterator **************
+var dom_NodeIterator = {};
 $dynamic("get$dartObjectLocalStorage").NodeIterator = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").NodeIterator = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for NodeList **************
-$dynamic("get$length").NodeList = function() { return this.length; };
-$dynamic("set$length").NodeList = function(value) { return this.length = value; };
+$dynamic("get$length").NodeList = function() {
+  return this.length;
+}
 $dynamic("$setindex").NodeList = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
 $dynamic("get$dartObjectLocalStorage").NodeList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").NodeList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_NodeSelector **************
+var dom_NodeSelector = {};
 $dynamic("get$dartObjectLocalStorage").NodeSelector = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").NodeSelector = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Notation **************
@@ -1727,23 +1829,25 @@ $dynamic("set$dartObjectLocalStorage").OESVertexArrayObject = function(value) { 
 // ********** Code for OperationNotAllowedException **************
 $dynamic("get$dartObjectLocalStorage").OperationNotAllowedException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").OperationNotAllowedException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").OperationNotAllowedException = function() {
-  return this.toString();
-};
 // ********** Code for OverflowEvent **************
 // ********** Code for PageTransitionEvent **************
 // ********** Code for dom_Performance **************
+var dom_Performance = {};
 $dynamic("get$dartObjectLocalStorage").Performance = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Performance = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_PerformanceNavigation **************
-$dynamic("get$type").PerformanceNavigation = function() { return this.type; };
-$dynamic("set$type").PerformanceNavigation = function(value) { return this.type = value; };
+var dom_PerformanceNavigation = {};
+$dynamic("get$type").PerformanceNavigation = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").PerformanceNavigation = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").PerformanceNavigation = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_PerformanceTiming **************
+var dom_PerformanceTiming = {};
 $dynamic("get$dartObjectLocalStorage").PerformanceTiming = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").PerformanceTiming = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_PointerLock **************
+var dom_PointerLock = {};
 $dynamic("get$dartObjectLocalStorage").PointerLock = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").PointerLock = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for PopStateEvent **************
@@ -1758,37 +1862,38 @@ $dynamic("set$dartObjectLocalStorage").RGBColor = function(value) { return this.
 // ********** Code for Range **************
 $dynamic("get$dartObjectLocalStorage").Range = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Range = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").Range = function() {
-  return this.toString();
-};
 // ********** Code for RangeException **************
 $dynamic("get$dartObjectLocalStorage").RangeException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").RangeException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").RangeException = function() {
-  return this.toString();
-};
 // ********** Code for RealtimeAnalyserNode **************
 // ********** Code for Rect **************
 $dynamic("get$dartObjectLocalStorage").Rect = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Rect = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLError **************
+var dom_SQLError = {};
 $dynamic("get$dartObjectLocalStorage").SQLError = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLError = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLException **************
+var dom_SQLException = {};
 $dynamic("get$dartObjectLocalStorage").SQLException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLException = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLResultSet **************
+var dom_SQLResultSet = {};
 $dynamic("get$dartObjectLocalStorage").SQLResultSet = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLResultSet = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLResultSetRowList **************
-$dynamic("get$length").SQLResultSetRowList = function() { return this.length; };
-$dynamic("set$length").SQLResultSetRowList = function(value) { return this.length = value; };
+var dom_SQLResultSetRowList = {};
+$dynamic("get$length").SQLResultSetRowList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").SQLResultSetRowList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLResultSetRowList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLTransaction **************
+var dom_SQLTransaction = {};
 $dynamic("get$dartObjectLocalStorage").SQLTransaction = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLTransaction = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_SQLTransactionSync **************
+var dom_SQLTransactionSync = {};
 $dynamic("get$dartObjectLocalStorage").SQLTransactionSync = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SQLTransactionSync = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGAElement **************
@@ -1843,232 +1948,206 @@ $dynamic("set$dartObjectLocalStorage").SVGAnimatedTransformList = function(value
 // ********** Code for SVGClipPathElement **************
 // ********** Code for SVGColor **************
 // ********** Code for SVGComponentTransferFunctionElement **************
-$dynamic("get$type").SVGComponentTransferFunctionElement = function() { return this.type; };
-$dynamic("set$type").SVGComponentTransferFunctionElement = function(value) { return this.type = value; };
+$dynamic("get$type").SVGComponentTransferFunctionElement = function() {
+  return this.type;
+}
 // ********** Code for SVGCursorElement **************
-$dynamic("get$x").SVGCursorElement = function() { return this.x; };
-$dynamic("set$x").SVGCursorElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGCursorElement = function() { return this.y; };
-$dynamic("set$y").SVGCursorElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGCursorElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGCursorElement = function() {
+  return this.y;
+}
 // ********** Code for SVGDefsElement **************
 // ********** Code for SVGDescElement **************
 // ********** Code for SVGDocument **************
+$dynamic("get$rootElement").SVGDocument = function() {
+  return this.rootElement;
+}
 // ********** Code for SVGElement **************
-$dynamic("get$id").SVGElement = function() { return this.id; };
-$dynamic("set$id").SVGElement = function(value) { return this.id = value; };
 // ********** Code for SVGElementInstance **************
-$dynamic("get$childNodes").SVGElementInstance = function() { return this.childNodes; };
-$dynamic("set$childNodes").SVGElementInstance = function(value) { return this.childNodes = value; };
-$dynamic("get$parentNode").SVGElementInstance = function() { return this.parentNode; };
-$dynamic("set$parentNode").SVGElementInstance = function(value) { return this.parentNode = value; };
+$dynamic("get$childNodes").SVGElementInstance = function() {
+  return this.childNodes;
+}
+$dynamic("get$parentNode").SVGElementInstance = function() {
+  return this.parentNode;
+}
 $dynamic("get$dartObjectLocalStorage").SVGElementInstance = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGElementInstance = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGElementInstanceList **************
-$dynamic("get$length").SVGElementInstanceList = function() { return this.length; };
-$dynamic("set$length").SVGElementInstanceList = function(value) { return this.length = value; };
+$dynamic("get$length").SVGElementInstanceList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").SVGElementInstanceList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGElementInstanceList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGEllipseElement **************
 // ********** Code for SVGException **************
 $dynamic("get$dartObjectLocalStorage").SVGException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").SVGException = function() {
-  return this.toString();
-};
 // ********** Code for SVGExternalResourcesRequired **************
 $dynamic("get$dartObjectLocalStorage").SVGExternalResourcesRequired = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGExternalResourcesRequired = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGFEBlendElement **************
-$dynamic("get$height").SVGFEBlendElement = function() { return this.height; };
-$dynamic("set$height").SVGFEBlendElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEBlendElement = function() { return this.width; };
-$dynamic("set$width").SVGFEBlendElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEBlendElement = function() { return this.x; };
-$dynamic("set$x").SVGFEBlendElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEBlendElement = function() { return this.y; };
-$dynamic("set$y").SVGFEBlendElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEBlendElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEBlendElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEColorMatrixElement **************
-$dynamic("get$type").SVGFEColorMatrixElement = function() { return this.type; };
-$dynamic("set$type").SVGFEColorMatrixElement = function(value) { return this.type = value; };
-$dynamic("get$height").SVGFEColorMatrixElement = function() { return this.height; };
-$dynamic("set$height").SVGFEColorMatrixElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEColorMatrixElement = function() { return this.width; };
-$dynamic("set$width").SVGFEColorMatrixElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEColorMatrixElement = function() { return this.x; };
-$dynamic("set$x").SVGFEColorMatrixElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEColorMatrixElement = function() { return this.y; };
-$dynamic("set$y").SVGFEColorMatrixElement = function(value) { return this.y = value; };
+$dynamic("get$type").SVGFEColorMatrixElement = function() {
+  return this.type;
+}
+$dynamic("get$x").SVGFEColorMatrixElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEColorMatrixElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEComponentTransferElement **************
-$dynamic("get$height").SVGFEComponentTransferElement = function() { return this.height; };
-$dynamic("set$height").SVGFEComponentTransferElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEComponentTransferElement = function() { return this.width; };
-$dynamic("set$width").SVGFEComponentTransferElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEComponentTransferElement = function() { return this.x; };
-$dynamic("set$x").SVGFEComponentTransferElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEComponentTransferElement = function() { return this.y; };
-$dynamic("set$y").SVGFEComponentTransferElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEComponentTransferElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEComponentTransferElement = function() {
+  return this.y;
+}
 // ********** Code for dom_SVGFECompositeElement **************
-$dynamic("get$height").SVGFECompositeElement = function() { return this.height; };
-$dynamic("set$height").SVGFECompositeElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFECompositeElement = function() { return this.width; };
-$dynamic("set$width").SVGFECompositeElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFECompositeElement = function() { return this.x; };
-$dynamic("set$x").SVGFECompositeElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFECompositeElement = function() { return this.y; };
-$dynamic("set$y").SVGFECompositeElement = function(value) { return this.y = value; };
+var dom_SVGFECompositeElement = {};
+$dynamic("get$x").SVGFECompositeElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFECompositeElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEConvolveMatrixElement **************
-$dynamic("get$height").SVGFEConvolveMatrixElement = function() { return this.height; };
-$dynamic("set$height").SVGFEConvolveMatrixElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEConvolveMatrixElement = function() { return this.width; };
-$dynamic("set$width").SVGFEConvolveMatrixElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEConvolveMatrixElement = function() { return this.x; };
-$dynamic("set$x").SVGFEConvolveMatrixElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEConvolveMatrixElement = function() { return this.y; };
-$dynamic("set$y").SVGFEConvolveMatrixElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEConvolveMatrixElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEConvolveMatrixElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEDiffuseLightingElement **************
-$dynamic("get$height").SVGFEDiffuseLightingElement = function() { return this.height; };
-$dynamic("set$height").SVGFEDiffuseLightingElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEDiffuseLightingElement = function() { return this.width; };
-$dynamic("set$width").SVGFEDiffuseLightingElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEDiffuseLightingElement = function() { return this.x; };
-$dynamic("set$x").SVGFEDiffuseLightingElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEDiffuseLightingElement = function() { return this.y; };
-$dynamic("set$y").SVGFEDiffuseLightingElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEDiffuseLightingElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEDiffuseLightingElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEDisplacementMapElement **************
-$dynamic("get$height").SVGFEDisplacementMapElement = function() { return this.height; };
-$dynamic("set$height").SVGFEDisplacementMapElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEDisplacementMapElement = function() { return this.width; };
-$dynamic("set$width").SVGFEDisplacementMapElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEDisplacementMapElement = function() { return this.x; };
-$dynamic("set$x").SVGFEDisplacementMapElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEDisplacementMapElement = function() { return this.y; };
-$dynamic("set$y").SVGFEDisplacementMapElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEDisplacementMapElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEDisplacementMapElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEDistantLightElement **************
 // ********** Code for SVGFEDropShadowElement **************
-$dynamic("get$height").SVGFEDropShadowElement = function() { return this.height; };
-$dynamic("set$height").SVGFEDropShadowElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEDropShadowElement = function() { return this.width; };
-$dynamic("set$width").SVGFEDropShadowElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEDropShadowElement = function() { return this.x; };
-$dynamic("set$x").SVGFEDropShadowElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEDropShadowElement = function() { return this.y; };
-$dynamic("set$y").SVGFEDropShadowElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEDropShadowElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEDropShadowElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEFloodElement **************
-$dynamic("get$height").SVGFEFloodElement = function() { return this.height; };
-$dynamic("set$height").SVGFEFloodElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEFloodElement = function() { return this.width; };
-$dynamic("set$width").SVGFEFloodElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEFloodElement = function() { return this.x; };
-$dynamic("set$x").SVGFEFloodElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEFloodElement = function() { return this.y; };
-$dynamic("set$y").SVGFEFloodElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEFloodElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEFloodElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEFuncAElement **************
 // ********** Code for SVGFEFuncBElement **************
 // ********** Code for SVGFEFuncGElement **************
 // ********** Code for SVGFEFuncRElement **************
 // ********** Code for SVGFEGaussianBlurElement **************
-$dynamic("get$height").SVGFEGaussianBlurElement = function() { return this.height; };
-$dynamic("set$height").SVGFEGaussianBlurElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEGaussianBlurElement = function() { return this.width; };
-$dynamic("set$width").SVGFEGaussianBlurElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEGaussianBlurElement = function() { return this.x; };
-$dynamic("set$x").SVGFEGaussianBlurElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEGaussianBlurElement = function() { return this.y; };
-$dynamic("set$y").SVGFEGaussianBlurElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEGaussianBlurElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEGaussianBlurElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEImageElement **************
-$dynamic("get$height").SVGFEImageElement = function() { return this.height; };
-$dynamic("set$height").SVGFEImageElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEImageElement = function() { return this.width; };
-$dynamic("set$width").SVGFEImageElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEImageElement = function() { return this.x; };
-$dynamic("set$x").SVGFEImageElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEImageElement = function() { return this.y; };
-$dynamic("set$y").SVGFEImageElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEImageElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEImageElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEMergeElement **************
-$dynamic("get$height").SVGFEMergeElement = function() { return this.height; };
-$dynamic("set$height").SVGFEMergeElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEMergeElement = function() { return this.width; };
-$dynamic("set$width").SVGFEMergeElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEMergeElement = function() { return this.x; };
-$dynamic("set$x").SVGFEMergeElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEMergeElement = function() { return this.y; };
-$dynamic("set$y").SVGFEMergeElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEMergeElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEMergeElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEMergeNodeElement **************
 // ********** Code for dom_SVGFEMorphologyElement **************
-$dynamic("get$height").SVGFEMorphologyElement = function() { return this.height; };
-$dynamic("set$height").SVGFEMorphologyElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEMorphologyElement = function() { return this.width; };
-$dynamic("set$width").SVGFEMorphologyElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEMorphologyElement = function() { return this.x; };
-$dynamic("set$x").SVGFEMorphologyElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEMorphologyElement = function() { return this.y; };
-$dynamic("set$y").SVGFEMorphologyElement = function(value) { return this.y = value; };
+var dom_SVGFEMorphologyElement = {};
+$dynamic("get$x").SVGFEMorphologyElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEMorphologyElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEOffsetElement **************
-$dynamic("get$height").SVGFEOffsetElement = function() { return this.height; };
-$dynamic("set$height").SVGFEOffsetElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFEOffsetElement = function() { return this.width; };
-$dynamic("set$width").SVGFEOffsetElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFEOffsetElement = function() { return this.x; };
-$dynamic("set$x").SVGFEOffsetElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEOffsetElement = function() { return this.y; };
-$dynamic("set$y").SVGFEOffsetElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEOffsetElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEOffsetElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFEPointLightElement **************
-$dynamic("get$x").SVGFEPointLightElement = function() { return this.x; };
-$dynamic("set$x").SVGFEPointLightElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFEPointLightElement = function() { return this.y; };
-$dynamic("set$y").SVGFEPointLightElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFEPointLightElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFEPointLightElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFESpecularLightingElement **************
-$dynamic("get$height").SVGFESpecularLightingElement = function() { return this.height; };
-$dynamic("set$height").SVGFESpecularLightingElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFESpecularLightingElement = function() { return this.width; };
-$dynamic("set$width").SVGFESpecularLightingElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFESpecularLightingElement = function() { return this.x; };
-$dynamic("set$x").SVGFESpecularLightingElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFESpecularLightingElement = function() { return this.y; };
-$dynamic("set$y").SVGFESpecularLightingElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFESpecularLightingElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFESpecularLightingElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFESpotLightElement **************
-$dynamic("get$x").SVGFESpotLightElement = function() { return this.x; };
-$dynamic("set$x").SVGFESpotLightElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFESpotLightElement = function() { return this.y; };
-$dynamic("set$y").SVGFESpotLightElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFESpotLightElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFESpotLightElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFETileElement **************
-$dynamic("get$height").SVGFETileElement = function() { return this.height; };
-$dynamic("set$height").SVGFETileElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFETileElement = function() { return this.width; };
-$dynamic("set$width").SVGFETileElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFETileElement = function() { return this.x; };
-$dynamic("set$x").SVGFETileElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFETileElement = function() { return this.y; };
-$dynamic("set$y").SVGFETileElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFETileElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFETileElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFETurbulenceElement **************
-$dynamic("get$type").SVGFETurbulenceElement = function() { return this.type; };
-$dynamic("set$type").SVGFETurbulenceElement = function(value) { return this.type = value; };
-$dynamic("get$height").SVGFETurbulenceElement = function() { return this.height; };
-$dynamic("set$height").SVGFETurbulenceElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFETurbulenceElement = function() { return this.width; };
-$dynamic("set$width").SVGFETurbulenceElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFETurbulenceElement = function() { return this.x; };
-$dynamic("set$x").SVGFETurbulenceElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFETurbulenceElement = function() { return this.y; };
-$dynamic("set$y").SVGFETurbulenceElement = function(value) { return this.y = value; };
+$dynamic("get$type").SVGFETurbulenceElement = function() {
+  return this.type;
+}
+$dynamic("get$x").SVGFETurbulenceElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFETurbulenceElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFilterElement **************
-$dynamic("get$height").SVGFilterElement = function() { return this.height; };
-$dynamic("set$height").SVGFilterElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFilterElement = function() { return this.width; };
-$dynamic("set$width").SVGFilterElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFilterElement = function() { return this.x; };
-$dynamic("set$x").SVGFilterElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFilterElement = function() { return this.y; };
-$dynamic("set$y").SVGFilterElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFilterElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFilterElement = function() {
+  return this.y;
+}
 // ********** Code for SVGFilterPrimitiveStandardAttributes **************
-$dynamic("get$height").SVGFilterPrimitiveStandardAttributes = function() { return this.height; };
-$dynamic("set$height").SVGFilterPrimitiveStandardAttributes = function(value) { return this.height = value; };
-$dynamic("get$width").SVGFilterPrimitiveStandardAttributes = function() { return this.width; };
-$dynamic("set$width").SVGFilterPrimitiveStandardAttributes = function(value) { return this.width = value; };
-$dynamic("get$x").SVGFilterPrimitiveStandardAttributes = function() { return this.x; };
-$dynamic("set$x").SVGFilterPrimitiveStandardAttributes = function(value) { return this.x = value; };
-$dynamic("get$y").SVGFilterPrimitiveStandardAttributes = function() { return this.y; };
-$dynamic("set$y").SVGFilterPrimitiveStandardAttributes = function(value) { return this.y = value; };
+$dynamic("get$x").SVGFilterPrimitiveStandardAttributes = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGFilterPrimitiveStandardAttributes = function() {
+  return this.y;
+}
 // ********** Code for SVGFitToViewBox **************
 $dynamic("get$dartObjectLocalStorage").SVGFitToViewBox = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGFitToViewBox = function(value) { return this.dartObjectLocalStorage = value; };
@@ -2079,32 +2158,30 @@ $dynamic("set$dartObjectLocalStorage").SVGFitToViewBox = function(value) { retur
 // ********** Code for SVGFontFaceSrcElement **************
 // ********** Code for SVGFontFaceUriElement **************
 // ********** Code for SVGForeignObjectElement **************
-$dynamic("get$height").SVGForeignObjectElement = function() { return this.height; };
-$dynamic("set$height").SVGForeignObjectElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGForeignObjectElement = function() { return this.width; };
-$dynamic("set$width").SVGForeignObjectElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGForeignObjectElement = function() { return this.x; };
-$dynamic("set$x").SVGForeignObjectElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGForeignObjectElement = function() { return this.y; };
-$dynamic("set$y").SVGForeignObjectElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGForeignObjectElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGForeignObjectElement = function() {
+  return this.y;
+}
 // ********** Code for SVGGElement **************
 // ********** Code for SVGGlyphElement **************
 // ********** Code for SVGGlyphRefElement **************
-$dynamic("get$x").SVGGlyphRefElement = function() { return this.x; };
-$dynamic("set$x").SVGGlyphRefElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGGlyphRefElement = function() { return this.y; };
-$dynamic("set$y").SVGGlyphRefElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGGlyphRefElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGGlyphRefElement = function() {
+  return this.y;
+}
 // ********** Code for SVGGradientElement **************
 // ********** Code for SVGHKernElement **************
 // ********** Code for SVGImageElement **************
-$dynamic("get$height").SVGImageElement = function() { return this.height; };
-$dynamic("set$height").SVGImageElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGImageElement = function() { return this.width; };
-$dynamic("set$width").SVGImageElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGImageElement = function() { return this.x; };
-$dynamic("set$x").SVGImageElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGImageElement = function() { return this.y; };
-$dynamic("set$y").SVGImageElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGImageElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGImageElement = function() {
+  return this.y;
+}
 // ********** Code for SVGLangSpace **************
 $dynamic("get$dartObjectLocalStorage").SVGLangSpace = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGLangSpace = function(value) { return this.dartObjectLocalStorage = value; };
@@ -2112,14 +2189,8 @@ $dynamic("set$dartObjectLocalStorage").SVGLangSpace = function(value) { return t
 $dynamic("get$dartObjectLocalStorage").SVGLength = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGLength = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGLengthList **************
-$dynamic("get$clear").SVGLengthList = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").SVGLengthList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGLengthList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGLengthList = function() {
-  return this.clear();
-};
 // ********** Code for SVGLineElement **************
 // ********** Code for SVGLinearGradientElement **************
 // ********** Code for SVGLocatable **************
@@ -2128,14 +2199,12 @@ $dynamic("set$dartObjectLocalStorage").SVGLocatable = function(value) { return t
 // ********** Code for SVGMPathElement **************
 // ********** Code for SVGMarkerElement **************
 // ********** Code for SVGMaskElement **************
-$dynamic("get$height").SVGMaskElement = function() { return this.height; };
-$dynamic("set$height").SVGMaskElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGMaskElement = function() { return this.width; };
-$dynamic("set$width").SVGMaskElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGMaskElement = function() { return this.x; };
-$dynamic("set$x").SVGMaskElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGMaskElement = function() { return this.y; };
-$dynamic("set$y").SVGMaskElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGMaskElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGMaskElement = function() {
+  return this.y;
+}
 // ********** Code for SVGMatrix **************
 $dynamic("get$dartObjectLocalStorage").SVGMatrix = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGMatrix = function(value) { return this.dartObjectLocalStorage = value; };
@@ -2145,140 +2214,156 @@ $dynamic("set$dartObjectLocalStorage").SVGMatrix = function(value) { return this
 $dynamic("get$dartObjectLocalStorage").SVGNumber = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGNumber = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGNumberList **************
-$dynamic("get$clear").SVGNumberList = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").SVGNumberList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGNumberList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGNumberList = function() {
-  return this.clear();
-};
 // ********** Code for SVGPaint **************
 // ********** Code for SVGPathElement **************
 // ********** Code for SVGPathSeg **************
 $dynamic("get$dartObjectLocalStorage").SVGPathSeg = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGPathSeg = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGPathSegArcAbs **************
-$dynamic("get$angle").SVGPathSegArcAbs = function() { return this.angle; };
-$dynamic("set$angle").SVGPathSegArcAbs = function(value) { return this.angle = value; };
-$dynamic("get$x").SVGPathSegArcAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegArcAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegArcAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegArcAbs = function(value) { return this.y = value; };
+$dynamic("get$angle").SVGPathSegArcAbs = function() {
+  return this.angle;
+}
+$dynamic("get$x").SVGPathSegArcAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegArcAbs = function() {
+  return this.y;
+}
 // ********** Code for SVGPathSegArcRel **************
-$dynamic("get$angle").SVGPathSegArcRel = function() { return this.angle; };
-$dynamic("set$angle").SVGPathSegArcRel = function(value) { return this.angle = value; };
-$dynamic("get$x").SVGPathSegArcRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegArcRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegArcRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegArcRel = function(value) { return this.y = value; };
+$dynamic("get$angle").SVGPathSegArcRel = function() {
+  return this.angle;
+}
+$dynamic("get$x").SVGPathSegArcRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegArcRel = function() {
+  return this.y;
+}
 // ********** Code for SVGPathSegClosePath **************
 // ********** Code for SVGPathSegCurvetoCubicAbs **************
-$dynamic("get$x").SVGPathSegCurvetoCubicAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoCubicAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoCubicAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoCubicAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoCubicRel **************
-$dynamic("get$x").SVGPathSegCurvetoCubicRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoCubicRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoCubicRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoCubicRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoCubicSmoothAbs **************
-$dynamic("get$x").SVGPathSegCurvetoCubicSmoothAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoCubicSmoothAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoCubicSmoothAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoCubicSmoothAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoCubicSmoothRel **************
-$dynamic("get$x").SVGPathSegCurvetoCubicSmoothRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoCubicSmoothRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoCubicSmoothRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoCubicSmoothRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoQuadraticAbs **************
-$dynamic("get$x").SVGPathSegCurvetoQuadraticAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoQuadraticAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoQuadraticAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoQuadraticAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoQuadraticRel **************
-$dynamic("get$x").SVGPathSegCurvetoQuadraticRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoQuadraticRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoQuadraticRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoQuadraticRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoQuadraticSmoothAbs **************
-$dynamic("get$x").SVGPathSegCurvetoQuadraticSmoothAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoQuadraticSmoothAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoQuadraticSmoothAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoQuadraticSmoothAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegCurvetoQuadraticSmoothRel **************
-$dynamic("get$x").SVGPathSegCurvetoQuadraticSmoothRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegCurvetoQuadraticSmoothRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegCurvetoQuadraticSmoothRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegCurvetoQuadraticSmoothRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegLinetoAbs **************
-$dynamic("get$x").SVGPathSegLinetoAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegLinetoAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegLinetoAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegLinetoAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegLinetoHorizontalAbs **************
-$dynamic("get$x").SVGPathSegLinetoHorizontalAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegLinetoHorizontalAbs = function(value) { return this.x = value; };
-// ********** Code for SVGPathSegLinetoHorizontalRel **************
-$dynamic("get$x").SVGPathSegLinetoHorizontalRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegLinetoHorizontalRel = function(value) { return this.x = value; };
-// ********** Code for SVGPathSegLinetoRel **************
-$dynamic("get$x").SVGPathSegLinetoRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegLinetoRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegLinetoRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegLinetoRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegLinetoVerticalAbs **************
-$dynamic("get$y").SVGPathSegLinetoVerticalAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegLinetoVerticalAbs = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegLinetoVerticalRel **************
-$dynamic("get$y").SVGPathSegLinetoVerticalRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegLinetoVerticalRel = function(value) { return this.y = value; };
-// ********** Code for SVGPathSegList **************
-$dynamic("get$clear").SVGPathSegList = function() {
-  return this.clear.bind(this);
+$dynamic("get$x").SVGPathSegCurvetoCubicAbs = function() {
+  return this.x;
 }
+$dynamic("get$y").SVGPathSegCurvetoCubicAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoCubicRel **************
+$dynamic("get$x").SVGPathSegCurvetoCubicRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoCubicRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoCubicSmoothAbs **************
+$dynamic("get$x").SVGPathSegCurvetoCubicSmoothAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoCubicSmoothAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoCubicSmoothRel **************
+$dynamic("get$x").SVGPathSegCurvetoCubicSmoothRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoCubicSmoothRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoQuadraticAbs **************
+$dynamic("get$x").SVGPathSegCurvetoQuadraticAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoQuadraticAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoQuadraticRel **************
+$dynamic("get$x").SVGPathSegCurvetoQuadraticRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoQuadraticRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoQuadraticSmoothAbs **************
+$dynamic("get$x").SVGPathSegCurvetoQuadraticSmoothAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoQuadraticSmoothAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegCurvetoQuadraticSmoothRel **************
+$dynamic("get$x").SVGPathSegCurvetoQuadraticSmoothRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegCurvetoQuadraticSmoothRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegLinetoAbs **************
+$dynamic("get$x").SVGPathSegLinetoAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegLinetoAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegLinetoHorizontalAbs **************
+$dynamic("get$x").SVGPathSegLinetoHorizontalAbs = function() {
+  return this.x;
+}
+// ********** Code for SVGPathSegLinetoHorizontalRel **************
+$dynamic("get$x").SVGPathSegLinetoHorizontalRel = function() {
+  return this.x;
+}
+// ********** Code for SVGPathSegLinetoRel **************
+$dynamic("get$x").SVGPathSegLinetoRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegLinetoRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegLinetoVerticalAbs **************
+$dynamic("get$y").SVGPathSegLinetoVerticalAbs = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegLinetoVerticalRel **************
+$dynamic("get$y").SVGPathSegLinetoVerticalRel = function() {
+  return this.y;
+}
+// ********** Code for SVGPathSegList **************
 $dynamic("get$dartObjectLocalStorage").SVGPathSegList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGPathSegList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGPathSegList = function() {
-  return this.clear();
-};
 // ********** Code for SVGPathSegMovetoAbs **************
-$dynamic("get$x").SVGPathSegMovetoAbs = function() { return this.x; };
-$dynamic("set$x").SVGPathSegMovetoAbs = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegMovetoAbs = function() { return this.y; };
-$dynamic("set$y").SVGPathSegMovetoAbs = function(value) { return this.y = value; };
+$dynamic("get$x").SVGPathSegMovetoAbs = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegMovetoAbs = function() {
+  return this.y;
+}
 // ********** Code for SVGPathSegMovetoRel **************
-$dynamic("get$x").SVGPathSegMovetoRel = function() { return this.x; };
-$dynamic("set$x").SVGPathSegMovetoRel = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPathSegMovetoRel = function() { return this.y; };
-$dynamic("set$y").SVGPathSegMovetoRel = function(value) { return this.y = value; };
+$dynamic("get$x").SVGPathSegMovetoRel = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPathSegMovetoRel = function() {
+  return this.y;
+}
 // ********** Code for SVGPatternElement **************
-$dynamic("get$height").SVGPatternElement = function() { return this.height; };
-$dynamic("set$height").SVGPatternElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGPatternElement = function() { return this.width; };
-$dynamic("set$width").SVGPatternElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGPatternElement = function() { return this.x; };
-$dynamic("set$x").SVGPatternElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPatternElement = function() { return this.y; };
-$dynamic("set$y").SVGPatternElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGPatternElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPatternElement = function() {
+  return this.y;
+}
 // ********** Code for SVGPoint **************
-$dynamic("get$x").SVGPoint = function() { return this.x; };
-$dynamic("set$x").SVGPoint = function(value) { return this.x = value; };
-$dynamic("get$y").SVGPoint = function() { return this.y; };
-$dynamic("set$y").SVGPoint = function(value) { return this.y = value; };
+$dynamic("get$x").SVGPoint = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGPoint = function() {
+  return this.y;
+}
 $dynamic("get$dartObjectLocalStorage").SVGPoint = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGPoint = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGPointList **************
-$dynamic("get$clear").SVGPointList = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").SVGPointList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGPointList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGPointList = function() {
-  return this.clear();
-};
 // ********** Code for SVGPolygonElement **************
 // ********** Code for SVGPolylineElement **************
 // ********** Code for SVGPreserveAspectRatio **************
@@ -2286,57 +2371,59 @@ $dynamic("get$dartObjectLocalStorage").SVGPreserveAspectRatio = function() { ret
 $dynamic("set$dartObjectLocalStorage").SVGPreserveAspectRatio = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGRadialGradientElement **************
 // ********** Code for SVGRect **************
-$dynamic("get$height").SVGRect = function() { return this.height; };
-$dynamic("set$height").SVGRect = function(value) { return this.height = value; };
-$dynamic("get$width").SVGRect = function() { return this.width; };
-$dynamic("set$width").SVGRect = function(value) { return this.width = value; };
-$dynamic("get$x").SVGRect = function() { return this.x; };
-$dynamic("set$x").SVGRect = function(value) { return this.x = value; };
-$dynamic("get$y").SVGRect = function() { return this.y; };
-$dynamic("set$y").SVGRect = function(value) { return this.y = value; };
+$dynamic("set$height").SVGRect = function(value) {
+  this.height = value;
+}
+$dynamic("set$width").SVGRect = function(value) {
+  this.width = value;
+}
+$dynamic("get$x").SVGRect = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGRect = function() {
+  return this.y;
+}
 $dynamic("get$dartObjectLocalStorage").SVGRect = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGRect = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGRectElement **************
-$dynamic("get$height").SVGRectElement = function() { return this.height; };
-$dynamic("set$height").SVGRectElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGRectElement = function() { return this.width; };
-$dynamic("set$width").SVGRectElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGRectElement = function() { return this.x; };
-$dynamic("set$x").SVGRectElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGRectElement = function() { return this.y; };
-$dynamic("set$y").SVGRectElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGRectElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGRectElement = function() {
+  return this.y;
+}
 // ********** Code for SVGRenderingIntent **************
 $dynamic("get$dartObjectLocalStorage").SVGRenderingIntent = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGRenderingIntent = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGSVGElement **************
-$dynamic("get$height").SVGSVGElement = function() { return this.height; };
-$dynamic("set$height").SVGSVGElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGSVGElement = function() { return this.width; };
-$dynamic("set$width").SVGSVGElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGSVGElement = function() { return this.x; };
-$dynamic("set$x").SVGSVGElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGSVGElement = function() { return this.y; };
-$dynamic("set$y").SVGSVGElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGSVGElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGSVGElement = function() {
+  return this.y;
+}
 // ********** Code for SVGScriptElement **************
-$dynamic("get$type").SVGScriptElement = function() { return this.type; };
-$dynamic("set$type").SVGScriptElement = function(value) { return this.type = value; };
+$dynamic("get$type").SVGScriptElement = function() {
+  return this.type;
+}
+$dynamic("set$type").SVGScriptElement = function(value) {
+  this.type = value;
+}
 // ********** Code for SVGSetElement **************
 // ********** Code for SVGStopElement **************
 // ********** Code for SVGStringList **************
-$dynamic("get$clear").SVGStringList = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").SVGStringList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGStringList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGStringList = function() {
-  return this.clear();
-};
 // ********** Code for SVGStylable **************
 $dynamic("get$dartObjectLocalStorage").SVGStylable = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGStylable = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGStyleElement **************
-$dynamic("get$type").SVGStyleElement = function() { return this.type; };
-$dynamic("set$type").SVGStyleElement = function(value) { return this.type = value; };
+$dynamic("get$type").SVGStyleElement = function() {
+  return this.type;
+}
+$dynamic("set$type").SVGStyleElement = function(value) {
+  this.type = value;
+}
 // ********** Code for SVGSwitchElement **************
 // ********** Code for SVGSymbolElement **************
 // ********** Code for SVGTRefElement **************
@@ -2348,27 +2435,25 @@ $dynamic("set$dartObjectLocalStorage").SVGTests = function(value) { return this.
 // ********** Code for SVGTextElement **************
 // ********** Code for SVGTextPathElement **************
 // ********** Code for SVGTextPositioningElement **************
-$dynamic("get$x").SVGTextPositioningElement = function() { return this.x; };
-$dynamic("set$x").SVGTextPositioningElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGTextPositioningElement = function() { return this.y; };
-$dynamic("set$y").SVGTextPositioningElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGTextPositioningElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGTextPositioningElement = function() {
+  return this.y;
+}
 // ********** Code for SVGTitleElement **************
 // ********** Code for SVGTransform **************
-$dynamic("get$angle").SVGTransform = function() { return this.angle; };
-$dynamic("set$angle").SVGTransform = function(value) { return this.angle = value; };
-$dynamic("get$type").SVGTransform = function() { return this.type; };
-$dynamic("set$type").SVGTransform = function(value) { return this.type = value; };
+$dynamic("get$angle").SVGTransform = function() {
+  return this.angle;
+}
+$dynamic("get$type").SVGTransform = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").SVGTransform = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGTransform = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGTransformList **************
-$dynamic("get$clear").SVGTransformList = function() {
-  return this.clear.bind(this);
-}
 $dynamic("get$dartObjectLocalStorage").SVGTransformList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGTransformList = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("clear$0").SVGTransformList = function() {
-  return this.clear();
-};
 // ********** Code for SVGTransformable **************
 // ********** Code for SVGURIReference **************
 $dynamic("get$dartObjectLocalStorage").SVGURIReference = function() { return this.dartObjectLocalStorage; };
@@ -2377,14 +2462,12 @@ $dynamic("set$dartObjectLocalStorage").SVGURIReference = function(value) { retur
 $dynamic("get$dartObjectLocalStorage").SVGUnitTypes = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SVGUnitTypes = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGUseElement **************
-$dynamic("get$height").SVGUseElement = function() { return this.height; };
-$dynamic("set$height").SVGUseElement = function(value) { return this.height = value; };
-$dynamic("get$width").SVGUseElement = function() { return this.width; };
-$dynamic("set$width").SVGUseElement = function(value) { return this.width = value; };
-$dynamic("get$x").SVGUseElement = function() { return this.x; };
-$dynamic("set$x").SVGUseElement = function(value) { return this.x = value; };
-$dynamic("get$y").SVGUseElement = function() { return this.y; };
-$dynamic("set$y").SVGUseElement = function(value) { return this.y = value; };
+$dynamic("get$x").SVGUseElement = function() {
+  return this.x;
+}
+$dynamic("get$y").SVGUseElement = function() {
+  return this.y;
+}
 // ********** Code for SVGVKernElement **************
 // ********** Code for SVGViewElement **************
 // ********** Code for SVGViewSpec **************
@@ -2393,34 +2476,32 @@ $dynamic("get$dartObjectLocalStorage").SVGZoomAndPan = function() { return this.
 $dynamic("set$dartObjectLocalStorage").SVGZoomAndPan = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SVGZoomEvent **************
 // ********** Code for Screen **************
-$dynamic("get$height").Screen = function() { return this.height; };
-$dynamic("set$height").Screen = function(value) { return this.height = value; };
-$dynamic("get$width").Screen = function() { return this.width; };
-$dynamic("set$width").Screen = function(value) { return this.width = value; };
 $dynamic("get$dartObjectLocalStorage").Screen = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").Screen = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_ScriptProfile **************
+var dom_ScriptProfile = {};
 $dynamic("get$dartObjectLocalStorage").ScriptProfile = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ScriptProfile = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_ScriptProfileNode **************
+var dom_ScriptProfileNode = {};
 $dynamic("get$dartObjectLocalStorage").ScriptProfileNode = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ScriptProfileNode = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SharedWorker **************
-// ********** Code for dom_SharedWorkercontext **************
+// ********** Code for dom_SharedWorkerContext **************
+var dom_SharedWorkerContext = {};
 // ********** Code for SpeechInputEvent **************
 // ********** Code for SpeechInputResult **************
 $dynamic("get$dartObjectLocalStorage").SpeechInputResult = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SpeechInputResult = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for SpeechInputResultList **************
-$dynamic("get$length").SpeechInputResultList = function() { return this.length; };
-$dynamic("set$length").SpeechInputResultList = function(value) { return this.length = value; };
+$dynamic("get$length").SpeechInputResultList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").SpeechInputResultList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").SpeechInputResultList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Storage **************
-$dynamic("get$length").Storage = function() { return this.length; };
-$dynamic("set$length").Storage = function(value) { return this.length = value; };
-$dynamic("get$clear").Storage = function() {
-  return this.clear.bind(this);
+$dynamic("get$length").Storage = function() {
+  return this.length;
 }
 $dynamic("get$dartObjectLocalStorage").Storage = function() {
   
@@ -2442,26 +2523,26 @@ $dynamic("set$dartObjectLocalStorage").Storage = function(value) {
         throw new UnsupportedOperationException('Cannot dartObjectLocalStorage for unknown Storage object.');
 
 }
-$dynamic("clear$0").Storage = function() {
-  return this.clear();
-};
 // ********** Code for StorageEvent **************
 // ********** Code for StorageInfo **************
 $dynamic("get$dartObjectLocalStorage").StorageInfo = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").StorageInfo = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for StyleMedia **************
-$dynamic("get$type").StyleMedia = function() { return this.type; };
-$dynamic("set$type").StyleMedia = function(value) { return this.type = value; };
+$dynamic("get$type").StyleMedia = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").StyleMedia = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").StyleMedia = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for StyleSheet **************
-$dynamic("get$type").StyleSheet = function() { return this.type; };
-$dynamic("set$type").StyleSheet = function(value) { return this.type = value; };
+$dynamic("get$type").StyleSheet = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").StyleSheet = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").StyleSheet = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for StyleSheetList **************
-$dynamic("get$length").StyleSheetList = function() { return this.length; };
-$dynamic("set$length").StyleSheetList = function(value) { return this.length = value; };
+$dynamic("get$length").StyleSheetList = function() {
+  return this.length;
+}
 $dynamic("$setindex").StyleSheetList = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
@@ -2470,31 +2551,31 @@ $dynamic("set$dartObjectLocalStorage").StyleSheetList = function(value) { return
 // ********** Code for Text **************
 // ********** Code for TextEvent **************
 // ********** Code for TextMetrics **************
-$dynamic("get$width").TextMetrics = function() { return this.width; };
-$dynamic("set$width").TextMetrics = function(value) { return this.width = value; };
 $dynamic("get$dartObjectLocalStorage").TextMetrics = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TextMetrics = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for TextTrack **************
 $dynamic("get$dartObjectLocalStorage").TextTrack = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TextTrack = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for TextTrackCue **************
-$dynamic("get$id").TextTrackCue = function() { return this.id; };
-$dynamic("set$id").TextTrackCue = function(value) { return this.id = value; };
 $dynamic("get$dartObjectLocalStorage").TextTrackCue = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TextTrackCue = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for TextTrackCueList **************
-$dynamic("get$length").TextTrackCueList = function() { return this.length; };
-$dynamic("set$length").TextTrackCueList = function(value) { return this.length = value; };
+$dynamic("get$length").TextTrackCueList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").TextTrackCueList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TextTrackCueList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_TextTrackList **************
-$dynamic("get$length").TextTrackList = function() { return this.length; };
-$dynamic("set$length").TextTrackList = function(value) { return this.length = value; };
+var dom_TextTrackList = {};
+$dynamic("get$length").TextTrackList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").TextTrackList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TextTrackList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for TimeRanges **************
-$dynamic("get$length").TimeRanges = function() { return this.length; };
-$dynamic("set$length").TimeRanges = function(value) { return this.length = value; };
+$dynamic("get$length").TimeRanges = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").TimeRanges = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TimeRanges = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for Touch **************
@@ -2502,15 +2583,18 @@ $dynamic("get$dartObjectLocalStorage").Touch = function() { return this.dartObje
 $dynamic("set$dartObjectLocalStorage").Touch = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for TouchEvent **************
 // ********** Code for TouchList **************
-$dynamic("get$length").TouchList = function() { return this.length; };
-$dynamic("set$length").TouchList = function(value) { return this.length = value; };
+$dynamic("get$length").TouchList = function() {
+  return this.length;
+}
 $dynamic("$setindex").TouchList = function(index, value) {
   $throw(new UnsupportedOperationException("Cannot assign element of immutable List."));
 }
 $dynamic("get$dartObjectLocalStorage").TouchList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").TouchList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_TrackEvent **************
+var dom_TrackEvent = {};
 // ********** Code for dom_TreeWalker **************
+var dom_TreeWalker = {};
 $dynamic("get$parentNode").TreeWalker = function() {
   return this.parentNode.bind(this);
 }
@@ -2518,27 +2602,32 @@ $dynamic("get$dartObjectLocalStorage").TreeWalker = function() { return this.dar
 $dynamic("set$dartObjectLocalStorage").TreeWalker = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for UIEvent **************
 // ********** Code for Uint16Array **************
-$dynamic("get$length").Uint16Array = function() { return this.length; };
-$dynamic("set$length").Uint16Array = function(value) { return this.length = value; };
+$dynamic("get$length").Uint16Array = function() {
+  return this.length;
+}
 // ********** Code for Uint32Array **************
-$dynamic("get$length").Uint32Array = function() { return this.length; };
-$dynamic("set$length").Uint32Array = function(value) { return this.length = value; };
+$dynamic("get$length").Uint32Array = function() {
+  return this.length;
+}
 // ********** Code for Uint8Array **************
-$dynamic("get$length").Uint8Array = function() { return this.length; };
-$dynamic("set$length").Uint8Array = function(value) { return this.length = value; };
+$dynamic("get$length").Uint8Array = function() {
+  return this.length;
+}
 // ********** Code for ValidityState **************
 $dynamic("get$dartObjectLocalStorage").ValidityState = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").ValidityState = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WaveShaperNode **************
 // ********** Code for WebGLActiveInfo **************
-$dynamic("get$type").WebGLActiveInfo = function() { return this.type; };
-$dynamic("set$type").WebGLActiveInfo = function(value) { return this.type = value; };
+$dynamic("get$type").WebGLActiveInfo = function() {
+  return this.type;
+}
 $dynamic("get$dartObjectLocalStorage").WebGLActiveInfo = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLActiveInfo = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WebGLBuffer **************
 $dynamic("get$dartObjectLocalStorage").WebGLBuffer = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLBuffer = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebGLCompressedTextures **************
+var dom_WebGLCompressedTextures = {};
 $dynamic("get$dartObjectLocalStorage").WebGLCompressedTextures = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLCompressedTextures = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WebGLContextAttributes **************
@@ -2555,6 +2644,7 @@ $dynamic("set$dartObjectLocalStorage").WebGLDebugShaders = function(value) { ret
 $dynamic("get$dartObjectLocalStorage").WebGLFramebuffer = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLFramebuffer = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebGLLoseContext **************
+var dom_WebGLLoseContext = {};
 $dynamic("get$dartObjectLocalStorage").WebGLLoseContext = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLLoseContext = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WebGLProgram **************
@@ -2564,12 +2654,6 @@ $dynamic("set$dartObjectLocalStorage").WebGLProgram = function(value) { return t
 $dynamic("get$dartObjectLocalStorage").WebGLRenderbuffer = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLRenderbuffer = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WebGLRenderingContext **************
-$dynamic("get$clear").WebGLRenderingContext = function() {
-  return this.clear.bind(this);
-}
-$dynamic("clear$1").WebGLRenderingContext = function($0) {
-  return this.clear($0);
-};
 // ********** Code for WebGLShader **************
 $dynamic("get$dartObjectLocalStorage").WebGLShader = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLShader = function(value) { return this.dartObjectLocalStorage = value; };
@@ -2583,63 +2667,74 @@ $dynamic("set$dartObjectLocalStorage").WebGLUniformLocation = function(value) { 
 $dynamic("get$dartObjectLocalStorage").WebGLVertexArrayObjectOES = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebGLVertexArrayObjectOES = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitAnimation **************
+var dom_WebKitAnimation = {};
 $dynamic("get$dartObjectLocalStorage").WebKitAnimation = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitAnimation = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitAnimationEvent **************
+var dom_WebKitAnimationEvent = {};
 // ********** Code for dom_WebKitAnimationList **************
-$dynamic("get$length").WebKitAnimationList = function() { return this.length; };
-$dynamic("set$length").WebKitAnimationList = function(value) { return this.length = value; };
+var dom_WebKitAnimationList = {};
+$dynamic("get$length").WebKitAnimationList = function() {
+  return this.length;
+}
 $dynamic("get$dartObjectLocalStorage").WebKitAnimationList = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitAnimationList = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitBlobBuilder **************
+var dom_WebKitBlobBuilder = {};
 $dynamic("get$dartObjectLocalStorage").WebKitBlobBuilder = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitBlobBuilder = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WebKitCSSFilterValue **************
 // ********** Code for dom_WebKitCSSKeyframeRule **************
+var dom_WebKitCSSKeyframeRule = {};
 // ********** Code for dom_WebKitCSSKeyframesRule **************
+var dom_WebKitCSSKeyframesRule = {};
 // ********** Code for dom_WebKitCSSMatrix **************
+var dom_WebKitCSSMatrix = {};
 $dynamic("get$dartObjectLocalStorage").WebKitCSSMatrix = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitCSSMatrix = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").WebKitCSSMatrix = function() {
-  return this.toString();
-};
 // ********** Code for dom_WebKitCSSTransformValue **************
+var dom_WebKitCSSTransformValue = {};
 // ********** Code for WebKitMutationObserver **************
 $dynamic("get$dartObjectLocalStorage").WebKitMutationObserver = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitMutationObserver = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitNamedFlow **************
+var dom_WebKitNamedFlow = {};
 $dynamic("get$dartObjectLocalStorage").WebKitNamedFlow = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitNamedFlow = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitPoint **************
-$dynamic("get$x").WebKitPoint = function() { return this.x; };
-$dynamic("set$x").WebKitPoint = function(value) { return this.x = value; };
-$dynamic("get$y").WebKitPoint = function() { return this.y; };
-$dynamic("set$y").WebKitPoint = function(value) { return this.y = value; };
+var dom_WebKitPoint = {};
+$dynamic("get$x").WebKitPoint = function() {
+  return this.x;
+}
+$dynamic("get$y").WebKitPoint = function() {
+  return this.y;
+}
 $dynamic("get$dartObjectLocalStorage").WebKitPoint = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebKitPoint = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_WebKitTransitionEvent **************
+var dom_WebKitTransitionEvent = {};
 // ********** Code for WebSocket **************
 $dynamic("get$dartObjectLocalStorage").WebSocket = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WebSocket = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for WheelEvent **************
-$dynamic("get$x").WheelEvent = function() { return this.x; };
-$dynamic("set$x").WheelEvent = function(value) { return this.x = value; };
-$dynamic("get$y").WheelEvent = function() { return this.y; };
-$dynamic("set$y").WheelEvent = function(value) { return this.y = value; };
+$dynamic("get$x").WheelEvent = function() {
+  return this.x;
+}
+$dynamic("get$y").WheelEvent = function() {
+  return this.y;
+}
 // ********** Code for dom_Worker **************
+var dom_Worker = {};
 // ********** Code for dom_WorkerContext **************
+var dom_WorkerContext = {};
 $dynamic("get$dartObjectLocalStorage").WorkerContext = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WorkerContext = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("setInterval$2").WorkerContext = function($0, $1) {
-  return this.setInterval($wrap_call$0(to$call$0($0)), $1);
-};
 // ********** Code for dom_WorkerLocation **************
+var dom_WorkerLocation = {};
 $dynamic("get$dartObjectLocalStorage").WorkerLocation = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WorkerLocation = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").WorkerLocation = function() {
-  return this.toString();
-};
 // ********** Code for dom_WorkerNavigator **************
+var dom_WorkerNavigator = {};
 $dynamic("get$dartObjectLocalStorage").WorkerNavigator = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").WorkerNavigator = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for XMLHttpRequest **************
@@ -2648,51 +2743,43 @@ $dynamic("set$dartObjectLocalStorage").XMLHttpRequest = function(value) { return
 // ********** Code for XMLHttpRequestException **************
 $dynamic("get$dartObjectLocalStorage").XMLHttpRequestException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XMLHttpRequestException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").XMLHttpRequestException = function() {
-  return this.toString();
-};
 // ********** Code for XMLHttpRequestProgressEvent **************
-$dynamic("get$position").XMLHttpRequestProgressEvent = function() { return this.position; };
-$dynamic("set$position").XMLHttpRequestProgressEvent = function(value) { return this.position = value; };
+$dynamic("get$position").XMLHttpRequestProgressEvent = function() {
+  return this.position;
+}
 // ********** Code for XMLHttpRequestUpload **************
 $dynamic("get$dartObjectLocalStorage").XMLHttpRequestUpload = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XMLHttpRequestUpload = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XMLSerializer **************
+var dom_XMLSerializer = {};
 $dynamic("get$dartObjectLocalStorage").XMLSerializer = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XMLSerializer = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XPathEvaluator **************
+var dom_XPathEvaluator = {};
 $dynamic("get$dartObjectLocalStorage").XPathEvaluator = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XPathEvaluator = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XPathException **************
+var dom_XPathException = {};
 $dynamic("get$dartObjectLocalStorage").XPathException = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XPathException = function(value) { return this.dartObjectLocalStorage = value; };
-$dynamic("toString$0").XPathException = function() {
-  return this.toString();
-};
 // ********** Code for dom_XPathExpression **************
+var dom_XPathExpression = {};
 $dynamic("get$dartObjectLocalStorage").XPathExpression = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XPathExpression = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XPathNSResolver **************
+var dom_XPathNSResolver = {};
 $dynamic("get$dartObjectLocalStorage").XPathNSResolver = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XPathNSResolver = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XPathResult **************
+var dom_XPathResult = {};
 $dynamic("get$dartObjectLocalStorage").XPathResult = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XPathResult = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom_XSLTProcessor **************
+var dom_XSLTProcessor = {};
 $dynamic("get$dartObjectLocalStorage").XSLTProcessor = function() { return this.dartObjectLocalStorage; };
 $dynamic("set$dartObjectLocalStorage").XSLTProcessor = function(value) { return this.dartObjectLocalStorage = value; };
 // ********** Code for dom__Collections **************
 function dom__Collections() {}
-// ********** Code for _VariableSizeListIterator_T **************
-$inherits(_VariableSizeListIterator_T, dom__VariableSizeListIterator);
-function _VariableSizeListIterator_T() {}
-// ********** Code for dom__FixedSizeListIterator **************
-$inherits(dom__FixedSizeListIterator, _VariableSizeListIterator_T);
-function dom__FixedSizeListIterator() {}
-dom__FixedSizeListIterator.prototype.hasNext = function() {
-  return this._dom_length > this._dom_pos;
-}
-dom__FixedSizeListIterator.prototype.hasNext$0 = dom__FixedSizeListIterator.prototype.hasNext;
 // ********** Code for dom__VariableSizeListIterator **************
 function dom__VariableSizeListIterator() {}
 dom__VariableSizeListIterator.prototype.hasNext = function() {
@@ -2700,12 +2787,16 @@ dom__VariableSizeListIterator.prototype.hasNext = function() {
 }
 dom__VariableSizeListIterator.prototype.next = function() {
   if (!this.hasNext()) {
-    $throw(const$0001);
+    $throw(const$0002);
   }
   return this._dom_array.$index(this._dom_pos++);
 }
-dom__VariableSizeListIterator.prototype.hasNext$0 = dom__VariableSizeListIterator.prototype.hasNext;
-dom__VariableSizeListIterator.prototype.next$0 = dom__VariableSizeListIterator.prototype.next;
+// ********** Code for dom__FixedSizeListIterator **************
+$inherits(dom__FixedSizeListIterator, dom__VariableSizeListIterator);
+function dom__FixedSizeListIterator() {}
+dom__FixedSizeListIterator.prototype.hasNext = function() {
+  return this._dom_length > this._dom_pos;
+}
 // ********** Code for _Lists **************
 function _Lists() {}
 // ********** Code for top level **************
@@ -2717,27 +2808,27 @@ function get$document() {
 }
 //  ********** Library htmlimpl **************
 // ********** Code for DOMWrapperBase **************
-function DOMWrapperBase() {}
 DOMWrapperBase._wrap$ctor = function(_ptr) {
   this._ptr = _ptr;
   this._ptr.set$dartObjectLocalStorage(this);
 }
 DOMWrapperBase._wrap$ctor.prototype = DOMWrapperBase.prototype;
+function DOMWrapperBase() {}
 DOMWrapperBase.prototype.get$_ptr = function() { return this._ptr; };
 // ********** Code for EventTargetWrappingImplementation **************
 $inherits(EventTargetWrappingImplementation, DOMWrapperBase);
-function EventTargetWrappingImplementation() {}
 EventTargetWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 EventTargetWrappingImplementation._wrap$ctor.prototype = EventTargetWrappingImplementation.prototype;
+function EventTargetWrappingImplementation() {}
 // ********** Code for NodeWrappingImplementation **************
 $inherits(NodeWrappingImplementation, EventTargetWrappingImplementation);
-function NodeWrappingImplementation() {}
 NodeWrappingImplementation._wrap$ctor = function(ptr) {
   EventTargetWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 NodeWrappingImplementation._wrap$ctor.prototype = NodeWrappingImplementation.prototype;
+function NodeWrappingImplementation() {}
 NodeWrappingImplementation.prototype.get$nodes = function() {
   if (this._nodes == null) {
     this._nodes = new _ChildrenNodeList._wrap$ctor(this._ptr);
@@ -2746,24 +2837,21 @@ NodeWrappingImplementation.prototype.get$nodes = function() {
 }
 // ********** Code for ElementWrappingImplementation **************
 $inherits(ElementWrappingImplementation, NodeWrappingImplementation);
-function ElementWrappingImplementation() {}
 ElementWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ElementWrappingImplementation._wrap$ctor.prototype = ElementWrappingImplementation.prototype;
+function ElementWrappingImplementation() {}
 ElementWrappingImplementation.ElementWrappingImplementation$tag$factory = function(tag) {
   return LevelDom.wrapElement(get$document().createElement(tag));
 }
-ElementWrappingImplementation.prototype.get$id = function() {
-  return this._ptr.get$id();
-}
 // ********** Code for AnchorElementWrappingImplementation **************
 $inherits(AnchorElementWrappingImplementation, ElementWrappingImplementation);
-function AnchorElementWrappingImplementation() {}
 AnchorElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 AnchorElementWrappingImplementation._wrap$ctor.prototype = AnchorElementWrappingImplementation.prototype;
+function AnchorElementWrappingImplementation() {}
 AnchorElementWrappingImplementation.prototype.set$shape = function(value) {
   this._ptr.set$shape(value);
 }
@@ -2774,97 +2862,87 @@ AnchorElementWrappingImplementation.prototype.set$type = function(value) {
   this._ptr.set$type(value);
 }
 AnchorElementWrappingImplementation.prototype.toString = function() {
-  return this._ptr.toString$0();
+  return this._ptr.toString();
 }
-AnchorElementWrappingImplementation.prototype.toString$0 = AnchorElementWrappingImplementation.prototype.toString;
 // ********** Code for AreaElementWrappingImplementation **************
 $inherits(AreaElementWrappingImplementation, ElementWrappingImplementation);
-function AreaElementWrappingImplementation() {}
 AreaElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 AreaElementWrappingImplementation._wrap$ctor.prototype = AreaElementWrappingImplementation.prototype;
+function AreaElementWrappingImplementation() {}
 AreaElementWrappingImplementation.prototype.set$shape = function(value) {
   this._ptr.set$shape(value);
 }
 // ********** Code for MediaElementWrappingImplementation **************
 $inherits(MediaElementWrappingImplementation, ElementWrappingImplementation);
-function MediaElementWrappingImplementation() {}
 MediaElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MediaElementWrappingImplementation._wrap$ctor.prototype = MediaElementWrappingImplementation.prototype;
+function MediaElementWrappingImplementation() {}
 // ********** Code for AudioElementWrappingImplementation **************
 $inherits(AudioElementWrappingImplementation, MediaElementWrappingImplementation);
-function AudioElementWrappingImplementation() {}
 AudioElementWrappingImplementation._wrap$ctor = function(ptr) {
   MediaElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 AudioElementWrappingImplementation._wrap$ctor.prototype = AudioElementWrappingImplementation.prototype;
+function AudioElementWrappingImplementation() {}
 // ********** Code for BRElementWrappingImplementation **************
 $inherits(BRElementWrappingImplementation, ElementWrappingImplementation);
-function BRElementWrappingImplementation() {}
 BRElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 BRElementWrappingImplementation._wrap$ctor.prototype = BRElementWrappingImplementation.prototype;
-BRElementWrappingImplementation.prototype.get$clear = function() {
-  return this._ptr.get$clear();
-}
-BRElementWrappingImplementation.prototype.clear$0 = function() {
-  return this.get$clear().call$0();
-};
-BRElementWrappingImplementation.prototype.clear$1 = function($0) {
-  return this.get$clear().call$1($0);
-};
+function BRElementWrappingImplementation() {}
 // ********** Code for BaseElementWrappingImplementation **************
 $inherits(BaseElementWrappingImplementation, ElementWrappingImplementation);
-function BaseElementWrappingImplementation() {}
 BaseElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 BaseElementWrappingImplementation._wrap$ctor.prototype = BaseElementWrappingImplementation.prototype;
+function BaseElementWrappingImplementation() {}
 // ********** Code for ButtonElementWrappingImplementation **************
 $inherits(ButtonElementWrappingImplementation, ElementWrappingImplementation);
-function ButtonElementWrappingImplementation() {}
 ButtonElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ButtonElementWrappingImplementation._wrap$ctor.prototype = ButtonElementWrappingImplementation.prototype;
+function ButtonElementWrappingImplementation() {}
 ButtonElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
 // ********** Code for CharacterDataWrappingImplementation **************
 $inherits(CharacterDataWrappingImplementation, NodeWrappingImplementation);
-function CharacterDataWrappingImplementation() {}
 CharacterDataWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 CharacterDataWrappingImplementation._wrap$ctor.prototype = CharacterDataWrappingImplementation.prototype;
+function CharacterDataWrappingImplementation() {}
 CharacterDataWrappingImplementation.prototype.get$length = function() {
   return this._ptr.get$length();
 }
 // ********** Code for TextWrappingImplementation **************
 $inherits(TextWrappingImplementation, CharacterDataWrappingImplementation);
-function TextWrappingImplementation() {}
 TextWrappingImplementation._wrap$ctor = function(ptr) {
   CharacterDataWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TextWrappingImplementation._wrap$ctor.prototype = TextWrappingImplementation.prototype;
+function TextWrappingImplementation() {}
 // ********** Code for CDATASectionWrappingImplementation **************
 $inherits(CDATASectionWrappingImplementation, TextWrappingImplementation);
-function CDATASectionWrappingImplementation() {}
 CDATASectionWrappingImplementation._wrap$ctor = function(ptr) {
   TextWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 CDATASectionWrappingImplementation._wrap$ctor.prototype = CDATASectionWrappingImplementation.prototype;
+function CDATASectionWrappingImplementation() {}
 // ********** Code for CanvasElementWrappingImplementation **************
 $inherits(CanvasElementWrappingImplementation, ElementWrappingImplementation);
-function CanvasElementWrappingImplementation() {}
 CanvasElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 CanvasElementWrappingImplementation._wrap$ctor.prototype = CanvasElementWrappingImplementation.prototype;
+function CanvasElementWrappingImplementation() {}
 CanvasElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -2876,46 +2954,45 @@ CanvasElementWrappingImplementation.prototype.getContext = function(contextId) {
     return LevelDom.wrapCanvasRenderingContext(this._ptr.getContext$0());
   }
   else {
-    return LevelDom.wrapCanvasRenderingContext(this._ptr.getContext$1(contextId));
+    return LevelDom.wrapCanvasRenderingContext(this._ptr.getContext(contextId));
   }
 }
 CanvasElementWrappingImplementation.prototype.getContext$0 = CanvasElementWrappingImplementation.prototype.getContext;
-CanvasElementWrappingImplementation.prototype.getContext$1 = CanvasElementWrappingImplementation.prototype.getContext;
 // ********** Code for CanvasRenderingContextWrappingImplementation **************
 $inherits(CanvasRenderingContextWrappingImplementation, DOMWrapperBase);
-function CanvasRenderingContextWrappingImplementation() {}
 CanvasRenderingContextWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 CanvasRenderingContextWrappingImplementation._wrap$ctor.prototype = CanvasRenderingContextWrappingImplementation.prototype;
+function CanvasRenderingContextWrappingImplementation() {}
 // ********** Code for CanvasRenderingContext2DWrappingImplementation **************
 $inherits(CanvasRenderingContext2DWrappingImplementation, CanvasRenderingContextWrappingImplementation);
-function CanvasRenderingContext2DWrappingImplementation() {}
 CanvasRenderingContext2DWrappingImplementation._wrap$ctor = function(ptr) {
   CanvasRenderingContextWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 CanvasRenderingContext2DWrappingImplementation._wrap$ctor.prototype = CanvasRenderingContext2DWrappingImplementation.prototype;
+function CanvasRenderingContext2DWrappingImplementation() {}
 CanvasRenderingContext2DWrappingImplementation.prototype.set$font = function(value) {
   this._ptr.set$font(value);
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.arc = function(x, y, radius, startAngle, endAngle, anticlockwise) {
-  this._ptr.arc$6(x, y, radius, startAngle, endAngle, anticlockwise);
+  this._ptr.arc(x, y, radius, startAngle, endAngle, anticlockwise);
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.beginPath = function() {
-  this._ptr.beginPath$0();
+  this._ptr.beginPath();
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.clearRect = function(x, y, width, height) {
-  this._ptr.clearRect$4(x, y, width, height);
+  this._ptr.clearRect(x, y, width, height);
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.closePath = function() {
-  this._ptr.closePath$0();
+  this._ptr.closePath();
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.fill = function() {
-  this._ptr.fill$0();
+  this._ptr.fill();
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.fillText = function(text, x, y, maxWidth) {
@@ -2924,12 +3001,12 @@ CanvasRenderingContext2DWrappingImplementation.prototype.fillText = function(tex
     return;
   }
   else {
-    this._ptr.fillText$4(text, x, y, maxWidth);
+    this._ptr.fillText(text, x, y, maxWidth);
     return;
   }
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.lineTo = function(x, y) {
-  this._ptr.lineTo$2(x, y);
+  this._ptr.lineTo(x, y);
   return;
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.moveTo = function(x, y) {
@@ -2986,7 +3063,7 @@ CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor = function
             return;
           }
           else {
-            this._ptr.setFillColor$5(LevelDom.unwrapMaybePrimitive(c_OR_color_OR_grayLevel_OR_r), alpha_OR_g_OR_m, b_OR_y, a_OR_k, a);
+            this._ptr.setFillColor(LevelDom.unwrapMaybePrimitive(c_OR_color_OR_grayLevel_OR_r), alpha_OR_g_OR_m, b_OR_y, a_OR_k, a);
             return;
           }
         }
@@ -3045,7 +3122,7 @@ CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor = functi
             return;
           }
           else {
-            this._ptr.setStrokeColor$5(LevelDom.unwrapMaybePrimitive(c_OR_color_OR_grayLevel_OR_r), alpha_OR_g_OR_m, b_OR_y, a_OR_k, a);
+            this._ptr.setStrokeColor(LevelDom.unwrapMaybePrimitive(c_OR_color_OR_grayLevel_OR_r), alpha_OR_g_OR_m, b_OR_y, a_OR_k, a);
             return;
           }
         }
@@ -3055,69 +3132,59 @@ CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor = functi
   $throw("Incorrect number or type of arguments");
 }
 CanvasRenderingContext2DWrappingImplementation.prototype.stroke = function() {
-  this._ptr.stroke$0();
+  this._ptr.stroke();
   return;
 }
-CanvasRenderingContext2DWrappingImplementation.prototype.arc$6 = CanvasRenderingContext2DWrappingImplementation.prototype.arc;
-CanvasRenderingContext2DWrappingImplementation.prototype.beginPath$0 = CanvasRenderingContext2DWrappingImplementation.prototype.beginPath;
-CanvasRenderingContext2DWrappingImplementation.prototype.clearRect$4 = CanvasRenderingContext2DWrappingImplementation.prototype.clearRect;
-CanvasRenderingContext2DWrappingImplementation.prototype.closePath$0 = CanvasRenderingContext2DWrappingImplementation.prototype.closePath;
-CanvasRenderingContext2DWrappingImplementation.prototype.fill$0 = CanvasRenderingContext2DWrappingImplementation.prototype.fill;
 CanvasRenderingContext2DWrappingImplementation.prototype.fillText$3 = CanvasRenderingContext2DWrappingImplementation.prototype.fillText;
-CanvasRenderingContext2DWrappingImplementation.prototype.fillText$4 = CanvasRenderingContext2DWrappingImplementation.prototype.fillText;
-CanvasRenderingContext2DWrappingImplementation.prototype.lineTo$2 = CanvasRenderingContext2DWrappingImplementation.prototype.lineTo;
 CanvasRenderingContext2DWrappingImplementation.prototype.moveTo$2 = CanvasRenderingContext2DWrappingImplementation.prototype.moveTo;
 CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor$1 = CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor;
 CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor$2 = CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor;
 CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor$4 = CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor;
-CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor$5 = CanvasRenderingContext2DWrappingImplementation.prototype.setFillColor;
 CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor$1 = CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor;
 CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor$2 = CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor;
 CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor$4 = CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor;
-CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor$5 = CanvasRenderingContext2DWrappingImplementation.prototype.setStrokeColor;
-CanvasRenderingContext2DWrappingImplementation.prototype.stroke$0 = CanvasRenderingContext2DWrappingImplementation.prototype.stroke;
 // ********** Code for CommentWrappingImplementation **************
 $inherits(CommentWrappingImplementation, CharacterDataWrappingImplementation);
-function CommentWrappingImplementation() {}
 CommentWrappingImplementation._wrap$ctor = function(ptr) {
   CharacterDataWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 CommentWrappingImplementation._wrap$ctor.prototype = CommentWrappingImplementation.prototype;
+function CommentWrappingImplementation() {}
 // ********** Code for DListElementWrappingImplementation **************
 $inherits(DListElementWrappingImplementation, ElementWrappingImplementation);
-function DListElementWrappingImplementation() {}
 DListElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 DListElementWrappingImplementation._wrap$ctor.prototype = DListElementWrappingImplementation.prototype;
+function DListElementWrappingImplementation() {}
 // ********** Code for DataListElementWrappingImplementation **************
 $inherits(DataListElementWrappingImplementation, ElementWrappingImplementation);
-function DataListElementWrappingImplementation() {}
 DataListElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 DataListElementWrappingImplementation._wrap$ctor.prototype = DataListElementWrappingImplementation.prototype;
+function DataListElementWrappingImplementation() {}
 // ********** Code for DetailsElementWrappingImplementation **************
 $inherits(DetailsElementWrappingImplementation, ElementWrappingImplementation);
-function DetailsElementWrappingImplementation() {}
 DetailsElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 DetailsElementWrappingImplementation._wrap$ctor.prototype = DetailsElementWrappingImplementation.prototype;
+function DetailsElementWrappingImplementation() {}
 // ********** Code for DivElementWrappingImplementation **************
 $inherits(DivElementWrappingImplementation, ElementWrappingImplementation);
-function DivElementWrappingImplementation() {}
 DivElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 DivElementWrappingImplementation._wrap$ctor.prototype = DivElementWrappingImplementation.prototype;
+function DivElementWrappingImplementation() {}
 // ********** Code for EmbedElementWrappingImplementation **************
 $inherits(EmbedElementWrappingImplementation, ElementWrappingImplementation);
-function EmbedElementWrappingImplementation() {}
 EmbedElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 EmbedElementWrappingImplementation._wrap$ctor.prototype = EmbedElementWrappingImplementation.prototype;
+function EmbedElementWrappingImplementation() {}
 EmbedElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -3132,73 +3199,73 @@ EmbedElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for EntityReferenceWrappingImplementation **************
 $inherits(EntityReferenceWrappingImplementation, NodeWrappingImplementation);
-function EntityReferenceWrappingImplementation() {}
 EntityReferenceWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 EntityReferenceWrappingImplementation._wrap$ctor.prototype = EntityReferenceWrappingImplementation.prototype;
+function EntityReferenceWrappingImplementation() {}
 // ********** Code for EntityWrappingImplementation **************
 $inherits(EntityWrappingImplementation, NodeWrappingImplementation);
-function EntityWrappingImplementation() {}
 EntityWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 EntityWrappingImplementation._wrap$ctor.prototype = EntityWrappingImplementation.prototype;
+function EntityWrappingImplementation() {}
 // ********** Code for FieldSetElementWrappingImplementation **************
 $inherits(FieldSetElementWrappingImplementation, ElementWrappingImplementation);
-function FieldSetElementWrappingImplementation() {}
 FieldSetElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 FieldSetElementWrappingImplementation._wrap$ctor.prototype = FieldSetElementWrappingImplementation.prototype;
+function FieldSetElementWrappingImplementation() {}
 // ********** Code for FontElementWrappingImplementation **************
 $inherits(FontElementWrappingImplementation, ElementWrappingImplementation);
-function FontElementWrappingImplementation() {}
 FontElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 FontElementWrappingImplementation._wrap$ctor.prototype = FontElementWrappingImplementation.prototype;
+function FontElementWrappingImplementation() {}
 // ********** Code for FormElementWrappingImplementation **************
 $inherits(FormElementWrappingImplementation, ElementWrappingImplementation);
-function FormElementWrappingImplementation() {}
 FormElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 FormElementWrappingImplementation._wrap$ctor.prototype = FormElementWrappingImplementation.prototype;
+function FormElementWrappingImplementation() {}
 FormElementWrappingImplementation.prototype.get$length = function() {
   return this._ptr.get$length();
 }
 // ********** Code for HRElementWrappingImplementation **************
 $inherits(HRElementWrappingImplementation, ElementWrappingImplementation);
-function HRElementWrappingImplementation() {}
 HRElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 HRElementWrappingImplementation._wrap$ctor.prototype = HRElementWrappingImplementation.prototype;
+function HRElementWrappingImplementation() {}
 HRElementWrappingImplementation.prototype.set$width = function(value) {
   this._ptr.set$width(value);
 }
 // ********** Code for HeadElementWrappingImplementation **************
 $inherits(HeadElementWrappingImplementation, ElementWrappingImplementation);
-function HeadElementWrappingImplementation() {}
 HeadElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 HeadElementWrappingImplementation._wrap$ctor.prototype = HeadElementWrappingImplementation.prototype;
+function HeadElementWrappingImplementation() {}
 // ********** Code for HeadingElementWrappingImplementation **************
 $inherits(HeadingElementWrappingImplementation, ElementWrappingImplementation);
-function HeadingElementWrappingImplementation() {}
 HeadingElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 HeadingElementWrappingImplementation._wrap$ctor.prototype = HeadingElementWrappingImplementation.prototype;
+function HeadingElementWrappingImplementation() {}
 // ********** Code for IFrameElementWrappingImplementation **************
 $inherits(IFrameElementWrappingImplementation, ElementWrappingImplementation);
-function IFrameElementWrappingImplementation() {}
 IFrameElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 IFrameElementWrappingImplementation._wrap$ctor.prototype = IFrameElementWrappingImplementation.prototype;
+function IFrameElementWrappingImplementation() {}
 IFrameElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -3207,11 +3274,11 @@ IFrameElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for ImageElementWrappingImplementation **************
 $inherits(ImageElementWrappingImplementation, ElementWrappingImplementation);
-function ImageElementWrappingImplementation() {}
 ImageElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ImageElementWrappingImplementation._wrap$ctor.prototype = ImageElementWrappingImplementation.prototype;
+function ImageElementWrappingImplementation() {}
 ImageElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -3226,11 +3293,11 @@ ImageElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for InputElementWrappingImplementation **************
 $inherits(InputElementWrappingImplementation, ElementWrappingImplementation);
-function InputElementWrappingImplementation() {}
 InputElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 InputElementWrappingImplementation._wrap$ctor.prototype = InputElementWrappingImplementation.prototype;
+function InputElementWrappingImplementation() {}
 InputElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -3239,21 +3306,21 @@ InputElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for KeygenElementWrappingImplementation **************
 $inherits(KeygenElementWrappingImplementation, ElementWrappingImplementation);
-function KeygenElementWrappingImplementation() {}
 KeygenElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 KeygenElementWrappingImplementation._wrap$ctor.prototype = KeygenElementWrappingImplementation.prototype;
+function KeygenElementWrappingImplementation() {}
 KeygenElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
 // ********** Code for LIElementWrappingImplementation **************
 $inherits(LIElementWrappingImplementation, ElementWrappingImplementation);
-function LIElementWrappingImplementation() {}
 LIElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 LIElementWrappingImplementation._wrap$ctor.prototype = LIElementWrappingImplementation.prototype;
+function LIElementWrappingImplementation() {}
 LIElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -3262,25 +3329,25 @@ LIElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for LabelElementWrappingImplementation **************
 $inherits(LabelElementWrappingImplementation, ElementWrappingImplementation);
-function LabelElementWrappingImplementation() {}
 LabelElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 LabelElementWrappingImplementation._wrap$ctor.prototype = LabelElementWrappingImplementation.prototype;
+function LabelElementWrappingImplementation() {}
 // ********** Code for LegendElementWrappingImplementation **************
 $inherits(LegendElementWrappingImplementation, ElementWrappingImplementation);
-function LegendElementWrappingImplementation() {}
 LegendElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 LegendElementWrappingImplementation._wrap$ctor.prototype = LegendElementWrappingImplementation.prototype;
+function LegendElementWrappingImplementation() {}
 // ********** Code for LinkElementWrappingImplementation **************
 $inherits(LinkElementWrappingImplementation, ElementWrappingImplementation);
-function LinkElementWrappingImplementation() {}
 LinkElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 LinkElementWrappingImplementation._wrap$ctor.prototype = LinkElementWrappingImplementation.prototype;
+function LinkElementWrappingImplementation() {}
 LinkElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -3289,18 +3356,18 @@ LinkElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for MapElementWrappingImplementation **************
 $inherits(MapElementWrappingImplementation, ElementWrappingImplementation);
-function MapElementWrappingImplementation() {}
 MapElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MapElementWrappingImplementation._wrap$ctor.prototype = MapElementWrappingImplementation.prototype;
+function MapElementWrappingImplementation() {}
 // ********** Code for MarqueeElementWrappingImplementation **************
 $inherits(MarqueeElementWrappingImplementation, ElementWrappingImplementation);
-function MarqueeElementWrappingImplementation() {}
 MarqueeElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MarqueeElementWrappingImplementation._wrap$ctor.prototype = MarqueeElementWrappingImplementation.prototype;
+function MarqueeElementWrappingImplementation() {}
 MarqueeElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -3309,46 +3376,46 @@ MarqueeElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for MenuElementWrappingImplementation **************
 $inherits(MenuElementWrappingImplementation, ElementWrappingImplementation);
-function MenuElementWrappingImplementation() {}
 MenuElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MenuElementWrappingImplementation._wrap$ctor.prototype = MenuElementWrappingImplementation.prototype;
+function MenuElementWrappingImplementation() {}
 // ********** Code for MetaElementWrappingImplementation **************
 $inherits(MetaElementWrappingImplementation, ElementWrappingImplementation);
-function MetaElementWrappingImplementation() {}
 MetaElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MetaElementWrappingImplementation._wrap$ctor.prototype = MetaElementWrappingImplementation.prototype;
+function MetaElementWrappingImplementation() {}
 // ********** Code for MeterElementWrappingImplementation **************
 $inherits(MeterElementWrappingImplementation, ElementWrappingImplementation);
-function MeterElementWrappingImplementation() {}
 MeterElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 MeterElementWrappingImplementation._wrap$ctor.prototype = MeterElementWrappingImplementation.prototype;
+function MeterElementWrappingImplementation() {}
 // ********** Code for ModElementWrappingImplementation **************
 $inherits(ModElementWrappingImplementation, ElementWrappingImplementation);
-function ModElementWrappingImplementation() {}
 ModElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ModElementWrappingImplementation._wrap$ctor.prototype = ModElementWrappingImplementation.prototype;
+function ModElementWrappingImplementation() {}
 // ********** Code for NotationWrappingImplementation **************
 $inherits(NotationWrappingImplementation, NodeWrappingImplementation);
-function NotationWrappingImplementation() {}
 NotationWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 NotationWrappingImplementation._wrap$ctor.prototype = NotationWrappingImplementation.prototype;
+function NotationWrappingImplementation() {}
 // ********** Code for OListElementWrappingImplementation **************
 $inherits(OListElementWrappingImplementation, ElementWrappingImplementation);
-function OListElementWrappingImplementation() {}
 OListElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 OListElementWrappingImplementation._wrap$ctor.prototype = OListElementWrappingImplementation.prototype;
+function OListElementWrappingImplementation() {}
 OListElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -3357,42 +3424,42 @@ OListElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for OptGroupElementWrappingImplementation **************
 $inherits(OptGroupElementWrappingImplementation, ElementWrappingImplementation);
-function OptGroupElementWrappingImplementation() {}
 OptGroupElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 OptGroupElementWrappingImplementation._wrap$ctor.prototype = OptGroupElementWrappingImplementation.prototype;
+function OptGroupElementWrappingImplementation() {}
 // ********** Code for OptionElementWrappingImplementation **************
 $inherits(OptionElementWrappingImplementation, ElementWrappingImplementation);
-function OptionElementWrappingImplementation() {}
 OptionElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 OptionElementWrappingImplementation._wrap$ctor.prototype = OptionElementWrappingImplementation.prototype;
+function OptionElementWrappingImplementation() {}
 // ********** Code for OutputElementWrappingImplementation **************
 $inherits(OutputElementWrappingImplementation, ElementWrappingImplementation);
-function OutputElementWrappingImplementation() {}
 OutputElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 OutputElementWrappingImplementation._wrap$ctor.prototype = OutputElementWrappingImplementation.prototype;
+function OutputElementWrappingImplementation() {}
 OutputElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
 // ********** Code for ParagraphElementWrappingImplementation **************
 $inherits(ParagraphElementWrappingImplementation, ElementWrappingImplementation);
-function ParagraphElementWrappingImplementation() {}
 ParagraphElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ParagraphElementWrappingImplementation._wrap$ctor.prototype = ParagraphElementWrappingImplementation.prototype;
+function ParagraphElementWrappingImplementation() {}
 // ********** Code for ParamElementWrappingImplementation **************
 $inherits(ParamElementWrappingImplementation, ElementWrappingImplementation);
-function ParamElementWrappingImplementation() {}
 ParamElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ParamElementWrappingImplementation._wrap$ctor.prototype = ParamElementWrappingImplementation.prototype;
+function ParamElementWrappingImplementation() {}
 ParamElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -3401,76 +3468,73 @@ ParamElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for PreElementWrappingImplementation **************
 $inherits(PreElementWrappingImplementation, ElementWrappingImplementation);
-function PreElementWrappingImplementation() {}
 PreElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 PreElementWrappingImplementation._wrap$ctor.prototype = PreElementWrappingImplementation.prototype;
+function PreElementWrappingImplementation() {}
 PreElementWrappingImplementation.prototype.set$width = function(value) {
   this._ptr.set$width(value);
 }
 // ********** Code for ProcessingInstructionWrappingImplementation **************
 $inherits(ProcessingInstructionWrappingImplementation, NodeWrappingImplementation);
-function ProcessingInstructionWrappingImplementation() {}
 ProcessingInstructionWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ProcessingInstructionWrappingImplementation._wrap$ctor.prototype = ProcessingInstructionWrappingImplementation.prototype;
+function ProcessingInstructionWrappingImplementation() {}
 // ********** Code for ProgressElementWrappingImplementation **************
 $inherits(ProgressElementWrappingImplementation, ElementWrappingImplementation);
-function ProgressElementWrappingImplementation() {}
 ProgressElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ProgressElementWrappingImplementation._wrap$ctor.prototype = ProgressElementWrappingImplementation.prototype;
+function ProgressElementWrappingImplementation() {}
 ProgressElementWrappingImplementation.prototype.get$position = function() {
   return this._ptr.get$position();
 }
 // ********** Code for QuoteElementWrappingImplementation **************
 $inherits(QuoteElementWrappingImplementation, ElementWrappingImplementation);
-function QuoteElementWrappingImplementation() {}
 QuoteElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 QuoteElementWrappingImplementation._wrap$ctor.prototype = QuoteElementWrappingImplementation.prototype;
+function QuoteElementWrappingImplementation() {}
 // ********** Code for SVGElementWrappingImplementation **************
 $inherits(SVGElementWrappingImplementation, ElementWrappingImplementation);
-function SVGElementWrappingImplementation() {}
 SVGElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGElementWrappingImplementation._wrap$ctor.prototype = SVGElementWrappingImplementation.prototype;
-SVGElementWrappingImplementation.prototype.get$id = function() {
-  return this._ptr.get$id();
-}
+function SVGElementWrappingImplementation() {}
 // ********** Code for SVGAElementWrappingImplementation **************
 $inherits(SVGAElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGAElementWrappingImplementation() {}
 SVGAElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAElementWrappingImplementation._wrap$ctor.prototype = SVGAElementWrappingImplementation.prototype;
+function SVGAElementWrappingImplementation() {}
 // ********** Code for SVGAltGlyphDefElementWrappingImplementation **************
 $inherits(SVGAltGlyphDefElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGAltGlyphDefElementWrappingImplementation() {}
 SVGAltGlyphDefElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAltGlyphDefElementWrappingImplementation._wrap$ctor.prototype = SVGAltGlyphDefElementWrappingImplementation.prototype;
+function SVGAltGlyphDefElementWrappingImplementation() {}
 // ********** Code for SVGTextContentElementWrappingImplementation **************
 $inherits(SVGTextContentElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGTextContentElementWrappingImplementation() {}
 SVGTextContentElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTextContentElementWrappingImplementation._wrap$ctor.prototype = SVGTextContentElementWrappingImplementation.prototype;
+function SVGTextContentElementWrappingImplementation() {}
 // ********** Code for SVGTextPositioningElementWrappingImplementation **************
 $inherits(SVGTextPositioningElementWrappingImplementation, SVGTextContentElementWrappingImplementation);
-function SVGTextPositioningElementWrappingImplementation() {}
 SVGTextPositioningElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextContentElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTextPositioningElementWrappingImplementation._wrap$ctor.prototype = SVGTextPositioningElementWrappingImplementation.prototype;
+function SVGTextPositioningElementWrappingImplementation() {}
 SVGTextPositioningElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLengthList(this._ptr.get$x());
 }
@@ -3479,112 +3543,112 @@ SVGTextPositioningElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGAltGlyphElementWrappingImplementation **************
 $inherits(SVGAltGlyphElementWrappingImplementation, SVGTextPositioningElementWrappingImplementation);
-function SVGAltGlyphElementWrappingImplementation() {}
 SVGAltGlyphElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextPositioningElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAltGlyphElementWrappingImplementation._wrap$ctor.prototype = SVGAltGlyphElementWrappingImplementation.prototype;
+function SVGAltGlyphElementWrappingImplementation() {}
 // ********** Code for SVGAltGlyphItemElementWrappingImplementation **************
 $inherits(SVGAltGlyphItemElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGAltGlyphItemElementWrappingImplementation() {}
 SVGAltGlyphItemElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAltGlyphItemElementWrappingImplementation._wrap$ctor.prototype = SVGAltGlyphItemElementWrappingImplementation.prototype;
+function SVGAltGlyphItemElementWrappingImplementation() {}
 // ********** Code for SVGAnimationElementWrappingImplementation **************
 $inherits(SVGAnimationElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGAnimationElementWrappingImplementation() {}
 SVGAnimationElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAnimationElementWrappingImplementation._wrap$ctor.prototype = SVGAnimationElementWrappingImplementation.prototype;
+function SVGAnimationElementWrappingImplementation() {}
 // ********** Code for SVGAnimateColorElementWrappingImplementation **************
 $inherits(SVGAnimateColorElementWrappingImplementation, SVGAnimationElementWrappingImplementation);
-function SVGAnimateColorElementWrappingImplementation() {}
 SVGAnimateColorElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGAnimationElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAnimateColorElementWrappingImplementation._wrap$ctor.prototype = SVGAnimateColorElementWrappingImplementation.prototype;
+function SVGAnimateColorElementWrappingImplementation() {}
 // ********** Code for SVGAnimateElementWrappingImplementation **************
 $inherits(SVGAnimateElementWrappingImplementation, SVGAnimationElementWrappingImplementation);
-function SVGAnimateElementWrappingImplementation() {}
 SVGAnimateElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGAnimationElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAnimateElementWrappingImplementation._wrap$ctor.prototype = SVGAnimateElementWrappingImplementation.prototype;
+function SVGAnimateElementWrappingImplementation() {}
 // ********** Code for SVGAnimateMotionElementWrappingImplementation **************
 $inherits(SVGAnimateMotionElementWrappingImplementation, SVGAnimationElementWrappingImplementation);
-function SVGAnimateMotionElementWrappingImplementation() {}
 SVGAnimateMotionElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGAnimationElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAnimateMotionElementWrappingImplementation._wrap$ctor.prototype = SVGAnimateMotionElementWrappingImplementation.prototype;
+function SVGAnimateMotionElementWrappingImplementation() {}
 // ********** Code for SVGAnimateTransformElementWrappingImplementation **************
 $inherits(SVGAnimateTransformElementWrappingImplementation, SVGAnimationElementWrappingImplementation);
-function SVGAnimateTransformElementWrappingImplementation() {}
 SVGAnimateTransformElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGAnimationElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGAnimateTransformElementWrappingImplementation._wrap$ctor.prototype = SVGAnimateTransformElementWrappingImplementation.prototype;
+function SVGAnimateTransformElementWrappingImplementation() {}
 // ********** Code for SVGAnimatedEnumerationWrappingImplementation **************
 $inherits(SVGAnimatedEnumerationWrappingImplementation, DOMWrapperBase);
-function SVGAnimatedEnumerationWrappingImplementation() {}
 SVGAnimatedEnumerationWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 SVGAnimatedEnumerationWrappingImplementation._wrap$ctor.prototype = SVGAnimatedEnumerationWrappingImplementation.prototype;
+function SVGAnimatedEnumerationWrappingImplementation() {}
 // ********** Code for SVGAnimatedLengthListWrappingImplementation **************
 $inherits(SVGAnimatedLengthListWrappingImplementation, DOMWrapperBase);
-function SVGAnimatedLengthListWrappingImplementation() {}
 SVGAnimatedLengthListWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 SVGAnimatedLengthListWrappingImplementation._wrap$ctor.prototype = SVGAnimatedLengthListWrappingImplementation.prototype;
+function SVGAnimatedLengthListWrappingImplementation() {}
 // ********** Code for SVGAnimatedLengthWrappingImplementation **************
 $inherits(SVGAnimatedLengthWrappingImplementation, DOMWrapperBase);
-function SVGAnimatedLengthWrappingImplementation() {}
 SVGAnimatedLengthWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 SVGAnimatedLengthWrappingImplementation._wrap$ctor.prototype = SVGAnimatedLengthWrappingImplementation.prototype;
+function SVGAnimatedLengthWrappingImplementation() {}
 // ********** Code for SVGAnimatedNumberWrappingImplementation **************
 $inherits(SVGAnimatedNumberWrappingImplementation, DOMWrapperBase);
-function SVGAnimatedNumberWrappingImplementation() {}
 SVGAnimatedNumberWrappingImplementation._wrap$ctor = function(ptr) {
   DOMWrapperBase._wrap$ctor.call(this, ptr);
 }
 SVGAnimatedNumberWrappingImplementation._wrap$ctor.prototype = SVGAnimatedNumberWrappingImplementation.prototype;
+function SVGAnimatedNumberWrappingImplementation() {}
 // ********** Code for SVGCircleElementWrappingImplementation **************
 $inherits(SVGCircleElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGCircleElementWrappingImplementation() {}
 SVGCircleElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGCircleElementWrappingImplementation._wrap$ctor.prototype = SVGCircleElementWrappingImplementation.prototype;
+function SVGCircleElementWrappingImplementation() {}
 // ********** Code for SVGClipPathElementWrappingImplementation **************
 $inherits(SVGClipPathElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGClipPathElementWrappingImplementation() {}
 SVGClipPathElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGClipPathElementWrappingImplementation._wrap$ctor.prototype = SVGClipPathElementWrappingImplementation.prototype;
+function SVGClipPathElementWrappingImplementation() {}
 // ********** Code for SVGComponentTransferFunctionElementWrappingImplementation **************
 $inherits(SVGComponentTransferFunctionElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGComponentTransferFunctionElementWrappingImplementation() {}
 SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor.prototype = SVGComponentTransferFunctionElementWrappingImplementation.prototype;
+function SVGComponentTransferFunctionElementWrappingImplementation() {}
 SVGComponentTransferFunctionElementWrappingImplementation.prototype.get$type = function() {
   return LevelDom.wrapSVGAnimatedEnumeration(this._ptr.get$type());
 }
 // ********** Code for SVGCursorElementWrappingImplementation **************
 $inherits(SVGCursorElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGCursorElementWrappingImplementation() {}
 SVGCursorElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGCursorElementWrappingImplementation._wrap$ctor.prototype = SVGCursorElementWrappingImplementation.prototype;
+function SVGCursorElementWrappingImplementation() {}
 SVGCursorElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3593,32 +3657,32 @@ SVGCursorElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGDefsElementWrappingImplementation **************
 $inherits(SVGDefsElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGDefsElementWrappingImplementation() {}
 SVGDefsElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGDefsElementWrappingImplementation._wrap$ctor.prototype = SVGDefsElementWrappingImplementation.prototype;
+function SVGDefsElementWrappingImplementation() {}
 // ********** Code for SVGDescElementWrappingImplementation **************
 $inherits(SVGDescElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGDescElementWrappingImplementation() {}
 SVGDescElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGDescElementWrappingImplementation._wrap$ctor.prototype = SVGDescElementWrappingImplementation.prototype;
+function SVGDescElementWrappingImplementation() {}
 // ********** Code for SVGEllipseElementWrappingImplementation **************
 $inherits(SVGEllipseElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGEllipseElementWrappingImplementation() {}
 SVGEllipseElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGEllipseElementWrappingImplementation._wrap$ctor.prototype = SVGEllipseElementWrappingImplementation.prototype;
+function SVGEllipseElementWrappingImplementation() {}
 // ********** Code for SVGFEBlendElementWrappingImplementation **************
 $inherits(SVGFEBlendElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEBlendElementWrappingImplementation() {}
 SVGFEBlendElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEBlendElementWrappingImplementation._wrap$ctor.prototype = SVGFEBlendElementWrappingImplementation.prototype;
+function SVGFEBlendElementWrappingImplementation() {}
 SVGFEBlendElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3627,11 +3691,11 @@ SVGFEBlendElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEColorMatrixElementWrappingImplementation **************
 $inherits(SVGFEColorMatrixElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEColorMatrixElementWrappingImplementation() {}
 SVGFEColorMatrixElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEColorMatrixElementWrappingImplementation._wrap$ctor.prototype = SVGFEColorMatrixElementWrappingImplementation.prototype;
+function SVGFEColorMatrixElementWrappingImplementation() {}
 SVGFEColorMatrixElementWrappingImplementation.prototype.get$type = function() {
   return LevelDom.wrapSVGAnimatedEnumeration(this._ptr.get$type());
 }
@@ -3643,11 +3707,11 @@ SVGFEColorMatrixElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEComponentTransferElementWrappingImplementation **************
 $inherits(SVGFEComponentTransferElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEComponentTransferElementWrappingImplementation() {}
 SVGFEComponentTransferElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEComponentTransferElementWrappingImplementation._wrap$ctor.prototype = SVGFEComponentTransferElementWrappingImplementation.prototype;
+function SVGFEComponentTransferElementWrappingImplementation() {}
 SVGFEComponentTransferElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3656,11 +3720,11 @@ SVGFEComponentTransferElementWrappingImplementation.prototype.get$y = function()
 }
 // ********** Code for SVGFEConvolveMatrixElementWrappingImplementation **************
 $inherits(SVGFEConvolveMatrixElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEConvolveMatrixElementWrappingImplementation() {}
 SVGFEConvolveMatrixElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEConvolveMatrixElementWrappingImplementation._wrap$ctor.prototype = SVGFEConvolveMatrixElementWrappingImplementation.prototype;
+function SVGFEConvolveMatrixElementWrappingImplementation() {}
 SVGFEConvolveMatrixElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3669,11 +3733,11 @@ SVGFEConvolveMatrixElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEDiffuseLightingElementWrappingImplementation **************
 $inherits(SVGFEDiffuseLightingElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEDiffuseLightingElementWrappingImplementation() {}
 SVGFEDiffuseLightingElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEDiffuseLightingElementWrappingImplementation._wrap$ctor.prototype = SVGFEDiffuseLightingElementWrappingImplementation.prototype;
+function SVGFEDiffuseLightingElementWrappingImplementation() {}
 SVGFEDiffuseLightingElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3682,11 +3746,11 @@ SVGFEDiffuseLightingElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEDisplacementMapElementWrappingImplementation **************
 $inherits(SVGFEDisplacementMapElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEDisplacementMapElementWrappingImplementation() {}
 SVGFEDisplacementMapElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEDisplacementMapElementWrappingImplementation._wrap$ctor.prototype = SVGFEDisplacementMapElementWrappingImplementation.prototype;
+function SVGFEDisplacementMapElementWrappingImplementation() {}
 SVGFEDisplacementMapElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3695,18 +3759,18 @@ SVGFEDisplacementMapElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEDistantLightElementWrappingImplementation **************
 $inherits(SVGFEDistantLightElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEDistantLightElementWrappingImplementation() {}
 SVGFEDistantLightElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEDistantLightElementWrappingImplementation._wrap$ctor.prototype = SVGFEDistantLightElementWrappingImplementation.prototype;
+function SVGFEDistantLightElementWrappingImplementation() {}
 // ********** Code for SVGFEDropShadowElementWrappingImplementation **************
 $inherits(SVGFEDropShadowElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEDropShadowElementWrappingImplementation() {}
 SVGFEDropShadowElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEDropShadowElementWrappingImplementation._wrap$ctor.prototype = SVGFEDropShadowElementWrappingImplementation.prototype;
+function SVGFEDropShadowElementWrappingImplementation() {}
 SVGFEDropShadowElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3715,11 +3779,11 @@ SVGFEDropShadowElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEFloodElementWrappingImplementation **************
 $inherits(SVGFEFloodElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEFloodElementWrappingImplementation() {}
 SVGFEFloodElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEFloodElementWrappingImplementation._wrap$ctor.prototype = SVGFEFloodElementWrappingImplementation.prototype;
+function SVGFEFloodElementWrappingImplementation() {}
 SVGFEFloodElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3728,39 +3792,39 @@ SVGFEFloodElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEFuncAElementWrappingImplementation **************
 $inherits(SVGFEFuncAElementWrappingImplementation, SVGComponentTransferFunctionElementWrappingImplementation);
-function SVGFEFuncAElementWrappingImplementation() {}
 SVGFEFuncAElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEFuncAElementWrappingImplementation._wrap$ctor.prototype = SVGFEFuncAElementWrappingImplementation.prototype;
+function SVGFEFuncAElementWrappingImplementation() {}
 // ********** Code for SVGFEFuncBElementWrappingImplementation **************
 $inherits(SVGFEFuncBElementWrappingImplementation, SVGComponentTransferFunctionElementWrappingImplementation);
-function SVGFEFuncBElementWrappingImplementation() {}
 SVGFEFuncBElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEFuncBElementWrappingImplementation._wrap$ctor.prototype = SVGFEFuncBElementWrappingImplementation.prototype;
+function SVGFEFuncBElementWrappingImplementation() {}
 // ********** Code for SVGFEFuncGElementWrappingImplementation **************
 $inherits(SVGFEFuncGElementWrappingImplementation, SVGComponentTransferFunctionElementWrappingImplementation);
-function SVGFEFuncGElementWrappingImplementation() {}
 SVGFEFuncGElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEFuncGElementWrappingImplementation._wrap$ctor.prototype = SVGFEFuncGElementWrappingImplementation.prototype;
+function SVGFEFuncGElementWrappingImplementation() {}
 // ********** Code for SVGFEFuncRElementWrappingImplementation **************
 $inherits(SVGFEFuncRElementWrappingImplementation, SVGComponentTransferFunctionElementWrappingImplementation);
-function SVGFEFuncRElementWrappingImplementation() {}
 SVGFEFuncRElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGComponentTransferFunctionElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEFuncRElementWrappingImplementation._wrap$ctor.prototype = SVGFEFuncRElementWrappingImplementation.prototype;
+function SVGFEFuncRElementWrappingImplementation() {}
 // ********** Code for SVGFEGaussianBlurElementWrappingImplementation **************
 $inherits(SVGFEGaussianBlurElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEGaussianBlurElementWrappingImplementation() {}
 SVGFEGaussianBlurElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEGaussianBlurElementWrappingImplementation._wrap$ctor.prototype = SVGFEGaussianBlurElementWrappingImplementation.prototype;
+function SVGFEGaussianBlurElementWrappingImplementation() {}
 SVGFEGaussianBlurElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3769,11 +3833,11 @@ SVGFEGaussianBlurElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEImageElementWrappingImplementation **************
 $inherits(SVGFEImageElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEImageElementWrappingImplementation() {}
 SVGFEImageElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEImageElementWrappingImplementation._wrap$ctor.prototype = SVGFEImageElementWrappingImplementation.prototype;
+function SVGFEImageElementWrappingImplementation() {}
 SVGFEImageElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3782,11 +3846,11 @@ SVGFEImageElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEMergeElementWrappingImplementation **************
 $inherits(SVGFEMergeElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEMergeElementWrappingImplementation() {}
 SVGFEMergeElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEMergeElementWrappingImplementation._wrap$ctor.prototype = SVGFEMergeElementWrappingImplementation.prototype;
+function SVGFEMergeElementWrappingImplementation() {}
 SVGFEMergeElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3795,18 +3859,18 @@ SVGFEMergeElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEMergeNodeElementWrappingImplementation **************
 $inherits(SVGFEMergeNodeElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEMergeNodeElementWrappingImplementation() {}
 SVGFEMergeNodeElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEMergeNodeElementWrappingImplementation._wrap$ctor.prototype = SVGFEMergeNodeElementWrappingImplementation.prototype;
+function SVGFEMergeNodeElementWrappingImplementation() {}
 // ********** Code for SVGFEOffsetElementWrappingImplementation **************
 $inherits(SVGFEOffsetElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEOffsetElementWrappingImplementation() {}
 SVGFEOffsetElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEOffsetElementWrappingImplementation._wrap$ctor.prototype = SVGFEOffsetElementWrappingImplementation.prototype;
+function SVGFEOffsetElementWrappingImplementation() {}
 SVGFEOffsetElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3815,11 +3879,11 @@ SVGFEOffsetElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFEPointLightElementWrappingImplementation **************
 $inherits(SVGFEPointLightElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFEPointLightElementWrappingImplementation() {}
 SVGFEPointLightElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFEPointLightElementWrappingImplementation._wrap$ctor.prototype = SVGFEPointLightElementWrappingImplementation.prototype;
+function SVGFEPointLightElementWrappingImplementation() {}
 SVGFEPointLightElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedNumber(this._ptr.get$x());
 }
@@ -3828,11 +3892,11 @@ SVGFEPointLightElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFESpecularLightingElementWrappingImplementation **************
 $inherits(SVGFESpecularLightingElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFESpecularLightingElementWrappingImplementation() {}
 SVGFESpecularLightingElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFESpecularLightingElementWrappingImplementation._wrap$ctor.prototype = SVGFESpecularLightingElementWrappingImplementation.prototype;
+function SVGFESpecularLightingElementWrappingImplementation() {}
 SVGFESpecularLightingElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3841,11 +3905,11 @@ SVGFESpecularLightingElementWrappingImplementation.prototype.get$y = function() 
 }
 // ********** Code for SVGFESpotLightElementWrappingImplementation **************
 $inherits(SVGFESpotLightElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFESpotLightElementWrappingImplementation() {}
 SVGFESpotLightElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFESpotLightElementWrappingImplementation._wrap$ctor.prototype = SVGFESpotLightElementWrappingImplementation.prototype;
+function SVGFESpotLightElementWrappingImplementation() {}
 SVGFESpotLightElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedNumber(this._ptr.get$x());
 }
@@ -3854,11 +3918,11 @@ SVGFESpotLightElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFETileElementWrappingImplementation **************
 $inherits(SVGFETileElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFETileElementWrappingImplementation() {}
 SVGFETileElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFETileElementWrappingImplementation._wrap$ctor.prototype = SVGFETileElementWrappingImplementation.prototype;
+function SVGFETileElementWrappingImplementation() {}
 SVGFETileElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3867,11 +3931,11 @@ SVGFETileElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFETurbulenceElementWrappingImplementation **************
 $inherits(SVGFETurbulenceElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFETurbulenceElementWrappingImplementation() {}
 SVGFETurbulenceElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFETurbulenceElementWrappingImplementation._wrap$ctor.prototype = SVGFETurbulenceElementWrappingImplementation.prototype;
+function SVGFETurbulenceElementWrappingImplementation() {}
 SVGFETurbulenceElementWrappingImplementation.prototype.get$type = function() {
   return LevelDom.wrapSVGAnimatedEnumeration(this._ptr.get$type());
 }
@@ -3883,11 +3947,11 @@ SVGFETurbulenceElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFilterElementWrappingImplementation **************
 $inherits(SVGFilterElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFilterElementWrappingImplementation() {}
 SVGFilterElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFilterElementWrappingImplementation._wrap$ctor.prototype = SVGFilterElementWrappingImplementation.prototype;
+function SVGFilterElementWrappingImplementation() {}
 SVGFilterElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3896,53 +3960,53 @@ SVGFilterElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGFontElementWrappingImplementation **************
 $inherits(SVGFontElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontElementWrappingImplementation() {}
 SVGFontElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontElementWrappingImplementation._wrap$ctor.prototype = SVGFontElementWrappingImplementation.prototype;
+function SVGFontElementWrappingImplementation() {}
 // ********** Code for SVGFontFaceElementWrappingImplementation **************
 $inherits(SVGFontFaceElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontFaceElementWrappingImplementation() {}
 SVGFontFaceElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontFaceElementWrappingImplementation._wrap$ctor.prototype = SVGFontFaceElementWrappingImplementation.prototype;
+function SVGFontFaceElementWrappingImplementation() {}
 // ********** Code for SVGFontFaceFormatElementWrappingImplementation **************
 $inherits(SVGFontFaceFormatElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontFaceFormatElementWrappingImplementation() {}
 SVGFontFaceFormatElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontFaceFormatElementWrappingImplementation._wrap$ctor.prototype = SVGFontFaceFormatElementWrappingImplementation.prototype;
+function SVGFontFaceFormatElementWrappingImplementation() {}
 // ********** Code for SVGFontFaceNameElementWrappingImplementation **************
 $inherits(SVGFontFaceNameElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontFaceNameElementWrappingImplementation() {}
 SVGFontFaceNameElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontFaceNameElementWrappingImplementation._wrap$ctor.prototype = SVGFontFaceNameElementWrappingImplementation.prototype;
+function SVGFontFaceNameElementWrappingImplementation() {}
 // ********** Code for SVGFontFaceSrcElementWrappingImplementation **************
 $inherits(SVGFontFaceSrcElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontFaceSrcElementWrappingImplementation() {}
 SVGFontFaceSrcElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontFaceSrcElementWrappingImplementation._wrap$ctor.prototype = SVGFontFaceSrcElementWrappingImplementation.prototype;
+function SVGFontFaceSrcElementWrappingImplementation() {}
 // ********** Code for SVGFontFaceUriElementWrappingImplementation **************
 $inherits(SVGFontFaceUriElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGFontFaceUriElementWrappingImplementation() {}
 SVGFontFaceUriElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGFontFaceUriElementWrappingImplementation._wrap$ctor.prototype = SVGFontFaceUriElementWrappingImplementation.prototype;
+function SVGFontFaceUriElementWrappingImplementation() {}
 // ********** Code for SVGForeignObjectElementWrappingImplementation **************
 $inherits(SVGForeignObjectElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGForeignObjectElementWrappingImplementation() {}
 SVGForeignObjectElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGForeignObjectElementWrappingImplementation._wrap$ctor.prototype = SVGForeignObjectElementWrappingImplementation.prototype;
+function SVGForeignObjectElementWrappingImplementation() {}
 SVGForeignObjectElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -3951,58 +4015,52 @@ SVGForeignObjectElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGGElementWrappingImplementation **************
 $inherits(SVGGElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGGElementWrappingImplementation() {}
 SVGGElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGGElementWrappingImplementation._wrap$ctor.prototype = SVGGElementWrappingImplementation.prototype;
+function SVGGElementWrappingImplementation() {}
 // ********** Code for SVGGlyphElementWrappingImplementation **************
 $inherits(SVGGlyphElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGGlyphElementWrappingImplementation() {}
 SVGGlyphElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGGlyphElementWrappingImplementation._wrap$ctor.prototype = SVGGlyphElementWrappingImplementation.prototype;
+function SVGGlyphElementWrappingImplementation() {}
 // ********** Code for SVGGlyphRefElementWrappingImplementation **************
 $inherits(SVGGlyphRefElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGGlyphRefElementWrappingImplementation() {}
 SVGGlyphRefElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGGlyphRefElementWrappingImplementation._wrap$ctor.prototype = SVGGlyphRefElementWrappingImplementation.prototype;
+function SVGGlyphRefElementWrappingImplementation() {}
 SVGGlyphRefElementWrappingImplementation.prototype.get$x = function() {
   return this._ptr.get$x();
-}
-SVGGlyphRefElementWrappingImplementation.prototype.set$x = function(value) {
-  this._ptr.set$x(value);
 }
 SVGGlyphRefElementWrappingImplementation.prototype.get$y = function() {
   return this._ptr.get$y();
 }
-SVGGlyphRefElementWrappingImplementation.prototype.set$y = function(value) {
-  this._ptr.set$y(value);
-}
 // ********** Code for SVGGradientElementWrappingImplementation **************
 $inherits(SVGGradientElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGGradientElementWrappingImplementation() {}
 SVGGradientElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGGradientElementWrappingImplementation._wrap$ctor.prototype = SVGGradientElementWrappingImplementation.prototype;
+function SVGGradientElementWrappingImplementation() {}
 // ********** Code for SVGHKernElementWrappingImplementation **************
 $inherits(SVGHKernElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGHKernElementWrappingImplementation() {}
 SVGHKernElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGHKernElementWrappingImplementation._wrap$ctor.prototype = SVGHKernElementWrappingImplementation.prototype;
+function SVGHKernElementWrappingImplementation() {}
 // ********** Code for SVGImageElementWrappingImplementation **************
 $inherits(SVGImageElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGImageElementWrappingImplementation() {}
 SVGImageElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGImageElementWrappingImplementation._wrap$ctor.prototype = SVGImageElementWrappingImplementation.prototype;
+function SVGImageElementWrappingImplementation() {}
 SVGImageElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -4011,39 +4069,39 @@ SVGImageElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGLineElementWrappingImplementation **************
 $inherits(SVGLineElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGLineElementWrappingImplementation() {}
 SVGLineElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGLineElementWrappingImplementation._wrap$ctor.prototype = SVGLineElementWrappingImplementation.prototype;
+function SVGLineElementWrappingImplementation() {}
 // ********** Code for SVGLinearGradientElementWrappingImplementation **************
 $inherits(SVGLinearGradientElementWrappingImplementation, SVGGradientElementWrappingImplementation);
-function SVGLinearGradientElementWrappingImplementation() {}
 SVGLinearGradientElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGGradientElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGLinearGradientElementWrappingImplementation._wrap$ctor.prototype = SVGLinearGradientElementWrappingImplementation.prototype;
+function SVGLinearGradientElementWrappingImplementation() {}
 // ********** Code for SVGMPathElementWrappingImplementation **************
 $inherits(SVGMPathElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGMPathElementWrappingImplementation() {}
 SVGMPathElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGMPathElementWrappingImplementation._wrap$ctor.prototype = SVGMPathElementWrappingImplementation.prototype;
+function SVGMPathElementWrappingImplementation() {}
 // ********** Code for SVGMarkerElementWrappingImplementation **************
 $inherits(SVGMarkerElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGMarkerElementWrappingImplementation() {}
 SVGMarkerElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGMarkerElementWrappingImplementation._wrap$ctor.prototype = SVGMarkerElementWrappingImplementation.prototype;
+function SVGMarkerElementWrappingImplementation() {}
 // ********** Code for SVGMaskElementWrappingImplementation **************
 $inherits(SVGMaskElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGMaskElementWrappingImplementation() {}
 SVGMaskElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGMaskElementWrappingImplementation._wrap$ctor.prototype = SVGMaskElementWrappingImplementation.prototype;
+function SVGMaskElementWrappingImplementation() {}
 SVGMaskElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -4052,32 +4110,32 @@ SVGMaskElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGMetadataElementWrappingImplementation **************
 $inherits(SVGMetadataElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGMetadataElementWrappingImplementation() {}
 SVGMetadataElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGMetadataElementWrappingImplementation._wrap$ctor.prototype = SVGMetadataElementWrappingImplementation.prototype;
+function SVGMetadataElementWrappingImplementation() {}
 // ********** Code for SVGMissingGlyphElementWrappingImplementation **************
 $inherits(SVGMissingGlyphElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGMissingGlyphElementWrappingImplementation() {}
 SVGMissingGlyphElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGMissingGlyphElementWrappingImplementation._wrap$ctor.prototype = SVGMissingGlyphElementWrappingImplementation.prototype;
+function SVGMissingGlyphElementWrappingImplementation() {}
 // ********** Code for SVGPathElementWrappingImplementation **************
 $inherits(SVGPathElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGPathElementWrappingImplementation() {}
 SVGPathElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGPathElementWrappingImplementation._wrap$ctor.prototype = SVGPathElementWrappingImplementation.prototype;
+function SVGPathElementWrappingImplementation() {}
 // ********** Code for SVGPatternElementWrappingImplementation **************
 $inherits(SVGPatternElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGPatternElementWrappingImplementation() {}
 SVGPatternElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGPatternElementWrappingImplementation._wrap$ctor.prototype = SVGPatternElementWrappingImplementation.prototype;
+function SVGPatternElementWrappingImplementation() {}
 SVGPatternElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -4086,32 +4144,32 @@ SVGPatternElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGPolygonElementWrappingImplementation **************
 $inherits(SVGPolygonElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGPolygonElementWrappingImplementation() {}
 SVGPolygonElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGPolygonElementWrappingImplementation._wrap$ctor.prototype = SVGPolygonElementWrappingImplementation.prototype;
+function SVGPolygonElementWrappingImplementation() {}
 // ********** Code for SVGPolylineElementWrappingImplementation **************
 $inherits(SVGPolylineElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGPolylineElementWrappingImplementation() {}
 SVGPolylineElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGPolylineElementWrappingImplementation._wrap$ctor.prototype = SVGPolylineElementWrappingImplementation.prototype;
+function SVGPolylineElementWrappingImplementation() {}
 // ********** Code for SVGRadialGradientElementWrappingImplementation **************
 $inherits(SVGRadialGradientElementWrappingImplementation, SVGGradientElementWrappingImplementation);
-function SVGRadialGradientElementWrappingImplementation() {}
 SVGRadialGradientElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGGradientElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGRadialGradientElementWrappingImplementation._wrap$ctor.prototype = SVGRadialGradientElementWrappingImplementation.prototype;
+function SVGRadialGradientElementWrappingImplementation() {}
 // ********** Code for SVGRectElementWrappingImplementation **************
 $inherits(SVGRectElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGRectElementWrappingImplementation() {}
 SVGRectElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGRectElementWrappingImplementation._wrap$ctor.prototype = SVGRectElementWrappingImplementation.prototype;
+function SVGRectElementWrappingImplementation() {}
 SVGRectElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -4120,11 +4178,11 @@ SVGRectElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGScriptElementWrappingImplementation **************
 $inherits(SVGScriptElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGScriptElementWrappingImplementation() {}
 SVGScriptElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGScriptElementWrappingImplementation._wrap$ctor.prototype = SVGScriptElementWrappingImplementation.prototype;
+function SVGScriptElementWrappingImplementation() {}
 SVGScriptElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4133,25 +4191,25 @@ SVGScriptElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for SVGSetElementWrappingImplementation **************
 $inherits(SVGSetElementWrappingImplementation, SVGAnimationElementWrappingImplementation);
-function SVGSetElementWrappingImplementation() {}
 SVGSetElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGAnimationElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGSetElementWrappingImplementation._wrap$ctor.prototype = SVGSetElementWrappingImplementation.prototype;
+function SVGSetElementWrappingImplementation() {}
 // ********** Code for SVGStopElementWrappingImplementation **************
 $inherits(SVGStopElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGStopElementWrappingImplementation() {}
 SVGStopElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGStopElementWrappingImplementation._wrap$ctor.prototype = SVGStopElementWrappingImplementation.prototype;
+function SVGStopElementWrappingImplementation() {}
 // ********** Code for SVGStyleElementWrappingImplementation **************
 $inherits(SVGStyleElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGStyleElementWrappingImplementation() {}
 SVGStyleElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGStyleElementWrappingImplementation._wrap$ctor.prototype = SVGStyleElementWrappingImplementation.prototype;
+function SVGStyleElementWrappingImplementation() {}
 SVGStyleElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4160,60 +4218,60 @@ SVGStyleElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for SVGSwitchElementWrappingImplementation **************
 $inherits(SVGSwitchElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGSwitchElementWrappingImplementation() {}
 SVGSwitchElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGSwitchElementWrappingImplementation._wrap$ctor.prototype = SVGSwitchElementWrappingImplementation.prototype;
+function SVGSwitchElementWrappingImplementation() {}
 // ********** Code for SVGSymbolElementWrappingImplementation **************
 $inherits(SVGSymbolElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGSymbolElementWrappingImplementation() {}
 SVGSymbolElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGSymbolElementWrappingImplementation._wrap$ctor.prototype = SVGSymbolElementWrappingImplementation.prototype;
+function SVGSymbolElementWrappingImplementation() {}
 // ********** Code for SVGTRefElementWrappingImplementation **************
 $inherits(SVGTRefElementWrappingImplementation, SVGTextPositioningElementWrappingImplementation);
-function SVGTRefElementWrappingImplementation() {}
 SVGTRefElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextPositioningElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTRefElementWrappingImplementation._wrap$ctor.prototype = SVGTRefElementWrappingImplementation.prototype;
+function SVGTRefElementWrappingImplementation() {}
 // ********** Code for SVGTSpanElementWrappingImplementation **************
 $inherits(SVGTSpanElementWrappingImplementation, SVGTextPositioningElementWrappingImplementation);
-function SVGTSpanElementWrappingImplementation() {}
 SVGTSpanElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextPositioningElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTSpanElementWrappingImplementation._wrap$ctor.prototype = SVGTSpanElementWrappingImplementation.prototype;
+function SVGTSpanElementWrappingImplementation() {}
 // ********** Code for SVGTextElementWrappingImplementation **************
 $inherits(SVGTextElementWrappingImplementation, SVGTextPositioningElementWrappingImplementation);
-function SVGTextElementWrappingImplementation() {}
 SVGTextElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextPositioningElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTextElementWrappingImplementation._wrap$ctor.prototype = SVGTextElementWrappingImplementation.prototype;
+function SVGTextElementWrappingImplementation() {}
 // ********** Code for SVGTextPathElementWrappingImplementation **************
 $inherits(SVGTextPathElementWrappingImplementation, SVGTextContentElementWrappingImplementation);
-function SVGTextPathElementWrappingImplementation() {}
 SVGTextPathElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGTextContentElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTextPathElementWrappingImplementation._wrap$ctor.prototype = SVGTextPathElementWrappingImplementation.prototype;
+function SVGTextPathElementWrappingImplementation() {}
 // ********** Code for SVGTitleElementWrappingImplementation **************
 $inherits(SVGTitleElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGTitleElementWrappingImplementation() {}
 SVGTitleElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGTitleElementWrappingImplementation._wrap$ctor.prototype = SVGTitleElementWrappingImplementation.prototype;
+function SVGTitleElementWrappingImplementation() {}
 // ********** Code for SVGUseElementWrappingImplementation **************
 $inherits(SVGUseElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGUseElementWrappingImplementation() {}
 SVGUseElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGUseElementWrappingImplementation._wrap$ctor.prototype = SVGUseElementWrappingImplementation.prototype;
+function SVGUseElementWrappingImplementation() {}
 SVGUseElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -4222,25 +4280,25 @@ SVGUseElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for SVGVKernElementWrappingImplementation **************
 $inherits(SVGVKernElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGVKernElementWrappingImplementation() {}
 SVGVKernElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGVKernElementWrappingImplementation._wrap$ctor.prototype = SVGVKernElementWrappingImplementation.prototype;
+function SVGVKernElementWrappingImplementation() {}
 // ********** Code for SVGViewElementWrappingImplementation **************
 $inherits(SVGViewElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGViewElementWrappingImplementation() {}
 SVGViewElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGViewElementWrappingImplementation._wrap$ctor.prototype = SVGViewElementWrappingImplementation.prototype;
+function SVGViewElementWrappingImplementation() {}
 // ********** Code for ScriptElementWrappingImplementation **************
 $inherits(ScriptElementWrappingImplementation, ElementWrappingImplementation);
-function ScriptElementWrappingImplementation() {}
 ScriptElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ScriptElementWrappingImplementation._wrap$ctor.prototype = ScriptElementWrappingImplementation.prototype;
+function ScriptElementWrappingImplementation() {}
 ScriptElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4249,11 +4307,11 @@ ScriptElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for SelectElementWrappingImplementation **************
 $inherits(SelectElementWrappingImplementation, ElementWrappingImplementation);
-function SelectElementWrappingImplementation() {}
 SelectElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SelectElementWrappingImplementation._wrap$ctor.prototype = SelectElementWrappingImplementation.prototype;
+function SelectElementWrappingImplementation() {}
 SelectElementWrappingImplementation.prototype.get$length = function() {
   return this._ptr.get$length();
 }
@@ -4262,11 +4320,11 @@ SelectElementWrappingImplementation.prototype.get$type = function() {
 }
 // ********** Code for SourceElementWrappingImplementation **************
 $inherits(SourceElementWrappingImplementation, ElementWrappingImplementation);
-function SourceElementWrappingImplementation() {}
 SourceElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SourceElementWrappingImplementation._wrap$ctor.prototype = SourceElementWrappingImplementation.prototype;
+function SourceElementWrappingImplementation() {}
 SourceElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4275,18 +4333,18 @@ SourceElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for SpanElementWrappingImplementation **************
 $inherits(SpanElementWrappingImplementation, ElementWrappingImplementation);
-function SpanElementWrappingImplementation() {}
 SpanElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SpanElementWrappingImplementation._wrap$ctor.prototype = SpanElementWrappingImplementation.prototype;
+function SpanElementWrappingImplementation() {}
 // ********** Code for StyleElementWrappingImplementation **************
 $inherits(StyleElementWrappingImplementation, ElementWrappingImplementation);
-function StyleElementWrappingImplementation() {}
 StyleElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 StyleElementWrappingImplementation._wrap$ctor.prototype = StyleElementWrappingImplementation.prototype;
+function StyleElementWrappingImplementation() {}
 StyleElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4295,18 +4353,18 @@ StyleElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for TableCaptionElementWrappingImplementation **************
 $inherits(TableCaptionElementWrappingImplementation, ElementWrappingImplementation);
-function TableCaptionElementWrappingImplementation() {}
 TableCaptionElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableCaptionElementWrappingImplementation._wrap$ctor.prototype = TableCaptionElementWrappingImplementation.prototype;
+function TableCaptionElementWrappingImplementation() {}
 // ********** Code for TableCellElementWrappingImplementation **************
 $inherits(TableCellElementWrappingImplementation, ElementWrappingImplementation);
-function TableCellElementWrappingImplementation() {}
 TableCellElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableCellElementWrappingImplementation._wrap$ctor.prototype = TableCellElementWrappingImplementation.prototype;
+function TableCellElementWrappingImplementation() {}
 TableCellElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -4315,69 +4373,69 @@ TableCellElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for TableColElementWrappingImplementation **************
 $inherits(TableColElementWrappingImplementation, ElementWrappingImplementation);
-function TableColElementWrappingImplementation() {}
 TableColElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableColElementWrappingImplementation._wrap$ctor.prototype = TableColElementWrappingImplementation.prototype;
+function TableColElementWrappingImplementation() {}
 TableColElementWrappingImplementation.prototype.set$width = function(value) {
   this._ptr.set$width(value);
 }
 // ********** Code for TableElementWrappingImplementation **************
 $inherits(TableElementWrappingImplementation, ElementWrappingImplementation);
-function TableElementWrappingImplementation() {}
 TableElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableElementWrappingImplementation._wrap$ctor.prototype = TableElementWrappingImplementation.prototype;
+function TableElementWrappingImplementation() {}
 TableElementWrappingImplementation.prototype.set$width = function(value) {
   this._ptr.set$width(value);
 }
 // ********** Code for TableRowElementWrappingImplementation **************
 $inherits(TableRowElementWrappingImplementation, ElementWrappingImplementation);
-function TableRowElementWrappingImplementation() {}
 TableRowElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableRowElementWrappingImplementation._wrap$ctor.prototype = TableRowElementWrappingImplementation.prototype;
+function TableRowElementWrappingImplementation() {}
 // ********** Code for TableSectionElementWrappingImplementation **************
 $inherits(TableSectionElementWrappingImplementation, ElementWrappingImplementation);
-function TableSectionElementWrappingImplementation() {}
 TableSectionElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TableSectionElementWrappingImplementation._wrap$ctor.prototype = TableSectionElementWrappingImplementation.prototype;
+function TableSectionElementWrappingImplementation() {}
 // ********** Code for TextAreaElementWrappingImplementation **************
 $inherits(TextAreaElementWrappingImplementation, ElementWrappingImplementation);
-function TextAreaElementWrappingImplementation() {}
 TextAreaElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TextAreaElementWrappingImplementation._wrap$ctor.prototype = TextAreaElementWrappingImplementation.prototype;
+function TextAreaElementWrappingImplementation() {}
 TextAreaElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
 // ********** Code for TitleElementWrappingImplementation **************
 $inherits(TitleElementWrappingImplementation, ElementWrappingImplementation);
-function TitleElementWrappingImplementation() {}
 TitleElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TitleElementWrappingImplementation._wrap$ctor.prototype = TitleElementWrappingImplementation.prototype;
+function TitleElementWrappingImplementation() {}
 // ********** Code for TrackElementWrappingImplementation **************
 $inherits(TrackElementWrappingImplementation, ElementWrappingImplementation);
-function TrackElementWrappingImplementation() {}
 TrackElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 TrackElementWrappingImplementation._wrap$ctor.prototype = TrackElementWrappingImplementation.prototype;
+function TrackElementWrappingImplementation() {}
 // ********** Code for UListElementWrappingImplementation **************
 $inherits(UListElementWrappingImplementation, ElementWrappingImplementation);
-function UListElementWrappingImplementation() {}
 UListElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 UListElementWrappingImplementation._wrap$ctor.prototype = UListElementWrappingImplementation.prototype;
+function UListElementWrappingImplementation() {}
 UListElementWrappingImplementation.prototype.get$type = function() {
   return this._ptr.get$type();
 }
@@ -4386,18 +4444,18 @@ UListElementWrappingImplementation.prototype.set$type = function(value) {
 }
 // ********** Code for UnknownElementWrappingImplementation **************
 $inherits(UnknownElementWrappingImplementation, ElementWrappingImplementation);
-function UnknownElementWrappingImplementation() {}
 UnknownElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 UnknownElementWrappingImplementation._wrap$ctor.prototype = UnknownElementWrappingImplementation.prototype;
+function UnknownElementWrappingImplementation() {}
 // ********** Code for VideoElementWrappingImplementation **************
 $inherits(VideoElementWrappingImplementation, MediaElementWrappingImplementation);
-function VideoElementWrappingImplementation() {}
 VideoElementWrappingImplementation._wrap$ctor = function(ptr) {
   MediaElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 VideoElementWrappingImplementation._wrap$ctor.prototype = VideoElementWrappingImplementation.prototype;
+function VideoElementWrappingImplementation() {}
 VideoElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -4406,19 +4464,11 @@ VideoElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for WebGLRenderingContextWrappingImplementation **************
 $inherits(WebGLRenderingContextWrappingImplementation, CanvasRenderingContextWrappingImplementation);
-function WebGLRenderingContextWrappingImplementation() {}
 WebGLRenderingContextWrappingImplementation._wrap$ctor = function(ptr) {
   CanvasRenderingContextWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 WebGLRenderingContextWrappingImplementation._wrap$ctor.prototype = WebGLRenderingContextWrappingImplementation.prototype;
-WebGLRenderingContextWrappingImplementation.prototype.clear = function(mask) {
-  this._ptr.clear$1(mask);
-  return;
-}
-WebGLRenderingContextWrappingImplementation.prototype.get$clear = function() {
-  return this.clear.bind(this);
-}
-WebGLRenderingContextWrappingImplementation.prototype.clear$1 = WebGLRenderingContextWrappingImplementation.prototype.clear;
+function WebGLRenderingContextWrappingImplementation() {}
 // ********** Code for LevelDom **************
 function LevelDom() {}
 LevelDom.wrapCanvasRenderingContext = function(raw) {
@@ -4443,7 +4493,7 @@ LevelDom.wrapCanvasRenderingContext = function(raw) {
 
     default:
 
-      $throw(new UnsupportedOperationException("Unknown type:" + raw.toString$0()));
+      $throw(new UnsupportedOperationException($add("Unknown type:", raw.toString())));
 
   }
 }
@@ -4465,7 +4515,7 @@ LevelDom.wrapDocument = function(raw) {
 
     default:
 
-      $throw(new UnsupportedOperationException("Unknown type:" + raw.toString$0()));
+      $throw(new UnsupportedOperationException($add("Unknown type:", raw.toString())));
 
   }
 }
@@ -5067,7 +5117,7 @@ LevelDom.wrapElement = function(raw) {
 
     default:
 
-      $throw(new UnsupportedOperationException("Unknown type:" + raw.toString$0()));
+      $throw(new UnsupportedOperationException($add("Unknown type:", raw.toString())));
 
   }
 }
@@ -5717,7 +5767,7 @@ LevelDom.wrapNode = function(raw) {
 
     default:
 
-      $throw(new UnsupportedOperationException("Unknown type:" + raw.toString$0()));
+      $throw(new UnsupportedOperationException($add("Unknown type:", raw.toString())));
 
   }
 }
@@ -5765,63 +5815,43 @@ Lists.setRange = function(to, start, length, from, startFrom) {
     $throw(new IndexOutOfRangeException(Math.min(from.get$length(), startFrom)));
   }
   for (var i = (0);
-   i < length; i = $add(i, (1))) {
-    to.$setindex(start + i, from.$index(startFrom + i));
+   $lt(i, length); i = $add(i, (1))) {
+    to.$setindex($add(start, i), from.$index($add(startFrom, i)));
   }
-}
-Lists.getRange = function(a, start, length) {
-  if (start < (0)) {
-    $throw(new IndexOutOfRangeException(start));
-  }
-  else if (length < (0)) {
-    $throw(new IllegalArgumentException(("negative length " + length)));
-  }
-  else if (start + length > a.get$length()) {
-    $throw(new IndexOutOfRangeException(Math.min(a.get$length(), start)));
-  }
-  var result = [];
-  for (var i = (0);
-   i < length; i = $add(i, (1))) {
-    result.add$1(a.$index(start + i));
-  }
-  return result;
 }
 // ********** Code for BodyElementWrappingImplementation **************
 $inherits(BodyElementWrappingImplementation, ElementWrappingImplementation);
-function BodyElementWrappingImplementation() {}
 BodyElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 BodyElementWrappingImplementation._wrap$ctor.prototype = BodyElementWrappingImplementation.prototype;
+function BodyElementWrappingImplementation() {}
 // ********** Code for DocumentFragmentWrappingImplementation **************
 $inherits(DocumentFragmentWrappingImplementation, NodeWrappingImplementation);
-function DocumentFragmentWrappingImplementation() {}
 DocumentFragmentWrappingImplementation._wrap$ctor = function(ptr) {
   NodeWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 DocumentFragmentWrappingImplementation._wrap$ctor.prototype = DocumentFragmentWrappingImplementation.prototype;
-DocumentFragmentWrappingImplementation.prototype.get$id = function() {
-  return "";
-}
+function DocumentFragmentWrappingImplementation() {}
 // ********** Code for DocumentWrappingImplementation **************
 $inherits(DocumentWrappingImplementation, ElementWrappingImplementation);
-function DocumentWrappingImplementation() {}
 DocumentWrappingImplementation._wrap$ctor = function(_documentPtr, ptr) {
   this._documentPtr = _documentPtr;
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
   this._documentPtr.get$dynamic().set$dartObjectLocalStorage(this);
 }
 DocumentWrappingImplementation._wrap$ctor.prototype = DocumentWrappingImplementation.prototype;
+function DocumentWrappingImplementation() {}
 DocumentWrappingImplementation.prototype.get$body = function() {
   return LevelDom.wrapElement(this._documentPtr.get$body());
 }
 // ********** Code for _ChildrenNodeList **************
-function _ChildrenNodeList() {}
 _ChildrenNodeList._wrap$ctor = function(node) {
   this._node = node;
   this._childNodes = node.get$childNodes();
 }
 _ChildrenNodeList._wrap$ctor.prototype = _ChildrenNodeList.prototype;
+function _ChildrenNodeList() {}
 _ChildrenNodeList.prototype._toList = function() {
   var output = new Array(this._childNodes.get$length());
   for (var i = (0), len = this._childNodes.get$length();
@@ -5831,7 +5861,7 @@ _ChildrenNodeList.prototype._toList = function() {
   return output;
 }
 _ChildrenNodeList.prototype.isEmpty = function() {
-  return !this._node.hasChildNodes$0();
+  return !this._node.hasChildNodes();
 }
 _ChildrenNodeList.prototype.get$length = function() {
   return this._childNodes.get$length();
@@ -5840,44 +5870,29 @@ _ChildrenNodeList.prototype.$index = function(index) {
   return LevelDom.wrapNode(this._childNodes.$index(index));
 }
 _ChildrenNodeList.prototype.$setindex = function(index, value) {
-  this._node.replaceChild$2(LevelDom.unwrap(value), this._childNodes.$index(index));
+  this._node.replaceChild(LevelDom.unwrap(value), this._childNodes.$index(index));
 }
 _ChildrenNodeList.prototype.add = function(value) {
-  this._node.appendChild$1(LevelDom.unwrap(value));
+  this._node.appendChild(LevelDom.unwrap(value));
   return value;
 }
 _ChildrenNodeList.prototype.iterator = function() {
-  return this._toList().iterator$0();
-}
-_ChildrenNodeList.prototype.sort = function(compare) {
-  $throw(const$0002);
+  return this._toList().iterator();
 }
 _ChildrenNodeList.prototype.setRange = function(start, length, from, startFrom) {
   return Lists.setRange(this, start, length, from, startFrom);
 }
-_ChildrenNodeList.prototype.getRange = function(start, length) {
-  return Lists.getRange(this, start, length);
-}
-_ChildrenNodeList.prototype.clear = function() {
-  this._node.set$textContent("");
-}
-_ChildrenNodeList.prototype.get$clear = function() {
-  return this.clear.bind(this);
-}
 _ChildrenNodeList.prototype.add$1 = _ChildrenNodeList.prototype.add;
-_ChildrenNodeList.prototype.clear$0 = _ChildrenNodeList.prototype.clear;
-_ChildrenNodeList.prototype.getRange$2 = _ChildrenNodeList.prototype.getRange;
-_ChildrenNodeList.prototype.iterator$0 = _ChildrenNodeList.prototype.iterator;
 _ChildrenNodeList.prototype.setRange$3 = function($0, $1, $2) {
   return this.setRange($0, $1, $2, (0));
 };
 // ********** Code for ObjectElementWrappingImplementation **************
 $inherits(ObjectElementWrappingImplementation, ElementWrappingImplementation);
-function ObjectElementWrappingImplementation() {}
 ObjectElementWrappingImplementation._wrap$ctor = function(ptr) {
   ElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 ObjectElementWrappingImplementation._wrap$ctor.prototype = ObjectElementWrappingImplementation.prototype;
+function ObjectElementWrappingImplementation() {}
 ObjectElementWrappingImplementation.prototype.set$height = function(value) {
   this._ptr.set$height(value);
 }
@@ -5892,18 +5907,18 @@ ObjectElementWrappingImplementation.prototype.set$width = function(value) {
 }
 // ********** Code for SVGDocumentWrappingImplementation **************
 $inherits(SVGDocumentWrappingImplementation, DocumentWrappingImplementation);
-function SVGDocumentWrappingImplementation() {}
 SVGDocumentWrappingImplementation._wrap$ctor = function(ptr) {
-  DocumentWrappingImplementation._wrap$ctor.call(this, ptr, ptr.rootElement);
+  DocumentWrappingImplementation._wrap$ctor.call(this, ptr, ptr.get$rootElement());
 }
 SVGDocumentWrappingImplementation._wrap$ctor.prototype = SVGDocumentWrappingImplementation.prototype;
+function SVGDocumentWrappingImplementation() {}
 // ********** Code for SVGSVGElementWrappingImplementation **************
 $inherits(SVGSVGElementWrappingImplementation, SVGElementWrappingImplementation);
-function SVGSVGElementWrappingImplementation() {}
 SVGSVGElementWrappingImplementation._wrap$ctor = function(ptr) {
   SVGElementWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 SVGSVGElementWrappingImplementation._wrap$ctor.prototype = SVGSVGElementWrappingImplementation.prototype;
+function SVGSVGElementWrappingImplementation() {}
 SVGSVGElementWrappingImplementation.prototype.get$x = function() {
   return LevelDom.wrapSVGAnimatedLength(this._ptr.get$x());
 }
@@ -5912,11 +5927,11 @@ SVGSVGElementWrappingImplementation.prototype.get$y = function() {
 }
 // ********** Code for WindowWrappingImplementation **************
 $inherits(WindowWrappingImplementation, EventTargetWrappingImplementation);
-function WindowWrappingImplementation() {}
 WindowWrappingImplementation._wrap$ctor = function(ptr) {
   EventTargetWrappingImplementation._wrap$ctor.call(this, ptr);
 }
 WindowWrappingImplementation._wrap$ctor.prototype = WindowWrappingImplementation.prototype;
+function WindowWrappingImplementation() {}
 WindowWrappingImplementation.prototype.get$length = function() {
   return this._ptr.get$length();
 }
@@ -5924,18 +5939,12 @@ WindowWrappingImplementation.prototype.moveTo = function(x, y) {
   this._ptr.moveTo$2(x, y);
 }
 WindowWrappingImplementation.prototype.setInterval = function(handler, timeout) {
-  return this._ptr.setInterval$2(handler, timeout);
+  return this._ptr.setInterval(handler, timeout);
 }
 WindowWrappingImplementation.prototype.webkitRequestAnimationFrame = function(callback, element) {
-  return this._ptr.webkitRequestAnimationFrame$2(callback, LevelDom.unwrap(element));
+  return this._ptr.webkitRequestAnimationFrame(callback, LevelDom.unwrap(element));
 }
 WindowWrappingImplementation.prototype.moveTo$2 = WindowWrappingImplementation.prototype.moveTo;
-WindowWrappingImplementation.prototype.setInterval$2 = function($0, $1) {
-  return this.setInterval(to$call$0($0), $1);
-};
-WindowWrappingImplementation.prototype.webkitRequestAnimationFrame$2 = function($0, $1) {
-  return this.webkitRequestAnimationFrame(to$call$1($0), $1);
-};
 // ********** Code for top level **************
 var _pendingRequests;
 var _pendingMeasurementFrameCallbacks;
@@ -5996,12 +6005,9 @@ AxisAlignedBox.prototype.setFrom = function(other) {
   this.upperBound.setFrom(other.upperBound);
 }
 AxisAlignedBox.prototype.toString = function() {
-  return this.lowerBound.toString() + ", " + this.upperBound.toString();
+  return $add($add(this.lowerBound.toString(), ", "), this.upperBound.toString());
 }
-AxisAlignedBox.prototype.setFrom$1 = AxisAlignedBox.prototype.setFrom;
-AxisAlignedBox.prototype.toString$0 = AxisAlignedBox.prototype.toString;
 // ********** Code for Collision **************
-function Collision() {}
 Collision._construct$ctor = function(pool) {
   this.normal1 = new Vector((0), (0));
   this.localTangent = new Vector((0), (0));
@@ -6028,6 +6034,7 @@ Collision._construct$ctor = function(pool) {
   this.clipPoints2.$setindex((1), new ClipVertex());
 }
 Collision._construct$ctor.prototype = Collision.prototype;
+function Collision() {}
 Collision.prototype.get$incidentEdge = function() { return this.incidentEdge; };
 Collision.prototype.testOverlap = function(shapeA, shapeB, transformA, transformB) {
   this.input.proxyA.setFromShape(shapeA);
@@ -6041,22 +6048,22 @@ Collision.prototype.testOverlap = function(shapeA, shapeB, transformA, transform
 }
 Collision.clipSegmentToLine = function(vOut, vIn, norm, offset) {
   var numOut = (0);
-  var distance0 = Vector.dot(norm, vIn.$index((0)).get$v()) - offset;
-  var distance1 = Vector.dot(norm, vIn.$index((1)).get$v()) - offset;
+  var distance0 = Vector.dot(norm, vIn[(0)].v) - offset;
+  var distance1 = Vector.dot(norm, vIn[(1)].v) - offset;
   if (distance0 <= (0)) {
-    vOut.$index(numOut++).setFrom$1(vIn.$index((0)));
+    vOut[numOut++].setFrom(vIn[(0)]);
   }
   if (distance1 <= (0)) {
-    vOut.$index(numOut++).setFrom$1(vIn.$index((1)));
+    vOut[numOut++].setFrom(vIn[(1)]);
   }
   if (distance0 * distance1 < (0)) {
     var interp = distance0 / (distance0 - distance1);
-    vOut.$index(numOut).get$v().setFrom$1(vIn.$index((1)).get$v()).subLocal$1(vIn.$index((0)).get$v()).mulLocal$1(interp).addLocal$1(vIn.$index((0)).get$v());
+    vOut[numOut].v.setFrom(vIn[(1)].v).subLocal(vIn[(0)].v).mulLocal(interp).addLocal(vIn[(0)].v);
     if (distance0 > (0)) {
-      vOut.$index(numOut).get$id().setFrom$1(vIn.$index((0)).get$id());
+      vOut[numOut].id.setFrom(vIn[(0)].id);
     }
     else {
-      vOut.$index(numOut).get$id().setFrom$1(vIn.$index((1)).get$id());
+      vOut[numOut].id.setFrom(vIn[(1)].id);
     }
     ++numOut;
   }
@@ -6081,8 +6088,8 @@ Collision.prototype.collideCircles = function(manifold, circle1, xfA, circle2, x
   manifold.localPoint.setFrom(circle1.position);
   manifold.localNormal.setZero();
   manifold.pointCount = (1);
-  manifold.points.$index((0)).get$localPoint().setFrom$1(circle2.position);
-  manifold.points.$index((0)).get$id().zero$0();
+  manifold.points[(0)].localPoint.setFrom(circle2.position);
+  manifold.points[(0)].id.zero();
 }
 Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, circle, xfB) {
   manifold.pointCount = (0);
@@ -6103,10 +6110,10 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
   var normals = polygon.normals;
   for (var i = (0);
    i < vertexCount; i++) {
-    var vertex = vertices.$index(i);
+    var vertex = vertices[i];
     var tempx = cLocalx - vertex.x;
     var tempy = cLocaly - vertex.y;
-    var norm = normals.$index(i);
+    var norm = normals[i];
     var s = norm.x * tempx + norm.y * tempy;
     if (s > radius) {
       return;
@@ -6118,17 +6125,17 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
   }
   var vertIndex1 = normalIndex;
   var vertIndex2 = vertIndex1 + (1) < vertexCount ? vertIndex1 + (1) : (0);
-  var v1 = vertices.$index(vertIndex1);
-  var v2 = vertices.$index(vertIndex2);
+  var v1 = vertices[vertIndex1];
+  var v2 = vertices[vertIndex2];
   if (separation < (1.192e-7)) {
     manifold.pointCount = (1);
     manifold.type = (1);
-    var norm = normals.$index(normalIndex);
+    var norm = normals[normalIndex];
     manifold.localNormal.x = norm.x;
     manifold.localNormal.y = norm.y;
     manifold.localPoint.x = (v1.x + v2.x) * (0.5);
     manifold.localPoint.y = (v1.y + v2.y) * (0.5);
-    var mpoint = manifold.points.$index((0));
+    var mpoint = manifold.points[(0)];
     mpoint.localPoint.x = circle.position.x;
     mpoint.localPoint.y = circle.position.y;
     mpoint.id.zero();
@@ -6156,8 +6163,8 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
     manifold.localNormal.y = cLocaly - v1.y;
     manifold.localNormal.normalize();
     manifold.localPoint.setFrom(v1);
-    manifold.points.$index((0)).get$localPoint().setFrom$1(circle.position);
-    manifold.points.$index((0)).get$id().zero$0();
+    manifold.points[(0)].localPoint.setFrom(circle.position);
+    manifold.points[(0)].id.zero();
   }
   else if (u2 <= (0)) {
     var dx = cLocalx - v2.x;
@@ -6171,26 +6178,26 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
     manifold.localNormal.y = cLocaly - v2.y;
     manifold.localNormal.normalize();
     manifold.localPoint.setFrom(v2);
-    manifold.points.$index((0)).get$localPoint().setFrom$1(circle.position);
-    manifold.points.$index((0)).get$id().zero$0();
+    manifold.points[(0)].localPoint.setFrom(circle.position);
+    manifold.points[(0)].id.zero();
   }
   else {
     var fcx = (v1.x + v2.x) * (0.5);
     var fcy = (v1.y + v2.y) * (0.5);
     var tx = cLocalx - fcx;
     var ty = cLocaly - fcy;
-    var norm = normals.$index(vertIndex1);
+    var norm = normals[vertIndex1];
     separation = tx * norm.x + ty * norm.y;
     if (separation > radius) {
       return;
     }
     manifold.pointCount = (1);
     manifold.type = (1);
-    manifold.localNormal.setFrom(normals.$index(vertIndex1));
+    manifold.localNormal.setFrom(normals[vertIndex1]);
     manifold.localPoint.x = fcx;
     manifold.localPoint.y = fcy;
-    manifold.points.$index((0)).get$localPoint().setFrom$1(circle.position);
-    manifold.points.$index((0)).get$id().zero$0();
+    manifold.points[(0)].localPoint.setFrom(circle.position);
+    manifold.points[(0)].id.zero();
   }
 }
 Collision.prototype.edgeSeparation = function(poly1, xf1, edge1, poly2, xf2) {
@@ -6200,7 +6207,7 @@ Collision.prototype.edgeSeparation = function(poly1, xf1, edge1, poly2, xf2) {
   var count2 = poly2.vertexCount;
   var vertices2 = poly2.vertices;
   var R = xf1.rotation;
-  var v = normals1.$index(edge1);
+  var v = normals1[edge1];
   var normal1Worldy = R.col1.y * v.x + R.col2.y * v.y;
   var normal1Worldx = R.col1.x * v.x + R.col2.x * v.y;
   var R1 = xf2.rotation;
@@ -6210,17 +6217,17 @@ Collision.prototype.edgeSeparation = function(poly1, xf1, edge1, poly2, xf2) {
   var minDot = (99999999999999);
   for (var i = (0);
    i < count2; ++i) {
-    var a = vertices2.$index(i);
+    var a = vertices2[i];
     var dot = a.x * normal1x + a.y * normal1y;
     if (dot < minDot) {
       minDot = dot;
       index = i;
     }
   }
-  var v3 = vertices1.$index(edge1);
+  var v3 = vertices1[edge1];
   var v1y = xf1.position.y + R.col1.y * v3.x + R.col2.y * v3.y;
   var v1x = xf1.position.x + R.col1.x * v3.x + R.col2.x * v3.y;
-  var v4 = vertices2.$index(index);
+  var v4 = vertices2[index];
   var v2y = xf2.position.y + R1.col1.y * v4.x + R1.col2.y * v4.y - v1y;
   var v2x = xf2.position.x + R1.col1.x * v4.x + R1.col2.x * v4.y - v1x;
   return v2x * normal1Worldx + v2y * normal1Worldy;
@@ -6244,7 +6251,7 @@ Collision.prototype.findMaxSeparation = function(results, poly1, xf1, poly2, xf2
   var maxDot = (1e-12);
   for (var i = (0);
    i < count1; i++) {
-    var norm = normals1.$index(i);
+    var norm = normals1[i];
     dot = norm.x * dLocal1x + norm.y * dLocal1y;
     if (dot > maxDot) {
       maxDot = dot;
@@ -6299,13 +6306,13 @@ Collision.prototype.findIncidentEdge = function(c, poly1, xf1, edge1, poly2, xf2
   var count2 = poly2.vertexCount;
   var vertices2 = poly2.vertices;
   var normals2 = poly2.normals;
-  Matrix22.mulMatrixAndVectorToOut(xf1.rotation, normals1.$index(edge1), this.normal1);
+  Matrix22.mulMatrixAndVectorToOut(xf1.rotation, normals1[edge1], this.normal1);
   Matrix22.mulTransMatrixAndVectorToOut(xf2.rotation, this.normal1, this.normal1);
   var index = (0);
   var minDot = (99999999999999);
   for (var i = (0);
    i < count2; ++i) {
-    var dot = Vector.dot(this.normal1, normals2.$index(i));
+    var dot = Vector.dot(this.normal1, normals2[i]);
     if (dot < minDot) {
       minDot = dot;
       index = i;
@@ -6313,14 +6320,14 @@ Collision.prototype.findIncidentEdge = function(c, poly1, xf1, edge1, poly2, xf2
   }
   var i1 = index;
   var i2 = i1 + (1) < count2 ? i1 + (1) : (0);
-  Transform.mulToOut(xf2, vertices2.$index(i1), c.$index((0)).get$v());
-  c.$index((0)).get$id().get$features().set$referenceEdge(edge1);
-  c.$index((0)).get$id().get$features().set$incidentEdge(i1);
-  c.$index((0)).get$id().get$features().set$incidentVertex((0));
-  Transform.mulToOut(xf2, vertices2.$index(i2), c.$index((1)).get$v());
-  c.$index((1)).get$id().get$features().set$referenceEdge(edge1);
-  c.$index((1)).get$id().get$features().set$incidentEdge(i2);
-  c.$index((1)).get$id().get$features().set$incidentVertex((1));
+  Transform.mulToOut(xf2, vertices2[i1], c[(0)].v);
+  c[(0)].id.features.referenceEdge = edge1;
+  c[(0)].id.features.incidentEdge = i1;
+  c[(0)].id.features.incidentVertex = (0);
+  Transform.mulToOut(xf2, vertices2[i2], c[(1)].v);
+  c[(1)].id.features.referenceEdge = edge1;
+  c[(1)].id.features.incidentEdge = i2;
+  c[(1)].id.features.incidentVertex = (1);
 }
 Collision.prototype.collidePolygons = function(manifold, polyA, xfA, polyB, xfB) {
   manifold.pointCount = (0);
@@ -6361,8 +6368,8 @@ Collision.prototype.collidePolygons = function(manifold, polyA, xfA, polyB, xfB)
   this.findIncidentEdge(this.incidentEdge, poly1, xf1, edge1, poly2, xf2);
   var count1 = poly1.vertexCount;
   var vertices1 = poly1.vertices;
-  this.v11.setFrom(vertices1.$index(edge1));
-  this.v12.setFrom(edge1 + (1) < count1 ? vertices1.$index(edge1 + (1)) : vertices1.$index((0)));
+  this.v11.setFrom(vertices1[edge1]);
+  this.v12.setFrom(edge1 + (1) < count1 ? vertices1[edge1 + (1)] : vertices1[(0)]);
   this.localTangent.setFrom(this.v12).subLocal(this.v11);
   this.localTangent.normalize();
   Vector.crossVectorAndNumToOut(this.localTangent, (1), this.localNormal);
@@ -6390,11 +6397,11 @@ Collision.prototype.collidePolygons = function(manifold, polyA, xfA, polyB, xfB)
   var pointCount = (0);
   for (var i = (0);
    i < (2); ++i) {
-    var separation = Vector.dot(this.normal, this.clipPoints2.$index(i).get$v()) - frontOffset;
+    var separation = Vector.dot(this.normal, this.clipPoints2[i].v) - frontOffset;
     if (separation <= totalRadius) {
-      var cp = manifold.points.$index(pointCount);
-      Transform.mulTransToOut(xf2, this.clipPoints2.$index(i).get$v(), cp.localPoint);
-      cp.id.setFrom(this.clipPoints2.$index(i).get$id());
+      var cp = manifold.points[pointCount];
+      Transform.mulTransToOut(xf2, this.clipPoints2[i].v, cp.localPoint);
+      cp.id.setFrom(this.clipPoints2[i].id);
       cp.id.features.flip = flip;
       ++pointCount;
     }
@@ -6406,15 +6413,10 @@ function ClipVertex() {
   this.v = new Vector((0), (0));
   this.id = new ContactID();
 }
-ClipVertex.prototype.get$v = function() { return this.v; };
-ClipVertex.prototype.set$v = function(value) { return this.v = value; };
-ClipVertex.prototype.get$id = function() { return this.id; };
-ClipVertex.prototype.set$id = function(value) { return this.id = value; };
 ClipVertex.prototype.setFrom = function(cv) {
   this.v.setFrom(cv.v);
   this.id.setFrom(cv.id);
 }
-ClipVertex.prototype.setFrom$1 = ClipVertex.prototype.setFrom;
 // ********** Code for EdgeResults **************
 function EdgeResults() {
   this.separation = (0);
@@ -6437,10 +6439,7 @@ ContactID.prototype.isEqual = function(other) {
 ContactID.prototype.zero = function() {
   this.features.zero();
 }
-ContactID.prototype.setFrom$1 = ContactID.prototype.setFrom;
-ContactID.prototype.zero$0 = ContactID.prototype.zero;
 // ********** Code for Distance **************
-function Distance() {}
 Distance._construct$ctor = function() {
   this.closestPoint = new Vector((0), (0));
   this.normal = new Vector((0), (0));
@@ -6454,7 +6453,9 @@ Distance._construct$ctor = function() {
   this.saveA = new Array((3));
 }
 Distance._construct$ctor.prototype = Distance.prototype;
+function Distance() {}
 Distance.prototype.distance = function(output, cache, input) {
+  var $0, $1;
   this.calls++;
   var proxyA = input.proxyA;
   var proxyB = input.proxyB;
@@ -6471,8 +6472,8 @@ Distance.prototype.distance = function(output, cache, input) {
     saveCount = this.simplex.count;
     for (var i = (0);
      i < saveCount; i++) {
-      this.saveA.$setindex(i, vertices.$index(i).get$indexA());
-      this.saveB.$setindex(i, vertices.$index(i).get$indexB());
+      this.saveA.$setindex(i, vertices[i].indexA);
+      this.saveB.$setindex(i, vertices[i].indexB);
     }
     switch (this.simplex.count) {
       case (1):
@@ -6505,13 +6506,13 @@ Distance.prototype.distance = function(output, cache, input) {
     if (this.searchDirection.get$lengthSquared() < (1.4208639999999999e-14)) {
       break;
     }
-    var vertex = vertices.$index(this.simplex.count);
+    var vertex = vertices[this.simplex.count];
     Matrix22.mulTransMatrixAndVectorToOut(transformA.rotation, this.searchDirection.negateLocal(), this.temp);
     vertex.indexA = proxyA.getSupport(this.temp);
-    Transform.mulToOut(transformA, proxyA.vertices.$index(vertex.indexA), vertex.wA);
+    Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA], vertex.wA);
     Matrix22.mulTransMatrixAndVectorToOut(transformB.rotation, this.searchDirection.negateLocal(), this.temp);
     vertex.indexB = proxyB.getSupport(this.temp);
-    Transform.mulToOut(transformB, proxyB.vertices.$index(vertex.indexB), vertex.wB);
+    Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB], vertex.wB);
     vertex.w.setFrom(vertex.wB).subLocal(vertex.wA);
     ++iter;
     ++this.iters;
@@ -6526,7 +6527,7 @@ Distance.prototype.distance = function(output, cache, input) {
     if (duplicate) {
       break;
     }
-    ++this.simplex.count;
+    ((($0 = this.simplex).count = ($1 = $0.count + (1)), $1));
   }
   this.maxIters = Math.max(this.maxIters, iter);
   this.simplex.getWitnessPoints(output.pointA, output.pointB);
@@ -6560,10 +6561,6 @@ function DistanceInput() {
   this.proxyB = new DistanceProxy();
   this.useRadii = false;
 }
-DistanceInput.prototype.get$proxyA = function() { return this.proxyA; };
-DistanceInput.prototype.set$proxyA = function(value) { return this.proxyA = value; };
-DistanceInput.prototype.get$proxyB = function() { return this.proxyB; };
-DistanceInput.prototype.set$proxyB = function(value) { return this.proxyB = value; };
 // ********** Code for DistanceOutput **************
 function DistanceOutput() {
   this.pointB = new Vector((0), (0));
@@ -6584,7 +6581,7 @@ DistanceProxy.prototype.get$radius = function() { return this.radius; };
 DistanceProxy.prototype.set$radius = function(value) { return this.radius = value; };
 DistanceProxy.prototype.setFromShape = function(shape) {
   if ($eq(shape.get$type(), (0))) {
-    this.vertices.$index((0)).setFrom$1(shape.get$position());
+    this.vertices[(0)].setFrom(shape.get$position());
     this.count = (1);
     this.radius = shape.get$radius();
   }
@@ -6593,7 +6590,7 @@ DistanceProxy.prototype.setFromShape = function(shape) {
     this.radius = shape.get$radius();
     for (var i = (0);
      i < this.count; i++) {
-      this.vertices.$index(i).setFrom$1(shape.get$vertices().$index(i));
+      this.vertices[i].setFrom(shape.get$vertices().$index(i));
     }
   }
   else {
@@ -6601,10 +6598,10 @@ DistanceProxy.prototype.setFromShape = function(shape) {
 }
 DistanceProxy.prototype.getSupport = function(direction) {
   var bestIndex = (0);
-  var bestValue = Vector.dot(this.vertices.$index((0)), direction);
+  var bestValue = Vector.dot(this.vertices[(0)], direction);
   for (var i = (1);
    i < this.count; i++) {
-    var value = Vector.dot(this.vertices.$index(i), direction);
+    var value = Vector.dot(this.vertices[i], direction);
     if (value > bestValue) {
       bestIndex = i;
       bestValue = value;
@@ -6637,7 +6634,7 @@ Features.prototype.$eq = function(other) {
   return this.referenceEdge == other.get$referenceEdge() && this.incidentEdge == other.get$incidentEdge() && this.incidentVertex == other.get$incidentVertex() && this.flip == other.get$flip();
 }
 Features.prototype.toString = function() {
-  var s = "Features: (" + this.flip + " ," + this.incidentEdge + " ," + this.incidentVertex + " ," + this.referenceEdge + ")";
+  var s = $add($add($add($add("Features: (" + this.flip, " ,") + this.incidentEdge, " ,") + this.incidentVertex, " ,") + this.referenceEdge, ")");
   return s;
 }
 Features.prototype.zero = function() {
@@ -6646,9 +6643,6 @@ Features.prototype.zero = function() {
   this.incidentVertex = (0);
   this.flip = (0);
 }
-Features.prototype.setFrom$1 = Features.prototype.setFrom;
-Features.prototype.toString$0 = Features.prototype.toString;
-Features.prototype.zero$0 = Features.prototype.zero;
 // ********** Code for Manifold **************
 function Manifold() {
   this.pointCount = (0);
@@ -6660,20 +6654,18 @@ function Manifold() {
     this.points.$setindex(i, new ManifoldPoint());
   }
 }
-Manifold.prototype.get$localPoint = function() { return this.localPoint; };
 Manifold.prototype.get$type = function() { return this.type; };
 Manifold.prototype.set$type = function(value) { return this.type = value; };
 Manifold.prototype.setFrom = function(other) {
   for (var i = (0);
    i < other.pointCount; i++) {
-    this.points.$index(i).setFrom$1(other.points.$index(i));
+    this.points[i].setFrom(other.points[i]);
   }
   this.type = other.type;
   this.localNormal.setFrom(other.localNormal);
   this.localPoint.setFrom(other.localPoint);
   this.pointCount = other.pointCount;
 }
-Manifold.prototype.setFrom$1 = Manifold.prototype.setFrom;
 // ********** Code for ManifoldPoint **************
 function ManifoldPoint() {
   this.tangentImpulse = (0);
@@ -6681,19 +6673,12 @@ function ManifoldPoint() {
   this.localPoint = new Vector((0), (0));
   this.normalImpulse = (0);
 }
-ManifoldPoint.prototype.get$localPoint = function() { return this.localPoint; };
-ManifoldPoint.prototype.get$normalImpulse = function() { return this.normalImpulse; };
-ManifoldPoint.prototype.set$normalImpulse = function(value) { return this.normalImpulse = value; };
-ManifoldPoint.prototype.get$tangentImpulse = function() { return this.tangentImpulse; };
-ManifoldPoint.prototype.set$tangentImpulse = function(value) { return this.tangentImpulse = value; };
-ManifoldPoint.prototype.get$id = function() { return this.id; };
 ManifoldPoint.prototype.setFrom = function(other) {
   this.localPoint.setFrom(other.localPoint);
   this.normalImpulse = other.normalImpulse;
   this.tangentImpulse = other.tangentImpulse;
   this.id.setFrom(other.id);
 }
-ManifoldPoint.prototype.setFrom$1 = ManifoldPoint.prototype.setFrom;
 // ********** Code for ManifoldType **************
 function ManifoldType() {}
 // ********** Code for Simplex **************
@@ -6719,11 +6704,11 @@ Simplex.prototype.readCache = function(cache, proxyA, transformA, proxyB, transf
   this.count = cache.count;
   for (var i = (0);
    i < this.count; ++i) {
-    var v = this.vertices.$index(i);
+    var v = this.vertices[i];
     v.indexA = cache.indexA.$index(i);
     v.indexB = cache.indexB.$index(i);
-    var wALocal = proxyA.vertices.$index(v.indexA);
-    var wBLocal = proxyB.vertices.$index(v.indexB);
+    var wALocal = proxyA.vertices[v.indexA];
+    var wBLocal = proxyB.vertices[v.indexB];
     Transform.mulToOut(transformA, wALocal, v.wA);
     Transform.mulToOut(transformB, wBLocal, v.wB);
     v.w.setFrom(v.wB).subLocal(v.wA);
@@ -6737,11 +6722,11 @@ Simplex.prototype.readCache = function(cache, proxyA, transformA, proxyB, transf
     }
   }
   if (this.count == (0)) {
-    var v = this.vertices.$index((0));
+    var v = this.vertices[(0)];
     v.indexA = (0);
     v.indexB = (0);
-    var wALocal = proxyA.vertices.$index((0));
-    var wBLocal = proxyB.vertices.$index((0));
+    var wALocal = proxyA.vertices[(0)];
+    var wBLocal = proxyB.vertices[(0)];
     Transform.mulToOut(transformA, wALocal, v.wA);
     Transform.mulToOut(transformB, wBLocal, v.wB);
     v.w.setFrom(v.wB).subLocal(v.wA);
@@ -6753,8 +6738,8 @@ Simplex.prototype.writeCache = function(cache) {
   cache.count = this.count;
   for (var i = (0);
    i < this.count; ++i) {
-    cache.indexA.$setindex(i, (this.vertices.$index(i).get$indexA()));
-    cache.indexB.$setindex(i, (this.vertices.$index(i).get$indexB()));
+    cache.indexA.$setindex(i, (this.vertices[i].indexA));
+    cache.indexB.$setindex(i, (this.vertices[i].indexB));
   }
 }
 Simplex.prototype.getSearchDirection = function(out) {
@@ -6980,15 +6965,6 @@ function SimplexCache() {
     this.indexB.$setindex(i, (2147483647));
   }
 }
-SimplexCache.prototype.get$indexA = function() { return this.indexA; };
-SimplexCache.prototype.get$indexB = function() { return this.indexB; };
-SimplexCache.prototype.setFrom = function(sc) {
-  this.indexA.setRange$3((0), this.indexA.get$length(), sc.indexA);
-  this.indexB.setRange$3((0), this.indexB.get$length(), sc.indexB);
-  this.metric = sc.metric;
-  this.count = sc.count;
-}
-SimplexCache.prototype.setFrom$1 = SimplexCache.prototype.setFrom;
 // ********** Code for SimplexVertex **************
 function SimplexVertex() {
   this.w = new Vector((0), (0));
@@ -6998,10 +6974,6 @@ function SimplexVertex() {
   this.wA = new Vector((0), (0));
   this.indexA = (0);
 }
-SimplexVertex.prototype.get$indexA = function() { return this.indexA; };
-SimplexVertex.prototype.set$indexA = function(value) { return this.indexA = value; };
-SimplexVertex.prototype.get$indexB = function() { return this.indexB; };
-SimplexVertex.prototype.set$indexB = function(value) { return this.indexB = value; };
 SimplexVertex.prototype.setFrom = function(sv) {
   this.wA.setFrom(sv.wA);
   this.wB.setFrom(sv.wB);
@@ -7011,12 +6983,9 @@ SimplexVertex.prototype.setFrom = function(sv) {
   this.indexB = sv.indexB;
 }
 SimplexVertex.prototype.toString = function() {
-  return "wA: " + this.wA.toString() + " wB: " + this.wB.toString() + " w: " + this.w.toString();
+  return $add($add($add($add($add("wA: ", this.wA.toString()), " wB: "), this.wB.toString()), " w: "), this.w.toString());
 }
-SimplexVertex.prototype.setFrom$1 = SimplexVertex.prototype.setFrom;
-SimplexVertex.prototype.toString$0 = SimplexVertex.prototype.toString;
 // ********** Code for TimeOfImpact **************
-function TimeOfImpact() {}
 TimeOfImpact._construct$ctor = function(argPool) {
   this.fcn = new SeparationFunction();
   this.xfB = new Transform();
@@ -7037,6 +7006,7 @@ TimeOfImpact._construct$ctor = function(argPool) {
   $globals.TimeOfImpact_toiMaxRootIters = (0);
 }
 TimeOfImpact._construct$ctor.prototype = TimeOfImpact.prototype;
+function TimeOfImpact() {}
 TimeOfImpact.prototype.timeOfImpact = function(output, input) {
   ++$globals.TimeOfImpact_toiCalls;
   output.state = (0);
@@ -7174,13 +7144,8 @@ function SeparationFunction() {
   this.type = (0);
   this.axisA = new Vector((0), (0));
 }
-SeparationFunction.prototype.get$proxyA = function() { return this.proxyA; };
-SeparationFunction.prototype.set$proxyA = function(value) { return this.proxyA = value; };
-SeparationFunction.prototype.get$proxyB = function() { return this.proxyB; };
-SeparationFunction.prototype.set$proxyB = function(value) { return this.proxyB = value; };
 SeparationFunction.prototype.get$type = function() { return this.type; };
 SeparationFunction.prototype.set$type = function(value) { return this.type = value; };
-SeparationFunction.prototype.get$localPoint = function() { return this.localPoint; };
 SeparationFunction.prototype.initialize = function(cache, argProxyA, argSweepA, argProxyB, argSweepB, t1) {
   this.proxyA = argProxyA;
   this.proxyB = argProxyB;
@@ -7191,18 +7156,18 @@ SeparationFunction.prototype.initialize = function(cache, argProxyA, argSweepA, 
   this.sweepB.getTransform(this.xfb, t1);
   if (count == (1)) {
     this.type = (0);
-    this.localPointA.setFrom(this.proxyA.vertices.$index(cache.indexA.$index((0))));
-    this.localPointB.setFrom(this.proxyB.vertices.$index(cache.indexB.$index((0))));
+    this.localPointA.setFrom(this.proxyA.vertices[cache.indexA.$index((0))]);
+    this.localPointB.setFrom(this.proxyB.vertices[cache.indexB.$index((0))]);
     Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
     Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
     this.axis.setFrom(this.pointB).subLocal(this.pointA);
     var s = this.axis.normalize();
     return s;
   }
-  else if ($eq(cache.indexA.$index((0)), cache.indexA.$index((1)))) {
+  else if (cache.indexA.$index((0)) == cache.indexA.$index((1))) {
     this.type = (2);
-    this.localPointB1.setFrom(this.proxyB.vertices.$index(cache.indexB.$index((0))));
-    this.localPointB2.setFrom(this.proxyB.vertices.$index(cache.indexB.$index((1))));
+    this.localPointB1.setFrom(this.proxyB.vertices[cache.indexB.$index((0))]);
+    this.localPointB2.setFrom(this.proxyB.vertices[cache.indexB.$index((1))]);
     this.temp.setFrom(this.localPointB2).subLocal(this.localPointB1);
     Vector.crossVectorAndNumToOut(this.temp, (1), this.axis);
     this.axis.normalize();
@@ -7211,7 +7176,7 @@ SeparationFunction.prototype.initialize = function(cache, argProxyA, argSweepA, 
     this.localPoint.addLocal(this.localPointB2);
     this.localPoint.mulLocal((0.5));
     Transform.mulToOut(this.xfb, this.localPoint, this.pointB);
-    this.localPointA.setFrom(this.proxyA.vertices.$index(cache.indexA.$index((0))));
+    this.localPointA.setFrom(this.proxyA.vertices[cache.indexA.$index((0))]);
     Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
     this.temp.setFrom(this.pointA);
     this.temp.subLocal(this.pointB);
@@ -7224,8 +7189,8 @@ SeparationFunction.prototype.initialize = function(cache, argProxyA, argSweepA, 
   }
   else {
     this.type = (1);
-    this.localPointA1.setFrom(this.proxyA.vertices.$index(cache.indexA.$index((0))));
-    this.localPointA2.setFrom(this.proxyA.vertices.$index(cache.indexA.$index((1))));
+    this.localPointA1.setFrom(this.proxyA.vertices[cache.indexA.$index((0))]);
+    this.localPointA2.setFrom(this.proxyA.vertices[cache.indexA.$index((1))]);
     this.temp.setFrom(this.localPointA2);
     this.temp.subLocal(this.localPointA1);
     Vector.crossVectorAndNumToOut(this.temp, (1), this.axis);
@@ -7235,7 +7200,7 @@ SeparationFunction.prototype.initialize = function(cache, argProxyA, argSweepA, 
     this.localPoint.addLocal(this.localPointA2);
     this.localPoint.mulLocal((0.5));
     Transform.mulToOut(this.xfa, this.localPoint, this.pointA);
-    this.localPointB.setFrom(this.proxyB.vertices.$index(cache.indexB.$index((0))));
+    this.localPointB.setFrom(this.proxyB.vertices[cache.indexB.$index((0))]);
     Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
     this.temp.setFrom(this.pointB);
     this.temp.subLocal(this.pointA);
@@ -7258,8 +7223,8 @@ SeparationFunction.prototype.findMinSeparation = function(indexes, t) {
       this.axis.negateLocal();
       indexes.$setindex((0), this.proxyA.getSupport(this.axisA));
       indexes.$setindex((1), this.proxyB.getSupport(this.axisB));
-      this.localPointA.setFrom(this.proxyA.vertices.$index(indexes.$index((0))));
-      this.localPointB.setFrom(this.proxyB.vertices.$index(indexes.$index((1))));
+      this.localPointA.setFrom(this.proxyA.vertices[indexes.$index((0))]);
+      this.localPointB.setFrom(this.proxyB.vertices[indexes.$index((1))]);
       Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
       Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
       var separation = Vector.dot(this.pointB.subLocal(this.pointA), this.axis);
@@ -7274,7 +7239,7 @@ SeparationFunction.prototype.findMinSeparation = function(indexes, t) {
       this.normal.negateLocal();
       indexes.$setindex((0), (-1));
       indexes.$setindex((1), this.proxyB.getSupport(this.axisB));
-      this.localPointB.setFrom(this.proxyB.vertices.$index(indexes.$index((1))));
+      this.localPointB.setFrom(this.proxyB.vertices[indexes.$index((1))]);
       Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
       var separation = Vector.dot(this.pointB.subLocal(this.pointA), this.normal);
       return separation;
@@ -7287,7 +7252,7 @@ SeparationFunction.prototype.findMinSeparation = function(indexes, t) {
       this.normal.negateLocal();
       indexes.$setindex((1), (-1));
       indexes.$setindex((0), this.proxyA.getSupport(this.axisA));
-      this.localPointA.setFrom(this.proxyA.vertices.$index(indexes.$index((0))));
+      this.localPointA.setFrom(this.proxyA.vertices[indexes.$index((0))]);
       Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
       var separation = Vector.dot(this.pointA.subLocal(this.pointB), this.normal);
       return separation;
@@ -7309,8 +7274,8 @@ SeparationFunction.prototype.evaluate = function(indexA, indexB, t) {
       Matrix22.mulTransMatrixAndVectorToOut(this.xfa.rotation, this.axis, this.axisA);
       Matrix22.mulTransMatrixAndVectorToOut(this.xfb.rotation, this.axis.negateLocal(), this.axisB);
       this.axis.negateLocal();
-      this.localPointA.setFrom(this.proxyA.vertices.$index(indexA));
-      this.localPointB.setFrom(this.proxyB.vertices.$index(indexB));
+      this.localPointA.setFrom(this.proxyA.vertices[indexA]);
+      this.localPointB.setFrom(this.proxyB.vertices[indexB]);
       Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
       Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
       var separation = Vector.dot(this.pointB.subLocal(this.pointA), this.axis);
@@ -7323,7 +7288,7 @@ SeparationFunction.prototype.evaluate = function(indexA, indexB, t) {
       this.normal.negateLocal();
       Matrix22.mulTransMatrixAndVectorToOut(this.xfb.rotation, this.normal, this.axisB);
       this.normal.negateLocal();
-      this.localPointB.setFrom(this.proxyB.vertices.$index(indexB));
+      this.localPointB.setFrom(this.proxyB.vertices[indexB]);
       Transform.mulToOut(this.xfb, this.localPointB, this.pointB);
       var separation = Vector.dot(this.pointB.subLocal(this.pointA), this.normal);
       return separation;
@@ -7334,7 +7299,7 @@ SeparationFunction.prototype.evaluate = function(indexA, indexB, t) {
       Transform.mulToOut(this.xfb, this.localPoint, this.pointB);
       Matrix22.mulTransMatrixAndVectorToOut(this.xfa.rotation, this.normal.negateLocal(), this.axisA);
       this.normal.negateLocal();
-      this.localPointA.setFrom(this.proxyA.vertices.$index(indexA));
+      this.localPointA.setFrom(this.proxyA.vertices[indexA]);
       Transform.mulToOut(this.xfa, this.localPointA, this.pointA);
       var separation = Vector.dot(this.pointA.subLocal(this.pointB), this.normal);
       return separation;
@@ -7353,8 +7318,6 @@ function TimeOfImpactInput() {
   this.proxyB = new DistanceProxy();
   this.sweepA = new Sweep();
 }
-TimeOfImpactInput.prototype.get$proxyA = function() { return this.proxyA; };
-TimeOfImpactInput.prototype.get$proxyB = function() { return this.proxyB; };
 // ********** Code for TimeOfImpactOutputState **************
 function TimeOfImpactOutputState() {}
 // ********** Code for TimeOfImpactOutput **************
@@ -7385,8 +7348,8 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       this.normal.y = (0);
       pointA.x = xfA.position.x + xfA.rotation.col1.x * manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
       pointA.y = xfA.position.y + xfA.rotation.col1.y * manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
-      pointB.x = xfB.position.x + xfB.rotation.col1.x * manifold.points.$index((0)).get$localPoint().get$x() + xfB.rotation.col2.x * manifold.points.$index((0)).get$localPoint().get$y();
-      pointB.y = xfB.position.y + xfB.rotation.col1.y * manifold.points.$index((0)).get$localPoint().get$x() + xfB.rotation.col2.y * manifold.points.$index((0)).get$localPoint().get$y();
+      pointB.x = xfB.position.x + xfB.rotation.col1.x * manifold.points[(0)].localPoint.x + xfB.rotation.col2.x * manifold.points[(0)].localPoint.y;
+      pointB.y = xfB.position.y + xfB.rotation.col1.y * manifold.points[(0)].localPoint.x + xfB.rotation.col2.y * manifold.points[(0)].localPoint.y;
       if (MathBox.distanceSquared(pointA, pointB) > (1.4208639999999999e-14)) {
         this.normal.x = pointB.x - pointA.x;
         this.normal.y = pointB.y - pointA.y;
@@ -7396,8 +7359,8 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       var cAy = this.normal.y * radiusA + pointA.y;
       var cBx = -this.normal.x * radiusB + pointB.x;
       var cBy = -this.normal.y * radiusB + pointB.y;
-      this.points.$index((0)).set$x((cAx + cBx) * (0.5));
-      this.points.$index((0)).set$y((cAy + cBy) * (0.5));
+      this.points[(0)].x = (cAx + cBx) * (0.5);
+      this.points[(0)].y = (cAy + cBy) * (0.5);
       return;
 
     case (1):
@@ -7410,15 +7373,15 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       var clipPoint = this.pool4;
       for (var i = (0);
        i < manifold.pointCount; i++) {
-        clipPoint.x = xfB.position.x + xfB.rotation.col1.x * manifold.points.$index(i).get$localPoint().get$x() + xfB.rotation.col2.x * manifold.points.$index(i).get$localPoint().get$y();
-        clipPoint.y = xfB.position.y + xfB.rotation.col1.y * manifold.points.$index(i).get$localPoint().get$x() + xfB.rotation.col2.y * manifold.points.$index(i).get$localPoint().get$y();
+        clipPoint.x = xfB.position.x + xfB.rotation.col1.x * manifold.points[i].localPoint.x + xfB.rotation.col2.x * manifold.points[i].localPoint.y;
+        clipPoint.y = xfB.position.y + xfB.rotation.col1.y * manifold.points[i].localPoint.x + xfB.rotation.col2.y * manifold.points[i].localPoint.y;
         var scalar = radiusA - ((clipPoint.x - planePoint.x) * this.normal.x + (clipPoint.y - planePoint.y) * this.normal.y);
         var cAx = this.normal.x * scalar + clipPoint.x;
         var cAy = this.normal.y * scalar + clipPoint.y;
         var cBx = -this.normal.x * radiusB + clipPoint.x;
         var cBy = -this.normal.y * radiusB + clipPoint.y;
-        this.points.$index(i).set$x((cAx + cBx) * (0.5));
-        this.points.$index(i).set$y((cAy + cBy) * (0.5));
+        this.points[i].x = (cAx + cBx) * (0.5);
+        this.points[i].y = (cAy + cBy) * (0.5);
       }
       return;
 
@@ -7434,15 +7397,15 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       var clipPoint = this.pool4;
       for (var i = (0);
        i < manifold.pointCount; i++) {
-        clipPoint.x = xfA.position.x + xfA.rotation.col1.x * manifold.points.$index(i).get$localPoint().get$x() + xfA.rotation.col2.x * manifold.points.$index(i).get$localPoint().get$y();
-        clipPoint.y = xfA.position.y + xfA.rotation.col1.y * manifold.points.$index(i).get$localPoint().get$x() + xfA.rotation.col2.y * manifold.points.$index(i).get$localPoint().get$y();
+        clipPoint.x = xfA.position.x + xfA.rotation.col1.x * manifold.points[i].localPoint.x + xfA.rotation.col2.x * manifold.points[i].localPoint.y;
+        clipPoint.y = xfA.position.y + xfA.rotation.col1.y * manifold.points[i].localPoint.x + xfA.rotation.col2.y * manifold.points[i].localPoint.y;
         var scalar = radiusB - ((clipPoint.x - planePoint.x) * this.normal.x + (clipPoint.y - planePoint.y) * this.normal.y);
         var cBx = this.normal.x * scalar + clipPoint.x;
         var cBy = this.normal.y * scalar + clipPoint.y;
         var cAx = -this.normal.x * radiusA + clipPoint.x;
         var cAy = -this.normal.y * radiusA + clipPoint.y;
-        this.points.$index(i).set$x((cAx + cBx) * (0.5));
-        this.points.$index(i).set$y((cAy + cBy) * (0.5));
+        this.points[i].x = (cAx + cBx) * (0.5);
+        this.points[i].y = (cAy + cBy) * (0.5);
       }
       this.normal.x = -this.normal.x;
       this.normal.y = -this.normal.y;
@@ -7493,28 +7456,28 @@ BroadPhase.prototype.updatePairs = function(callback) {
   this._pairCount = (0);
   for (var i = (0);
    i < this._moveCount; ++i) {
-    this.queryProxy = this.moveBuffer.$index(i);
+    this.queryProxy = this.moveBuffer[i];
     if (this.queryProxy == null) {
       continue;
     }
     this._tree.query(this, this.queryProxy.box);
   }
   this._moveCount = (0);
-  var pairBuffer = ListFactory.ListFactory$from$factory(this._pairBuffer.getRange$2((0), this._pairCount));
+  var pairBuffer = ListFactory.ListFactory$from$factory(this._pairBuffer.getRange((0), this._pairCount));
   pairBuffer.sort((function (a, b) {
-    return a.compareTo$1(b);
+    return a.compareTo(b);
   })
   );
   this._pairBuffer.setRange$3((0), this._pairCount, pairBuffer);
   var i = (0);
   while (i < this._pairCount) {
-    var primaryPair = this._pairBuffer.$index(i);
+    var primaryPair = this._pairBuffer[i];
     var userDataA = primaryPair.proxyA.userData;
     var userDataB = primaryPair.proxyB.userData;
     callback.addPair(userDataA, userDataB);
     i++;
     while (i < this._pairCount) {
-      var pair = this._pairBuffer.$index(i);
+      var pair = this._pairBuffer[i];
       if (pair.proxyA != primaryPair.proxyA || pair.proxyB != primaryPair.proxyB) {
         break;
       }
@@ -7533,7 +7496,7 @@ BroadPhase.prototype.treeCallback = function(proxy) {
     this._pairBuffer = new Array(this._pairCapacity);
     for (var i = (0);
      i < oldBuffer.get$length(); i++) {
-      this._pairBuffer.$setindex(i, oldBuffer.$index(i));
+      this._pairBuffer.$setindex(i, oldBuffer[i]);
     }
     for (var i = oldBuffer.get$length();
      i < this._pairCapacity; i++) {
@@ -7541,12 +7504,12 @@ BroadPhase.prototype.treeCallback = function(proxy) {
     }
   }
   if (proxy.key < this.queryProxy.key) {
-    this._pairBuffer.$index(this._pairCount).set$proxyA(proxy);
-    this._pairBuffer.$index(this._pairCount).set$proxyB(this.queryProxy);
+    this._pairBuffer[this._pairCount].proxyA = proxy;
+    this._pairBuffer[this._pairCount].proxyB = this.queryProxy;
   }
   else {
-    this._pairBuffer.$index(this._pairCount).set$proxyA(this.queryProxy);
-    this._pairBuffer.$index(this._pairCount).set$proxyB(proxy);
+    this._pairBuffer[this._pairCount].proxyA = this.queryProxy;
+    this._pairBuffer[this._pairCount].proxyB = proxy;
   }
   this._pairCount++;
   return true;
@@ -7558,7 +7521,7 @@ BroadPhase.prototype._bufferMove = function(node) {
     this.moveBuffer = new Array(this._moveCapacity);
     for (var i = (0);
      i < old.get$length(); i++) {
-      this.moveBuffer.$setindex(i, old.$index(i));
+      this.moveBuffer.$setindex(i, old[i]);
     }
   }
   this.moveBuffer.$setindex(this._moveCount, node);
@@ -7573,7 +7536,7 @@ function DynamicTree() {
   this._drawVectors = new Array((4));
   this.center = new Vector((0), (0));
   this._tempVector = new Vector((0), (0));
-  this._nodeStack = new DoubleLinkedQueue();
+  this._nodeStack = new DoubleLinkedQueue_DynamicTreeNode();
   this._root = null;
   this._insertionCount = (0);
   this._tempBox = new AxisAlignedBox();
@@ -7599,7 +7562,7 @@ DynamicTree.prototype.createProxy = function(box, userData) {
   while (height > (64) && tryCount < (10)) {
     this.rebalance(iterationCount);
     height = this.computeHeightFromRoot();
-    tryCount++;
+    ++tryCount;
   }
   return proxy;
 }
@@ -7634,9 +7597,7 @@ DynamicTree.prototype.moveProxy = function(argProxy, argBox, displacement) {
 DynamicTree.prototype._allocateNode = function() {
   if (this._nodeStack.isEmpty()) {
     for (var i = (0);
-     i < (6); i++) {
-      this._nodeStack.addFirst(new DynamicTreeNode._construct$ctor());
-    }
+     i < (6); ++i) this._nodeStack.addFirst(new DynamicTreeNode._construct$ctor());
   }
   var node = this._nodeStack.removeFirst();
   node.parent = null;
@@ -7644,45 +7605,34 @@ DynamicTree.prototype._allocateNode = function() {
   node.childTwo = null;
   node.userData = null;
   node.key = this._nodeCounter;
-  this._nodeCounter++;
-  this._nodeCount++;
+  ++this._nodeCounter;
+  ++this._nodeCount;
   return node;
 }
 DynamicTree.prototype.query = function(callback, argBox) {
   this._query(callback, argBox, this._root, (1));
 }
 DynamicTree.prototype._query = function(callback, argBox, node, count) {
-  if (node == null) {
-    return true;
-  }
+  if (node == null) return true;
   if (AxisAlignedBox.testOverlap(argBox, node.box)) {
     if (node.get$isLeaf()) {
-      var proceed = callback.treeCallback(node);
-      if (!proceed) {
-        return false;
-      }
+      if (!callback.treeCallback(node)) return false;
     }
     else {
       if (count < (64)) {
-        count++;
-        var proceed = this._query(callback, argBox, node.childOne, count);
-        if (!proceed) {
-          return false;
-        }
+        ++count;
+        if (!this._query(callback, argBox, node.childOne, count)) return false;
       }
       if (count < (64)) {
-        count++;
-        var proceed = this._query(callback, argBox, node.childTwo, count);
-        if (!proceed) {
-          return false;
-        }
+        ++count;
+        if (!this._query(callback, argBox, node.childTwo, count)) return false;
       }
     }
   }
   return true;
 }
 DynamicTree.prototype._insertLeaf = function(node) {
-  this._insertionCount++;
+  ++this._insertionCount;
   if (this._root == null) {
     this._root = node;
     node.parent = null;
@@ -7701,12 +7651,7 @@ DynamicTree.prototype._insertLeaf = function(node) {
       this.deltaTwo.subLocal(this.center).absLocal();
       var normOne = this.deltaOne.x + this.deltaOne.y;
       var normTwo = this.deltaTwo.x + this.deltaTwo.y;
-      if (normOne < normTwo) {
-        sibling = childOne;
-      }
-      else {
-        sibling = childTwo;
-      }
+      sibling = (normOne < normTwo ? childOne : childTwo);
     }
     while ($eq(sibling.get$isLeaf(), false))
   }
@@ -7716,20 +7661,14 @@ DynamicTree.prototype._insertLeaf = function(node) {
   node2.userData = null;
   node2.box.setFromCombination(node.box, sibling.box);
   if (node1 != null) {
-    if (sibling.parent.childOne == sibling) {
-      node1.childOne = node2;
-    }
-    else {
-      node1.childTwo = node2;
-    }
+    if (sibling.parent.childOne == sibling) node1.childOne = node2;
+    else node1.childTwo = node2;
     node2.childOne = sibling;
     node2.childTwo = node;
     sibling.parent = node2;
     node.parent = node2;
     do {
-      if (node1.box.contains(node2.box)) {
-        break;
-      }
+      if (node1.box.contains(node2.box)) break;
       node1.box.setFromCombination(node1.childOne.box, node1.childTwo.box);
       node2 = node1;
       node1 = node1.parent;
@@ -7755,19 +7694,10 @@ DynamicTree.prototype._removeLeaf = function(argNode) {
   var node2 = argNode.parent;
   var node1 = node2.parent;
   var sibling;
-  if (node2.childOne == argNode) {
-    sibling = node2.childTwo;
-  }
-  else {
-    sibling = node2.childOne;
-  }
+  sibling = (node2.childOne == argNode ? node2.childTwo : node2.childOne);
   if (node1 != null) {
-    if (node1.childOne == node2) {
-      node1.childOne = sibling;
-    }
-    else {
-      node1.childTwo = sibling;
-    }
+    if (node1.childOne == node2) node1.childOne = sibling;
+    else node1.childTwo = sibling;
     sibling.parent = node1;
     this._freeNode(node2);
     while (node1 != null) {
@@ -7792,43 +7722,33 @@ DynamicTree.prototype.computeHeightFromRoot = function() {
   return this._computeHeight(this._root);
 }
 DynamicTree.prototype._computeHeight = function(node) {
-  if (node == null) {
-    return (0);
-  }
+  if (node == null) return (0);
   var heightOne = this._computeHeight(node.childOne);
   var heightTwo = this._computeHeight(node.childTwo);
   return (1) + Math.max(heightOne, heightTwo);
 }
 DynamicTree.prototype.rebalance = function(iterations) {
-  if (this._root == null) {
-    return;
-  }
+  if (this._root == null) return;
   var current;
   for (var i = (0);
-   i < iterations; i++) {
+   i < iterations; ++i) {
     current = this._root;
     var bit = (0);
     while (!current.get$isLeaf()) {
       var goLeft = (this._path >> bit) & (1);
-      if (goLeft == (0)) {
-        current = current.childOne;
-      }
-      else {
-        current = current.childTwo;
-      }
+      current = (goLeft == (0) ? current.childOne : current.childTwo);
       bit = (bit + (1)) & (31);
     }
-    this._path++;
+    ++this._path;
     this._removeLeaf(current);
     this._insertLeaf(current);
   }
 }
 DynamicTree.prototype._freeNode = function(node) {
   this._nodeStack.addFirst(node);
-  this._nodeCount--;
+  --this._nodeCount;
 }
 // ********** Code for DynamicTreeNode **************
-function DynamicTreeNode() {}
 DynamicTreeNode._construct$ctor = function() {
   this.childOne = null;
   this.next = null;
@@ -7837,25 +7757,18 @@ DynamicTreeNode._construct$ctor = function() {
   this.box = new AxisAlignedBox();
 }
 DynamicTreeNode._construct$ctor.prototype = DynamicTreeNode.prototype;
+function DynamicTreeNode() {}
 DynamicTreeNode.prototype.get$isLeaf = function() {
   return this.childOne == null;
 }
 DynamicTreeNode.prototype.toString = function() {
   return this.box.toString();
 }
-DynamicTreeNode.prototype.next$0 = function() {
-  return this.next.call$0();
-};
-DynamicTreeNode.prototype.toString$0 = DynamicTreeNode.prototype.toString;
 // ********** Code for Pair **************
 function Pair() {
   this.proxyA = null;
   this.proxyB = null;
 }
-Pair.prototype.get$proxyA = function() { return this.proxyA; };
-Pair.prototype.set$proxyA = function(value) { return this.proxyA = value; };
-Pair.prototype.get$proxyB = function() { return this.proxyB; };
-Pair.prototype.set$proxyB = function(value) { return this.proxyB = value; };
 Pair.prototype.compareTo = function(pair2) {
   if (this.proxyA.key < pair2.proxyA.key) {
     return (-1);
@@ -7875,7 +7788,6 @@ Pair.prototype.compareTo = function(pair2) {
   }
   return (1);
 }
-Pair.prototype.compareTo$1 = Pair.prototype.compareTo;
 // ********** Code for Shape **************
 function Shape(type, radius) {
   this.type = type;
@@ -7926,12 +7838,6 @@ function MassData() {
 }
 MassData.prototype.get$center = function() { return this.center; };
 MassData.prototype.set$center = function(value) { return this.center = value; };
-MassData.prototype.setFrom = function(md) {
-  this.mass = md.mass;
-  this.inertia = md.inertia;
-  this.center.setFrom(md.center);
-}
-MassData.prototype.setFrom$1 = MassData.prototype.setFrom;
 // ********** Code for ShapeType **************
 function ShapeType() {}
 // ********** Code for DebugDraw **************
@@ -7941,21 +7847,20 @@ function DebugDraw(viewport) {
 }
 DebugDraw.prototype.drawPolygon = function(vertices, vertexCount, color) {
   if (vertexCount == (1)) {
-    this.drawSegment(vertices.$index((0)), vertices.$index((0)), color);
+    this.drawSegment(vertices[(0)], vertices[(0)], color);
     return;
   }
   for (var i = (0);
    i < vertexCount - (1); i += (1)) {
-    this.drawSegment(vertices.$index(i), vertices.$index(i + (1)), color);
+    this.drawSegment(vertices[i], vertices[i + (1)], color);
   }
   if (vertexCount > (2)) {
-    this.drawSegment(vertices.$index(vertexCount - (1)), vertices.$index((0)), color);
+    this.drawSegment(vertices[vertexCount - (1)], vertices[(0)], color);
   }
 }
 DebugDraw.prototype.getWorldToScreenToOut = function(argWorld, argScreen) {
   this.viewportTransform.getWorldToScreen(argWorld, argScreen);
 }
-DebugDraw.prototype.drawSegment$3 = DebugDraw.prototype.drawSegment;
 // ********** Code for CanvasDraw **************
 $inherits(CanvasDraw, DebugDraw);
 function CanvasDraw(viewport, ctx) {
@@ -7964,30 +7869,30 @@ function CanvasDraw(viewport, ctx) {
 }
 CanvasDraw.prototype.drawPolygon = function(vertices, vertexCount, color) {
   if (vertexCount == (1)) {
-    this.drawSegment(vertices.$index((0)), vertices.$index((0)), color);
+    this.drawSegment(vertices[(0)], vertices[(0)], color);
     return;
   }
   for (var i = (0);
    i < vertexCount - (1); i += (1)) {
-    this.drawSegment(vertices.$index(i), vertices.$index(i + (1)), color);
+    this.drawSegment(vertices[i], vertices[i + (1)], color);
   }
   if (vertexCount > (2)) {
-    this.drawSegment(vertices.$index(vertexCount - (1)), vertices.$index((0)), color);
+    this.drawSegment(vertices[vertexCount - (1)], vertices[(0)], color);
   }
 }
 CanvasDraw.prototype.drawSolidPolygon = function(vertices, vertexCount, color) {
   this.set$_color(color);
   for (var i = (0);
    i < vertexCount; i++) {
-    this.getWorldToScreenToOut(vertices.$index(i), vertices.$index(i));
+    this.getWorldToScreenToOut(vertices[i], vertices[i]);
   }
   this.ctx.beginPath();
-  this.ctx.moveTo(vertices.$index((0)).get$x(), vertices.$index((0)).get$y());
+  this.ctx.moveTo(vertices[(0)].x, vertices[(0)].y);
   for (var i = (1);
    i < vertexCount; i++) {
-    this.ctx.lineTo(vertices.$index(i).get$x(), vertices.$index(i).get$y());
+    this.ctx.lineTo(vertices[i].x, vertices[i].y);
   }
-  this.ctx.lineTo(vertices.$index((0)).get$x(), vertices.$index((0)).get$y());
+  this.ctx.lineTo(vertices[(0)].x, vertices[(0)].y);
   this.ctx.closePath();
   this.ctx.fill();
 }
@@ -8024,10 +7929,9 @@ CanvasDraw.prototype.set$_color = function(color) {
   colorString.add$1(redString);
   colorString.add$1(greenString);
   colorString.add$1(blueString);
-  this.ctx.setStrokeColor(colorString.toString$0());
-  this.ctx.setFillColor(colorString.toString$0());
+  this.ctx.setStrokeColor(colorString.toString());
+  this.ctx.setFillColor(colorString.toString());
 }
-CanvasDraw.prototype.drawSegment$3 = CanvasDraw.prototype.drawSegment;
 // ********** Code for ContactFilter **************
 function ContactFilter() {
 
@@ -8179,7 +8083,7 @@ Body.prototype.resetMassData = function() {
     f.getMassData(massData);
     this.mass = this.mass + massData.mass;
     var temp = new Vector.copy$ctor(massData.center);
-    temp.mulLocal$1(massData.mass);
+    temp.mulLocal(massData.mass);
     this.tempCenter.addLocal(temp);
     this._inertia = this._inertia + massData.inertia;
   }
@@ -8204,7 +8108,7 @@ Body.prototype.resetMassData = function() {
   Transform.mulToOut(this.originTransform, this.sweep.localCenter, this.sweep.centerZero);
   this.sweep.center.setFrom(this.sweep.centerZero);
   var temp = new Vector.copy$ctor(this.sweep.center);
-  temp.subLocal$1(this.oldCenter);
+  temp.subLocal(this.oldCenter);
   Vector.crossNumAndVectorToOut(this._angularVelocity, temp, temp);
   this._linearVelocity.addLocal(temp);
 }
@@ -8249,12 +8153,8 @@ Body.prototype.get$bullet = function() {
   return (this.flags & (8)) == (8);
 }
 Body.prototype.set$bullet = function(flag) {
-  if (flag) {
-    this.flags = this.flags | (8);
-  }
-  else {
-    this.flags = this.flags & (-9);
-  }
+  if (flag) this.flags = this.flags | (8);
+  else this.flags = this.flags & (-9);
 }
 Body.prototype.get$awake = function() {
   return (this.flags & (2)) == (2);
@@ -8286,30 +8186,23 @@ Body.prototype.synchronizeFixtures = function() {
   xf1.position.addLocal(this.sweep.centerZero);
   var broadPhase = this.world._contactManager.broadPhase;
   for (var f = this.fixtureList;
-   f != null; f = f.next) {
-    f.synchronize(broadPhase, xf1, this.originTransform);
-  }
+   f != null; f = f.next) f.synchronize(broadPhase, xf1, this.originTransform);
 }
 Body.prototype.synchronizeTransform = function() {
-  var $0, $1, $2, $3;
   var c = Math.cos(this.sweep.angle);
   var s = Math.sin(this.sweep.angle);
-  this.originTransform.rotation.col1.x = c;
-  this.originTransform.rotation.col2.x = -s;
-  this.originTransform.rotation.col1.y = s;
-  this.originTransform.rotation.col2.y = c;
-  this.originTransform.position.x = this.originTransform.rotation.col1.x * this.sweep.localCenter.x + this.originTransform.rotation.col2.x * this.sweep.localCenter.y;
-  this.originTransform.position.y = this.originTransform.rotation.col1.y * this.sweep.localCenter.x + this.originTransform.rotation.col2.y * this.sweep.localCenter.y;
-  ($0 = this.originTransform.position).x = $0.x * (-1);
-  ($1 = this.originTransform.position).y = $1.y * (-1);
-  ($2 = this.originTransform.position).x = $2.x + this.sweep.center.x;
-  ($3 = this.originTransform.position).y = $3.y + this.sweep.center.y;
+  var t = this.originTransform;
+  var r = t.rotation;
+  var p = t.position;
+  r.col1.x = c;
+  r.col2.x = -s;
+  r.col1.y = s;
+  r.col2.y = c;
+  p.x = (r.col1.x * this.sweep.localCenter.x + r.col2.x * this.sweep.localCenter.y) * (-1) + this.sweep.center.x;
+  p.y = (r.col1.y * this.sweep.localCenter.x + r.col2.y * this.sweep.localCenter.y) * (-1) + this.sweep.center.y;
 }
 Body.prototype.shouldCollide = function(other) {
-  if (this._type != (2) && other._type != (2)) {
-    return false;
-  }
-  return true;
+  return !(this._type != (2) && other._type != (2));
 }
 Body.prototype.advance = function(t) {
   this.sweep.advance(t);
@@ -8317,10 +8210,6 @@ Body.prototype.advance = function(t) {
   this.sweep.angle = this.sweep.angleZero;
   this.synchronizeTransform();
 }
-Body.prototype.createFixture$1 = Body.prototype.createFixture;
-Body.prototype.next$0 = function() {
-  return this.next.call$0();
-};
 // ********** Code for BodyDef **************
 function BodyDef() {
   this.linearVelocity = new Vector((0), (0));
@@ -8422,7 +8311,7 @@ ContactManager.prototype.destroy = function(c) {
   var bodyA = fixtureA.body;
   var bodyB = fixtureB.body;
   if (this.contactListener != null && c.get$touching()) {
-    this.contactListener.endContact$1(c);
+    this.contactListener.noSuchMethod("endContact", [c]);
   }
   if (c.prev != null) {
     c.prev.next = c.next;
@@ -8504,7 +8393,6 @@ Filter.prototype.setFrom = function(other) {
   this.maskBits = other.maskBits;
   this.groupIndex = other.groupIndex;
 }
-Filter.prototype.setFrom$1 = Filter.prototype.setFrom;
 // ********** Code for Fixture **************
 function Fixture() {
   this.shape = null;
@@ -8562,9 +8450,6 @@ Fixture.prototype.getMassData = function(massData) {
 Fixture.prototype.get$type = function() {
   return this.shape.type;
 }
-Fixture.prototype.next$0 = function() {
-  return this.next.call$0();
-};
 // ********** Code for FixtureDef **************
 function FixtureDef() {
   this.shape = null;
@@ -8632,14 +8517,11 @@ Island.prototype.clear = function() {
   this.contactCount = (0);
   this.jointCount = (0);
 }
-Island.prototype.get$clear = function() {
-  return this.clear.bind(this);
-}
 Island.prototype.solve = function(step, gravity, allowSleep) {
   var $0;
   for (var i = (0);
    i < this.bodyCount; ++i) {
-    var b = this.bodies.$index(i);
+    var b = this.bodies[i];
     if (b.get$type() != (2)) {
       continue;
     }
@@ -8657,15 +8539,15 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
   var i1 = (-1);
   for (var i2 = (0);
    i2 < this.contactCount; ++i2) {
-    var fixtureA = this.contacts.$index(i2).get$fixtureA();
-    var fixtureB = this.contacts.$index(i2).get$fixtureB();
+    var fixtureA = this.contacts[i2].fixtureA;
+    var fixtureB = this.contacts[i2].fixtureB;
     var bodyA = fixtureA.body;
     var bodyB = fixtureB.body;
     var nonStatic = bodyA.get$type() != (0) && bodyB.get$type() != (0);
     if (nonStatic) {
       ++i1;
-      var temp = this.contacts.$index(i1);
-      this.contacts.$setindex(i1, this.contacts.$index(i2));
+      var temp = this.contacts[i1];
+      this.contacts.$setindex(i1, this.contacts[i2]);
       this.contacts.$setindex(i2, temp);
     }
   }
@@ -8673,7 +8555,7 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
   this._contactSolver.warmStart();
   for (var i = (0);
    i < this.jointCount; ++i) {
-    this.joints.$index(i).initVelocityConstraints$1(step);
+    this.joints.$index(i).initVelocityConstraints(step);
   }
   for (var i = (0);
    i < step.velocityIterations; ++i) {
@@ -8687,7 +8569,7 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
   var temp = new Vector((0), (0));
   for (var i = (0);
    i < this.bodyCount; ++i) {
-    var b = this.bodies.$index(i);
+    var b = this.bodies[i];
     if (b.get$type() == (0)) {
       continue;
     }
@@ -8716,7 +8598,7 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
     var jointsOkay = true;
     for (var j = (0);
      j < this.jointCount; ++j) {
-      var jointOkay = this.joints.$index(j).solvePositionConstraints$1((0.2));
+      var jointOkay = this.joints.$index(j).solvePositionConstraints((0.2));
       jointsOkay = jointsOkay && jointOkay;
     }
     if (contactsOkay && jointsOkay) {
@@ -8730,7 +8612,7 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
     var angTolSqr = (0.0012184696791468343);
     for (var i = (0);
      i < this.bodyCount; ++i) {
-      var b = this.bodies.$index(i);
+      var b = this.bodies[i];
       if (b.get$type() == (0)) {
         continue;
       }
@@ -8750,7 +8632,7 @@ Island.prototype.solve = function(step, gravity, allowSleep) {
     if (minSleepTime >= (0.5)) {
       for (var i = (0);
        i < this.bodyCount; ++i) {
-        var b = this.bodies.$index(i);
+        var b = this.bodies[i];
         b.set$awake(false);
       }
     }
@@ -8772,17 +8654,16 @@ Island.prototype.report = function(constraints) {
   }
   for (var i = (0);
    i < this.contactCount; ++i) {
-    var c = this.contacts.$index(i);
-    var cc = constraints.$index(i);
+    var c = this.contacts[i];
+    var cc = constraints[i];
     for (var j = (0);
      j < cc.pointCount; ++j) {
-      this.impulse.normalImpulses.$setindex(j, cc.points.$index(j).get$normalImpulse());
-      this.impulse.tangentImpulses.$setindex(j, cc.points.$index(j).get$tangentImpulse());
+      this.impulse.normalImpulses.$setindex(j, cc.points[j].normalImpulse);
+      this.impulse.tangentImpulses.$setindex(j, cc.points[j].tangentImpulse);
     }
-    this.listener.postSolve$2(c, this.impulse);
+    this.listener.noSuchMethod("postSolve", [c, this.impulse]);
   }
 }
-Island.prototype.clear$0 = Island.prototype.clear;
 // ********** Code for Position **************
 function Position() {
   this.x = new Vector((0), (0));
@@ -8795,8 +8676,6 @@ function Velocity() {
   this.v = new Vector((0), (0));
   this.a = (0);
 }
-Velocity.prototype.get$v = function() { return this.v; };
-Velocity.prototype.set$v = function(value) { return this.v = value; };
 // ********** Code for TimeStep **************
 function TimeStep() {
   this.dtRatio = (0);
@@ -8848,12 +8727,12 @@ World.prototype._addType = function(creatorStack, type1, type2) {
   var register = new ContactRegister();
   register.creator = creatorStack;
   register.primary = true;
-  this._contactStacks.$index(type1).$setindex(type2, register);
+  this._contactStacks[type1].$setindex(type2, register);
   if (type1 != type2) {
     var register2 = new ContactRegister();
     register2.creator = creatorStack;
     register2.primary = false;
-    this._contactStacks.$index(type2).$setindex(type1, register2);
+    this._contactStacks[type2].$setindex(type1, register2);
   }
 }
 World.prototype._initializeRegisters = function() {
@@ -8864,7 +8743,7 @@ World.prototype._initializeRegisters = function() {
 World.prototype.popContact = function(fixtureA, fixtureB) {
   var type1 = fixtureA.get$type();
   var type2 = fixtureB.get$type();
-  var reg = this._contactStacks.$index(type1).$index(type2);
+  var reg = this._contactStacks[type1][type2];
   var creator = reg.creator;
   if (creator != null) {
     if (creator.isEmpty()) {
@@ -8903,7 +8782,7 @@ World.prototype.pushContact = function(contact) {
   }
   var type1 = contact.fixtureA.get$type();
   var type2 = contact.fixtureB.get$type();
-  var creator = this._contactStacks.$index(type1).$index(type2).get$creator();
+  var creator = this._contactStacks[type1][type2].creator;
   creator.addFirst(contact);
 }
 World.prototype.createBody = function(def) {
@@ -9025,10 +8904,10 @@ World.prototype.drawDebugData = function() {
          i < vs.get$length(); i++) {
           vs.$setindex(i, new Vector((0), (0)));
         }
-        vs.$index((0)).setCoords$2(aabb.lowerBound.x, aabb.lowerBound.y);
-        vs.$index((1)).setCoords$2(aabb.upperBound.x, aabb.lowerBound.y);
-        vs.$index((2)).setCoords$2(aabb.upperBound.x, aabb.upperBound.y);
-        vs.$index((3)).setCoords$2(aabb.lowerBound.x, aabb.upperBound.y);
+        vs[(0)].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
+        vs[(1)].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
+        vs[(2)].setCoords(aabb.upperBound.x, aabb.upperBound.y);
+        vs[(3)].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
         this._debugDraw.drawPolygon(vs, (4), color);
       }
     }
@@ -9083,7 +8962,7 @@ World.prototype.solve = function(timeStep) {
     this.stack.$setindex(stackCount++, seed);
     seed.flags = seed.flags | (1);
     while (stackCount > (0)) {
-      var b = this.stack.$index(--stackCount);
+      var b = this.stack[--stackCount];
       this.island.addBody(b);
       b.set$awake(true);
       if (b.get$type() == (0)) {
@@ -9133,7 +9012,7 @@ World.prototype.solve = function(timeStep) {
     this.island.solve(timeStep, this._gravity, this._allowSleep);
     for (var i = (0);
      i < this.island.bodyCount; ++i) {
-      var b = this.island.bodies.$index(i);
+      var b = this.island.bodies[i];
       if (b.get$type() == (0)) {
         b.flags = b.flags & (-2);
       }
@@ -9190,6 +9069,7 @@ World.prototype.solveTimeOfImpact = function() {
   }
 }
 World.prototype.solveTimeOfImpactGivenBody = function(body) {
+  var $0;
   var toiContact = null;
   var toi = (1);
   var toiOther = null;
@@ -9260,7 +9140,7 @@ World.prototype.solveTimeOfImpactGivenBody = function(body) {
     body.sweep.setFrom(this.backup);
     this.solveTimeOfImpactGivenBody(body);
   }
-  ++toiContact.toiCount;
+  ((toiContact.toiCount = ($0 = toiContact.toiCount + (1)), $0));
   if (this.contacts == null || this.contacts.get$length() < (32)) {
     this.contacts = new Array((32));
   }
@@ -9328,7 +9208,7 @@ World.prototype.drawShape = function(fixture, xf, color) {
       }
       for (var i = (0);
        i < vertexCount; ++i) {
-        Transform.mulToOut(xf, poly.get$vertices().$index(i), vertices.$index(i));
+        Transform.mulToOut(xf, poly.get$vertices().$index(i), vertices[i]);
       }
       this._debugDraw.drawSolidPolygon(vertices, vertexCount, color);
 
@@ -9349,7 +9229,7 @@ World.prototype.drawJoint = function(joint) {
   switch (joint.type) {
     case (3):
 
-      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(p1, p2, color);
+      this.noSuchMethod("get:debugDraw", []).drawSegment(p1, p2, color);
       break;
 
     case (4):
@@ -9363,9 +9243,9 @@ World.prototype.drawJoint = function(joint) {
 
     default:
 
-      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(x1, p1, color);
-      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(p1, p2, color);
-      this.noSuchMethod$2("get:debugDraw", []).drawSegment$3(x2, p2, color);
+      this.noSuchMethod("get:debugDraw", []).drawSegment(x1, p1, color);
+      this.noSuchMethod("get:debugDraw", []).drawSegment(p1, p2, color);
+      this.noSuchMethod("get:debugDraw", []).drawSegment(x2, p2, color);
 
   }
 }
@@ -9378,7 +9258,7 @@ function WorldQueryWrapper() {
 }
 WorldQueryWrapper.prototype.treeCallback = function(node) {
   var fixture = node.userData;
-  return this.callback.reportFixture$1(fixture);
+  return this.callback.noSuchMethod("reportFixture", [fixture]);
 }
 // ********** Code for Contact **************
 function Contact(pool) {
@@ -9390,10 +9270,6 @@ function Contact(pool) {
   this.pool = pool;
   this.edge2 = new ContactEdge();
 }
-Contact.prototype.get$fixtureA = function() { return this.fixtureA; };
-Contact.prototype.set$fixtureA = function(value) { return this.fixtureA = value; };
-Contact.prototype.get$fixtureB = function() { return this.fixtureB; };
-Contact.prototype.set$fixtureB = function(value) { return this.fixtureB = value; };
 Contact.prototype.init = function(fixA, fixB) {
   this.flags = (0);
   this.fixtureA = fixA;
@@ -9443,13 +9319,13 @@ Contact.prototype.update = function(listener) {
     touching = this.manifold.pointCount > (0);
     for (var i = (0);
      i < this.manifold.pointCount; ++i) {
-      var mp2 = this.manifold.points.$index(i);
+      var mp2 = this.manifold.points[i];
       mp2.normalImpulse = (0);
       mp2.tangentImpulse = (0);
       var id2 = mp2.id;
       for (var j = (0);
        j < this._oldManifold.pointCount; ++j) {
-        var mp1 = this._oldManifold.points.$index(j);
+        var mp1 = this._oldManifold.points[j];
         if (mp1.id.isEqual(id2)) {
           mp2.normalImpulse = mp1.normalImpulse;
           mp2.tangentImpulse = mp1.tangentImpulse;
@@ -9472,18 +9348,15 @@ Contact.prototype.update = function(listener) {
     return;
   }
   if ($eq(wasTouching, false) && $eq(touching, true)) {
-    listener.beginContact$1(this);
+    listener.noSuchMethod("beginContact", [this]);
   }
   if ($eq(wasTouching, true) && $eq(touching, false)) {
-    listener.endContact$1(this);
+    listener.noSuchMethod("endContact", [this]);
   }
   if ($eq(sensor, false) && touching) {
-    listener.preSolve$2(this, this._oldManifold);
+    listener.noSuchMethod("preSolve", [this, this._oldManifold]);
   }
 }
-Contact.prototype.next$0 = function() {
-  return this.next.call$0();
-};
 // ********** Code for ContactConstraint **************
 function ContactConstraint() {
   this.localPoint = new Vector((0), (0));
@@ -9499,7 +9372,6 @@ function ContactConstraint() {
     this.points.$setindex(i, new ContactConstraintPoint());
   }
 }
-ContactConstraint.prototype.get$localPoint = function() { return this.localPoint; };
 ContactConstraint.prototype.get$type = function() { return this.type; };
 ContactConstraint.prototype.set$type = function(value) { return this.type = value; };
 ContactConstraint.prototype.get$radius = function() { return this.radius; };
@@ -9508,31 +9380,10 @@ ContactConstraint.prototype.get$friction = function() { return this.friction; };
 ContactConstraint.prototype.set$friction = function(value) { return this.friction = value; };
 ContactConstraint.prototype.get$restitution = function() { return this.restitution; };
 ContactConstraint.prototype.set$restitution = function(value) { return this.restitution = value; };
-ContactConstraint.prototype.setFrom = function(cp) {
-  this.pointCount = cp.pointCount;
-  this.localNormal.setFrom(cp.localNormal);
-  this.localPoint.setFrom(cp.localPoint);
-  this.normal.setFrom(cp.normal);
-  this.normalMass.setFrom(cp.normalMass);
-  this.K.setFrom(cp.K);
-  this.bodyA = cp.bodyA;
-  this.bodyB = cp.bodyB;
-  this.type = cp.type;
-  this.radius = cp.radius;
-  this.friction = cp.friction;
-  this.restitution = cp.restitution;
-  this.manifold = cp.manifold;
-  for (var i = (0);
-   i < cp.pointCount; i++) {
-    this.points.$index(i).setFrom$1(cp.points.$index(i));
-  }
-}
 ContactConstraint.prototype.toString = function() {
-  var result = ("localNormal: \"" + this.localNormal + "\", localPoint: \"" + this.localPoint + "\" ") + ("normal: \"" + this.normal + "\", radius: \"" + this.radius + "\" friction: \"" + this.friction + "\" ") + ("restitution: \"" + this.restitution + "\", pointCount: \"" + this.pointCount + "\"");
+  var result = $add($add(("localNormal: \"" + this.localNormal + "\", localPoint: \"" + this.localPoint + "\" "), ("normal: \"" + this.normal + "\", radius: \"" + this.radius + "\" friction: \"" + this.friction + "\" ")), ("restitution: \"" + this.restitution + "\", pointCount: \"" + this.pointCount + "\""));
   return result;
 }
-ContactConstraint.prototype.setFrom$1 = ContactConstraint.prototype.setFrom;
-ContactConstraint.prototype.toString$0 = ContactConstraint.prototype.toString;
 // ********** Code for ContactConstraintPoint **************
 function ContactConstraintPoint() {
   this.tangentMass = (0);
@@ -9544,26 +9395,9 @@ function ContactConstraintPoint() {
   this.normalMass = (0);
   this.normalImpulse = (0);
 }
-ContactConstraintPoint.prototype.get$localPoint = function() { return this.localPoint; };
-ContactConstraintPoint.prototype.get$normalImpulse = function() { return this.normalImpulse; };
-ContactConstraintPoint.prototype.set$normalImpulse = function(value) { return this.normalImpulse = value; };
-ContactConstraintPoint.prototype.get$tangentImpulse = function() { return this.tangentImpulse; };
-ContactConstraintPoint.prototype.set$tangentImpulse = function(value) { return this.tangentImpulse = value; };
-ContactConstraintPoint.prototype.setFrom = function(cp) {
-  this.localPoint.setFrom(cp.localPoint);
-  this.rA.setFrom(cp.rA);
-  this.rB.setFrom(cp.rB);
-  this.normalImpulse = cp.normalImpulse;
-  this.tangentImpulse = cp.tangentImpulse;
-  this.normalMass = cp.normalMass;
-  this.tangentMass = cp.tangentMass;
-  this.velocityBias = cp.velocityBias;
-}
 ContactConstraintPoint.prototype.toString = function() {
-  return "normal impulse: " + this.normalImpulse + ", tangentImpulse: " + this.tangentImpulse + ", normalMass: " + this.normalMass + ", tangentMass: " + this.tangentMass + ", velocityBias: " + this.velocityBias + ", localPoint " + this.localPoint + ", rA: " + this.rA + ", rB: " + this.rB;
+  return $add($add($add($add($add($add($add($add($add($add("normal impulse: " + this.normalImpulse, ", tangentImpulse: ") + this.tangentImpulse, ", normalMass: ") + this.normalMass, ", tangentMass: ") + this.tangentMass, ", velocityBias: ") + this.velocityBias, ", localPoint "), this.localPoint), ", rA: "), this.rA), ", rB: "), this.rB);
 }
-ContactConstraintPoint.prototype.setFrom$1 = ContactConstraintPoint.prototype.setFrom;
-ContactConstraintPoint.prototype.toString$0 = ContactConstraintPoint.prototype.toString;
 // ********** Code for ContactEdge **************
 function ContactEdge() {
   this.other = null;
@@ -9571,9 +9405,6 @@ function ContactEdge() {
   this.prev = null;
   this.next = null;
 }
-ContactEdge.prototype.next$0 = function() {
-  return this.next.call$0();
-};
 // ********** Code for CircleContact **************
 $inherits(CircleContact, Contact);
 function CircleContact(argPool) {
@@ -9592,8 +9423,6 @@ function ContactRegister() {
   this.primary = false;
   this.creator = null;
 }
-ContactRegister.prototype.get$creator = function() { return this.creator; };
-ContactRegister.prototype.set$creator = function(value) { return this.creator = value; };
 // ********** Code for ContactSolver **************
 function ContactSolver() {
   this.P2 = new Vector((0), (0));
@@ -9632,7 +9461,7 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
   }
   for (var i = (0);
    i < this.constraintCount; ++i) {
-    var contact = contacts.$index(i);
+    var contact = contacts[i];
     var fixtureA = contact.fixtureA;
     var fixtureB = contact.fixtureB;
     var shapeA = fixtureA.shape;
@@ -9649,7 +9478,7 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
     var wA = bodyA.get$angularVelocity();
     var wB = bodyB.get$angularVelocity();
     this.worldManifold.initialize(manifold, bodyA.originTransform, radiusA, bodyB.originTransform, radiusB);
-    var cc = this.constraints.$index(i);
+    var cc = this.constraints[i];
     cc.bodyA = bodyA;
     cc.bodyB = bodyB;
     cc.manifold = manifold;
@@ -9666,16 +9495,16 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
     cc.type = manifold.type;
     for (var j = (0);
      j < cc.pointCount; ++j) {
-      var cp = manifold.points.$index(j);
-      var ccp = cc.points.$index(j);
+      var cp = manifold.points[j];
+      var ccp = cc.points[j];
       ccp.normalImpulse = impulseRatio * cp.normalImpulse;
       ccp.tangentImpulse = impulseRatio * cp.tangentImpulse;
       ccp.localPoint.x = cp.localPoint.x;
       ccp.localPoint.y = cp.localPoint.y;
-      ccp.rA.x = this.worldManifold.points.$index(j).get$x() - bodyA.sweep.center.x;
-      ccp.rA.y = this.worldManifold.points.$index(j).get$y() - bodyA.sweep.center.y;
-      ccp.rB.x = this.worldManifold.points.$index(j).get$x() - bodyB.sweep.center.x;
-      ccp.rB.y = this.worldManifold.points.$index(j).get$y() - bodyB.sweep.center.y;
+      ccp.rA.x = this.worldManifold.points[j].x - bodyA.sweep.center.x;
+      ccp.rA.y = this.worldManifold.points[j].y - bodyA.sweep.center.y;
+      ccp.rB.x = this.worldManifold.points[j].x - bodyB.sweep.center.x;
+      ccp.rB.y = this.worldManifold.points[j].y - bodyB.sweep.center.y;
       var rnA = ccp.rA.x * cc.normal.y - ccp.rA.y * cc.normal.x;
       var rnB = ccp.rB.x * cc.normal.y - ccp.rB.y * cc.normal.x;
       rnA *= rnA;
@@ -9702,8 +9531,8 @@ ContactSolver.prototype.init = function(contacts, contactCount, impulseRatio) {
       }
     }
     if (cc.pointCount == (2)) {
-      var ccp1 = cc.points.$index((0));
-      var ccp2 = cc.points.$index((1));
+      var ccp1 = cc.points[(0)];
+      var ccp2 = cc.points[(1)];
       var invMassA = bodyA.invMass;
       var invIA = bodyA.invInertia;
       var invMassB = bodyB.invMass;
@@ -9736,7 +9565,7 @@ ContactSolver.prototype.warmStart = function() {
   var $0, $1, $2, $3;
   for (var i = (0);
    i < this.constraintCount; ++i) {
-    var c = this.constraints.$index(i);
+    var c = this.constraints[i];
     var bodyA = c.bodyA;
     var bodyB = c.bodyB;
     var invMassA = bodyA.invMass;
@@ -9747,7 +9576,7 @@ ContactSolver.prototype.warmStart = function() {
     Vector.crossVectorAndNumToOut(normal, (1), this.tangent);
     for (var j = (0);
      j < c.pointCount; ++j) {
-      var ccp = c.points.$index(j);
+      var ccp = c.points[j];
       var Px = ccp.normalImpulse * normal.x + ccp.tangentImpulse * this.tangent.x;
       var Py = ccp.normalImpulse * normal.y + ccp.tangentImpulse * this.tangent.y;
       bodyA.set$angularVelocity(bodyA.get$angularVelocity() - (invIA * (ccp.rA.x * Py - ccp.rA.y * Px)));
@@ -9762,7 +9591,7 @@ ContactSolver.prototype.warmStart = function() {
 ContactSolver.prototype.solveVelocityConstraints = function() {
   for (var i = (0);
    i < this.constraintCount; ++i) {
-    var c = this.constraints.$index(i);
+    var c = this.constraints[i];
     var bodyA = c.bodyA;
     var bodyB = c.bodyB;
     var wA = bodyA.get$angularVelocity();
@@ -9778,7 +9607,7 @@ ContactSolver.prototype.solveVelocityConstraints = function() {
     var friction = c.friction;
     for (var j = (0);
      j < c.pointCount; ++j) {
-      var ccp = c.points.$index(j);
+      var ccp = c.points[j];
       var a = ccp.rA;
       this.dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
       this.dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
@@ -9798,7 +9627,7 @@ ContactSolver.prototype.solveVelocityConstraints = function() {
       ccp.tangentImpulse = newImpulse;
     }
     if (c.pointCount == (1)) {
-      var ccp = c.points.$index((0));
+      var ccp = c.points[(0)];
       var a1 = ccp.rA;
       this.dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
       this.dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
@@ -9819,8 +9648,8 @@ ContactSolver.prototype.solveVelocityConstraints = function() {
       ccp.normalImpulse = newImpulse;
     }
     else {
-      var cp1 = c.points.$index((0));
-      var cp2 = c.points.$index((1));
+      var cp1 = c.points[(0)];
+      var cp2 = c.points[(1)];
       var a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
       this.dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
       this.dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
@@ -9920,12 +9749,12 @@ ContactSolver.prototype.solveVelocityConstraints = function() {
 ContactSolver.prototype.storeImpulses = function() {
   for (var i = (0);
    i < this.constraintCount; i++) {
-    var c = this.constraints.$index(i);
+    var c = this.constraints[i];
     var m = c.manifold;
     for (var j = (0);
      j < c.pointCount; j++) {
-      m.points.$index(j).set$normalImpulse(c.points.$index(j).get$normalImpulse());
-      m.points.$index(j).set$tangentImpulse(c.points.$index(j).get$tangentImpulse());
+      m.points[j].normalImpulse = c.points[j].normalImpulse;
+      m.points[j].tangentImpulse = c.points[j].tangentImpulse;
     }
   }
 }
@@ -9934,7 +9763,7 @@ ContactSolver.prototype.solvePositionConstraints = function(baumgarte) {
   var minSeparation = (0);
   for (var i = (0);
    i < this.constraintCount; ++i) {
-    var c = this.constraints.$index(i);
+    var c = this.constraints[i];
     var bodyA = c.bodyA;
     var bodyB = c.bodyB;
     var invMassA = bodyA.mass * bodyA.invMass;
@@ -9970,7 +9799,6 @@ ContactSolver.prototype.solvePositionConstraints = function(baumgarte) {
   }
   return minSeparation >= (-0.0075);
 }
-ContactSolver.prototype.solvePositionConstraints$1 = ContactSolver.prototype.solvePositionConstraints;
 // ********** Code for PositionSolverManifold **************
 function PositionSolverManifold() {
   this.normal = new Vector((0), (0));
@@ -9987,7 +9815,7 @@ PositionSolverManifold.prototype.initialize = function(cc, index) {
     case (0):
 
       cc.bodyA.getWorldPointToOut(cc.localPoint, this.pointA);
-      cc.bodyB.getWorldPointToOut(cc.points.$index((0)).get$localPoint(), this.pointB);
+      cc.bodyB.getWorldPointToOut(cc.points[(0)].localPoint, this.pointB);
       if (MathBox.distanceSquared(this.pointA, this.pointB) > (1.4208639999999999e-14)) {
         this.normal.setFrom(this.pointB).subLocal(this.pointA);
         this.normal.normalize();
@@ -10004,7 +9832,7 @@ PositionSolverManifold.prototype.initialize = function(cc, index) {
 
       cc.bodyA.getWorldVectorToOut(cc.localNormal, this.normal);
       cc.bodyA.getWorldPointToOut(cc.localPoint, this.planePoint);
-      cc.bodyB.getWorldPointToOut(cc.points.$index(index).get$localPoint(), this.clipPoint);
+      cc.bodyB.getWorldPointToOut(cc.points[index].localPoint, this.clipPoint);
       this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
       this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
       this.point.setFrom(this.clipPoint);
@@ -10014,7 +9842,7 @@ PositionSolverManifold.prototype.initialize = function(cc, index) {
 
       cc.bodyB.getWorldVectorToOut(cc.localNormal, this.normal);
       cc.bodyB.getWorldPointToOut(cc.localPoint, this.planePoint);
-      cc.bodyA.getWorldPointToOut(cc.points.$index(index).get$localPoint(), this.clipPoint);
+      cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, this.clipPoint);
       this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
       this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
       this.point.setFrom(this.clipPoint);
@@ -10078,7 +9906,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
   }
   for (var i = (0);
    i < this.count; i++) {
-    var contact = contacts.$index(i);
+    var contact = contacts[i];
     var fixtureA = contact.fixtureA;
     var fixtureB = contact.fixtureB;
     var shapeA = fixtureA.shape;
@@ -10088,7 +9916,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
     var bodyA = fixtureA.body;
     var bodyB = fixtureB.body;
     var manifold = contact.manifold;
-    var constraint = this.constraints.$index(i);
+    var constraint = this.constraints[i];
     constraint.bodyA = bodyA;
     constraint.bodyB = bodyB;
     constraint.localNormal.setFrom(manifold.localNormal);
@@ -10098,7 +9926,7 @@ TimeOfImpactSolver.prototype.initialize = function(contacts, argCount, argToiBod
     constraint.radius = radiusA + radiusB;
     for (var j = (0);
      j < constraint.pointCount; ++j) {
-      var cp = manifold.points.$index(j);
+      var cp = manifold.points[j];
       constraint.localPoints.$setindex(j, cp.localPoint);
     }
   }
@@ -10108,7 +9936,7 @@ TimeOfImpactSolver.prototype.solve = function(baumgarte) {
   var minSeparation = (0);
   for (var i = (0);
    i < this.count; ++i) {
-    var c = this.constraints.$index(i);
+    var c = this.constraints[i];
     var bodyA = c.bodyA;
     var bodyB = c.bodyB;
     var massA = bodyA.mass;
@@ -10166,7 +9994,7 @@ TimeOfImpactSolverManifold.prototype.initialize = function(cc, index) {
     case (0):
 
       this.pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-      this.pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints.$index((0))));
+      this.pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[(0)]));
       if (MathBox.distanceSquared(this.pointA, this.pointB) > (1.4208639999999999e-14)) {
         this.normal.setFrom(this.pointB).subLocal(this.pointA);
         this.normal.normalize();
@@ -10183,7 +10011,7 @@ TimeOfImpactSolverManifold.prototype.initialize = function(cc, index) {
 
       this.normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
       this.planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-      this.clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints.$index(index)));
+      this.clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
       this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
       this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
       this.point.setFrom(this.clipPoint);
@@ -10193,7 +10021,7 @@ TimeOfImpactSolverManifold.prototype.initialize = function(cc, index) {
 
       this.normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
       this.planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
-      this.clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints.$index(index)));
+      this.clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
       this.temp.setFrom(this.clipPoint).subLocal(this.planePoint);
       this.separation = Vector.dot(this.temp, this.normal) - cc.radius;
       this.point.setFrom(this.clipPoint);
@@ -10217,25 +10045,10 @@ function TimeOfImpactConstraint() {
     this.localPoints.$setindex(i, new Vector((0), (0)));
   }
 }
-TimeOfImpactConstraint.prototype.get$localPoint = function() { return this.localPoint; };
 TimeOfImpactConstraint.prototype.get$type = function() { return this.type; };
 TimeOfImpactConstraint.prototype.set$type = function(value) { return this.type = value; };
 TimeOfImpactConstraint.prototype.get$radius = function() { return this.radius; };
 TimeOfImpactConstraint.prototype.set$radius = function(value) { return this.radius = value; };
-TimeOfImpactConstraint.prototype.setFrom = function(argOther) {
-  for (var i = (0);
-   i < this.localPoints.get$length(); i++) {
-    this.localPoints.$index(i).setFrom$1(argOther.localPoints.$index(i));
-  }
-  this.localNormal.setFrom(argOther.localNormal);
-  this.localPoint.setFrom(argOther.localPoint);
-  this.type = argOther.type;
-  this.radius = argOther.radius;
-  this.pointCount = argOther.pointCount;
-  this.bodyA = argOther.bodyA;
-  this.bodyB = argOther.bodyB;
-}
-TimeOfImpactConstraint.prototype.setFrom$1 = TimeOfImpactConstraint.prototype.setFrom;
 // ********** Code for JointType **************
 function JointType() {}
 // ********** Code for DefaultWorldPool **************
@@ -10245,26 +10058,26 @@ function DefaultWorldPool() {
   this.timeOfImpact = new TimeOfImpact._construct$ctor(this);
 }
 DefaultWorldPool.prototype.getCircleContactStack = function() {
-  var queue = new DoubleLinkedQueue();
+  var queue = new DoubleLinkedQueue_CircleContact();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst$1(new CircleContact(this));
+    queue.addFirst(new CircleContact(this));
   }
   return queue;
 }
 DefaultWorldPool.prototype.getPolyCircleContactStack = function() {
-  var queue = new DoubleLinkedQueue();
+  var queue = new DoubleLinkedQueue_PolygonAndCircleContact();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst$1(new PolygonAndCircleContact(this));
+    queue.addFirst(new PolygonAndCircleContact(this));
   }
   return queue;
 }
 DefaultWorldPool.prototype.getPolyContactStack = function() {
-  var queue = new DoubleLinkedQueue();
+  var queue = new DoubleLinkedQueue_PolygonContact();
   for (var i = (0);
    i < (10); i++) {
-    queue.addFirst$1(new PolygonContact(this));
+    queue.addFirst(new PolygonContact(this));
   }
   return queue;
 }
@@ -10289,12 +10102,6 @@ Color3.prototype.setFromRGB = function(r, g, b) {
   this.y = g;
   this.z = b;
 }
-Color3.prototype.setFrom = function(argColor) {
-  this.x = argColor.x;
-  this.y = argColor.y;
-  this.z = argColor.z;
-}
-Color3.prototype.setFrom$1 = Color3.prototype.setFrom;
 // ********** Code for MathBox **************
 function MathBox() {}
 MathBox.distanceSquared = function(v1, v2) {
@@ -10342,7 +10149,7 @@ Matrix22.prototype.set$col1 = function(value) { return this.col1 = value; };
 Matrix22.prototype.get$col2 = function() { return this.col2; };
 Matrix22.prototype.set$col2 = function(value) { return this.col2 = value; };
 Matrix22.prototype.$eq = function(other) {
-  if (other != null && (other instanceof Matrix22)) {
+  if ($ne(other) && (other instanceof Matrix22)) {
     return $eq(this.col1, other.get$col1()) && $eq(this.col2, other.get$col2());
   }
   else {
@@ -10381,20 +10188,9 @@ Matrix22.prototype.invertLocal = function() {
   this.col2.y = det * a;
   return this;
 }
-Matrix22.prototype.addLocal = function(other) {
-  var $0, $1, $2, $3;
-  ($0 = this.col1).x = $0.x + other.col1.x;
-  ($1 = this.col1).y = $1.y + other.col1.y;
-  ($2 = this.col2).x = $2.x + other.col2.x;
-  ($3 = this.col2).y = $3.y + other.col2.y;
-  return this;
-}
 Matrix22.prototype.toString = function() {
-  return this.col1.toString() + ", " + this.col2.toString();
+  return $add($add(this.col1.toString(), ", "), this.col2.toString());
 }
-Matrix22.prototype.addLocal$1 = Matrix22.prototype.addLocal;
-Matrix22.prototype.setFrom$1 = Matrix22.prototype.setFrom;
-Matrix22.prototype.toString$0 = Matrix22.prototype.toString;
 // ********** Code for Settings **************
 function Settings() {}
 Settings.mixFriction = function(friction1, friction2) {
@@ -10446,7 +10242,6 @@ Sweep.prototype.advance = function(time) {
   this.centerZero.y = ((1) - time) * this.centerZero.y + time * this.center.y;
   this.angleZero = ((1) - time) * this.angleZero + time * this.angle;
 }
-Sweep.prototype.setFrom$1 = Sweep.prototype.setFrom;
 // ********** Code for Transform **************
 function Transform() {
   this.position = new Vector((0), (0));
@@ -10455,7 +10250,7 @@ function Transform() {
 Transform.prototype.get$position = function() { return this.position; };
 Transform.prototype.get$rotation = function() { return this.rotation; };
 Transform.prototype.$eq = function(other) {
-  if (other == null) {
+  if ($eq(other)) {
     return false;
   }
   else {
@@ -10480,7 +10275,6 @@ Transform.mulTransToOut = function(T, v, out) {
   out.x = v1x * b.x + v1y * b.y;
   out.y = tempy;
 }
-Transform.prototype.setFrom$1 = Transform.prototype.setFrom;
 // ********** Code for Vector **************
 function Vector(x, y) {
   this.y = y;
@@ -10496,7 +10290,7 @@ Vector.prototype.set$x = function(value) { return this.x = value; };
 Vector.prototype.get$y = function() { return this.y; };
 Vector.prototype.set$y = function(value) { return this.y = value; };
 Vector.prototype.$eq = function(other) {
-  if (other == null) {
+  if ($eq(other)) {
     return false;
   }
   else {
@@ -10548,7 +10342,7 @@ Vector.prototype.setZero = function() {
   return this;
 }
 Vector.prototype.get$length = function() {
-  return Math.sqrt(this.x * this.x + this.y * this.y);
+  return Math.sqrt(this.get$lengthSquared());
 }
 Vector.prototype.get$lengthSquared = function() {
   return this.x * this.x + this.y * this.y;
@@ -10573,14 +10367,8 @@ Vector.prototype.negateLocal = function() {
   return this;
 }
 Vector.prototype.toString = function() {
-  return "(" + this.x + ", " + this.y + ")";
+  return $add($add("(" + this.x, ", ") + this.y, ")");
 }
-Vector.prototype.addLocal$1 = Vector.prototype.addLocal;
-Vector.prototype.mulLocal$1 = Vector.prototype.mulLocal;
-Vector.prototype.setCoords$2 = Vector.prototype.setCoords;
-Vector.prototype.setFrom$1 = Vector.prototype.setFrom;
-Vector.prototype.subLocal$1 = Vector.prototype.subLocal;
-Vector.prototype.toString$0 = Vector.prototype.toString;
 // ********** Code for top level **************
 //  ********** Library BallCage **************
 // ********** Code for Demo **************
@@ -10614,7 +10402,7 @@ Demo.prototype.initializeAnimation = function() {
   this.canvas = ElementWrappingImplementation.ElementWrappingImplementation$tag$factory("canvas");
   this.canvas.set$width((900));
   this.canvas.set$height((600));
-  html_get$document().get$body().get$nodes().add$1(this.canvas);
+  html_get$document().get$body().get$nodes().add(this.canvas);
   this.ctx = this.canvas.getContext("2d");
   var extents = new Vector((450), (300));
   this.viewport = new CanvasViewportTransform(extents, extents);
@@ -10639,8 +10427,6 @@ Demo.prototype.runAnimation = function() {
   , this.canvas);
 }
 Demo.prototype.initialize$0 = Demo.prototype.initialize;
-Demo.prototype.initializeAnimation$0 = Demo.prototype.initializeAnimation;
-Demo.prototype.runAnimation$0 = Demo.prototype.runAnimation;
 // ********** Code for BallCage **************
 $inherits(BallCage, Demo);
 function BallCage() {
@@ -10649,8 +10435,8 @@ function BallCage() {
 BallCage.main = function() {
   var cage = new BallCage();
   cage.initialize$0();
-  cage.initializeAnimation$0();
-  cage.runAnimation$0();
+  cage.initializeAnimation();
+  cage.runAnimation();
 }
 BallCage.prototype.get$name = function() {
   return "Ball Cage";
@@ -10672,19 +10458,19 @@ BallCage.prototype.initialize = function() {
     var shiftY = (-20) + circleShape.get$radius() * (2) * i;
     circleBodyDef.set$position(new Vector(shiftX, (-20)));
     var circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add$1(circleBody);
+    this.bodies.add(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector(shiftX, borderLimitY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add$1(circleBody);
+    this.bodies.add(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector((-20), shiftY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add$1(circleBody);
+    this.bodies.add(circleBody);
     circleBody.createFixture(circleFixtureDef);
     circleBodyDef.set$position(new Vector(borderLimitX, shiftY));
     circleBody = this.world.createBody(circleBodyDef);
-    this.bodies.add$1(circleBody);
+    this.bodies.add(circleBody);
     circleBody.createFixture(circleFixtureDef);
   }
   var bouncingCircle = new CircleShape();
@@ -10699,36 +10485,24 @@ BallCage.prototype.initialize = function() {
   activeBodyDef.set$type((2));
   activeBodyDef.set$bullet(true);
   var activeBody = this.world.createBody(activeBodyDef);
-  this.bodies.add$1(activeBody);
-  activeBody.createFixture$1(activeFixtureDef);
+  this.bodies.add(activeBody);
+  activeBody.createFixture(activeFixtureDef);
 }
 BallCage.prototype.initialize$0 = BallCage.prototype.initialize;
 // ********** Code for top level **************
 function main() {
   BallCage.main();
 }
-// ********** Generic Type Inheritance **************
-/** Implements extends for generic types. */
-function $inheritsMembers(child, parent) {
-  child = child.prototype;
-  parent = parent.prototype;
-  Object.getOwnPropertyNames(parent).forEach(function(name) {
-    if (typeof(child[name]) == 'undefined') child[name] = parent[name];
-  });
-}
-$inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
-// 326 dynamic types.
-// 502 types
+// 320 dynamic types.
+// 501 types
 // 41 !leaf
 (function(){
   var v0/*CSSValueList*/ = 'CSSValueList|WebKitCSSFilterValue|WebKitCSSTransformValue';
-  var v1/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';
-  var v2/*SVGComponentTransferFunctionElement*/ = 'SVGComponentTransferFunctionElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement';
-  var v3/*SVGTextPositioningElement*/ = 'SVGTextPositioningElement|SVGAltGlyphElement|SVGTRefElement|SVGTSpanElement|SVGTextElement';
-  var v4/*CharacterData*/ = 'CharacterData|Comment|Text|CDATASection';
-  var v5/*Document*/ = 'Document|HTMLDocument|SVGDocument';
-  var v6/*HTMLElement*/ = [v1/*HTMLInputElement*/,'HTMLElement|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMediaElement|HTMLAudioElement|HTMLVideoElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement'].join('|');
-  var v7/*SVGElement*/ = [v2/*SVGComponentTransferFunctionElement*/,v3/*SVGTextPositioningElement*/,'SVGElement|SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimationElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGSetElement|SVGCircleElement|SVGClipPathElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGStopElement|SVGStyleElement|SVGSwitchElement|SVGSymbolElement|SVGTextContentElement|SVGTextPathElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement'].join('|');
+  var v1/*CharacterData*/ = 'CharacterData|Comment|Text|CDATASection';
+  var v2/*Document*/ = 'Document|HTMLDocument|SVGDocument';
+  var v3/*HTMLInputElement*/ = 'HTMLInputElement|HTMLIsIndexElement';
+  var v4/*SVGComponentTransferFunctionElement*/ = 'SVGComponentTransferFunctionElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement';
+  var v5/*SVGTextPositioningElement*/ = 'SVGTextPositioningElement|SVGAltGlyphElement|SVGTRefElement|SVGTSpanElement|SVGTextElement';
   var table = [
     // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
     ['AbstractWorker', 'AbstractWorker|SharedWorker|Worker'],
@@ -10740,28 +10514,26 @@ $inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
     ['CSSValueList', v0/*CSSValueList*/],
     ['CSSValue', [v0/*CSSValueList*/,'CSSValue|CSSPrimitiveValue|SVGColor|SVGPaint'].join('|')],
     ['CanvasRenderingContext', 'CanvasRenderingContext|CanvasRenderingContext2D|WebGLRenderingContext'],
-    ['CharacterData', v4/*CharacterData*/],
+    ['CharacterData', v1/*CharacterData*/],
     ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList'],
     ['DOMWindow', 'DOMWindow|Window'],
-    ['Document', v5/*Document*/],
+    ['Document', v2/*Document*/],
     ['Entry', 'Entry|DirectoryEntry|FileEntry'],
     ['EntrySync', 'EntrySync|DirectoryEntrySync|FileEntrySync'],
     ['Event', 'Event|AudioProcessingEvent|BeforeLoadEvent|CloseEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|ErrorEvent|HashChangeEvent|IDBVersionChangeEvent|MessageEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|ProgressEvent|XMLHttpRequestProgressEvent|SpeechInputEvent|StorageEvent|TrackEvent|UIEvent|CompositionEvent|KeyboardEvent|MouseEvent|SVGZoomEvent|TextEvent|TouchEvent|WheelEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent'],
     ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLPropertiesCollection'],
-    ['HTMLInputElement', v1/*HTMLInputElement*/],
-    ['HTMLElement', v6/*HTMLElement*/],
+    ['HTMLInputElement', v3/*HTMLInputElement*/],
     ['IDBCursor', 'IDBCursor|IDBCursorWithValue'],
     ['IDBRequest', 'IDBRequest|IDBVersionChangeRequest'],
-    ['SVGComponentTransferFunctionElement', v2/*SVGComponentTransferFunctionElement*/],
-    ['SVGTextPositioningElement', v3/*SVGTextPositioningElement*/],
-    ['SVGElement', v7/*SVGElement*/],
-    ['Node', [v4/*CharacterData*/,v5/*Document*/,v6/*HTMLElement*/,v7/*SVGElement*/,'Node|Attr|DocumentFragment|DocumentType|Element|Entity|EntityReference|Notation|ProcessingInstruction'].join('|')],
+    ['SVGComponentTransferFunctionElement', v4/*SVGComponentTransferFunctionElement*/],
+    ['SVGTextPositioningElement', v5/*SVGTextPositioningElement*/],
+    ['Node', [v1/*CharacterData*/,v2/*Document*/,v3/*HTMLInputElement*/,v4/*SVGComponentTransferFunctionElement*/,v5/*SVGTextPositioningElement*/,'Node|Attr|DocumentFragment|DocumentType|Element|HTMLElement|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMediaElement|HTMLAudioElement|HTMLVideoElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement|SVGElement|SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimationElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGSetElement|SVGCircleElement|SVGClipPathElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGStopElement|SVGStyleElement|SVGSwitchElement|SVGSymbolElement|SVGTextContentElement|SVGTextPathElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement|Entity|EntityReference|Notation|ProcessingInstruction'].join('|')],
     ['SVGLocatable', 'SVGLocatable|SVGTransformable'],
     ['SVGPathSeg', 'SVGPathSeg|SVGPathSegArcAbs|SVGPathSegArcRel|SVGPathSegClosePath|SVGPathSegCurvetoCubicAbs|SVGPathSegCurvetoCubicRel|SVGPathSegCurvetoCubicSmoothAbs|SVGPathSegCurvetoCubicSmoothRel|SVGPathSegCurvetoQuadraticAbs|SVGPathSegCurvetoQuadraticRel|SVGPathSegCurvetoQuadraticSmoothAbs|SVGPathSegCurvetoQuadraticSmoothRel|SVGPathSegLinetoAbs|SVGPathSegLinetoHorizontalAbs|SVGPathSegLinetoHorizontalRel|SVGPathSegLinetoRel|SVGPathSegLinetoVerticalAbs|SVGPathSegLinetoVerticalRel|SVGPathSegMovetoAbs|SVGPathSegMovetoRel'],
     ['SVGStylable', 'SVGStylable|SVGFilterPrimitiveStandardAttributes'],
     ['SVGZoomAndPan', 'SVGZoomAndPan|SVGViewSpec'],
     ['StyleSheet', 'StyleSheet|CSSStyleSheet'],
-    ['WorkerContext', 'WorkerContext|DedicatedWorkerContext|SharedWorkercontext'],
+    ['WorkerContext', 'WorkerContext|DedicatedWorkerContext|SharedWorkerContext'],
   ];
   $dynamicSetMetadata(table);
 })();
@@ -10769,8 +10541,8 @@ $inheritsMembers(_DoubleLinkedQueueEntrySentinel_E, DoubleLinkedQueueEntry_E);
 function $static_init(){
 }
 var const$0000 = Object.create(EmptyQueueException.prototype, {});
-var const$0001 = Object.create(NoMoreElementsException.prototype, {});
-var const$0002 = Object.create(UnsupportedOperationException.prototype, {_message: {"value": "TODO(jacobr): should we impl?", writeable: false}, });
+var const$0001 = Object.create(_DeletedKeySentinel.prototype, {});
+var const$0002 = Object.create(NoMoreElementsException.prototype, {});
 var $globals = {};
 $static_init();
 main();

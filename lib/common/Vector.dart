@@ -119,7 +119,7 @@ class Vector {
   }
 
   num get length() {
-    return Math.sqrt(x * x + y * y);
+    return Math.sqrt(this.lengthSquared);
   }
 
   /**
