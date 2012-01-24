@@ -41,7 +41,10 @@
         } else {
           // If browser doesn't support dart, redirect to js version.
           console.log('JS fallback.');
+          // frog version
           script.setAttribute('src', 'js/demos/' + demo + '.dart.js');
+          // dartc version
+          // script.setAttribute('src', 'out/demos/' + demo + '.dart.app.js');
         }
         document.body.appendChild(script);
       } else {
