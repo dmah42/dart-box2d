@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//TODO(gregbglw): Make a typedef. bug# 4534395
+//TODO(gregbglw): Make a typedef.
 interface PairCallback {
   void addPair(userDataA, userDataB);
 }

@@ -30,18 +30,16 @@ class CanvasDraw extends DebugDraw {
    * uses [drawSegment] to draw each side of the polygon.
    */
   void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
-    if(vertexCount == 1){
+    if(vertexCount == 1) {
       drawSegment(vertices[0], vertices[0], color);
       return;
     }
 
-    for(int i=0; i<vertexCount-1; i+=1){
-      drawSegment(vertices[i], vertices[i+1], color);
-    }
+    for(int i = 0; i < vertexCount - 1; ++i)
+      drawSegment(vertices[i], vertices[i + 1], color);
 
-    if(vertexCount > 2){
-      drawSegment(vertices[vertexCount-1], vertices[0], color);
-    }
+    if(vertexCount > 2)
+      drawSegment(vertices[vertexCount - 1], vertices[0], color);
   }
 
   /**
@@ -59,22 +57,20 @@ class CanvasDraw extends DebugDraw {
   /**
    * Draw a solid closed polygon provided in CCW order.
    */
-  void drawSolidPolygon(List<Vector> vertices, int vertexCount,
-      Color3 color) {
+  void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     // Set the color and convert to screen coordinates.
     _color = color;
     // TODO(gregbglw): Do a single ctx transform rather than convert all of
     // these vectors.
-    for (int i = 0; i < vertexCount; i++) {
+    for (int i = 0; i < vertexCount; ++i)
       getWorldToScreenToOut(vertices[i], vertices[i]);
-    }
+
     ctx.beginPath();
     ctx.moveTo(vertices[0].x, vertices[0].y);
 
     // Draw lines to all of the remaining points.
-    for (int i = 1; i < vertexCount; i++) {
+    for (int i = 1; i < vertexCount; ++i)
       ctx.lineTo(vertices[i].x, vertices[i].y);
-    }
 
     // Draw a line back to the starting point.
     ctx.lineTo(vertices[0].x, vertices[0].y);
@@ -101,8 +97,7 @@ class CanvasDraw extends DebugDraw {
   /**
    * Draw a solid circle.
    */
-  void drawSolidCircle(Vector center, num radius, Vector axis,
-      Color3 color) {
+  void drawSolidCircle(Vector center, num radius, Vector axis, Color3 color) {
     _color = color;
     getWorldToScreenToOut(center, center);
     radius *= viewportTransform.scale;
@@ -130,9 +125,7 @@ class CanvasDraw extends DebugDraw {
   /**
    * Draw a transform. Choose your own length scale.
    */
-  void drawTransform(Transform xf) {
-    throw new NotImplementedException();
-  }
+  void drawTransform(Transform xf) { throw new NotImplementedException(); }
 
   /**
    * Draw a string.

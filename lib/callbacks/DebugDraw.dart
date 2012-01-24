@@ -35,39 +35,29 @@ class DebugDraw {
     drawFlags = e_shapeBit,
     viewportTransform = viewport { }
 
-  void setFlags(int flags) {
-    drawFlags = flags;
-  }
+  void set flags(int flags) { drawFlags = flags; }
 
-  int getFlags() {
-    return drawFlags;
-  }
+  int get flags() => drawFlags;
 
-  void appendFlags(int flags) {
-    drawFlags |= flags;
-  }
+  void appendFlags(int flags) { drawFlags |= flags; }
 
-  void clearFlags(int flags) {
-    drawFlags &= ~flags;
-  }
+  void clearFlags(int flags) { drawFlags &= ~flags; }
 
   /**
    * Draw a closed polygon provided in CCW order.  This implementation
    * uses [drawSegment] to draw each side of the polygon.
    */
-  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color){
-    if(vertexCount == 1){
+  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
+    if(vertexCount == 1) {
       drawSegment(vertices[0], vertices[0], color);
       return;
     }
 
-    for(int i=0; i<vertexCount-1; i+=1){
-      drawSegment(vertices[i], vertices[i+1], color);
-    }
+    for(int i=0; i<vertexCount - 1; ++i)
+      drawSegment(vertices[i], vertices[i + 1], color);
 
-    if(vertexCount > 2){
-      drawSegment(vertices[vertexCount-1], vertices[0], color);
-    }
+    if(vertexCount > 2)
+      drawSegment(vertices[vertexCount - 1], vertices[0], color);
   }
 
   /**
@@ -110,17 +100,13 @@ class DebugDraw {
   /**
    * Returns the viewport transform.
    */
-  IViewportTransform getViewportTranform(){
-    return viewportTransform;
-  }
+  IViewportTransform get viewportTranform() => viewportTransform;
 
   /**
    * Sets the center of the viewport to the given x and y values and the
    * viewport scale to the given scale.
    */
-  void setCamera(num x, num y, num scale){
-    viewportTransform.setCamera(x,y,scale);
-  }
+  void setCamera(num x, num y, num scale){ viewportTransform.setCamera(x,y,scale); }
 
   /**
    * Screen coordinates are specified in argScreen. These coordinates are

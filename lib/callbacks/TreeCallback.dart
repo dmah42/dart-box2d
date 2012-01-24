@@ -16,7 +16,7 @@
  * Callback from a tree query request. Returns true if the query should be
  * continued.
  */
-//TODO(gregbglw): Make a typedef. bug# 4534395
+//TODO(gregbglw): Make a typedef. 
 interface TreeCallback {
   bool treeCallback(DynamicTreeNode node);
 }
