@@ -57,14 +57,9 @@ class AxisAlignedBox {
   /**
    * Returns true if the given box overlaps with this box.
    */
-  static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) {
-    if (b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y)
-      return false;
-    if (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y)
-      return false;
-
-    return true;
-  }
+  static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =>
+    !((b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) ||
+      (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y));
 
   /**
    * Returns true if the lower bound is strictly less than the upper bound and

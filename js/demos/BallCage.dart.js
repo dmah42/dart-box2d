@@ -5979,9 +5979,7 @@ AxisAlignedBox.prototype.setFromCombination = function(boxOne, boxTwo) {
   this.upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
 }
 AxisAlignedBox.testOverlap = function(a, b) {
-  if (b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) return false;
-  if (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y) return false;
-  return true;
+  return !((b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) || (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y));
 }
 AxisAlignedBox.prototype.get$center = function() {
   var c = new Vector.copy$ctor(this.lowerBound);
