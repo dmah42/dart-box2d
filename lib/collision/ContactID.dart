@@ -34,7 +34,6 @@ class ContactID {
    * Returns true if this ContactID equals the given ContactID.
    */
   bool operator == (other) => other.features == features;
-  }
 
   /**
    * Sets this contactID to be equal to the given ContactID.

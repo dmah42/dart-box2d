@@ -50,12 +50,11 @@ class Manifold {
    * already instantiated ManifoldPoints.
    */
   Manifold() :
-    points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    pointCount = 0 {
-
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
+      points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
+      localNormal = new Vector(),
+      localPoint = new Vector(),
+      pointCount = 0 {
+    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint();
   }
 
@@ -63,11 +62,11 @@ class Manifold {
    * Creates a new manifold that is a copy of the given manifold.
    */
   Manifold.copy(Manifold other) :
-    points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector.copy(other.localNormal),
-    localPoint = new Vector.copy(other.localPoint),
-    pointCount = other.pointCount,
-    type = other.type;
+      points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
+      localNormal = new Vector.copy(other.localNormal),
+      localPoint = new Vector.copy(other.localPoint),
+      pointCount = other.pointCount,
+      type = other.type {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint.copy(other.points[i]);
   }

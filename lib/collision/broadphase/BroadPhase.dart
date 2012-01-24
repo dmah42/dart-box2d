@@ -35,8 +35,6 @@ class BroadPhase implements TreeCallback {
 
   List<DynamicTreeNode> moveBuffer;
 
-  int _moveCount;
-
   List<Pair> _pairBuffer;
 
   int _pairCapacity;
@@ -52,7 +50,6 @@ class BroadPhase implements TreeCallback {
     proxyCount = 0,
     _pairCapacity = PAIR_CAPACITY,
     _pairCount = 0,
-    _moveCount = 0,
     _tree = new DynamicTree(),
     queryProxy = null {
     moveBuffer = new List<DynamicTreeNode>(MOVE_CAPACITY);
@@ -99,17 +96,7 @@ class BroadPhase implements TreeCallback {
   bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
     final AxisAlignedBox a = proxyA.box;
     final AxisAlignedBox b = proxyB.box;
-    if (b.lowerBound.x - a.upperBound.x > 0.0 ||
-        b.lowerBound.y - a.upperBound.y > 0.0) {
-      return false;
-    }
-
-    if (a.lowerBound.x - b.upperBound.x > 0.0 ||
-        a.lowerBound.y - b.upperBound.y > 0.0) {
-      return false;
-    }
-
-    return true;
+    return AxisAlignedBox.testOverlap(a, b);
   }
 
   /**
@@ -122,7 +109,7 @@ class BroadPhase implements TreeCallback {
     _pairCount = 0;
 
     // Perform tree queries for all moving proxies.
-    for (int i = 0; i < _moveCount; ++i) {
+    for (int i = 0; i < moveBuffer.length; ++i) {
       queryProxy = moveBuffer[i];
       if (queryProxy == null)
         continue;
@@ -135,7 +122,7 @@ class BroadPhase implements TreeCallback {
     }
 
     // Reset move buffer
-    _moveCount = 0;
+    moveBuffer = new List<DynamicTreeNode>(MOVE_CAPACITY);
 
     // We only want to sort the first _pairCount items of _pairBuffer,
     // so copy these to a temporary buffer where we do the sorting, then

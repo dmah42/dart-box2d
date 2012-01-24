@@ -40,12 +40,11 @@ class PolygonShape extends Shape {
    * Constructs a new PolygonShape.
    */
   PolygonShape() :
-    super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
-    vertexCount = 0,
-    vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-    normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-    centroid = new Vector() {
-
+      super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+      vertexCount = 0,
+      vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+      normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+      centroid = new Vector() {
     for (int i = 0; i < vertices.length; ++i)
       vertices[i] = new Vector();
     for (int i = 0; i < normals.length; ++i)
@@ -56,14 +55,11 @@ class PolygonShape extends Shape {
    * Constructs a new PolygonShape equal to the given shape.
    */
   PolygonShape.copy(PolygonShape other) :
-    super(ShapeType.POLYGON, other.radius),
-    vertexCount = other.vertexCount,
-
-    vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-    normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-    centroid = new Vector.copy(other.centroid),
-    vectorPool = new List<Vector>(6),
-    
+      super(ShapeType.POLYGON, other.radius),
+      vertexCount = other.vertexCount,
+      vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+      normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+      centroid = new Vector.copy(other.centroid) {
     // Copy the vertices and normals from the other polygon shape.
     for (int i = 0; i < other.vertices.length; ++i)
       vertices[i] = new Vector.copy(other.vertices[i]);

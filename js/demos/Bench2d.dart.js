@@ -2030,12 +2030,8 @@ var secretDocument;
 function AxisAlignedBox(lowerBound, upperBound) {
   this.lowerBound = lowerBound;
   this.upperBound = upperBound;
-  if (this.lowerBound == null) {
-    this.lowerBound = new Vector((0), (0));
-  }
-  if (this.upperBound == null) {
-    this.upperBound = new Vector((0), (0));
-  }
+  if (this.lowerBound == null) this.lowerBound = new Vector((0), (0));
+  if (this.upperBound == null) this.upperBound = new Vector((0), (0));
 }
 AxisAlignedBox.prototype.setFromCombination = function(boxOne, boxTwo) {
   this.lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
@@ -2044,12 +2040,8 @@ AxisAlignedBox.prototype.setFromCombination = function(boxOne, boxTwo) {
   this.upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
 }
 AxisAlignedBox.testOverlap = function(a, b) {
-  if (b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) {
-    return false;
-  }
-  if (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y) {
-    return false;
-  }
+  if (b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) return false;
+  if (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y) return false;
   return true;
 }
 AxisAlignedBox.prototype.get$center = function() {
@@ -2111,21 +2103,13 @@ Collision.clipSegmentToLine = function(vOut, vIn, norm, offset) {
   var numOut = (0);
   var distance0 = Vector.dot(norm, vIn[(0)].v) - offset;
   var distance1 = Vector.dot(norm, vIn[(1)].v) - offset;
-  if (distance0 <= (0)) {
-    vOut[numOut++].setFrom(vIn[(0)]);
-  }
-  if (distance1 <= (0)) {
-    vOut[numOut++].setFrom(vIn[(1)]);
-  }
+  if (distance0 <= (0)) vOut[numOut++].setFrom(vIn[(0)]);
+  if (distance1 <= (0)) vOut[numOut++].setFrom(vIn[(1)]);
   if (distance0 * distance1 < (0)) {
     var interp = distance0 / (distance0 - distance1);
     vOut[numOut].v.setFrom(vIn[(1)].v).subLocal(vIn[(0)].v).mulLocal(interp).addLocal(vIn[(0)].v);
-    if (distance0 > (0)) {
-      vOut[numOut].id.setFrom(vIn[(0)].id);
-    }
-    else {
-      vOut[numOut].id.setFrom(vIn[(1)].id);
-    }
+    var vin = (distance0 > (0) ? vIn[(0)] : vIn[(1)]);
+    vOut[numOut].id.setFrom(vin.id);
     ++numOut;
   }
   return numOut;
@@ -2142,9 +2126,7 @@ Collision.prototype.collideCircles = function(manifold, circle1, xfA, circle2, x
   var dy = pBy - pAy;
   var distSqr = dx * dx + dy * dy;
   var radius = circle1.radius + circle2.radius;
-  if (distSqr > radius * radius) {
-    return;
-  }
+  if (distSqr > radius * radius) return;
   manifold.type = (0);
   manifold.localPoint.setFrom(circle1.position);
   manifold.localNormal.setZero();
@@ -2170,15 +2152,13 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
   var vertices = polygon.vertices;
   var normals = polygon.normals;
   for (var i = (0);
-   i < vertexCount; i++) {
+   i < vertexCount; ++i) {
     var vertex = vertices[i];
     var tempx = cLocalx - vertex.x;
     var tempy = cLocaly - vertex.y;
     var norm = normals[i];
     var s = norm.x * tempx + norm.y * tempy;
-    if (s > radius) {
-      return;
-    }
+    if (s > radius) return;
     if (s > separation) {
       separation = s;
       normalIndex = i;
@@ -2215,9 +2195,7 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
   if (u1 <= (0)) {
     var dx = cLocalx - v1.x;
     var dy = cLocaly - v1.y;
-    if (dx * dx + dy * dy > radius * radius) {
-      return;
-    }
+    if (dx * dx + dy * dy > radius * radius) return;
     manifold.pointCount = (1);
     manifold.type = (1);
     manifold.localNormal.x = cLocalx - v1.x;
@@ -2230,9 +2208,7 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
   else if (u2 <= (0)) {
     var dx = cLocalx - v2.x;
     var dy = cLocaly - v2.y;
-    if (dx * dx + dy * dy > radius * radius) {
-      return;
-    }
+    if (dx * dx + dy * dy > radius * radius) return;
     manifold.pointCount = (1);
     manifold.type = (1);
     manifold.localNormal.x = cLocalx - v2.x;
@@ -2249,9 +2225,7 @@ Collision.prototype.collidePolygonAndCircle = function(manifold, polygon, xfA, c
     var ty = cLocaly - fcy;
     var norm = normals[vertIndex1];
     separation = tx * norm.x + ty * norm.y;
-    if (separation > radius) {
-      return;
-    }
+    if (separation > radius) return;
     manifold.pointCount = (1);
     manifold.type = (1);
     manifold.localNormal.setFrom(normals[vertIndex1]);
@@ -2343,12 +2317,8 @@ Collision.prototype.findMaxSeparation = function(results, poly1, xf1, poly2, xf2
     return;
   }
   while (true) {
-    if (increment == (-1)) {
-      edge = bestEdge - (1) >= (0) ? bestEdge - (1) : count1 - (1);
-    }
-    else {
-      edge = bestEdge + (1) < count1 ? bestEdge + (1) : (0);
-    }
+    if (increment == (-1)) edge = bestEdge - (1) >= (0) ? bestEdge - (1) : count1 - (1);
+    else edge = bestEdge + (1) < count1 ? bestEdge + (1) : (0);
     s = this.edgeSeparation(poly1, xf1, edge, poly2, xf2);
     if (s > bestSeparation) {
       bestEdge = edge;
@@ -2394,13 +2364,9 @@ Collision.prototype.collidePolygons = function(manifold, polyA, xfA, polyB, xfB)
   manifold.pointCount = (0);
   var totalRadius = polyA.radius + polyB.radius;
   this.findMaxSeparation(this.results1, polyA, xfA, polyB, xfB);
-  if (this.results1.separation > totalRadius) {
-    return;
-  }
+  if (this.results1.separation > totalRadius) return;
   this.findMaxSeparation(this.results2, polyB, xfB, polyA, xfA);
-  if (this.results2.separation > totalRadius) {
-    return;
-  }
+  if (this.results2.separation > totalRadius) return;
   var poly1;
   var poly2;
   var xf1, xf2;
@@ -2446,13 +2412,9 @@ Collision.prototype.collidePolygons = function(manifold, polyA, xfA, polyB, xfB)
   this.tangent.negateLocal();
   np = Collision.clipSegmentToLine(this.clipPoints1, this.incidentEdge, this.tangent, sideOffset1);
   this.tangent.negateLocal();
-  if (np < (2)) {
-    return;
-  }
+  if (np < (2)) return;
   np = Collision.clipSegmentToLine(this.clipPoints2, this.clipPoints1, this.tangent, sideOffset2);
-  if (np < (2)) {
-    return;
-  }
+  if (np < (2)) return;
   manifold.localNormal.setFrom(this.localNormal);
   manifold.localPoint.setFrom(this.planePoint);
   var pointCount = (0);
@@ -2555,13 +2517,9 @@ Distance.prototype.distance = function(output, cache, input) {
 
 
     }
-    if (this.simplex.count == (3)) {
-      break;
-    }
+    if (this.simplex.count == (3)) break;
     this.simplex.getClosestPoint(this.closestPoint);
     distanceSqr2 = this.closestPoint.get$lengthSquared();
-    if (distanceSqr2 >= distanceSqr1) {
-    }
     distanceSqr1 = distanceSqr2;
     this.simplex.getSearchDirection(this.searchDirection);
     if (this.searchDirection.get$lengthSquared() < (1.4208639999999999e-14)) {
@@ -2585,9 +2543,7 @@ Distance.prototype.distance = function(output, cache, input) {
         break;
       }
     }
-    if (duplicate) {
-      break;
-    }
+    if (duplicate) break;
     ((($0 = this.simplex).count = ($1 = $0.count + (1)), $1));
   }
   this.maxIters = Math.max(this.maxIters, iter);
@@ -2633,9 +2589,7 @@ function DistanceProxy() {
   this.radius = (0);
   this.count = (0);
   for (var i = (0);
-   i < this.vertices.get$length(); i++) {
-    this.vertices.$setindex(i, new Vector((0), (0)));
-  }
+   i < this.vertices.get$length(); ++i) this.vertices.$setindex(i, new Vector((0), (0)));
 }
 DistanceProxy.prototype.get$vertices = function() { return this.vertices; };
 DistanceProxy.prototype.get$radius = function() { return this.radius; };
@@ -2661,7 +2615,7 @@ DistanceProxy.prototype.getSupport = function(direction) {
   var bestIndex = (0);
   var bestValue = Vector.dot(this.vertices[(0)], direction);
   for (var i = (1);
-   i < this.count; i++) {
+   i < this.count; ++i) {
     var value = Vector.dot(this.vertices[i], direction);
     if (value > bestValue) {
       bestIndex = i;
@@ -2695,8 +2649,7 @@ Features.prototype.$eq = function(other) {
   return this.referenceEdge == other.get$referenceEdge() && this.incidentEdge == other.get$incidentEdge() && this.incidentVertex == other.get$incidentVertex() && this.flip == other.get$flip();
 }
 Features.prototype.toString = function() {
-  var s = $add($add($add($add("Features: (" + this.flip, " ,") + this.incidentEdge, " ,") + this.incidentVertex, " ,") + this.referenceEdge, ")");
-  return s;
+  return $add($add($add($add("Features: (" + this.flip, " ,") + this.incidentEdge, " ,") + this.incidentVertex, " ,") + this.referenceEdge, ")");
 }
 Features.prototype.zero = function() {
   this.referenceEdge = (0);
@@ -2711,17 +2664,13 @@ function Manifold() {
   this.points = new Array((2));
   this.localNormal = new Vector((0), (0));
   for (var i = (0);
-   i < (2); i++) {
-    this.points.$setindex(i, new ManifoldPoint());
-  }
+   i < (2); ++i) this.points.$setindex(i, new ManifoldPoint());
 }
 Manifold.prototype.get$type = function() { return this.type; };
 Manifold.prototype.set$type = function(value) { return this.type = value; };
 Manifold.prototype.setFrom = function(other) {
   for (var i = (0);
-   i < other.pointCount; i++) {
-    this.points[i].setFrom(other.points[i]);
-  }
+   i < other.pointCount; ++i) this.points[i].setFrom(other.points[i]);
   this.type = other.type;
   this.localNormal.setFrom(other.localNormal);
   this.localPoint.setFrom(other.localPoint);
@@ -3021,7 +2970,7 @@ function SimplexCache() {
   this.indexB = new Array((3));
   this.count = (0);
   for (var i = (0);
-   i < (3); i++) {
+   i < (3); ++i) {
     this.indexA.$setindex(i, (2147483647));
     this.indexB.$setindex(i, (2147483647));
   }
@@ -3170,9 +3119,7 @@ TimeOfImpact.prototype.timeOfImpact = function(output, input) {
     }
     ++iter;
     ++$globals.TimeOfImpact_toiIters;
-    if (done) {
-      break;
-    }
+    if (done) break;
     if (iter == (1000)) {
       output.state = (1);
       output.t = t1;
@@ -3395,9 +3342,7 @@ function WorldManifold() {
   this.points = new Array((2));
   this.pool4 = new Vector((0), (0));
   for (var i = (0);
-   i < (2); i++) {
-    this.points.$setindex(i, new Vector((0), (0)));
-  }
+   i < (2); ++i) this.points.$setindex(i, new Vector((0), (0)));
 }
 WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiusB) {
   switch (manifold.type) {
@@ -3433,7 +3378,7 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       planePoint.y = xfA.position.y + xfA.rotation.col1.y * manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
       var clipPoint = this.pool4;
       for (var i = (0);
-       i < manifold.pointCount; i++) {
+       i < manifold.pointCount; ++i) {
         clipPoint.x = xfB.position.x + xfB.rotation.col1.x * manifold.points[i].localPoint.x + xfB.rotation.col2.x * manifold.points[i].localPoint.y;
         clipPoint.y = xfB.position.y + xfB.rotation.col1.y * manifold.points[i].localPoint.x + xfB.rotation.col2.y * manifold.points[i].localPoint.y;
         var scalar = radiusA - ((clipPoint.x - planePoint.x) * this.normal.x + (clipPoint.y - planePoint.y) * this.normal.y);
@@ -3457,7 +3402,7 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
       planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x + xfB.rotation.col2.y * v.y;
       var clipPoint = this.pool4;
       for (var i = (0);
-       i < manifold.pointCount; i++) {
+       i < manifold.pointCount; ++i) {
         clipPoint.x = xfA.position.x + xfA.rotation.col1.x * manifold.points[i].localPoint.x + xfA.rotation.col2.x * manifold.points[i].localPoint.y;
         clipPoint.y = xfA.position.y + xfA.rotation.col1.y * manifold.points[i].localPoint.x + xfA.rotation.col2.y * manifold.points[i].localPoint.y;
         var scalar = radiusB - ((clipPoint.x - planePoint.x) * this.normal.x + (clipPoint.y - planePoint.y) * this.normal.y);
@@ -3477,53 +3422,38 @@ WorldManifold.prototype.initialize = function(manifold, xfA, radiusA, xfB, radiu
 // ********** Code for BroadPhase **************
 function BroadPhase() {
   this._pairCapacity = (16);
-  this._moveCapacity = (16);
   this._pairCount = (0);
   this.proxyCount = (0);
   this._tree = new DynamicTree();
-  this._moveCount = (0);
   this.queryProxy = null;
-  this.moveBuffer = new Array(this._moveCapacity);
+  this.moveBuffer = new Array((16));
   this._pairBuffer = new Array(this._pairCapacity);
   for (var i = (0);
-   i < this._pairCapacity; i++) {
-    this._pairBuffer.$setindex(i, new Pair());
-  }
+   i < this._pairCapacity; ++i) this._pairBuffer.$setindex(i, new Pair());
 }
 BroadPhase.prototype.createProxy = function(box, userData) {
   var node = this._tree.createProxy(box, userData);
-  this.proxyCount++;
+  ++this.proxyCount;
   this._bufferMove(node);
   return node;
 }
 BroadPhase.prototype.moveProxy = function(proxy, box, displacement) {
-  var buffer = this._tree.moveProxy(proxy, box, displacement);
-  if (buffer) {
-    this._bufferMove(proxy);
-  }
+  if (this._tree.moveProxy(proxy, box, displacement)) this._bufferMove(proxy);
 }
 BroadPhase.prototype.testOverlap = function(proxyA, proxyB) {
   var a = proxyA.box;
   var b = proxyB.box;
-  if (b.lowerBound.x - a.upperBound.x > (0) || b.lowerBound.y - a.upperBound.y > (0)) {
-    return false;
-  }
-  if (a.lowerBound.x - b.upperBound.x > (0) || a.lowerBound.y - b.upperBound.y > (0)) {
-    return false;
-  }
-  return true;
+  return AxisAlignedBox.testOverlap(a, b);
 }
 BroadPhase.prototype.updatePairs = function(callback) {
   this._pairCount = (0);
   for (var i = (0);
-   i < this._moveCount; ++i) {
+   i < this.moveBuffer.get$length(); ++i) {
     this.queryProxy = this.moveBuffer[i];
-    if (this.queryProxy == null) {
-      continue;
-    }
+    if (this.queryProxy == null) continue;
     this._tree.query(this, this.queryProxy.box);
   }
-  this._moveCount = (0);
+  this.moveBuffer = new Array((16));
   var pairBuffer = ListFactory.ListFactory$from$factory(this._pairBuffer.getRange((0), this._pairCount));
   pairBuffer.sort((function (a, b) {
     return a.compareTo(b);
@@ -3536,33 +3466,27 @@ BroadPhase.prototype.updatePairs = function(callback) {
     var userDataA = primaryPair.proxyA.userData;
     var userDataB = primaryPair.proxyB.userData;
     callback.addPair(userDataA, userDataB);
-    i++;
+    ++i;
     while (i < this._pairCount) {
       var pair = this._pairBuffer[i];
       if (pair.proxyA != primaryPair.proxyA || pair.proxyB != primaryPair.proxyB) {
         break;
       }
-      i++;
+      ++i;
     }
   }
   this._tree.rebalance((4));
 }
 BroadPhase.prototype.treeCallback = function(proxy) {
-  if ($eq(proxy, this.queryProxy)) {
-    return true;
-  }
+  if ($eq(proxy, this.queryProxy)) return true;
   if (this._pairCount == this._pairCapacity) {
     var oldBuffer = this._pairBuffer;
     this._pairCapacity = this._pairCapacity * (2);
     this._pairBuffer = new Array(this._pairCapacity);
     for (var i = (0);
-     i < oldBuffer.get$length(); i++) {
-      this._pairBuffer.$setindex(i, oldBuffer[i]);
-    }
+     i < oldBuffer.get$length(); ++i) this._pairBuffer.$setindex(i, oldBuffer[i]);
     for (var i = oldBuffer.get$length();
-     i < this._pairCapacity; i++) {
-      this._pairBuffer.$setindex(i, new Pair());
-    }
+     i < this._pairCapacity; ++i) this._pairBuffer.$setindex(i, new Pair());
   }
   if (proxy.key < this.queryProxy.key) {
     this._pairBuffer[this._pairCount].proxyA = proxy;
@@ -3572,21 +3496,11 @@ BroadPhase.prototype.treeCallback = function(proxy) {
     this._pairBuffer[this._pairCount].proxyA = this.queryProxy;
     this._pairBuffer[this._pairCount].proxyB = proxy;
   }
-  this._pairCount++;
+  ++this._pairCount;
   return true;
 }
 BroadPhase.prototype._bufferMove = function(node) {
-  if (this._moveCount == this._moveCapacity) {
-    var old = this.moveBuffer;
-    this._moveCapacity = this._moveCapacity * (2);
-    this.moveBuffer = new Array(this._moveCapacity);
-    for (var i = (0);
-     i < old.get$length(); i++) {
-      this.moveBuffer.$setindex(i, old[i]);
-    }
-  }
-  this.moveBuffer.$setindex(this._moveCount, node);
-  ++this._moveCount;
+  this.moveBuffer.add(node);
 }
 // ********** Code for DynamicTree **************
 function DynamicTree() {
@@ -3604,9 +3518,7 @@ function DynamicTree() {
   this.deltaTwo = new Vector((0), (0));
   this._nodeCounter = (0);
   for (var i = (0);
-   i < this._drawVectors.get$length(); i++) {
-    this._drawVectors.$setindex(i, new Vector((0), (0)));
-  }
+   i < this._drawVectors.get$length(); ++i) this._drawVectors.$setindex(i, new Vector((0), (0)));
 }
 DynamicTree.prototype.get$center = function() { return this.center; };
 DynamicTree.prototype.createProxy = function(box, userData) {
@@ -3629,9 +3541,7 @@ DynamicTree.prototype.createProxy = function(box, userData) {
 }
 DynamicTree.prototype.moveProxy = function(argProxy, argBox, displacement) {
   var $0, $1, $2, $3, $4, $5, $6, $7;
-  if (argProxy.box.contains(argBox)) {
-    return false;
-  }
+  if (argProxy.box.contains(argBox)) return false;
   this._removeLeaf(argProxy);
   ($0 = argBox.lowerBound).x = $0.x - (0.1);
   ($1 = argBox.lowerBound).y = $1.y - (0.1);
@@ -3639,18 +3549,10 @@ DynamicTree.prototype.moveProxy = function(argProxy, argBox, displacement) {
   ($3 = argBox.upperBound).y = $3.y + (0.1);
   this._tempVector.setFrom(displacement);
   this._tempVector.mulLocal((2));
-  if (this._tempVector.x < (0)) {
-    ($4 = argBox.lowerBound).x = $4.x + this._tempVector.x;
-  }
-  else {
-    ($5 = argBox.upperBound).x = $5.x + this._tempVector.x;
-  }
-  if (this._tempVector.y < (0)) {
-    ($6 = argBox.lowerBound).y = $6.y + this._tempVector.y;
-  }
-  else {
-    ($7 = argBox.upperBound).y = $7.y + this._tempVector.y;
-  }
+  if (this._tempVector.x < (0)) ($4 = argBox.lowerBound).x = $4.x + this._tempVector.x;
+  else ($5 = argBox.upperBound).x = $5.x + this._tempVector.x;
+  if (this._tempVector.y < (0)) ($6 = argBox.lowerBound).y = $6.y + this._tempVector.y;
+  else ($7 = argBox.upperBound).y = $7.y + this._tempVector.y;
   argProxy.box.setFrom(argBox);
   this._insertLeaf(argProxy);
   return true;
@@ -3831,21 +3733,9 @@ function Pair() {
   this.proxyB = null;
 }
 Pair.prototype.compareTo = function(pair2) {
-  if (this.proxyA.key < pair2.proxyA.key) {
-    return (-1);
-  }
+  if (this.proxyA.key < pair2.proxyA.key) return (-1);
   if (this.proxyA.key == pair2.proxyA.key) {
-    if (this.proxyB.key < pair2.proxyB.key) {
-      return (-1);
-    }
-    else {
-      if (this.proxyB.key == pair2.proxyB.key) {
-        return (0);
-      }
-      else {
-        return (1);
-      }
-    }
+    return (this.proxyB.key < pair2.proxyB.key) ? (-1) : (this.proxyB.key == pair2.proxyB.key) ? (0) : (1);
   }
   return (1);
 }
@@ -3870,45 +3760,25 @@ Shape.prototype.set$radius = function(value) { return this.radius = value; };
 $inherits(PolygonShape, Shape);
 function PolygonShape() {
   this.centroid = new Vector((0), (0));
-  this.poolTransform = new Transform();
-  this.vertices = new Array((8));
-  this.vectorPool = new Array((6));
   this.vertexCount = (0);
+  this.vertices = new Array((8));
   this.normals = new Array((8));
   Shape.call(this, (1), (0.01));
   for (var i = (0);
-   i < (6); i++) {
-    this.vectorPool.$setindex(i, new Vector((0), (0)));
-  }
+   i < this.vertices.get$length(); ++i) this.vertices.$setindex(i, new Vector((0), (0)));
   for (var i = (0);
-   i < this.vertices.get$length(); i++) {
-    this.vertices.$setindex(i, new Vector((0), (0)));
-  }
-  for (var i = (0);
-   i < this.normals.get$length(); i++) {
-    this.normals.$setindex(i, new Vector((0), (0)));
-  }
+   i < this.normals.get$length(); ++i) this.normals.$setindex(i, new Vector((0), (0)));
 }
 PolygonShape.copy$ctor = function(other) {
   this.centroid = new Vector.copy$ctor(other.centroid);
-  this.poolTransform = new Transform();
-  this.vertices = new Array((8));
-  this.vectorPool = new Array((6));
   this.vertexCount = other.vertexCount;
+  this.vertices = new Array((8));
   this.normals = new Array((8));
   Shape.call(this, (1), other.radius);
   for (var i = (0);
-   i < (6); i++) {
-    this.vectorPool.$setindex(i, new Vector((0), (0)));
-  }
+   i < other.vertices.get$length(); ++i) this.vertices.$setindex(i, new Vector.copy$ctor(other.vertices[i]));
   for (var i = (0);
-   i < other.vertices.get$length(); i++) {
-    this.vertices.$setindex(i, new Vector.copy$ctor(other.vertices[i]));
-  }
-  for (var i = (0);
-   i < other.normals.get$length(); i++) {
-    this.normals.$setindex(i, new Vector.copy$ctor(other.normals[i]));
-  }
+   i < other.normals.get$length(); ++i) this.normals.$setindex(i, new Vector.copy$ctor(other.normals[i]));
 }
 PolygonShape.copy$ctor.prototype = PolygonShape.prototype;
 PolygonShape.prototype.get$vertices = function() { return this.vertices; };
@@ -3940,9 +3810,9 @@ PolygonShape.prototype.setAsEdge = function(v1, v2) {
   this.normals[(1)].setFrom(this.normals[(0)]).negateLocal();
 }
 PolygonShape.prototype.computeAxisAlignedBox = function(argAabb, argXf) {
-  var lower = this.vectorPool[(0)];
-  var upper = this.vectorPool[(1)];
-  var v = this.vectorPool[(2)];
+  var lower = new Vector((0), (0));
+  var upper = new Vector((0), (0));
+  var v = new Vector((0), (0));
   Transform.mulToOut(argXf, this.vertices[(0)], lower);
   upper.setFrom(lower);
   for (var i = (1);
@@ -3963,15 +3833,15 @@ PolygonShape.prototype.computeMass = function(massData, density) {
     massData.inertia = (0);
     return;
   }
-  var center = this.vectorPool[(0)];
+  var center = new Vector((0), (0));
   center.setZero();
   var area = (0);
   var I = (0);
-  var pRef = this.vectorPool[(1)];
+  var pRef = new Vector((0), (0));
   pRef.setZero();
   var k_inv3 = (0.3333333333333333);
-  var e1 = this.vectorPool[(2)];
-  var e2 = this.vectorPool[(3)];
+  var e1 = new Vector((0), (0));
+  var e2 = new Vector((0), (0));
   for (var i = (0);
    i < this.vertexCount; ++i) {
     var p1 = pRef;
@@ -4010,11 +3880,8 @@ function ContactFilter() {
 ContactFilter.prototype.shouldCollide = function(fixtureA, fixtureB) {
   var filterA = fixtureA.filter;
   var filterB = fixtureB.filter;
-  if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != (0)) {
-    return filterA.groupIndex > (0);
-  }
-  var collide = (filterA.maskBits & filterB.categoryBits) != (0) && (filterA.categoryBits & filterB.maskBits) != (0);
-  return collide;
+  if (filterA.groupIndex != (0) && filterA.groupIndex == filterB.groupIndex) return filterA.groupIndex > (0);
+  return (filterA.maskBits & filterB.categoryBits) != (0) && (filterA.categoryBits & filterB.maskBits) != (0);
 }
 // ********** Code for ContactImpulse **************
 function ContactImpulse() {
@@ -4329,9 +4196,7 @@ ContactManager.prototype.addPair = function(fixtureA, fixtureB) {
   c.edge2.other = bodyA;
   c.edge2.prev = null;
   c.edge2.next = bodyB.contactList;
-  if (bodyB.contactList != null) {
-    bodyB.contactList.prev = c.edge2;
-  }
+  if (bodyB.contactList != null) bodyB.contactList.prev = c.edge2;
   bodyB.contactList = c.edge2;
   ++this.contactCount;
 }
@@ -4346,33 +4211,15 @@ ContactManager.prototype.destroy = function(c) {
   if (this.contactListener != null && c.get$touching()) {
     this.contactListener.noSuchMethod("endContact", [c]);
   }
-  if (c.prev != null) {
-    c.prev.next = c.next;
-  }
-  if (c.next != null) {
-    c.next.prev = c.prev;
-  }
-  if ($eq(c, this.contactList)) {
-    this.contactList = c.next;
-  }
-  if (c.edge1.prev != null) {
-    c.edge1.prev.next = c.edge1.next;
-  }
-  if (c.edge1.next != null) {
-    c.edge1.next.prev = c.edge1.prev;
-  }
-  if ($eq(c.edge1, bodyA.contactList)) {
-    bodyA.contactList = c.edge1.next;
-  }
-  if (c.edge2.prev != null) {
-    c.edge2.prev.next = c.edge2.next;
-  }
-  if (c.edge2.next != null) {
-    c.edge2.next.prev = c.edge2.prev;
-  }
-  if ($eq(c.edge2, bodyB.contactList)) {
-    bodyB.contactList = c.edge2.next;
-  }
+  if (c.prev != null) c.prev.next = c.next;
+  if (c.next != null) c.next.prev = c.prev;
+  if ($eq(c, this.contactList)) this.contactList = c.next;
+  if (c.edge1.prev != null) c.edge1.prev.next = c.edge1.next;
+  if (c.edge1.next != null) c.edge1.next.prev = c.edge1.prev;
+  if ($eq(c.edge1, bodyA.contactList)) bodyA.contactList = c.edge1.next;
+  if (c.edge2.prev != null) c.edge2.prev.next = c.edge2.next;
+  if (c.edge2.next != null) c.edge2.next.prev = c.edge2.prev;
+  if ($eq(c.edge2, bodyB.contactList)) bodyB.contactList = c.edge2.next;
   this.pool.pushContact(c);
   --this.contactCount;
 }
