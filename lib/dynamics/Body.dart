@@ -925,28 +925,27 @@ class Body {
     xf1.position.addLocal(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;
-    for (Fixture f = fixtureList; f != null; f = f.next) {
+    for (Fixture f = fixtureList; f != null; f = f.next)
       f.synchronize(broadPhase, xf1, originTransform);
-    }
   }
 
   void synchronizeTransform() {
     num c = Math.cos(sweep.angle);
     num s = Math.sin(sweep.angle);
-    originTransform.rotation.col1.x = c;
-    originTransform.rotation.col2.x = -s;
-    originTransform.rotation.col1.y = s;
-    originTransform.rotation.col2.y = c;
-    originTransform.position.x = originTransform.rotation.col1.x *
-        sweep.localCenter.x + originTransform.rotation.col2.x *
-        sweep.localCenter.y;
-    originTransform.position.y = originTransform.rotation.col1.y *
-        sweep.localCenter.x + originTransform.rotation.col2.y *
-        sweep.localCenter.y;
-    originTransform.position.x *= -1;
-    originTransform.position.y *= -1;
-    originTransform.position.x += sweep.center.x;
-    originTransform.position.y += sweep.center.y;
+    final t = originTransform;
+    final r = t.rotation;
+    final p = t.position;
+
+    r.col1.x = c;
+    r.col2.x = -s;
+    r.col1.y = s;
+    r.col2.y = c;
+    p.x = r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y;
+    p.y = r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y;
+    p.x *= -1;
+    p.y *= -1;
+    p.x += sweep.center.x;
+    p.y += sweep.center.y;
   }
 
   /**
@@ -955,11 +954,7 @@ class Body {
    */
   bool shouldCollide(Body other) {
     // At least one body should be dynamic.
-    if (_type != BodyType.DYNAMIC && other._type != BodyType.DYNAMIC) {
-      return false;
-    }
-
-    return true;
+    return !(_type != BodyType.DYNAMIC && other._type != BodyType.DYNAMIC);
   }
 
   void advance(num t) {
