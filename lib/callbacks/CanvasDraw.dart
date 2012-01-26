@@ -144,11 +144,7 @@ class CanvasDraw extends DebugDraw {
 
   /** Sets the rendering context stroke color based on the given color3. */
   void set _color(Color3 color) {
-    int red = (color.x * 255).round().toInt();
-    int green = (color.y * 255).round().toInt();
-    int blue = (color.z * 255).round().toInt();
-
-    ctx.setStrokeColor(red, green, blue);
-    ctx.setFillColor(red, green, blue);
+    ctx.setStrokeColor(color.x, color.y, color.z, 1.0);
+    ctx.setFillColor(color.x, color.y, color.z, 0.8);
   }
 }
