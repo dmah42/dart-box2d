@@ -108,9 +108,8 @@ class Benchmark {
         watch.start();
 
         // Step the world forward in a nice loop.
-        for (int i = 0; i < stepCount; i++) {
+        for (int i = 0; i < stepCount; ++i)
           world.step(TIME_STEP, solveCount, solveCount);
-        }
 
         // Record the running time.
         watch.stop();
@@ -137,7 +136,5 @@ class Benchmark {
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;
   }
 
-  int get bodyCount() {
-    return bodies.length;
-  }
+  int get bodyCount() => bodies.length;
 }
