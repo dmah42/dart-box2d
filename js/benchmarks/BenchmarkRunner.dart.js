@@ -8199,9 +8199,7 @@ Benchmark.prototype.runBenchmark = function(resultsWriter) {
       var watch = new StopwatchImplementation();
       watch.start$0();
       for (var i = (0);
-       i < stepCount; i++) {
-        this.world.step((0.016666666666666666), solveCount, solveCount);
-      }
+       i < stepCount; ++i) this.world.step((0.016666666666666666), solveCount, solveCount);
       watch.stop();
       this._recordResults(watch.elapsedInMs(), resultsWriter, solveCount, stepCount);
     }
