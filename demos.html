@@ -31,21 +31,9 @@
       var demo = getQueryVariable('demo');
       if (demo && demos.indexOf(demo) != -1) {
         console.log('Loading ' + demo);
-        console.log('Checking for native dart support');
         var script = document.createElement('script');
-        if(getQueryVariable('native') && document.implementation.hasFeature('dart')) {
-          // Browser has the goods, so kick it in to dart gear.
-          console.log('Dart supported.');
-          script.setAttribute('type', 'application/dart');
-          script.setAttribute('src', 'demos/' + demo + '.dart');
-        } else {
-          // If browser doesn't support dart, redirect to js version.
-          console.log('JS fallback.');
-          // frog version
-          script.setAttribute('src', 'js/demos/' + demo + '.dart.js');
-          // dartc version
-          // script.setAttribute('src', 'out/demos/' + demo + '.dart.app.js');
-        }
+        script.setAttribute('type', 'application/dart');
+        script.setAttribute('src', 'demos/' + demo + '.dart');
         document.body.appendChild(script);
       } else {
         console.log('Creating menu');
@@ -61,6 +49,9 @@
         }
         document.body.appendChild(menu);
       }
+    </script>
+    <script
+      src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
     </script>
   </body>
 </html>
