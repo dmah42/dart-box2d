@@ -27,7 +27,6 @@
 class BroadPhase implements TreeCallback {
   static final int NULL_PROXY = -1;
   static final int PAIR_CAPACITY = 16;
-  static final int MOVE_CAPACITY = 16;
 
   final DynamicTree _tree;
 
@@ -52,7 +51,7 @@ class BroadPhase implements TreeCallback {
     _pairCount = 0,
     _tree = new DynamicTree(),
     queryProxy = null {
-    moveBuffer = new List<DynamicTreeNode>(MOVE_CAPACITY);
+    moveBuffer = new List<DynamicTreeNode>();
     // Put a bunch of pairs into the pair buffer.
     // TODO(dominich): Do a benchmark to see how preallocating the pairs
     // performs against allocating them as we go.
@@ -122,7 +121,7 @@ class BroadPhase implements TreeCallback {
     }
 
     // Reset move buffer
-    moveBuffer = new List<DynamicTreeNode>(MOVE_CAPACITY);
+    moveBuffer = new List<DynamicTreeNode>();
 
     // We only want to sort the first _pairCount items of _pairBuffer,
     // so copy these to a temporary buffer where we do the sorting, then
@@ -171,6 +170,7 @@ class BroadPhase implements TreeCallback {
       return true;
 
     // Grow the pair buffer as needed.
+    // TODO(dominich): Can this be left up to the underlying SDK?
     if (_pairCount == _pairCapacity) {
       List<Pair> oldBuffer = _pairBuffer;
       _pairCapacity *= 2;

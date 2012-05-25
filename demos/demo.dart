@@ -81,9 +81,7 @@ class Demo {
     }
     ++frameCount;
 
-    window.webkitRequestAnimationFrame((num time) {
-      step(time);
-    }, canvas);
+    window.requestAnimationFrame((num time) { step(time); });
   }
 
   /**
@@ -124,9 +122,7 @@ class Demo {
    * Starts running the demo as an animation using an animation scheduler.
    */
   void runAnimation() {
-    window.webkitRequestAnimationFrame((num time) {
-      step(time);
-    }, canvas);
+    window.requestAnimationFrame((num time) { step(time); });
   }
 }
 
