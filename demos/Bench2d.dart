@@ -123,15 +123,11 @@ class Bench2d {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    window.webkitRequestAnimationFrame((num time) {
-      render();
-    }, canvas);
+    window.requestAnimationFrame((num time) { render(); });
   }
 
   void runAnimation() {
-    window.webkitRequestAnimationFrame((num time) {
-      render();
-    }, canvas);
+    window.requestAnimationFrame((num time) { render(); });
   }
 
   void warmup() {
