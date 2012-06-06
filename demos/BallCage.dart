@@ -16,6 +16,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+class CollisionListener implements ContactListener {
+  void beginContact(Contact contact) {
+    print("begin contact");
+  }
+  void endContact(Contact contact) {
+    print("end contact");
+  }
+}
 
 class BallCage extends Demo {
   static final String NAME = "Ball Cage";
