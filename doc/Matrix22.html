@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Matrix22</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Matrix22::Matrix22'>Matrix22</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ A 2x2 matrix class.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Matrix22::col1'>col1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Matrix22::col2'>col2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a>([<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::::c1'>c1</a> = null, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::::c2'>c2</a> = null])</code>
+</dt>
+<dd>
+
+ Constructs a new Matrix. Defaults to both columns being default vectors.
+</dd>
+<dt>
+<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a>.<a name='Matrix22::fromAngle'>fromAngle</a>(<code><a href='num.html#num::num'>num</a></code> <a name='Matrix22::fromAngle::angle'>angle</a>)</code>
+</dt>
+<dd>
+
+ Constructs a new Matrix22 representing an angle.
+</dd>
+<dt>
+<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a>.<a name='Matrix22::copy'>copy</a>(<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::copy::other'>other</a>)</code>
+</dt>
+<dd>
+
+ Create a new Matrix equal to the given Matrix.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='Matrix22::6161'>==</a>(&lt;dynamic&gt; <a name='Matrix22::6161::other'>other</a>)</code></dt>
+<dd>
+
+ Returns true if given object is a Matrix22 and its col1 and col2 are equal
+ to the col1 and col2 of this Matrix22.
+</dd>
+<dt>
+<code><code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::addLocal'>addLocal</a>(<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::addLocal::other'>other</a>)</code></dt>
+<dd>
+
+ Adds the given matrix to this matrix. Returns this matrix.
+</dd>
+<dt>
+<code><code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::invertLocal'>invertLocal</a>()</code></dt>
+<dd>
+ Inverts this Matrix. </dd>
+<dt>
+<code>static void <a name='Matrix22::mulMatrixAndVectorToOut'>mulMatrixAndVectorToOut</a>(<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::mulMatrixAndVectorToOut::matrix'>matrix</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::mulMatrixAndVectorToOut::vector'>vector</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::mulMatrixAndVectorToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Multiply the given vector by the given matrix and store
+ the result in the given parameter out.
+</dd>
+<dt>
+<code>static void <a name='Matrix22::mulTransMatrixAndVectorToOut'>mulTransMatrixAndVectorToOut</a>(<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::mulTransMatrixAndVectorToOut::matrix'>matrix</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::mulTransMatrixAndVectorToOut::vector'>vector</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::mulTransMatrixAndVectorToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Multiply the given vector by the transpose of the given matrix and store
+ the result in the given parameter out.
+</dd>
+<dt>
+<code>void <a name='Matrix22::multiplyVectorToOut'>multiplyVectorToOut</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::multiplyVectorToOut::v'>v</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::multiplyVectorToOut::out'>out</a>)</code></dt>
+<dd>
+
+ Multiply this matrix by a vector. Return the result through the given out
+ parameter.
+</dd>
+<dt>
+<code>void <a name='Matrix22::setAngle'>setAngle</a>(<code><a href='num.html#num::num'>num</a></code> <a name='Matrix22::setAngle::angle'>angle</a>)</code></dt>
+<dd>
+
+ Set as a matrix representing a rotation.
+</dd>
+<dt>
+<code>void <a name='Matrix22::setFrom'>setFrom</a>(<code><a href='Matrix22.html#Matrix22::Matrix22'>Matrix22</a></code> <a name='Matrix22::setFrom::matrix'>matrix</a>)</code></dt>
+<dd>
+
+ Sets this matrix to be equal to the given matrix.
+</dd>
+<dt>
+<code>void <a name='Matrix22::setFromColumns'>setFromColumns</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::setFromColumns::v1'>v1</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::setFromColumns::v2'>v2</a>)</code></dt>
+<dd>
+
+ Sets this matrix's columns equal to the given vectors, respectively.
+</dd>
+<dt>
+<code>void <a name='Matrix22::setIdentity'>setIdentity</a>()</code></dt>
+<dd>
+
+ Set as the identity matrix.
+</dd>
+<dt>
+<code>void <a name='Matrix22::solveToOut'>solveToOut</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::solveToOut::b'>b</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Matrix22::solveToOut::out'>out</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code><code><a href='String.html#String::String'>String</a></code> <a name='Matrix22::toString'>toString</a>()</code></dt>
+<dd>
+ Returns a String showing this matrix values. </dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

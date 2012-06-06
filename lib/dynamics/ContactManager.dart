@@ -109,17 +109,14 @@ class ContactManager implements PairCallback {
 
     c.edge2.prev = null;
     c.edge2.next = bodyB.contactList;
-    if (bodyB.contactList != null) {
+    if (bodyB.contactList != null)
       bodyB.contactList.prev = c.edge2;
-    }
     bodyB.contactList = c.edge2;
 
     ++contactCount;
   }
 
-  void findNewContacts() {
-    broadPhase.updatePairs(this);
-  }
+  void findNewContacts() { broadPhase.updatePairs(this); }
 
   void destroy(Contact c) {
     Fixture fixtureA = c.fixtureA;
@@ -132,43 +129,34 @@ class ContactManager implements PairCallback {
     }
 
     // Remove from the world.
-    if (c.prev != null) {
+    if (c.prev != null)
       c.prev.next = c.next;
-    }
 
-    if (c.next != null) {
+    if (c.next != null)
       c.next.prev = c.prev;
-    }
 
-    if (c == contactList) {
+    if (c == contactList)
       contactList = c.next;
-    }
 
     // Remove from body 1
-    if (c.edge1.prev != null) {
+    if (c.edge1.prev != null)
       c.edge1.prev.next = c.edge1.next;
-    }
 
-    if (c.edge1.next != null) {
+    if (c.edge1.next != null)
       c.edge1.next.prev = c.edge1.prev;
-    }
 
-    if (c.edge1 == bodyA.contactList) {
+    if (c.edge1 == bodyA.contactList)
       bodyA.contactList = c.edge1.next;
-    }
 
     // Remove from body 2
-    if (c.edge2.prev != null) {
+    if (c.edge2.prev != null)
       c.edge2.prev.next = c.edge2.next;
-    }
 
-    if (c.edge2.next != null) {
+    if (c.edge2.next != null)
       c.edge2.next.prev = c.edge2.prev;
-    }
 
-    if (c.edge2 == bodyB.contactList) {
+    if (c.edge2 == bodyB.contactList)
       bodyB.contactList = c.edge2.next;
-    }
 
     // Call the factory.
     pool.pushContact(c);

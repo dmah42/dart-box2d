@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : ContactManager</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='ContactManager::ContactManager'>ContactManager</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+<section class="interfaces">
+<h2>Implemented interfaces:</h2>
+<ul>
+<li><a href='PairCallback.html#PairCallback::PairCallback'>PairCallback</a></li>
+</ul>
+</section>
+
+</section>
+
+<section id="summary">
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='BroadPhase.html#BroadPhase::BroadPhase'>BroadPhase</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::broadPhase'>broadPhase
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='int.html#int::int'>int</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::contactCount'>contactCount
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='ContactFilter.html#ContactFilter::ContactFilter'>ContactFilter</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::contactFilter'>contactFilter
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Contact.html#Contact::Contact'>Contact</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::contactList'>contactList
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='ContactListener.html#ContactListener::ContactListener'>ContactListener</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::contactListener'>contactListener
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='World.html#World::World'>World</a></code></code></span>
+<span class="field-name"><code><a name='ContactManager::pool'>pool
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='ContactManager.html#ContactManager::ContactManager'>ContactManager</a>(<code><a href='World.html#World::World'>World</a></code> <a name='ContactManager::::argPool'>argPool</a>)</code>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='ContactManager::addPair'>addPair</a>(<code><a href='Fixture.html#Fixture::Fixture'>Fixture</a></code> <a name='ContactManager::addPair::fixtureA'>fixtureA</a>, <code><a href='Fixture.html#Fixture::Fixture'>Fixture</a></code> <a name='ContactManager::addPair::fixtureB'>fixtureB</a>)</code></dt>
+<dd>
+
+ Broad-phase callback.
+</dd>
+<dt>
+<code>void <a name='ContactManager::collide'>collide</a>()</code></dt>
+<dd>
+
+ This is the top level collision call for the time step. Here
+ all the narrow phase collision is processed for the world
+ contact list.
+</dd>
+<dt>
+<code>void <a name='ContactManager::destroy'>destroy</a>(<code><a href='Contact.html#Contact::Contact'>Contact</a></code> <a name='ContactManager::destroy::c'>c</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='ContactManager::findNewContacts'>findNewContacts</a>()</code></dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

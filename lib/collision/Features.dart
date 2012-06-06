@@ -43,7 +43,7 @@ class Features {
     flip = f.flip { }
 
   // Set this feature to be a copy of the given feature.
-  setFrom(Features f) {
+  void setFrom(Features f) {
     referenceEdge = f.referenceEdge;
     incidentEdge = f.incidentEdge;
     incidentVertex = f.incidentVertex;
@@ -53,20 +53,16 @@ class Features {
   /**
    * Returns true if this Features object is equal to the given object.
    */
-  bool operator == (other) {
-    return referenceEdge == other.referenceEdge &&
-        incidentEdge == other.incidentEdge &&
-        incidentVertex == other.incidentVertex && flip == other.flip;
-  }
+  bool operator == (other) =>
+    referenceEdge == other.referenceEdge &&
+    incidentEdge == other.incidentEdge &&
+    incidentVertex == other.incidentVertex && flip == other.flip;
 
   /**
    * Returns a String representation of this Features.
    */
-  String toString() {
-    String s = "Features: (" + flip + " ," + incidentEdge +
-        " ," + incidentVertex + " ," + referenceEdge + ")";
-    return s;
-  }
+  String toString() => "Features: (" + flip + " ," + incidentEdge + " ," +
+      incidentVertex + " ," + referenceEdge + ")";
 
   /**
    * Sets all features to 0.

@@ -27,6 +27,7 @@ class DynamicTree {
   static final int _DEFAULT_NODE_ADDITION = 6;
 
   DynamicTreeNode _root;
+  /** Current number of active nodes */
   int _nodeCount;
   DynamicTreeNode _lastLeaf;
   int _insertionCount;
@@ -34,6 +35,7 @@ class DynamicTree {
 
   final Queue<DynamicTreeNode> _nodeStack;
   final List<Vector> _drawVectors;
+  /** Monotonically increasing count used to uniquely identify nodes. */
   int _nodeCounter;
 
   /**
@@ -67,9 +69,8 @@ class DynamicTree {
     deltaTwo = new Vector() {
 
     // Place new vectors in the draw vectors array.
-    for (int i = 0; i < _drawVectors.length; i++) {
+    for (int i = 0; i < _drawVectors.length; ++i)
       _drawVectors[i] = new Vector();
-    }
   }
 
   /**
@@ -91,21 +92,21 @@ class DynamicTree {
     // Insert the proxy node on the tree.
     _insertLeaf(proxy);
 
-    //TODO(gregbglw): why 4? why 64? what is going on here?
+    // TODO(dominich): The iteration count should be enough to hit all nodes in the 
+    // tree but not too large such that it wastes time. This could be tuned.
     int iterationCount = _nodeCount >> 4;
     int tryCount = 0;
     int height = computeHeightFromRoot();
     while (height > 64 && tryCount < 10) {
       rebalance(iterationCount);
       height = computeHeightFromRoot();
-      tryCount++;
+      ++tryCount;
     }
 
     return proxy;
   }
 
   /** Destroys the given proxy. */
-  // TODO(gregbglw): what the hell is a proxy?
   void destroyProxy(DynamicTreeNode toDestroy) {
     // The given proxy must not be null and must be a leaf.
     assert(toDestroy != null);
@@ -130,9 +131,8 @@ class DynamicTree {
     assert (argProxy.isLeaf);
 
     // If the given proxies box contains the given box, then return right away.
-    if (argProxy.box.contains(argBox)) {
+    if (argProxy.box.contains(argBox))
       return false;
-    }
 
     // Remove the proxy from the tree.
     _removeLeaf(argProxy);
@@ -146,17 +146,15 @@ class DynamicTree {
     // Predict bounding box displacement.
     _tempVector.setFrom(displacement);
     _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
-    if (_tempVector.x < 0) {
+    if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
-    } else {
+    else
       argBox.upperBound.x += _tempVector.x;
-    }
 
-    if (_tempVector.y < 0) {
+    if (_tempVector.y < 0)
       argBox.lowerBound.y += _tempVector.y;
-    } else {
+    else
       argBox.upperBound.y += _tempVector.y;
-    }
 
     argProxy.box.setFrom(argBox);
 
@@ -169,9 +167,8 @@ class DynamicTree {
   DynamicTreeNode _allocateNode() {
     // If node stack is empty, add nodes to it.
     if (_nodeStack.isEmpty()) {
-      for (int i = 0; i < _DEFAULT_NODE_ADDITION; i++) {
+      for (int i = 0; i < _DEFAULT_NODE_ADDITION; ++i)
         _nodeStack.addFirst(new DynamicTreeNode._construct());
-      }
     }
 
     DynamicTreeNode node = _nodeStack.removeFirst();
@@ -180,8 +177,8 @@ class DynamicTree {
     node.childTwo = null;
     node.userData = null;
     node.key = _nodeCounter;
-    _nodeCounter++;
-    _nodeCount++;
+    ++_nodeCounter;
+    ++_nodeCount;
     return node;
   }
 
@@ -197,33 +194,25 @@ class DynamicTree {
   bool _query(TreeCallback callback, AxisAlignedBox argBox, DynamicTreeNode
       node, int count) {
     // If given node is null, get out of here and continue recursing.
-    if (node == null) {
+    if (node == null)
       return true;
-    }
 
     if (AxisAlignedBox.testOverlap(argBox, node.box)) {
 
       if (node.isLeaf) {
-        bool proceed = callback.treeCallback(node);
-        if (!proceed) {
+        if (!callback.treeCallback(node))
           return false;
-        }
-
       } else {
         if (count < MAX_STACK_SIZE) {
-          count++;
-          bool proceed = _query(callback, argBox, node.childOne, count);
-          if (!proceed) {
+          ++count;
+          if (!_query(callback, argBox, node.childOne, count))
             return false;
-          }
         }
 
         if (count < MAX_STACK_SIZE) {
-          count++;
-          bool proceed = _query(callback, argBox, node.childTwo, count);
-          if (!proceed) {
+          ++count;
+          if (!_query(callback, argBox, node.childTwo, count))
             return false;
-          }
         }
       }
     }
@@ -233,7 +222,7 @@ class DynamicTree {
   /** Inserts a leaf into the tree. */
   void _insertLeaf(DynamicTreeNode node) {
     // Increment insertion count.
-    _insertionCount++;
+    ++_insertionCount;
 
     // If nothing in the tree, make given node the root.
     if (_root == null) {
@@ -266,11 +255,8 @@ class DynamicTree {
         num normOne = deltaOne.x + deltaOne.y;
         num normTwo = deltaTwo.x + deltaTwo.y;
 
-        if (normOne < normTwo) {
-          sibling = childOne;
-        } else {
-          sibling = childTwo;
-        }
+        sibling = (normOne < normTwo ? childOne : childTwo);
+
       } while (sibling.isLeaf == false);
     }
 
@@ -286,11 +272,10 @@ class DynamicTree {
     if (node1 != null) {
       // If the sibling was the first child, make the new parent the first child
       // of the old parent. Otherwise, make it the second.
-      if (sibling.parent.childOne === sibling) {
+      if (sibling.parent.childOne === sibling)
         node1.childOne = node2;
-      } else {
+      else
         node1.childTwo = node2;
-      }
 
       // Set the new parent's children.
       node2.childOne = sibling;
@@ -301,9 +286,8 @@ class DynamicTree {
       // Build up the axis-aligned boxes in case we expanded them out.
       do {
         // If the old parent's box contains the new parent's box, leave.
-        if (node1.box.contains(node2.box)) {
+        if (node1.box.contains(node2.box))
           break;
-        }
 
         // Set the old parent's box to the combination of it's new
         // children's boxes.
@@ -337,20 +321,15 @@ class DynamicTree {
     DynamicTreeNode sibling;
 
     // Find the sibling of the node to remove.
-    if (node2.childOne === argNode) {
-      sibling = node2.childTwo;
-    } else {
-      sibling = node2.childOne;
-    }
+    sibling = (node2.childOne === argNode ? node2.childTwo : node2.childOne);
 
     // If the grandparent node of the node to remove isn't null, destroy the
     // parent node and connect the grandparent node directly to the sibling.
     if (node1 != null) {
-      if (node1.childOne === node2) {
+      if (node1.childOne === node2)
         node1.childOne = sibling;
-      } else {
+      else
         node1.childTwo = sibling;
-      }
 
       sibling.parent = node1;
 
@@ -386,15 +365,12 @@ class DynamicTree {
   }
 
   /** Computes the height of the overall tree. */
-  int computeHeightFromRoot() {
-    return _computeHeight(_root);
-  }
+  int computeHeightFromRoot() => _computeHeight(_root);
 
   /** Computes the height of the given tree. */
   int _computeHeight(DynamicTreeNode node) {
-    if (node == null) {
+    if (node == null)
       return 0;
-    }
 
     int heightOne = _computeHeight(node.childOne);
     int heightTwo = _computeHeight(node.childTwo);
@@ -408,27 +384,22 @@ class DynamicTree {
    * the tree. Starts at the last reinserted leaf.
    */
   void rebalance(int iterations) {
-    if (_root == null) {
+    if (_root == null)
       return;
-    }
 
     DynamicTreeNode current;
-    for (int i = 0; i < iterations; i++) {
+    for (int i = 0; i < iterations; ++i) {
       current = _root;
 
       int bit = 0;
       while (!current.isLeaf) {
         int goLeft = (_path >> bit) & 1;
-        if (goLeft == 0) {
-          current = current.childOne;
-        } else {
-          current = current.childTwo;
-        }
+        current = (goLeft == 0 ? current.childOne : current.childTwo);
 
         bit = (bit + 1) & 31;
       }
 
-      _path++;
+      ++_path;
 
       _removeLeaf(current);
       _insertLeaf(current);
@@ -440,6 +411,6 @@ class DynamicTree {
     assert(node != null);
     assert(_nodeCount > 0);
     _nodeStack.addFirst(node);
-    _nodeCount--;
+    --_nodeCount;
   }
 }

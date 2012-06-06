@@ -25,17 +25,15 @@ class ContactFilter {
    * Return true if contact calculations should be performed between these two
    * shapes.
    */
-  bool shouldCollide(Fixture fixtureA, Fixture fixtureB){
-    Filter filterA = fixtureA.filter;
-    Filter filterB = fixtureB.filter;
+  bool shouldCollide(Fixture fixtureA, Fixture fixtureB) {
+    final Filter filterA = fixtureA.filter;
+    final Filter filterB = fixtureB.filter;
 
-    if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0){
+    if (filterA.groupIndex != 0 && filterA.groupIndex == filterB.groupIndex)
       return filterA.groupIndex > 0;
-    }
 
-    bool collide = (filterA.maskBits & filterB.categoryBits) != 0 &&
-        (filterA.categoryBits & filterB.maskBits) != 0;
-    return collide;
+    return (filterA.maskBits & filterB.categoryBits) != 0 &&
+           (filterA.categoryBits & filterB.maskBits) != 0;
   }
 }
 

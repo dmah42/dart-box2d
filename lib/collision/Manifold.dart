@@ -50,37 +50,33 @@ class Manifold {
    * already instantiated ManifoldPoints.
    */
   Manifold() :
-    points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    pointCount = 0 {
-
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
+      points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
+      localNormal = new Vector(),
+      localPoint = new Vector(),
+      pointCount = 0 {
+    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint();
-    }
   }
 
   /**
    * Creates a new manifold that is a copy of the given manifold.
    */
   Manifold.copy(Manifold other) :
-    points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector.copy(other.localNormal),
-    localPoint = new Vector.copy(other.localPoint),
-    pointCount = other.pointCount,
-    type = other.type {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
+      points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
+      localNormal = new Vector.copy(other.localNormal),
+      localPoint = new Vector.copy(other.localPoint),
+      pointCount = other.pointCount,
+      type = other.type {
+    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint.copy(other.points[i]);
-    }
   }
 
   /**
    * Sets this manifold to be a copy of the given manifold.
    */
   void setFrom(Manifold other) {
-    for (int i = 0; i < other.pointCount; i++) {
+    for (int i = 0; i < other.pointCount; ++i)
       points[i].setFrom(other.points[i]);
-    }
 
     type = other.type;
     localNormal.setFrom(other.localNormal);

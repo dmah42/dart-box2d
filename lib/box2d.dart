@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #library('box2d');
-#import('dart:dom');
+#import('dart:html');
 
 #source('collision/AxisAlignedBox.dart');
 #source('collision/Collision.dart');

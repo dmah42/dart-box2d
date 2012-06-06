@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Collision</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Collision::Collision'>Collision</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ Functions used for computing contact points, distance
+ queries, and time of impact (TimeOfImpact) queries. Collision methods are non-static
+ for pooling speed, retrieve a collision object from the [SingletonPool].
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code>&lt;dynamic&gt;</code></span>
+<span class="field-name"><code><a name='Collision::NULL_FEATURE'>NULL_FEATURE
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='SimplexCache.html#SimplexCache::SimplexCache'>SimplexCache</a></code></code></span>
+<span class="field-name"><code><a name='Collision::cache'>cache
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='Collision::clipPoints1'>clipPoints1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='Collision::clipPoints2'>clipPoints2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='List.html#List::List'>List&lt;E&gt;</a></code></code></span>
+<span class="field-name"><code><a name='Collision::incidentEdge'>incidentEdge
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='DistanceInput.html#DistanceInput::DistanceInput'>DistanceInput</a></code></code></span>
+<span class="field-name"><code><a name='Collision::input'>input
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::localNormal'>localNormal
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::localTangent'>localTangent
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::normal'>normal
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::normal1'>normal1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='DistanceOutput.html#DistanceOutput::DistanceOutput'>DistanceOutput</a></code></code></span>
+<span class="field-name"><code><a name='Collision::output'>output
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::planePoint'>planePoint
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='EdgeResults.html#EdgeResults::EdgeResults'>EdgeResults</a></code></code></span>
+<span class="field-name"><code><a name='Collision::results1'>results1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='EdgeResults.html#EdgeResults::EdgeResults'>EdgeResults</a></code></code></span>
+<span class="field-name"><code><a name='Collision::results2'>results2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::tangent'>tangent
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::v11'>v11
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Collision::v12'>v12
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>static <code><a href='int.html#int::int'>int</a></code> <a name='Collision::clipSegmentToLine'>clipSegmentToLine</a>(<code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='Collision::clipSegmentToLine::vOut'>vOut</a>, <code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='Collision::clipSegmentToLine::vIn'>vIn</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='Collision::clipSegmentToLine::norm'>norm</a>, <code><a href='num.html#num::num'>num</a></code> <a name='Collision::clipSegmentToLine::offset'>offset</a>)</code></dt>
+<dd>
+
+ Clipping for contact manifolds.
+ Sutherland-Hodgman clipping.
+</dd>
+<dt>
+<code>void <a name='Collision::collideCircles'>collideCircles</a>(<code><a href='Manifold.html#Manifold::Manifold'>Manifold</a></code> <a name='Collision::collideCircles::manifold'>manifold</a>, <code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a></code> <a name='Collision::collideCircles::circle1'>circle1</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collideCircles::xfA'>xfA</a>, <code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a></code> <a name='Collision::collideCircles::circle2'>circle2</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collideCircles::xfB'>xfB</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Collision::collidePolygonAndCircle'>collidePolygonAndCircle</a>(<code><a href='Manifold.html#Manifold::Manifold'>Manifold</a></code> <a name='Collision::collidePolygonAndCircle::manifold'>manifold</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::collidePolygonAndCircle::polygon'>polygon</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collidePolygonAndCircle::xfA'>xfA</a>, <code><a href='CircleShape.html#CircleShape::CircleShape'>CircleShape</a></code> <a name='Collision::collidePolygonAndCircle::circle'>circle</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collidePolygonAndCircle::xfB'>xfB</a>)</code></dt>
+<dd>
+
+ Compute the collision manifold between a polygon and a circle.
+</dd>
+<dt>
+<code>void <a name='Collision::collidePolygons'>collidePolygons</a>(<code><a href='Manifold.html#Manifold::Manifold'>Manifold</a></code> <a name='Collision::collidePolygons::manifold'>manifold</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::collidePolygons::polyA'>polyA</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collidePolygons::xfA'>xfA</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::collidePolygons::polyB'>polyB</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::collidePolygons::xfB'>xfB</a>)</code></dt>
+<dd>
+
+ Compute the collision manifold between two polygons.
+</dd>
+<dt>
+<code><code><a href='num.html#num::num'>num</a></code> <a name='Collision::edgeSeparation'>edgeSeparation</a>(<code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::edgeSeparation::poly1'>poly1</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::edgeSeparation::xf1'>xf1</a>, <code><a href='int.html#int::int'>int</a></code> <a name='Collision::edgeSeparation::edge1'>edge1</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::edgeSeparation::poly2'>poly2</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::edgeSeparation::xf2'>xf2</a>)</code></dt>
+<dd>
+
+ Find the separation between poly1 and poly2 for a given edge normal on
+ poly1.
+</dd>
+<dt>
+<code>void <a name='Collision::findIncidentEdge'>findIncidentEdge</a>(<code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='Collision::findIncidentEdge::c'>c</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::findIncidentEdge::poly1'>poly1</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::findIncidentEdge::xf1'>xf1</a>, <code><a href='int.html#int::int'>int</a></code> <a name='Collision::findIncidentEdge::edge1'>edge1</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::findIncidentEdge::poly2'>poly2</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::findIncidentEdge::xf2'>xf2</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Collision::findMaxSeparation'>findMaxSeparation</a>(<code><a href='EdgeResults.html#EdgeResults::EdgeResults'>EdgeResults</a></code> <a name='Collision::findMaxSeparation::results'>results</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::findMaxSeparation::poly1'>poly1</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::findMaxSeparation::xf1'>xf1</a>, <code><a href='PolygonShape.html#PolygonShape::PolygonShape'>PolygonShape</a></code> <a name='Collision::findMaxSeparation::poly2'>poly2</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::findMaxSeparation::xf2'>xf2</a>)</code></dt>
+<dd>
+
+ Find the max separation between poly1 and poly2 using edge normals from
+ poly1.
+</dd>
+<dt>
+<code>void <a name='Collision::getPointStates'>getPointStates</a>(<code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='Collision::getPointStates::state1'>state1</a>, <code><a href='List.html#List::List'>List&lt;E&gt;</a></code> <a name='Collision::getPointStates::state2'>state2</a>, <code><a href='Manifold.html#Manifold::Manifold'>Manifold</a></code> <a name='Collision::getPointStates::manifold1'>manifold1</a>, <code><a href='Manifold.html#Manifold::Manifold'>Manifold</a></code> <a name='Collision::getPointStates::manifold2'>manifold2</a>)</code></dt>
+<dd>
+
+ Compute the point states given two manifolds. The states pertain to the
+ transition from manifold1 to manifold2. So state1 is either persist or
+ remove while state2 is either add or persist.
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='Collision::testOverlap'>testOverlap</a>(<code><a href='Shape.html#Shape::Shape'>Shape</a></code> <a name='Collision::testOverlap::shapeA'>shapeA</a>, <code><a href='Shape.html#Shape::Shape'>Shape</a></code> <a name='Collision::testOverlap::shapeB'>shapeB</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::testOverlap::transformA'>transformA</a>, <code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Collision::testOverlap::transformB'>transformB</a>)</code></dt>
+<dd>
+
+ Returns true if the two given shapes overlap.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

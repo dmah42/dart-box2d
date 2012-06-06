@@ -107,28 +107,28 @@ class Simplex {
   void getSearchDirection(Vector out) {
     switch (count) {
       case 1 :
-      out.setFrom(v1.w).negateLocal();
-      return;
+        out.setFrom(v1.w).negateLocal();
+        return;
       case 2 :
-      e12.setFrom(v2.w).subLocal(v1.w);
-      // use out for a temp variable real quick
-      out.setFrom(v1.w).negateLocal();
-      num sgn = Vector.crossVectors(e12, out);
+        e12.setFrom(v2.w).subLocal(v1.w);
+        // use out for a temp variable real quick
+        out.setFrom(v1.w).negateLocal();
+        num sgn = Vector.crossVectors(e12, out);
 
-      if (sgn > 0) {
-        // Origin is left of e12.
-        Vector.crossNumAndVectorToOut(1, e12, out);
-        return;
-      }
-      else {
-        // Origin is right of e12.
-        Vector.crossVectorAndNumToOut(e12, 1, out);
-        return;
-      }
+        if (sgn > 0) {
+          // Origin is left of e12.
+          Vector.crossNumAndVectorToOut(1, e12, out);
+          return;
+        }
+        else {
+          // Origin is right of e12.
+          Vector.crossVectorAndNumToOut(e12, 1, out);
+          return;
+        }
       default :
-      assert (false);
-      out.setZero();
-      return;
+        assert (false);
+        out.setZero();
+        return;
     }
   }
 
@@ -139,24 +139,24 @@ class Simplex {
   void getClosestPoint(Vector out) {
     switch (count) {
       case 0 :
-      assert (false);
-      out.setZero();
-      return;
+        assert (false);
+        out.setZero();
+        return;
       case 1 :
-      out.setFrom(v1.w);
-      return;
+        out.setFrom(v1.w);
+        return;
       case 2 :
-      case22.setFrom(v2.w).mulLocal(v2.a);
-      case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
-      out.setFrom(case2);
-      return;
+        case22.setFrom(v2.w).mulLocal(v2.a);
+        case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
+        out.setFrom(case2);
+        return;
       case 3 :
-      out.setZero();
-      return;
+        out.setZero();
+        return;
       default :
-      assert (false);
-      out.setZero();
-      return;
+        assert (false);
+        out.setZero();
+        return;
     }
   }
 
@@ -164,33 +164,33 @@ class Simplex {
   void getWitnessPoints(Vector pA, Vector pB) {
     switch (count) {
       case 0 :
-      assert (false);
-      break;
+        assert (false);
+        break;
 
       case 1 :
-      pA.setFrom(v1.wA);
-      pB.setFrom(v1.wB);
-      break;
+        pA.setFrom(v1.wA);
+        pB.setFrom(v1.wB);
+        break;
 
       case 2 :
-      case2.setFrom(v1.wA).mulLocal(v1.a);
-      pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
-      case2.setFrom(v1.wB).mulLocal(v1.a);
-      pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
+        case2.setFrom(v1.wA).mulLocal(v1.a);
+        pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
+        case2.setFrom(v1.wB).mulLocal(v1.a);
+        pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
 
-      break;
+        break;
 
       case 3 :
-      pA.setFrom(v1.wA).mulLocal(v1.a);
-      case3.setFrom(v2.wA).mulLocal(v2.a);
-      case33.setFrom(v3.wA).mulLocal(v3.a);
-      pA.addLocal(case3).addLocal(case33);
-      pB.setFrom(pA);
-      break;
+        pA.setFrom(v1.wA).mulLocal(v1.a);
+        case3.setFrom(v2.wA).mulLocal(v2.a);
+        case33.setFrom(v3.wA).mulLocal(v3.a);
+        pA.addLocal(case3).addLocal(case33);
+        pB.setFrom(pA);
+        break;
 
       default :
-      assert (false);
-      break;
+        assert (false);
+        break;
     }
   }
 

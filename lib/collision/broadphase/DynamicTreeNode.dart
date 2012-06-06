@@ -45,11 +45,7 @@ class DynamicTreeNode {
   /**
    * Returns true if this node is a leaf.
    */
-  bool get isLeaf() {
-    return childOne == null;
-  }
+  bool get isLeaf() => childOne == null;
 
-  String toString() {
-    return box.toString();
-  }
+  String toString() => box.toString();
 }

@@ -35,7 +35,7 @@ class Demo {
   static final int POSITION_ITERATIONS = 10;
 
   /** The drawing canvas. */
-  HTMLCanvasElement canvas;
+  CanvasElement canvas;
 
   /** The canvas rendering context. */
   CanvasRenderingContext2D ctx;
@@ -81,9 +81,7 @@ class Demo {
     }
     ++frameCount;
 
-    window.webkitRequestAnimationFrame((num time) {
-      step(time);
-    }, canvas);
+    window.requestAnimationFrame((num time) { step(time); });
   }
 
   /**
@@ -92,10 +90,10 @@ class Demo {
    */
   void initializeAnimation() {
     // Setup the canvas.
-    canvas = document.createElement('canvas');
+    canvas = new Element.tag('canvas');
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
-    document.body.appendChild(canvas);
+    document.body.nodes.add(canvas);
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.
@@ -124,9 +122,7 @@ class Demo {
    * Starts running the demo as an animation using an animation scheduler.
    */
   void runAnimation() {
-    window.webkitRequestAnimationFrame((num time) {
-      step(time);
-    }, canvas);
+    window.requestAnimationFrame((num time) { step(time); });
   }
 }
 

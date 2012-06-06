@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : RevoluteJointDef</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='RevoluteJointDef::RevoluteJointDef'>RevoluteJointDef</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li><a href='JointDef.html#JointDef::JointDef'>JointDef</a></li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+  Revolute joint definition. This requires defining an
+  anchor point where the bodies are joined. The definition
+  uses local anchor points so that the initial configuration
+  can violate the constraint slightly. You also need to
+  specify the initial relative angle for joint limits. This
+  helps when saving and loading a game.
+  The local anchor points are measured from the body's origin
+  rather than the center of mass because...
+  - You might not know where the center of mass will be.
+  - If you add/remove shapes from a body and recompute the mass,
+    the joints will be broken.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='bool.html#bool::bool'>bool</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::enableLimit'>enableLimit
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='bool.html#bool::bool'>bool</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::enableMotor'>enableMotor
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::localAnchorA'>localAnchorA
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::localAnchorB'>localAnchorB
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::lowerAngle'>lowerAngle
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::maxMotorTorque'>maxMotorTorque
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::motorSpeed'>motorSpeed
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::referenceAngle'>referenceAngle
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='RevoluteJointDef::upperAngle'>upperAngle
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='RevoluteJointDef.html#RevoluteJointDef::RevoluteJointDef'>RevoluteJointDef</a>()</code>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='RevoluteJointDef::initialize'>initialize</a>(<code><a href='Body.html#Body::Body'>Body</a></code> <a name='RevoluteJointDef::initialize::b1'>b1</a>, <code><a href='Body.html#Body::Body'>Body</a></code> <a name='RevoluteJointDef::initialize::b2'>b2</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='RevoluteJointDef::initialize::anchor'>anchor</a>)</code></dt>
+<dd>
+
+ Initialize the bodies, anchors, and reference angle using the world
+ anchor.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

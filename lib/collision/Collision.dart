@@ -98,18 +98,18 @@ class Collision {
    */
   void getPointStates(List<int> state1, List<int> state2,
       Manifold manifold1, Manifold manifold2) {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
+    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
       state1[i] = PointState.NULL_STATE;
       state2[i] = PointState.NULL_STATE;
     }
 
     // Detect persists and removes.
-    for (int i = 0; i < manifold1.pointCount; i++) {
+    for (int i = 0; i < manifold1.pointCount; ++i) {
       ContactID id = manifold1.points[i].id;
 
       state1[i] = PointState.REMOVE_STATE;
 
-      for (int j = 0; j < manifold2.pointCount; j++) {
+      for (int j = 0; j < manifold2.pointCount; ++j) {
         if (manifold2.points[j].id.isEqual(id)) {
           state1[i] = PointState.PERSIST_STATE;
           break;
@@ -118,12 +118,12 @@ class Collision {
     }
 
     // Detect persists and adds
-    for (int i = 0; i < manifold2.pointCount; i++) {
+    for (int i = 0; i < manifold2.pointCount; ++i) {
       ContactID id = manifold2.points[i].id;
 
       state2[i] = PointState.ADD_STATE;
 
-      for (int j = 0; j < manifold1.pointCount; j++) {
+      for (int j = 0; j < manifold1.pointCount; ++j) {
         if (manifold1.points[j].id.isEqual(id)) {
           state2[i] = PointState.PERSIST_STATE;
           break;
@@ -147,12 +147,11 @@ class Collision {
     num distance1 = Vector.dot(norm, vIn[1].v) - offset;
 
     // If the points are behind the plane
-    if (distance0 <= 0.0) {
+    if (distance0 <= 0.0)
       vOut[numOut++].setFrom(vIn[0]);
-    }
-    if (distance1 <= 0.0) {
+
+    if (distance1 <= 0.0)
       vOut[numOut++].setFrom(vIn[1]);
-    }
 
     // If the points are on different sides of the plane
     if (distance0 * distance1 < 0.0) {
@@ -161,11 +160,8 @@ class Collision {
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
       vOut[numOut].v.setFrom(vIn[1].v).
           subLocal(vIn[0].v).mulLocal(interp).addLocal(vIn[0].v);
-      if (distance0 > 0.0) {
-        vOut[numOut].id.setFrom(vIn[0].id);
-      } else {
-        vOut[numOut].id.setFrom(vIn[1].id);
-      }
+      final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
+      vOut[numOut].id.setFrom(vin.id);
       ++numOut;
     }
 
@@ -201,9 +197,8 @@ class Collision {
     final num distSqr = dx * dx + dy * dy;
 
     final num radius = circle1.radius + circle2.radius;
-    if (distSqr > radius * radius) {
+    if (distSqr > radius * radius)
       return;
-    }
 
     manifold.type = ManifoldType.CIRCLES;
     manifold.localPoint.setFrom(circle1.position);
@@ -242,17 +237,16 @@ class Collision {
     final List<Vector> vertices = polygon.vertices;
     final List<Vector> normals = polygon.normals;
 
-    for (int i = 0; i < vertexCount; i++) {
+    for (int i = 0; i < vertexCount; ++i) {
       final Vector vertex = vertices[i];
       final num tempx = cLocalx - vertex.x;
       final num tempy = cLocaly - vertex.y;
       final Vector norm = normals[i];
       final num s = norm.x * tempx + norm.y * tempy;
 
-      if (s > radius) {
-        // early out
+      // early out
+      if (s > radius)
         return;
-      }
 
       if (s > separation) {
         separation = s;
@@ -299,9 +293,8 @@ class Collision {
     if (u1 <= 0) {
       final num dx = cLocalx - v1.x;
       final num dy = cLocaly - v1.y;
-      if ( dx * dx + dy * dy > radius * radius) {
+      if ( dx * dx + dy * dy > radius * radius)
         return;
-      }
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -314,9 +307,8 @@ class Collision {
     } else if (u2 <= 0.0) {
       final num dx = cLocalx - v2.x;
       final num dy = cLocaly - v2.y;
-      if ( dx * dx + dy * dy > radius * radius) {
+      if ( dx * dx + dy * dy > radius * radius)
         return;
-      }
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -336,9 +328,8 @@ class Collision {
       final num ty = cLocaly - fcy;
       final Vector norm = normals[vertIndex1];
       separation = tx * norm.x + ty * norm.y;
-      if(separation > radius){
+      if(separation > radius)
         return;
-      }
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -467,11 +458,10 @@ class Collision {
 
     // Perform a local search for the best edge normal.
     while (true) {
-      if (increment == -1) {
+      if (increment == -1)
         edge = bestEdge - 1 >= 0 ? bestEdge - 1 : count1 - 1;
-      } else {
+      else
         edge = bestEdge + 1 < count1 ? bestEdge + 1 : 0;
-      }
 
       s = edgeSeparation(poly1, xf1, edge, poly2, xf2);
 
@@ -538,14 +528,12 @@ class Collision {
     num totalRadius = polyA.radius + polyB.radius;
 
     findMaxSeparation(results1, polyA, xfA, polyB, xfB);
-    if (results1.separation > totalRadius) {
+    if (results1.separation > totalRadius)
       return;
-    }
 
     findMaxSeparation(results2, polyB, xfB, polyA, xfA);
-    if (results2.separation > totalRadius) {
+    if (results2.separation > totalRadius)
       return;
-    }
 
     PolygonShape poly1; // reference polygon
     PolygonShape poly2; // incident polygon
@@ -621,16 +609,14 @@ class Collision {
     np = clipSegmentToLine(clipPoints1, incidentEdge, tangent, sideOffset1);
     tangent.negateLocal();
 
-    if (np < 2) {
+    if (np < 2)
       return;
-    }
 
     // Clip to negative box side 1
     np = clipSegmentToLine(clipPoints2, clipPoints1, tangent, sideOffset2);
 
-    if (np < 2) {
+    if (np < 2)
       return;
-    }
 
     // Now clipPoints2 contains the clipped points.
     manifold.localNormal.setFrom(localNormal);
@@ -661,10 +647,9 @@ class ClipVertex {
   Vector v;
   ContactID id;
 
-  ClipVertex() {
-    v = new Vector();
-    id = new ContactID();
-  }
+  ClipVertex() :
+    v = new Vector(),
+    id = new ContactID() { }
 
   void setFrom(ClipVertex cv){
     v.setFrom(cv.v);
@@ -679,7 +664,7 @@ class EdgeResults {
   num separation;
   int edgeIndex;
 
-  EdgeResults()
-    :separation = 0,
+  EdgeResults() :
+    separation = 0,
     edgeIndex = 0 { }
 }

@@ -35,7 +35,7 @@ class SimplexCache {
     count = 0,
     indexA = new List<int>(3),
     indexB = new List<int>(3) {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; ++i) {
       indexA[i] = Settings.MAX_INTEGER;
       indexB[i] = Settings.MAX_INTEGER;
     }

@@ -51,7 +51,7 @@ class Settings {
   static final int MAX_INTEGER = 2147483647;
 
   static final num SMALL_NUMBER = .000000000001;
-  static final num BIG_NUMBER = 99999999999999;
+  static final num BIG_NUMBER = 99999999999999.0;
 
   /**
    * A small length used as a collision and constant tolerance. Usually it

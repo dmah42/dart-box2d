@@ -14,7 +14,7 @@
 
 #library('BenchmarkRunner');
 #import('../lib/box2d.dart');
-#import('dart:dom');
+#import('dart:html');
 #source('Benchmark.dart');
 #source('BallCageBench.dart');
 #source('BallDropBench.dart');

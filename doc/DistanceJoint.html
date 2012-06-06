@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : DistanceJoint</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='DistanceJoint::DistanceJoint'>DistanceJoint</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li><a href='Joint.html#Joint::Joint'>Joint</a></li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+
+ A distance joint constrains two points on two bodies
+ to remain at a fixed distance from each other. You can view
+ this as a massless, rigid rod.
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::bias'>bias
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::dampingRatio'>dampingRatio
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::frequencyHz'>frequencyHz
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::gamma'>gamma
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::impulse'>impulse
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::length'>length
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::localAnchor1'>localAnchor1
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::localAnchor2'>localAnchor2
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::mass'>mass
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='DistanceJoint::u'>u
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='DistanceJoint.html#DistanceJoint::DistanceJoint'>DistanceJoint</a>(<code><a href='DistanceJointDef.html#DistanceJointDef::DistanceJointDef'>DistanceJointDef</a></code> <a name='DistanceJoint::::def'>def</a>)</code>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code>void <a name='DistanceJoint::getAnchorA'>getAnchorA</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='DistanceJoint::getAnchorA::argOut'>argOut</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='DistanceJoint::getAnchorB'>getAnchorB</a>(<code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='DistanceJoint::getAnchorB::argOut'>argOut</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='DistanceJoint::getReactionForce'>getReactionForce</a>(<code><a href='num.html#num::num'>num</a></code> <a name='DistanceJoint::getReactionForce::inv_dt'>inv_dt</a>, <code><a href='Vector.html#Vector::Vector'>Vector</a></code> <a name='DistanceJoint::getReactionForce::argOut'>argOut</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code><code><a href='num.html#num::num'>num</a></code> <a name='DistanceJoint::getReactionTorque'>getReactionTorque</a>(<code><a href='num.html#num::num'>num</a></code> <a name='DistanceJoint::getReactionTorque::inv_dt'>inv_dt</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='DistanceJoint::initVelocityConstraints'>initVelocityConstraints</a>(<code><a href='TimeStep.html#TimeStep::TimeStep'>TimeStep</a></code> <a name='DistanceJoint::initVelocityConstraints::step'>step</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='DistanceJoint::solvePositionConstraints'>solvePositionConstraints</a>(<code><a href='num.html#num::num'>num</a></code> <a name='DistanceJoint::solvePositionConstraints::baumgarte'>baumgarte</a>)</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='DistanceJoint::solveVelocityConstraints'>solveVelocityConstraints</a>(<code><a href='TimeStep.html#TimeStep::TimeStep'>TimeStep</a></code> <a name='DistanceJoint::solveVelocityConstraints::step'>step</a>)</code></dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

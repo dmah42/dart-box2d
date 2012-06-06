@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Dart : Libraries : box2d : Sweep</title>
+</head>
+
+<body>
+
+<header></header>
+
+<h1 id="title">class <a name='Sweep::Sweep'>Sweep</a></h1>
+
+<section id="inheritance">
+
+<section class="supertype">
+<h2>Supertype:</h2>
+<ul><li>Object</li></ul>
+</section>
+
+</section>
+
+<section id="summary">
+</section>
+
+<section id="fields">
+<h2>Fields</h2>
+<dl>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='Sweep::angle'>angle
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='num.html#num::num'>num</a></code></code></span>
+<span class="field-name"><code><a name='Sweep::angleZero'>angleZero
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Sweep::center'>center
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Sweep::centerZero'>centerZero
+</a></code></span>
+</dt>
+<dd>
+</dd>
+<dt>
+<span class="field-type"><code><code><a href='Vector.html#Vector::Vector'>Vector</a></code></code></span>
+<span class="field-name"><code><a name='Sweep::localCenter'>localCenter
+</a></code></span>
+</dt>
+<dd>
+</dd>
+</dl>
+</section>
+
+<section id="constructors">
+<h2>Constructors</h2>
+<dl>
+<dt>
+<code><a href='Sweep.html#Sweep::Sweep'>Sweep</a>()</code>
+</dt>
+<dd>
+
+ Constructs a new Sweep with centers initialized to the origin and angles
+ set to zero.
+</dd>
+<dt>
+<code><a href='Sweep.html#Sweep::Sweep'>Sweep</a>.<a name='Sweep::copy'>copy</a>(<code><a href='Sweep.html#Sweep::Sweep'>Sweep</a></code> <a name='Sweep::copy::other'>other</a>)</code>
+</dt>
+<dd>
+
+ Constructs a new sweep that is a copy of the given Sweep.
+</dd>
+</dl>
+</section>
+
+<section id="methods">
+<h2>Methods</h2>
+<dl>
+<dt>
+<code><code><a href='bool.html#bool::bool'>bool</a></code> <a name='Sweep::6161'>==</a>(&lt;dynamic&gt; <a name='Sweep::6161::other'>other</a>)</code></dt>
+<dd>
+
+ Returns true if given object is equal to this sweep. Two sweeps are equal
+ if their fields are equal.
+</dd>
+<dt>
+<code>void <a name='Sweep::advance'>advance</a>(<code><a href='num.html#num::num'>num</a></code> <a name='Sweep::advance::time'>time</a>)</code></dt>
+<dd>
+
+ Advances the sweep forward, resulting in a new initial state.
+ Time is the new initial time.
+</dd>
+<dt>
+<code>void <a name='Sweep::getTransform'>getTransform</a>(<code><a href='Transform.html#Transform::Transform'>Transform</a></code> <a name='Sweep::getTransform::xf'>xf</a>, <code><a href='num.html#num::num'>num</a></code> <a name='Sweep::getTransform::alpha'>alpha</a>)</code></dt>
+<dd>
+
+ Computes the interpolated transform at a specific time.
+ Time is the normalized time in [0,1].
+</dd>
+<dt>
+<code>void <a name='Sweep::normalize'>normalize</a>()</code></dt>
+<dd>
+</dd>
+<dt>
+<code>void <a name='Sweep::setFrom'>setFrom</a>(<code><a href='Sweep.html#Sweep::Sweep'>Sweep</a></code> <a name='Sweep::setFrom::other'>other</a>)</code></dt>
+<dd>
+
+ Sets this Sweep equal to the given Sweep.
+</dd>
+</dl>
+</section>
+
+<footer></footer>
+
+</body></html>

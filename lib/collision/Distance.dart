@@ -101,18 +101,17 @@ class Distance {
       }
 
       // If we have 3 points, then the origin is in the corresponding triangle.
-      if (simplex.count == 3) {
+      if (simplex.count == 3)
         break;
-      }
 
       // Compute closest point.
       simplex.getClosestPoint(closestPoint);
       distanceSqr2 = closestPoint.lengthSquared;
 
       // ensure progress
-      if (distanceSqr2 >= distanceSqr1) {
+//      if (distanceSqr2 >= distanceSqr1) {
         // break;
-      }
+//      }
       distanceSqr1 = distanceSqr2;
 
       // get search direction;
@@ -161,9 +160,8 @@ class Distance {
       }
 
       // If we found a duplicate support point we must exit to avoid cycling.
-      if (duplicate) {
+      if (duplicate)
         break;
-      }
 
       // New vertex is ok and needed.
       ++simplex.count;

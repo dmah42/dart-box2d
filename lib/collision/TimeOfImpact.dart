@@ -229,9 +229,8 @@ class TimeOfImpact {
       ++iter;
       ++toiIters;
 
-      if (done) {
+      if (done)
         break;
-      }
 
       if (iter == MAX_ITERATIONS) {
         // Root finder got stuck. Semi-victory.

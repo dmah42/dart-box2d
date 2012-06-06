@@ -21,21 +21,13 @@ class CircleShape extends Shape {
    */
   final Vector position;
 
-  /** Used internally to avoid constructing while running. */
-  final Vector pool1;
-  final Vector pool2;
-  final Vector pool3;
-
   /**
    * A constructor for internal use only. Instead use Body.createShape with a
    * CircleDef.
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new Vector(),
-    pool1 = new Vector(),
-    pool2 = new Vector(),
-    pool3 = new Vector() {
+    position = new Vector() {
   }
 
   /**
@@ -43,10 +35,7 @@ class CircleShape extends Shape {
    */
   CircleShape.copy(CircleShape other) :
     super(other.type, other.radius),
-    position = new Vector.copy(other.position),
-    pool1 = new Vector(),
-    pool2 = new Vector(),
-    pool3 = new Vector() { }
+    position = new Vector.copy(other.position) { }
 
 
   /**
@@ -55,7 +44,7 @@ class CircleShape extends Shape {
    * the same name.
    */
   bool testPoint(Transform transform, Vector point) {
-    Vector center = pool1;
+    Vector center = new Vector();
     transform.rotation.multiplyVectorToOut(position, center);
     center.addLocal(transform.position);
 
@@ -68,7 +57,7 @@ class CircleShape extends Shape {
    * applied. Stores the result in the given box.
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-    Vector p = pool1;
+    Vector p = new Vector();
     Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
     p.addLocal(argTransform.position);
 
@@ -77,9 +66,7 @@ class CircleShape extends Shape {
   }
 
   /** Returns a clone of this circle. */
-  Shape clone() {
-    return new CircleShape.copy(this);
-  }
+  Shape clone() => new CircleShape.copy(this);
 
   /**
    * Computes the mass properties of this Circle at the given density and stores
