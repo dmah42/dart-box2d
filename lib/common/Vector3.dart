@@ -59,9 +59,8 @@ class Vector3 {
     return this;
   }
 
-  Vector3 add(Vector3 argVec) {
-    return new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
-  }
+  Vector3 add(Vector3 argVec) =>
+      new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
 
   Vector3 subLocal(Vector3 argVec) {
     x -= argVec.x;
@@ -70,9 +69,8 @@ class Vector3 {
     return this;
   }
 
-  Vector3 sub(Vector3 argVec) {
-    return new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
-  }
+  Vector3 sub(Vector3 argVec) =>
+      new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
 
   Vector3 mulLocal(num argScalar) {
     x *= argScalar;
@@ -81,9 +79,8 @@ class Vector3 {
     return this;
   }
 
-  Vector3 mul(num argScalar) {
-    return new Vector3(x * argScalar, y * argScalar, z * argScalar);
-  }
+  Vector3 mul(num argScalar) =>
+      new Vector3(x * argScalar, y * argScalar, z * argScalar);
 
   Vector3 negateLocal() {
     x = -x;
@@ -98,18 +95,14 @@ class Vector3 {
     z = 0;
   }
 
-  String toString() {
-    return "(" + x + "," + y + "," + z + ")";
-  }
+  String toString() => "($x, $y, $z)";
 
-  static num dot(Vector3 a, Vector3 b) {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-  }
+  static num dot(Vector3 a, Vector3 b) => a.x * b.x + a.y * b.y + a.z * b.z;
 
-  static Vector3 cross(Vector3 a, Vector3 b) {
-    return new Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x);
-  }
+  static Vector3 cross(Vector3 a, Vector3 b) =>
+      new Vector3(a.y * b.z - a.z * b.y,
+                  a.z * b.x - a.x * b.z,
+                  a.x * b.y - a.y * b.x);
 
   static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
     final num tempy = a.z * b.x - a.x * b.z;

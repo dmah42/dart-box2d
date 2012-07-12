@@ -63,16 +63,11 @@ class Vector {
     return this;
   }
 
-  static num crossVectors(Vector v1, Vector v2) {
-    return (v1.x * v2.y - v1.y * v2.x);
-  }
+  /** Return the cross product of the twe given vectors. */
+  static num crossVectors(Vector v1, Vector v2) => (v1.x * v2.y - v1.y * v2.x);
 
-  /**
-   * Return the dot product of the two given vectors.
-   */
-  static num dot(Vector one, Vector two) {
-    return one.x * two.x + one.y * two.y;
-  }
+  /** Return the dot product of the two given vectors. */
+  static num dot(Vector one, Vector two) => (one.x * two.x + one.y * two.y);
 
   /**
    * Has the effect of swapping the x and y coordinates of the vector,
@@ -118,9 +113,7 @@ class Vector {
     return this;
   }
 
-  num get length() {
-    return Math.sqrt(this.lengthSquared);
-  }
+  num get length() => Math.sqrt(this.lengthSquared);
 
   /**
    * Take the minimum of each coordinate from the two given vectors and store
@@ -143,9 +136,7 @@ class Vector {
   /**
    * Returns the length of this vector, squared.
    */
-  num get lengthSquared() {
-    return x * x + y * y;
-  }
+  num get lengthSquared() => x * x + y * y;
 
   /**
    * Set the x and y coordinates of this vector to absolute values.
@@ -192,26 +183,17 @@ class Vector {
     return temp;
   }
 
-  /**
-   * Flips this vector such that the +/- of each x and y are reversed.
-   */
+  /** Flips this vector such that the +/- of each x and y are reversed. */
   Vector negateLocal() {
     x = -x;
     y = -y;
     return this;
   }
 
-  /**
-   * Returns if the values of coordinates within the MAX_INTEGER.
-   */
-  bool isValid() {
-    return !x.isInfinite() && !x.isNaN() && !y.isInfinite() && !y.isNaN();
-  }
+  /** Returns if the values of coordinates within the MAX_INTEGER. */
+  bool isValid() =>
+      !x.isInfinite() && !x.isNaN() && !y.isInfinite() && !y.isNaN();
 
-  /**
-   * Returns a String representation of the given vector.
-   */
-  String toString() {
-    return "(" + x + ", " + y + ")";
-  }
+  /** Returns a String representation of the given vector. */
+  String toString() => "($x, $y)";
 }

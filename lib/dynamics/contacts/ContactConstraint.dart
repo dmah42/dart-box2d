@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// TODO(dominic): This should probably be split into Velocity and Position
+// constraints.
 class ContactConstraint {
   List<ContactConstraintPoint> points;
 
