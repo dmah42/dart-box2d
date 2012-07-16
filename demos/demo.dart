@@ -114,9 +114,7 @@ class Demo {
   abstract void initialize();
 
   /** The name of the demo. */
-  String get name() {
-    return "No Demo Name";
-  }
+  String get name() => "No Demo Name Set";
 
   /**
    * Starts running the demo as an animation using an animation scheduler.

@@ -23,8 +23,8 @@ class DebugDraw {
   // neat stuff described below.
   static final int e_shapeBit = 0x0001; ///< draw shapes
   static final int e_jointBit = 0x0002; ///< draw joint connections
-  static final int e_aabbBit = 0x0004; ///< draw core (TimeOfImpact) shapes
-  static final int e_pairBit = 0x0008; ///< draw axis aligned boxes
+  static final int e_aabbBit = 0x0004; ///< draw axis aligned boxes
+  static final int e_pairBit = 0x0008; ///< draw pairs of objects colliding
   static final int e_centerOfMassBit =  0x0010; ///< draw center of mass 
   static final int e_dynamicTreeBit = 0x0020; ///< draw dynamic tree.
 
@@ -63,7 +63,8 @@ class DebugDraw {
   /**
    * Draws the given point with the given radius and color.
    */
-  abstract void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor);
+  abstract void drawPoint(Vector argPoint, num argRadiusOnScreen,
+                          Color3 argColor);
 
   /**
    * Draw a solid closed polygon provided in CCW order.
@@ -106,7 +107,9 @@ class DebugDraw {
    * Sets the center of the viewport to the given x and y values and the
    * viewport scale to the given scale.
    */
-  void setCamera(num x, num y, num scale){ viewportTransform.setCamera(x,y,scale); }
+  void setCamera(num x, num y, num scale) {
+    viewportTransform.setCamera(x,y,scale);
+   }
 
   /**
    * Screen coordinates are specified in argScreen. These coordinates are

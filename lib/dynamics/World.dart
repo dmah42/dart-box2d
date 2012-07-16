@@ -1132,8 +1132,8 @@ class World {
     Body bodyB = joint.bodyB;
     Transform xf1 = bodyA.originTransform;
     Transform xf2 = bodyB.originTransform;
-    Vector x1 = xf1.position;
-    Vector x2 = xf2.position;
+    Vector x1 = new Vector.copy(xf1.position);
+    Vector x2 = new Vector.copy(xf2.position);
     Vector p1 = new Vector();
     Vector p2 = new Vector();
     joint.getAnchorA(p1);
@@ -1144,7 +1144,7 @@ class World {
 
     switch (joint.type) {
       case JointType.DISTANCE :
-        debugDraw.drawSegment(p1, p2, color);
+        _debugDraw.drawSegment(p1, p2, color);
         break;
 
       case JointType.PULLEY :
@@ -1154,15 +1154,21 @@ class World {
         //debugDraw.drawSegment(s1, p1, color);
         //debugDraw.drawSegment(s2, p2, color);
         //debugDraw.drawSegment(s1, s2, color);
+        //break;
+
+      case JointType.FRICTION:
+        _debugDraw.drawSegment(x1, x2, color);
+        break;
+
       case JointType.CONSTANT_VOLUME :
         // Nothing to see here.
       case JointType.MOUSE :
         // Don't draw anything for mouse. Already have cursor!
         break;
       default :
-        debugDraw.drawSegment(x1, p1, color);
-        debugDraw.drawSegment(p1, p2, color);
-        debugDraw.drawSegment(x2, p2, color);
+        _debugDraw.drawSegment(x1, p1, color);
+        _debugDraw.drawSegment(p1, p2, color);
+        _debugDraw.drawSegment(x2, p2, color);
     }
   }
 }

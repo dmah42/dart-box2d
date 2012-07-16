@@ -80,6 +80,8 @@
 #source('dynamics/joints/ConstantVolumeJointDef.dart');
 #source('dynamics/joints/DistanceJoint.dart');
 #source('dynamics/joints/DistanceJointDef.dart');
+#source('dynamics/joints/FrictionJoint.dart');
+#source('dynamics/joints/FrictionJointDef.dart');
 #source('dynamics/joints/RevoluteJoint.dart');
 #source('dynamics/joints/RevoluteJointDef.dart');
 #source('pooling/DefaultWorldPool.dart');

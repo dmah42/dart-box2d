@@ -1052,256 +1052,62 @@ $$.ExpectException = {"":
  }
 };
 
-$$.CircleStress = {"":
- ["_joint", "fps", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
+$$.FrictionJointTest = {"":
+ ["_boxFixture", "_ground", "fps", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
  super: "Demo",
- initialize$0: function() {
-  var bd = $.BodyDef$();
+ _createFrictionBox$0: function() {
+  var bodyDef = $.BodyDef$();
+  bodyDef.type = 2;
+  bodyDef.position = $.Vector$(10.0, 30.0);
   var t1 = this.world;
-  var ground = t1.createBody$1(bd);
-  var t2 = this.bodies;
-  t2.push(ground);
-  var shape = $.PolygonShape$();
-  shape.setAsEdge$2($.Vector$(-40.0, 0.0), $.Vector$(40.0, 0.0));
-  ground.createFixtureFromShape$1(shape);
-  var sd = $.PolygonShape$();
-  sd.setAsBox$2(50.0, 10.0);
-  bd = $.BodyDef$();
-  bd.type = 0;
-  bd.position = $.Vector$(0.0, -10.0);
-  var b = t1.createBody$1(bd);
-  t2.push(b);
-  var fd = $.FixtureDef$();
-  fd.shape = sd;
-  fd.friction = 1.0;
-  b.createFixture$1(fd);
-  sd.setAsBox$2(3.0, 50.0);
-  var wallDef = $.BodyDef$();
-  wallDef.position = $.Vector$(45.0, 25.0);
-  var rightWall = t1.createBody$1(wallDef);
-  t2.push(rightWall);
-  rightWall.createFixtureFromShape$1(sd);
-  wallDef.position = $.Vector$(-45.0, 25.0);
-  var leftWall = t1.createBody$1(wallDef);
-  t2.push(leftWall);
-  leftWall.createFixtureFromShape$1(sd);
-  var cornerDef = $.BodyDef$();
-  sd.setAsBox$2(20.0, 3.0);
-  cornerDef.angle = -0.7853981633974483;
-  cornerDef.position = $.Vector$(-35, 8.0);
-  var myBod = t1.createBody$1(cornerDef);
-  t2.push(myBod);
-  myBod.createFixtureFromShape$1(sd);
-  cornerDef.angle = 0.7853981633974483;
-  cornerDef.position = $.Vector$(35, 8.0);
-  myBod = t1.createBody$1(cornerDef);
-  t2.push(myBod);
-  myBod.createFixtureFromShape$1(sd);
-  sd.setAsBox$2(50.0, 10.0);
-  var topDef = $.BodyDef$();
-  topDef.type = 0;
-  topDef.angle = 0;
-  topDef.position = $.Vector$(0.0, 75.0);
-  var topBody = t1.createBody$1(topDef);
-  t2.push(topBody);
-  fd.shape = sd;
-  fd.friction = 1.0;
-  topBody.createFixture$1(fd);
-  bd = $.BodyDef$();
-  bd.type = 2;
-  bd.position = $.Vector$(0.0, 10.0);
-  var body = t1.createBody$1(bd);
-  t2.push(body);
-  for (var i = 0; i < 5; ++i) {
-    fd = $.FixtureDef$();
-    var cd = $.CircleShape$();
-    cd.radius = 1.2;
-    fd.shape = cd;
-    fd.density = 25;
-    fd.friction = 0.1;
-    fd.restitution = 0.9;
-    var t3 = $.toDouble(5);
-    if (typeof t3 !== 'number') throw $.iae(t3);
-    var t4 = $.Math_cos(6.283185307179586 * (i / t3));
-    if (typeof t4 !== 'number') throw $.iae(t4);
-    var xPos = 6 * t4;
-    t4 = $.toDouble(5);
-    if (typeof t4 !== 'number') throw $.iae(t4);
-    var t5 = $.Math_sin(6.283185307179586 * (i / t4));
-    if (typeof t5 !== 'number') throw $.iae(t5);
-    var yPos = 6 * t5;
-    cd.position.setCoords$2(xPos, yPos);
-    body.createFixture$1(fd);
-  }
-  body.set$bullet(false);
-  var groundBody = t1.createBody$1($.BodyDef$());
-  var rjd = $.RevoluteJointDef$();
-  rjd.initialize$3(body, groundBody, body.get$position());
-  rjd.motorSpeed = 3.141592653589793;
-  rjd.maxMotorTorque = 1000000.0;
-  rjd.enableMotor = true;
-  this._joint = t1.createJoint$1(rjd);
-  for (var j = 0; j < 8; ++j) {
-    for (yPos = 50 + j, i = 0; i < 20; ++i) {
-      var circ = $.CircleShape$();
-      var bod = $.BodyDef$();
-      bod.type = 2;
-      t3 = $.mod(i, 2);
-      circ.radius = 1.0 + (t3 === 0 ? 1.0 : -1.0) * 0.5 * 0.75;
-      var fd2 = $.FixtureDef$();
-      fd2.shape = circ;
-      t3 = circ.radius;
-      if (typeof t3 !== 'number') return this.initialize$0$bailout(1, yPos, bod, i, j, t1, t2, fd2, t3);
-      fd2.density = t3 * 1.5;
-      fd2.friction = 0.5;
-      fd2.restitution = 0.7;
-      bod.position = $.Vector$(-39 + 2 * i, yPos);
-      var myBody = t1.createBody$1(bod);
-      t2.push(myBody);
-      myBody.createFixture$1(fd2);
-    }
-  }
+  var fallingBox = t1.createBody$1(bodyDef);
+  fallingBox.createFixture$1(this._boxFixture);
+  var frictionJointDef = $.FrictionJointDef$();
+  frictionJointDef.bodyA = fallingBox;
+  frictionJointDef.bodyB = this._ground;
+  frictionJointDef.maxForce = 3.0;
+  frictionJointDef.maxTorque = 5.0;
+  frictionJointDef.collideConnected = true;
+  t1.createJoint$1(frictionJointDef);
+  this.bodies.push(fallingBox);
  },
- initialize$0$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7) {
-  switch (state) {
-    case 1:
-      yPos = env0;
-      bod = env1;
-      i = env2;
-      j = env3;
-      t1 = env4;
-      t2 = env5;
-      fd2 = env6;
-      t3 = env7;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var bd = $.BodyDef$();
-      var t1 = this.world;
-      var ground = t1.createBody$1(bd);
-      var t2 = this.bodies;
-      t2.push(ground);
-      var shape = $.PolygonShape$();
-      shape.setAsEdge$2($.Vector$(-40.0, 0.0), $.Vector$(40.0, 0.0));
-      ground.createFixtureFromShape$1(shape);
-      var sd = $.PolygonShape$();
-      sd.setAsBox$2(50.0, 10.0);
-      bd = $.BodyDef$();
-      bd.type = 0;
-      bd.position = $.Vector$(0.0, -10.0);
-      var b = t1.createBody$1(bd);
-      t2.push(b);
-      var fd = $.FixtureDef$();
-      fd.shape = sd;
-      fd.friction = 1.0;
-      b.createFixture$1(fd);
-      sd.setAsBox$2(3.0, 50.0);
-      var wallDef = $.BodyDef$();
-      wallDef.position = $.Vector$(45.0, 25.0);
-      var rightWall = t1.createBody$1(wallDef);
-      t2.push(rightWall);
-      rightWall.createFixtureFromShape$1(sd);
-      wallDef.position = $.Vector$(-45.0, 25.0);
-      var leftWall = t1.createBody$1(wallDef);
-      t2.push(leftWall);
-      leftWall.createFixtureFromShape$1(sd);
-      var cornerDef = $.BodyDef$();
-      sd.setAsBox$2(20.0, 3.0);
-      cornerDef.angle = -0.7853981633974483;
-      cornerDef.position = $.Vector$(-35, 8.0);
-      var myBod = t1.createBody$1(cornerDef);
-      t2.push(myBod);
-      myBod.createFixtureFromShape$1(sd);
-      cornerDef.angle = 0.7853981633974483;
-      cornerDef.position = $.Vector$(35, 8.0);
-      myBod = t1.createBody$1(cornerDef);
-      t2.push(myBod);
-      myBod.createFixtureFromShape$1(sd);
-      sd.setAsBox$2(50.0, 10.0);
-      var topDef = $.BodyDef$();
-      topDef.type = 0;
-      topDef.angle = 0;
-      topDef.position = $.Vector$(0.0, 75.0);
-      var topBody = t1.createBody$1(topDef);
-      t2.push(topBody);
-      fd.shape = sd;
-      fd.friction = 1.0;
-      topBody.createFixture$1(fd);
-      bd = $.BodyDef$();
-      bd.type = 2;
-      bd.position = $.Vector$(0.0, 10.0);
-      var body = t1.createBody$1(bd);
-      t2.push(body);
-      for (var i = 0; i < 5; ++i) {
-        fd = $.FixtureDef$();
-        var cd = $.CircleShape$();
-        cd.radius = 1.2;
-        fd.shape = cd;
-        fd.density = 25;
-        fd.friction = 0.1;
-        fd.restitution = 0.9;
-        var t3 = $.toDouble(5);
-        if (typeof t3 !== 'number') throw $.iae(t3);
-        var t4 = $.Math_cos(6.283185307179586 * (i / t3));
-        if (typeof t4 !== 'number') throw $.iae(t4);
-        var xPos = 6 * t4;
-        t4 = $.toDouble(5);
-        if (typeof t4 !== 'number') throw $.iae(t4);
-        var t5 = $.Math_sin(6.283185307179586 * (i / t4));
-        if (typeof t5 !== 'number') throw $.iae(t5);
-        var yPos = 6 * t5;
-        cd.position.setCoords$2(xPos, yPos);
-        body.createFixture$1(fd);
-      }
-      body.set$bullet(false);
-      var groundBody = t1.createBody$1($.BodyDef$());
-      var rjd = $.RevoluteJointDef$();
-      rjd.initialize$3(body, groundBody, body.get$position());
-      rjd.motorSpeed = 3.141592653589793;
-      rjd.maxMotorTorque = 1000000.0;
-      rjd.enableMotor = true;
-      this._joint = t1.createJoint$1(rjd);
-      var j = 0;
-    case 1:
-      L0: while (true) {
-        switch (state) {
-          case 0:
-            if (!(j < 8)) break L0;
-            yPos = 50 + j;
-            i = 0;
-          case 1:
-            L1: while (true) {
-              switch (state) {
-                case 0:
-                  if (!(i < 20)) break L1;
-                  var circ = $.CircleShape$();
-                  var bod = $.BodyDef$();
-                  bod.type = 2;
-                  t3 = $.mod(i, 2);
-                  circ.radius = 1.0 + (t3 === 0 ? 1.0 : -1.0) * 0.5 * 0.75;
-                  var fd2 = $.FixtureDef$();
-                  fd2.shape = circ;
-                  t3 = circ.radius;
-                case 1:
-                  state = 0;
-                  fd2.density = $.mul(t3, 1.5);
-                  fd2.friction = 0.5;
-                  fd2.restitution = 0.7;
-                  bod.position = $.Vector$(-39 + 2 * i, yPos);
-                  var myBody = t1.createBody$1(bod);
-                  t2.push(myBody);
-                  myBody.createFixture$1(fd2);
-                  ++i;
-              }
-            }
-            ++j;
-        }
-      }
-  }
+ _createBox$0: function() {
+  var bodyDef = $.BodyDef$();
+  bodyDef.type = 2;
+  bodyDef.position = $.Vector$(-10.0, 30.0);
+  var fallingBox = this.world.createBody$1(bodyDef);
+  fallingBox.createFixture$1(this._boxFixture);
+  this.bodies.push(fallingBox);
+ },
+ _createBoxShapeAndFixture$0: function() {
+  var boxShape = $.PolygonShape$();
+  boxShape.setAsBoxWithCenterAndAngle$4(3.0, 1.5, $.Vector$(0, 0), 1.5707963267948966);
+  this._boxFixture = $.FixtureDef$();
+  this._boxFixture.set$restitution(0.5);
+  this._boxFixture.set$density(0.1);
+  this._boxFixture.set$shape(boxShape);
+ },
+ _createGround$0: function() {
+  var shape = $.PolygonShape$();
+  var bodyDef = $.BodyDef$();
+  bodyDef.position.setCoords$2(0.0, 0.0);
+  this._ground = this.world.createBody$1(bodyDef);
+  shape.setAsBox$2(50.0, 0.4);
+  this._ground.createFixtureFromShape$1(shape);
+  shape.setAsBoxWithCenterAndAngle$4(0.4, 50.0, $.Vector$(-20.0, 0.0), 0.0);
+  this._ground.createFixtureFromShape$1(shape);
+  shape.setAsBoxWithCenterAndAngle$4(0.4, 50.0, $.Vector$(20.0, 0.0), 0.0);
+  this._ground.createFixtureFromShape$1(shape);
+  this.bodies.push(this._ground);
+ },
+ initialize$0: function() {
+  this._createGround$0();
+  this._createBoxShapeAndFixture$0();
+  this._createBox$0();
+  this._createFrictionBox$0();
  },
  get$name: function() {
-  return 'Circle Stress';
+  return 'FrictionJoint Test';
  }
 };
 
@@ -6589,34 +6395,6 @@ $$.Pair = {"":
  }
 };
 
-$$.CircleShape = {"":
- ["position?", "radius", "type"],
- super: "Shape",
- computeMass$2: function(massData, density) {
-  massData.set$mass($.mul($.mul($.mul(density, 3.141592653589793), this.radius), this.radius));
-  var t1 = massData.get$center();
-  var t2 = this.position;
-  t1.setFrom$1(t2);
-  t1 = massData.get$mass();
-  var t3 = this.radius;
-  if (typeof t3 !== 'number') throw $.iae(t3);
-  t3 *= 0.5 * t3;
-  t2 = $.Vector_dot(t2, t2);
-  if (typeof t2 !== 'number') throw $.iae(t2);
-  massData.set$inertia($.mul(t1, t3 + t2));
- },
- clone$0: function() {
-  return $.CircleShape$copy(this);
- },
- computeAxisAlignedBox$2: function(argBox, argTransform) {
-  var p = $.Vector$(0, 0);
-  $.Matrix22_mulMatrixAndVectorToOut(argTransform.get$rotation(), this.position, p);
-  p.addLocal$1(argTransform.get$position());
-  argBox.get$lowerBound().setCoords$2($.sub(p.x, this.radius), $.sub(p.y, this.radius));
-  argBox.get$upperBound().setCoords$2($.add(p.x, this.radius), $.add(p.y, this.radius));
- }
-};
-
 $$.MassData = {"":
  ["inertia=", "center?", "mass="],
  super: "Object",
@@ -6737,35 +6515,53 @@ $$.PolygonShape = {"":
   t1 = $.add(upper.y, this.radius);
   argAabb.get$upperBound().set$y(t1);
  },
- setAsEdge$2: function(v1, v2) {
-  this.vertexCount = 2;
+ setAsBoxWithCenterAndAngle$4: function(hx, hy, center, angle) {
+  this.vertexCount = 4;
   var t1 = this.vertices;
   var t2 = t1.length;
   if (0 < 0 || 0 >= t2) throw $.ioore(0);
-  t1[0].setFrom$1(v1);
+  t1[0].setCoords$2($.neg(hx), $.neg(hy));
   var t3 = t1.length;
   if (1 < 0 || 1 >= t3) throw $.ioore(1);
-  t1[1].setFrom$1(v2);
-  this.centroid.setFrom$1(v1).addLocal$1(v2).mulLocal$1(0.5);
-  var t4 = this.normals;
-  var t5 = t4.length;
-  if (0 < 0 || 0 >= t5) throw $.ioore(0);
-  t4[0].setFrom$1(v2).subLocal$1(v1);
-  var t6 = t4.length;
-  if (0 < 0 || 0 >= t6) throw $.ioore(0);
-  var t7 = t4[0];
-  var t8 = t4.length;
-  if (0 < 0 || 0 >= t8) throw $.ioore(0);
-  $.Vector_crossVectorAndNumToOut(t7, 1, t4[0]);
-  t7 = t4.length;
+  t1[1].setCoords$2(hx, $.neg(hy));
+  var t4 = t1.length;
+  if (2 < 0 || 2 >= t4) throw $.ioore(2);
+  t1[2].setCoords$2(hx, hy);
+  var t5 = t1.length;
+  if (3 < 0 || 3 >= t5) throw $.ioore(3);
+  t1[3].setCoords$2($.neg(hx), hy);
+  var t6 = this.normals;
+  var t7 = t6.length;
   if (0 < 0 || 0 >= t7) throw $.ioore(0);
-  t4[0].normalize$0();
-  var t9 = t4.length;
-  if (1 < 0 || 1 >= t9) throw $.ioore(1);
-  var t10 = t4[1];
-  var t11 = t4.length;
-  if (0 < 0 || 0 >= t11) throw $.ioore(0);
-  t10.setFrom$1(t4[0]).negateLocal$0();
+  t6[0].setCoords$2(0.0, -1.0);
+  var t8 = t6.length;
+  if (1 < 0 || 1 >= t8) throw $.ioore(1);
+  t6[1].setCoords$2(1.0, 0.0);
+  var t9 = t6.length;
+  if (2 < 0 || 2 >= t9) throw $.ioore(2);
+  t6[2].setCoords$2(0.0, 1.0);
+  var t10 = t6.length;
+  if (3 < 0 || 3 >= t10) throw $.ioore(3);
+  t6[3].setCoords$2(-1.0, 0.0);
+  this.centroid.setFrom$1(center);
+  var xf = $.Transform$();
+  xf.position.setFrom$1(center);
+  var t11 = xf.rotation;
+  t11.setAngle$1(angle);
+  for (var i = 0; $.ltB(i, this.vertexCount); ++i) {
+    t2 = t1.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    t3 = t1[i];
+    t4 = t1.length;
+    if (i < 0 || i >= t4) throw $.ioore(i);
+    $.Transform_mulToOut(xf, t3, t1[i]);
+    t3 = t6.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    t5 = t6[i];
+    t7 = t6.length;
+    if (i < 0 || i >= t7) throw $.ioore(i);
+    $.Matrix22_mulMatrixAndVectorToOut(t11, t5, t6[i]);
+  }
  },
  setAsBox$2: function(hx, hy) {
   this.vertexCount = 4;
@@ -7188,6 +6984,9 @@ $$.DebugDraw = {"":
   }
   $.gtB(vertexCount, 2) && this.drawSegment$3($.index(vertices, $.sub(vertexCount, 1)), $.index(vertices, 0), color);
  },
+ appendFlags$1: function(flags) {
+  this.drawFlags = $.or(this.drawFlags, flags);
+ },
  get$flags: function() {
   return this.drawFlags;
  },
@@ -7488,17 +7287,6 @@ $$.Body = {"":
         }
       }
   }
- },
- set$bullet: function(flag) {
-  var t1 = flag === true;
-  var t2 = this.flags;
-  if (t2 !== (t2 | 0)) return this.set$bullet$bailout(1, t1, t2);
-  if (t1) this.flags = (t2 | 8) >>> 0;
-  else this.flags = (t2 & -9) >>> 0;
- },
- set$bullet$bailout: function(state, t1, t2) {
-  if (t1) this.flags = $.or(t2, 8);
-  else this.flags = $.and(t2, -9);
  },
  get$bullet: function() {
   var t1 = this.flags;
@@ -8161,7 +7949,7 @@ $$.Body = {"":
 };
 
 $$.BodyDef = {"":
- ["active?", "awake=", "angularDamping?", "linearDamping?", "allowSleep?", "bullet=", "isSleeping", "fixedRotation?", "angularVelocity=", "linearVelocity?", "position?", "userData=", "angle=", "type="],
+ ["active?", "awake=", "angularDamping?", "linearDamping?", "allowSleep?", "bullet?", "isSleeping", "fixedRotation?", "angularVelocity=", "linearVelocity?", "position?", "userData=", "angle=", "type="],
  super: "Object"
 };
 
@@ -21617,6 +21405,20 @@ $$.FrictionJoint = {"":
  }
 };
 
+$$.FrictionJointDef = {"":
+ ["maxTorque?", "maxForce?", "localAnchorB?", "localAnchorA?", "collideConnected", "bodyB", "bodyA", "userData", "type"],
+ super: "JointDef",
+ initialize$3: function(bA, bB, anchor) {
+  this.bodyA = bA;
+  this.bodyB = bB;
+  bA.getLocalPointToOut$2(anchor, this.localAnchorA);
+  bB.getLocalPointToOut$2(anchor, this.localAnchorB);
+ },
+ FrictionJointDef$0: function() {
+  this.type = 9;
+ }
+};
+
 $$.RevoluteJoint = {"":
  ["limitState", "upperAngle?", "lowerAngle?", "referenceAngle?", "_enableLimit", "_motorSpeed", "_maxMotorTorque", "_enableMotor", "motorMass", "mass?", "_motorImpulse", "impulse", "localAnchor2", "localAnchor1", "invIB", "invMassB", "invIA", "invMassA", "localCenterB", "localCenterA", "userData", "collideConnected", "islandFlag", "bodyB", "bodyA", "edgeB", "edgeA", "_lib0_next", "_prev", "type"],
  super: "Joint",
@@ -23515,21 +23317,6 @@ $$.RevoluteJoint = {"":
  }
 };
 
-$$.RevoluteJointDef = {"":
- ["maxMotorTorque?", "motorSpeed?", "enableMotor?", "upperAngle?", "lowerAngle?", "enableLimit?", "referenceAngle?", "localAnchorB?", "localAnchorA?", "collideConnected", "bodyB", "bodyA", "userData", "type"],
- super: "JointDef",
- initialize$3: function(b1, b2, anchor) {
-  this.bodyA = b1;
-  this.bodyB = b2;
-  this.bodyA.getLocalPointToOut$2(anchor, this.localAnchorA);
-  this.bodyB.getLocalPointToOut$2(anchor, this.localAnchorB);
-  this.referenceAngle = $.sub(this.bodyA.get$angle(), this.bodyB.get$angle());
- },
- RevoluteJointDef$0: function() {
-  this.type = 1;
- }
-};
-
 $$.DefaultWorldPool = {"":
  ["distance=", "timeOfImpact?", "collision?"],
  super: "Object",
@@ -24982,13 +24769,6 @@ $.Vector_crossVectors = function(v1, v2) {
   return $.sub($.mul(v1.get$x(), v2.get$y()), $.mul(v1.get$y(), v2.get$x()));
 };
 
-$.RevoluteJointDef$ = function() {
-  var t1 = $.Vector$(0.0, 0.0);
-  t1 = new $.RevoluteJointDef(0.0, 0.0, false, 0.0, 0.0, false, 0.0, $.Vector$(0.0, 0.0), t1, false, null, null, null, 0);
-  t1.RevoluteJointDef$0();
-  return t1;
-};
-
 $.isJsArray = function(value) {
   return !(value == null) && (value.constructor === Array);
 };
@@ -25012,12 +24792,6 @@ $.allMatches = function(receiver, str) {
   if (!(typeof receiver === 'string')) return receiver.allMatches$1(str);
   $.checkString(str);
   return $.allMatchesInStringUnchecked(receiver, str);
-};
-
-$.CircleShape$copy = function(other) {
-  var t1 = other.get$type();
-  var t2 = other.get$radius();
-  return new $.CircleShape($.Vector$copy(other.get$position()), t2, t1);
 };
 
 $.substringUnchecked = function(receiver, startIndex, endIndex) {
@@ -25110,14 +24884,6 @@ $.typeNameInIE = function(obj) {
   return name$;
 };
 
-$.CircleStress$ = function() {
-  var t1 = $.ListFactory_List(null);
-  $.setRuntimeTypeInfo(t1, ({E: 'Body'}));
-  t1 = new $.CircleStress(null, null, null, null, null, null, null, null, t1);
-  t1.Demo$0();
-  return t1;
-};
-
 $.constructorNameFallback = function(obj) {
   var constructor$ = (obj.constructor);
   var t1 = (typeof(constructor$));
@@ -25130,15 +24896,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
+$.regExpMatchStart = function(m) {
+  return m.index;
+};
+
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
-};
-
-$.regExpMatchStart = function(m) {
-  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -25215,6 +24981,14 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'Window') return 'DOMWindow';
   if (name$ === 'CanvasPixelArray') return 'Uint8ClampedArray';
   return name$;
+};
+
+$.FrictionJointTest$ = function() {
+  var t1 = $.ListFactory_List(null);
+  $.setRuntimeTypeInfo(t1, ({E: 'Body'}));
+  t1 = new $.FrictionJointTest(null, null, null, null, null, null, null, null, null, t1);
+  t1.Demo$0();
+  return t1;
 };
 
 $.Math_sqrt = function(x) {
@@ -25665,14 +25439,6 @@ $.ContactSolver$ = function() {
   return t1;
 };
 
-$._Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
-};
-
 $.buildDynamicMetadata = function(inputTable) {
   if (typeof inputTable !== 'string' && (typeof inputTable !== 'object' || inputTable === null || (inputTable.constructor !== Array && !inputTable.is$JavaScriptIndexingBehavior()))) return $.buildDynamicMetadata$bailout(1, inputTable, 0, 0, 0, 0, 0, 0);
   var result = [];
@@ -25696,6 +25462,14 @@ $.buildDynamicMetadata = function(inputTable) {
   var t1;
 };
 
+$._Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
+};
+
 $.BroadPhase$ = function() {
   var t1 = new $.BroadPhase(null, 0, 16, null, null, 0, $.DynamicTree$());
   t1.BroadPhase$0();
@@ -25710,13 +25484,13 @@ $.mul = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a * b) : $.mul$slow(a, b);
 };
 
+$.Settings_mixFriction = function(friction1, friction2) {
+  return $.Math_sqrt($.mul(friction1, friction2));
+};
+
 $.contains$1 = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.contains$1(other);
   return $.contains$2(receiver, other, 0);
-};
-
-$.Settings_mixFriction = function(friction1, friction2) {
-  return $.Math_sqrt($.mul(friction1, friction2));
 };
 
 $._browserPrefix = function() {
@@ -25807,14 +25581,6 @@ $.Vector3$ = function(x, y, z) {
   return new $.Vector3(z, y, x);
 };
 
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
-};
-
 $.or = function(a, b) {
   if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
   return a.operator$or$1(b);
@@ -25824,6 +25590,14 @@ $.DoubleLinkedQueueEntry$ = function(e) {
   var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
   t1.DoubleLinkedQueueEntry$1(e);
   return t1;
+};
+
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $.DefaultWorldPool$ = function() {
@@ -25860,11 +25634,6 @@ $.CanvasViewportTransform$ = function(extents, center) {
   return new $.CanvasViewportTransform(20, $.Vector$copy(center), t1);
 };
 
-$.isEmpty = function(receiver) {
-  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
-  return receiver.isEmpty$0();
-};
-
 $.TimeStep$ = function() {
   return new $.TimeStep(true, 0, 0, 0, 0, 0);
 };
@@ -25881,6 +25650,11 @@ $.TimeOfImpactSolverManifold$ = function() {
   var t5 = $.Vector$(0, 0);
   var t6 = $.Vector$(0, 0);
   return new $.TimeOfImpactSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
+};
+
+$.isEmpty = function(receiver) {
+  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
+  return receiver.isEmpty$0();
 };
 
 $.add$1 = function(receiver, value) {
@@ -25954,6 +25728,11 @@ $.abs = function(receiver) {
   return Math.abs(receiver);
 };
 
+$.iterator = function(receiver) {
+  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
+  return receiver.iterator$0();
+};
+
 $.Primitives_objectTypeName = function(object) {
   var name$ = $.constructorNameFallback(object);
   if ($.eqB(name$, 'Object')) {
@@ -25966,11 +25745,6 @@ $.Primitives_objectTypeName = function(object) {
 
 $.regExpAttachGlobalNative = function(regExp) {
   regExp._re = $.regExpMakeNative(regExp, true);
-};
-
-$.iterator = function(receiver) {
-  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
-  return receiver.iterator$0();
 };
 
 $.leB = function(a, b) {
@@ -25987,18 +25761,6 @@ $.isNegative = function(receiver) {
     return receiver === 0 ? 1 / receiver < 0 : receiver < 0;
   }
   return receiver.isNegative$0();
-};
-
-$.mod = function(a, b) {
-  if ($.checkNumbers(a, b) === true) {
-    var result = (a % b);
-    if (result === 0) return 0;
-    if (result > 0) return result;
-    b = (b);
-    if (b < 0) return result - b;
-    return result + b;
-  }
-  return a.operator$mod$1(b);
 };
 
 $.regExpMakeNative = function(regExp, global) {
@@ -26293,16 +26055,16 @@ $.Primitives_newList = function(length$) {
   return result;
 };
 
-$.CircleStress_main = function() {
-  var stress = $.CircleStress$();
-  stress.initialize$0();
-  stress.initializeAnimation$0();
-  stress.viewport.set$scale(4);
-  stress.runAnimation$0();
+$.FrictionJointTest_main = function() {
+  var test = $.FrictionJointTest$();
+  test.initialize$0();
+  test.initializeAnimation$0();
+  test.debugDraw.appendFlags$1(2);
+  test.runAnimation$0();
 };
 
 $.main = function() {
-  $.CircleStress_main();
+  $.FrictionJointTest_main();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
@@ -26834,10 +26596,6 @@ $.ContactEdge$ = function() {
   return new $.ContactEdge(null, null, null, null);
 };
 
-$.CircleShape$ = function() {
-  return new $.CircleShape($.Vector$(0, 0), 0, 0);
-};
-
 $._globalState = function() {
   return $globalState;;
 };
@@ -27023,6 +26781,13 @@ $.div = function(a, b) {
 
 $.MathBox_distance = function(v1, v2) {
   return $.Math_sqrt($.MathBox_distanceSquared(v1, v2));
+};
+
+$.FrictionJointDef$ = function() {
+  var t1 = $.Vector$(0.0, 0.0);
+  t1 = new $.FrictionJointDef(0.0, 0.0, $.Vector$(0.0, 0.0), t1, false, null, null, null, 0);
+  t1.FrictionJointDef$0();
+  return t1;
 };
 
 $.DistanceJointDef$ = function() {
@@ -27313,11 +27078,6 @@ $.DualPivotQuicksort__doSort = function(a, left, right, compare) {
 
 $.MathNatives_sin = function(value) {
   return Math.sin($.checkNum(value));
-};
-
-$.toDouble = function(receiver) {
-  if (!(typeof receiver === 'number')) return receiver.toDouble$0();
-  return receiver;
 };
 
 $.ListFactory_List = function(length$) {

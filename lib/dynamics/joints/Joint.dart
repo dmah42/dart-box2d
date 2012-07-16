@@ -57,6 +57,8 @@ class Joint {
     edgeA = new JointEdge(),
     edgeB = new JointEdge() { }
 
+  // TODO(dominich): use 'is' to create the right type of Joint and remove the
+  // *Def.type.
   factory Joint.create(World argWorld, JointDef def) {
     switch(def.type){
       case JointType.MOUSE:
@@ -73,8 +75,7 @@ class Joint {
         throw new NotImplementedException();
         //return new WeldJoint(def);
       case JointType.FRICTION:
-        throw new NotImplementedException();
-        //return new FrictionJoint(def);
+        return new FrictionJoint(def);
       case JointType.LINE:
         throw new NotImplementedException();
         //return new LineJoint(def);

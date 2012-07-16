@@ -35,7 +35,7 @@ class Vector {
     if (other == null) {
       return false;
     } else {
-      return x == other.x && y == other.y;
+      return x === other.x && y === other.y;
     }
   }
 
