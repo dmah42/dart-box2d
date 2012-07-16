@@ -49,58 +49,50 @@ class DebugDraw {
    */
   void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     if(vertexCount == 1) {
-      drawSegment(vertices[0], vertices[0], color);
+      final Vector a = new Vector.copy(vertices[0]);
+      final Vector b = new Vector.copy(vertices[0]);
       return;
     }
 
-    for(int i=0; i<vertexCount - 1; ++i)
-      drawSegment(vertices[i], vertices[i + 1], color);
+    for(int i = 0; i < vertexCount - 1; ++i) {
+      final Vector a = new Vector.copy(vertices[i]);
+      final Vector b = new Vector.copy(vertices[i + 1]);
+      drawSegment(a, b, color);
+    }
 
-    if(vertexCount > 2)
-      drawSegment(vertices[vertexCount - 1], vertices[0], color);
+    // Close the loop.
+    if(vertexCount > 2) {
+      final Vector a = new Vector.copy(vertices[vertexCount - 1]);
+      final Vector b = new Vector.copy(vertices[0]);
+      drawSegment(a, b, color);
+    }
   }
 
-  /**
-   * Draws the given point with the given radius and color.
-   */
+  /** Draws the given point with the given radius and color. */
   abstract void drawPoint(Vector argPoint, num argRadiusOnScreen,
                           Color3 argColor);
 
-  /**
-   * Draw a solid closed polygon provided in CCW order.
-   */
+  /** Draw a solid closed polygon provided in CCW order. */
   abstract void drawSolidPolygon(List<Vector> vertices, int vertexCount,
       Color3 color);
 
-  /**
-   * Draw a circle.
-   */
+  /** Draw a circle. */
   abstract void drawCircle(Vector center, num radius, Color3 color);
 
-  /**
-   * Draw a solid circle.
-   */
+  /** Draw a solid circle. */
   abstract void drawSolidCircle(Vector center, num radius, Vector axis,
       Color3 color);
 
-  /**
-   * Draw a line segment.
-   */
+  /** Draw a line segment. */
   abstract void drawSegment(Vector p1, Vector p2, Color3 color);
 
-  /**
-   * Draw a transform.  Choose your own length scale
-   */
+  /** Draw a transform.  Choose your own length scale. */
   abstract void drawTransform(Transform xf);
 
-  /**
-   * Draw a string.
-   */
+  /** Draw a string. */
   abstract void drawString(num x, num y, String s, Color3 color);
 
-  /**
-   * Returns the viewport transform.
-   */
+  /** Returns the viewport transform. */
   IViewportTransform get viewportTranform() => viewportTransform;
 
   /**

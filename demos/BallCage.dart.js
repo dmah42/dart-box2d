@@ -6609,43 +6609,6 @@ $$.CanvasDraw = {"":
   t1.lineTo$2($.index(vertices, 0).get$x(), $.index(vertices, 0).get$y());
   t1.closePath$0();
   t1.fill$0();
- },
- drawPolygon$3: function(vertices, vertexCount, color) {
-  if (typeof vertices !== 'string' && (typeof vertices !== 'object' || vertices === null || (vertices.constructor !== Array && !vertices.is$JavaScriptIndexingBehavior()))) return this.drawPolygon$3$bailout(1, vertices, vertexCount, color);
-  if (typeof vertexCount !== 'number') return this.drawPolygon$3$bailout(1, vertices, vertexCount, color);
-  if (vertexCount === 1) {
-    var t1 = vertices.length;
-    if (0 >= t1) throw $.ioore(0);
-    this.drawSegment$3(vertices[0], vertices[0], color);
-    return;
-  }
-  for (t1 = vertexCount - 1, i = 0; i < t1; ++i) {
-    var t2 = vertices.length;
-    if (i < 0 || i >= t2) throw $.ioore(i);
-    var t3 = vertices[i];
-    var t4 = i + 1;
-    if (t4 < 0 || t4 >= t2) throw $.ioore(t4);
-    this.drawSegment$3(t3, vertices[t4], color);
-  }
-  if (vertexCount > 2) {
-    if (t1 !== (t1 | 0)) throw $.iae(t1);
-    t2 = vertices.length;
-    if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
-    t1 = vertices[t1];
-    if (0 >= t2) throw $.ioore(0);
-    this.drawSegment$3(t1, vertices[0], color);
-  }
-  var i;
- },
- drawPolygon$3$bailout: function(state, vertices, vertexCount, color) {
-  if ($.eqB(vertexCount, 1)) {
-    this.drawSegment$3($.index(vertices, 0), $.index(vertices, 0), color);
-    return;
-  }
-  for (var i = 0; $.ltB(i, $.sub(vertexCount, 1)); ++i) {
-    this.drawSegment$3($.index(vertices, i), $.index(vertices, i + 1), color);
-  }
-  $.gtB(vertexCount, 2) && this.drawSegment$3($.index(vertices, $.sub(vertexCount, 1)), $.index(vertices, 0), color);
  }
 };
 
@@ -6769,36 +6732,42 @@ $$.DebugDraw = {"":
   if (vertexCount === 1) {
     var t1 = vertices.length;
     if (0 >= t1) throw $.ioore(0);
-    this.drawSegment$3(vertices[0], vertices[0], color);
+    $.Vector$copy(vertices[0]);
+    var t2 = vertices.length;
+    if (0 >= t2) throw $.ioore(0);
+    $.Vector$copy(vertices[0]);
     return;
   }
   for (t1 = vertexCount - 1, i = 0; i < t1; ++i) {
-    var t2 = vertices.length;
+    t2 = vertices.length;
     if (i < 0 || i >= t2) throw $.ioore(i);
-    var t3 = vertices[i];
-    var t4 = i + 1;
-    if (t4 < 0 || t4 >= t2) throw $.ioore(t4);
-    this.drawSegment$3(t3, vertices[t4], color);
+    var a = $.Vector$copy(vertices[i]);
+    var t3 = i + 1;
+    var t4 = vertices.length;
+    if (t3 < 0 || t3 >= t4) throw $.ioore(t3);
+    this.drawSegment$3(a, $.Vector$copy(vertices[t3]), color);
   }
   if (vertexCount > 2) {
     if (t1 !== (t1 | 0)) throw $.iae(t1);
     t2 = vertices.length;
     if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
-    t1 = vertices[t1];
-    if (0 >= t2) throw $.ioore(0);
-    this.drawSegment$3(t1, vertices[0], color);
+    a = $.Vector$copy(vertices[t1]);
+    t3 = vertices.length;
+    if (0 >= t3) throw $.ioore(0);
+    this.drawSegment$3(a, $.Vector$copy(vertices[0]), color);
   }
   var i;
  },
  drawPolygon$3$bailout: function(state, vertices, vertexCount, color) {
   if ($.eqB(vertexCount, 1)) {
-    this.drawSegment$3($.index(vertices, 0), $.index(vertices, 0), color);
+    $.Vector$copy($.index(vertices, 0));
+    $.Vector$copy($.index(vertices, 0));
     return;
   }
   for (var i = 0; $.ltB(i, $.sub(vertexCount, 1)); ++i) {
-    this.drawSegment$3($.index(vertices, i), $.index(vertices, i + 1), color);
+    this.drawSegment$3($.Vector$copy($.index(vertices, i)), $.Vector$copy($.index(vertices, i + 1)), color);
   }
-  $.gtB(vertexCount, 2) && this.drawSegment$3($.index(vertices, $.sub(vertexCount, 1)), $.index(vertices, 0), color);
+  $.gtB(vertexCount, 2) && this.drawSegment$3($.Vector$copy($.index(vertices, $.sub(vertexCount, 1))), $.Vector$copy($.index(vertices, 0)), color);
  },
  get$flags: function() {
   return this.drawFlags;

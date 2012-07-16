@@ -26,24 +26,8 @@ class CanvasDraw extends DebugDraw {
   CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) { }
 
   /**
-   * Draw a closed polygon provided in CCW order.  This implementation
-   * uses [drawSegment] to draw each side of the polygon.
-   */
-  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
-    if(vertexCount == 1) {
-      drawSegment(vertices[0], vertices[0], color);
-      return;
-    }
-
-    for(int i = 0; i < vertexCount - 1; ++i)
-      drawSegment(vertices[i], vertices[i + 1], color);
-
-    if(vertexCount > 2)
-      drawSegment(vertices[vertexCount - 1], vertices[0], color);
-  }
-
-  /**
-   * Draws the given point with the given radius, in the given color.
+   * Draws the given point with the given radius, in the given color. WARNING: This
+     mutates [argPoint].
    */
   void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor) {
     _color = argColor;
@@ -55,7 +39,7 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draw a solid closed polygon provided in CCW order.
+   * Draw a solid closed polygon provided in CCW order. WARNING: This mutates [vertices].
    */
   void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     // Set the color and convert to screen coordinates.
@@ -81,7 +65,7 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draw a circle.
+   * Draw a circle. WARNING: This mutates [center].
    */
   void drawCircle(Vector center, num radius, Color3 color) {
     _color = color;
@@ -95,7 +79,7 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draw a solid circle.
+   * Draw a solid circle. WARNING: This mutates [center].
    */
   void drawSolidCircle(Vector center, num radius, Vector axis, Color3 color) {
     _color = color;
@@ -109,7 +93,7 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draw a line segment.
+   * Draw a line segment. WARNING: This mutates [p1] and [p2].
    */
   void drawSegment(Vector p1, Vector p2, Color3 color) {
     _color = color;

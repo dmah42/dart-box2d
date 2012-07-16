@@ -27,9 +27,7 @@ class FrictionJointTest extends Demo {
     final test = new FrictionJointTest();
     test.initialize();
     test.initializeAnimation();
-
     test.debugDraw.appendFlags(DebugDraw.e_jointBit);
-
     test.runAnimation();
   }
 
