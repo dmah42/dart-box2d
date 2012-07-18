@@ -6,6 +6,7 @@
 #source('../demo.dart');
 #source('Car.dart');
 #source('ControlState.dart');
+#source('GroundArea.dart');
 #source('Tire.dart');
 
 class Racer extends Demo implements ContactListener {
@@ -30,19 +31,19 @@ class Racer extends Demo implements ContactListener {
 
       PolygonShape shape = new PolygonShape();
 
-      FixtureDef fixture = new FixtureDef();
-      fixture.shape = shape;
-      fixture.isSensor = true;
+      FixtureDef fixtureDef = new FixtureDef();
+      fixtureDef.shape = shape;
+      fixtureDef.isSensor = true;
 
       shape.setAsBoxWithCenterAndAngle(
           18, 14, new Vector(-20, 30), MathBox.degToRad(20));
-      Fixture groundAreaFixture = _groundBody.createFixture(fixture);
-      // TODO: set user data
+      Fixture groundAreaFixture = _groundBody.createFixture(fixtureDef);
+      groundAreaFixture.userData = new GroundArea(0.001, false);
 
       shape.setAsBoxWithCenterAndAngle(
           18, 10, new Vector(10, 40), MathBox.degToRad(-40));
-      groundAreaFixture = _groundBody.createFixture(fixture);
-      // TODO: more user data
+      groundAreaFixture = _groundBody.createFixture(fixtureDef);
+      groundAreaFixture.userData = new GroundArea(0.2, false);
     }
     _car = new Car(world);
     _controlState = 0;
@@ -50,6 +51,9 @@ class Racer extends Demo implements ContactListener {
     // Bind to keyboard events.
     document.on.keyDown.add(_handleKeyDown);
     document.on.keyUp.add(_handleKeyUp);
+
+    // Add ourselves as a collision listener.
+    world.contactListener = this;
   }
 
   void _handleKeyDown(KeyboardEvent event) {
@@ -71,10 +75,14 @@ class Racer extends Demo implements ContactListener {
   }
 
   void _handleContact(Contact contact, bool began) {
-    Fixture a = contact.fixtureA;
-    Fixture b = contact.fixtureB;
+    Object fudA = contact.fixtureA.userData;
+    Object fudB = contact.fixtureB.userData;
 
-    // TODO(dominich): tire/ground contact.
+    // TODO: named parameters instead of swapping order?
+    if (fudA is Tire && fudB is GroundArea)
+      _tireVsGroundArea(fudA, fudB, began);
+    else if (fudA is GroundArea && fudB is Tire)
+      _tireVsGroundArea(fudB, fudA, began);
   }
 
   void beginContact(Contact contact) {
@@ -83,6 +91,13 @@ class Racer extends Demo implements ContactListener {
 
   void endContact(Contact contact) {
     _handleContact(contact, false);
+  }
+
+  void _tireVsGroundArea(Tire tire, GroundArea groundArea, bool began) {
+    if (began)
+      tire.addGroundArea(groundArea);
+    else
+      tire.removeGroundArea(groundArea);
   }
 
   void preSolve(Contact contact, Manifold oldManifold) { }

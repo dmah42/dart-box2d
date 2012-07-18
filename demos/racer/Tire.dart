@@ -5,16 +5,20 @@ class Tire {
   double _maxDriveForce;
   double _maxLateralImpulse;
   double _currentTraction;
+  // This can't be a Set as GroundArea is not hashable. Handle uniqueness
+  // manually.
+  final List<GroundArea> _groundAreas;
 
-  Tire(World world) {
+  Tire(World world)
+      : _groundAreas = new List<GroundArea>() {
     BodyDef def = new BodyDef();
     def.type = BodyType.DYNAMIC;
     _body = world.createBody(def);
 
     PolygonShape polygonShape = new PolygonShape();
     polygonShape.setAsBox(0.5, 1.25);
-    _body.createFixtureFromShape(polygonShape, 1.0);
-    _body.userData = this;
+    Fixture fixture = _body.createFixtureFromShape(polygonShape, 1.0);
+    fixture.userData = this;
 
     _currentTraction = 1.0;
   }
@@ -27,9 +31,31 @@ class Tire {
     _maxLateralImpulse = maxLateralImpulse;
   }
 
-  void updateTraction() {
-    // TODO.
-    _currentTraction = 1.0;
+  void addGroundArea(GroundArea ga) {
+    if (_groundAreas.indexOf(ga) === -1) {
+      _groundAreas.add(ga);
+      _updateTraction();
+    }
+  }
+
+  void removeGroundArea(GroundArea ga) {
+    var index = _groundAreas.indexOf(ga);
+    if (index !== -1) {
+      _groundAreas.removeRange(index, 1);
+      _updateTraction();
+    }
+  }
+
+  void _updateTraction() {
+    if (_groundAreas.isEmpty()) {
+      _currentTraction = 1.0;
+    } else {
+      _currentTraction = 0.0;
+      _groundAreas.forEach((element) {
+        _currentTraction = Math.max(_currentTraction, element.frictionModifier);
+      });
+      print("$_currentTraction");
+    }
   }
 
   Vector get lateralVelocity() {
