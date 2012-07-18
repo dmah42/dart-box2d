@@ -79,6 +79,7 @@ class DebugDraw {
   abstract void drawTransform(Transform xf, Color3 color);
 
   /** Draw a string. */
+  // TODO(dominich): font.
   abstract void drawString(num x, num y, String s, Color3 color);
 
   /**

@@ -52,4 +52,7 @@ class MathBox {
     final num res = toMin + mult * (toMax - toMin);
     return res;
   }
+
+  static num degToRad(num deg) => deg * (Math.PI / 180.0);
+  static num radToDeg(num rad) => rad * (180.0 / Math.PI);
 }

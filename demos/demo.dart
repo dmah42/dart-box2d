@@ -55,12 +55,18 @@ class Demo {
   /** Current fps */
   int fps;
 
-  Demo() :
-    bodies = new List<Body>() {
-    // Setup the World.
-    final gravity = new Vector(0, GRAVITY);
-    bool doSleep = true;
-    world = new World(gravity, doSleep, new DefaultWorldPool());
+  // TODO(dominich): Make this library-private once optional positional
+  // parameters are introduced.
+  num viewportScale;
+
+  Demo([this.viewportScale = _VIEWPORT_SCALE])
+      : bodies = new List<Body>() {
+    _setupWorld(new Vector(0, GRAVITY));
+  }
+
+  Demo.withGravity(Vector gravity, [this.viewportScale = _VIEWPORT_SCALE])
+      : bodies = new List<Body>() {
+    _setupWorld(gravity);
   }
 
   /** Advances the world forward by timestep seconds. */
@@ -68,9 +74,10 @@ class Demo {
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 
     // Clear the animation panel and draw new frame.
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.setFillColor('#404040');
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    ctx.setFillColor('black');
+    ctx.setFillColor('white');
     ctx.font = '18pt monospace';
     ctx.fillText(this.name, 20, 20);
 
@@ -99,7 +106,7 @@ class Demo {
     // Create the viewport transform with the center at extents.
     final extents = new Vector(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
     viewport = new CanvasViewportTransform(extents, extents);
-    viewport.scale = _VIEWPORT_SCALE;
+    viewport.scale = viewportScale;
 
     // Create our canvas drawing tool to give to the world.
     debugDraw = new CanvasDraw(viewport, ctx);
@@ -121,6 +128,12 @@ class Demo {
    */
   void runAnimation() {
     window.requestAnimationFrame((num time) { step(time); });
+  }
+
+  void _setupWorld(Vector gravity) {
+    // Setup the World.
+    bool doSleep = true;
+    world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 }
 
