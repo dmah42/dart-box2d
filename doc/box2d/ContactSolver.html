@@ -1,0 +1,880 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>ContactSolver Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="ContactSolver">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/ContactSolver.html">ContactSolver</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>ContactSolver</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+
+</div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="ContactSolver">
+<span class="show-code">Code</span>
+new <strong>ContactSolver</strong>() <a class="anchor-link" href="#ContactSolver"
+              title="Permalink to ContactSolver.ContactSolver">#</a></h4>
+<div class="doc">
+<p>Constructs a new ContactSolver.</p>
+<pre class="source">
+ContactSolver() :
+  constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
+
+  // Setup pool variables.
+  worldManifold = new WorldManifold(),
+  tangent = new Vector(),
+  temp1 = new Vector(),
+  temp2 = new Vector(),
+  P = new Vector(),
+  dv = new Vector(),
+  dv1 = new Vector(),
+  dv2 = new Vector(),
+  x = new Vector(),
+  d = new Vector(),
+  P1 = new Vector(),
+  P2 = new Vector(),
+  psolver = new PositionSolverManifold(),
+  rA = new Vector(),
+  rB = new Vector() {
+  for(int i=0; i &lt; constraints.length; i++) {
+    constraints[i] = new ContactConstraint();
+  }
+}
+</pre>
+</div>
+</div>
+<h3>Static Fields</h3>
+<div class="field"><h4 id="INITIAL_NUM_CONSTRAINTS">
+<span class="show-code">Code</span>
+final <a href="../dart_core/int.html">int</a>         <strong>INITIAL_NUM_CONSTRAINTS</strong> <a class="anchor-link"
+            href="#INITIAL_NUM_CONSTRAINTS"
+            title="Permalink to ContactSolver.INITIAL_NUM_CONSTRAINTS">#</a>
+        </h4>
+        <div class="doc">
+<p>For each solver, this is the initial number of constraints
+in the array, which expands as needed.</p>
+<pre class="source">
+static final int INITIAL_NUM_CONSTRAINTS = 256;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="K_MAX_CONDITION_NUMBER">
+<span class="show-code">Code</span>
+final <a href="../dart_core/num.html">num</a>         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
+            href="#K_MAX_CONDITION_NUMBER"
+            title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
+        </h4>
+        <div class="doc">
+<p>Ensure a reasonable condition number. For the block solver</p>
+<pre class="source">
+static final num K_MAX_CONDITION_NUMBER = 100.0;
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id="init">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>init</strong>(<a href="../dart_core/List.html">List</a> contacts, <a href="../dart_core/int.html">int</a> contactCount, <a href="../dart_core/num.html">num</a> impulseRatio) <a class="anchor-link" href="#init"
+              title="Permalink to ContactSolver.init">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
+  constraintCount = contactCount;
+
+  // dynamic array
+  if(constraints.length &lt; contactCount){
+    List&lt;ContactConstraint&gt; old = constraints;
+    int newLen = Math.max(old.length * 2, constraintCount);
+    constraints = new List&lt;ContactConstraint&gt;(newLen);
+    constraints.setRange(0, old.length, old);
+
+    for(int i=old.length; i&lt; constraints.length; i++){
+      constraints[i] = new ContactConstraint();
+    }
+  }
+
+  for (int i = 0; i &lt; constraintCount; ++i){
+    Contact contact = contacts[i];
+
+    Fixture fixtureA = contact.fixtureA;
+    Fixture fixtureB = contact.fixtureB;
+    Shape shapeA = fixtureA.shape;
+    Shape shapeB = fixtureB.shape;
+    num radiusA = shapeA.radius;
+    num radiusB = shapeB.radius;
+    Body bodyA = fixtureA.body;
+    Body bodyB = fixtureB.body;
+    Manifold manifold = contact.manifold;
+
+    num friction = Settings.mixFriction(fixtureA.friction,
+        fixtureB.friction);
+    num restitution = Settings.mixRestitution(fixtureA.restitution,
+        fixtureB.restitution);
+
+    Vector vA = bodyA.linearVelocity;
+    Vector vB = bodyB.linearVelocity;
+    num wA = bodyA.angularVelocity;
+    num wB = bodyB.angularVelocity;
+
+    assert(manifold.pointCount &gt; 0);
+
+    worldManifold.initialize(manifold, bodyA.originTransform, radiusA,
+        bodyB.originTransform, radiusB);
+
+    ContactConstraint cc = constraints[i];
+    cc.bodyA = bodyA;
+    cc.bodyB = bodyB;
+    cc.manifold = manifold;
+    cc.normal.x = worldManifold.normal.x;
+    cc.normal.y = worldManifold.normal.y; // have to set actual manifold
+    cc.pointCount = manifold.pointCount;
+    cc.friction = friction;
+    cc.restitution = restitution;
+    cc.localNormal.x = manifold.localNormal.x;
+    cc.localNormal.y = manifold.localNormal.y;
+    cc.localPoint.x = manifold.localPoint.x;
+    cc.localPoint.y = manifold.localPoint.y;
+    cc.radius = radiusA + radiusB;
+    cc.type = manifold.type;
+
+    for (int j = 0; j &lt; cc.pointCount; ++j){
+      ManifoldPoint cp = manifold.points[j];
+      ContactConstraintPoint ccp = cc.points[j];
+
+      ccp.normalImpulse = impulseRatio * cp.normalImpulse;
+      ccp.tangentImpulse = impulseRatio * cp.tangentImpulse;
+      ccp.localPoint.x = cp.localPoint.x;
+      ccp.localPoint.y = cp.localPoint.y;
+
+      ccp.rA.x = worldManifold.points[j].x - bodyA.sweep.center.x;
+      ccp.rA.y = worldManifold.points[j].y - bodyA.sweep.center.y;
+
+      ccp.rB.x = worldManifold.points[j].x - bodyB.sweep.center.x;
+      ccp.rB.y = worldManifold.points[j].y - bodyB.sweep.center.y;
+      num rnA = ccp.rA.x * cc.normal.y - ccp.rA.y * cc.normal.x;
+      num rnB = ccp.rB.x * cc.normal.y - ccp.rB.y * cc.normal.x;
+      rnA *= rnA;
+      rnB *= rnB;
+
+      num kNormal = bodyA.invMass + bodyB.invMass + bodyA.invInertia *
+          rnA + bodyB.invInertia * rnB;
+
+      assert(kNormal &gt; Settings.EPSILON);
+      ccp.normalMass = 1.0 / kNormal;
+
+      tangent.x = 1.0 * cc.normal.y;
+      tangent.y = -1.0 * cc.normal.x;
+
+      num rtA = ccp.rA.x * tangent.y - ccp.rA.y * tangent.x;
+      num rtB = ccp.rB.x * tangent.y - ccp.rB.y * tangent.x;
+      rtA *= rtA;
+      rtB *= rtB;
+
+      num kTangent = bodyA.invMass + bodyB.invMass + bodyA.invInertia * rtA
+          + bodyB.invInertia * rtB;
+
+      assert(kTangent &gt; Settings.EPSILON);
+      ccp.tangentMass = 1.0 /  kTangent;
+
+      // Setup a velocity bias for restitution.
+      ccp.velocityBias = 0.0;
+      temp2.x = -wA * ccp.rA.y;
+      temp2.y = wA * ccp.rA.x;
+      temp1.x = -wB * ccp.rB.y + vB.x - vA.x - temp2.x;
+      temp1.y = wB * ccp.rB.x + vB.y - vA.y - temp2.y;
+
+      Vector a = cc.normal;
+
+      num vRel = a.x * temp1.x + a.y * temp1.y;
+
+      if (vRel &lt; -Settings.VELOCITY_THRESHOLD){
+        ccp.velocityBias = -restitution * vRel;
+      }
+    }
+
+    // If we have two points, then prepare the block solver.
+    if (cc.pointCount == 2){
+      ContactConstraintPoint ccp1 = cc.points[0];
+      ContactConstraintPoint ccp2 = cc.points[1];
+
+      num invMassA = bodyA.invMass;
+      num invIA = bodyA.invInertia;
+      num invMassB = bodyB.invMass;
+      num invIB = bodyB.invInertia;
+
+      num rn1A = Vector.crossVectors(ccp1.rA, cc.normal);
+      num rn1B = Vector.crossVectors(ccp1.rB, cc.normal);
+      num rn2A = Vector.crossVectors(ccp2.rA, cc.normal);
+      num rn2B = Vector.crossVectors(ccp2.rB, cc.normal);
+
+      num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
+          * rn1B;
+      num k22 = invMassA + invMassB + invIA * rn2A * rn2A + invIB * rn2B
+          * rn2B;
+      num k12 = invMassA + invMassB + invIA * rn1A * rn2A + invIB * rn1B
+          * rn2B;
+
+      // Ensure a reasonable condition number.
+      if (k11 * k11 &lt; K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
+        // K is safe to invert.
+        cc.K.col1.x = k11;
+        cc.K.col1.y = k12;
+        cc.K.col2.x = k12;
+        cc.K.col2.y = k22;
+        cc.normalMass.col1.x = cc.K.col1.x;
+        cc.normalMass.col1.y = cc.K.col1.y;
+        cc.normalMass.col2.x = cc.K.col2.x;
+        cc.normalMass.col2.y = cc.K.col2.y;
+        cc.normalMass.invertLocal();
+      } else{
+        // The constraints are redundant, just use one.
+        cc.pointCount = 1;
+      }
+    }
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solvePositionConstraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>solvePositionConstraints</strong>(<a href="../dart_core/num.html">num</a> baumgarte) <a class="anchor-link" href="#solvePositionConstraints"
+              title="Permalink to ContactSolver.solvePositionConstraints">#</a></h4>
+<div class="doc">
+<p>Sequential solver.</p>
+<pre class="source">
+bool solvePositionConstraints(num baumgarte){
+  num minSeparation = 0.0;
+
+  for (int i = 0; i &lt; constraintCount; ++i){
+    final ContactConstraint c = constraints[i];
+    final Body bodyA = c.bodyA;
+    final Body bodyB = c.bodyB;
+
+    final num invMassA = bodyA.mass * bodyA.invMass;
+    final num invIA = bodyA.mass * bodyA.invInertia;
+    final num invMassB = bodyB.mass * bodyB.invMass;
+    final num invIB = bodyB.mass * bodyB.invInertia;
+
+    // Solve normal constraints
+    for (int j = 0; j &lt; c.pointCount; ++j){
+      PositionSolverManifold psm = psolver;
+      psm.initialize(c, j);
+      Vector normal = psm.normal;
+
+      Vector point = psm.point;
+      num separation = psm.separation;
+
+      rA.setFrom(point).subLocal(bodyA.sweep.center);
+      rB.setFrom(point).subLocal(bodyB.sweep.center);
+
+      // Track max constraint error.
+      minSeparation = Math.min(minSeparation, separation);
+
+      // Prevent large corrections and allow slop.
+      num C = MathBox.clamp(baumgarte *
+          (separation + Settings.LINEAR_SLOP),
+          -Settings.MAX_LINEAR_CORRECTION, 0.0);
+
+      // Compute the effective mass.
+      num rnA = Vector.crossVectors(rA, normal);
+      num rnB = Vector.crossVectors(rB, normal);
+      num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
+
+      // Compute normal impulse
+      num impulse = K &gt; 0.0 ? - C / K : 0.0;
+
+      P.setFrom(normal).mulLocal(impulse);
+
+      temp1.setFrom(P).mulLocal(invMassA);
+      bodyA.sweep.center.subLocal(temp1);;
+      bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+      bodyA.synchronizeTransform();
+
+      temp1.setFrom(P).mulLocal(invMassB);
+      bodyB.sweep.center.addLocal(temp1);
+      bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+      bodyB.synchronizeTransform();
+    }
+  }
+
+  // We can't expect minSpeparation &gt;= -LINEAR_SLOP because we don't
+  // push the separation above -LINEAR_SLOP.
+  return minSeparation &gt;= -1.5 * Settings.LINEAR_SLOP;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solveVelocityConstraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>solveVelocityConstraints</strong>() <a class="anchor-link" href="#solveVelocityConstraints"
+              title="Permalink to ContactSolver.solveVelocityConstraints">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void solveVelocityConstraints(){
+  for (int i = 0; i &lt; constraintCount; ++i){
+    final ContactConstraint c = constraints[i];
+    final Body bodyA = c.bodyA;
+    final Body bodyB = c.bodyB;
+    num wA = bodyA.angularVelocity;
+    num wB = bodyB.angularVelocity;
+    final Vector vA = bodyA.linearVelocity;
+    final Vector vB = bodyB.linearVelocity;
+    final num invMassA = bodyA.invMass;
+    final num invIA = bodyA.invInertia;
+    final num invMassB = bodyB.invMass;
+    final num invIB = bodyB.invInertia;
+    tangent.x = 1.0 * c.normal.y;
+    tangent.y = -1.0 * c.normal.x;
+    final num friction = c.friction;
+
+    assert(c.pointCount == 1 || c.pointCount == 2);
+
+    // Solve tangent constraints
+    for (int j = 0; j &lt; c.pointCount; ++j){
+      ContactConstraintPoint ccp = c.points[j];
+      Vector a = ccp.rA;
+
+      dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
+      dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
+
+      // Compute tangent force
+      num vt = dv.x * tangent.x + dv.y * tangent.y;
+      num lambda = ccp.tangentMass * (-vt);
+
+      // Clamp the accumulated force
+      num maxFriction = friction * ccp.normalImpulse;
+      num newImpulse = MathBox.clamp(ccp.tangentImpulse + lambda,
+          -maxFriction, maxFriction);
+      lambda = newImpulse - ccp.tangentImpulse;
+
+      // Apply contact impulse
+      num Px = tangent.x * lambda;
+      num Py = tangent.y * lambda;
+
+      //vA -= invMassA * P;
+      vA.x -= Px * invMassA;
+      vA.y -= Py * invMassA;
+      wA -= invIA * (ccp.rA.x * Py - ccp.rA.y * Px);
+
+      //vB += invMassB * P;
+      vB.x += Px * invMassB;
+      vB.y += Py * invMassB;
+      wB += invIB * (ccp.rB.x * Py - ccp.rB.y * Px);
+
+      ccp.tangentImpulse = newImpulse;
+    }
+
+    // Solve normal constraints
+    if (c.pointCount == 1){
+      ContactConstraintPoint ccp = c.points[0];
+      Vector a1 = ccp.rA;
+
+      dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
+      dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
+      Vector b = c.normal;
+
+      // Compute normal impulse
+      num vn = dv.x * b.x + dv.y * b.y;
+      num lambda = -ccp.normalMass * (vn - ccp.velocityBias);
+
+      // Clamp the accumulated impulse
+      num a = ccp.normalImpulse + lambda;
+      num newImpulse = (a &gt; 0.0 ? a : 0.0);
+      lambda = newImpulse - ccp.normalImpulse;
+
+      // Apply contact impulse
+      num Px = c.normal.x * lambda;
+      num Py = c.normal.y * lambda;
+
+      //vA -= invMassA * P;
+      vA.x -= Px * invMassA;
+      vA.y -= Py * invMassA;
+      wA -= invIA * (ccp.rA.x * Py - ccp.rA.y * Px);
+
+      //vB += invMassB * P;
+      vB.x += Px * invMassB;
+      vB.y += Py * invMassB;
+      wB += invIB * (ccp.rB.x * Py - ccp.rB.y * Px);
+
+      ccp.normalImpulse = newImpulse;
+    } else {
+      ContactConstraintPoint cp1 = c.points[0];
+      ContactConstraintPoint cp2 = c.points[1];
+      Vector a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
+
+      assert(a.x &gt;= 0.0 &amp;&amp; a.y &gt;= 0.0);
+      // Relative velocity at contact
+      //Vector dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
+      dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
+      dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
+
+      //Vector dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
+      dv2.x = -wB * cp2.rB.y + vB.x - vA.x + wA * cp2.rA.y;
+      dv2.y = wB * cp2.rB.x + vB.y - vA.y - wA * cp2.rA.x;
+
+      // Compute normal velocity
+      num vn1 = dv1.x * c.normal.x + dv1.y * c.normal.y;
+      num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
+
+      Vector b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
+      temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
+      temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
+      b.x -= temp2.x;
+      b.y -= temp2.y;
+
+      while (true) {
+        Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
+        x.mulLocal(-1);
+
+        if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
+          // Resubstitute for the incremental impulse
+          //Vector d = x - a;
+          d.setFrom(x).subLocal(a);
+
+          // Apply incremental impulse
+          // Vector P1 = d.x * normal;
+          // Vector P2 = d.y * normal;
+          P1.setFrom(c.normal).mulLocal(d.x);
+          P2.setFrom(c.normal).mulLocal(d.y);
+
+          temp1.setFrom(P1).addLocal(P2);
+          temp2.setFrom(temp1).mulLocal(invMassA);
+          vA.subLocal(temp2);
+          temp2.setFrom(temp1).mulLocal(invMassB);
+          vB.addLocal(temp2);
+
+          wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
+              Vector.crossVectors(cp2.rA, P2));
+          wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
+              Vector.crossVectors(cp2.rB, P2));
+
+          // Accumulate
+          cp1.normalImpulse = x.x;
+          cp2.normalImpulse = x.y;
+
+          break;
+        }
+
+        x.x = - cp1.normalMass * b.x;
+        x.y = 0.0;
+        vn1 = 0.0;
+        vn2 = c.K.col1.y * x.x + b.y;
+
+        if (x.x &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0) {
+          // Resubstitute for the incremental impulse
+          d.setFrom(x).subLocal(a);
+
+          // Apply incremental impulse
+          P1.setFrom(c.normal).mulLocal(d.x);
+          P2.setFrom(c.normal).mulLocal(d.y);
+
+          temp1.setFrom(P1).addLocal(P2);
+          temp2.setFrom(temp1).mulLocal(invMassA);
+          vA.subLocal(temp2);
+          temp2.setFrom(temp1).mulLocal(invMassB);
+          vB.addLocal(temp2);
+
+          wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
+              Vector.crossVectors(cp2.rA, P2));
+          wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
+              Vector.crossVectors(cp2.rB, P2));
+
+          // Accumulate
+          cp1.normalImpulse = x.x;
+          cp2.normalImpulse = x.y;
+
+          break;
+        }
+
+        x.x = 0.0;
+        x.y = - cp2.normalMass * b.y;
+        vn1 = c.K.col2.x * x.y + b.x;
+        vn2 = 0.0;
+
+        if (x.y &gt;= 0.0 &amp;&amp; vn1 &gt;= 0.0) {
+          // Resubstitute for the incremental impulse
+          d.setFrom(x).subLocal(a);
+
+          // Apply incremental impulse
+          P1.setFrom(c.normal).mulLocal(d.x);
+          P2.setFrom(c.normal).mulLocal(d.y);
+
+          temp1.setFrom(P1).addLocal(P2);
+          temp2.setFrom(temp1).mulLocal(invMassA);
+          vA.subLocal(temp2);
+          temp2.setFrom(temp1).mulLocal(invMassB);
+          vB.addLocal(temp2);
+
+          wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
+              Vector.crossVectors(cp2.rA, P2));
+          wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
+              Vector.crossVectors(cp2.rB, P2));
+
+          // Accumulate
+          cp1.normalImpulse = x.x;
+          cp2.normalImpulse = x.y;
+
+          break;
+        }
+
+        x.x = 0.0;
+        x.y = 0.0;
+        vn1 = b.x;
+        vn2 = b.y;
+
+        if (vn1 &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0 ) {
+          // Resubstitute for the incremental impulse
+          d.setFrom(x).subLocal(a);
+
+          // Apply incremental impulse
+          P1.setFrom(c.normal).mulLocal(d.x);
+          P2.setFrom(c.normal).mulLocal(d.y);
+
+          temp1.setFrom(P1).addLocal(P2);
+          temp2.setFrom(temp1).mulLocal(invMassA);
+          vA.subLocal(temp2);
+          temp2.setFrom(temp1).mulLocal(invMassB);
+          vB.addLocal(temp2);
+
+          wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
+              Vector.crossVectors(cp2.rA, P2));
+          wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
+              Vector.crossVectors(cp2.rB, P2));
+
+          // Accumulate
+          cp1.normalImpulse = x.x;
+          cp2.normalImpulse = x.y;
+
+          break;
+        }
+
+        // No solution, give up. This is hit sometimes,
+        // but it doesn't seem to matter.
+        break;
+      }
+    }
+
+    bodyA.linearVelocity.setFrom(vA);
+    bodyA.angularVelocity = wA;
+    bodyB.linearVelocity.setFrom(vB);
+    bodyB.angularVelocity = wB;
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="storeImpulses">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>storeImpulses</strong>() <a class="anchor-link" href="#storeImpulses"
+              title="Permalink to ContactSolver.storeImpulses">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void storeImpulses(){
+  for( int i=0; i&lt;constraintCount; i++){
+    ContactConstraint c = constraints[i];
+    Manifold m = c.manifold;
+
+    for(int j=0; j&lt; c.pointCount; j++){
+      m.points[j].normalImpulse = c.points[j].normalImpulse;
+      m.points[j].tangentImpulse = c.points[j].tangentImpulse;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="warmStart">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>warmStart</strong>() <a class="anchor-link" href="#warmStart"
+              title="Permalink to ContactSolver.warmStart">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void warmStart(){
+  // Warm start.
+  for (int i = 0; i &lt; constraintCount; ++i){
+    ContactConstraint c = constraints[i];
+
+    final Body bodyA = c.bodyA;
+    final Body bodyB = c.bodyB;
+    final num invMassA = bodyA.invMass;
+    final num invIA = bodyA.invInertia;
+    final num invMassB = bodyB.invMass;
+    final num invIB = bodyB.invInertia;
+    final Vector normal = c.normal;
+    Vector.crossVectorAndNumToOut(normal, 1, tangent);
+
+    for (int j = 0; j &lt; c.pointCount; ++j){
+      ContactConstraintPoint ccp = c.points[j];
+
+      num Px = ccp.normalImpulse * normal.x + ccp.tangentImpulse *
+          tangent.x;
+      num Py = ccp.normalImpulse * normal.y + ccp.tangentImpulse
+          * tangent.y;
+
+      bodyA.angularVelocity -= invIA * (ccp.rA.x * Py - ccp.rA.y * Px);
+      bodyA.linearVelocity.x -= Px * invMassA;
+      bodyA.linearVelocity.y -= Py * invMassA;
+
+      bodyB.angularVelocity += invIB * (ccp.rB.x * Py - ccp.rB.y * Px);
+      bodyB.linearVelocity.x += Px * invMassB;
+      bodyB.linearVelocity.y += Py * invMassB;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="constraintCount">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>constraintCount</strong> <a class="anchor-link"
+            href="#constraintCount"
+            title="Permalink to ContactSolver.constraintCount">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int constraintCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="constraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>constraints</strong> <a class="anchor-link"
+            href="#constraints"
+            title="Permalink to ContactSolver.constraints">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;ContactConstraint&gt; constraints;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="d">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>d</strong> <a class="anchor-link"
+            href="#d"
+            title="Permalink to ContactSolver.d">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector d;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="dv">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>dv</strong> <a class="anchor-link"
+            href="#dv"
+            title="Permalink to ContactSolver.dv">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector dv;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="dv1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>dv1</strong> <a class="anchor-link"
+            href="#dv1"
+            title="Permalink to ContactSolver.dv1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector dv1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="dv2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>dv2</strong> <a class="anchor-link"
+            href="#dv2"
+            title="Permalink to ContactSolver.dv2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector dv2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="P">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>P</strong> <a class="anchor-link"
+            href="#P"
+            title="Permalink to ContactSolver.P">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector P;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="P1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>P1</strong> <a class="anchor-link"
+            href="#P1"
+            title="Permalink to ContactSolver.P1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector P1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="P2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>P2</strong> <a class="anchor-link"
+            href="#P2"
+            title="Permalink to ContactSolver.P2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector P2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="psolver">
+<span class="show-code">Code</span>
+final <a href="../box2d/PositionSolverManifold.html">PositionSolverManifold</a>         <strong>psolver</strong> <a class="anchor-link"
+            href="#psolver"
+            title="Permalink to ContactSolver.psolver">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final PositionSolverManifold psolver;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="rA">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
+            href="#rA"
+            title="Permalink to ContactSolver.rA">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector rA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="rB">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
+            href="#rB"
+            title="Permalink to ContactSolver.rB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector rB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="tangent">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>tangent</strong> <a class="anchor-link"
+            href="#tangent"
+            title="Permalink to ContactSolver.tangent">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector tangent;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="temp1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>temp1</strong> <a class="anchor-link"
+            href="#temp1"
+            title="Permalink to ContactSolver.temp1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector temp1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="temp2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>temp2</strong> <a class="anchor-link"
+            href="#temp2"
+            title="Permalink to ContactSolver.temp2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector temp2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="worldManifold">
+<span class="show-code">Code</span>
+final <a href="../box2d/WorldManifold.html">WorldManifold</a>         <strong>worldManifold</strong> <a class="anchor-link"
+            href="#worldManifold"
+            title="Permalink to ContactSolver.worldManifold">#</a>
+        </h4>
+        <div class="doc">
+<p>Pooling</p>
+<pre class="source">
+final WorldManifold worldManifold;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="x">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>x</strong> <a class="anchor-link"
+            href="#x"
+            title="Permalink to ContactSolver.x">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector x;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:40.310</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

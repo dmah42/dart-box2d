@@ -1,0 +1,227 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Sweep Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="Sweep">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Sweep.html">Sweep</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Sweep</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+
+</div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Sweep">
+<span class="show-code">Code</span>
+new <strong>Sweep</strong>() <a class="anchor-link" href="#Sweep"
+              title="Permalink to Sweep.Sweep">#</a></h4>
+<div class="doc">
+<p>Constructs a new Sweep with centers initialized to the origin and angles
+set to zero.</p>
+<pre class="source">
+Sweep() :
+  localCenter = new Vector(),
+  centerZero = new Vector(),
+  center = new Vector(),
+  angleZero = 0,
+  angle = 0 { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Sweep">
+<span class="show-code">Code</span>
+new <strong>Sweep</strong>.copy(<a href="../box2d/Sweep.html">Sweep</a> other) <a class="anchor-link" href="#Sweep"
+              title="Permalink to Sweep.Sweep">#</a></h4>
+<div class="doc">
+<p>Constructs a new sweep that is a copy of the given Sweep.</p>
+<pre class="source">
+Sweep.copy(Sweep other) :
+  localCenter = new Vector.copy(other.localCenter),
+  centerZero = new Vector.copy(other.centerZero),
+  center = new Vector.copy(other.center),
+  angleZero = other.angleZero,
+  angle = other.angle { }
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id=":eq">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>operator ==</strong>(other) <a class="anchor-link" href="#:eq"
+              title="Permalink to Sweep.operator ==">#</a></h4>
+<div class="doc">
+<p>Returns true if given object is equal to this sweep. Two sweeps are equal
+if their fields are equal.</p>
+<pre class="source">
+bool operator == (other) {
+  return localCenter == other.localCenter &amp;&amp; centerZero == other.centerZero
+      &amp;&amp; center == other.center &amp;&amp; angleZero == other.angleZero &amp;&amp;
+      angle == other.angle;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="advance">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>advance</strong>(<a href="../dart_core/num.html">num</a> time) <a class="anchor-link" href="#advance"
+              title="Permalink to Sweep.advance">#</a></h4>
+<div class="doc">
+<p>Advances the sweep forward, resulting in a new initial state.
+Time is the new initial time.</p>
+<pre class="source">
+void advance(num time) {
+  centerZero.x = (1 - time) * centerZero.x + time * center.x;
+  centerZero.y = (1 - time) * centerZero.y + time * center.y;
+  angleZero = (1 - time) * angleZero + time * angle;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getTransform">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../dart_core/num.html">num</a> alpha) <a class="anchor-link" href="#getTransform"
+              title="Permalink to Sweep.getTransform">#</a></h4>
+<div class="doc">
+<p>Computes the interpolated transform at a specific time.
+Time is the normalized time in <code>0,1</code>.</p>
+<pre class="source">
+void getTransform(Transform xf, num alpha) {
+  assert (xf != null);
+
+  xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
+  xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
+  xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
+
+  // Shift to origin
+  xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+      * localCenter.y;
+  xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+      * localCenter.y;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="normalize">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
+              title="Permalink to Sweep.normalize">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void normalize() {
+  num d = MathBox._2PI * (angleZero / MathBox._2PI).floor();
+  angleZero -= d;
+  angle -= d;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>setFrom</strong>(<a href="../box2d/Sweep.html">Sweep</a> other) <a class="anchor-link" href="#setFrom"
+              title="Permalink to Sweep.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this Sweep equal to the given Sweep.</p>
+<pre class="source">
+void setFrom(Sweep other) {
+  localCenter.setFrom(other.localCenter);
+  centerZero.setFrom(other.centerZero);
+  center.setFrom(other.center);
+  angleZero = other.angleZero;
+  angle = other.angle;
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="angle">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>angle</strong> <a class="anchor-link"
+            href="#angle"
+            title="Permalink to Sweep.angle">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num angle;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="angleZero">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>angleZero</strong> <a class="anchor-link"
+            href="#angleZero"
+            title="Permalink to Sweep.angleZero">#</a>
+        </h4>
+        <div class="doc">
+<p>World angles.</p>
+<pre class="source">
+num angleZero;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="center">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+            href="#center"
+            title="Permalink to Sweep.center">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector center;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="centerZero">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>centerZero</strong> <a class="anchor-link"
+            href="#centerZero"
+            title="Permalink to Sweep.centerZero">#</a>
+        </h4>
+        <div class="doc">
+<p>Center world positions.</p>
+<pre class="source">
+final Vector centerZero;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localCenter">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenter</strong> <a class="anchor-link"
+            href="#localCenter"
+            title="Permalink to Sweep.localCenter">#</a>
+        </h4>
+        <div class="doc">
+<p>Local center of mass position.</p>
+<pre class="source">
+final Vector localCenter;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:41.274</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

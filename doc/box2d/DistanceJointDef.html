@@ -1,0 +1,157 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>DistanceJointDef Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="DistanceJointDef">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/DistanceJointDef.html">DistanceJointDef</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>DistanceJointDef</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+<p>Distance joint definition. This requires defining an
+anchor point on both bodies and the non-zero length of the
+distance joint. The definition uses local anchor points
+so that the initial configuration can violate the constraint
+slightly. This helps when saving and loading a game.
+Warning: Do not use a zero or short length.</p>
+</div>
+<h3>Extends</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/JointDef.html">JointDef</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>DistanceJointDef</strong></span></p>
+<h3>Constructors</h3>
+<div class="method"><h4 id="DistanceJointDef">
+<span class="show-code">Code</span>
+new <strong>DistanceJointDef</strong>() <a class="anchor-link" href="#DistanceJointDef"
+              title="Permalink to DistanceJointDef.DistanceJointDef">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+DistanceJointDef() :
+  super(),
+  localAnchorA = new Vector(0.0, 0.0),
+  localAnchorB = new Vector(0.0, 0.0),
+  length = 1.0,
+  frequencyHz = 0.0,
+  dampingRatio = 0.0 {
+  type = JointType.DISTANCE;
+}
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id="initialize">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector.html">Vector</a> anchor1, <a href="../box2d/Vector.html">Vector</a> anchor2) <a class="anchor-link" href="#initialize"
+              title="Permalink to DistanceJointDef.initialize">#</a></h4>
+<div class="doc">
+<p>Initialize the bodies, anchors, and length using the world
+anchors.
+b1: First body
+b2: Second body
+anchor1: World anchor on first body
+anchor2: World anchor on second body</p>
+<pre class="source">
+void initialize(Body b1, Body b2, Vector anchor1, Vector anchor2) {
+  bodyA = b1;
+  bodyB = b2;
+  localAnchorA.setFrom(bodyA.getLocalPoint(anchor1));
+  localAnchorB.setFrom(bodyB.getLocalPoint(anchor2));
+  Vector d = new Vector.copy(anchor2);
+  d.subLocal(anchor1);
+  length = d.length;
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="dampingRatio">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>dampingRatio</strong> <a class="anchor-link"
+            href="#dampingRatio"
+            title="Permalink to DistanceJointDef.dampingRatio">#</a>
+        </h4>
+        <div class="doc">
+<p>The damping ratio. 0 = no damping, 1 = critical damping.</p>
+<pre class="source">
+num dampingRatio;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="frequencyHz">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>frequencyHz</strong> <a class="anchor-link"
+            href="#frequencyHz"
+            title="Permalink to DistanceJointDef.frequencyHz">#</a>
+        </h4>
+        <div class="doc">
+<p>The mass-spring-damper frequency in Hertz.</p>
+<pre class="source">
+num frequencyHz;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="length">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>length</strong> <a class="anchor-link"
+            href="#length"
+            title="Permalink to DistanceJointDef.length">#</a>
+        </h4>
+        <div class="doc">
+<p>The equilibrium length between the anchor points.</p>
+<pre class="source">
+num length;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localAnchorA">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+            href="#localAnchorA"
+            title="Permalink to DistanceJointDef.localAnchorA">#</a>
+        </h4>
+        <div class="doc">
+<p>The local anchor point relative to body1's origin.</p>
+<pre class="source">
+final Vector localAnchorA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localAnchorB">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+            href="#localAnchorB"
+            title="Permalink to DistanceJointDef.localAnchorB">#</a>
+        </h4>
+        <div class="doc">
+<p>The local anchor point relative to body2's origin.</p>
+<pre class="source">
+final Vector localAnchorB;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:40.597</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

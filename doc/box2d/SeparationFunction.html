@@ -1,0 +1,576 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>SeparationFunction Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="SeparationFunction">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/SeparationFunction.html">SeparationFunction</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>SeparationFunction</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+
+</div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="SeparationFunction">
+<span class="show-code">Code</span>
+new <strong>SeparationFunction</strong>() <a class="anchor-link" href="#SeparationFunction"
+              title="Permalink to SeparationFunction.SeparationFunction">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+SeparationFunction() :
+  proxyA = new DistanceProxy(),
+  proxyB = new DistanceProxy(),
+  type = Type.POINTS,
+  localPoint = new Vector(),
+  axis = new Vector(),
+  sweepA = new Sweep(),
+  sweepB = new Sweep(),
+  localPointA = new Vector(),
+  localPointB = new Vector(),
+  pointA = new Vector(),
+  pointB = new Vector(),
+  localPointA1 = new Vector(),
+  localPointA2 = new Vector(),
+  normal = new Vector(),
+  localPointB1 = new Vector(),
+  localPointB2 = new Vector(),
+  temp = new Vector(),
+  xfa = new Transform(),
+  xfb = new Transform(),
+  axisA = new Vector(),
+  axisB = new Vector() { }
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id="evaluate">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>evaluate</strong>(<a href="../dart_core/int.html">int</a> indexA, <a href="../dart_core/int.html">int</a> indexB, <a href="../dart_core/num.html">num</a> t) <a class="anchor-link" href="#evaluate"
+              title="Permalink to SeparationFunction.evaluate">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num evaluate(int indexA, int indexB, num t) {
+  sweepA.getTransform(xfa, t);
+  sweepB.getTransform(xfb, t);
+
+  switch (type) {
+    case Type.POINTS:
+      Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+      Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+          axisB);
+      axis.negateLocal();
+
+      localPointA.setFrom(proxyA.vertices[indexA]);
+      localPointB.setFrom(proxyB.vertices[indexB]);
+
+      Transform.mulToOut(xfa, localPointA, pointA);
+      Transform.mulToOut(xfb, localPointB, pointB);
+
+      num separation = Vector.dot(pointB.subLocal(pointA), axis);
+      return separation;
+
+    case Type.FACE_A:
+      Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+      Transform.mulToOut(xfa, localPoint, pointA);
+
+      normal.negateLocal();
+      Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+      normal.negateLocal();
+
+      localPointB.setFrom(proxyB.vertices[indexB]);
+      Transform.mulToOut(xfb, localPointB, pointB);
+      num separation = Vector.dot(pointB.subLocal(pointA), normal);
+      return separation;
+
+    case Type.FACE_B:
+      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+      Transform.mulToOut(xfb, localPoint, pointB);
+
+      Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
+          normal.negateLocal(), axisA);
+      normal.negateLocal();
+
+      localPointA.setFrom(proxyA.vertices[indexA]);
+      Transform.mulToOut(xfa, localPointA, pointA);
+
+      num separation = Vector.dot(pointA.subLocal(pointB), normal);
+      return separation;
+
+    default:
+      assert (false);
+      return 0;
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="findMinSeparation">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>findMinSeparation</strong>(<a href="../dart_core/List.html">List</a> indexes, <a href="../dart_core/num.html">num</a> t) <a class="anchor-link" href="#findMinSeparation"
+              title="Permalink to SeparationFunction.findMinSeparation">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num findMinSeparation(List&lt;int&gt; indexes, num t) {
+  sweepA.getTransform(xfa, t);
+  sweepB.getTransform(xfb, t);
+
+  switch (type) {
+    case Type.POINTS:
+      Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+      Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+          axisB);
+      axis.negateLocal();
+
+      indexes[0] = proxyA.getSupport(axisA);
+      indexes[1] = proxyB.getSupport(axisB);
+
+      localPointA.setFrom(proxyA.vertices[indexes[0]]);
+      localPointB.setFrom(proxyB.vertices[indexes[1]]);
+
+      Transform.mulToOut(xfa, localPointA, pointA);
+      Transform.mulToOut(xfb, localPointB, pointB);
+
+      num separation = Vector.dot(pointB.subLocal(pointA), axis);
+      return separation;
+
+    case Type.FACE_A:
+      Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+      Transform.mulToOut(xfa, localPoint, pointA);
+
+      normal.negateLocal();
+      Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+      normal.negateLocal();
+
+      indexes[0] = -1;
+      indexes[1] = proxyB.getSupport(axisB);
+
+      localPointB.setFrom(proxyB.vertices[indexes[1]]);
+      Transform.mulToOut(xfb, localPointB, pointB);
+
+      num separation = Vector.dot(pointB.subLocal(pointA), normal);
+      return separation;
+
+    case Type.FACE_B:
+      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+      Transform.mulToOut(xfb, localPoint, pointB);
+
+      Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
+          normal.negateLocal(), axisA);
+      normal.negateLocal();
+
+      indexes[1] = -1;
+      indexes[0] = proxyA.getSupport(axisA);
+
+      localPointA.setFrom(proxyA.vertices[indexes[0]]);
+      Transform.mulToOut(xfa, localPointA, pointA);
+
+      num separation = Vector.dot(pointA.subLocal(pointB), normal);
+      return separation;
+
+    default:
+      assert (false);
+      indexes[0] = -1;
+      indexes[1] = -1;
+      return 0;
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="initialize">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>initialize</strong>(<a href="../box2d/SimplexCache.html">SimplexCache</a> cache, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyA, <a href="../box2d/Sweep.html">Sweep</a> argSweepA, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyB, <a href="../box2d/Sweep.html">Sweep</a> argSweepB, <a href="../dart_core/num.html">num</a> t1) <a class="anchor-link" href="#initialize"
+              title="Permalink to SeparationFunction.initialize">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+    argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+  proxyA = argProxyA;
+  proxyB = argProxyB;
+  int count = cache.count;
+  assert (0 &lt; count &amp;&amp; count &lt; 3);
+
+  sweepA = argSweepA;
+  sweepB = argSweepB;
+
+  sweepA.getTransform(xfa, t1);
+  sweepB.getTransform(xfb, t1);
+
+  if (count == 1) {
+    type = Type.POINTS;
+    localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
+    localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
+    Transform.mulToOut(xfa, localPointA, pointA);
+    Transform.mulToOut(xfb, localPointB, pointB);
+    axis.setFrom(pointB).subLocal(pointA);
+    num s = axis.normalize();
+    return s;
+  } else if (cache.indexA[0] == cache.indexA[1]) {
+    // Two points on B and one on A.
+    type = Type.FACE_B;
+
+    localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
+    localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
+
+    temp.setFrom(localPointB2).subLocal(localPointB1);
+    Vector.crossVectorAndNumToOut(temp, 1, axis);
+    axis.normalize();
+
+    Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+
+    localPoint.setFrom(localPointB1);
+    localPoint.addLocal(localPointB2);
+    localPoint.mulLocal(.5);
+    Transform.mulToOut(xfb, localPoint, pointB);
+
+    localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
+    Transform.mulToOut(xfa, localPointA, pointA);
+
+    temp.setFrom(pointA);
+    temp.subLocal(pointB);
+    num s = Vector.dot(temp, normal);
+    if (s &lt; 0.0) {
+      axis.negateLocal();
+      s = -s;
+    }
+
+    return s;
+  } else {
+    // Two points on A and one or two points on B.
+    type = Type.FACE_A;
+
+    localPointA1.setFrom(proxyA.vertices[cache.indexA[0]]);
+    localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
+
+    temp.setFrom(localPointA2);
+    temp.subLocal(localPointA1);
+    Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+    axis.normalize();
+
+    Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+
+    localPoint.setFrom(localPointA1);
+    localPoint.addLocal(localPointA2);
+    localPoint.mulLocal(.5);
+    Transform.mulToOut(xfa, localPoint, pointA);
+
+    localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
+    Transform.mulToOut(xfb, localPointB, pointB);
+
+    temp.setFrom(pointB);
+    temp.subLocal(pointA);
+    num s = Vector.dot(temp, normal);
+    if (s &lt; 0.0) {
+      axis.negateLocal();
+      s = -s;
+    }
+    return s;
+  }
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="axis">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>axis</strong> <a class="anchor-link"
+            href="#axis"
+            title="Permalink to SeparationFunction.axis">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector axis;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="axisA">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>axisA</strong> <a class="anchor-link"
+            href="#axisA"
+            title="Permalink to SeparationFunction.axisA">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector axisA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="axisB">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>axisB</strong> <a class="anchor-link"
+            href="#axisB"
+            title="Permalink to SeparationFunction.axisB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector axisB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPoint">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+            href="#localPoint"
+            title="Permalink to SeparationFunction.localPoint">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPoint;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA</strong> <a class="anchor-link"
+            href="#localPointA"
+            title="Permalink to SeparationFunction.localPointA">#</a>
+        </h4>
+        <div class="doc">
+<p>Pooling</p>
+<pre class="source">
+final Vector localPointA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA1</strong> <a class="anchor-link"
+            href="#localPointA1"
+            title="Permalink to SeparationFunction.localPointA1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPointA1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA2</strong> <a class="anchor-link"
+            href="#localPointA2"
+            title="Permalink to SeparationFunction.localPointA2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPointA2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB</strong> <a class="anchor-link"
+            href="#localPointB"
+            title="Permalink to SeparationFunction.localPointB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPointB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB1</strong> <a class="anchor-link"
+            href="#localPointB1"
+            title="Permalink to SeparationFunction.localPointB1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPointB1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB2</strong> <a class="anchor-link"
+            href="#localPointB2"
+            title="Permalink to SeparationFunction.localPointB2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localPointB2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="normal">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
+            href="#normal"
+            title="Permalink to SeparationFunction.normal">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector normal;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pointA">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> <a class="anchor-link"
+            href="#pointA"
+            title="Permalink to SeparationFunction.pointA">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector pointA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pointB">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> <a class="anchor-link"
+            href="#pointB"
+            title="Permalink to SeparationFunction.pointB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector pointB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="proxyA">
+<span class="show-code">Code</span>
+<a href="../box2d/DistanceProxy.html">DistanceProxy</a>         <strong>proxyA</strong> <a class="anchor-link"
+            href="#proxyA"
+            title="Permalink to SeparationFunction.proxyA">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+DistanceProxy proxyA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="proxyB">
+<span class="show-code">Code</span>
+<a href="../box2d/DistanceProxy.html">DistanceProxy</a>         <strong>proxyB</strong> <a class="anchor-link"
+            href="#proxyB"
+            title="Permalink to SeparationFunction.proxyB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+DistanceProxy proxyB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sweepA">
+<span class="show-code">Code</span>
+<a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepA</strong> <a class="anchor-link"
+            href="#sweepA"
+            title="Permalink to SeparationFunction.sweepA">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+Sweep sweepA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sweepB">
+<span class="show-code">Code</span>
+<a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepB</strong> <a class="anchor-link"
+            href="#sweepB"
+            title="Permalink to SeparationFunction.sweepB">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+Sweep sweepB;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="temp">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
+            href="#temp"
+            title="Permalink to SeparationFunction.temp">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector temp;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="type">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to SeparationFunction.type">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int type;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xfa">
+<span class="show-code">Code</span>
+final <a href="../box2d/Transform.html">Transform</a>         <strong>xfa</strong> <a class="anchor-link"
+            href="#xfa"
+            title="Permalink to SeparationFunction.xfa">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Transform xfa;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xfb">
+<span class="show-code">Code</span>
+final <a href="../box2d/Transform.html">Transform</a>         <strong>xfb</strong> <a class="anchor-link"
+            href="#xfb"
+            title="Permalink to SeparationFunction.xfb">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Transform xfb;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:37.586</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

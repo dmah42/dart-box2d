@@ -1,0 +1,785 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>RevoluteJoint Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="RevoluteJoint">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/RevoluteJoint.html">RevoluteJoint</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>RevoluteJoint</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+<p>A revolute joint constrains two bodies to share a common point while they
+are free to rotate about the point. The relative rotation about the shared
+point is the joint angle. You can limit the relative rotation with
+a joint limit that specifies a lower and upper angle. You can use a motor
+to drive the relative rotation about the shared point. A maximum motor torque
+is provided so that infinite forces are not generated.</p>
+</div>
+<h3>Extends</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/Joint.html">Joint</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>RevoluteJoint</strong></span></p>
+<h3>Constructors</h3>
+<div class="method"><h4 id="RevoluteJoint">
+<span class="show-code">Code</span>
+new <strong>RevoluteJoint</strong>(<a href="../box2d/RevoluteJointDef.html">RevoluteJointDef</a> def) <a class="anchor-link" href="#RevoluteJoint"
+              title="Permalink to RevoluteJoint.RevoluteJoint">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+RevoluteJoint(RevoluteJointDef def) :
+  super(def),
+  localAnchor1 = new Vector(),
+  localAnchor2 = new Vector(),
+  impulse = new Vector3(),
+  _motorImpulse = 0,
+  mass = new Matrix33() {
+  localAnchor1.setFrom(def.localAnchorA);
+  localAnchor2.setFrom(def.localAnchorB);
+  referenceAngle = def.referenceAngle;
+
+  _motorImpulse = 0;
+
+  lowerAngle = def.lowerAngle;
+  upperAngle = def.upperAngle;
+  _maxMotorTorque = def.maxMotorTorque;
+  _motorSpeed = def.motorSpeed;
+  _enableLimit = def.enableLimit;
+  _enableMotor = def.enableMotor;
+}
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id="getAnchorA">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
+              title="Permalink to RevoluteJoint.getAnchorA">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void getAnchorA(Vector argOut) {
+  bodyA.getWorldPointToOut(localAnchor1, argOut);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getAnchorB">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
+              title="Permalink to RevoluteJoint.getAnchorB">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void getAnchorB(Vector argOut) {
+  bodyB.getWorldPointToOut(localAnchor2, argOut);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getReactionForce">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>getReactionForce</strong>(<a href="../dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getReactionForce"
+              title="Permalink to RevoluteJoint.getReactionForce">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void getReactionForce(num inv_dt, Vector argOut) {
+  argOut.setCoords(impulse.x, impulse.y).mulLocal(inv_dt);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getReactionTorque">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>getReactionTorque</strong>(<a href="../dart_core/num.html">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
+              title="Permalink to RevoluteJoint.getReactionTorque">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num getReactionTorque(num inv_dt) {
+  return inv_dt * impulse.z;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="initVelocityConstraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#initVelocityConstraints"
+              title="Permalink to RevoluteJoint.initVelocityConstraints">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void initVelocityConstraints(TimeStep step) {
+  final Body b1 = bodyA;
+  final Body b2 = bodyB;
+
+  if (_enableMotor || _enableLimit) {
+    // You cannot create a rotation limit between bodies that
+    // both have fixed rotation.
+    assert (b1.invInertia &gt; 0.0 || b2.invInertia &gt; 0.0);
+  }
+
+  final Vector r1 = new Vector();
+  final Vector r2 = new Vector();
+
+  // Compute the effective mass matrix.
+  r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+  r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+  Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+  Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+
+  num m1 = b1.invMass, m2 = b2.invMass;
+  num i1 = b1.invInertia, i2 = b2.invInertia;
+
+  mass.col1.x = m1 + m2 + r1.y * r1.y * i1 + r2.y * r2.y * i2;
+  mass.col2.x = -r1.y * r1.x * i1 - r2.y * r2.x * i2;
+  mass.col3.x = -r1.y * i1 - r2.y * i2;
+  mass.col1.y = mass.col2.x;
+  mass.col2.y = m1 + m2 + r1.x * r1.x * i1 + r2.x * r2.x * i2;
+  mass.col3.y = r1.x * i1 + r2.x * i2;
+  mass.col1.z = mass.col3.x;
+  mass.col2.z = mass.col3.y;
+  mass.col3.z = i1 + i2;
+
+  motorMass = i1 + i2;
+  if (motorMass &gt; 0.0) {
+    motorMass = 1.0 / motorMass;
+  }
+
+  if (_enableMotor == false) {
+    _motorImpulse = 0.0;
+  }
+
+  if (_enableLimit) {
+    num jointAngle = b2.sweep.angle - b1.sweep.angle - referenceAngle;
+    if ((upperAngle - lowerAngle).abs() &lt; 2.0 * Settings.ANGULAR_SLOP) {
+      limitState = LimitState.EQUAL;
+    }
+    else if (jointAngle &lt;= lowerAngle) {
+      if (limitState != LimitState.AT_LOWER) {
+        impulse.z = 0.0;
+      }
+      limitState = LimitState.AT_LOWER;
+    }
+    else if (jointAngle &gt;= upperAngle) {
+      if (limitState != LimitState.AT_UPPER) {
+        impulse.z = 0.0;
+      }
+      limitState = LimitState.AT_UPPER;
+    }
+    else {
+      limitState = LimitState.INACTIVE;
+      impulse.z = 0.0;
+    }
+  }
+  else {
+    limitState = LimitState.INACTIVE;
+  }
+
+  if (step.warmStarting) {
+    // Scale impulses to support a variable time step.
+    impulse.mulLocal(step.dtRatio);
+    _motorImpulse *= step.dtRatio;
+
+    Vector temp = new Vector();
+    Vector P = new Vector();
+    P.setCoords(impulse.x, impulse.y);
+
+    temp.setFrom(P).mulLocal(m1);
+    b1.linearVelocity.subLocal(temp);
+    b1.angularVelocity -= i1 * (Vector.crossVectors(r1, P) + _motorImpulse +
+        impulse.z);
+
+    temp.setFrom(P).mulLocal(m2);
+    b2.linearVelocity.addLocal(temp);
+    b2.angularVelocity += i2 * (Vector.crossVectors(r2, P) + _motorImpulse +
+        impulse.z);
+
+  } else {
+    impulse.setZero();
+    _motorImpulse = 0.0;
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:jointAngle">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>get jointAngle</strong>() <a class="anchor-link" href="#get:jointAngle"
+              title="Permalink to RevoluteJoint.get jointAngle">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num get jointAngle() {
+  final Body b1 = bodyA;
+  final Body b2 = bodyB;
+  return b2.sweep.angle - b1.sweep.angle - referenceAngle;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:jointSpeed">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>get jointSpeed</strong>() <a class="anchor-link" href="#get:jointSpeed"
+              title="Permalink to RevoluteJoint.get jointSpeed">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num get jointSpeed() {
+  final Body b1 = bodyA;
+  final Body b2 = bodyB;
+  return b2.angularVelocity - b1.angularVelocity;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:limitEnabled">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>get limitEnabled</strong>() <a class="anchor-link" href="#get:limitEnabled"
+              title="Permalink to RevoluteJoint.get limitEnabled">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+bool get limitEnabled() {
+  return _enableLimit;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="set:limitEnabled">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>set limitEnabled</strong>(<a href="../dart_core/bool.html">bool</a> flag) <a class="anchor-link" href="#set:limitEnabled"
+              title="Permalink to RevoluteJoint.set limitEnabled">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void set limitEnabled(bool flag) {
+  bodyA.awake = true;
+  bodyB.awake = true;
+  _enableLimit = flag;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:maxMotorTorque">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>get maxMotorTorque</strong>() <a class="anchor-link" href="#get:maxMotorTorque"
+              title="Permalink to RevoluteJoint.get maxMotorTorque">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num get maxMotorTorque() {
+  return _maxMotorTorque;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="set:maxMotorTorque">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>set maxMotorTorque</strong>(<a href="../dart_core/num.html">num</a> torque) <a class="anchor-link" href="#set:maxMotorTorque"
+              title="Permalink to RevoluteJoint.set maxMotorTorque">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void set maxMotorTorque(num torque) {
+  bodyA.awake = true;
+  bodyB.awake = true;
+  _maxMotorTorque = torque;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:motorEnabled">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>get motorEnabled</strong>() <a class="anchor-link" href="#get:motorEnabled"
+              title="Permalink to RevoluteJoint.get motorEnabled">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+bool get motorEnabled() {
+  return _enableMotor;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="set:motorEnabled">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>set motorEnabled</strong>(<a href="../dart_core/bool.html">bool</a> flag) <a class="anchor-link" href="#set:motorEnabled"
+              title="Permalink to RevoluteJoint.set motorEnabled">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void set motorEnabled(bool flag) {
+  bodyA.awake = true;
+  bodyB.awake = true;
+  _enableMotor = flag;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:motorSpeed">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>get motorSpeed</strong>() <a class="anchor-link" href="#get:motorSpeed"
+              title="Permalink to RevoluteJoint.get motorSpeed">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num get motorSpeed() {
+  return _motorSpeed;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="set:motorSpeed">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>set motorSpeed</strong>(<a href="../dart_core/num.html">num</a> speed) <a class="anchor-link" href="#set:motorSpeed"
+              title="Permalink to RevoluteJoint.set motorSpeed">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void set motorSpeed(num speed) {
+  bodyA.awake = true;
+  bodyB.awake = true;
+  _motorSpeed = speed;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="get:motorTorque">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>get motorTorque</strong>() <a class="anchor-link" href="#get:motorTorque"
+              title="Permalink to RevoluteJoint.get motorTorque">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+num get motorTorque() {
+  return _motorImpulse;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setLimits">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>setLimits</strong>(<a href="../dart_core/num.html">num</a> lower, <a href="../dart_core/num.html">num</a> upper) <a class="anchor-link" href="#setLimits"
+              title="Permalink to RevoluteJoint.setLimits">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void setLimits(final num lower, final num upper) {
+  assert (lower &lt;= upper);
+  bodyA.awake = true;
+  bodyB.awake = true;
+  lowerAngle = lower;
+  upperAngle = upper;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solvePositionConstraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>solvePositionConstraints</strong>(<a href="../dart_core/num.html">num</a> baumgarte) <a class="anchor-link" href="#solvePositionConstraints"
+              title="Permalink to RevoluteJoint.solvePositionConstraints">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+bool solvePositionConstraints(num baumgarte) {
+  final Body b1 = bodyA;
+  final Body b2 = bodyB;
+
+  num angularError = 0.0;
+  num positionError = 0.0;
+
+  // Solve angular limit constraint.
+  if (_enableLimit &amp;&amp; limitState != LimitState.INACTIVE) {
+    num angle = b2.sweep.angle - b1.sweep.angle - referenceAngle;
+    num limitImpulse = 0.0;
+
+    if (limitState == LimitState.EQUAL) {
+      // Prevent large angular corrections
+      num C = MathBox.clamp(angle - lowerAngle,
+          -Settings.MAX_ANGULAR_CORRECTION, Settings.MAX_ANGULAR_CORRECTION);
+      limitImpulse = -motorMass * C;
+      angularError = C.abs();
+    }
+    else if (limitState == LimitState.AT_LOWER) {
+      num C = angle - lowerAngle;
+      angularError = -C;
+
+      // Prevent large angular corrections and allow some slop.
+      C = MathBox.clamp(C + Settings.ANGULAR_SLOP,
+          -Settings.MAX_ANGULAR_CORRECTION, 0.0);
+      limitImpulse = -motorMass * C;
+    }
+    else if (limitState == LimitState.AT_UPPER) {
+      num C = angle - upperAngle;
+      angularError = C;
+
+      // Prevent large angular corrections and allow some slop.
+      C = MathBox.clamp(C - Settings.ANGULAR_SLOP, 0.0,
+          Settings.MAX_ANGULAR_CORRECTION);
+      limitImpulse = -motorMass * C;
+    }
+
+    b1.sweep.angle -= b1.invInertia * limitImpulse;
+    b2.sweep.angle += b2.invInertia * limitImpulse;
+
+    b1.synchronizeTransform();
+    b2.synchronizeTransform();
+  }
+
+  // Solve point-to-point constraint.
+  {
+    Vector imp = new Vector();
+
+    Vector r1 = new Vector();
+    Vector r2 = new Vector();
+    Vector C = new Vector();
+
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+
+    C.setFrom(b2.sweep.center).addLocal(r2);
+    C.subLocal(b1.sweep.center).subLocal(r1);
+    positionError = C.length;
+
+    num invMass1 = b1.invMass, invMass2 = b2.invMass;
+    num invI1 = b1.invInertia, invI2 = b2.invInertia;
+
+    // Handle large detachment.
+    final num k_allowedStretch = 10.0 * Settings.LINEAR_SLOP;
+    if (C.lengthSquared &gt; k_allowedStretch * k_allowedStretch) {
+      Vector u = new Vector();
+
+      // Use a particle solution (no rotation).
+      num m = invMass1 + invMass2;
+      if (m &gt; 0.0) {
+        m = 1.0 / m;
+      }
+      imp.setFrom(C).negateLocal().mulLocal(m);
+      final num k_beta = 0.5;
+      // using u as temp variable
+      u.setFrom(imp).mulLocal(k_beta * invMass1);
+      b1.sweep.center.subLocal(u);
+      u.setFrom(imp).mulLocal(k_beta * invMass2);
+      b2.sweep.center.addLocal(u);
+
+      C.setFrom(b2.sweep.center).addLocal(r2);
+      C.subLocal(b1.sweep.center).subLocal(r1);
+    }
+
+    Matrix22 K1 = new Matrix22();
+    K1.col1.x = invMass1 + invMass2;
+    K1.col2.x = 0.0;
+    K1.col1.y = 0.0;
+    K1.col2.y = invMass1 + invMass2;
+
+    Matrix22 K2 = new Matrix22();
+    K2.col1.x = invI1 * r1.y * r1.y;
+    K2.col2.x = -invI1 * r1.x * r1.y;
+    K2.col1.y = -invI1 * r1.x * r1.y;
+    K2.col2.y = invI1 * r1.x * r1.x;
+
+    Matrix22 K3 = new Matrix22();
+    K3.col1.x = invI2 * r2.y * r2.y;
+    K3.col2.x = -invI2 * r2.x * r2.y;
+    K3.col1.y = -invI2 * r2.x * r2.y;
+    K3.col2.y = invI2 * r2.x * r2.x;
+
+    K1.addLocal(K2).addLocal(K3);
+    K1.solveToOut(C.negateLocal(), imp); // just leave c negated
+
+    // using C as temp variable
+    C.setFrom(imp).mulLocal(b1.invMass);
+    b1.sweep.center.subLocal(C);
+    b1.sweep.angle -= b1.invInertia * Vector.crossVectors(r1, imp);
+
+    C.setFrom(imp).mulLocal(b2.invMass);
+    b2.sweep.center.addLocal(C);
+    b2.sweep.angle += b2.invInertia * Vector.crossVectors(r2, imp);
+
+    b1.synchronizeTransform();
+    b2.synchronizeTransform();
+  }
+
+  return positionError &lt;= Settings.LINEAR_SLOP &amp;&amp; angularError &lt;=
+      Settings.ANGULAR_SLOP;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solveVelocityConstraints">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#solveVelocityConstraints"
+              title="Permalink to RevoluteJoint.solveVelocityConstraints">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void solveVelocityConstraints(final TimeStep step) {
+  final Body b1 = bodyA;
+  final Body b2 = bodyB;
+
+  final Vector v1 = b1.linearVelocity;
+  num w1 = b1.angularVelocity;
+  final Vector v2 = b2.linearVelocity;
+  num w2 = b2.angularVelocity;
+
+  num m1 = b1.invMass, m2 = b2.invMass;
+  num i1 = b1.invInertia, i2 = b2.invInertia;
+
+  // Solve motor constraint.
+  if (_enableMotor &amp;&amp; limitState != LimitState.EQUAL) {
+    num Cdot = w2 - w1 - _motorSpeed;
+    num imp = motorMass * (-Cdot);
+    num oldImpulse = _motorImpulse;
+    num maxImpulse = step.dt * _maxMotorTorque;
+    _motorImpulse = MathBox.clamp(_motorImpulse + imp, -maxImpulse,
+        maxImpulse);
+    imp = _motorImpulse - oldImpulse;
+
+    w1 -= i1 * imp;
+    w2 += i2 * imp;
+  }
+
+  final Vector temp = new Vector();
+  final Vector r1 = new Vector();
+  final Vector r2 = new Vector();
+
+  // Solve limit constraint.
+  if (_enableLimit &amp;&amp; limitState != LimitState.INACTIVE) {
+
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+
+    final Vector Cdot1 = new Vector();
+    final Vector3 Cdot = new Vector3();
+
+    // Solve point-to-point constraint
+    Vector.crossNumAndVectorToOut(w1, r1, temp);
+    Vector.crossNumAndVectorToOut(w2, r2, Cdot1);
+    Cdot1.addLocal(v2).subLocal(v1).subLocal(temp);
+    num Cdot2 = w2 - w1;
+    Cdot.setCoords(Cdot1.x, Cdot1.y, Cdot2);
+
+    Vector3 imp = new Vector3();
+    mass.solve33ToOut(Cdot.negateLocal(), imp);
+
+    if (limitState == LimitState.EQUAL) {
+      impulse.addLocal(imp);
+    }
+    else if (limitState == LimitState.AT_LOWER) {
+      num newImpulse = impulse.z + imp.z;
+      if (newImpulse &lt; 0.0) {
+        mass.solve22ToOut(Cdot1.negateLocal(), temp);
+        imp.x = temp.x;
+        imp.y = temp.y;
+        imp.z = -impulse.z;
+        impulse.x += temp.x;
+        impulse.y += temp.y;
+        impulse.z = 0.0;
+      }
+    }
+    else if (limitState == LimitState.AT_UPPER) {
+      num newImpulse = impulse.z + imp.z;
+      if (newImpulse &gt; 0.0) {
+        mass.solve22ToOut(Cdot1.negateLocal(), temp);
+        imp.x = temp.x;
+        imp.y = temp.y;
+        imp.z = -impulse.z;
+        impulse.x += temp.x;
+        impulse.y += temp.y;
+        impulse.z = 0.0;
+      }
+    }
+    final Vector P = new Vector();
+
+    P.setCoords(imp.x, imp.y);
+
+    temp.setFrom(P).mulLocal(m1);
+    v1.subLocal(temp);
+    w1 -= i1 * (Vector.crossVectors(r1, P) + imp.z);
+
+    temp.setFrom(P).mulLocal(m2);
+    v2.addLocal(temp);
+    w2 += i2 * (Vector.crossVectors(r2, P) + imp.z);
+
+  } else {
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+
+    // Solve point-to-point constraint
+    Vector Cdot = new Vector();
+    Vector imp = new Vector();
+
+    Vector.crossNumAndVectorToOut(w1, r1, temp);
+    Vector.crossNumAndVectorToOut(w2, r2, Cdot);
+    Cdot.addLocal(v2).subLocal(v1).subLocal(temp);
+    mass.solve22ToOut(Cdot.negateLocal(), imp); // just leave negated
+
+    impulse.x += imp.x;
+    impulse.y += imp.y;
+
+    temp.setFrom(imp).mulLocal(m1);
+    v1.subLocal(temp);
+    w1 -= i1 * Vector.crossVectors(r1, imp);
+
+    temp.setFrom(imp).mulLocal(m2);
+    v2.addLocal(temp);
+    w2 += i2 * Vector.crossVectors(r2, imp);
+  }
+
+  b1.angularVelocity = w1;
+  b2.angularVelocity = w2;
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="impulse">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector3.html">Vector3</a>         <strong>impulse</strong> <a class="anchor-link"
+            href="#impulse"
+            title="Permalink to RevoluteJoint.impulse">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector3 impulse;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="limitState">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>limitState</strong> <a class="anchor-link"
+            href="#limitState"
+            title="Permalink to RevoluteJoint.limitState">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int limitState;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localAnchor1">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchor1</strong> <a class="anchor-link"
+            href="#localAnchor1"
+            title="Permalink to RevoluteJoint.localAnchor1">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localAnchor1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localAnchor2">
+<span class="show-code">Code</span>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchor2</strong> <a class="anchor-link"
+            href="#localAnchor2"
+            title="Permalink to RevoluteJoint.localAnchor2">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Vector localAnchor2;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="lowerAngle">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>lowerAngle</strong> <a class="anchor-link"
+            href="#lowerAngle"
+            title="Permalink to RevoluteJoint.lowerAngle">#</a>
+        </h4>
+        <div class="doc">
+<p>Limits on the relative rotation of the joint.</p>
+<pre class="source">
+num lowerAngle;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="mass">
+<span class="show-code">Code</span>
+final <a href="../box2d/Matrix33.html">Matrix33</a>         <strong>mass</strong> <a class="anchor-link"
+            href="#mass"
+            title="Permalink to RevoluteJoint.mass">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+final Matrix33 mass;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="motorMass">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>motorMass</strong> <a class="anchor-link"
+            href="#motorMass"
+            title="Permalink to RevoluteJoint.motorMass">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num motorMass;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="referenceAngle">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>referenceAngle</strong> <a class="anchor-link"
+            href="#referenceAngle"
+            title="Permalink to RevoluteJoint.referenceAngle">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num referenceAngle;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="upperAngle">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>upperAngle</strong> <a class="anchor-link"
+            href="#upperAngle"
+            title="Permalink to RevoluteJoint.upperAngle">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num upperAngle;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:40.681</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

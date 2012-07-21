@@ -1,0 +1,549 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Island Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="Island">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Island.html">Island</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Island</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+<p>Island represents a grouping of objects to apply DFS solving
+for movement and collisions.</p>
+</div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Island">
+<span class="show-code">Code</span>
+new <strong>Island</strong>() <a class="anchor-link" href="#Island"
+              title="Permalink to Island.Island">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Island() :
+  _contactSolver = new ContactSolver(),
+  _translation = new Vector(),
+  impulse = new ContactImpulse() { }
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id="addBody">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>addBody</strong>(<a href="../box2d/Body.html">Body</a> body) <a class="anchor-link" href="#addBody"
+              title="Permalink to Island.addBody">#</a></h4>
+<div class="doc">
+<p>Adds a body to the Island.</p>
+<pre class="source">
+void addBody(Body body){
+  assert(bodyCount &lt; bodyCapacity);
+  body.islandIndex = bodyCount;
+  bodies[bodyCount++] = body;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="addContact">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>addContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#addContact"
+              title="Permalink to Island.addContact">#</a></h4>
+<div class="doc">
+<p>Add a contact to the Island.</p>
+<pre class="source">
+void addContact(Contact contact) {
+  assert(contactCount &lt; contactCapacity);
+  contacts[contactCount++] = contact;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="addJoint">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>addJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a class="anchor-link" href="#addJoint"
+              title="Permalink to Island.addJoint">#</a></h4>
+<div class="doc">
+<p>Add a joint to the Island.</p>
+<pre class="source">
+void addJoint(Joint joint) {
+  assert(jointCount &lt; jointCapacity);
+  joints[jointCount++] = joint;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="clear">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>clear</strong>() <a class="anchor-link" href="#clear"
+              title="Permalink to Island.clear">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void clear() {
+  bodyCount = 0;
+  contactCount = 0;
+  jointCount = 0;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="init">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>init</strong>(<a href="../dart_core/int.html">int</a> argBodyCapacity, <a href="../dart_core/int.html">int</a> argContactCapacity, <a href="../dart_core/int.html">int</a> argJointCapacity, <a href="../box2d/ContactListener.html">ContactListener</a> argListener) <a class="anchor-link" href="#init"
+              title="Permalink to Island.init">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void init(int argBodyCapacity, int argContactCapacity, int argJointCapacity,
+    ContactListener argListener) {
+  bodyCapacity = argBodyCapacity;
+  contactCapacity = argContactCapacity;
+  jointCapacity = argJointCapacity;
+  bodyCount = 0;
+  contactCount = 0;
+
+  listener = argListener;
+
+  if (bodies == null || bodyCapacity &gt; bodies.length) {
+    bodies = new List&lt;Body&gt;(bodyCapacity);
+  }
+  if (contacts == null || contactCapacity &gt; contacts.length) {
+    contacts = new List&lt;Contact&gt;(contactCapacity);
+  }
+  if (joints == null || jointCapacity &gt; joints.length) {
+    joints = new List&lt;Joint&gt;(jointCapacity);
+  }
+
+  // dynamic array
+  if (velocities == null || bodyCapacity &gt; velocities.length) {
+    final List&lt;Velocity&gt; old = velocities == null ?
+        new List&lt;Velocity&gt;(0) : velocities;
+    velocities = new List&lt;Velocity&gt;(bodyCapacity);
+    velocities.setRange(0, old.length, old);
+    for (int i=old.length; i&lt;velocities.length; i++) {
+      velocities[i] = new Velocity();
+    }
+  }
+
+  // dynamic array
+  if(positions == null || bodyCapacity &gt; positions.length){
+    List&lt;Position&gt; old = positions == null ?
+        new List&lt;Position&gt;(0) : positions;
+    positions = new List&lt;Position&gt;(bodyCapacity);
+    positions.setRange(0, old.length, old);
+    for (int i=old.length; i&lt;positions.length; i++) {
+      positions[i] = new Position();
+    }
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="report">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>report</strong>(<a href="../dart_core/List.html">List</a> constraints) <a class="anchor-link" href="#report"
+              title="Permalink to Island.report">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void report(List&lt;ContactConstraint&gt; constraints){
+  if (listener == null){
+    return;
+  }
+
+  for (int i = 0; i &lt; contactCount; ++i){
+    Contact c = contacts[i];
+
+    ContactConstraint cc = constraints[i];
+
+    for (int j = 0; j &lt; cc.pointCount; ++j){
+      impulse.normalImpulses[j] = cc.points[j].normalImpulse;
+      impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
+    }
+
+    listener.postSolve(c, impulse);
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solve">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>solve</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step, <a href="../box2d/Vector.html">Vector</a> gravity, <a href="../dart_core/bool.html">bool</a> allowSleep) <a class="anchor-link" href="#solve"
+              title="Permalink to Island.solve">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void solve(TimeStep step, Vector gravity, bool allowSleep){
+  // Integrate velocities and apply damping.
+  for (int i = 0; i &lt; bodyCount; ++i){
+    Body b = bodies[i];
+
+    if (b.type != BodyType.DYNAMIC){
+      continue;
+    }
+
+    final velocityDelta = new Vector(
+        (b._force.x * b.invMass + gravity.x) * step.dt,
+        (b._force.y * b.invMass + gravity.y) * step.dt);
+    b.linearVelocity.addLocal(velocityDelta);
+    num newAngularVelocity = b.angularVelocity +
+        (step.dt * b.invInertia * b._torque);
+    b.angularVelocity = newAngularVelocity;
+
+    num a = (1.0 - step.dt * b.linearDamping);
+    num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
+    b.linearVelocity.mulLocal(a1);
+
+    num a2 = (1.0 - step.dt * b.angularDamping);
+    num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
+    b.angularVelocity *= 0.0 &gt; b1 ? 0.0 : b1;
+  }
+
+  // Partition contacts so that contacts with static bodies are solved last.
+  int i1 = -1;
+  for (int i2 = 0; i2 &lt; contactCount; ++i2) {
+    Fixture fixtureA = contacts[i2].fixtureA;
+    Fixture fixtureB = contacts[i2].fixtureB;
+    Body bodyA = fixtureA.body;
+    Body bodyB = fixtureB.body;
+    bool nonStatic = bodyA.type != BodyType.STATIC &amp;&amp; bodyB.type
+        != BodyType.STATIC;
+    if (nonStatic){
+      ++i1;
+      //Swap(contacts[i1], contacts[i2]);
+      Contact temp = contacts[i1];
+      contacts[i1] = contacts[i2];
+      contacts[i2] = temp;
+    }
+  }
+
+  // Initialize velocity constraints.
+  _contactSolver.init(contacts, contactCount, step.dtRatio);
+  _contactSolver.warmStart();
+
+  for (int i = 0; i &lt; jointCount; ++i){
+    joints[i].initVelocityConstraints(step);
+  }
+
+  for (int i = 0; i &lt; step.velocityIterations; ++i) {
+    for (int j = 0; j &lt; jointCount; ++j){
+      joints[j].solveVelocityConstraints(step);
+    }
+    _contactSolver.solveVelocityConstraints();
+  }
+
+  // Post-solve (store impulses for warm starting).
+  _contactSolver.storeImpulses();
+
+  // Integrate positions.
+  Vector temp = new Vector();
+  for (int i = 0; i &lt; bodyCount; ++i){
+    Body b = bodies[i];
+
+    if (b.type == BodyType.STATIC){
+      continue;
+    }
+
+    // Check for large velocities.
+    _translation.setFrom(b.linearVelocity);
+    _translation.mulLocal(step.dt);
+    if (Vector.dot(_translation, _translation) &gt;
+        Settings.MAX_TRANSLATION_SQUARED){
+      num ratio = Settings.MAX_TRANSLATION / _translation.length;
+      b.linearVelocity.mulLocal(ratio);
+    }
+
+    num rotation = step.dt * b.angularVelocity;
+    if (rotation * rotation &gt; Settings.MAX_ROTATION_SQUARED) {
+      num ratio = Settings.MAX_ROTATION / rotation.abs();
+      b.angularVelocity *= ratio;
+    }
+
+    // Store positions for continuous collision.
+    b.sweep.centerZero.setFrom(b.sweep.center);
+    b.sweep.angleZero = b.sweep.angle;
+
+    // Integrate
+    temp.setFrom(b.linearVelocity);
+    temp.mulLocal(step.dt);
+    b.sweep.center.addLocal(temp);
+    b.sweep.angle += step.dt * b.angularVelocity;
+
+    // Compute new transform
+    b.synchronizeTransform();
+
+    // Note: shapes are synchronized later.
+  }
+
+  // Iterate over constraints.
+  for (int i = 0; i &lt; step.positionIterations; ++i){
+    bool contactsOkay =
+        _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+
+    bool jointsOkay = true;
+    for (int j = 0; j &lt; jointCount; ++j){
+      bool jointOkay =
+          joints[j].solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+      jointsOkay = jointsOkay &amp;&amp; jointOkay;
+    }
+
+    if (contactsOkay &amp;&amp; jointsOkay){
+      // Exit early if the position errors are small.
+      break;
+    }
+  }
+
+  report(_contactSolver.constraints);
+
+
+  if (allowSleep){
+    num minSleepTime = Settings.BIG_NUMBER;
+
+    num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
+        * Settings.LINEAR_SLEEP_TOLERANCE;
+    num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
+        * Settings.ANGULAR_SLEEP_TOLERANCE;
+
+    for (int i = 0; i &lt; bodyCount; ++i){
+      Body b = bodies[i];
+      if (b.type == BodyType.STATIC){
+        continue;
+      }
+
+      if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0){
+        b.sleepTime = 0.0;
+        minSleepTime = 0.0;
+      }
+
+      if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
+          b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
+          Vector.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
+        b.sleepTime = 0.0;
+        minSleepTime = 0.0;
+      }
+      else{
+        b.sleepTime += step.dt;
+        minSleepTime = Math.min(minSleepTime, b.sleepTime);
+      }
+    }
+
+    if (minSleepTime &gt;= Settings.TIME_TO_SLEEP){
+      for (int i = 0; i &lt; bodyCount; ++i){
+        Body b = bodies[i];
+        b.awake = false;
+      }
+    }
+  }
+
+}
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="bodies">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>bodies</strong> <a class="anchor-link"
+            href="#bodies"
+            title="Permalink to Island.bodies">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;Body&gt; bodies;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="bodyCapacity">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>bodyCapacity</strong> <a class="anchor-link"
+            href="#bodyCapacity"
+            title="Permalink to Island.bodyCapacity">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int bodyCapacity;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="bodyCount">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>bodyCount</strong> <a class="anchor-link"
+            href="#bodyCount"
+            title="Permalink to Island.bodyCount">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int bodyCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="contactCapacity">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>contactCapacity</strong> <a class="anchor-link"
+            href="#contactCapacity"
+            title="Permalink to Island.contactCapacity">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int contactCapacity;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="contactCount">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>contactCount</strong> <a class="anchor-link"
+            href="#contactCount"
+            title="Permalink to Island.contactCount">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int contactCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="contacts">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>contacts</strong> <a class="anchor-link"
+            href="#contacts"
+            title="Permalink to Island.contacts">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;Contact&gt; contacts;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="impulse">
+<span class="show-code">Code</span>
+<a href="../box2d/ContactImpulse.html">ContactImpulse</a>         <strong>impulse</strong> <a class="anchor-link"
+            href="#impulse"
+            title="Permalink to Island.impulse">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+ContactImpulse impulse;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="jointCapacity">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>jointCapacity</strong> <a class="anchor-link"
+            href="#jointCapacity"
+            title="Permalink to Island.jointCapacity">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int jointCapacity;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="jointCount">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>jointCount</strong> <a class="anchor-link"
+            href="#jointCount"
+            title="Permalink to Island.jointCount">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int jointCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="joints">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>joints</strong> <a class="anchor-link"
+            href="#joints"
+            title="Permalink to Island.joints">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;Joint&gt; joints;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="listener">
+<span class="show-code">Code</span>
+<a href="../box2d/ContactListener.html">ContactListener</a>         <strong>listener</strong> <a class="anchor-link"
+            href="#listener"
+            title="Permalink to Island.listener">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+ContactListener listener;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="positionIterationCount">
+<span class="show-code">Code</span>
+<a href="../dart_core/int.html">int</a>         <strong>positionIterationCount</strong> <a class="anchor-link"
+            href="#positionIterationCount"
+            title="Permalink to Island.positionIterationCount">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+int positionIterationCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="positions">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>positions</strong> <a class="anchor-link"
+            href="#positions"
+            title="Permalink to Island.positions">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;Position&gt; positions;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="velocities">
+<span class="show-code">Code</span>
+<a href="../dart_core/List.html">List</a>         <strong>velocities</strong> <a class="anchor-link"
+            href="#velocities"
+            title="Permalink to Island.velocities">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+List&lt;Velocity&gt; velocities;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:39.997</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

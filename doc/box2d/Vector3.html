@@ -1,0 +1,324 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Vector3 Class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="Vector3">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Vector3.html">Vector3</a></div>
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Vector3</strong>
+          Class
+        </h2>
+        
+<div class="doc">
+<p>A three dimensional vector.</p>
+</div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Vector3">
+<span class="show-code">Code</span>
+new <strong>Vector3</strong>([x = 0, y = 0, z = 0]) <a class="anchor-link" href="#Vector3"
+              title="Permalink to Vector3.Vector3">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3([this.x = 0, this.y = 0, this.z = 0]) { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Vector3">
+<span class="show-code">Code</span>
+new <strong>Vector3</strong>.copy(<a href="../box2d/Vector3.html">Vector3</a> argCopy) <a class="anchor-link" href="#Vector3"
+              title="Permalink to Vector3.Vector3">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3.copy(Vector3 argCopy) {
+  x = argCopy.x;
+  y = argCopy.y;
+  z = argCopy.z;
+}
+</pre>
+</div>
+</div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="cross">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>cross</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, <a href="../box2d/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#cross"
+              title="Permalink to Vector3.cross">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+static Vector3 cross(Vector3 a, Vector3 b) =&gt;
+    new Vector3(a.y * b.z - a.z * b.y,
+                a.z * b.x - a.x * b.z,
+                a.x * b.y - a.y * b.x);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="crossToOut">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>crossToOut</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, <a href="../box2d/Vector3.html">Vector3</a> b, <a href="../box2d/Vector3.html">Vector3</a> out) <a class="anchor-link" href="#crossToOut"
+              title="Permalink to Vector3.crossToOut">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
+  final num tempy = a.z * b.x - a.x * b.z;
+  final num tempz = a.x * b.y - a.y * b.x;
+  out.x = a.y * b.z - a.z * b.y;
+  out.y = tempy;
+  out.z = tempz;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="dot">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>dot</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, <a href="../box2d/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#dot"
+              title="Permalink to Vector3.dot">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+</pre>
+</div>
+</div>
+<h3>Methods</h3>
+<div class="method"><h4 id=":eq">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>operator ==</strong>(other) <a class="anchor-link" href="#:eq"
+              title="Permalink to Vector3.operator ==">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+bool operator == (other) {
+  if (other != null &amp;&amp; other is Vector3) {
+    return x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+  } else {
+    return false;
+  }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="add">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>add</strong>(<a href="../box2d/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#add"
+              title="Permalink to Vector3.add">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 add(Vector3 argVec) =&gt;
+    new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="addLocal">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>addLocal</strong>(<a href="../box2d/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#addLocal"
+              title="Permalink to Vector3.addLocal">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 addLocal(Vector3 argVec) {
+  x += argVec.x;
+  y += argVec.y;
+  z += argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mul">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>mul</strong>(<a href="../dart_core/num.html">num</a> argScalar) <a class="anchor-link" href="#mul"
+              title="Permalink to Vector3.mul">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 mul(num argScalar) =&gt;
+    new Vector3(x * argScalar, y * argScalar, z * argScalar);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mulLocal">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>mulLocal</strong>(<a href="../dart_core/num.html">num</a> argScalar) <a class="anchor-link" href="#mulLocal"
+              title="Permalink to Vector3.mulLocal">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 mulLocal(num argScalar) {
+  x *= argScalar;
+  y *= argScalar;
+  z *= argScalar;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="negateLocal">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>negateLocal</strong>() <a class="anchor-link" href="#negateLocal"
+              title="Permalink to Vector3.negateLocal">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 negateLocal() {
+  x = -x;
+  y = -y;
+  z = -z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setCoords">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>setCoords</strong>(<a href="../dart_core/num.html">num</a> argX, <a href="../dart_core/num.html">num</a> argY, <a href="../dart_core/num.html">num</a> argZ) <a class="anchor-link" href="#setCoords"
+              title="Permalink to Vector3.setCoords">#</a></h4>
+<div class="doc">
+<p>Sets the vectors coordinate values to those given.</p>
+<pre class="source">
+Vector3 setCoords(num argX, num argY, num argZ) {
+  x = argX;
+  y = argY;
+  z = argZ;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>setFrom</strong>(<a href="../box2d/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#setFrom"
+              title="Permalink to Vector3.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this vector equal to the given vector.</p>
+<pre class="source">
+Vector3 setFrom(Vector3 argVec) {
+  x = argVec.x;
+  y = argVec.y;
+  z = argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setZero">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
+              title="Permalink to Vector3.setZero">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+void setZero() {
+  x = 0;
+  y = 0;
+  z = 0;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="sub">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>sub</strong>(<a href="../box2d/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#sub"
+              title="Permalink to Vector3.sub">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 sub(Vector3 argVec) =&gt;
+    new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="subLocal">
+<span class="show-code">Code</span>
+<a href="../box2d/Vector3.html">Vector3</a> <strong>subLocal</strong>(<a href="../box2d/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#subLocal"
+              title="Permalink to Vector3.subLocal">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+Vector3 subLocal(Vector3 argVec) {
+  x -= argVec.x;
+  y -= argVec.y;
+  z -= argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<span class="show-code">Code</span>
+<a href="../dart_core/String.html">String</a> <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to Vector3.toString">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+String toString() =&gt; "($x, $y, $z)";
+</pre>
+</div>
+</div>
+<h3>Fields</h3>
+<div class="field"><h4 id="x">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>x</strong> <a class="anchor-link"
+            href="#x"
+            title="Permalink to Vector3.x">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num x;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="y">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>y</strong> <a class="anchor-link"
+            href="#y"
+            title="Permalink to Vector3.y">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num y;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="z">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a>         <strong>z</strong> <a class="anchor-link"
+            href="#z"
+            title="Permalink to Vector3.z">#</a>
+        </h4>
+        <div class="doc">
+
+<pre class="source">
+num z;
+</pre>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          <div>This page generated at 2012-07-21 17:39:41.418</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
