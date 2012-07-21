@@ -24,7 +24,9 @@
         </h2>
         
 <div class="doc">
-<p>Draws using the given canvas context for debugging purposes.</p>
+<p>Draws using the given canvas context for debugging purposes.
+WARNING: This implementation modifies its arguments (e.g. Vectors) to save
+garbage.</p>
 </div>
 <h3>Extends</h3>
 <p>
@@ -37,27 +39,24 @@ new <strong>CanvasDraw</strong>(<a href="../box2d/IViewportTransform.html">IView
 <div class="doc">
 
 <pre class="source">
-CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) { }
+CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
+  assert (null !== viewport &amp;&amp; null !== ctx);
+}
 </pre>
 </div>
 </div>
 <h3>Methods</h3>
 <div class="method"><h4 id="drawCircle">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawCircle"
+<a href="../dart_core/void.html">void</a> <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to CanvasDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle. WARNING: This mutates 
 <span class="param">center</span>.</p>
 <pre class="source">
-void drawCircle(Vector center, num radius, Color3 color) {
-  _color = color;
-  getWorldToScreenToOut(center, center);
+void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
   radius *= viewportTransform.scale;
-
-  ctx.beginPath();
-  ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
-  ctx.closePath();
+  _pathCircle(center, radius, color);
   ctx.stroke();
 }
 </pre>
@@ -65,20 +64,31 @@ void drawCircle(Vector center, num radius, Color3 color) {
 </div>
 <div class="method"><h4 id="drawPoint">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> argPoint, <a href="../dart_core/num.html">num</a> argRadiusOnScreen, <a href="../box2d/Color3.html">Color3</a> argColor) <a class="anchor-link" href="#drawPoint"
+<a href="../dart_core/void.html">void</a> <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point, <a href="../dart_core/num.html">num</a> radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to CanvasDraw.drawPoint">#</a></h4>
 <div class="doc">
-<p>Draws the given point with the given radius, in the given color. WARNING: This
-mutates 
-<span class="param">argPoint</span>.</p>
+<p>Draws the given point with the given <em>unscaled</em> radius, in the given color.
+WARNING: This mutates <code>center</code>.</p>
 <pre class="source">
-void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor) {
-  _color = argColor;
-  getWorldToScreenToOut(argPoint, argPoint);
-  ctx.beginPath();
-  ctx.arc(argPoint.x, argPoint.y, argRadiusOnScreen, 0, MathBox._2PI, true);
-  ctx.closePath();
+void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
+  _pathCircle(point, radiusOnScreen, color);
   ctx.fill();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="drawPolygon">
+<span class="show-code">Code</span>
+<a href="../dart_core/void.html">void</a> <strong>drawPolygon</strong>(<a href="../dart_core/List.html">List</a> vertices, <a href="../dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
+              title="Permalink to CanvasDraw.drawPolygon">#</a></h4>
+<div class="doc">
+<p>Draw a closed polygon provided in CCW order. WARNING: This mutates
+
+<span class="param">vertices</span>.</p>
+<pre class="source">
+void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
+  _pathPolygon(vertices, vertexCount, color);
+  ctx.stroke();
 }
 </pre>
 </div>
@@ -96,6 +106,7 @@ void drawSegment(Vector p1, Vector p2, Color3 color) {
   _color = color;
   getWorldToScreenToOut(p1, p1);
   getWorldToScreenToOut(p2, p2);
+
   ctx.beginPath();
   ctx.moveTo(p1.x, p1.y);
   ctx.lineTo(p2.x, p2.y);
@@ -107,21 +118,15 @@ void drawSegment(Vector p1, Vector p2, Color3 color) {
 </div>
 <div class="method"><h4 id="drawSolidCircle">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Vector.html">Vector</a> axis, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidCircle"
+<a href="../dart_core/void.html">void</a> <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to CanvasDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle. WARNING: This mutates 
 <span class="param">center</span>.</p>
 <pre class="source">
-void drawSolidCircle(Vector center, num radius, Vector axis, Color3 color) {
-  _color = color;
-  getWorldToScreenToOut(center, center);
+void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
   radius *= viewportTransform.scale;
-
-  ctx.beginPath();
-  ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
-  ctx.closePath();
-  ctx.fill();
+  drawPoint(center, radius, color);
 }
 </pre>
 </div>
@@ -131,29 +136,12 @@ void drawSolidCircle(Vector center, num radius, Vector axis, Color3 color) {
 <a href="../dart_core/void.html">void</a> <strong>drawSolidPolygon</strong>(<a href="../dart_core/List.html">List</a> vertices, <a href="../dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
               title="Permalink to CanvasDraw.drawSolidPolygon">#</a></h4>
 <div class="doc">
-<p>Draw a solid closed polygon provided in CCW order. WARNING: This mutates 
+<p>Draw a solid closed polygon provided in CCW order. WARNING: This mutates
+
 <span class="param">vertices</span>.</p>
 <pre class="source">
 void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-  // Set the color and convert to screen coordinates.
-  _color = color;
-  // TODO(gregbglw): Do a single ctx transform rather than convert all of
-  // these vectors.
-  for (int i = 0; i &lt; vertexCount; ++i)
-    getWorldToScreenToOut(vertices[i], vertices[i]);
-
-  ctx.beginPath();
-  ctx.moveTo(vertices[0].x, vertices[0].y);
-
-  // Draw lines to all of the remaining points.
-  for (int i = 1; i &lt; vertexCount; ++i)
-    ctx.lineTo(vertices[i].x, vertices[i].y);
-
-  // Draw a line back to the starting point.
-  ctx.lineTo(vertices[0].x, vertices[0].y);
-
-  // Fill in the drawn polygon.
-  ctx.closePath();
+  _pathPolygon(vertices, vertexCount, color);
   ctx.fill();
 }
 </pre>
@@ -175,12 +163,17 @@ void drawString(num x, num y, String s, Color3 color) {
 </div>
 <div class="method"><h4 id="drawTransform">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf) <a class="anchor-link" href="#drawTransform"
+<a href="../dart_core/void.html">void</a> <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawTransform"
               title="Permalink to CanvasDraw.drawTransform">#</a></h4>
 <div class="doc">
-<p>Draw a transform. Choose your own length scale.</p>
+<p>Draw a transform. Choose your own length scale. WARNING: This mutates
+
+<span class="param">xf</span>.position.</p>
 <pre class="source">
-void drawTransform(Transform xf) { throw new NotImplementedException(); }
+void drawTransform(Transform xf, Color3 color) {
+  drawCircle(xf.position, 0.1, color);
+  // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
+}
 </pre>
 </div>
 </div>
@@ -203,7 +196,7 @@ CanvasRenderingContext2D ctx;
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:39:38.449</div>
+          <div>This page generated at 2012-07-21 17:45:04.987</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

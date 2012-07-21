@@ -555,7 +555,7 @@ class World {
       return;
     }
 
-    int drawFlags = _debugDraw.drawFlags;
+    final int drawFlags = _debugDraw.drawFlags;
 
     if ((drawFlags & DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
       Transform xf = new Transform();
@@ -622,7 +622,11 @@ class World {
           vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
           vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
-          _debugDraw.drawPolygon(vs, 4, color);
+          if (0 !== (drawFlags & DebugDraw.e_lineDrawingBit)) {
+            _debugDraw.drawPolygon(vs, 4, color);
+          } else {
+            _debugDraw.drawSolidPolygon(vs, 4, color);
+          }
         }
       }
     }
@@ -630,10 +634,11 @@ class World {
     if ((drawFlags & DebugDraw.e_centerOfMassBit) ==
         DebugDraw.e_centerOfMassBit) {
       Transform xf = new Transform();
+      final Color3 color = new Color3.fromRGB(1, 0, 0);
       for (Body b = _bodyList; b != null; b = b.next) {
         xf.setFrom(b.originTransform);
         xf.position.setFrom(b.worldCenter);
-        _debugDraw.drawTransform(xf);
+        _debugDraw.drawTransform(xf, color);
       }
     }
   }
@@ -1102,7 +1107,11 @@ class World {
         num radius = circle.radius;
         axis.setFrom(xf.rotation.col1);
 
-        _debugDraw.drawSolidCircle(center, radius, axis, color);
+        if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
+          _debugDraw.drawCircle(center, radius, color, axis);
+        } else {
+          _debugDraw.drawSolidCircle(center, radius, color, axis);
+        }
         break;
 
       case ShapeType.POLYGON:
@@ -1121,7 +1130,11 @@ class World {
          Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
        }
 
-       _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+       if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
+         _debugDraw.drawPolygon(vertices, vertexCount, color);
+       } else {
+         _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+       }
     }
   }
 
@@ -1140,7 +1153,7 @@ class World {
     joint.getAnchorB(p2);
 
     // Set the drawing color.
-    Color3 color = new Color3.fromRGB(0.5, 0.8, 0.8);
+    Color3 color = new Color3.fromRGB(0.5, 0.3, 0.3);
 
     switch (joint.type) {
       case JointType.DISTANCE :
@@ -1166,9 +1179,11 @@ class World {
         // Don't draw anything for mouse. Already have cursor!
         break;
       default :
+        Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
+        Vector p2t = new Vector.copy(p2);
         _debugDraw.drawSegment(x1, p1, color);
-        _debugDraw.drawSegment(p1, p2, color);
-        _debugDraw.drawSegment(x2, p2, color);
+        _debugDraw.drawSegment(p1t, p2, color);
+        _debugDraw.drawSegment(x2, p2t, color);
     }
   }
 }

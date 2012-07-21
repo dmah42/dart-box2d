@@ -53,6 +53,22 @@ Color3.fromRGB(num r, num g, num b) :
 </div>
 </div>
 <h3>Methods</h3>
+<div class="method"><h4 id=":eq">
+<span class="show-code">Code</span>
+<a href="../dart_core/bool.html">bool</a> <strong>operator ==</strong>(other) <a class="anchor-link" href="#:eq"
+              title="Permalink to Color3.operator ==">#</a></h4>
+<div class="doc">
+
+<pre class="source">
+bool operator ==(final other) {
+  if (other is! Color3) {
+    return false;
+  }
+  return x === other.x &amp;&amp; y === other.y &amp;&amp; z === other.z;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="setFrom">
 <span class="show-code">Code</span>
 <a href="../dart_core/void.html">void</a> <strong>setFrom</strong>(<a href="../box2d/Color3.html">Color3</a> argColor) <a class="anchor-link" href="#setFrom"
@@ -128,7 +144,7 @@ num z;
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:39:40.849</div>
+          <div>This page generated at 2012-07-21 17:45:07.424</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

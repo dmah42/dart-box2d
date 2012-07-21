@@ -14,34 +14,41 @@
 
 /**
  * Draws using the given canvas context for debugging purposes.
+ * WARNING: This implementation modifies its arguments (e.g. Vectors) to save
+ * garbage.
  */
 // TODO(gregbglw): Test all of these methods to make sure that they draw the
 // correct things.
 class CanvasDraw extends DebugDraw {
+
   /**
    * The canvas rendering context with which to draw.
    */
   CanvasRenderingContext2D ctx;
 
-  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) { }
-
-  /**
-   * Draws the given point with the given radius, in the given color. WARNING: This
-     mutates [argPoint].
-   */
-  void drawPoint(Vector argPoint, num argRadiusOnScreen, Color3 argColor) {
-    _color = argColor;
-    getWorldToScreenToOut(argPoint, argPoint);
-    ctx.beginPath();
-    ctx.arc(argPoint.x, argPoint.y, argRadiusOnScreen, 0, MathBox._2PI, true);
-    ctx.closePath();
-    ctx.fill();
+  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
+    assert (null !== viewport && null !== ctx);
   }
 
   /**
-   * Draw a solid closed polygon provided in CCW order. WARNING: This mutates [vertices].
+   * Draw a closed polygon provided in CCW order. WARNING: This mutates
+   * [vertices].
+   */
+  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
+    _pathPolygon(vertices, vertexCount, color);
+    ctx.stroke();
+  }
+
+  /**
+   * Draw a solid closed polygon provided in CCW order. WARNING: This mutates
+   * [vertices].
    */
   void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
+    _pathPolygon(vertices, vertexCount, color);
+    ctx.fill();
+  }
+  
+  void _pathPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     // Set the color and convert to screen coordinates.
     _color = color;
     // TODO(gregbglw): Do a single ctx transform rather than convert all of
@@ -59,46 +66,16 @@ class CanvasDraw extends DebugDraw {
     // Draw a line back to the starting point.
     ctx.lineTo(vertices[0].x, vertices[0].y);
 
-    // Fill in the drawn polygon.
+    // Close the drawn polygon ready for fill/stroke
     ctx.closePath();
-    ctx.fill();
   }
 
-  /**
-   * Draw a circle. WARNING: This mutates [center].
-   */
-  void drawCircle(Vector center, num radius, Color3 color) {
-    _color = color;
-    getWorldToScreenToOut(center, center);
-    radius *= viewportTransform.scale;
-
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
-    ctx.closePath();
-    ctx.stroke();
-  }
-
-  /**
-   * Draw a solid circle. WARNING: This mutates [center].
-   */
-  void drawSolidCircle(Vector center, num radius, Vector axis, Color3 color) {
-    _color = color;
-    getWorldToScreenToOut(center, center);
-    radius *= viewportTransform.scale;
-
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  /**
-   * Draw a line segment. WARNING: This mutates [p1] and [p2].
-   */
+  /** Draw a line segment. WARNING: This mutates [p1] and [p2]. */
   void drawSegment(Vector p1, Vector p2, Color3 color) {
     _color = color;
     getWorldToScreenToOut(p1, p1);
     getWorldToScreenToOut(p2, p2);
+
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
@@ -106,10 +83,45 @@ class CanvasDraw extends DebugDraw {
     ctx.stroke();
   }
 
+  /** Draw a circle. WARNING: This mutates [center]. */
+  void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
+    radius *= viewportTransform.scale;
+    _pathCircle(center, radius, color);
+    ctx.stroke();
+  }
+
+  /** Draw a solid circle. WARNING: This mutates [center]. */
+  void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
+    radius *= viewportTransform.scale;
+    drawPoint(center, radius, color);
+  }
+
   /**
-   * Draw a transform. Choose your own length scale.
+   * Draws the given point with the given *unscaled* radius, in the given color.
+   * WARNING: This mutates [center].
    */
-  void drawTransform(Transform xf) { throw new NotImplementedException(); }
+  void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
+    _pathCircle(point, radiusOnScreen, color);
+    ctx.fill();
+  }
+
+  void _pathCircle(Vector center, num radius, Color3 color) {
+    _color = color;
+    getWorldToScreenToOut(center, center);
+
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
+    ctx.closePath();
+  }
+
+  /**
+   * Draw a transform. Choose your own length scale. WARNING: This mutates
+   * [xf].position.
+   */
+  void drawTransform(Transform xf, Color3 color) {
+    drawCircle(xf.position, 0.1, color);
+    // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
+  }
 
   /**
    * Draw a string.
@@ -121,7 +133,7 @@ class CanvasDraw extends DebugDraw {
 
   /** Sets the rendering context stroke color based on the given color3. */
   void set _color(Color3 color) {
-    ctx.setStrokeColor(color.x, color.y, color.z, 1.0);
+    ctx.setStrokeColor(color.x, color.y, color.z, 0.9);
     ctx.setFillColor(color.x, color.y, color.z, 0.8);
   }
 }

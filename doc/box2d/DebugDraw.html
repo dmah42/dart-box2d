@@ -24,7 +24,7 @@
         </h2>
         
 <div class="doc">
-<p>Implement this abstract class to allow JBox2d to
+<p>Implement this abstract class to allow DartBox2d to
 automatically draw your physics for debugging purposes.
 Not intended to replace your own custom rendering
 routines! Draws shapes by default.</p>
@@ -54,7 +54,7 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_aabbBit</strong>
             title="Permalink to DebugDraw.e_aabbBit">#</a>
         </h4>
         <div class="doc">
-< draw joint connections
+<p>draw core (TimeOfImpact) shapes</p>
 <pre class="source">
 static final int e_aabbBit = 0x0004;
 </pre>
@@ -67,9 +67,9 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_centerOfMassBit<
             title="Permalink to DebugDraw.e_centerOfMassBit">#</a>
         </h4>
         <div class="doc">
-< draw pairs of objects colliding
+<p>draw center of mass </p>
 <pre class="source">
-static final int e_centerOfMassBit =  0x0010;
+static final int e_centerOfMassBit = 0x0010;
 </pre>
 </div>
 </div>
@@ -80,7 +80,7 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_dynamicTreeBit</
             title="Permalink to DebugDraw.e_dynamicTreeBit">#</a>
         </h4>
         <div class="doc">
-< draw center of mass 
+<p>draw dynamic tree.</p>
 <pre class="source">
 static final int e_dynamicTreeBit = 0x0020;
 </pre>
@@ -93,9 +93,22 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_jointBit</strong
             title="Permalink to DebugDraw.e_jointBit">#</a>
         </h4>
         <div class="doc">
-< draw shapes
+<p>draw joint connections</p>
 <pre class="source">
 static final int e_jointBit = 0x0002;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="e_lineDrawingBit">
+<span class="show-code">Code</span>
+final <a href="../dart_core/int.html">int</a>         <strong>e_lineDrawingBit</strong> <a class="anchor-link"
+            href="#e_lineDrawingBit"
+            title="Permalink to DebugDraw.e_lineDrawingBit">#</a>
+        </h4>
+        <div class="doc">
+<p>draw with lines (vs. default filled polygons).</p>
+<pre class="source">
+static final int e_lineDrawingBit = 0x0040;
 </pre>
 </div>
 </div>
@@ -106,7 +119,7 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_pairBit</strong>
             title="Permalink to DebugDraw.e_pairBit">#</a>
         </h4>
         <div class="doc">
-< draw axis aligned boxes
+<p>draw axis aligned boxes</p>
 <pre class="source">
 static final int e_pairBit = 0x0008;
 </pre>
@@ -119,7 +132,7 @@ final <a href="../dart_core/int.html">int</a>         <strong>e_shapeBit</strong
             title="Permalink to DebugDraw.e_shapeBit">#</a>
         </h4>
         <div class="doc">
-
+<p>draw shapes</p>
 <pre class="source">
 static final int e_shapeBit = 0x0001;
 </pre>
@@ -150,24 +163,24 @@ void clearFlags(int flags) { drawFlags &amp;= ~flags; }
 </div>
 <div class="method"><h4 id="drawCircle">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawCircle"
+<a href="../dart_core/void.html">void</a> <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to DebugDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle.</p>
 <pre class="source">
-abstract void drawCircle(Vector center, num radius, Color3 color);
+abstract void drawCircle(Vector center, num radius, Color3 color,
+    [Vector axis]);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="drawPoint">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> argPoint, <a href="../dart_core/num.html">num</a> argRadiusOnScreen, <a href="../box2d/Color3.html">Color3</a> argColor) <a class="anchor-link" href="#drawPoint"
+<a href="../dart_core/void.html">void</a> <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point, <a href="../dart_core/num.html">num</a> radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to DebugDraw.drawPoint">#</a></h4>
 <div class="doc">
 <p>Draws the given point with the given radius and color.</p>
 <pre class="source">
-abstract void drawPoint(Vector argPoint, num argRadiusOnScreen,
-                        Color3 argColor);
+abstract void drawPoint(Vector point, num radiusOnScreen, Color3 color);
 </pre>
 </div>
 </div>
@@ -176,29 +189,10 @@ abstract void drawPoint(Vector argPoint, num argRadiusOnScreen,
 <a href="../dart_core/void.html">void</a> <strong>drawPolygon</strong>(<a href="../dart_core/List.html">List</a> vertices, <a href="../dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
               title="Permalink to DebugDraw.drawPolygon">#</a></h4>
 <div class="doc">
-<p>Draw a closed polygon provided in CCW order.  This implementation
-uses <a class="crossref" href="../box2d/DebugDraw.html#drawSegment">drawSegment</a> to draw each side of the polygon.</p>
+<p>Draw a closed polygon provided in CCW order.</p>
 <pre class="source">
-void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-  if(vertexCount == 1) {
-    final Vector a = new Vector.copy(vertices[0]);
-    final Vector b = new Vector.copy(vertices[0]);
-    return;
-  }
-
-  for(int i = 0; i &lt; vertexCount - 1; ++i) {
-    final Vector a = new Vector.copy(vertices[i]);
-    final Vector b = new Vector.copy(vertices[i + 1]);
-    drawSegment(a, b, color);
-  }
-
-  // Close the loop.
-  if(vertexCount &gt; 2) {
-    final Vector a = new Vector.copy(vertices[vertexCount - 1]);
-    final Vector b = new Vector.copy(vertices[0]);
-    drawSegment(a, b, color);
-  }
-}
+abstract void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount,
+    Color3 color);
 </pre>
 </div>
 </div>
@@ -215,13 +209,13 @@ abstract void drawSegment(Vector p1, Vector p2, Color3 color);
 </div>
 <div class="method"><h4 id="drawSolidCircle">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Vector.html">Vector</a> axis, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidCircle"
+<a href="../dart_core/void.html">void</a> <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, <a href="../dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to DebugDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle.</p>
 <pre class="source">
-abstract void drawSolidCircle(Vector center, num radius, Vector axis,
-    Color3 color);
+abstract void drawSolidCircle(Vector center, num radius, Color3 color,
+    [Vector axis]);
 </pre>
 </div>
 </div>
@@ -250,12 +244,12 @@ abstract void drawString(num x, num y, String s, Color3 color);
 </div>
 <div class="method"><h4 id="drawTransform">
 <span class="show-code">Code</span>
-<a href="../dart_core/void.html">void</a> <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf) <a class="anchor-link" href="#drawTransform"
+<a href="../dart_core/void.html">void</a> <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawTransform"
               title="Permalink to DebugDraw.drawTransform">#</a></h4>
 <div class="doc">
 <p>Draw a transform.  Choose your own length scale.</p>
 <pre class="source">
-abstract void drawTransform(Transform xf);
+abstract void drawTransform(Transform xf, Color3 color);
 </pre>
 </div>
 </div>
@@ -319,18 +313,7 @@ viewport scale to the given scale.</p>
 <pre class="source">
 void setCamera(num x, num y, num scale) {
   viewportTransform.setCamera(x,y,scale);
- }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="get:viewportTranform">
-<span class="show-code">Code</span>
-<a href="../box2d/IViewportTransform.html">IViewportTransform</a> <strong>get viewportTranform</strong>() <a class="anchor-link" href="#get:viewportTranform"
-              title="Permalink to DebugDraw.get viewportTranform">#</a></h4>
-<div class="doc">
-<p>Returns the viewport transform.</p>
-<pre class="source">
-IViewportTransform get viewportTranform() =&gt; viewportTransform;
+}
 </pre>
 </div>
 </div>
@@ -342,7 +325,7 @@ IViewportTransform get viewportTranform() =&gt; viewportTransform;
             title="Permalink to DebugDraw.drawFlags">#</a>
         </h4>
         <div class="doc">
-< draw dynamic tree.
+
 <pre class="source">
 int drawFlags;
 </pre>
@@ -366,7 +349,7 @@ IViewportTransform viewportTransform;
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:39:39.080</div>
+          <div>This page generated at 2012-07-21 17:45:05.640</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

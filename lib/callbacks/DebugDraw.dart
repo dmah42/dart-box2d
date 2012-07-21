@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Implement this abstract class to allow JBox2d to
+ * Implement this abstract class to allow DartBox2d to
  * automatically draw your physics for debugging purposes.
  * Not intended to replace your own custom rendering
  * routines! Draws shapes by default.
@@ -21,12 +21,21 @@
 class DebugDraw {
   // TODO(gregbglw): Draw joints once have them implemented. Also draw other
   // neat stuff described below.
-  static final int e_shapeBit = 0x0001; ///< draw shapes
-  static final int e_jointBit = 0x0002; ///< draw joint connections
-  static final int e_aabbBit = 0x0004; ///< draw axis aligned boxes
-  static final int e_pairBit = 0x0008; ///< draw pairs of objects colliding
-  static final int e_centerOfMassBit =  0x0010; ///< draw center of mass 
-  static final int e_dynamicTreeBit = 0x0020; ///< draw dynamic tree.
+
+  /// draw shapes
+  static final int e_shapeBit = 0x0001;
+  /// draw joint connections
+  static final int e_jointBit = 0x0002;
+  /// draw core (TimeOfImpact) shapes
+  static final int e_aabbBit = 0x0004;
+  /// draw axis aligned boxes
+  static final int e_pairBit = 0x0008;
+  /// draw center of mass 
+  static final int e_centerOfMassBit = 0x0010;
+  /// draw dynamic tree.
+  static final int e_dynamicTreeBit = 0x0020;
+  /// draw with lines (vs. default filled polygons).
+  static final int e_lineDrawingBit = 0x0040;
 
   int drawFlags;
   IViewportTransform viewportTransform;
@@ -43,57 +52,34 @@ class DebugDraw {
 
   void clearFlags(int flags) { drawFlags &= ~flags; }
 
-  /**
-   * Draw a closed polygon provided in CCW order.  This implementation
-   * uses [drawSegment] to draw each side of the polygon.
-   */
-  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
-    if(vertexCount == 1) {
-      final Vector a = new Vector.copy(vertices[0]);
-      final Vector b = new Vector.copy(vertices[0]);
-      return;
-    }
+  /** Draw a closed polygon provided in CCW order. */
+  abstract void drawPolygon(List<Vector> vertices, int vertexCount,
+      Color3 color);
 
-    for(int i = 0; i < vertexCount - 1; ++i) {
-      final Vector a = new Vector.copy(vertices[i]);
-      final Vector b = new Vector.copy(vertices[i + 1]);
-      drawSegment(a, b, color);
-    }
-
-    // Close the loop.
-    if(vertexCount > 2) {
-      final Vector a = new Vector.copy(vertices[vertexCount - 1]);
-      final Vector b = new Vector.copy(vertices[0]);
-      drawSegment(a, b, color);
-    }
-  }
-
-  /** Draws the given point with the given radius and color. */
-  abstract void drawPoint(Vector argPoint, num argRadiusOnScreen,
-                          Color3 argColor);
+  /** Draws the given point with the given radius and color.  */
+  abstract void drawPoint(Vector point, num radiusOnScreen, Color3 color);
 
   /** Draw a solid closed polygon provided in CCW order. */
   abstract void drawSolidPolygon(List<Vector> vertices, int vertexCount,
       Color3 color);
 
   /** Draw a circle. */
-  abstract void drawCircle(Vector center, num radius, Color3 color);
+  abstract void drawCircle(Vector center, num radius, Color3 color,
+      [Vector axis]);
+
 
   /** Draw a solid circle. */
-  abstract void drawSolidCircle(Vector center, num radius, Vector axis,
-      Color3 color);
+  abstract void drawSolidCircle(Vector center, num radius, Color3 color,
+      [Vector axis]);
 
   /** Draw a line segment. */
   abstract void drawSegment(Vector p1, Vector p2, Color3 color);
 
   /** Draw a transform.  Choose your own length scale. */
-  abstract void drawTransform(Transform xf);
+  abstract void drawTransform(Transform xf, Color3 color);
 
   /** Draw a string. */
   abstract void drawString(num x, num y, String s, Color3 color);
-
-  /** Returns the viewport transform. */
-  IViewportTransform get viewportTranform() => viewportTransform;
 
   /**
    * Sets the center of the viewport to the given x and y values and the
@@ -101,7 +87,7 @@ class DebugDraw {
    */
   void setCamera(num x, num y, num scale) {
     viewportTransform.setCamera(x,y,scale);
-   }
+  }
 
   /**
    * Screen coordinates are specified in argScreen. These coordinates are

@@ -38,4 +38,12 @@ class Color3 {
     y = argColor.y;
     z = argColor.z;
   }
+
+  bool operator ==(final other) {
+    if (other is! Color3) {
+      return false;
+    }
+    return x === other.x && y === other.y && z === other.z;
+  }
+
 }
