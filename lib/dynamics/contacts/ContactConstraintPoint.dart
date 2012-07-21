@@ -48,9 +48,9 @@ class ContactConstraintPoint {
   }
 
   String toString() {
-    return "normal impulse: " + normalImpulse + ", tangentImpulse: " +
-        tangentImpulse + ", normalMass: " + normalMass + ", tangentMass: " +
-        tangentMass + ", velocityBias: " + velocityBias + ", localPoint " +
-        localPoint + ", rA: " + rA + ", rB: " + rB;
+    return "normal impulse: $normalImpulse, tangentImpulse: $tangentImpulse"
+        ", normalMass: $normalMass, tangentMass: $tangentMass"
+        ", velocityBias: $velocityBias, localPoint: $localPoint"
+        ", rA: $rA, rB: $rB";
   }
 }

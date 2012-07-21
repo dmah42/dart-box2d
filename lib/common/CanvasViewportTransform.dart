@@ -96,7 +96,7 @@ class CanvasViewportTransform implements IViewportTransform {
    */
   void setCamera(num x, num y, num s) {
     center.setCoords(x, y);
-    this.scale = s;
+    scale = s;
   }
 
   /**

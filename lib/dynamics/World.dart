@@ -389,7 +389,7 @@ class World {
     Joint.destroy(joint);
 
     assert (_jointCount > 0);
-    --jointCount;
+    --_jointCount;
 
     // If the joint prevents collisions, then flag any contacts for filtering.
     if (collideConnected == false) {
@@ -605,7 +605,7 @@ class World {
       Color3 color = new Color3.fromRGB(0.9, 0.3, 0.9);
 
       for (Body b = _bodyList; b != null; b = b.next) {
-        if (b.active == false) {
+        if (!b.active) {
           continue;
         }
 
@@ -1095,7 +1095,7 @@ class World {
   void drawShape(Fixture fixture, Transform xf, Color3 color) {
     switch (fixture.type) {
       case ShapeType.CIRCLE :
-        var circle = fixture.shape;
+        final CircleShape circle = fixture.shape;
 
         // Vector center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
@@ -1106,7 +1106,7 @@ class World {
         break;
 
       case ShapeType.POLYGON:
-       var poly = fixture.shape;
+       final PolygonShape poly = fixture.shape;
        int vertexCount = poly.vertexCount;
        assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
        List<Vector> vertices =
@@ -1151,9 +1151,9 @@ class World {
         throw new NotImplementedException();
         //Vector s1 = pulley.getGroundAnchorA();
         //Vector s2 = pulley.getGroundAnchorB();
-        //debugDraw.drawSegment(s1, p1, color);
-        //debugDraw.drawSegment(s2, p2, color);
-        //debugDraw.drawSegment(s1, s2, color);
+        //_debugDraw.drawSegment(s1, p1, color);
+        //_debugDraw.drawSegment(s2, p2, color);
+        //_debugDraw.drawSegment(s1, s2, color);
         //break;
 
       case JointType.FRICTION:

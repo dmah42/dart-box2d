@@ -71,8 +71,8 @@ class ContactConstraint {
   }
 
   String toString() {
-    String result = 'localNormal: "$localNormal", localPoint: "$localPoint" ' +
-        'normal: "$normal", radius: "$radius" friction: "$friction" ' +
+    String result = 'localNormal: "$localNormal", localPoint: "$localPoint" '
+        'normal: "$normal", radius: "$radius" friction: "$friction" '
         'restitution: "$restitution", pointCount: "$pointCount"';
     return result;
   }

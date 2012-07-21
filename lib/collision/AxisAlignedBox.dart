@@ -93,5 +93,5 @@ class AxisAlignedBox {
     upperBound.setFrom(other.upperBound);
   }
 
-  String toString() => lowerBound.toString() + ", " + upperBound.toString();
+  String toString() => "$lowerBound, $upperBound";
 }

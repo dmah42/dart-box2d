@@ -39,7 +39,7 @@ class FrictionJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, Vector argOut) {
-    argOut.setFrom(_linearPulse).mulLocal(inv_dt);
+    argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;

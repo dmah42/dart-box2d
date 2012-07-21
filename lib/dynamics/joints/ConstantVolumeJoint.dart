@@ -42,7 +42,7 @@ class ConstantVolumeJoint extends Joint {
     if (def.bodies.length <= 2) {
       throw new IllegalArgumentException(
           "You cannot create a constant volume joint with less than three "
-          + "bodies.");
+          "bodies.");
     }
 
     // Create a fixed size array with a capacity equal to the number of elements
@@ -62,7 +62,7 @@ class ConstantVolumeJoint extends Joint {
     if (def.joints != null && def.joints.length != def.bodies.length) {
       throw new IllegalArgumentException(
           "Incorrect joint definition.  Joints have to correspond to "
-          + "the bodies");
+          "the bodies");
     }
 
     if (def.joints == null) {

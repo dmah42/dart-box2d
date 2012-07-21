@@ -164,5 +164,5 @@ class Matrix22 {
   }
 
   /** Returns a String showing this matrix values. */
-  String toString() => "${col1.toString()}, ${col2.toString()}";
+  String toString() => "$col1, $col2";
 }

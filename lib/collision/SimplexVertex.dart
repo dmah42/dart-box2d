@@ -38,6 +38,5 @@ class SimplexVertex {
     indexB = sv.indexB;
   }
 
-  String toString() => "wA: " + wA.toString() + " wB: " + wB.toString() + " w: " +
-      w.toString();
+  String toString() => "wA: $wA, wB: $wB, w: $w";
 }

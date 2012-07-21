@@ -61,8 +61,9 @@ class Features {
   /**
    * Returns a String representation of this Features.
    */
-  String toString() => "Features: (" + flip + " ," + incidentEdge + " ," +
-      incidentVertex + " ," + referenceEdge + ")";
+  String toString() {
+    return "Features: ($flip, $incidentEdge, $incidentVertex $referenceEdge)";
+  }
 
   /**
    * Sets all features to 0.

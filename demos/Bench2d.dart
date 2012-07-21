@@ -139,7 +139,7 @@ class Bench2d {
   void bench() {
     Bench2d bench2d = new Bench2d();
 
-    final times = new List<int>(FRAMES);
+    final times = new List<num>(FRAMES);
     for (int i = 0; i < FRAMES; ++i) {
       final watch = new Stopwatch();
       watch.start();

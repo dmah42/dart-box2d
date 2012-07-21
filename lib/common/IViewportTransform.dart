@@ -42,6 +42,12 @@ interface IViewportTransform {
   num get scale();
 
   /**
+   * Sets the scaling factor used in converting from world sizes to rendering
+   * sizes.
+   */
+  void set scale(num value);
+  
+  /**
    * This sets the half-width and half-height.
    * This should be the actual half-width and 
    * half-height, not anything transformed or scaled.
