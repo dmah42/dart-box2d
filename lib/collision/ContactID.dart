@@ -22,18 +22,18 @@ class ContactID {
 
   /**
    * Constructs a new ContactID. */
-  ContactID() : features = new Features() { }
+  ContactID() : features = new Features();
 
   /**
    * Constructs a ContactID that is a copy of the given ContactID.
    */
   ContactID.copy(ContactID other) :
-    features = new Features.copy(other.features) { }
+    features = new Features.copy(other.features);
 
   /**
    * Returns true if this ContactID equals the given ContactID.
    */
-  bool operator == (other) => other.features == features;
+  bool operator==(other) => other.features == features;
 
   /**
    * Sets this contactID to be equal to the given ContactID.

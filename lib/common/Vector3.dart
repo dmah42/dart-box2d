@@ -20,7 +20,7 @@ class Vector3 {
   num y;
   num z;
 
-  Vector3([this.x = 0, this.y = 0, this.z = 0]) { }
+  Vector3([this.x = 0, this.y = 0, this.z = 0]);
 
   Vector3.copy(Vector3 argCopy) {
     x = argCopy.x;
@@ -28,12 +28,11 @@ class Vector3 {
     z = argCopy.z;
   }
 
-  bool operator == (other) {
-    if (other != null && other is Vector3) {
+  bool operator==(other) {
+    if (other != null && other is Vector3)
       return x == other.x && y == other.y && z == other.z;
-    } else {
-      return false;
-    }
+
+    return false;
   }
 
   /** Sets this vector equal to the given vector. */

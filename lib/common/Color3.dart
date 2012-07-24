@@ -20,12 +20,9 @@ class Color3 {
   num y;
   num z;
 
-  Color3() : x = 0, y = 0, z = 0 { }
+  Color3() : x = 0, y = 0, z = 0;
 
-  Color3.fromRGB(num r, num g, num b) :
-    x = r,
-    y = g,
-    z = b { }
+  Color3.fromRGB(num r, num g, num b) : x = r, y = g, z = b;
 
   void setFromRGB(num r, num g, num b) {
     x = r;
@@ -39,11 +36,10 @@ class Color3 {
     z = argColor.z;
   }
 
-  bool operator ==(final other) {
+  bool operator==(final other) {
     if (other is! Color3) {
       return false;
     }
     return x === other.x && y === other.y && z === other.z;
   }
-
 }

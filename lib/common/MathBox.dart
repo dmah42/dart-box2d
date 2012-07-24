@@ -17,7 +17,7 @@
 class MathBox {
   static final num TWO_PI = Math.PI * 2;
 
-  MathBox() { }
+  MathBox();
 
   /**
    * Return the distance between the two given vectors, but squared.

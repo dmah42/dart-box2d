@@ -23,6 +23,6 @@ class ContactImpulse {
 
   ContactImpulse() :
     normalImpulses = new List<num>(Settings.MAX_MANIFOLD_POINTS),
-    tangentImpulses = new List<num>(Settings.MAX_MANIFOLD_POINTS) { }
+    tangentImpulses = new List<num>(Settings.MAX_MANIFOLD_POINTS);
 }
 

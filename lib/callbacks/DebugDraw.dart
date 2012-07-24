@@ -40,16 +40,15 @@ class DebugDraw {
   int drawFlags;
   IViewportTransform viewportTransform;
 
-  DebugDraw(IViewportTransform viewport) :
-    drawFlags = e_shapeBit,
-    viewportTransform = viewport { }
+  DebugDraw(IViewportTransform viewport)
+      : drawFlags = e_shapeBit,
+        viewportTransform = viewport;
 
   void set flags(int flags) { drawFlags = flags; }
 
   int get flags() => drawFlags;
 
   void appendFlags(int flags) { drawFlags |= flags; }
-
   void clearFlags(int flags) { drawFlags &= ~flags; }
 
   /** Draw a closed polygon provided in CCW order. */
@@ -66,7 +65,6 @@ class DebugDraw {
   /** Draw a circle. */
   abstract void drawCircle(Vector center, num radius, Color3 color,
       [Vector axis]);
-
 
   /** Draw a solid circle. */
   abstract void drawSolidCircle(Vector center, num radius, Color3 color,

@@ -28,22 +28,22 @@ class Sweep {
    * Constructs a new Sweep with centers initialized to the origin and angles
    * set to zero.
    */
-  Sweep() :
-    localCenter = new Vector(),
-    centerZero = new Vector(),
-    center = new Vector(),
-    angleZero = 0,
-    angle = 0 { }
+  Sweep()
+      : localCenter = new Vector(),
+        centerZero = new Vector(),
+        center = new Vector(),
+        angleZero = 0,
+        angle = 0;
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
    */
-  Sweep.copy(Sweep other) :
-    localCenter = new Vector.copy(other.localCenter),
-    centerZero = new Vector.copy(other.centerZero),
-    center = new Vector.copy(other.center),
-    angleZero = other.angleZero,
-    angle = other.angle { }
+  Sweep.copy(Sweep other)
+      : localCenter = new Vector.copy(other.localCenter),
+        centerZero = new Vector.copy(other.centerZero),
+        center = new Vector.copy(other.center),
+        angleZero = other.angleZero,
+        angle = other.angle;
 
   /**
    * Returns true if given object is equal to this sweep. Two sweeps are equal

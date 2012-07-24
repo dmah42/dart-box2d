@@ -20,10 +20,7 @@
 // TODO(gregbglw): Test all of these methods to make sure that they draw the
 // correct things.
 class CanvasDraw extends DebugDraw {
-
-  /**
-   * The canvas rendering context with which to draw.
-   */
+  /** The canvas rendering context with which to draw. */
   CanvasRenderingContext2D ctx;
 
   CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
@@ -116,22 +113,21 @@ class CanvasDraw extends DebugDraw {
 
   /**
    * Draw a transform. Choose your own length scale. WARNING: This mutates
-   * [xf].position.
+   * [xf.position].
    */
   void drawTransform(Transform xf, Color3 color) {
     drawCircle(xf.position, 0.1, color);
     // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
   }
 
-  /**
-   * Draw a string.
-   */
+  /** Draw a string. */
   void drawString(num x, num y, String s, Color3 color) {
     _color = color;
     ctx.strokeText(s, x, y);
   }
 
-  /** Sets the rendering context stroke color based on the given color3. */
+  /** Sets the rendering context stroke and fill color based on the given
+   *  color3. */
   void set _color(Color3 color) {
     ctx.setStrokeColor(color.x, color.y, color.z, 0.9);
     ctx.setFillColor(color.x, color.y, color.z, 0.8);

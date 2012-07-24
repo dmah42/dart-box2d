@@ -20,23 +20,21 @@ class Vector {
   num x;
   num y;
 
-  Vector([this.x = 0, this.y = 0]) { }
+  Vector([this.x = 0, this.y = 0]);
 
   /**
    * Constructs a new vector with the same coordinates as the given vector.
    */
-  Vector.copy(Vector other) : x = other.x, y = other.y { }
+  Vector.copy(Vector other) : x = other.x, y = other.y;
 
   /**
    * Returns true if given object is a Vector with the same x and y values as
    * this vector. Returns false otherwise.
    */
   bool operator == (other) {
-    if (other == null) {
+    if (other == null)
       return false;
-    } else {
-      return x === other.x && y === other.y;
-    }
+    return x === other.x && y === other.y;
   }
 
   /**

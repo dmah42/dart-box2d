@@ -19,7 +19,7 @@
  * contact creation.
  */
 class ContactFilter {
-  ContactFilter() { }
+  ContactFilter();
 
   /**
    * Return true if contact calculations should be performed between these two

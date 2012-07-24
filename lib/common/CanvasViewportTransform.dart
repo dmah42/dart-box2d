@@ -23,9 +23,7 @@ class CanvasViewportTransform implements IViewportTransform {
    * Whether the y axis should be flipped such that y is greater as you get
    * lower on the screen.
    */
-  bool get yFlip() {
-    return true;
-  }
+  bool get yFlip() => true;
 
   // Does nothing.
   void set yFlip(bool yFlip) { }
@@ -52,7 +50,7 @@ class CanvasViewportTransform implements IViewportTransform {
   CanvasViewportTransform(Vector extents, Vector center) :
     extents = new Vector.copy(extents),
     center = new Vector.copy(center),
-    scale = DEFAULT_DRAWING_SCALE { }
+    scale = DEFAULT_DRAWING_SCALE;
 
   /**
    * Sets the rendering context such that all drawing commands given in terms

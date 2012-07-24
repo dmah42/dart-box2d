@@ -26,30 +26,26 @@ class Transform {
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() :
-    position = new Vector(),
-    rotation = new Matrix22() { }
+  Transform() : position = new Vector(), rotation = new Matrix22();
 
   /**
    * Constructs a new transform equal to the given transform.
    */
-  Transform.copy(Transform other) :
-    position = new Vector.copy(other.position),
-    rotation = new Matrix22.copy(other.rotation) { }
+  Transform.copy(Transform other)
+      : position = new Vector.copy(other.position),
+        rotation = new Matrix22.copy(other.rotation);
 
   bool operator == (other) {
-    if (other == null) {
+    if (other == null)
       return false;
-    } else {
-      return position == other.position && rotation == other.rotation;
-    }
+
+    return position == other.position && rotation == other.rotation;
   }
 
   /**
    * Sets this transform with the given position and rotation.
    */
-  void setFromPositionAndRotation(Vector argPosition,
-      Matrix22 argRotation) {
+  void setFromPositionAndRotation(Vector argPosition, Matrix22 argRotation) {
     position.setFrom(argPosition);
     rotation.setFrom(argRotation);
   }
