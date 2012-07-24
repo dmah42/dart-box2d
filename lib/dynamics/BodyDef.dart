@@ -98,5 +98,5 @@ class BodyDef {
     fixedRotation = false,
     active = true,
     linearVelocity = new Vector(),
-    angularVelocity = 0 { }
+    angularVelocity = 0;
 }

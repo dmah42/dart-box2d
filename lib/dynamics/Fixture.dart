@@ -45,15 +45,15 @@ class Fixture {
   /**
    * Constructs a new Fixture with default values.
    */
-  Fixture() :
-    box = new AxisAlignedBox(),
-    body = null,
-    next = null,
-    proxy = null,
-    shape = null,
-    filter = new Filter(),
-    _poolOne = new AxisAlignedBox(),
-    _poolTwo = new AxisAlignedBox() { }
+  Fixture()
+      : box = new AxisAlignedBox(),
+        body = null,
+        next = null,
+        proxy = null,
+        shape = null,
+        filter = new Filter(),
+        _poolOne = new AxisAlignedBox(),
+        _poolTwo = new AxisAlignedBox();
 
   /**
    * Sets this fixture according to the given body and definition.

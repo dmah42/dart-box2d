@@ -90,53 +90,49 @@ class Body {
   Vector oldCenter;
   Vector tempCenter;
 
-  Body(BodyDef bd, World world) :
-    // Set the flags
-    world = world,
-    flags = 0,
+  Body(BodyDef bd, this.world)
+      : flags = 0,
+        // Set the origin transform.
+        originTransform = new Transform(),
 
-    // Set the origin transform.
-    originTransform = new Transform(),
+        // Set the sweep.
+        sweep = new Sweep(),
 
-    // Set the sweep.
-    sweep = new Sweep(),
+        jointList = null,
+        contactList = null,
+        prev = null,
+        next = null,
 
-    jointList = null,
-    contactList = null,
-    prev = null,
-    next = null,
+        // Set the linear and angular velocities.
+        _linearVelocity = new Vector.copy(bd.linearVelocity),
+        _angularVelocity = 0,
 
-    // Set the linear and angular velocities.
-    _linearVelocity = new Vector.copy(bd.linearVelocity),
-    _angularVelocity = 0,
+        // Set the linear and angular damping.
+        linearDamping = bd.linearDamping,
+        angularDamping = bd.angularDamping,
 
-    // Set the linear and angular damping.
-    linearDamping = bd.linearDamping,
-    angularDamping = bd.angularDamping,
+        // Set force and torque.
+        _force = new Vector(),
+        _torque = 0,
 
-    // Set force and torque.
-    _force = new Vector(),
-    _torque = 0,
+        _inertia = 0,
+        invInertia = 0,
 
-    _inertia = 0,
-    invInertia = 0,
+        userData = bd.userData,
 
-    userData = bd.userData,
+        fixtureList = null,
+        fixtureCount = 0,
 
-    fixtureList = null,
-    fixtureCount = 0,
+        // Initialize pool objects.
+        _fixDef = new FixtureDef(),
+        _pmd = new MassData(),
+        _pxf = new Transform(),
+        oldCenter = new Vector(),
+        tempCenter = new Vector(),
 
-    // Initialize pool objects.
-    _fixDef = new FixtureDef(),
-    _pmd = new MassData(),
-    _pxf = new Transform(),
-    oldCenter = new Vector(),
-    tempCenter = new Vector(),
+        sleepTime = 0,
 
-    sleepTime = 0,
-
-    _type = bd.type {
-
+        _type = bd.type {
     if (bd.bullet) {
       flags |= BULLET_FLAG;
     }
