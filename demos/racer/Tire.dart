@@ -14,6 +14,7 @@ class Tire {
     BodyDef def = new BodyDef();
     def.type = BodyType.DYNAMIC;
     _body = world.createBody(def);
+    _body.userData = "Tire";
 
     PolygonShape polygonShape = new PolygonShape();
     polygonShape.setAsBox(0.5, 1.25);
@@ -54,7 +55,6 @@ class Tire {
       _groundAreas.forEach((element) {
         _currentTraction = Math.max(_currentTraction, element.frictionModifier);
       });
-      print("$_currentTraction");
     }
   }
 

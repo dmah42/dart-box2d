@@ -19,7 +19,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super.withGravity(new Vector(0, 0), 2.5) { }
+  Racer() : super.withGravity(new Vector(0, 0), 2.5);
 
   String get name() => NAME;
 
@@ -28,6 +28,7 @@ class Racer extends Demo implements ContactListener {
     {
       BodyDef def = new BodyDef();
       _groundBody = world.createBody(def);
+      _groundBody.userData = "Ground";
 
       PolygonShape shape = new PolygonShape();
 
@@ -36,15 +37,47 @@ class Racer extends Demo implements ContactListener {
       fixtureDef.isSensor = true;
 
       shape.setAsBoxWithCenterAndAngle(
-          18, 14, new Vector(-20, 30), MathBox.degToRad(20));
+          27, 21, new Vector(-30, 30), MathBox.degToRad(20));
       Fixture groundAreaFixture = _groundBody.createFixture(fixtureDef);
       groundAreaFixture.userData = new GroundArea(0.001, false);
 
       shape.setAsBoxWithCenterAndAngle(
-          18, 10, new Vector(10, 40), MathBox.degToRad(-40));
+          27, 15, new Vector(20, 40), MathBox.degToRad(-40));
       groundAreaFixture = _groundBody.createFixture(fixtureDef);
       groundAreaFixture.userData = new GroundArea(0.2, false);
     }
+
+    // Set up boundary.
+    {
+      BodyDef def = new BodyDef();
+      Body boundaryBody = world.createBody(def);
+      boundaryBody.userData = "Boundary";
+
+      PolygonShape shape = new PolygonShape();
+
+      FixtureDef fixtureDef = new FixtureDef();
+      fixtureDef.shape = shape;
+
+      final int boundaryX = 150;
+      final int boundaryY = 100;
+
+      shape.setAsEdge(new Vector(-boundaryX, -boundaryY),
+                      new Vector( boundaryX, -boundaryY));
+      Fixture boundaryFixture = boundaryBody.createFixture(fixtureDef);
+
+      shape.setAsEdge(new Vector(boundaryX, -boundaryY),
+                      new Vector(boundaryX,  boundaryY));
+      boundaryFixture = boundaryBody.createFixture(fixtureDef);
+
+      shape.setAsEdge(new Vector( boundaryX, boundaryY),
+                      new Vector(-boundaryX, boundaryY));
+      boundaryFixture = boundaryBody.createFixture(fixtureDef);
+
+      shape.setAsEdge(new Vector(-boundaryX,  boundaryY),
+                      new Vector(-boundaryX, -boundaryY));
+      boundaryFixture = boundaryBody.createFixture(fixtureDef);
+    }
+
     _car = new Car(world);
     _controlState = 0;
 
@@ -74,10 +107,14 @@ class Racer extends Demo implements ContactListener {
     }
   }
 
+  // TODO: collision filtering.
+  //   Tire with Boundary
+  //   Tire with GroundArea
   void _handleContact(Contact contact, bool began) {
     Object fudA = contact.fixtureA.userData;
     Object fudB = contact.fixtureB.userData;
 
+    // Check for ground area collision.
     // TODO: named parameters instead of swapping order?
     if (fudA is Tire && fudB is GroundArea)
       _tireVsGroundArea(fudA, fudB, began);
