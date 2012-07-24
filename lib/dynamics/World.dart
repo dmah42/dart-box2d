@@ -1099,7 +1099,7 @@ class World {
 
   void drawShape(Fixture fixture, Transform xf, Color3 color) {
     switch (fixture.type) {
-      case ShapeType.CIRCLE :
+      case ShapeType.CIRCLE:
         final CircleShape circle = fixture.shape;
 
         // Vector center = Mul(xf, circle.p);
@@ -1115,26 +1115,30 @@ class World {
         break;
 
       case ShapeType.POLYGON:
-       final PolygonShape poly = fixture.shape;
-       int vertexCount = poly.vertexCount;
-       assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
-       List<Vector> vertices =
-           new List<Vector>(vertexCount);
-       for (int i = 0; i < vertexCount; i++) {
-         vertices[i] = new Vector();
-       }
+        final PolygonShape poly = fixture.shape;
+        int vertexCount = poly.vertexCount;
+        assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
+        List<Vector> vertices =
+            new List<Vector>(vertexCount);
+        for (int i = 0; i < vertexCount; i++) {
+          vertices[i] = new Vector();
+        }
 
-       for (int i = 0; i < vertexCount; ++i) {
-         assert(poly.vertices[i] != null);
-         assert(vertices[i] != null);
-         Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
-       }
+        for (int i = 0; i < vertexCount; ++i) {
+          assert(poly.vertices[i] != null);
+          assert(vertices[i] != null);
+          Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
+        }
 
-       if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
-         _debugDraw.drawPolygon(vertices, vertexCount, color);
-       } else {
-         _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-       }
+        if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
+          _debugDraw.drawPolygon(vertices, vertexCount, color);
+        } else {
+          if (vertexCount > 2)
+            _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+          else
+            _debugDraw.drawPolygon(vertices, vertexCount, color);
+        }
+        break;
     }
   }
 
