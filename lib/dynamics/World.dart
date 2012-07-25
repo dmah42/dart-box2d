@@ -1133,10 +1133,11 @@ class World {
         if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawPolygon(vertices, vertexCount, color);
         } else {
-          if (vertexCount > 2)
+          if (vertexCount > 2) {
             _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-          else
+          } else {
             _debugDraw.drawPolygon(vertices, vertexCount, color);
+          }
         }
         break;
     }

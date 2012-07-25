@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="overflow-x: hidden">
   <head>
     <title>Racer</title>
     <!-- This tag improves the experience on mobile browsers. -->
@@ -8,14 +8,20 @@
 
     <!-- These tags improve web apps on ios. -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <style type="text/css">
+      body {
+        background-color: #404040;
+        color: #FFFFFF;
+        font-family: "Courier New", monospace;
+      }
+    </style>
   </head>
   <body>
-    <script type='application/dart' src='racer.dart'></script>
-    <script type='text/javascript'
-      src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
+    <h1>Racer</h1>
+    <p>Use the arrow keys to control the car.</p>
+    <script type="application/dart" src="racer.dart"></script>
+    <script type="text/javascript"
+      src="https://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
     </script>
   </body>
 </html>
-
-
-

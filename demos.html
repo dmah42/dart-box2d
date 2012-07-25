@@ -54,6 +54,12 @@
           item.appendChild(link);
           menu.appendChild(item);
         }
+        var item = document.createElement('li');
+        var link = document.createElement('a');
+        link.setAttribute('href', 'demos/racer/racer.html');
+        link.appendChild(document.createTextNode('Racer'));
+        item.appendChild(link);
+        menu.appendChild(item);
         document.body.appendChild(menu);
       }
     </script>

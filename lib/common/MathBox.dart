@@ -35,16 +35,16 @@ class MathBox {
     return Math.sqrt(distanceSquared(v1, v2));
   }
 
-  /** Returns the closest value to 'a' that is in between 'low' and 'high' */
+  /** Returns the closest value to [a] that is in between [low] and [high] */
   static num clamp(num a, num low, num high) {
     return Math.max(low, Math.min(a, high));
   }
 
   /**
-   * Given a value within the range specified by fromMin and fromMax, returns a
-   * value with the same relative position in the range specified from toMin and
-   * toMax. For example, given a val of 2 in the "from range" of 0-4, and a
-   * "to range" of 10-20, would return 15.
+   * Given a value within the range specified by [fromMin] and [fromMax],
+   * returns a value with the same relative position in the range specified
+   * from [toMin] and [toMax]. For example, given a [val] of 2 in the
+   * "from range" of 0-4, and a "to range" of 10-20, would return 15.
    */
   static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
       num toMax) {
@@ -53,6 +53,8 @@ class MathBox {
     return res;
   }
 
-  static num degToRad(num deg) => deg * (Math.PI / 180.0);
-  static num radToDeg(num rad) => rad * (180.0 / Math.PI);
+  /** Convert from [deg] degrees to radians. */
+  static num degToRad(num deg) => (Math.PI / 180.0) * deg;
+  /** Convert from [rad] radians to degrees. */
+  static num radToDeg(num rad) => (180.0 / Math.PI) * rad;
 }

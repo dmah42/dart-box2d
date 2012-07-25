@@ -94,7 +94,7 @@ class PolygonShape extends Shape {
   /**
    * Copy vertices. This assumes the vertices define a convex polygon.
    * It is assumed that the exterior is the the right of each edge.
-   * TODO(dominich): Remove [count].
+   * TODO(dominich): Consider removing [count].
    */
   void setFrom(List<Vector> otherVertices, int count) {
     assert (2 <= count && count <= Settings.MAX_POLYGON_VERTICES);

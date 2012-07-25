@@ -59,14 +59,16 @@ class Demo {
   // parameters are introduced.
   num viewportScale;
 
-  Demo([this.viewportScale = _VIEWPORT_SCALE])
-      : bodies = new List<Body>() {
-    _setupWorld(new Vector(0, GRAVITY));
-  }
+  Demo()
+      : this.withGravity(new Vector(0, GRAVITY), _VIEWPORT_SCALE);
 
-  Demo.withGravity(Vector gravity, [this.viewportScale = _VIEWPORT_SCALE])
+  Demo.withViewportScale(num viewportScale)
+      : this.withGravity(new Vector(0, GRAVITY), viewportScale);
+
+  Demo.withGravity(Vector gravity, this.viewportScale)
       : bodies = new List<Body>() {
-    _setupWorld(gravity);
+    bool doSleep = true;
+    world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 
   /** Advances the world forward by timestep seconds. */
@@ -74,13 +76,13 @@ class Demo {
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 
     // Clear the animation panel and draw new frame.
-    ctx.setFillColor('#404040');
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    ctx.setFillColor('white');
-    ctx.font = '18pt monospace';
-    ctx.fillText(this.name, 20, 20);
-
+    if (this.name != null) {
+      ctx.setFillColor('black');
+      ctx.font = '18pt monospace';
+      ctx.fillText(this.name, 20, 20);
+    }
     if (fps != null) {
       ctx.setFillColor('red');
       ctx.font = '12pt monospace';
@@ -128,12 +130,6 @@ class Demo {
    */
   void runAnimation() {
     window.requestAnimationFrame((num time) { step(time); });
-  }
-
-  void _setupWorld(Vector gravity) {
-    // Setup the World.
-    bool doSleep = true;
-    world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 }
 

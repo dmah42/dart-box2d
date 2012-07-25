@@ -1,16 +1,15 @@
 class Tire {
-  Body _body;
-  double _maxForwardSpeed;
-  double _maxBackwardSpeed;
-  double _maxDriveForce;
-  double _maxLateralImpulse;
-  double _currentTraction;
-  // This can't be a Set as GroundArea is not hashable. Handle uniqueness
-  // manually.
-  final List<GroundArea> _groundAreas;
-
-  Tire(World world)
-      : _groundAreas = new List<GroundArea>() {
+  // I would use [this._maxForwardSpeed], etc, here but they can't start with
+  // '_'.
+  Tire(World world, double maxForwardSpeed, double maxBackwardSpeed,
+      double maxDriveForce, double maxLateralImpulse)
+      : _maxForwardSpeed = maxForwardSpeed,
+        _maxBackwardSpeed = maxBackwardSpeed,
+        _maxDriveForce = maxDriveForce,
+        _maxLateralImpulse = maxLateralImpulse,
+        _groundAreas = new List<GroundArea>(),
+        _worldLeft = new Vector(1.0, 0.0),
+        _worldUp = new Vector(0.0, 1.0) {
     BodyDef def = new BodyDef();
     def.type = BodyType.DYNAMIC;
     _body = world.createBody(def);
@@ -24,14 +23,6 @@ class Tire {
     _currentTraction = 1.0;
   }
 
-  void setCharacteristics(double maxForwardSpeed, double maxBackwardSpeed,
-      double maxDriveForce, double maxLateralImpulse) {
-    _maxForwardSpeed = maxForwardSpeed;
-    _maxBackwardSpeed = maxBackwardSpeed;
-    _maxDriveForce = maxDriveForce;
-    _maxLateralImpulse = maxLateralImpulse;
-  }
-
   void addGroundArea(GroundArea ga) {
     if (_groundAreas.indexOf(ga) === -1) {
       _groundAreas.add(ga);
@@ -40,7 +31,7 @@ class Tire {
   }
 
   void removeGroundArea(GroundArea ga) {
-    var index = _groundAreas.indexOf(ga);
+    final index = _groundAreas.indexOf(ga);
     if (index !== -1) {
       _groundAreas.removeRange(index, 1);
       _updateTraction();
@@ -58,31 +49,32 @@ class Tire {
     }
   }
 
-  Vector get lateralVelocity() {
-    Vector currentRightNormal = _body.getWorldVector(new Vector(1.0, 0.0));
+  Vector get _lateralVelocity() {
+    final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
     return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
                                                   _body.linearVelocity));
   }
 
-  Vector get forwardVelocity() {
-    Vector currentForwardNormal = _body.getWorldVector(new Vector(0.0, 1.0));
+  Vector get _forwardVelocity() {
+    final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
     return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
                                                     _body.linearVelocity));
   }
 
   void updateFriction() {
-    Vector impulse = lateralVelocity.mulLocal(-_body.mass);
-    if (impulse.length > _maxLateralImpulse)
+    final Vector impulse = _lateralVelocity.mulLocal(-_body.mass);
+    if (impulse.length > _maxLateralImpulse) {
       impulse.mulLocal(_maxLateralImpulse / impulse.length);
+    }
     _body.applyLinearImpulse(impulse.mulLocal(_currentTraction),
                              _body.worldCenter);
     _body.applyAngularImpulse(
         0.1 * _currentTraction * _body.inertia * (-_body.angularVelocity));
 
-    Vector currentForwardNormal = forwardVelocity;
-    double currentForwardSpeed = currentForwardNormal.length;
+    Vector currentForwardNormal = _forwardVelocity;
+    final double currentForwardSpeed = currentForwardNormal.length;
     currentForwardNormal.normalize();
-    double dragForceMagnitude = -2 * currentForwardSpeed;
+    final double dragForceMagnitude = -2 * currentForwardSpeed;
     _body.applyForce(
         currentForwardNormal.mulLocal(_currentTraction * dragForceMagnitude),
         _body.worldCenter);
@@ -97,12 +89,13 @@ class Tire {
     }
 
     Vector currentForwardNormal = _body.getWorldVector(new Vector(0.0, 1.0));
-    double currentSpeed = Vector.dot(forwardVelocity, currentForwardNormal);
+    final double currentSpeed = Vector.dot(_forwardVelocity, currentForwardNormal);
     double force = 0.0;
-    if (desiredSpeed < currentSpeed)
+    if (desiredSpeed < currentSpeed) {
       force = -_maxDriveForce;
-    else if (desiredSpeed > currentSpeed)
+    } else if (desiredSpeed > currentSpeed) {
       force = _maxDriveForce;
+    }
 
     if (force.abs() > 0) {
       _body.applyForce(currentForwardNormal.mulLocal(_currentTraction * force),
@@ -118,4 +111,18 @@ class Tire {
     }
     _body.applyTorque(desiredTorque);
   }
+
+  Body _body;
+  final double _maxForwardSpeed;
+  final double _maxBackwardSpeed;
+  final double _maxDriveForce;
+  final double _maxLateralImpulse;
+  double _currentTraction;
+  // This can't be a Set as GroundArea is not hashable. Handle uniqueness
+  // manually.
+  final List<GroundArea> _groundAreas;
+
+  final Vector _worldLeft = null;
+  final Vector _worldUp = null;
+
 }
