@@ -1864,7 +1864,7 @@ $$.AxisAlignedBox = {"":
  ["upperBound?", "lowerBound?"],
  super: "Object",
  toString$0: function() {
-  return $.add($.add($.toString(this.lowerBound), ', '), $.toString(this.upperBound));
+  return $.S(this.lowerBound) + ', ' + $.S(this.upperBound);
  },
  setFrom$1: function(other) {
   this.lowerBound.setFrom$1(other.get$lowerBound());
@@ -3899,7 +3899,7 @@ $$.Features = {"":
   this.flip = 0;
  },
  toString$0: function() {
-  return $.add($.add($.add($.add($.add($.add($.add($.add('Features: (', this.flip), ' ,'), this.incidentEdge), ' ,'), this.incidentVertex), ' ,'), this.referenceEdge), ')');
+  return 'Features: (' + $.S(this.flip) + ', ' + $.S(this.incidentEdge) + ', ' + $.S(this.incidentVertex) + ' ' + $.S(this.referenceEdge) + ')';
  },
  operator$eq$1: function(other) {
   return $.eqB(this.referenceEdge, other.get$referenceEdge()) && $.eqB(this.incidentEdge, other.get$incidentEdge()) && $.eqB(this.incidentVertex, other.get$incidentVertex()) && $.eqB(this.flip, other.get$flip());
@@ -4866,7 +4866,7 @@ $$.SimplexVertex = {"":
  ["indexB=", "indexA=", "a=", "w?", "wB?", "wA?"],
  super: "Object",
  toString$0: function() {
-  return $.add($.add($.add($.add($.add('wA: ', $.toString(this.wA)), ' wB: '), $.toString(this.wB)), ' w: '), $.toString(this.w));
+  return 'wA: ' + $.S(this.wA) + ', wB: ' + $.S(this.wB) + ', w: ' + $.S(this.w);
  },
  setFrom$1: function(sv) {
   this.wA.setFrom$1(sv.get$wA());
@@ -11363,7 +11363,7 @@ $$.ContactConstraint = {"":
  ["manifold=", "pointCount=", "restitution=", "friction=", "radius=", "type=", "bodyB=", "bodyA=", "K?", "normalMass?", "normal?", "localPoint?", "localNormal?", "points?"],
  super: "Object",
  toString$0: function() {
-  return $.add($.add('localNormal: "' + $.S(this.localNormal) + '", localPoint: "' + $.S(this.localPoint) + '" ', 'normal: "' + $.S(this.normal) + '", radius: "' + $.S(this.radius) + '" friction: "' + $.S(this.friction) + '" '), 'restitution: "' + $.S(this.restitution) + '", pointCount: "' + $.S(this.pointCount) + '"');
+  return 'localNormal: "' + $.S(this.localNormal) + '", localPoint: "' + $.S(this.localPoint) + '" ' + 'normal: "' + $.S(this.normal) + '", radius: "' + $.S(this.radius) + '" friction: "' + $.S(this.friction) + '" ' + 'restitution: "' + $.S(this.restitution) + '", pointCount: "' + $.S(this.pointCount) + '"';
  },
  setFrom$1: function(cp) {
   this.pointCount = cp.get$pointCount();
@@ -11464,7 +11464,7 @@ $$.ContactConstraintPoint = {"":
  ["velocityBias=", "tangentMass=", "normalMass=", "tangentImpulse=", "normalImpulse=", "rB?", "rA?", "localPoint?"],
  super: "Object",
  toString$0: function() {
-  return $.add($.add($.add($.add($.add($.add($.add($.add($.add($.add($.add($.add($.add($.add($.add('normal impulse: ', this.normalImpulse), ', tangentImpulse: '), this.tangentImpulse), ', normalMass: '), this.normalMass), ', tangentMass: '), this.tangentMass), ', velocityBias: '), this.velocityBias), ', localPoint '), this.localPoint), ', rA: '), this.rA), ', rB: '), this.rB);
+  return 'normal impulse: ' + $.S(this.normalImpulse) + ', tangentImpulse: ' + $.S(this.tangentImpulse) + ', normalMass: ' + $.S(this.normalMass) + ', tangentMass: ' + $.S(this.tangentMass) + ', velocityBias: ' + $.S(this.velocityBias) + ', localPoint: ' + $.S(this.localPoint) + ', rA: ' + $.S(this.rA) + ', rB: ' + $.S(this.rB);
  },
  setFrom$1: function(cp) {
   this.localPoint.setFrom$1(cp.get$localPoint());
@@ -18817,7 +18817,7 @@ $$.ConstantVolumeJoint = {"":
  },
  step$3: function(arg0, arg1, arg2) { return this.step.$call$3(arg0, arg1, arg2); },
  ConstantVolumeJoint$2: function(_world, def) {
-  if ($.leB($.get$length(def.get$bodies()), 2)) throw $.captureStackTrace($.IllegalArgumentException$($.add('You cannot create a constant volume joint with less than three ', 'bodies.')));
+  if ($.leB($.get$length(def.get$bodies()), 2)) throw $.captureStackTrace($.IllegalArgumentException$('You cannot create a constant volume joint with less than three bodies.'));
   this.bodies = $.ListFactory_List$from(def.get$bodies());
   var t1 = this.bodies;
   var t2 = $.ListFactory_List(t1.length);
@@ -18839,7 +18839,7 @@ $$.ConstantVolumeJoint = {"":
   }
   this.targetVolume = this.get$area();
   t3 = def.get$joints();
-  if (!(t3 == null) && !$.eqB($.get$length(def.get$joints()), $.get$length(def.get$bodies()))) throw $.captureStackTrace($.IllegalArgumentException$($.add('Incorrect joint definition.  Joints have to correspond to ', 'the bodies')));
+  if (!(t3 == null) && !$.eqB($.get$length(def.get$joints()), $.get$length(def.get$bodies()))) throw $.captureStackTrace($.IllegalArgumentException$('Incorrect joint definition.  Joints have to correspond to the bodies'));
   t3 = def.get$joints();
   if (t3 == null) {
     var djd = $.DistanceJointDef$();
@@ -23141,7 +23141,7 @@ $$.Matrix22 = {"":
  ["col2?", "col1?"],
  super: "Object",
  toString$0: function() {
-  return $.S($.toString(this.col1)) + ', ' + $.S($.toString(this.col2));
+  return $.S(this.col1) + ', ' + $.S(this.col2);
  },
  solveToOut$2: function(b, out) {
   var t1 = this.col1;
