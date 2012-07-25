@@ -13,7 +13,8 @@
   </fail>
 
   <property name="dart.sdk.dir" value="${env.DART_SDK}" />
-  <property name="dartdoc.dart" value="${dart.sdk.dir}/lib/dartdoc/dartdoc.dart" />
+  <property name="dartdoc.dart"
+    value="${dart.sdk.dir}/lib/dartdoc/dartdoc.dart" />
   <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dart_analyzer" />
   <property name="dart_analyzer.args" value="--enable_type_checks" />
 
@@ -23,14 +24,19 @@
   </condition>
   <property name="withChecks" value="false" />
 
-  <!-- Set envvar DB2D_THREAD_COUNT to parallelize. May affect output readability. -->
+  <!-- Set envvar DB2D_THREAD_COUNT to parallelize.
+       May affect output readability. -->
   <condition property="threadCount" value="${env.DB2D_THREAD_COUNT}">
     <matches pattern="^\d+$" string="${env.DB2D_THREAD_COUNT}"/>
   </condition>
   <property name="threadCount" value="1" />
 
   <path id="demos">
-    <fileset dir="demos" includes="*.dart" excludes="demo.dart" />
+    <fileset dir="demos">
+      <include name="*.dart" />
+      <exclude name="demo.dart" />
+      <include name="racer/racer.dart" />
+    </fileset>
   </path>
 
   <macrodef name="dart_analyze">
@@ -78,9 +84,13 @@
   </macrodef>
 
   <!-- MAIN -->
-  <target name="default" depends="analyze, generate-JS, generate-doc" description="Analyze, generate JS and library's DartDoc." />
+  <target name="default"
+    depends="analyze, generate-JS, generate-doc"
+    description="Analyze, generate JS and library's DartDoc." />
 
-  <target name="analyze" description="Run dart_analyzer over library and all demos." depends="analyze-lib, analyze-demos, analyze-benchmarks" />
+  <target name="analyze"
+    depends="analyze-lib, analyze-demos, analyze-benchmarks"
+    description="Run dart_analyzer over library and all demos." />
 
   <target name="analyze-lib">
     <dart_analyze file="lib/box2d.dart" />
@@ -103,7 +113,9 @@
     <dartdoc file="lib/box2d.dart" outDir="doc" />
   </target>
 
-  <target name="generate-JS" depends="generate-JS-demos, generate-JS-benchmarks" description="Run dart2js on all demos and benchmarks." />
+  <target name="generate-JS"
+    depends="generate-JS-demos, generate-JS-benchmarks"
+    description="Run dart2js on all demos and benchmarks." />
 
   <target name="generate-JS-demos">
     <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
@@ -115,7 +127,8 @@
   </target>
 
   <target name="generate-JS-benchmarks">
-    <dart2js file="benchmarks/BenchmarkRunner.dart" withChecks="${withChecks}" />
+    <dart2js file="benchmarks/BenchmarkRunner.dart"
+      withChecks="${withChecks}" />
   </target>
 
 </project>
