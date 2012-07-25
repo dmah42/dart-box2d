@@ -68,7 +68,9 @@ class Demo {
 
   /** Advances the world forward by timestep seconds. */
   void step(num timestamp) {
+    final stopwatch = new Stopwatch.start();
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+    final int elapsedUs = stopwatch.elapsedInUs();
 
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -83,6 +85,9 @@ class Demo {
       ctx.font = '12pt monospace';
       ctx.fillText('FPS: ${fps.toStringAsFixed(2)}', 20, 40);
     }
+    ctx.setFillColor('red');
+    ctx.font = '10pt monospace';
+    ctx.fillText('world.step time: ${elapsedUs / 1000} ms', 620, 40);
     ++frameCount;
 
     window.requestAnimationFrame((num time) { step(time); });
