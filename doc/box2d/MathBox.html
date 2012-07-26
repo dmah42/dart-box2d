@@ -44,11 +44,26 @@ MathBox() { }
 <a href="../dart_core/num.html">num</a> <strong>clamp</strong>(<a href="../dart_core/num.html">num</a> a, <a href="../dart_core/num.html">num</a> low, <a href="../dart_core/num.html">num</a> high) <a class="anchor-link" href="#clamp"
               title="Permalink to MathBox.clamp">#</a></h4>
 <div class="doc">
-<p>Returns the closest value to 'a' that is in between 'low' and 'high'</p>
+<p>Returns the closest value to 
+<span class="param">a</span> that is in between 
+<span class="param">low</span> and 
+<span class="param">high</span></p>
 <pre class="source">
 static num clamp(num a, num low, num high) {
   return Math.max(low, Math.min(a, high));
 }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="degToRad">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>degToRad</strong>(<a href="../dart_core/num.html">num</a> deg) <a class="anchor-link" href="#degToRad"
+              title="Permalink to MathBox.degToRad">#</a></h4>
+<div class="doc">
+<p>Convert from 
+<span class="param">deg</span> degrees to radians.</p>
+<pre class="source">
+static num degToRad(num deg) =&gt; (Math.PI / 180.0) * deg;
 </pre>
 </div>
 </div>
@@ -80,15 +95,32 @@ static num distanceSquared(Vector v1, Vector v2) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="radToDeg">
+<span class="show-code">Code</span>
+<a href="../dart_core/num.html">num</a> <strong>radToDeg</strong>(<a href="../dart_core/num.html">num</a> rad) <a class="anchor-link" href="#radToDeg"
+              title="Permalink to MathBox.radToDeg">#</a></h4>
+<div class="doc">
+<p>Convert from 
+<span class="param">rad</span> radians to degrees.</p>
+<pre class="source">
+static num radToDeg(num rad) =&gt; (180.0 / Math.PI) * rad;
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="translateAndScale">
 <span class="show-code">Code</span>
 <a href="../dart_core/num.html">num</a> <strong>translateAndScale</strong>(<a href="../dart_core/num.html">num</a> val, <a href="../dart_core/num.html">num</a> fromMin, <a href="../dart_core/num.html">num</a> fromMax, <a href="../dart_core/num.html">num</a> toMin, <a href="../dart_core/num.html">num</a> toMax) <a class="anchor-link" href="#translateAndScale"
               title="Permalink to MathBox.translateAndScale">#</a></h4>
 <div class="doc">
-<p>Given a value within the range specified by fromMin and fromMax, returns a
-value with the same relative position in the range specified from toMin and
-toMax. For example, given a val of 2 in the "from range" of 0-4, and a
-"to range" of 10-20, would return 15.</p>
+<p>Given a value within the range specified by 
+<span class="param">fromMin</span> and 
+<span class="param">fromMax</span>,
+returns a value with the same relative position in the range specified
+from 
+<span class="param">toMin</span> and 
+<span class="param">toMax</span>. For example, given a 
+<span class="param">val</span> of 2 in the
+"from range" of 0-4, and a "to range" of 10-20, would return 15.</p>
 <pre class="source">
 static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
     num toMax) {
@@ -104,7 +136,7 @@ static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:45:07.509</div>
+          <div>This page generated at 2012-07-26 10:55:37.577</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

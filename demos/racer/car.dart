@@ -28,26 +28,26 @@ class Car {
     jointDef.upperAngle = 0.0;
     jointDef.localAnchorB.setZero();
 
-    _blTire = new Tire(world, maxForwardSpeed, maxBackwardSpeed,
-        backTireMaxDriveForce, backTireMaxLateralImpulse);
+    _blTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
+        _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _blTire._body;
     jointDef.localAnchorA.setCoords(-3.0, 0.75);
     world.createJoint(jointDef);
 
-    _brTire = new Tire(world, maxForwardSpeed, maxBackwardSpeed,
-        backTireMaxDriveForce, backTireMaxLateralImpulse);
+    _brTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
+        _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _brTire._body;
     jointDef.localAnchorA.setCoords(3.0, 0.75);
     world.createJoint(jointDef);
 
-    _flTire = new Tire(world, maxForwardSpeed, maxBackwardSpeed,
-        frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    _flTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
+        _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _flTire._body;
     jointDef.localAnchorA.setCoords(-3.0, 8.5);
     _flJoint = world.createJoint(jointDef);
 
-    _frTire = new Tire(world, maxForwardSpeed, maxBackwardSpeed,
-        frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    _frTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
+        _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _frTire._body;
     jointDef.localAnchorA.setCoords(3.0, 8.5);
     _frJoint = world.createJoint(jointDef);
@@ -67,20 +67,17 @@ class Car {
     _frTire.updateDrive(controlState);
   }
 
-  void update(int controlState) {
+  void update(num time, int controlState) {
     _updateFriction();
     _updateDrive(controlState);
 
     // Steering.
-    // TODO(dominich): const
-    final double lockAngle = MathBox.degToRad(35);
-    final double turnSpeedPerSec = MathBox.degToRad(160);
-    final double turnPerTimeStep = turnSpeedPerSec / 60.0;
     double desiredAngle = 0.0;
     switch (controlState & (ControlState.LEFT | ControlState.RIGHT)) {
-      case ControlState.LEFT: desiredAngle = lockAngle; break;
-      case ControlState.RIGHT: desiredAngle = -lockAngle; break;
+      case ControlState.LEFT: desiredAngle = _lockAngle; break;
+      case ControlState.RIGHT: desiredAngle = -_lockAngle; break;
     }
+    final double turnPerTimeStep = _turnSpeedPerSec * 1000 / time;
     final double angleNow = _flJoint.jointAngle;
     double angleToTurn = desiredAngle - angleNow;
     angleToTurn = MathBox.clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -89,15 +86,17 @@ class Car {
     _frJoint.setLimits(angle, angle);
   }
 
-  final double maxForwardSpeed = 250.0;
-  final double maxBackwardSpeed = -40.0;
-  final double backTireMaxDriveForce = 300.0;
-  final double frontTireMaxDriveForce = 500.0;
-  final double backTireMaxLateralImpulse = 8.5;
-  final double frontTireMaxLateralImpulse = 7.5;
+  final double _maxForwardSpeed = 250.0;
+  final double _maxBackwardSpeed = -40.0;
+  final double _backTireMaxDriveForce = 300.0;
+  final double _frontTireMaxDriveForce = 500.0;
+  final double _backTireMaxLateralImpulse = 8.5;
+  final double _frontTireMaxLateralImpulse = 7.5;
+
+  final double _lockAngle = (Math.PI / 180) * 35;
+  final double _turnSpeedPerSec = (Math.PI / 180) * 160;
 
   Body _body;
   Tire _blTire, _brTire, _flTire, _frTire;
   RevoluteJoint _flJoint, _frJoint;
-
 }

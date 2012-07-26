@@ -430,7 +430,9 @@ void setAsEdge(Vector v1, Vector v2) {
               title="Permalink to PolygonShape.setFrom">#</a></h4>
 <div class="doc">
 <p>Copy vertices. This assumes the vertices define a convex polygon.
-It is assumed that the exterior is the the right of each edge.</p>
+It is assumed that the exterior is the the right of each edge.
+TODO(dominich): Consider removing 
+<span class="param">count</span>.</p>
 <pre class="source">
 void setFrom(List&lt;Vector&gt; otherVertices, int count) {
   assert (2 &lt;= count &amp;&amp; count &lt;= Settings.MAX_POLYGON_VERTICES);
@@ -547,7 +549,7 @@ final List&lt;Vector&gt; vertices;
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:45:04.895</div>
+          <div>This page generated at 2012-07-26 10:55:35.066</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

@@ -1,13 +1,11 @@
 class Tire {
-  // I would use [this._maxForwardSpeed], etc, here but they can't start with
-  // '_'.
-  Tire(World world, double maxForwardSpeed, double maxBackwardSpeed,
-      double maxDriveForce, double maxLateralImpulse)
-      : _maxForwardSpeed = maxForwardSpeed,
-        _maxBackwardSpeed = maxBackwardSpeed,
-        _maxDriveForce = maxDriveForce,
-        _maxLateralImpulse = maxLateralImpulse,
-        _groundAreas = new List<GroundArea>(),
+  Tire(World world, this._maxForwardSpeed, this._maxBackwardSpeed,
+      this._maxDriveForce, this._maxLateralImpulse)
+      : //_maxForwardSpeed = maxForwardSpeed,
+        //_maxBackwardSpeed = maxBackwardSpeed,
+        //_maxDriveForce = maxDriveForce,
+        //_maxLateralImpulse = maxLateralImpulse,
+        _groundAreas = new Set<GroundArea>(),
         _worldLeft = new Vector(1.0, 0.0),
         _worldUp = new Vector(0.0, 1.0) {
     BodyDef def = new BodyDef();
@@ -24,41 +22,16 @@ class Tire {
   }
 
   void addGroundArea(GroundArea ga) {
-    if (_groundAreas.indexOf(ga) === -1) {
-      _groundAreas.add(ga);
-      _updateTraction();
-    }
+    // TODO: If http://dartbug.com/4210 is fixed, check the return value of add
+    // before calling _updateTraction().
+    _groundAreas.add(ga);
+    _updateTraction();
   }
 
   void removeGroundArea(GroundArea ga) {
-    final index = _groundAreas.indexOf(ga);
-    if (index !== -1) {
-      _groundAreas.removeRange(index, 1);
+    if (_groundAreas.remove(ga)) {
       _updateTraction();
     }
-  }
-
-  void _updateTraction() {
-    if (_groundAreas.isEmpty()) {
-      _currentTraction = 1.0;
-    } else {
-      _currentTraction = 0.0;
-      _groundAreas.forEach((element) {
-        _currentTraction = Math.max(_currentTraction, element.frictionModifier);
-      });
-    }
-  }
-
-  Vector get _lateralVelocity() {
-    final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
-    return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
-                                                  _body.linearVelocity));
-  }
-
-  Vector get _forwardVelocity() {
-    final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
-    return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
-                                                    _body.linearVelocity));
   }
 
   void updateFriction() {
@@ -112,17 +85,38 @@ class Tire {
     _body.applyTorque(desiredTorque);
   }
 
+  void _updateTraction() {
+    if (_groundAreas.isEmpty()) {
+      _currentTraction = 1.0;
+    } else {
+      _currentTraction = 0.0;
+      _groundAreas.forEach((element) {
+        _currentTraction = Math.max(_currentTraction, element.frictionModifier);
+      });
+    }
+  }
+
+  Vector get _lateralVelocity() {
+    final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
+    return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
+                                                  _body.linearVelocity));
+  }
+
+  Vector get _forwardVelocity() {
+    final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
+    return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
+                                                    _body.linearVelocity));
+  }
+
   Body _body;
   final double _maxForwardSpeed;
   final double _maxBackwardSpeed;
   final double _maxDriveForce;
   final double _maxLateralImpulse;
   double _currentTraction;
-  // This can't be a Set as GroundArea is not hashable. Handle uniqueness
-  // manually.
-  final List<GroundArea> _groundAreas;
+  final Set<GroundArea> _groundAreas;
 
+  // Cached Vectors to reduce unnecessary object creation.
   final Vector _worldLeft = null;
   final Vector _worldUp = null;
-
 }

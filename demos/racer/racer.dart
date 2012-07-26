@@ -17,9 +17,42 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super.withGravity(new Vector(0, 0), 2.5);
+  Racer() : super.withGravity(new Vector(0, 0), 2.5), _lastTime = 0;
 
   String get name() => null;
+
+  void initialize() {
+    _createGround();
+    _createBoundary();
+
+    _car = new Car(world);
+    _controlState = 0;
+
+    // Bind to keyboard events.
+    document.on.keyDown.add(_handleKeyDown);
+    document.on.keyUp.add(_handleKeyUp);
+
+    // Add ourselves as a collision listener.
+    world.contactListener = this;
+  }
+
+  void step(num time) {
+    _car.update(time - _lastTime, _controlState);
+    _lastTime = time;
+    super.step(time);
+  }
+ 
+  // ContactListener overrides.
+  void beginContact(Contact contact) {
+    _handleContact(contact, true);
+  }
+
+  void endContact(Contact contact) {
+    _handleContact(contact, false);
+  }
+
+  void preSolve(Contact contact, Manifold oldManifold) { }
+  void postSolve(Contact contact, ContactImpulse impulse) { }
 
   void _createGround() {
     BodyDef def = new BodyDef();
@@ -73,21 +106,6 @@ class Racer extends Demo implements ContactListener {
     boundaryFixture = boundaryBody.createFixture(fixtureDef);
   }
 
-  void initialize() {
-    _createGround();
-    _createBoundary();
-
-    _car = new Car(world);
-    _controlState = 0;
-
-    // Bind to keyboard events.
-    document.on.keyDown.add(_handleKeyDown);
-    document.on.keyUp.add(_handleKeyUp);
-
-    // Add ourselves as a collision listener.
-    world.contactListener = this;
-  }
-
   void _handleKeyDown(KeyboardEvent event) {
     switch (event.keyCode) {
       case 37: _controlState |= ControlState.LEFT; break;
@@ -122,14 +140,6 @@ class Racer extends Demo implements ContactListener {
     }
   }
 
-  void beginContact(Contact contact) {
-    _handleContact(contact, true);
-  }
-
-  void endContact(Contact contact) {
-    _handleContact(contact, false);
-  }
-
   void _tireVsGroundArea(Tire tire, GroundArea groundArea, bool began) {
     if (began) {
       tire.addGroundArea(groundArea);
@@ -138,17 +148,10 @@ class Racer extends Demo implements ContactListener {
     }
   }
 
-  void preSolve(Contact contact, Manifold oldManifold) { }
-  void postSolve(Contact contact, ContactImpulse impulse) { }
-
-  void step(num timestep) {
-    _car.update(_controlState);
-    super.step(timestep);
-  }
-
   int _controlState;
   Body _groundBody;
   Car _car;
+  num _lastTime;
 }
 
 main() {

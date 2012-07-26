@@ -78,12 +78,12 @@ class Demo {
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    if (this.name != null) {
+    if (this.name !== null) {
       ctx.setFillColor('black');
       ctx.font = '18pt monospace';
       ctx.fillText(this.name, 20, 20);
     }
-    if (fps != null) {
+    if (fps !== null) {
       ctx.setFillColor('red');
       ctx.font = '12pt monospace';
       ctx.fillText('FPS: ${fps.toStringAsFixed(2)}', 20, 40);

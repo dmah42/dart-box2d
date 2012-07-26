@@ -717,7 +717,7 @@ void drawJoint(Joint joint) {
 <pre class="source">
 void drawShape(Fixture fixture, Transform xf, Color3 color) {
   switch (fixture.type) {
-    case ShapeType.CIRCLE :
+    case ShapeType.CIRCLE:
       final CircleShape circle = fixture.shape;
 
       // Vector center = Mul(xf, circle.p);
@@ -733,26 +733,31 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
       break;
 
     case ShapeType.POLYGON:
-     final PolygonShape poly = fixture.shape;
-     int vertexCount = poly.vertexCount;
-     assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-     List&lt;Vector&gt; vertices =
-         new List&lt;Vector&gt;(vertexCount);
-     for (int i = 0; i &lt; vertexCount; i++) {
-       vertices[i] = new Vector();
-     }
+      final PolygonShape poly = fixture.shape;
+      int vertexCount = poly.vertexCount;
+      assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
+      List&lt;Vector&gt; vertices =
+          new List&lt;Vector&gt;(vertexCount);
+      for (int i = 0; i &lt; vertexCount; i++) {
+        vertices[i] = new Vector();
+      }
 
-     for (int i = 0; i &lt; vertexCount; ++i) {
-       assert(poly.vertices[i] != null);
-       assert(vertices[i] != null);
-       Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
-     }
+      for (int i = 0; i &lt; vertexCount; ++i) {
+        assert(poly.vertices[i] != null);
+        assert(vertices[i] != null);
+        Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
+      }
 
-     if (0 !== (_debugDraw.drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
-       _debugDraw.drawPolygon(vertices, vertexCount, color);
-     } else {
-       _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-     }
+      if (0 !== (_debugDraw.drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
+        _debugDraw.drawPolygon(vertices, vertexCount, color);
+      } else {
+        if (vertexCount &gt; 2) {
+          _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+        } else {
+          _debugDraw.drawPolygon(vertices, vertexCount, color);
+        }
+      }
+      break;
   }
 }
 </pre>
@@ -1532,7 +1537,7 @@ final WorldQueryWrapper wqwrapper;
         </div>
         
         <div class="footer">
-          <div>This page generated at 2012-07-21 17:45:06.798</div>
+          <div>This page generated at 2012-07-26 10:55:36.729</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>

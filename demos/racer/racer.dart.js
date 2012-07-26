@@ -42,13 +42,13 @@ $$.HashMapImplementation = {"":
   if (typeof length$ !== 'number') return this.forEach$1$bailout(1, f, length$);
   for (var i = 0; i < length$; ++i) {
     var key = $.index(this._keys, i);
-    !(key == null) && !(key === $.CTC4) && f.$call$2(key, $.index(this._values, i));
+    !(key == null) && !(key === $.CTC2) && f.$call$2(key, $.index(this._values, i));
   }
  },
  forEach$1$bailout: function(state, f, length$) {
   for (var i = 0; $.ltB(i, length$); ++i) {
     var key = $.index(this._keys, i);
-    !(key == null) && !(key === $.CTC4) && f.$call$2(key, $.index(this._values, i));
+    !(key == null) && !(key === $.CTC2) && f.$call$2(key, $.index(this._values, i));
   }
  },
  get$length: function() {
@@ -56,6 +56,18 @@ $$.HashMapImplementation = {"":
  },
  isEmpty$0: function() {
   return $.eq(this._numberOfEntries, 0);
+ },
+ remove$1: function(key) {
+  var index = this._probeForLookup$1(key);
+  if ($.geB(index, 0)) {
+    this._numberOfEntries = $.sub(this._numberOfEntries, 1);
+    var value = $.index(this._values, index);
+    $.indexSet(this._values, index, null);
+    $.indexSet(this._keys, index, $.CTC2);
+    this._numberOfDeleted = $.add(this._numberOfDeleted, 1);
+    return value;
+  }
+  return;
  },
  operator$index$1: function(key) {
   var index = this._probeForLookup$1(key);
@@ -96,7 +108,7 @@ $$.HashMapImplementation = {"":
   var t1 = $.index(this._keys, index);
   if (!(t1 == null)) {
     t1 = $.index(this._keys, index);
-    t1 = t1 === $.CTC4;
+    t1 = t1 === $.CTC2;
   } else t1 = true;
   if (t1) this._numberOfEntries = $.add(this._numberOfEntries, 1);
   $.indexSet(this._keys, index, key);
@@ -134,7 +146,7 @@ $$.HashMapImplementation = {"":
     t1 = oldKeys.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
     var t2 = oldKeys[i];
-    if (t2 == null || t2 === $.CTC4) continue;
+    if (t2 == null || t2 === $.CTC2) continue;
     t1 = oldValues.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
     var t3 = oldValues[i];
@@ -180,7 +192,7 @@ $$.HashMapImplementation = {"":
       this._values = t1;
       for (var i = 0; $.ltB(i, capacity); ++i) {
         var key = $.index(oldKeys, i);
-        if (key == null || key === $.CTC4) continue;
+        if (key == null || key === $.CTC2) continue;
         var value = $.index(oldValues, i);
         var newIndex = this._probeForAdding$1(key);
         $.indexSet(this._keys, newIndex, key);
@@ -223,7 +235,7 @@ $$.HashMapImplementation = {"":
       return insertionIndex;
     }
     if ($.eqB(t1, key)) return hash;
-    if (insertionIndex < 0 && $.CTC4 === t1) insertionIndex = hash;
+    if (insertionIndex < 0 && $.CTC2 === t1) insertionIndex = hash;
     var numberOfProbes0 = numberOfProbes + 1;
     hash = $.HashMapImplementation__nextProbe(hash, numberOfProbes, $.get$length(this._keys));
     if (hash !== (hash | 0)) return this._probeForAdding$1$bailout(3, key, numberOfProbes0, insertionIndex, hash, 0);
@@ -272,7 +284,7 @@ $$.HashMapImplementation = {"":
               return insertionIndex;
             }
             if ($.eqB(existingKey, key)) return hash;
-            if ($.ltB(insertionIndex, 0) && $.CTC4 === existingKey) insertionIndex = hash;
+            if ($.ltB(insertionIndex, 0) && $.CTC2 === existingKey) insertionIndex = hash;
             var numberOfProbes0 = numberOfProbes + 1;
             hash = $.HashMapImplementation__nextProbe(hash, numberOfProbes, $.get$length(this._keys));
           case 3:
@@ -321,6 +333,12 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   $.forEach(this._backingMap, new $.HashSetImplementation_forEach__(f));
  },
+ remove$1: function(value) {
+  var t1 = this._backingMap;
+  if (t1.containsKey$1(value) !== true) return false;
+  t1.remove$1(value);
+  return true;
+ },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
  },
@@ -361,7 +379,7 @@ $$.HashSetIterator = {"":
     var t3 = t1.length;
     if (t2 < 0 || t2 >= t3) throw $.ioore(t2);
     entry = t1[t2];
-  } while ((entry == null || entry === $.CTC4));
+  } while ((entry == null || entry === $.CTC2));
  },
  _advance$0$bailout: function(state, t1) {
   var length$ = $.get$length(t1);
@@ -371,7 +389,7 @@ $$.HashSetIterator = {"":
     this._nextValidIndex = t2;
     if ($.geB(t2, length$)) break;
     entry = $.index(t1, this._nextValidIndex);
-  } while ((entry == null || entry === $.CTC4));
+  } while ((entry == null || entry === $.CTC2));
  },
  next$0: function() {
   if (this.hasNext$0() !== true) throw $.captureStackTrace($.CTC1);
@@ -401,7 +419,7 @@ $$.HashSetIterator = {"":
   if (t1 !== (t1 | 0)) throw $.iae(t1);
   if (t1 < 0 || t1 >= t3) throw $.ioore(t1);
   t1 = t2[t1];
-  t1 === $.CTC4 && this._advance$0();
+  t1 === $.CTC2 && this._advance$0();
   t1 = this._nextValidIndex;
   if (typeof t1 !== 'number') return this.hasNext$0$bailout(3, t1, t2);
   return t1 < t2.length;
@@ -430,7 +448,7 @@ $$.HashSetIterator = {"":
       state = 0;
       if ($.geB(t1, $.get$length(t2))) return false;
       t1 = $.index(t2, this._nextValidIndex);
-      t1 === $.CTC4 && this._advance$0();
+      t1 === $.CTC2 && this._advance$0();
       t1 = this._nextValidIndex;
     case 3:
       state = 0;
@@ -489,6 +507,12 @@ $$.LinkedHashMapImplementation = {"":
   t1.index_10 = 0;
   $.forEach(this._lib1_list, new $.LinkedHashMapImplementation_getKeys__(list, t1));
   return list;
+ },
+ remove$1: function(key) {
+  var entry = this._map.remove$1(key);
+  if (entry == null) return;
+  entry.remove$0();
+  return entry.get$element().get$value();
  },
  operator$index$1: function(key) {
   var t1 = this._map;
@@ -586,13 +610,13 @@ $$._DoubleLinkedQueueEntrySentinel = {"":
  ["_element", "_next", "_previous"],
  super: "DoubleLinkedQueueEntry",
  get$element: function() {
-  throw $.captureStackTrace($.CTC2);
+  throw $.captureStackTrace($.CTC3);
  },
  _asNonSentinelEntry$0: function() {
   return;
  },
  remove$0: function() {
-  throw $.captureStackTrace($.CTC2);
+  throw $.captureStackTrace($.CTC3);
  },
  _DoubleLinkedQueueEntrySentinel$0: function() {
   this._link$2(this, this);
@@ -1053,25 +1077,11 @@ $$.ExpectException = {"":
 };
 
 $$.Racer = {"":
- ["_car", "_groundBody", "_controlState", "viewportScale", "fps", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
+ ["_lastTime", "_car", "_groundBody", "_controlState", "viewportScale", "fps", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
  super: "Demo",
- step$1: function(timestep) {
-  this._car.update$1(this._controlState);
-  $.Demo.prototype.step$1.call(this, timestep);
- },
- postSolve$2: function(contact, impulse) {
- },
- preSolve$2: function(contact, oldManifold) {
- },
  _tireVsGroundArea$3: function(tire, groundArea, began) {
   if (began === true) tire.addGroundArea$1(groundArea);
   else tire.removeGroundArea$1(groundArea);
- },
- endContact$1: function(contact) {
-  this._handleContact$2(contact, false);
- },
- beginContact$1: function(contact) {
-  this._handleContact$2(contact, true);
  },
  _handleContact$2: function(contact, began) {
   var fudA = contact.get$fixtureA().get$userData();
@@ -1115,16 +1125,6 @@ $$.Racer = {"":
   }
  },
  get$_handleKeyDown: function() { return new $.BoundClosure(this, '_handleKeyDown$1'); },
- initialize$0: function() {
-  this._createGround$0();
-  this._createBoundary$0();
-  var t1 = this.world;
-  this._car = $.Car$(t1);
-  this._controlState = 0;
-  $.add$1($.document().get$on().get$keyDown(), this.get$_handleKeyDown());
-  $.add$1($.document().get$on().get$keyUp(), this.get$_handleKeyUp());
-  t1.set$contactListener(this);
- },
  _createBoundary$0: function() {
   var def = $.BodyDef$();
   var boundaryBody = this.world.createBody$1(def);
@@ -1155,6 +1155,31 @@ $$.Racer = {"":
   fixtureDef.userData = $.GroundArea$(0.2, false);
   shape.setAsBoxWithCenterAndAngle$4(27, 15, $.Vector$(20, 40), $.MathBox_degToRad(-40));
   this._groundBody.createFixture$1(fixtureDef);
+ },
+ postSolve$2: function(contact, impulse) {
+ },
+ preSolve$2: function(contact, oldManifold) {
+ },
+ endContact$1: function(contact) {
+  this._handleContact$2(contact, false);
+ },
+ beginContact$1: function(contact) {
+  this._handleContact$2(contact, true);
+ },
+ step$1: function(time) {
+  this._car.update$2($.sub(time, this._lastTime), this._controlState);
+  this._lastTime = time;
+  $.Demo.prototype.step$1.call(this, time);
+ },
+ initialize$0: function() {
+  this._createGround$0();
+  this._createBoundary$0();
+  var t1 = this.world;
+  this._car = $.Car$(t1);
+  this._controlState = 0;
+  $.add$1($.document().get$on().get$keyDown(), this.get$_handleKeyDown());
+  $.add$1($.document().get$on().get$keyUp(), this.get$_handleKeyUp());
+  t1.set$contactListener(this);
  },
  get$name: function() {
   return;
@@ -1218,22 +1243,21 @@ $$.Demo = {"":
 };
 
 $$.Car = {"":
- ["_frJoint", "_flJoint", "_frTire", "_flTire", "_brTire", "_blTire", "_body?", "frontTireMaxLateralImpulse", "backTireMaxLateralImpulse", "frontTireMaxDriveForce", "backTireMaxDriveForce", "maxBackwardSpeed", "maxForwardSpeed"],
+ ["_frJoint", "_flJoint", "_frTire", "_flTire", "_brTire", "_blTire", "_body?", "_turnSpeedPerSec", "_lockAngle", "_frontTireMaxLateralImpulse", "_backTireMaxLateralImpulse", "_frontTireMaxDriveForce", "_backTireMaxDriveForce", "_maxBackwardSpeed", "_maxForwardSpeed"],
  super: "Object",
- update$1: function(controlState) {
+ update$2: function(time, controlState) {
   this._updateFriction$0();
   this._updateDrive$1(controlState);
-  var lockAngle = $.MathBox_degToRad(35);
-  var turnPerTimeStep = $.div($.MathBox_degToRad(160), 60.0);
   var desiredAngle = 0.0;
   switch ($.and(controlState, 12)) {
     case 4:
-      desiredAngle = lockAngle;
+      desiredAngle = this._lockAngle;
       break;
     case 8:
-      desiredAngle = $.neg(lockAngle);
+      desiredAngle = $.neg(this._lockAngle);
       break;
   }
+  var turnPerTimeStep = $.div($.mul(this._turnSpeedPerSec, 1000), time);
   var t1 = this._flJoint;
   var angleNow = t1.get$jointAngle();
   var angle = $.add(angleNow, $.MathBox_clamp($.sub(desiredAngle, angleNow), $.neg(turnPerTimeStep), turnPerTimeStep));
@@ -1302,10 +1326,10 @@ $$.Car = {"":
   jointDef.lowerAngle = 0.0;
   jointDef.upperAngle = 0.0;
   jointDef.localAnchorB.setZero$0();
-  t1 = this.maxForwardSpeed;
-  t2 = this.maxBackwardSpeed;
-  var t11 = this.backTireMaxDriveForce;
-  var t12 = this.backTireMaxLateralImpulse;
+  t1 = this._maxForwardSpeed;
+  t2 = this._maxBackwardSpeed;
+  var t11 = this._backTireMaxDriveForce;
+  var t12 = this._backTireMaxLateralImpulse;
   this._blTire = $.Tire$(world, t1, t2, t11, t12);
   jointDef.bodyB = this._blTire.get$_body();
   var t13 = jointDef.localAnchorA;
@@ -1315,8 +1339,8 @@ $$.Car = {"":
   jointDef.bodyB = this._brTire.get$_body();
   t13.setCoords$2(3.0, 0.75);
   world.createJoint$1(jointDef);
-  var t14 = this.frontTireMaxDriveForce;
-  var t15 = this.frontTireMaxLateralImpulse;
+  var t14 = this._frontTireMaxDriveForce;
+  var t15 = this._frontTireMaxLateralImpulse;
   this._flTire = $.Tire$(world, t1, t2, t14, t15);
   jointDef.bodyB = this._flTire.get$_body();
   t13.setCoords$2(-3.0, 8.5);
@@ -1329,14 +1353,35 @@ $$.Car = {"":
 };
 
 $$.GroundArea = {"":
- ["outOfCourse", "frictionModifier?"],
+ ["_hash", "outOfCourse", "frictionModifier?"],
  super: "Object",
+ hashCode$0: function() {
+  return this._hash;
+ },
  is$GroundArea: true
 };
 
 $$.Tire = {"":
  ["_worldUp", "_worldLeft", "_groundAreas", "_currentTraction=", "_maxLateralImpulse", "_maxDriveForce", "_maxBackwardSpeed", "_maxForwardSpeed", "_body?"],
  super: "Object",
+ get$_forwardVelocity: function() {
+  var t1 = this._body;
+  var currentForwardNormal = t1.getWorldVector$1(this._worldUp);
+  return currentForwardNormal.mulLocal$1($.Vector_dot(currentForwardNormal, t1.get$linearVelocity()));
+ },
+ get$_lateralVelocity: function() {
+  var t1 = this._body;
+  var currentRightNormal = t1.getWorldVector$1(this._worldLeft);
+  return currentRightNormal.mulLocal$1($.Vector_dot(currentRightNormal, t1.get$linearVelocity()));
+ },
+ _updateTraction$0: function() {
+  var t1 = this._groundAreas;
+  if ($.isEmpty(t1) === true) this._currentTraction = 1.0;
+  else {
+    this._currentTraction = 0.0;
+    $.forEach(t1, new $.Tire__updateTraction_anon(this));
+  }
+ },
  updateDrive$1: function(controlState) {
   switch ($.and(controlState, 3)) {
     case 1:
@@ -1381,41 +1426,14 @@ $$.Tire = {"":
   var dragForceMagnitude = -2 * currentForwardSpeed;
   t2.applyForce$2(currentForwardNormal.mulLocal$1($.mul(this._currentTraction, dragForceMagnitude)), t2.get$worldCenter());
  },
- get$_forwardVelocity: function() {
-  var t1 = this._body;
-  var currentForwardNormal = t1.getWorldVector$1(this._worldUp);
-  return currentForwardNormal.mulLocal$1($.Vector_dot(currentForwardNormal, t1.get$linearVelocity()));
- },
- get$_lateralVelocity: function() {
-  var t1 = this._body;
-  var currentRightNormal = t1.getWorldVector$1(this._worldLeft);
-  return currentRightNormal.mulLocal$1($.Vector_dot(currentRightNormal, t1.get$linearVelocity()));
- },
- _updateTraction$0: function() {
-  var t1 = this._groundAreas;
-  if ($.isEmpty(t1) === true) this._currentTraction = 1.0;
-  else {
-    this._currentTraction = 0.0;
-    $.forEach(t1, new $.Tire__updateTraction_anon(this));
-  }
- },
  removeGroundArea$1: function(ga) {
-  var t1 = this._groundAreas;
-  var index = $.indexOf$1(t1, ga);
-  if (!(index === -1)) {
-    $.removeRange(t1, index, 1);
-    this._updateTraction$0();
-  }
+  this._groundAreas.remove$1(ga) === true && this._updateTraction$0();
  },
  addGroundArea$1: function(ga) {
-  var t1 = this._groundAreas;
-  var t2 = $.indexOf$1(t1, ga);
-  if (t2 === -1) {
-    t1.push(ga);
-    this._updateTraction$0();
-  }
+  $.add$1(this._groundAreas, ga);
+  this._updateTraction$0();
  },
- Tire$5: function(world, maxForwardSpeed, maxBackwardSpeed, maxDriveForce, maxLateralImpulse) {
+ Tire$5: function(world, _maxForwardSpeed, _maxBackwardSpeed, _maxDriveForce, _maxLateralImpulse) {
   var def = $.BodyDef$();
   def.type = 2;
   this._body = world.createBody$1(def);
@@ -1510,9 +1528,19 @@ $$._EventsImpl = {"":
 $$._EventListenerListImpl = {"":
  ["_type?", "_ptr"],
  super: "Object",
+ _remove$2: function(listener, useCapture) {
+  this._ptr.$dom_removeEventListener$3(this._type, listener, useCapture);
+ },
  _add$2: function(listener, useCapture) {
   this._ptr.$dom_addEventListener$3(this._type, listener, useCapture);
  },
+ remove$2: function(listener, useCapture) {
+  this._remove$2(listener, useCapture);
+  return this;
+ },
+ remove$1: function(listener) {
+  return this.remove$2(listener,false)
+},
  add$2: function(listener, useCapture) {
   this._add$2(listener, useCapture);
   return this;
@@ -1602,9 +1630,6 @@ $$._ChildNodeListLazy = {"":
  getRange$2: function(start, rangeLength) {
   return $._NodeListWrapper$($._Lists_getRange(this, start, rangeLength, []));
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -1614,9 +1639,6 @@ $$._ChildNodeListLazy = {"":
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -1660,9 +1682,6 @@ $$._ChildNodeListLazy = {"":
 $$._ListWrapper = {"":
  [],
  super: "Object",
- removeRange$2: function(start, rangeLength) {
-  return $.removeRange(this._list, start, rangeLength);
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   return $.setRange$4(this._list, start, rangeLength, from, startFrom);
  },
@@ -1681,9 +1700,6 @@ $$._ListWrapper = {"":
  indexOf$2: function(element, start) {
   return $.indexOf$2(this._list, element, start);
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   return $.sort(this._list, compare);
  },
@@ -25458,12 +25474,28 @@ $$.Demo_initializeAnimation_anon = {"":
  }
 };
 
+$$.HashSetImplementation_forEach__ = {"":
+ ["f_0"],
+ super: "Closure",
+ $call$2: function(key, value) {
+  this.f_0.$call$1(key);
+ }
+};
+
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  super: "Closure",
  $call$1: function(element) {
   var counter = $.add(this.box_0.counter_1, 1);
   this.box_0.counter_1 = counter;
+ }
+};
+
+$$.HashSetImplementation_filter__ = {"":
+ ["result_1", "f_0"],
+ super: "Closure",
+ $call$2: function(key, value) {
+  this.f_0.$call$1(key) === true && $.add$1(this.result_1, key);
  }
 };
 
@@ -25481,22 +25513,6 @@ $$.BroadPhase_updatePairs_anon = {"":
  super: "Closure",
  $call$2: function(a, b) {
   return $.compareTo(a, b);
- }
-};
-
-$$.HashSetImplementation_forEach__ = {"":
- ["f_0"],
- super: "Closure",
- $call$2: function(key, value) {
-  this.f_0.$call$1(key);
- }
-};
-
-$$.HashSetImplementation_filter__ = {"":
- ["result_1", "f_0"],
- super: "Closure",
- $call$2: function(key, value) {
-  this.f_0.$call$1(key) === true && $.add$1(this.result_1, key);
  }
 };
 
@@ -25856,6 +25872,12 @@ $.typeNameInIE = function(obj) {
   return name$;
 };
 
+$.DoubleLinkedQueueEntry$ = function(e) {
+  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
+  t1.DoubleLinkedQueueEntry$1(e);
+  return t1;
+};
+
 $.constructorNameFallback = function(obj) {
   var constructor$ = (obj.constructor);
   var t1 = (typeof(constructor$));
@@ -25885,6 +25907,25 @@ $.NotImplementedException$ = function(message) {
 
 $.NullPointerException$ = function(functionName, arguments$) {
   return new $.NullPointerException(arguments$, functionName);
+};
+
+$._serializeMessage = function(message) {
+  if ($._globalState().get$needSerialization() === true) return $._JsSerializer$().traverse$1(message);
+  return $._JsCopier$().traverse$1(message);
+};
+
+$.clear = function(receiver) {
+  if ($.isJsArray(receiver) !== true) return receiver.clear$0();
+  $.set$length(receiver, 0);
+};
+
+$.Math_max = function(a, b) {
+  return $.ltB($.compareTo(a, b), 0) ? b : a;
+};
+
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return $.truncate((a) / (b));
+  return a.operator$tdiv$1(b);
 };
 
 $.AxisAlignedBox_testOverlap = function(a, b) {
@@ -25917,49 +25958,12 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
   return !t1;
 };
 
-$._serializeMessage = function(message) {
-  if ($._globalState().get$needSerialization() === true) return $._JsSerializer$().traverse$1(message);
-  return $._JsCopier$().traverse$1(message);
-};
-
-$.clear = function(receiver) {
-  if ($.isJsArray(receiver) !== true) return receiver.clear$0();
-  $.set$length(receiver, 0);
-};
-
-$.Math_max = function(a, b) {
-  return $.ltB($.compareTo(a, b), 0) ? b : a;
-};
-
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return $.truncate((a) / (b));
-  return a.operator$tdiv$1(b);
-};
-
 $.JSSyntaxRegExp$_globalVersionOf = function(other) {
   var t1 = other.get$pattern();
   var t2 = other.get$multiLine();
   t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
   t1.JSSyntaxRegExp$_globalVersionOf$1(other);
   return t1;
-};
-
-$.removeRange = function(receiver, start, length$) {
-  if ($.isJsArray(receiver) !== true) return receiver.removeRange$2(start, length$);
-  $.checkGrowable(receiver, 'removeRange');
-  if ($.eqB(length$, 0)) return;
-  $.checkNull(start);
-  $.checkNull(length$);
-  if (!((typeof start === 'number') && (start === (start | 0)))) throw $.captureStackTrace($.IllegalArgumentException$(start));
-  if (!((typeof length$ === 'number') && (length$ === (length$ | 0)))) throw $.captureStackTrace($.IllegalArgumentException$(length$));
-  if (length$ < 0) throw $.captureStackTrace($.IllegalArgumentException$(length$));
-  var receiverLength = (receiver.length);
-  if (start < 0 || start >= receiverLength) throw $.captureStackTrace($.IndexOutOfRangeException$(start));
-  var t1 = start + length$;
-  if (t1 > receiverLength) throw $.captureStackTrace($.IndexOutOfRangeException$(t1));
-  var t2 = receiverLength - length$;
-  $.Arrays_copy(receiver, t1, receiver, start, t2 - start);
-  $.set$length(receiver, t2);
 };
 
 $.JointEdge$ = function() {
@@ -26496,6 +26500,11 @@ $._browserPrefix = function() {
   return $._cachedBrowserPrefix;
 };
 
+$.filter = function(receiver, predicate) {
+  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
+  return $.Collections_filter(receiver, [], predicate);
+};
+
 $.ContactConstraint$ = function() {
   var t1 = $.ListFactory_List(2);
   $.setRuntimeTypeInfo(t1, ({E: 'ContactConstraintPoint'}));
@@ -26525,9 +26534,12 @@ $._MessageTraverser_isPrimitive = function(x) {
   return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
 };
 
-$.filter = function(receiver, predicate) {
-  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
-  return $.Collections_filter(receiver, [], predicate);
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $.Matrix22_mulMatrixAndVectorToOut = function(matrix, vector, out) {
@@ -26556,14 +26568,6 @@ $.DynamicTreeNode$_construct = function() {
 
 $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
-};
-
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
 };
 
 $.ExpectException$ = function(message) {
@@ -26631,7 +26635,7 @@ $.Racer$ = function() {
   var t1 = $.Vector$(0, 0);
   var t2 = $.ListFactory_List(null);
   $.setRuntimeTypeInfo(t2, ({E: 'Body'}));
-  t2 = new $.Racer(null, null, null, 2.5, null, null, null, null, null, null, null, t2);
+  t2 = new $.Racer(0, null, null, null, 2.5, null, null, null, null, null, null, null, t2);
   t2.Demo$withGravity$2(t1, 2.5);
   return t2;
 };
@@ -26646,23 +26650,17 @@ $.stringSplitUnchecked = function(receiver, pattern) {
   throw $.captureStackTrace('StringImplementation.split(Pattern) UNIMPLEMENTED');
 };
 
-$.DoubleLinkedQueueEntry$ = function(e) {
-  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
-  t1.DoubleLinkedQueueEntry$1(e);
-  return t1;
-};
-
 $.CanvasViewportTransform$ = function(extents, center) {
   var t1 = $.Vector$copy(extents);
   return new $.CanvasViewportTransform(20, $.Vector$copy(center), t1);
 };
 
-$.TimeStep$ = function() {
-  return new $.TimeStep(true, 0, 0, 0, 0, 0);
-};
-
 $.checkGrowable = function(list, reason) {
   if (!!(list.fixed$length)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
+};
+
+$.TimeStep$ = function() {
+  return new $.TimeStep(true, 0, 0, 0, 0, 0);
 };
 
 $._SpeechRecognitionEventsImpl$ = function(_ptr) {
@@ -26712,10 +26710,6 @@ $.isEmpty = function(receiver) {
   return receiver.isEmpty$0();
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
-};
-
 $.stringContainsUnchecked = function(receiver, other, startIndex) {
   if (typeof other === 'string') {
     var t1 = $.indexOf$2(receiver, other, startIndex);
@@ -26723,6 +26717,10 @@ $.stringContainsUnchecked = function(receiver, other, startIndex) {
   }
   if (typeof other === 'object' && other !== null && !!other.is$JSSyntaxRegExp) return other.hasMatch$1($.substring$1(receiver, startIndex));
   return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
 $.FrictionJoint$ = function(def) {
@@ -26847,7 +26845,9 @@ $.Maps_mapToString = function(m) {
 };
 
 $.GroundArea$ = function(frictionModifier, outOfCourse) {
-  return new $.GroundArea(outOfCourse, frictionModifier);
+  var t1 = $.GroundArea__lastHash;
+  $.GroundArea__lastHash = $.add(t1, 1);
+  return new $.GroundArea(t1, outOfCourse, frictionModifier);
 };
 
 $.Vector3_crossToOut = function(a, b, out) {
@@ -27001,12 +27001,12 @@ $.DistanceJoint$ = function(def) {
   return new $.DistanceJoint(0.0, 0.0, def.get$dampingRatio(), t14, t12, null, 0.0, t13, t11, t10, null, null, null, null, t7, t6, t5, t4, false, t3, t2, t9, t8, null, null, t1);
 };
 
-$.ge = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b);
-};
-
 $._TextTrackCueEventsImpl$ = function(_ptr) {
   return new $._TextTrackCueEventsImpl(_ptr);
+};
+
+$.ge = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b);
 };
 
 $.MatchImplementation$ = function(pattern, str, _start, _end, _groups) {
@@ -27097,12 +27097,12 @@ $._FrameSetElementEventsImpl$ = function(_ptr) {
   return new $._FrameSetElementEventsImpl(_ptr);
 };
 
-$.Tire$ = function(world, maxForwardSpeed, maxBackwardSpeed, maxDriveForce, maxLateralImpulse) {
-  var t1 = $.ListFactory_List(null);
+$.Tire$ = function(world, _maxForwardSpeed, _maxBackwardSpeed, _maxDriveForce, _maxLateralImpulse) {
+  var t1 = $.HashSetImplementation$();
   $.setRuntimeTypeInfo(t1, ({E: 'GroundArea'}));
   var t2 = $.Vector$(1.0, 0.0);
-  t1 = new $.Tire($.Vector$(0.0, 1.0), t2, t1, null, maxLateralImpulse, maxDriveForce, maxBackwardSpeed, maxForwardSpeed, null);
-  t1.Tire$5(world, maxForwardSpeed, maxBackwardSpeed, maxDriveForce, maxLateralImpulse);
+  t1 = new $.Tire($.Vector$(0.0, 1.0), t2, t1, null, _maxLateralImpulse, _maxDriveForce, _maxBackwardSpeed, _maxForwardSpeed, null);
+  t1.Tire$5(world, _maxForwardSpeed, _maxBackwardSpeed, _maxDriveForce, _maxLateralImpulse);
   return t1;
 };
 
@@ -27823,7 +27823,7 @@ $._BatteryManagerEventsImpl$ = function(_ptr) {
 };
 
 $.Car$ = function(world) {
-  var t1 = new $.Car(null, null, null, null, null, null, null, 7.5, 8.5, 500.0, 300.0, -40.0, 250.0);
+  var t1 = new $.Car(null, null, null, null, null, null, null, 2.792526803190927, 0.6108652381980153, 7.5, 8.5, 500.0, 300.0, -40.0, 250.0);
   t1.Car$1(world);
   return t1;
 };
@@ -27858,12 +27858,16 @@ $.ContactConstraintPoint$ = function() {
   return new $.ContactConstraintPoint(0, 0, 0, 0, 0, $.Vector$(0, 0), t2, t1);
 };
 
+$._MediaStreamEventsImpl$ = function(_ptr) {
+  return new $._MediaStreamEventsImpl(_ptr);
+};
+
 $.MathBox_clamp = function(a, low, high) {
   return $.Math_max(low, $.Math_min(a, high));
 };
 
-$._MediaStreamEventsImpl$ = function(_ptr) {
-  return new $._MediaStreamEventsImpl(_ptr);
+$.ContactRegister$ = function() {
+  return new $.ContactRegister(false, null);
 };
 
 $._NativeJsSendPort$ = function(_receivePort, isolateId) {
@@ -27887,8 +27891,8 @@ $.dynamicFunction = function(name$) {
   return methods;
 };
 
-$.ContactRegister$ = function() {
-  return new $.ContactRegister(false, null);
+$.div = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
 };
 
 $.checkString = function(value) {
@@ -27897,10 +27901,6 @@ $.checkString = function(value) {
     throw $.captureStackTrace($.IllegalArgumentException$(value));
   }
   return value;
-};
-
-$.div = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
 };
 
 $.MathBox_distance = function(v1, v2) {
@@ -27959,15 +27959,6 @@ $.set$length = function(receiver, newLength) {
   return newLength;
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
-};
-
 $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
@@ -27977,14 +27968,13 @@ $.gt$slow = function(a, b) {
   return a.operator$gt$1(b);
 };
 
-$.PositionSolverManifold$ = function() {
-  var t1 = $.Vector$(0, 0);
-  var t2 = $.Vector$(0, 0);
-  var t3 = $.Vector$(0, 0);
-  var t4 = $.Vector$(0, 0);
-  var t5 = $.Vector$(0, 0);
-  var t6 = $.Vector$(0, 0);
-  return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
 };
 
 $.DistanceProxy$ = function() {
@@ -27995,19 +27985,14 @@ $.DistanceProxy$ = function() {
   return t1;
 };
 
-$._Lists_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if ($.geB(startIndex, a.length)) return -1;
-  if ($.ltB(startIndex, 0)) startIndex = 0;
-  if (typeof startIndex !== 'number') return $._Lists_indexOf$bailout(2, a, element, startIndex, endIndex);
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i !== (i | 0)) throw $.iae(i);
-    var t1 = a.length;
-    if (i < 0 || i >= t1) throw $.ioore(i);
-    if ($.eqB(a[i], element)) return i;
-  }
-  return -1;
+$.PositionSolverManifold$ = function() {
+  var t1 = $.Vector$(0, 0);
+  var t2 = $.Vector$(0, 0);
+  var t3 = $.Vector$(0, 0);
+  var t4 = $.Vector$(0, 0);
+  var t5 = $.Vector$(0, 0);
+  var t6 = $.Vector$(0, 0);
+  return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
 $.hashCode = function(receiver) {
@@ -28027,17 +28012,6 @@ $.hashCode = function(receiver) {
 
 $._JsVisitedMap$ = function() {
   return new $._JsVisitedMap(null);
-};
-
-$.toString = function(value) {
-  if (typeof value == "object" && value !== null) {
-    if ($.isJsArray(value) === true) return $.Collections_collectionToString(value);
-    return value.toString$0();
-  }
-  if (value === 0 && (1 / value) < 0) return '-0.0';
-  if (value == null) return 'null';
-  if (typeof value == "function") return 'Closure';
-  return String(value);
 };
 
 $.makeLiteralMap = function(keyValuePairs) {
@@ -28060,25 +28034,25 @@ $.Math_min = function(a, b) {
   return b;
 };
 
+$._Lists_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if ($.geB(startIndex, a.length)) return -1;
+  if ($.ltB(startIndex, 0)) startIndex = 0;
+  if (typeof startIndex !== 'number') return $._Lists_indexOf$bailout(2, a, element, startIndex, endIndex);
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i !== (i | 0)) throw $.iae(i);
+    var t1 = a.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    if ($.eqB(a[i], element)) return i;
+  }
+  return -1;
+};
+
 $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
   }
-};
-
-$.removeLast = function(receiver) {
-  if ($.isJsArray(receiver) === true) {
-    $.checkGrowable(receiver, 'removeLast');
-    var t1 = $.get$length(receiver);
-    if (t1 === 0) throw $.captureStackTrace($.IndexOutOfRangeException$(-1));
-    return receiver.pop();
-  }
-  return receiver.removeLast$0();
-};
-
-$.forEach = function(receiver, f) {
-  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
-  return $.Collections_forEach(receiver, f);
 };
 
 $.startsWith = function(receiver, other) {
@@ -28093,6 +28067,11 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.S($.getTypeNameOf(obj));
 };
 
+$.forEach = function(receiver, f) {
+  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
+  return $.Collections_forEach(receiver, f);
+};
+
 $.Fixture$ = function() {
   var t1 = $.AxisAlignedBox$(null, null);
   var t2 = $.Filter$();
@@ -28100,8 +28079,39 @@ $.Fixture$ = function() {
   return new $.Fixture($.AxisAlignedBox$(null, null), t3, null, null, t2, null, null, null, null, null, null, null, t1);
 };
 
+$.toString = function(value) {
+  if (typeof value == "object" && value !== null) {
+    if ($.isJsArray(value) === true) return $.Collections_collectionToString(value);
+    return value.toString$0();
+  }
+  if (value === 0 && (1 / value) < 0) return '-0.0';
+  if (value == null) return 'null';
+  if (typeof value == "function") return 'Closure';
+  return String(value);
+};
+
 $._MessagePortEventsImpl$ = function(_ptr) {
   return new $._MessagePortEventsImpl(_ptr);
+};
+
+$.removeLast = function(receiver) {
+  if ($.isJsArray(receiver) === true) {
+    $.checkGrowable(receiver, 'removeLast');
+    var t1 = $.get$length(receiver);
+    if (t1 === 0) throw $.captureStackTrace($.IndexOutOfRangeException$(-1));
+    return receiver.pop();
+  }
+  return receiver.removeLast$0();
+};
+
+$.getFunctionForTypeNameOf = function() {
+  var t1 = (typeof(navigator));
+  if (!(t1 === 'object')) return $.typeNameInChrome;
+  var userAgent = (navigator.userAgent);
+  if ($.contains$1(userAgent, $.CTC4) === true) return $.typeNameInChrome;
+  if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
+  if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
+  return $.constructorNameFallback;
 };
 
 $.dynamicBind = function(obj, name$, methods, arguments$) {
@@ -28128,24 +28138,23 @@ $.dynamicBind = function(obj, name$, methods, arguments$) {
   return method.apply(obj, arguments$);
 };
 
+$.ContactID$ = function() {
+  return new $.ContactID($.Features$());
+};
+
 $._Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
   }
 };
 
-$.getFunctionForTypeNameOf = function() {
-  var t1 = (typeof(navigator));
-  if (!(t1 === 'object')) return $.typeNameInChrome;
-  var userAgent = (navigator.userAgent);
-  if ($.contains$1(userAgent, $.CTC3) === true) return $.typeNameInChrome;
-  if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
-  if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
-  return $.constructorNameFallback;
+$.DistanceOutput$ = function() {
+  var t1 = $.Vector$(0, 0);
+  return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
 };
 
-$.ContactID$ = function() {
-  return new $.ContactID($.Features$());
+$._ElementEventsImpl$ = function(_ptr) {
+  return new $._ElementEventsImpl(_ptr);
 };
 
 $.World$ = function(gravity, doSleep, argPool) {
@@ -28171,13 +28180,9 @@ $.World$ = function(gravity, doSleep, argPool) {
   return t1;
 };
 
-$.DistanceOutput$ = function() {
-  var t1 = $.Vector$(0, 0);
-  return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
-};
-
-$._ElementEventsImpl$ = function(_ptr) {
-  return new $._ElementEventsImpl(_ptr);
+$.xor = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
+  return a.operator$xor$1(b);
 };
 
 $.index = function(a, index) {
@@ -28186,17 +28191,6 @@ $.index = function(a, index) {
     if (key === index && key < (a.length)) return a[key];
   }
   return $.index$slow(a, index);
-};
-
-$.xor = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
-  return a.operator$xor$1(b);
-};
-
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.Math_sin = function(x) {
@@ -28212,12 +28206,18 @@ $.MathNatives_sin = function(value) {
   return Math.sin($.checkNum(value));
 };
 
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.ListFactory_List = function(length$) {
   return $.Primitives_newList(length$);
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
 };
 
 $._XMLHttpRequestUploadEventsImpl$ = function(_ptr) {
@@ -28254,16 +28254,6 @@ $.PolygonShape$copy = function(other) {
   return t1;
 };
 
-$.indexOf$1 = function(receiver, element) {
-  if ($.isJsArray(receiver) === true) return $.Arrays_indexOf(receiver, element, 0, (receiver.length));
-  if (typeof receiver === 'string') {
-    $.checkNull(element);
-    if (!(typeof element === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(element));
-    return receiver.indexOf(element);
-  }
-  return receiver.indexOf$1(element);
-};
-
 $.StackOverflowException$ = function() {
   return new $.StackOverflowException();
 };
@@ -28296,12 +28286,6 @@ $.div$slow = function(a, b) {
 $.StringBufferImpl$ = function(content$) {
   var t1 = new $.StringBufferImpl(null, null);
   t1.StringBufferImpl$1(content$);
-  return t1;
-};
-
-$.Position$ = function() {
-  var t1 = new $.Position(null, null);
-  t1.Position$0();
   return t1;
 };
 
@@ -28366,22 +28350,22 @@ $.Vector_dot = function(one, two) {
   return $.add($.mul(one.get$x(), two.get$x()), $.mul(one.get$y(), two.get$y()));
 };
 
+$.document = function() {
+  return document;;
+};
+
 $.SimplexVertex$ = function() {
   var t1 = $.Vector$(0, 0);
   var t2 = $.Vector$(0, 0);
   return new $.SimplexVertex(0, 0, 0, $.Vector$(0, 0), t2, t1);
 };
 
-$.document = function() {
-  return document;;
+$._FileWriterEventsImpl$ = function(_ptr) {
+  return new $._FileWriterEventsImpl(_ptr);
 };
 
 $.Vector3_dot = function(a, b) {
   return $.add($.add($.mul(a.get$x(), b.get$x()), $.mul(a.get$y(), b.get$y())), $.mul(a.get$z(), b.get$z()));
-};
-
-$._FileWriterEventsImpl$ = function(_ptr) {
-  return new $._FileWriterEventsImpl(_ptr);
 };
 
 $.shl = function(a, b) {
@@ -28431,6 +28415,12 @@ $.unwrapException = function(ex) {
     if (typeof message === 'string' && message === 'too much recursion') return $.StackOverflowException$();
   }
   return ex;
+};
+
+$.Position$ = function() {
+  var t1 = new $.Position(null, null);
+  t1.Position$0();
+  return t1;
 };
 
 $.ceil = function(receiver) {
@@ -29104,12 +29094,13 @@ Isolate.makeConstantList = function(list) {
 };
 $.CTC = Isolate.makeConstantList([]);
 $.CTC5 = new Isolate.$isolateProperties.Object();
-$.CTC4 = new Isolate.$isolateProperties._DeletedKeySentinel();
-$.CTC3 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
+$.CTC2 = new Isolate.$isolateProperties._DeletedKeySentinel();
+$.CTC4 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
 $.CTC0 = new Isolate.$isolateProperties.NullPointerException(Isolate.$isolateProperties.CTC, null);
 $.CTC1 = new Isolate.$isolateProperties.NoMoreElementsException();
-$.CTC2 = new Isolate.$isolateProperties.EmptyQueueException();
+$.CTC3 = new Isolate.$isolateProperties.EmptyQueueException();
 $.TimeOfImpact_toiCalls = null;
+$.GroundArea__lastHash = 0;
 $._getTypeNameOf = null;
 $._cachedBrowserPrefix = null;
 $.TimeOfImpact_toiMaxRootIters = null;
@@ -29151,6 +29142,9 @@ $.defineProperty(Object.prototype, 'is$List', function() { return false; });
 $.defineProperty(Object.prototype, 'is$Map', function() { return false; });
 $.defineProperty(Object.prototype, 'toString$0', function() { return $.toStringForNativeObject(this); });
 $.$defineNativeClass('AbstractWorker', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29198,6 +29192,9 @@ $.$defineNativeClass('HTMLBRElement', [], {
 });
 
 $.$defineNativeClass('BatteryManager', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29343,6 +29340,9 @@ $.$defineNativeClass('ConvolverNode', [], {
 });
 
 $.$defineNativeClass('DOMApplicationCache', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29385,9 +29385,6 @@ $.$defineNativeClass('DOMStringList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29400,9 +29397,6 @@ $.$defineNativeClass('DOMStringList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -29441,6 +29435,9 @@ $.$defineNativeClass('DOMTokenList', ["length?"], {
  toString$0: function() {
   return this.toString();
  },
+ remove$1: function(token) {
+  return this.remove(token);
+ },
  contains$1: function(token) {
   return this.contains(token);
  },
@@ -29477,6 +29474,9 @@ $.$defineNativeClass('DedicatedWorkerContext', [], {
 });
 
 $.$defineNativeClass('DeprecatedPeerConnection', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29517,6 +29517,13 @@ $.$defineNativeClass('HTMLEmbedElement', ["width!", "type=", "height!"], {
 });
 
 $.$defineNativeClass('Entry', [], {
+ remove$2: function(successCallback, errorCallback) {
+  return this.remove($.convertDartClosureToJS(successCallback, 0),$.convertDartClosureToJS(errorCallback, 1));
+ },
+ remove$1: function(successCallback) {
+  successCallback = $.convertDartClosureToJS(successCallback, 0);
+  return this.remove(successCallback);
+},
  moveTo$4: function(parent, name, successCallback, errorCallback) {
   return this.moveTo(parent,name,$.convertDartClosureToJS(successCallback, 1),$.convertDartClosureToJS(errorCallback, 1));
  },
@@ -29550,6 +29557,9 @@ $.$defineNativeClass('EventException', [], {
 });
 
 $.$defineNativeClass('EventSource', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29559,6 +29569,13 @@ $.$defineNativeClass('EventSource', [], {
 });
 
 $.$defineNativeClass('EventTarget', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  if (Object.getPrototypeOf(this).hasOwnProperty('$dom_removeEventListener$3')) {
+    return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+  } else {
+    return Object.prototype.$dom_removeEventListener$3.call(this, type, listener, useCapture);
+  }
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   if (Object.getPrototypeOf(this).hasOwnProperty('$dom_addEventListener$3')) {
     return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
@@ -29594,9 +29611,6 @@ $.$defineNativeClass('FileList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29609,9 +29623,6 @@ $.$defineNativeClass('FileList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -29647,6 +29658,9 @@ $.$defineNativeClass('FileList', ["length?"], {
 });
 
 $.$defineNativeClass('FileReader', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29656,6 +29670,9 @@ $.$defineNativeClass('FileReader', [], {
 });
 
 $.$defineNativeClass('FileWriter', ["position?", "length?"], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29671,9 +29688,6 @@ $.$defineNativeClass('Float32Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29686,9 +29700,6 @@ $.$defineNativeClass('Float32Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -29728,9 +29739,6 @@ $.$defineNativeClass('Float64Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29743,9 +29751,6 @@ $.$defineNativeClass('Float64Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -29803,9 +29808,6 @@ $.$defineNativeClass('HTMLCollection', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29818,9 +29820,6 @@ $.$defineNativeClass('HTMLCollection', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -29856,6 +29855,9 @@ $.$defineNativeClass('HTMLCollection', ["length?"], {
 });
 
 $.$defineNativeClass('HTMLOptionsCollection', [], {
+ remove$1: function(index) {
+  return this.remove(index);
+ },
  set$length: function(value) {
   this.length = value;;
  },
@@ -29882,6 +29884,9 @@ $.$defineNativeClass('IDBCursorWithValue', ["value?"], {
 });
 
 $.$defineNativeClass('IDBDatabase', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29920,6 +29925,13 @@ $.$defineNativeClass('IDBObjectStore', [], {
 });
 
 $.$defineNativeClass('IDBRequest', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  if (Object.getPrototypeOf(this).hasOwnProperty('$dom_removeEventListener$3')) {
+    return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+  } else {
+    return Object.prototype.$dom_removeEventListener$3.call(this, type, listener, useCapture);
+  }
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   if (Object.getPrototypeOf(this).hasOwnProperty('$dom_addEventListener$3')) {
     return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
@@ -29937,6 +29949,9 @@ $.$defineNativeClass('IDBRequest', [], {
 });
 
 $.$defineNativeClass('IDBTransaction', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29946,6 +29961,9 @@ $.$defineNativeClass('IDBTransaction', [], {
 });
 
 $.$defineNativeClass('IDBVersionChangeRequest', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -29972,9 +29990,6 @@ $.$defineNativeClass('Int16Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -29987,9 +30002,6 @@ $.$defineNativeClass('Int16Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30029,9 +30041,6 @@ $.$defineNativeClass('Int32Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30044,9 +30053,6 @@ $.$defineNativeClass('Int32Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30086,9 +30092,6 @@ $.$defineNativeClass('Int8Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30101,9 +30104,6 @@ $.$defineNativeClass('Int8Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30140,6 +30140,9 @@ $.$defineNativeClass('Int8Array', ["length?"], {
 });
 
 $.$defineNativeClass('JavaScriptAudioNode', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30161,6 +30164,9 @@ $.$defineNativeClass('HTMLLinkElement', ["type="], {
 });
 
 $.$defineNativeClass('LocalMediaStream', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  }
@@ -30176,6 +30182,9 @@ $.$defineNativeClass('HTMLMarqueeElement', ["width!", "height!"], {
 });
 
 $.$defineNativeClass('MediaController', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  }
@@ -30191,9 +30200,6 @@ $.$defineNativeClass('MediaList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30206,9 +30212,6 @@ $.$defineNativeClass('MediaList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30244,6 +30247,13 @@ $.$defineNativeClass('MediaList', ["length?"], {
 });
 
 $.$defineNativeClass('MediaStream', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  if (Object.getPrototypeOf(this).hasOwnProperty('$dom_removeEventListener$3')) {
+    return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+  } else {
+    return Object.prototype.$dom_removeEventListener$3.call(this, type, listener, useCapture);
+  }
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   if (Object.getPrototypeOf(this).hasOwnProperty('$dom_addEventListener$3')) {
     return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
@@ -30269,6 +30279,9 @@ $.$defineNativeClass('MessageEvent', ["ports?"], {
 });
 
 $.$defineNativeClass('MessagePort', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  postMessage$2: function(message, messagePorts) {
   return this.postMessage(message,messagePorts);
  },
@@ -30296,9 +30309,6 @@ $.$defineNativeClass('NamedNodeMap', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30311,9 +30321,6 @@ $.$defineNativeClass('NamedNodeMap', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30354,6 +30361,9 @@ $.$defineNativeClass('Navigator', ["userAgent?"], {
 $.$defineNativeClass('Node', [], {
  $dom_replaceChild$2: function(newChild, oldChild) {
   return this.replaceChild(newChild,oldChild);
+ },
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
  $dom_removeChild$1: function(oldChild) {
   return this.removeChild(oldChild);
@@ -30401,9 +30411,6 @@ $.$defineNativeClass('NodeList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._NodeListWrapper$($._Lists_getRange(this, start, rangeLength, []));
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30416,9 +30423,6 @@ $.$defineNativeClass('NodeList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30459,6 +30463,9 @@ $.$defineNativeClass('NodeList', ["length?"], {
 });
 
 $.$defineNativeClass('Notification', ["tag?"], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30486,6 +30493,9 @@ $.$defineNativeClass('HTMLParamElement', ["value=", "type="], {
 });
 
 $.$defineNativeClass('PeerConnection00', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30801,6 +30811,9 @@ $.$defineNativeClass('SpeechInputResultList', ["length?"], {
 });
 
 $.$defineNativeClass('SpeechRecognition', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30818,6 +30831,9 @@ $.$defineNativeClass('SpeechRecognitionResultList', ["length?"], {
 $.$defineNativeClass('Storage', [], {
  $dom_setItem$2: function(key, data) {
   return this.setItem(key,data);
+ },
+ $dom_removeItem$1: function(key) {
+  return this.removeItem(key);
  },
  $dom_key$1: function(index) {
   return this.key(index);
@@ -30858,6 +30874,11 @@ $.$defineNativeClass('Storage', [], {
  clear$0: function() {
   return this.$dom_clear$0();
  },
+ remove$1: function(key) {
+  var value = this.operator$index$1(key);
+  this.$dom_removeItem$1(key);
+  return value;
+ },
  operator$indexSet$2: function(key, value) {
   return this.$dom_setItem$2(key, value);
  },
@@ -30887,9 +30908,6 @@ $.$defineNativeClass('StyleSheetList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -30902,9 +30920,6 @@ $.$defineNativeClass('StyleSheetList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -30952,6 +30967,9 @@ $.$defineNativeClass('HTMLTextAreaElement', ["value=", "type?"], {
 });
 
 $.$defineNativeClass('TextTrack', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30961,6 +30979,9 @@ $.$defineNativeClass('TextTrack', [], {
 });
 
 $.$defineNativeClass('TextTrackCue', ["text!", "position?", "id?"], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30973,6 +30994,9 @@ $.$defineNativeClass('TextTrackCueList', ["length?"], {
 });
 
 $.$defineNativeClass('TextTrackList', ["length?"], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -30988,9 +31012,6 @@ $.$defineNativeClass('TouchList', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -31003,9 +31024,6 @@ $.$defineNativeClass('TouchList', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -31054,9 +31072,6 @@ $.$defineNativeClass('Uint16Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -31069,9 +31084,6 @@ $.$defineNativeClass('Uint16Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -31111,9 +31123,6 @@ $.$defineNativeClass('Uint32Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -31126,9 +31135,6 @@ $.$defineNativeClass('Uint32Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -31168,9 +31174,6 @@ $.$defineNativeClass('Uint8Array', ["length?"], {
  getRange$2: function(start, rangeLength) {
   return $._Lists_getRange(this, start, rangeLength, []);
  },
- removeRange$2: function(start, rangeLength) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
- },
  setRange$4: function(start, rangeLength, from, startFrom) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
  },
@@ -31183,9 +31186,6 @@ $.$defineNativeClass('Uint8Array', ["length?"], {
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
  },
- indexOf$1: function(element) {
-  return this.indexOf$2(element,0)
-},
  sort$1: function(compare) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
  },
@@ -31233,6 +31233,9 @@ $.$defineNativeClass('WebGLActiveInfo', ["type?"], {
 });
 
 $.$defineNativeClass('WebSocket', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -31250,6 +31253,9 @@ $.$defineNativeClass('DOMWindow', ["parent?", "navigator?", "length?"], {
  },
  setInterval$2: function(handler, timeout) {
   return this.setInterval($.convertDartClosureToJS(handler, 0),timeout);
+ },
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
  moveTo$2: function(x, y) {
   return this.moveTo(x,y);
@@ -31304,6 +31310,9 @@ $.$defineNativeClass('WorkerContext', ["navigator?"], {
  setInterval$2: function(handler, timeout) {
   return this.setInterval($.convertDartClosureToJS(handler, 0),timeout);
  },
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -31326,6 +31335,9 @@ $.$defineNativeClass('WorkerNavigator', ["userAgent?"], {
 });
 
 $.$defineNativeClass('XMLHttpRequest', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -31344,6 +31356,9 @@ $.$defineNativeClass('XMLHttpRequestProgressEvent', ["position?"], {
 });
 
 $.$defineNativeClass('XMLHttpRequestUpload', [], {
+ $dom_removeEventListener$3: function(type, listener, useCapture) {
+  return this.removeEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },

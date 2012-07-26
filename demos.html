@@ -19,7 +19,8 @@
         'CircleStress',
         'DominoTest',
         'DominoTower',
-        'FrictionJointTest'
+        'FrictionJointTest',
+        'racer/racer'
       ];
 
       function getQueryVariable(variable) {
@@ -38,10 +39,18 @@
       var demo = getQueryVariable('demo');
       if (demo && demos.indexOf(demo) != -1) {
         console.log('Loading ' + demo);
-        var script = document.createElement('script');
-        script.setAttribute('type', 'application/dart');
-        script.setAttribute('src', 'demos/' + demo + '.dart');
-        document.body.appendChild(script);
+        // HACK HACK HACK
+        // What we really should do is set up some metadata for each demo so we
+        // set the header text and background color, etc.
+        // https://code.google.com/p/dartbox2d/issues/detail?id=15
+        if (demo === 'racer/racer')
+          window.location = 'demos/racer/racer.html';
+        else {
+          var script = document.createElement('script');
+          script.setAttribute('type', 'application/dart');
+          script.setAttribute('src', 'demos/' + demo + '.dart');
+          document.body.appendChild(script);
+        }
       } else {
         console.log('Creating menu');
         document.body.appendChild(document.createTextNode('Choose a demo:'));
@@ -54,12 +63,6 @@
           item.appendChild(link);
           menu.appendChild(item);
         }
-        var item = document.createElement('li');
-        var link = document.createElement('a');
-        link.setAttribute('href', 'demos/racer/racer.html');
-        link.appendChild(document.createTextNode('Racer'));
-        item.appendChild(link);
-        menu.appendChild(item);
         document.body.appendChild(menu);
       }
     </script>
