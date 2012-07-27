@@ -17,7 +17,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super.withGravity(new Vector(0, 0), 2.5), _lastTime = 0;
+  Racer() : super(new Vector(0, 0), 2.5), _lastTime = 0;
 
   String get name() => null;
 

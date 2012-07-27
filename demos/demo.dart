@@ -59,15 +59,10 @@ class Demo {
   // parameters are introduced.
   num viewportScale;
 
-  Demo()
-      : this.withGravity(new Vector(0, GRAVITY), _VIEWPORT_SCALE);
-
-  Demo.withViewportScale(num viewportScale)
-      : this.withGravity(new Vector(0, GRAVITY), viewportScale);
-
-  Demo.withGravity(Vector gravity, this.viewportScale)
+  Demo([Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
       : bodies = new List<Body>() {
     bool doSleep = true;
+    if (null === gravity) gravity = new Vector(0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 

@@ -1,11 +1,7 @@
 class Tire {
   Tire(World world, this._maxForwardSpeed, this._maxBackwardSpeed,
       this._maxDriveForce, this._maxLateralImpulse)
-      : //_maxForwardSpeed = maxForwardSpeed,
-        //_maxBackwardSpeed = maxBackwardSpeed,
-        //_maxDriveForce = maxDriveForce,
-        //_maxLateralImpulse = maxLateralImpulse,
-        _groundAreas = new Set<GroundArea>(),
+      : _groundAreas = new Set<GroundArea>(),
         _worldLeft = new Vector(1.0, 0.0),
         _worldUp = new Vector(0.0, 1.0) {
     BodyDef def = new BodyDef();
@@ -62,7 +58,8 @@ class Tire {
     }
 
     Vector currentForwardNormal = _body.getWorldVector(new Vector(0.0, 1.0));
-    final double currentSpeed = Vector.dot(_forwardVelocity, currentForwardNormal);
+    final double currentSpeed =
+        Vector.dot(_forwardVelocity, currentForwardNormal);
     double force = 0.0;
     if (desiredSpeed < currentSpeed) {
       force = -_maxDriveForce;

@@ -1253,7 +1253,8 @@ $$.Demo = {"":
   this.frameCount = $.add(t1, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
- Demo$withGravity$2: function(gravity, viewportScale) {
+ Demo$2: function(gravity, viewportScale) {
+  if (null == gravity) gravity = $.Vector$(0, -10);
   this.world = $.World$(gravity, true, $.DefaultWorldPool$());
  }
 };
@@ -19605,15 +19606,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
+$.regExpMatchStart = function(m) {
+  return m.index;
+};
+
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
-};
-
-$.regExpMatchStart = function(m) {
-  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -20277,15 +20278,15 @@ $.Collections_filter = function(source, destination, f) {
   return destination;
 };
 
+$.or = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
+  return a.operator$or$1(b);
+};
+
 $.DoubleLinkedQueueEntry$ = function(e) {
   var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
   t1.DoubleLinkedQueueEntry$1(e);
   return t1;
-};
-
-$.or = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
-  return a.operator$or$1(b);
 };
 
 $.DefaultWorldPool$ = function() {
@@ -20961,12 +20962,11 @@ $._Device_userAgent = function() {
 };
 
 $.BallCage$ = function() {
-  var t1 = $.Vector$(0, -10);
-  var t2 = $.ListFactory_List(null);
-  $.setRuntimeTypeInfo(t2, ({E: 'Body'}));
-  t2 = new $.BallCage(10, null, null, null, null, null, null, null, t2);
-  t2.Demo$withGravity$2(t1, 10);
-  return t2;
+  var t1 = $.ListFactory_List(null);
+  $.setRuntimeTypeInfo(t1, ({E: 'Body'}));
+  t1 = new $.BallCage(10, null, null, null, null, null, null, null, t1);
+  t1.Demo$2(null, 10);
+  return t1;
 };
 
 $.Distance$_construct = function() {

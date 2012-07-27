@@ -1237,7 +1237,8 @@ $$.Demo = {"":
   this.frameCount = $.add(t1, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
- Demo$withGravity$2: function(gravity, viewportScale) {
+ Demo$2: function(gravity, viewportScale) {
+  if (null == gravity) gravity = $.Vector$(0, -10);
   this.world = $.World$(gravity, true, $.DefaultWorldPool$());
  }
 };
@@ -26636,7 +26637,7 @@ $.Racer$ = function() {
   var t2 = $.ListFactory_List(null);
   $.setRuntimeTypeInfo(t2, ({E: 'Body'}));
   t2 = new $.Racer(0, null, null, null, 2.5, null, null, null, null, null, null, null, t2);
-  t2.Demo$withGravity$2(t1, 2.5);
+  t2.Demo$2(t1, 2.5);
   return t2;
 };
 
