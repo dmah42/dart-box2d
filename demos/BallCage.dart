@@ -26,8 +26,6 @@ class CollisionListener implements ContactListener {
 }
 
 class BallCage extends Demo {
-  static final String NAME = "Ball Cage";
-
   /** Starting position of ball cage in the world. */
   static final num START_X = -20;
   static final num START_Y = -20;
@@ -39,7 +37,7 @@ class BallCage extends Demo {
   static final num ACTIVE_BALL_RADIUS = 1;
 
   /** Constructs a new BallCage. */
-  BallCage() : super() { }
+  BallCage() : super("Ball cage") { }
 
   /** Entrypoint. */
   static void main() {
@@ -48,8 +46,6 @@ class BallCage extends Demo {
     cage.initializeAnimation();
     cage.runAnimation();
   }
-
-  String get name() => NAME;
 
   void initialize() {
     // Define the circle shape.

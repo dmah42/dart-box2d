@@ -18,8 +18,6 @@
 #source('demo.dart');
 
 class CircleStress extends Demo {
-  static final String NAME = "Circle Stress";
-
   /** The joint used to churn the balls around. */
   RevoluteJoint _joint;
 
@@ -33,7 +31,7 @@ class CircleStress extends Demo {
   static final int LOAD_SIZE = 20;
 
   /** Construct a new Circle Stress Demo. */
-  CircleStress() : super() { }
+  CircleStress() : super("Circle stress") { }
 
   /** Entrypoint. */
   static void main() {
@@ -42,10 +40,6 @@ class CircleStress extends Demo {
     stress.initializeAnimation();
     stress.viewport.scale = _MY_VIEWPORT_SCALE;
     stress.runAnimation();
-  }
-
-  String get name() {
-    return NAME;
   }
 
   /** Creates all bodies. */

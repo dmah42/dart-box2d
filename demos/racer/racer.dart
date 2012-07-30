@@ -28,12 +28,12 @@ class Racer extends Demo implements ContactListener {
     final racer = new Racer();
     racer.initialize();
     racer.initializeAnimation();
+    document.body.nodes.add(
+        new Element.html("<p>Use the arrow keys to drive the car.</p>"));
     racer.runAnimation();
   }
 
-  Racer() : super(new Vector(0, 0), 2.5), _lastTime = 0;
-
-  String get name() => null;
+  Racer() : super("Racer", new Vector(0, 0), 2.5), _lastTime = 0;
 
   void initialize() {
     _createGround();

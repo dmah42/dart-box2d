@@ -18,9 +18,7 @@
 #source('demo.dart');
 
 class FrictionJointTest extends Demo {
-  static final String NAME = "FrictionJoint Test";
-
-  FrictionJointTest() : super();
+  FrictionJointTest() : super("FrictionJoint test");
 
   /** Entrypoint. */
   static void main() {
@@ -30,8 +28,6 @@ class FrictionJointTest extends Demo {
     test.debugDraw.appendFlags(DebugDraw.e_jointBit);
     test.runAnimation();
   }
-
-  String get name() => NAME;
 
   void initialize() {
     assert (null !== world);

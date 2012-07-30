@@ -59,8 +59,9 @@ class Demo {
   // parameters are introduced.
   num viewportScale;
 
-  Demo([Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
+  Demo(String name, [Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
       : bodies = new List<Body>() {
+    query("#title").innerHTML = name;
     bool doSleep = true;
     if (null === gravity) gravity = new Vector(0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
@@ -75,15 +76,8 @@ class Demo {
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    if (this.name !== null) {
-      ctx.setFillColor('black');
-      ctx.font = '18pt monospace';
-      ctx.fillText(this.name, 20, 20);
-    }
     if (fps !== null) {
-      ctx.setFillColor('red');
-      ctx.font = '12pt monospace';
-      ctx.fillText('FPS: ${fps.toStringAsFixed(2)}', 20, 40);
+      query("#fps").innerHTML = "FPS: ${fps.toStringAsFixed(2)}";
     }
     ctx.setFillColor('red');
     ctx.font = '10pt monospace';
@@ -121,9 +115,6 @@ class Demo {
   }
 
   abstract void initialize();
-
-  /** The name of the demo. */
-  String get name() => "No Demo Name Set";
 
   /**
    * Starts running the demo as an animation using an animation scheduler.

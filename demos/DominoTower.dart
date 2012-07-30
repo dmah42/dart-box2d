@@ -22,7 +22,6 @@ class DominoTower extends Demo {
   static final num DOMINO_FRICTION = 0.1;
   static final num DOMINO_HEIGHT = 1;
   static final num BASE_COUNT = 25;
-  static final String NAME = "Domino Tower";
 
   /**
    * The density of the dominos under construction. Varies for different parts
@@ -31,7 +30,7 @@ class DominoTower extends Demo {
   num dominoDensity;
 
   /** Construct a new DominoTower. */
-  DominoTower() : super() { }
+  DominoTower() : super("Domino tower") { }
 
   /** Entrypoint. */
   static void main() {
@@ -39,10 +38,6 @@ class DominoTower extends Demo {
     tower.initialize();
     tower.initializeAnimation();
     tower.runAnimation();
-  }
-
-  String get name() {
-    return NAME;
   }
 
   void makeDomino(num x, num y, bool horizontal) {

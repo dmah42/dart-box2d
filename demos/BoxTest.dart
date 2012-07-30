@@ -18,10 +18,8 @@
 #source('demo.dart');
 
 class BoxTest extends Demo {
-  static final String NAME = "Box Test";
-
   /** Constructs a new BoxTest. */
-  BoxTest() : super();
+  BoxTest() : super("Box test");
 
   /** Entrypoint. */
   static void main() {
@@ -30,8 +28,6 @@ class BoxTest extends Demo {
     boxTest.initializeAnimation();
     boxTest.runAnimation();
   }
-
-  String get name() => NAME;
 
   void initialize() {
     assert (null !== world);

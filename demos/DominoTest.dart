@@ -19,11 +19,7 @@
 
 /** Demonstration of dominoes being knocked over. */
 class DominoTest extends Demo {
-  static final String NAME = "Domino Platforms";
-
-  DominoTest() : super() { }
-
-  String get name() => NAME;
+  DominoTest() : super("Domino test") { }
 
   void initialize() {
     { // Floor

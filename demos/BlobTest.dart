@@ -18,10 +18,8 @@
 #source('demo.dart');
 
 class BlobTest extends Demo {
-  static final String NAME = "Blob Test";
-
   /** Constructs a new BlobTest. */
-  BlobTest() : super() { }
+  BlobTest() : super("Blob test") { }
 
   /** Entrypoint. */
   static void main() {
@@ -31,8 +29,6 @@ class BlobTest extends Demo {
     blob.runAnimation();
   }
 
-  String get name() => NAME;
-  
   void initialize() {
     Body ground;
     {
