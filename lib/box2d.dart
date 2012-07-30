@@ -12,8 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #library('box2d');
-#import('dart:html');
 
+#source('callbacks/PairCallback.dart');
+#source('callbacks/TreeCallback.dart');
+#source('callbacks/ContactListener.dart');
+#source('callbacks/ContactFilter.dart');
+#source('callbacks/ContactImpulse.dart');
+#source('callbacks/QueryCallback.dart');
+#source('callbacks/DebugDraw.dart');
+#source('callbacks/DestructionListener.dart');
 #source('collision/AxisAlignedBox.dart');
 #source('collision/Collision.dart');
 #source('collision/ContactID.dart');
@@ -40,15 +47,16 @@
 #source('collision/shapes/PolygonShape.dart');
 #source('collision/shapes/Shape.dart');
 #source('collision/shapes/ShapeType.dart');
-#source('callbacks/CanvasDraw.dart');
-#source('callbacks/PairCallback.dart');
-#source('callbacks/TreeCallback.dart');
-#source('callbacks/ContactListener.dart');
-#source('callbacks/ContactFilter.dart');
-#source('callbacks/ContactImpulse.dart');
-#source('callbacks/QueryCallback.dart');
-#source('callbacks/DebugDraw.dart');
-#source('callbacks/DestructionListener.dart');
+#source('common/Color3.dart');
+#source('common/IViewportTransform.dart');
+#source('common/MathBox.dart');
+#source('common/Matrix22.dart');
+#source('common/Matrix33.dart');
+#source('common/Settings.dart');
+#source('common/Sweep.dart');
+#source('common/Transform.dart');
+#source('common/Vector.dart');
+#source('common/Vector3.dart');
 #source('dynamics/Body.dart');
 #source('dynamics/BodyDef.dart');
 #source('dynamics/BodyType.dart');
@@ -85,15 +93,3 @@
 #source('dynamics/joints/RevoluteJoint.dart');
 #source('dynamics/joints/RevoluteJointDef.dart');
 #source('pooling/DefaultWorldPool.dart');
-#source('common/Color3.dart');
-#source('common/IViewportTransform.dart');
-#source('common/MathBox.dart');
-#source('common/CanvasViewportTransform.dart');
-#source('common/Matrix22.dart');
-#source('common/Matrix33.dart');
-#source('common/Settings.dart');
-#source('common/Sweep.dart');
-#source('common/Transform.dart');
-#source('common/Vector.dart');
-#source('common/Vector3.dart');
-

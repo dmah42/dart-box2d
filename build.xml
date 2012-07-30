@@ -94,6 +94,7 @@
 
   <target name="analyze-lib">
     <dart_analyze file="lib/box2d.dart" />
+    <dart_analyze file="lib/box2d_html.dart" />
   </target>
 
   <target name="analyze-demos">

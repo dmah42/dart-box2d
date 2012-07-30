@@ -110,7 +110,7 @@ class CanvasDraw extends DebugDraw {
     getWorldToScreenToOut(center, center);
 
     ctx.beginPath();
-    ctx.arc(center.x, center.y, radius, 0, MathBox._2PI, true);
+    ctx.arc(center.x, center.y, radius, 0, MathBox.TWO_PI, true);
     ctx.closePath();
   }
 

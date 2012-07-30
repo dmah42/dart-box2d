@@ -97,7 +97,7 @@ class DistanceJoint extends Joint {
       num C = len - length;
 
       // Frequency
-      num omega = MathBox._2PI * frequencyHz;
+      num omega = MathBox.TWO_PI * frequencyHz;
 
       // Damping coefficient
       num d = 2.0 * mass * dampingRatio * omega;

@@ -1,9 +1,3 @@
-#library('DominoTest');
-#import('dart:html');
-#import('../lib/box2d.dart');
-
-#source('demo.dart');
-
 // Copyright 2012 Google Inc. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Demonstration of dominoes being knocked over.
- */
+#library('DominoTest');
+#import('dart:html');
+#import('../lib/box2d.dart');
+#import('../lib/box2d_html.dart');
+#source('demo.dart');
+
+/** Demonstration of dominoes being knocked over. */
 class DominoTest extends Demo {
   static final String NAME = "Domino Platforms";
 

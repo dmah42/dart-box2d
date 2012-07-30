@@ -67,7 +67,7 @@ class Sweep {
   }
 
   void normalize() {
-    num d = MathBox._2PI * (angleZero / MathBox._2PI).floor();
+    num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
     angleZero -= d;
     angle -= d;
   }

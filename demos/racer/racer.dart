@@ -16,6 +16,7 @@
 
 #import('dart:html');
 #import('../../lib/box2d.dart');
+#import('../../lib/box2d_html.dart');
 
 #source('../demo.dart');
 #source('car.dart');
