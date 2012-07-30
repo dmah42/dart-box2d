@@ -59,46 +59,13 @@ $$.HashMapImplementation = {"":
  },
  operator$index$1: function(key) {
   var index = this._probeForLookup$1(key);
-  if (typeof index !== 'number') return this.operator$index$1$bailout(1, index, 0);
-  if (index < 0) return;
-  var t1 = this._values;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$index$1$bailout(2, t1, index);
-  if (index !== (index | 0)) throw $.iae(index);
-  var t2 = t1.length;
-  if (index < 0 || index >= t2) throw $.ioore(index);
-  return t1[index];
- },
- operator$index$1$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      index = env0;
-      break;
-    case 2:
-      t1 = env0;
-      index = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var index = this._probeForLookup$1(key);
-    case 1:
-      state = 0;
-      if ($.ltB(index, 0)) return;
-      var t1 = this._values;
-    case 2:
-      state = 0;
-      return $.index(t1, index);
-  }
+  if ($.ltB(index, 0)) return;
+  return $.index(this._values, index);
  },
  operator$indexSet$2: function(key, value) {
   this._ensureCapacity$0();
   var index = this._probeForAdding$1(key);
-  var t1 = $.index(this._keys, index);
-  if (!(t1 == null)) {
-    t1 = $.index(this._keys, index);
-    t1 = t1 === $.CTC4;
-  } else t1 = true;
-  if (t1) this._numberOfEntries = $.add(this._numberOfEntries, 1);
+  if ($.index(this._keys, index) == null || $.index(this._keys, index) === $.CTC4) this._numberOfEntries = $.add(this._numberOfEntries, 1);
   $.indexSet(this._keys, index, key);
   $.indexSet(this._values, index, value);
  },
@@ -127,20 +94,20 @@ $$.HashMapImplementation = {"":
   var oldValues = this._values;
   if (typeof oldValues !== 'string' && (typeof oldValues !== 'object' || oldValues === null || (oldValues.constructor !== Array && !oldValues.is$JavaScriptIndexingBehavior()))) return this._grow$1$bailout(3, newCapacity, oldKeys, oldValues, capacity);
   this._keys = $.ListFactory_List(newCapacity);
-  var t1 = $.ListFactory_List(newCapacity);
-  $.setRuntimeTypeInfo(t1, ({E: 'V'}));
-  this._values = t1;
+  var t4 = $.ListFactory_List(newCapacity);
+  $.setRuntimeTypeInfo(t4, ({E: 'V'}));
+  this._values = t4;
   for (var i = 0; i < capacity; ++i) {
-    t1 = oldKeys.length;
+    var t1 = oldKeys.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t2 = oldKeys[i];
-    if (t2 == null || t2 === $.CTC4) continue;
+    var key = oldKeys[i];
+    if (key == null || key === $.CTC4) continue;
     t1 = oldValues.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t3 = oldValues[i];
-    var newIndex = this._probeForAdding$1(t2);
-    $.indexSet(this._keys, newIndex, t2);
-    $.indexSet(this._values, newIndex, t3);
+    var value = oldValues[i];
+    var newIndex = this._probeForAdding$1(key);
+    $.indexSet(this._keys, newIndex, key);
+    $.indexSet(this._values, newIndex, value);
   }
   this._numberOfDeleted = 0;
  },
@@ -175,9 +142,9 @@ $$.HashMapImplementation = {"":
     case 3:
       state = 0;
       this._keys = $.ListFactory_List(newCapacity);
-      var t1 = $.ListFactory_List(newCapacity);
-      $.setRuntimeTypeInfo(t1, ({E: 'V'}));
-      this._values = t1;
+      var t4 = $.ListFactory_List(newCapacity);
+      $.setRuntimeTypeInfo(t4, ({E: 'V'}));
+      this._values = t4;
       for (var i = 0; $.ltB(i, capacity); ++i) {
         var key = $.index(oldKeys, i);
         if (key == null || key === $.CTC4) continue;
@@ -215,15 +182,15 @@ $$.HashMapImplementation = {"":
   for (var numberOfProbes = 1, insertionIndex = -1; true; ) {
     var t1 = this._keys;
     if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this._probeForAdding$1$bailout(2, numberOfProbes, hash, key, insertionIndex, t1);
-    var t2 = t1.length;
-    if (hash < 0 || hash >= t2) throw $.ioore(hash);
-    t1 = t1[hash];
-    if (t1 == null) {
+    var t3 = t1.length;
+    if (hash < 0 || hash >= t3) throw $.ioore(hash);
+    var existingKey = t1[hash];
+    if (existingKey == null) {
       if (insertionIndex < 0) return hash;
       return insertionIndex;
     }
-    if ($.eqB(t1, key)) return hash;
-    if (insertionIndex < 0 && $.CTC4 === t1) insertionIndex = hash;
+    if ($.eqB(existingKey, key)) return hash;
+    if (insertionIndex < 0 && $.CTC4 === existingKey) insertionIndex = hash;
     var numberOfProbes0 = numberOfProbes + 1;
     hash = $.HashMapImplementation__nextProbe(hash, numberOfProbes, $.get$length(this._keys));
     if (hash !== (hash | 0)) return this._probeForAdding$1$bailout(3, key, numberOfProbes0, insertionIndex, hash, 0);
@@ -257,8 +224,7 @@ $$.HashMapImplementation = {"":
       state = 0;
       var numberOfProbes = 1;
       var insertionIndex = -1;
-    case 2:
-    case 3:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -328,8 +294,8 @@ $$.HashSetImplementation = {"":
   var t1 = this._backingMap;
   if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.add$1$bailout(1, t1, value);
   if (value !== (value | 0)) throw $.iae(value);
-  var t2 = t1.length;
-  if (value < 0 || value >= t2) throw $.ioore(value);
+  var t3 = t1.length;
+  if (value < 0 || value >= t3) throw $.ioore(value);
   t1[value] = value;
  },
  add$1$bailout: function(state, t1, value) {
@@ -377,13 +343,13 @@ $$.HashSetIterator = {"":
   if (this.hasNext$0() !== true) throw $.captureStackTrace($.CTC1);
   var t1 = this._entries;
   if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.next$0$bailout(1, t1);
-  var t2 = this._nextValidIndex;
-  if (t2 !== (t2 | 0)) throw $.iae(t2);
-  var t3 = t1.length;
-  if (t2 < 0 || t2 >= t3) throw $.ioore(t2);
-  t2 = t1[t2];
+  var t3 = this._nextValidIndex;
+  if (t3 !== (t3 | 0)) throw $.iae(t3);
+  var t4 = t1.length;
+  if (t3 < 0 || t3 >= t4) throw $.ioore(t3);
+  var res = t1[t3];
   this._advance$0();
-  return t2;
+  return res;
  },
  next$0$bailout: function(state, t1) {
   var res = $.index(t1, this._nextValidIndex);
@@ -393,49 +359,19 @@ $$.HashSetIterator = {"":
  get$next: function() { return new $.BoundClosure0(this, 'next$0'); },
  hasNext$0: function() {
   var t1 = this._nextValidIndex;
-  if (typeof t1 !== 'number') return this.hasNext$0$bailout(1, t1, 0);
   var t2 = this._entries;
-  if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2 === null || (t2.constructor !== Array && !t2.is$JavaScriptIndexingBehavior()))) return this.hasNext$0$bailout(2, t1, t2);
-  var t3 = t2.length;
-  if (t1 >= t3) return false;
+  if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2 === null || (t2.constructor !== Array && !t2.is$JavaScriptIndexingBehavior()))) return this.hasNext$0$bailout(1, t1, t2);
+  var t4 = t2.length;
+  if (t1 >= t4) return false;
   if (t1 !== (t1 | 0)) throw $.iae(t1);
-  if (t1 < 0 || t1 >= t3) throw $.ioore(t1);
-  t1 = t2[t1];
-  t1 === $.CTC4 && this._advance$0();
-  t1 = this._nextValidIndex;
-  if (typeof t1 !== 'number') return this.hasNext$0$bailout(3, t1, t2);
-  return t1 < t2.length;
+  if (t1 < 0 || t1 >= t4) throw $.ioore(t1);
+  t2[t1] === $.CTC4 && this._advance$0();
+  return this._nextValidIndex < t2.length;
  },
- hasNext$0$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      break;
-    case 2:
-      t1 = env0;
-      t2 = env1;
-      break;
-    case 3:
-      t1 = env0;
-      t2 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this._nextValidIndex;
-    case 1:
-      state = 0;
-      var t2 = this._entries;
-    case 2:
-      state = 0;
-      if ($.geB(t1, $.get$length(t2))) return false;
-      t1 = $.index(t2, this._nextValidIndex);
-      t1 === $.CTC4 && this._advance$0();
-      t1 = this._nextValidIndex;
-    case 3:
-      state = 0;
-      return $.lt(t1, $.get$length(t2));
-  }
+ hasNext$0$bailout: function(state, t1, t2) {
+  if ($.geB(t1, $.get$length(t2))) return false;
+  $.index(t2, this._nextValidIndex) === $.CTC4 && this._advance$0();
+  return $.lt(this._nextValidIndex, $.get$length(t2));
  },
  HashSetIterator$1: function(set_) {
   this._advance$0();
@@ -491,17 +427,7 @@ $$.LinkedHashMapImplementation = {"":
   return list;
  },
  operator$index$1: function(key) {
-  var t1 = this._map;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$index$1$bailout(1, key, t1);
-  if (key !== (key | 0)) throw $.iae(key);
-  var t2 = t1.length;
-  if (key < 0 || key >= t2) throw $.ioore(key);
-  t1 = t1[key];
-  if (t1 == null) return;
-  return t1.get$element().get$value();
- },
- operator$index$1$bailout: function(state, key, t1) {
-  var entry = $.index(t1, key);
+  var entry = $.index(this._map, key);
   if (entry == null) return;
   return entry.get$element().get$value();
  },
@@ -697,10 +623,8 @@ $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
  toString$0: function() {
-  var t1 = $.get$length(this._buffer);
-  if (t1 === 0) return '';
-  t1 = $.get$length(this._buffer);
-  if (t1 === 1) return $.index(this._buffer, 0);
+  if ($.get$length(this._buffer) === 0) return '';
+  if ($.get$length(this._buffer) === 1) return $.index(this._buffer, 0);
   var result = $.StringBase_concatAll(this._buffer);
   $.clear(this._buffer);
   $.add$1(this._buffer, result);
@@ -719,9 +643,9 @@ $$.StringBufferImpl = {"":
   $.add$1(this._buffer, str);
   var t1 = this._length;
   if (typeof t1 !== 'number') return this.add$1$bailout(1, str, t1);
-  var t2 = $.get$length(str);
-  if (typeof t2 !== 'number') return this.add$1$bailout(2, t1, t2);
-  this._length = t1 + t2;
+  var t3 = $.get$length(str);
+  if (typeof t3 !== 'number') return this.add$1$bailout(2, t1, t3);
+  this._length = t1 + t3;
   return this;
  },
  add$1$bailout: function(state, env0, env1) {
@@ -732,7 +656,7 @@ $$.StringBufferImpl = {"":
       break;
     case 2:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       break;
   }
   switch (state) {
@@ -743,16 +667,15 @@ $$.StringBufferImpl = {"":
       var t1 = this._length;
     case 1:
       state = 0;
-      var t2 = $.get$length(str);
+      var t3 = $.get$length(str);
     case 2:
       state = 0;
-      this._length = $.add(t1, t2);
+      this._length = $.add(t1, t3);
       return this;
   }
  },
  isEmpty$0: function() {
-  var t1 = this._length;
-  return t1 === 0;
+  return this._length === 0;
  },
  get$length: function() {
   return this._length;
@@ -810,11 +733,9 @@ $$._AllMatchesIterator = {"":
  super: "Object",
  hasNext$0: function() {
   if (this._done === true) return false;
-  var t1 = this._next;
-  if (!(t1 == null)) return true;
+  if (!(this._next == null)) return true;
   this._next = this._re.firstMatch$1(this._str);
-  t1 = this._next;
-  if (t1 == null) {
+  if (this._next == null) {
     this._done = true;
     return false;
   }
@@ -835,7 +756,13 @@ $$.ListIterator = {"":
  next$0: function() {
   if (this.hasNext$0() !== true) throw $.captureStackTrace($.NoMoreElementsException$());
   var value = (this.list[this.i]);
-  this.i = this.i + 1;
+  var t1 = this.i;
+  if (typeof t1 !== 'number') return this.next$0$bailout(1, t1, value);
+  this.i = t1 + 1;
+  return value;
+ },
+ next$0$bailout: function(state, t1, value) {
+  this.i = $.add(t1, 1);
   return value;
  },
  get$next: function() { return new $.BoundClosure0(this, 'next$0'); },
@@ -892,10 +819,10 @@ $$.Object = {"":
 };
 
 $$.IndexOutOfRangeException = {"":
- ["_index"],
+ ["_value"],
  super: "Object",
  toString$0: function() {
-  return 'IndexOutOfRangeException: ' + $.S(this._index);
+  return 'IndexOutOfRangeException: ' + $.S(this._value);
  }
 };
 
@@ -1121,25 +1048,17 @@ $$.Demo = {"":
   t1.step$3(0.016666666666666666, 10, 10);
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
-  t1 = this.get$name();
-  if (!(t1 == null)) {
+  if (!(this.get$name() == null)) {
     this.ctx.setFillColor$1('black');
     this.ctx.set$font('18pt monospace');
     this.ctx.fillText$3(this.get$name(), 20, 20);
   }
-  t1 = this.fps;
-  if (!(t1 == null)) {
+  if (!(this.fps == null)) {
     this.ctx.setFillColor$1('red');
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
-  t1 = this.frameCount;
-  if (typeof t1 !== 'number') return this.step$1$bailout(1, t1);
-  this.frameCount = t1 + 1;
-  $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
- },
- step$1$bailout: function(state, t1) {
-  this.frameCount = $.add(t1, 1);
+  this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
  Demo$2: function(gravity, viewportScale) {
@@ -1152,15 +1071,7 @@ $$._ChildNodeListLazy = {"":
  ["_this"],
  super: "Object",
  operator$index$1: function(index) {
-  var t1 = this._this.get$$$dom_childNodes();
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$index$1$bailout(1, index, t1);
-  if (index !== (index | 0)) throw $.iae(index);
-  var t2 = t1.length;
-  if (index < 0 || index >= t2) throw $.ioore(index);
-  return t1[index];
- },
- operator$index$1$bailout: function(state, index, t1) {
-  return $.index(t1, index);
+  return $.index(this._this.get$$$dom_childNodes(), index);
  },
  get$length: function() {
   return $.get$length(this._this.get$$$dom_childNodes());
@@ -1254,15 +1165,7 @@ $$._ListWrapper = {"":
   $.indexSet(this._list, index, value);
  },
  operator$index$1: function(index) {
-  var t1 = this._list;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$index$1$bailout(1, t1, index);
-  if (index !== (index | 0)) throw $.iae(index);
-  var t2 = t1.length;
-  if (index < 0 || index >= t2) throw $.ioore(index);
-  return t1[index];
- },
- operator$index$1$bailout: function(state, t1, index) {
-  return $.index(t1, index);
+  return $.index(this._list, index);
  },
  get$length: function() {
   return $.get$length(this._list);
@@ -1304,9 +1207,9 @@ $$._FixedSizeListIterator = {"":
  hasNext$0: function() {
   var t1 = this._lib_length;
   if (typeof t1 !== 'number') return this.hasNext$0$bailout(1, t1, 0);
-  var t2 = this._pos;
-  if (typeof t2 !== 'number') return this.hasNext$0$bailout(2, t1, t2);
-  return t1 > t2;
+  var t3 = this._pos;
+  if (typeof t3 !== 'number') return this.hasNext$0$bailout(2, t1, t3);
+  return t1 > t3;
  },
  hasNext$0$bailout: function(state, env0, env1) {
   switch (state) {
@@ -1315,7 +1218,7 @@ $$._FixedSizeListIterator = {"":
       break;
     case 2:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       break;
   }
   switch (state) {
@@ -1323,10 +1226,10 @@ $$._FixedSizeListIterator = {"":
       var t1 = this._lib_length;
     case 1:
       state = 0;
-      var t2 = this._pos;
+      var t3 = this._pos;
     case 2:
       state = 0;
-      return $.gt(t1, t2);
+      return $.gt(t1, t3);
   }
  }
 };
@@ -1337,26 +1240,45 @@ $$._VariableSizeListIterator = {"":
  next$0: function() {
   if (this.hasNext$0() !== true) throw $.captureStackTrace($.CTC1);
   var t1 = this._array;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.next$0$bailout(1, t1);
-  var t2 = this._pos;
-  this._pos = t2 + 1;
-  if (t2 !== (t2 | 0)) throw $.iae(t2);
-  var t3 = t1.length;
-  if (t2 < 0 || t2 >= t3) throw $.ioore(t2);
-  return t1[t2];
+  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.next$0$bailout(1, t1, 0);
+  var t3 = this._pos;
+  if (typeof t3 !== 'number') return this.next$0$bailout(2, t1, t3);
+  this._pos = t3 + 1;
+  if (t3 !== (t3 | 0)) throw $.iae(t3);
+  var t5 = t1.length;
+  if (t3 < 0 || t3 >= t5) throw $.ioore(t3);
+  return t1[t3];
  },
- next$0$bailout: function(state, t1) {
-  var t2 = this._pos;
-  this._pos = t2 + 1;
-  return $.index(t1, t2);
+ next$0$bailout: function(state, env0, env1) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      break;
+    case 2:
+      t1 = env0;
+      t3 = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+      if (this.hasNext$0() !== true) throw $.captureStackTrace($.CTC1);
+      var t1 = this._array;
+    case 1:
+      state = 0;
+      var t3 = this._pos;
+    case 2:
+      state = 0;
+      this._pos = $.add(t3, 1);
+      return $.index(t1, t3);
+  }
  },
  get$next: function() { return new $.BoundClosure0(this, 'next$0'); },
  hasNext$0: function() {
   var t1 = $.get$length(this._array);
   if (typeof t1 !== 'number') return this.hasNext$0$bailout(1, t1, 0);
-  var t2 = this._pos;
-  if (typeof t2 !== 'number') return this.hasNext$0$bailout(2, t2, t1);
-  return t1 > t2;
+  var t3 = this._pos;
+  if (typeof t3 !== 'number') return this.hasNext$0$bailout(2, t3, t1);
+  return t1 > t3;
  },
  hasNext$0$bailout: function(state, env0, env1) {
   switch (state) {
@@ -1364,7 +1286,7 @@ $$._VariableSizeListIterator = {"":
       t1 = env0;
       break;
     case 2:
-      t2 = env0;
+      t3 = env0;
       t1 = env1;
       break;
   }
@@ -1373,10 +1295,10 @@ $$._VariableSizeListIterator = {"":
       var t1 = $.get$length(this._array);
     case 1:
       state = 0;
-      var t2 = this._pos;
+      var t3 = this._pos;
     case 2:
       state = 0;
-      return $.gt(t1, t2);
+      return $.gt(t1, t3);
   }
  }
 };
@@ -1610,8 +1532,7 @@ $$._EventLoop = {"":
   }
  },
  _runHelper$0: function() {
-  var t1 = $._window();
-  if (!(t1 == null)) new $._EventLoop__runHelper_next(this).$call$0();
+  if (!($._window() == null)) new $._EventLoop__runHelper_next(this).$call$0();
   else {
     for (; this.runIteration$0() === true; ) {
     }
@@ -1622,8 +1543,7 @@ $$._EventLoop = {"":
   if (event$ == null) {
     if ($._globalState().get$isWorker() === true) $._globalState().maybeCloseWorker$0();
     else {
-      var t1 = $._globalState().get$rootContext();
-      if (!(t1 == null) && $._globalState().get$isolates().containsKey$1($._globalState().get$rootContext().get$id()) === true && $._globalState().get$fromCommandLine() === true && $.isEmpty($._globalState().get$rootContext().get$ports()) === true) throw $.captureStackTrace($.ExceptionImplementation$('Program exited with open ReceivePorts.'));
+      if (!($._globalState().get$rootContext() == null) && ($._globalState().get$isolates().containsKey$1($._globalState().get$rootContext().get$id()) === true && ($._globalState().get$fromCommandLine() === true && $.isEmpty($._globalState().get$rootContext().get$ports()) === true))) throw $.captureStackTrace($.ExceptionImplementation$('Program exited with open ReceivePorts.'));
     }
     return false;
   }
@@ -1671,13 +1591,13 @@ $$._WorkerSendPort = {"":
  ["_receivePortId?", "_workerId?", "_isolateId"],
  super: "_BaseSendPort",
  hashCode$0: function() {
-  var t1 = this._workerId << 16 ^ this._isolateId << 8;
-  var t2 = this._receivePortId;
-  if (typeof t2 !== 'number') throw $.iae(t2);
-  return (t1 ^ t2) >>> 0;
+  return $.xor($.xor($.shl(this._workerId, 16), $.shl(this._isolateId, 8)), this._receivePortId);
  },
  operator$eq$1: function(other) {
-  return typeof other === 'object' && other !== null && !!other.is$_WorkerSendPort && $.eqB(this._workerId, other._workerId) && $.eqB(this._isolateId, other.get$_isolateId()) && $.eqB(this._receivePortId, other.get$_receivePortId());
+  if (typeof other === 'object' && other !== null && !!other.is$_WorkerSendPort) {
+    var t1 = $.eqB(this._workerId, other._workerId) && ($.eqB(this._isolateId, other._isolateId) && $.eqB(this._receivePortId, other._receivePortId));
+  } else t1 = false;
+  return t1;
  },
  is$_WorkerSendPort: true,
  is$SendPort: true
@@ -1687,8 +1607,7 @@ $$._JsSerializer = {"":
  ["_nextFreeRefId", "_visited"],
  super: "_Serializer",
  visitBufferingSendPort$1: function(port) {
-  var t1 = port.get$_port();
-  if (!(t1 == null)) return this.visitSendPort$1(port.get$_port());
+  if (!(port.get$_port() == null)) return this.visitSendPort$1(port.get$_port());
   throw $.captureStackTrace('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
  },
  visitWorkerSendPort$1: function(port) {
@@ -1712,8 +1631,7 @@ $$._JsCopier = {"":
  ["_visited"],
  super: "_Copier",
  visitBufferingSendPort$1: function(port) {
-  var t1 = port.get$_port();
-  if (!(t1 == null)) return this.visitSendPort$1(port.get$_port());
+  if (!(port.get$_port() == null)) return this.visitSendPort$1(port.get$_port());
   throw $.captureStackTrace('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
  },
  visitWorkerSendPort$1: function(port) {
@@ -1785,7 +1703,13 @@ $$.AxisAlignedBox = {"":
  },
  contains$1: function(aabb) {
   var t1 = this.lowerBound;
-  return $.gtB(t1.get$x(), aabb.get$lowerBound().get$x()) && $.gtB(t1.get$y(), aabb.get$lowerBound().get$y()) && $.ltB(this.upperBound.get$y(), aabb.get$upperBound().get$y()) && $.ltB(this.upperBound.get$x(), aabb.get$upperBound().get$x());
+  if ($.gtB(t1.get$x(), aabb.get$lowerBound().get$x())) {
+    if ($.gtB(t1.get$y(), aabb.get$lowerBound().get$y())) {
+      t1 = this.upperBound;
+      t1 = $.ltB(t1.get$y(), aabb.get$upperBound().get$y()) && $.ltB(t1.get$x(), aabb.get$upperBound().get$x());
+    } else t1 = false;
+  } else t1 = false;
+  return t1;
  },
  get$center: function() {
   var c = $.Vector$copy(this.lowerBound);
@@ -1804,10 +1728,8 @@ $$.AxisAlignedBox = {"":
   t1.set$y($.Math_max(boxOne.get$upperBound().get$y(), boxTwo.get$upperBound().get$y()));
  },
  AxisAlignedBox$2: function(lowerBound, upperBound) {
-  var t1 = this.lowerBound;
-  if (t1 == null) this.lowerBound = $.Vector$(0, 0);
-  t1 = this.upperBound;
-  if (t1 == null) this.upperBound = $.Vector$(0, 0);
+  if (this.lowerBound == null) this.lowerBound = $.Vector$(0, 0);
+  if (this.upperBound == null) this.upperBound = $.Vector$(0, 0);
  }
 };
 
@@ -1818,17 +1740,17 @@ $$.Collision = {"":
   manifold.set$pointCount(0);
   var totalRadius = $.add(polyA.get$radius(), polyB.get$radius());
   if (typeof totalRadius !== 'number') return this.collidePolygons$5$bailout(1, manifold, polyA, xfA, polyB, xfB, totalRadius, 0, 0, 0, 0, 0, 0);
-  var t1 = this.results1;
-  this.findMaxSeparation$5(t1, polyA, xfA, polyB, xfB);
-  if (t1.separation > totalRadius) return;
-  var t2 = this.results2;
-  this.findMaxSeparation$5(t2, polyB, xfB, polyA, xfA);
-  if (t2.separation > totalRadius) return;
-  var t3 = t2.separation;
-  var t4 = t1.separation;
+  var t2 = this.results1;
+  this.findMaxSeparation$5(t2, polyA, xfA, polyB, xfB);
+  if ($.gtB(t2.separation, totalRadius)) return;
+  var t1 = this.results2;
+  this.findMaxSeparation$5(t1, polyB, xfB, polyA, xfA);
+  if ($.gtB(t1.separation, totalRadius)) return;
+  var t3 = t1.separation;
+  var t4 = t2.separation;
   if (typeof t4 !== 'number') throw $.iae(t4);
-  if (t3 > 0.98 * t4 + 0.001) {
-    var edge1 = t2.edgeIndex;
+  if ($.gtB(t3, 0.98 * t4 + 0.001)) {
+    var edge1 = t1.edgeIndex;
     manifold.set$type(2);
     var poly2 = polyA;
     var xf2 = xfA;
@@ -1836,7 +1758,7 @@ $$.Collision = {"":
     var poly1 = polyB;
     var flip = 1;
   } else {
-    edge1 = t1.edgeIndex;
+    edge1 = t2.edgeIndex;
     manifold.set$type(1);
     poly2 = polyB;
     xf2 = xfB;
@@ -1871,12 +1793,12 @@ $$.Collision = {"":
   var sideOffset1 = $.add($.neg($.Vector_dot(t8, t2)), totalRadius);
   var sideOffset2 = $.add($.Vector_dot(t8, t3), totalRadius);
   t8.negateLocal$0();
-  t7 = this.clipPoints1;
-  var np = $.Collision_clipSegmentToLine(t7, t1, t8, sideOffset1);
+  var t9 = this.clipPoints1;
+  var np = $.Collision_clipSegmentToLine(t9, t1, t8, sideOffset1);
   t8.negateLocal$0();
   if ($.ltB(np, 2)) return;
   t1 = this.clipPoints2;
-  if ($.ltB($.Collision_clipSegmentToLine(t1, t7, t8, sideOffset2), 2)) return;
+  if ($.ltB($.Collision_clipSegmentToLine(t1, t9, t8, sideOffset2), 2)) return;
   manifold.get$localNormal().setFrom$1(t5);
   manifold.get$localPoint().setFrom$1(t6);
   for (var pointCount = 0, i = 0; i < 2; ++i) {
@@ -1928,17 +1850,17 @@ $$.Collision = {"":
       var totalRadius = $.add(polyA.get$radius(), polyB.get$radius());
     case 1:
       state = 0;
-      var t1 = this.results1;
-      this.findMaxSeparation$5(t1, polyA, xfA, polyB, xfB);
-      if ($.gtB(t1.get$separation(), totalRadius)) return;
-      var t2 = this.results2;
-      this.findMaxSeparation$5(t2, polyB, xfB, polyA, xfA);
+      var t2 = this.results1;
+      this.findMaxSeparation$5(t2, polyA, xfA, polyB, xfB);
       if ($.gtB(t2.get$separation(), totalRadius)) return;
-      var t3 = t2.get$separation();
-      var t4 = t1.get$separation();
+      var t1 = this.results2;
+      this.findMaxSeparation$5(t1, polyB, xfB, polyA, xfA);
+      if ($.gtB(t1.get$separation(), totalRadius)) return;
+      var t3 = t1.get$separation();
+      var t4 = t2.get$separation();
       if (typeof t4 !== 'number') throw $.iae(t4);
       if ($.gtB(t3, 0.98 * t4 + 0.001)) {
-        var edge1 = t2.get$edgeIndex();
+        var edge1 = t1.get$edgeIndex();
         manifold.set$type(2);
         var poly2 = polyA;
         var xf2 = xfA;
@@ -1946,7 +1868,7 @@ $$.Collision = {"":
         var poly1 = polyB;
         var flip = 1;
       } else {
-        edge1 = t1.get$edgeIndex();
+        edge1 = t2.get$edgeIndex();
         manifold.set$type(1);
         poly2 = polyB;
         xf2 = xfB;
@@ -1982,12 +1904,12 @@ $$.Collision = {"":
       var sideOffset1 = $.add($.neg($.Vector_dot(t8, t2)), totalRadius);
       var sideOffset2 = $.add($.Vector_dot(t8, t3), totalRadius);
       t8.negateLocal$0();
-      t7 = this.clipPoints1;
-      var np = $.Collision_clipSegmentToLine(t7, t1, t8, sideOffset1);
+      var t9 = this.clipPoints1;
+      var np = $.Collision_clipSegmentToLine(t9, t1, t8, sideOffset1);
       t8.negateLocal$0();
       if ($.ltB(np, 2)) return;
       t1 = this.clipPoints2;
-      if ($.ltB($.Collision_clipSegmentToLine(t1, t7, t8, sideOffset2), 2)) return;
+      if ($.ltB($.Collision_clipSegmentToLine(t1, t9, t8, sideOffset2), 2)) return;
       manifold.get$localNormal().setFrom$1(t5);
       manifold.get$localPoint().setFrom$1(t6);
       for (var pointCount = 0, i = 0; i < 2; ++i) {
@@ -2017,15 +1939,15 @@ $$.Collision = {"":
   var vertices2 = poly2.get$vertices();
   var normals2 = poly2.get$normals();
   if (typeof normals2 !== 'string' && (typeof normals2 !== 'object' || normals2 === null || (normals2.constructor !== Array && !normals2.is$JavaScriptIndexingBehavior()))) return this.findIncidentEdge$6$bailout(2, c, xf1, edge1, xf2, normals1, count2, vertices2, normals2);
-  var t1 = xf1.get$rotation();
-  var t2 = $.index(normals1, edge1);
-  var t3 = this.normal1;
-  $.Matrix22_mulMatrixAndVectorToOut(t1, t2, t3);
-  $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t3, t3);
+  var t3 = xf1.get$rotation();
+  var t4 = $.index(normals1, edge1);
+  var t5 = this.normal1;
+  $.Matrix22_mulMatrixAndVectorToOut(t3, t4, t5);
+  $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t5, t5);
   for (var minDot = 99999999999999.0, i = 0, index = 0; i < count2; ++i) {
-    t1 = normals2.length;
+    var t1 = normals2.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var dot = $.Vector_dot(t3, normals2[i]);
+    var dot = $.Vector_dot(t5, normals2[i]);
     if ($.ltB(dot, minDot)) {
       index = i;
       minDot = dot;
@@ -2075,13 +1997,13 @@ $$.Collision = {"":
       var normals2 = poly2.get$normals();
     case 2:
       state = 0;
-      var t1 = xf1.get$rotation();
-      var t2 = $.index(normals1, edge1);
-      var t3 = this.normal1;
-      $.Matrix22_mulMatrixAndVectorToOut(t1, t2, t3);
-      $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t3, t3);
+      var t3 = xf1.get$rotation();
+      var t4 = $.index(normals1, edge1);
+      var t5 = this.normal1;
+      $.Matrix22_mulMatrixAndVectorToOut(t3, t4, t5);
+      $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t5, t5);
       for (var minDot = 99999999999999.0, i = 0, index = 0; $.ltB(i, count2); ++i) {
-        var dot = $.Vector_dot(t3, $.index(normals2, i));
+        var dot = $.Vector_dot(t5, $.index(normals2, i));
         if ($.ltB(dot, minDot)) {
           index = i;
           minDot = dot;
@@ -2119,8 +2041,8 @@ $$.Collision = {"":
   for (var edge = 0, i = 0, maxDot = 1e-12, dot = null; i < count1; ++i) {
     var t1 = normals1.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t2 = normals1[i];
-    dot = $.add($.mul(t2.get$x(), dLocal1x), $.mul(t2.get$y(), dLocal1y));
+    var norm = normals1[i];
+    dot = $.add($.mul(norm.get$x(), dLocal1x), $.mul(norm.get$y(), dLocal1y));
     if ($.gtB(dot, maxDot)) {
       edge = i;
       maxDot = dot;
@@ -2315,52 +2237,52 @@ $$.Collision = {"":
   if (typeof vertices2 !== 'string' && (typeof vertices2 !== 'object' || vertices2 === null || (vertices2.constructor !== Array && !vertices2.is$JavaScriptIndexingBehavior()))) return this.edgeSeparation$5$bailout(4, xf1, edge1, xf2, vertices1, normals1, count2, vertices2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   var R = xf1.get$rotation();
   if (edge1 !== (edge1 | 0)) throw $.iae(edge1);
-  var t1 = normals1.length;
-  if (edge1 < 0 || edge1 >= t1) throw $.ioore(edge1);
-  var t2 = normals1[edge1];
-  var t3 = R.get$col1().get$y();
-  if (typeof t3 !== 'number') return this.edgeSeparation$5$bailout(5, xf1, edge1, xf2, t3, vertices1, count2, vertices2, R, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t4 = t2.get$x();
-  if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(6, xf1, edge1, t4, xf2, t3, vertices1, count2, vertices2, R, t2, 0, 0, 0, 0, 0, 0, 0);
-  t4 *= t3;
-  t3 = R.get$col2().get$y();
-  if (typeof t3 !== 'number') return this.edgeSeparation$5$bailout(7, xf1, edge1, xf2, t4, t3, vertices1, count2, vertices2, R, t2, 0, 0, 0, 0, 0, 0, 0);
-  var t5 = t2.get$y();
-  if (typeof t5 !== 'number') return this.edgeSeparation$5$bailout(8, xf1, edge1, xf2, t4, t3, t5, vertices1, count2, vertices2, R, t2, 0, 0, 0, 0, 0, 0);
-  var normal1Worldy = t4 + t3 * t5;
-  t4 = R.get$col1().get$x();
-  if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(9, xf1, edge1, xf2, vertices1, count2, vertices2, normal1Worldy, R, t4, t2, 0, 0, 0, 0, 0, 0, 0);
-  var t6 = t2.get$x();
-  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(10, xf1, edge1, t6, xf2, vertices1, count2, vertices2, normal1Worldy, R, t4, t2, 0, 0, 0, 0, 0, 0);
-  t6 *= t4;
-  t4 = R.get$col2().get$x();
-  if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(11, t6, xf1, edge1, t4, xf2, vertices1, count2, vertices2, normal1Worldy, R, t2, 0, 0, 0, 0, 0, 0);
-  t2 = t2.get$y();
-  if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(12, t6, xf1, edge1, t4, xf2, t2, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
-  var normal1Worldx = t6 + t4 * t2;
+  var t5 = normals1.length;
+  if (edge1 < 0 || edge1 >= t5) throw $.ioore(edge1);
+  var v = normals1[edge1];
+  var t6 = R.get$col1().get$y();
+  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(5, xf1, edge1, xf2, t6, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t8 = v.get$x();
+  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(6, xf1, edge1, t8, xf2, t6, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0);
+  t8 *= t6;
+  t6 = R.get$col2().get$y();
+  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(7, xf1, edge1, xf2, t8, t6, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0);
+  var t11 = v.get$y();
+  if (typeof t11 !== 'number') return this.edgeSeparation$5$bailout(8, xf1, edge1, xf2, t8, t6, t11, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0);
+  var normal1Worldy = t8 + t6 * t11;
+  t8 = R.get$col1().get$x();
+  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(9, xf1, edge1, xf2, vertices1, count2, vertices2, normal1Worldy, R, t8, v, 0, 0, 0, 0, 0, 0, 0);
+  var t14 = v.get$x();
+  if (typeof t14 !== 'number') return this.edgeSeparation$5$bailout(10, xf1, edge1, t14, xf2, vertices1, count2, vertices2, normal1Worldy, R, t8, v, 0, 0, 0, 0, 0, 0);
+  t14 *= t8;
+  t8 = R.get$col2().get$x();
+  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(11, t14, xf1, edge1, t8, xf2, vertices1, count2, vertices2, normal1Worldy, R, v, 0, 0, 0, 0, 0, 0);
+  var t17 = v.get$y();
+  if (typeof t17 !== 'number') return this.edgeSeparation$5$bailout(12, t14, xf1, edge1, t8, xf2, t17, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
+  var normal1Worldx = t14 + t8 * t17;
   var R1 = xf2.get$rotation();
-  t6 = R1.get$col1().get$x();
-  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(13, t6, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
-  t6 *= normal1Worldx;
-  var t7 = R1.get$col1().get$y();
-  if (typeof t7 !== 'number') return this.edgeSeparation$5$bailout(14, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, t6, R, t7, normal1Worldy, 0, 0, 0, 0, 0);
-  var normal1x = t6 + normal1Worldy * t7;
-  t6 = R1.get$col2().get$x();
-  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(15, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t6, normal1Worldy, 0, 0, 0, 0, 0);
-  t6 *= normal1Worldx;
-  var t8 = R1.get$col2().get$y();
-  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(16, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t6, t8, normal1Worldy, 0, 0, 0, 0);
-  var normal1y = t6 + normal1Worldy * t8;
+  t14 = R1.get$col1().get$x();
+  if (typeof t14 !== 'number') return this.edgeSeparation$5$bailout(13, t14, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
+  t14 *= normal1Worldx;
+  var t20 = R1.get$col1().get$y();
+  if (typeof t20 !== 'number') return this.edgeSeparation$5$bailout(14, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, t14, R, t20, normal1Worldy, 0, 0, 0, 0, 0);
+  var normal1x = t14 + normal1Worldy * t20;
+  t14 = R1.get$col2().get$x();
+  if (typeof t14 !== 'number') return this.edgeSeparation$5$bailout(15, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t14, normal1Worldy, 0, 0, 0, 0, 0);
+  t14 *= normal1Worldx;
+  var t23 = R1.get$col2().get$y();
+  if (typeof t23 !== 'number') return this.edgeSeparation$5$bailout(16, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t14, t23, normal1Worldy, 0, 0, 0, 0);
+  var normal1y = t14 + normal1Worldy * t23;
   for (var minDot = 99999999999999.0, i = 0, index = 0; i < count2; ++i) {
-    t1 = vertices2.length;
+    var t1 = vertices2.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    t2 = vertices2[i];
-    t3 = t2.get$x();
-    if (typeof t3 !== 'number') return this.edgeSeparation$5$bailout(17, xf1, edge1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y, t2, t3);
-    t3 *= normal1x;
-    t2 = t2.get$y();
-    if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(18, t3, t2, edge1, xf1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y);
-    var dot = t3 + t2 * normal1y;
+    var a = vertices2[i];
+    var t2 = a.get$x();
+    if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(17, xf1, edge1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y, a, t2);
+    t2 *= normal1x;
+    var t4 = a.get$y();
+    if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(18, t2, t4, edge1, xf1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y);
+    var dot = t2 + t4 * normal1y;
     if (typeof dot !== 'number') return this.edgeSeparation$5$bailout(19, xf1, edge1, xf2, dot, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y, 0);
     if (dot < minDot) {
       index = i;
@@ -2369,58 +2291,58 @@ $$.Collision = {"":
   }
   t1 = vertices1.length;
   if (edge1 < 0 || edge1 >= t1) throw $.ioore(edge1);
-  t2 = vertices1[edge1];
-  t3 = xf1.get$position().get$y();
-  if (typeof t3 !== 'number') return this.edgeSeparation$5$bailout(20, index, xf1, xf2, normal1Worldx, R1, t2, vertices2, normal1Worldy, R, t3, 0, 0, 0, 0, 0, 0, 0);
+  var v3 = vertices1[edge1];
+  t2 = xf1.get$position().get$y();
+  if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(20, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t2, 0, 0, 0, 0, 0, 0, 0);
   t4 = R.get$col1().get$y();
-  if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(21, index, xf1, xf2, normal1Worldx, R1, t2, vertices2, normal1Worldy, R, t4, t3, 0, 0, 0, 0, 0, 0);
-  t5 = t2.get$x();
-  if (typeof t5 !== 'number') return this.edgeSeparation$5$bailout(22, xf1, xf2, normal1Worldx, R1, vertices2, R, index, t2, normal1Worldy, t3, t4, t5, 0, 0, 0, 0, 0);
-  t3 += t4 * t5;
-  t6 = R.get$col2().get$y();
-  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(23, index, xf1, t3, xf2, t6, normal1Worldx, R1, t2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
-  t7 = t2.get$y();
-  if (typeof t7 !== 'number') return this.edgeSeparation$5$bailout(24, xf1, t3, xf2, t6, t7, normal1Worldx, R1, vertices2, R, index, t2, normal1Worldy, 0, 0, 0, 0, 0);
-  var v1y = t3 + t6 * t7;
-  t3 = xf1.get$position().get$x();
-  if (typeof t3 !== 'number') return this.edgeSeparation$5$bailout(25, index, xf2, normal1Worldx, R1, t2, v1y, vertices2, t3, R, normal1Worldy, 0, 0, 0, 0, 0, 0, 0);
-  t8 = R.get$col1().get$x();
-  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(26, index, normal1Worldy, xf2, normal1Worldx, R1, t2, v1y, vertices2, t3, R, t8, 0, 0, 0, 0, 0, 0);
-  var t9 = t2.get$x();
-  if (typeof t9 !== 'number') return this.edgeSeparation$5$bailout(27, xf2, normal1Worldx, R1, v1y, vertices2, t3, R, t8, t9, index, t2, normal1Worldy, 0, 0, 0, 0, 0);
-  t3 += t8 * t9;
-  var t10 = R.get$col2().get$x();
-  if (typeof t10 !== 'number') return this.edgeSeparation$5$bailout(28, index, t3, xf2, t10, normal1Worldx, R1, v1y, normal1Worldy, vertices2, t2, 0, 0, 0, 0, 0, 0, 0);
-  t2 = t2.get$y();
-  if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(29, index, t3, xf2, t10, t2, normal1Worldx, R1, v1y, normal1Worldy, vertices2, 0, 0, 0, 0, 0, 0, 0);
-  var v1x = t3 + t10 * t2;
-  t3 = vertices2.length;
-  if (index < 0 || index >= t3) throw $.ioore(index);
-  var t11 = vertices2[index];
-  var t12 = xf2.get$position().get$y();
-  if (typeof t12 !== 'number') return this.edgeSeparation$5$bailout(30, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, t11, t12, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t13 = R1.get$col1().get$y();
-  if (typeof t13 !== 'number') return this.edgeSeparation$5$bailout(31, t13, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, t11, t12, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t14 = t11.get$x();
-  if (typeof t14 !== 'number') return this.edgeSeparation$5$bailout(32, t13, t14, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, t11, t12, 0, 0, 0, 0, 0, 0, 0);
-  t12 += t13 * t14;
-  var t15 = R1.get$col2().get$y();
-  if (typeof t15 !== 'number') return this.edgeSeparation$5$bailout(33, xf2, t12, normal1Worldx, R1, t15, v1y, normal1Worldy, v1x, t11, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t16 = t11.get$y();
-  if (typeof t16 !== 'number') return this.edgeSeparation$5$bailout(34, xf2, t12, normal1Worldx, R1, t16, t15, v1y, normal1Worldy, v1x, t11, 0, 0, 0, 0, 0, 0, 0);
-  var v2y = t12 + t15 * t16 - v1y;
-  var t17 = xf2.get$position().get$x();
-  if (typeof t17 !== 'number') return this.edgeSeparation$5$bailout(35, t17, normal1Worldx, R1, v1x, normal1Worldy, t11, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t18 = R1.get$col1().get$x();
-  if (typeof t18 !== 'number') return this.edgeSeparation$5$bailout(36, t17, t18, normal1Worldx, R1, v1x, normal1Worldy, t11, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t19 = t11.get$x();
-  if (typeof t19 !== 'number') return this.edgeSeparation$5$bailout(37, t17, t18, t19, normal1Worldx, R1, v1x, normal1Worldy, t11, v2y, 0, 0, 0, 0, 0, 0, 0, 0);
-  t17 += t18 * t19;
-  var t20 = R1.get$col2().get$x();
-  if (typeof t20 !== 'number') return this.edgeSeparation$5$bailout(38, normal1Worldx, t17, t20, v1x, normal1Worldy, t11, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  t11 = t11.get$y();
-  if (typeof t11 !== 'number') return this.edgeSeparation$5$bailout(39, normal1Worldx, t17, t20, v1x, normal1Worldy, t11, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  return (t17 + t20 * t11 - v1x) * normal1Worldx + v2y * normal1Worldy;
+  if (typeof t4 !== 'number') return this.edgeSeparation$5$bailout(21, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t4, t2, 0, 0, 0, 0, 0, 0);
+  t6 = v3.get$x();
+  if (typeof t6 !== 'number') return this.edgeSeparation$5$bailout(22, xf1, xf2, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, t2, t4, t6, 0, 0, 0, 0, 0);
+  t2 += t4 * t6;
+  t8 = R.get$col2().get$y();
+  if (typeof t8 !== 'number') return this.edgeSeparation$5$bailout(23, index, xf1, t2, xf2, t8, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
+  var t10 = v3.get$y();
+  if (typeof t10 !== 'number') return this.edgeSeparation$5$bailout(24, xf1, t2, xf2, t8, t10, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
+  var v1y = t2 + t8 * t10;
+  t2 = xf1.get$position().get$x();
+  if (typeof t2 !== 'number') return this.edgeSeparation$5$bailout(25, index, xf2, normal1Worldx, R1, v3, v1y, vertices2, t2, R, normal1Worldy, 0, 0, 0, 0, 0, 0, 0);
+  var t13 = R.get$col1().get$x();
+  if (typeof t13 !== 'number') return this.edgeSeparation$5$bailout(26, index, normal1Worldy, xf2, normal1Worldx, R1, v3, v1y, vertices2, t2, R, t13, 0, 0, 0, 0, 0, 0);
+  var t15 = v3.get$x();
+  if (typeof t15 !== 'number') return this.edgeSeparation$5$bailout(27, xf2, normal1Worldx, R1, v1y, vertices2, t2, R, t13, t15, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
+  t2 += t13 * t15;
+  t17 = R.get$col2().get$x();
+  if (typeof t17 !== 'number') return this.edgeSeparation$5$bailout(28, index, t2, xf2, t17, normal1Worldx, R1, v1y, normal1Worldy, vertices2, v3, 0, 0, 0, 0, 0, 0, 0);
+  var t19 = v3.get$y();
+  if (typeof t19 !== 'number') return this.edgeSeparation$5$bailout(29, index, t2, xf2, t17, t19, normal1Worldx, R1, v1y, normal1Worldy, vertices2, 0, 0, 0, 0, 0, 0, 0);
+  var v1x = t2 + t17 * t19;
+  t2 = vertices2.length;
+  if (index < 0 || index >= t2) throw $.ioore(index);
+  var v4 = vertices2[index];
+  var t21 = xf2.get$position().get$y();
+  if (typeof t21 !== 'number') return this.edgeSeparation$5$bailout(30, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t21, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  t23 = R1.get$col1().get$y();
+  if (typeof t23 !== 'number') return this.edgeSeparation$5$bailout(31, t23, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t21, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t25 = v4.get$x();
+  if (typeof t25 !== 'number') return this.edgeSeparation$5$bailout(32, t23, t25, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t21, 0, 0, 0, 0, 0, 0, 0);
+  t21 += t23 * t25;
+  var t27 = R1.get$col2().get$y();
+  if (typeof t27 !== 'number') return this.edgeSeparation$5$bailout(33, xf2, t21, normal1Worldx, R1, t27, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t29 = v4.get$y();
+  if (typeof t29 !== 'number') return this.edgeSeparation$5$bailout(34, xf2, t21, normal1Worldx, R1, t29, t27, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0);
+  var v2y = t21 + t27 * t29 - v1y;
+  var t31 = xf2.get$position().get$x();
+  if (typeof t31 !== 'number') return this.edgeSeparation$5$bailout(35, t31, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t33 = R1.get$col1().get$x();
+  if (typeof t33 !== 'number') return this.edgeSeparation$5$bailout(36, t31, t33, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t35 = v4.get$x();
+  if (typeof t35 !== 'number') return this.edgeSeparation$5$bailout(37, t31, t33, t35, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0);
+  t31 += t33 * t35;
+  var t37 = R1.get$col2().get$x();
+  if (typeof t37 !== 'number') return this.edgeSeparation$5$bailout(38, normal1Worldx, t31, t37, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t39 = v4.get$y();
+  if (typeof t39 !== 'number') return this.edgeSeparation$5$bailout(39, normal1Worldx, t31, t37, v1x, normal1Worldy, t39, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  return (t31 + t37 * t39 - v1x) * normal1Worldx + v2y * normal1Worldy;
  },
  edgeSeparation$5$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14, env15, env16) {
   switch (state) {
@@ -2462,7 +2384,7 @@ $$.Collision = {"":
       xf1 = env0;
       edge1 = env1;
       xf2 = env2;
-      t1 = env3;
+      t5 = env3;
       vertices1 = env4;
       count2 = env5;
       vertices2 = env6;
@@ -2472,9 +2394,9 @@ $$.Collision = {"":
     case 6:
       xf1 = env0;
       edge1 = env1;
-      t2 = env2;
+      t7 = env2;
       xf2 = env3;
-      t1 = env4;
+      t5 = env4;
       vertices1 = env5;
       count2 = env6;
       vertices2 = env7;
@@ -2485,8 +2407,8 @@ $$.Collision = {"":
       xf1 = env0;
       edge1 = env1;
       xf2 = env2;
-      t2 = env3;
-      t1 = env4;
+      t7 = env3;
+      t5 = env4;
       vertices1 = env5;
       count2 = env6;
       vertices2 = env7;
@@ -2497,9 +2419,9 @@ $$.Collision = {"":
       xf1 = env0;
       edge1 = env1;
       xf2 = env2;
-      t2 = env3;
-      t1 = env4;
-      t3 = env5;
+      t7 = env3;
+      t5 = env4;
+      t10 = env5;
       vertices1 = env6;
       count2 = env7;
       vertices2 = env8;
@@ -2515,27 +2437,27 @@ $$.Collision = {"":
       vertices2 = env5;
       normal1Worldy = env6;
       R = env7;
-      t2 = env8;
+      t7 = env8;
       v = env9;
       break;
     case 10:
       xf1 = env0;
       edge1 = env1;
-      t4 = env2;
+      t13 = env2;
       xf2 = env3;
       vertices1 = env4;
       count2 = env5;
       vertices2 = env6;
       normal1Worldy = env7;
       R = env8;
-      t2 = env9;
+      t7 = env9;
       v = env10;
       break;
     case 11:
-      t4 = env0;
+      t13 = env0;
       xf1 = env1;
       edge1 = env2;
-      t2 = env3;
+      t7 = env3;
       xf2 = env4;
       vertices1 = env5;
       count2 = env6;
@@ -2545,12 +2467,12 @@ $$.Collision = {"":
       v = env10;
       break;
     case 12:
-      t4 = env0;
+      t13 = env0;
       xf1 = env1;
       edge1 = env2;
-      t2 = env3;
+      t7 = env3;
       xf2 = env4;
-      t5 = env5;
+      t16 = env5;
       vertices1 = env6;
       count2 = env7;
       vertices2 = env8;
@@ -2558,7 +2480,7 @@ $$.Collision = {"":
       R = env10;
       break;
     case 13:
-      t4 = env0;
+      t13 = env0;
       xf1 = env1;
       edge1 = env2;
       xf2 = env3;
@@ -2579,9 +2501,9 @@ $$.Collision = {"":
       vertices1 = env5;
       count2 = env6;
       vertices2 = env7;
-      t4 = env8;
+      t13 = env8;
       R = env9;
-      t6 = env10;
+      t19 = env10;
       normal1Worldy = env11;
       break;
     case 15:
@@ -2595,7 +2517,7 @@ $$.Collision = {"":
       vertices2 = env7;
       R = env8;
       normal1x = env9;
-      t4 = env10;
+      t13 = env10;
       normal1Worldy = env11;
       break;
     case 16:
@@ -2609,8 +2531,8 @@ $$.Collision = {"":
       vertices2 = env7;
       R = env8;
       normal1x = env9;
-      t4 = env10;
-      t7 = env11;
+      t13 = env10;
+      t22 = env11;
       normal1Worldy = env12;
       break;
     case 17:
@@ -2634,7 +2556,7 @@ $$.Collision = {"":
       break;
     case 18:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       edge1 = env2;
       xf1 = env3;
       xf2 = env4;
@@ -2691,7 +2613,7 @@ $$.Collision = {"":
       vertices2 = env6;
       normal1Worldy = env7;
       R = env8;
-      t2 = env9;
+      t3 = env9;
       t1 = env10;
       break;
     case 22:
@@ -2705,15 +2627,15 @@ $$.Collision = {"":
       v3 = env7;
       normal1Worldy = env8;
       t1 = env9;
-      t2 = env10;
-      t3 = env11;
+      t3 = env10;
+      t5 = env11;
       break;
     case 23:
       index = env0;
       xf1 = env1;
       t1 = env2;
       xf2 = env3;
-      t4 = env4;
+      t7 = env4;
       normal1Worldx = env5;
       R1 = env6;
       v3 = env7;
@@ -2725,8 +2647,8 @@ $$.Collision = {"":
       xf1 = env0;
       t1 = env1;
       xf2 = env2;
-      t4 = env3;
-      t5 = env4;
+      t7 = env3;
+      t9 = env4;
       normal1Worldx = env5;
       R1 = env6;
       vertices2 = env7;
@@ -2758,7 +2680,7 @@ $$.Collision = {"":
       vertices2 = env7;
       t1 = env8;
       R = env9;
-      t6 = env10;
+      t12 = env10;
       break;
     case 27:
       xf2 = env0;
@@ -2768,8 +2690,8 @@ $$.Collision = {"":
       vertices2 = env4;
       t1 = env5;
       R = env6;
-      t6 = env7;
-      t7 = env8;
+      t12 = env7;
+      t14 = env8;
       index = env9;
       v3 = env10;
       normal1Worldy = env11;
@@ -2778,7 +2700,7 @@ $$.Collision = {"":
       index = env0;
       t1 = env1;
       xf2 = env2;
-      t8 = env3;
+      t16 = env3;
       normal1Worldx = env4;
       R1 = env5;
       v1y = env6;
@@ -2790,8 +2712,8 @@ $$.Collision = {"":
       index = env0;
       t1 = env1;
       xf2 = env2;
-      t8 = env3;
-      t9 = env4;
+      t16 = env3;
+      t18 = env4;
       normal1Worldx = env5;
       R1 = env6;
       v1y = env7;
@@ -2809,7 +2731,7 @@ $$.Collision = {"":
       t1 = env7;
       break;
     case 31:
-      t10 = env0;
+      t21 = env0;
       xf2 = env1;
       normal1Worldx = env2;
       R1 = env3;
@@ -2820,8 +2742,8 @@ $$.Collision = {"":
       t1 = env8;
       break;
     case 32:
-      t10 = env0;
-      t11 = env1;
+      t21 = env0;
+      t23 = env1;
       xf2 = env2;
       normal1Worldx = env3;
       R1 = env4;
@@ -2836,7 +2758,7 @@ $$.Collision = {"":
       t1 = env1;
       normal1Worldx = env2;
       R1 = env3;
-      t12 = env4;
+      t25 = env4;
       v1y = env5;
       normal1Worldy = env6;
       v1x = env7;
@@ -2847,15 +2769,15 @@ $$.Collision = {"":
       t1 = env1;
       normal1Worldx = env2;
       R1 = env3;
-      t13 = env4;
-      t12 = env5;
+      t27 = env4;
+      t25 = env5;
       v1y = env6;
       normal1Worldy = env7;
       v1x = env8;
       v4 = env9;
       break;
     case 35:
-      t14 = env0;
+      t29 = env0;
       normal1Worldx = env1;
       R1 = env2;
       v1x = env3;
@@ -2864,8 +2786,8 @@ $$.Collision = {"":
       v2y = env6;
       break;
     case 36:
-      t14 = env0;
-      t15 = env1;
+      t29 = env0;
+      t31 = env1;
       normal1Worldx = env2;
       R1 = env3;
       v1x = env4;
@@ -2874,9 +2796,9 @@ $$.Collision = {"":
       v2y = env7;
       break;
     case 37:
-      t14 = env0;
-      t15 = env1;
-      t16 = env2;
+      t29 = env0;
+      t31 = env1;
+      t33 = env2;
       normal1Worldx = env3;
       R1 = env4;
       v1x = env5;
@@ -2886,8 +2808,8 @@ $$.Collision = {"":
       break;
     case 38:
       normal1Worldx = env0;
-      t14 = env1;
-      t17 = env2;
+      t29 = env1;
+      t35 = env2;
       v1x = env3;
       normal1Worldy = env4;
       v4 = env5;
@@ -2895,11 +2817,11 @@ $$.Collision = {"":
       break;
     case 39:
       normal1Worldx = env0;
-      t14 = env1;
-      t17 = env2;
+      t29 = env1;
+      t35 = env2;
       v1x = env3;
       normal1Worldy = env4;
-      t18 = env5;
+      t37 = env5;
       v2y = env6;
       break;
   }
@@ -2920,70 +2842,68 @@ $$.Collision = {"":
       state = 0;
       var R = xf1.get$rotation();
       var v = $.index(normals1, edge1);
-      var t1 = R.get$col1().get$y();
+      var t5 = R.get$col1().get$y();
     case 5:
       state = 0;
-      var t2 = v.get$x();
+      var t7 = v.get$x();
     case 6:
       state = 0;
-      t2 = $.mul(t1, t2);
-      t1 = R.get$col2().get$y();
+      t7 = $.mul(t5, t7);
+      t5 = R.get$col2().get$y();
     case 7:
       state = 0;
-      var t3 = v.get$y();
+      var t10 = v.get$y();
     case 8:
       state = 0;
-      var normal1Worldy = $.add(t2, $.mul(t1, t3));
-      t2 = R.get$col1().get$x();
+      var normal1Worldy = $.add(t7, $.mul(t5, t10));
+      t7 = R.get$col1().get$x();
     case 9:
       state = 0;
-      var t4 = v.get$x();
+      var t13 = v.get$x();
     case 10:
       state = 0;
-      t4 = $.mul(t2, t4);
-      t2 = R.get$col2().get$x();
+      t13 = $.mul(t7, t13);
+      t7 = R.get$col2().get$x();
     case 11:
       state = 0;
-      var t5 = v.get$y();
+      var t16 = v.get$y();
     case 12:
       state = 0;
-      var normal1Worldx = $.add(t4, $.mul(t2, t5));
+      var normal1Worldx = $.add(t13, $.mul(t7, t16));
       var R1 = xf2.get$rotation();
-      t4 = R1.get$col1().get$x();
+      t13 = R1.get$col1().get$x();
     case 13:
       state = 0;
-      t4 = $.mul(normal1Worldx, t4);
-      var t6 = R1.get$col1().get$y();
+      t13 = $.mul(normal1Worldx, t13);
+      var t19 = R1.get$col1().get$y();
     case 14:
       state = 0;
-      var normal1x = $.add(t4, $.mul(normal1Worldy, t6));
-      t4 = R1.get$col2().get$x();
+      var normal1x = $.add(t13, $.mul(normal1Worldy, t19));
+      t13 = R1.get$col2().get$x();
     case 15:
       state = 0;
-      t4 = $.mul(normal1Worldx, t4);
-      var t7 = R1.get$col2().get$y();
+      t13 = $.mul(normal1Worldx, t13);
+      var t22 = R1.get$col2().get$y();
     case 16:
       state = 0;
-      var normal1y = $.add(t4, $.mul(normal1Worldy, t7));
+      var normal1y = $.add(t13, $.mul(normal1Worldy, t22));
       var minDot = 99999999999999.0;
       var i = 0;
       var index = 0;
-    case 17:
-    case 18:
-    case 19:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
             if (!$.ltB(i, count2)) break L0;
             var a = $.index(vertices2, i);
-            t1 = a.get$x();
+            var t1 = a.get$x();
           case 17:
             state = 0;
             t1 = $.mul(t1, normal1x);
-            t2 = a.get$y();
+            var t3 = a.get$y();
           case 18:
             state = 0;
-            var dot = $.add(t1, $.mul(t2, normal1y));
+            var dot = $.add(t1, $.mul(t3, normal1y));
           case 19:
             state = 0;
             if ($.ltB(dot, minDot)) {
@@ -2997,72 +2917,72 @@ $$.Collision = {"":
       t1 = xf1.get$position().get$y();
     case 20:
       state = 0;
-      t2 = R.get$col1().get$y();
+      t3 = R.get$col1().get$y();
     case 21:
       state = 0;
-      t3 = v3.get$x();
+      t5 = v3.get$x();
     case 22:
       state = 0;
-      t1 = $.add(t1, $.mul(t2, t3));
-      t4 = R.get$col2().get$y();
+      t1 = $.add(t1, $.mul(t3, t5));
+      t7 = R.get$col2().get$y();
     case 23:
       state = 0;
-      t5 = v3.get$y();
+      var t9 = v3.get$y();
     case 24:
       state = 0;
-      var v1y = $.add(t1, $.mul(t4, t5));
+      var v1y = $.add(t1, $.mul(t7, t9));
       t1 = xf1.get$position().get$x();
     case 25:
       state = 0;
-      t6 = R.get$col1().get$x();
+      var t12 = R.get$col1().get$x();
     case 26:
       state = 0;
-      t7 = v3.get$x();
+      var t14 = v3.get$x();
     case 27:
       state = 0;
-      t1 = $.add(t1, $.mul(t6, t7));
-      var t8 = R.get$col2().get$x();
+      t1 = $.add(t1, $.mul(t12, t14));
+      t16 = R.get$col2().get$x();
     case 28:
       state = 0;
-      var t9 = v3.get$y();
+      var t18 = v3.get$y();
     case 29:
       state = 0;
-      var v1x = $.add(t1, $.mul(t8, t9));
+      var v1x = $.add(t1, $.mul(t16, t18));
       var v4 = $.index(vertices2, index);
       t1 = xf2.get$position().get$y();
     case 30:
       state = 0;
-      var t10 = R1.get$col1().get$y();
+      var t21 = R1.get$col1().get$y();
     case 31:
       state = 0;
-      var t11 = v4.get$x();
+      var t23 = v4.get$x();
     case 32:
       state = 0;
-      t1 = $.add(t1, $.mul(t10, t11));
-      var t12 = R1.get$col2().get$y();
+      t1 = $.add(t1, $.mul(t21, t23));
+      var t25 = R1.get$col2().get$y();
     case 33:
       state = 0;
-      var t13 = v4.get$y();
+      var t27 = v4.get$y();
     case 34:
       state = 0;
-      var v2y = $.sub($.add(t1, $.mul(t12, t13)), v1y);
-      var t14 = xf2.get$position().get$x();
+      var v2y = $.sub($.add(t1, $.mul(t25, t27)), v1y);
+      var t29 = xf2.get$position().get$x();
     case 35:
       state = 0;
-      var t15 = R1.get$col1().get$x();
+      var t31 = R1.get$col1().get$x();
     case 36:
       state = 0;
-      var t16 = v4.get$x();
+      var t33 = v4.get$x();
     case 37:
       state = 0;
-      t14 = $.add(t14, $.mul(t15, t16));
-      var t17 = R1.get$col2().get$x();
+      t29 = $.add(t29, $.mul(t31, t33));
+      var t35 = R1.get$col2().get$x();
     case 38:
       state = 0;
-      var t18 = v4.get$y();
+      var t37 = v4.get$y();
     case 39:
       state = 0;
-      return $.add($.mul($.sub($.add(t14, $.mul(t17, t18)), v1x), normal1Worldx), $.mul(v2y, normal1Worldy));
+      return $.add($.mul($.sub($.add(t29, $.mul(t35, t37)), v1x), normal1Worldx), $.mul(v2y, normal1Worldy));
   }
  },
  collidePolygonAndCircle$5: function(manifold, polygon, xfA, circle, xfB) {
@@ -3088,17 +3008,17 @@ $$.Collision = {"":
   for (var normalIndex = 0, i = 0, separation = 1e-12; i < vertexCount; ++i) {
     var t1 = vertices.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t2 = vertices[i];
-    var t3 = t2.get$x();
-    if (typeof t3 !== 'number') throw $.iae(t3);
-    var tempx = cLocalx - t3;
-    t2 = t2.get$y();
+    var vertex = vertices[i];
+    var t2 = vertex.get$x();
+    if (typeof t2 !== 'number') throw $.iae(t2);
+    var tempx = cLocalx - t2;
+    t2 = vertex.get$y();
     if (typeof t2 !== 'number') throw $.iae(t2);
     var tempy = cLocaly - t2;
     t2 = normals.length;
     if (i < 0 || i >= t2) throw $.ioore(i);
-    t3 = normals[i];
-    var s = $.add($.mul(t3.get$x(), tempx), $.mul(t3.get$y(), tempy));
+    var norm = normals[i];
+    var s = $.add($.mul(norm.get$x(), tempx), $.mul(norm.get$y(), tempy));
     if ($.gtB(s, radius)) return;
     if ($.gtB(s, separation)) {
       separation = s;
@@ -3109,116 +3029,116 @@ $$.Collision = {"":
   vertIndex2 = vertIndex2 < vertexCount ? vertIndex2 : 0;
   t1 = vertices.length;
   if (normalIndex < 0 || normalIndex >= t1) throw $.ioore(normalIndex);
-  t2 = vertices[normalIndex];
+  var v1 = vertices[normalIndex];
   if (vertIndex2 < 0 || vertIndex2 >= t1) throw $.ioore(vertIndex2);
-  t3 = vertices[vertIndex2];
+  var v2 = vertices[vertIndex2];
   if ($.ltB(separation, 1.192e-7)) {
     manifold.set$pointCount(1);
     manifold.set$type(1);
     t1 = normals.length;
     if (normalIndex < 0 || normalIndex >= t1) throw $.ioore(normalIndex);
-    var t4 = normals[normalIndex];
-    var t5 = t4.get$x();
-    manifold.get$localNormal().set$x(t5);
-    t4 = t4.get$y();
-    manifold.get$localNormal().set$y(t4);
-    t4 = $.mul($.add(t2.get$x(), t3.get$x()), 0.5);
-    manifold.get$localPoint().set$x(t4);
-    t4 = $.mul($.add(t2.get$y(), t3.get$y()), 0.5);
-    manifold.get$localPoint().set$y(t4);
+    norm = normals[normalIndex];
+    t2 = norm.get$x();
+    manifold.get$localNormal().set$x(t2);
+    t2 = norm.get$y();
+    manifold.get$localNormal().set$y(t2);
+    t2 = $.mul($.add(v1.get$x(), v2.get$x()), 0.5);
+    manifold.get$localPoint().set$x(t2);
+    t2 = $.mul($.add(v1.get$y(), v2.get$y()), 0.5);
+    manifold.get$localPoint().set$y(t2);
     var mpoint = $.index(manifold.get$points(), 0);
-    t4 = circle.get$position().get$x();
-    mpoint.get$localPoint().set$x(t4);
-    t4 = circle.get$position().get$y();
-    mpoint.get$localPoint().set$y(t4);
+    t2 = circle.get$position().get$x();
+    mpoint.get$localPoint().set$x(t2);
+    t2 = circle.get$position().get$y();
+    mpoint.get$localPoint().set$y(t2);
     mpoint.get$id().zero$0();
     return;
   }
-  t1 = t2.get$x();
+  t1 = v1.get$x();
   if (typeof t1 !== 'number') throw $.iae(t1);
   var tempX = cLocalx - t1;
-  t1 = t2.get$y();
+  t1 = v1.get$y();
   if (typeof t1 !== 'number') throw $.iae(t1);
   var tempY = cLocaly - t1;
-  var temp2X = $.sub(t3.get$x(), t2.get$x());
-  var temp2Y = $.sub(t3.get$y(), t2.get$y());
+  var temp2X = $.sub(v2.get$x(), v1.get$x());
+  var temp2Y = $.sub(v2.get$y(), v1.get$y());
   if (typeof temp2X !== 'number') throw $.iae(temp2X);
   t1 = tempX * temp2X;
   if (typeof temp2Y !== 'number') throw $.iae(temp2Y);
   var u1 = t1 + tempY * temp2Y;
-  t1 = t3.get$x();
+  t1 = v2.get$x();
   if (typeof t1 !== 'number') throw $.iae(t1);
   var temp3X = cLocalx - t1;
-  t1 = t3.get$y();
+  t1 = v2.get$y();
   if (typeof t1 !== 'number') throw $.iae(t1);
   var temp3Y = cLocaly - t1;
-  var temp4X = $.sub(t2.get$x(), t3.get$x());
-  var temp4Y = $.sub(t2.get$y(), t3.get$y());
+  var temp4X = $.sub(v1.get$x(), v2.get$x());
+  var temp4Y = $.sub(v1.get$y(), v2.get$y());
   if (typeof temp4X !== 'number') throw $.iae(temp4X);
   t1 = temp3X * temp4X;
   if (typeof temp4Y !== 'number') throw $.iae(temp4Y);
   var u2 = t1 + temp3Y * temp4Y;
   if (u1 <= 0) {
-    t1 = t2.get$x();
+    t1 = v1.get$x();
     if (typeof t1 !== 'number') throw $.iae(t1);
     var dx = cLocalx - t1;
-    t1 = t2.get$y();
+    t1 = v1.get$y();
     if (typeof t1 !== 'number') throw $.iae(t1);
     var dy = cLocaly - t1;
     if (dx * dx + dy * dy > radius * radius) return;
     manifold.set$pointCount(1);
     manifold.set$type(1);
-    t1 = t2.get$x();
+    t1 = v1.get$x();
     if (typeof t1 !== 'number') throw $.iae(t1);
     t1 = cLocalx - t1;
     manifold.get$localNormal().set$x(t1);
-    t1 = t2.get$y();
+    t1 = v1.get$y();
     if (typeof t1 !== 'number') throw $.iae(t1);
     t1 = cLocaly - t1;
     manifold.get$localNormal().set$y(t1);
     manifold.get$localNormal().normalize$0();
-    manifold.get$localPoint().setFrom$1(t2);
+    manifold.get$localPoint().setFrom$1(v1);
     $.index(manifold.get$points(), 0).get$localPoint().setFrom$1(circle.get$position());
     $.index(manifold.get$points(), 0).get$id().zero$0();
   } else {
     if (u2 <= 0.0) {
-      t1 = t3.get$x();
+      t1 = v2.get$x();
       if (typeof t1 !== 'number') throw $.iae(t1);
       dx = cLocalx - t1;
-      t1 = t3.get$y();
+      t1 = v2.get$y();
       if (typeof t1 !== 'number') throw $.iae(t1);
       dy = cLocaly - t1;
       if (dx * dx + dy * dy > radius * radius) return;
       manifold.set$pointCount(1);
       manifold.set$type(1);
-      t1 = t3.get$x();
+      t1 = v2.get$x();
       if (typeof t1 !== 'number') throw $.iae(t1);
       t1 = cLocalx - t1;
       manifold.get$localNormal().set$x(t1);
-      t1 = t3.get$y();
+      t1 = v2.get$y();
       if (typeof t1 !== 'number') throw $.iae(t1);
       t1 = cLocaly - t1;
       manifold.get$localNormal().set$y(t1);
       manifold.get$localNormal().normalize$0();
-      manifold.get$localPoint().setFrom$1(t3);
+      manifold.get$localPoint().setFrom$1(v2);
       $.index(manifold.get$points(), 0).get$localPoint().setFrom$1(circle.get$position());
       $.index(manifold.get$points(), 0).get$id().zero$0();
     } else {
-      var fcx = $.mul($.add(t2.get$x(), t3.get$x()), 0.5);
-      var fcy = $.mul($.add(t2.get$y(), t3.get$y()), 0.5);
+      var fcx = $.mul($.add(v1.get$x(), v2.get$x()), 0.5);
+      var fcy = $.mul($.add(v1.get$y(), v2.get$y()), 0.5);
       if (typeof fcx !== 'number') throw $.iae(fcx);
       var tx = cLocalx - fcx;
       if (typeof fcy !== 'number') throw $.iae(fcy);
       var ty = cLocaly - fcy;
       t1 = normals.length;
       if (normalIndex < 0 || normalIndex >= t1) throw $.ioore(normalIndex);
-      t4 = normals[normalIndex];
-      t5 = t4.get$x();
-      if (typeof t5 !== 'number') throw $.iae(t5);
-      t5 *= tx;
-      t4 = t4.get$y();
-      if (typeof t4 !== 'number') throw $.iae(t4);
-      if (t5 + ty * t4 > radius) return;
+      norm = normals[normalIndex];
+      t2 = norm.get$x();
+      if (typeof t2 !== 'number') throw $.iae(t2);
+      t2 *= tx;
+      var t3 = norm.get$y();
+      if (typeof t3 !== 'number') throw $.iae(t3);
+      if (t2 + ty * t3 > radius) return;
       manifold.set$pointCount(1);
       manifold.set$type(1);
       t1 = manifold.get$localNormal();
@@ -3501,7 +3421,7 @@ $$.Distance = {"":
  ["normal?", "temp", "searchDirection", "closestPoint", "saveB", "saveA", "simplex", "maxIters", "iters", "calls"],
  super: "Object",
  distance$3: function(output, cache, input) {
-  this.calls = this.calls + 1;
+  this.calls = $.add(this.calls, 1);
   var proxyA = input.get$proxyA();
   var proxyB = input.get$proxyB();
   var transformA = input.get$transformA();
@@ -3512,7 +3432,7 @@ $$.Distance = {"":
   var t2 = this.closestPoint;
   t1.getClosestPoint$1(t2);
   var distanceSqr1 = t2.get$lengthSquared();
-  for (var t3 = this.saveA, t4 = this.saveB, t5 = this.searchDirection, t6 = this.temp, distanceSqr2 = distanceSqr1, iter = 0, saveCount = 0; iter < this.maxIters; ) {
+  for (var t3 = this.saveA, t4 = this.saveB, t5 = this.searchDirection, t6 = this.temp, distanceSqr2 = distanceSqr1, iter = 0, saveCount = 0; $.ltB(iter, this.maxIters); ) {
     saveCount = t1.get$count();
     for (var i = 0; $.ltB(i, saveCount); ++i) {
       $.indexSet(t3, i, $.index(vertices, i).get$indexA());
@@ -3543,7 +3463,7 @@ $$.Distance = {"":
     $.Transform_mulToOut(transformB, $.index(proxyB.get$vertices(), vertex.get$indexB()), vertex.get$wB());
     vertex.get$w().setFrom$1(vertex.get$wB()).subLocal$1(vertex.get$wA());
     ++iter;
-    this.iters = this.iters + 1;
+    this.iters = $.add(this.iters, 1);
     for (i = 0; duplicate = false, $.ltB(i, saveCount); ++i) {
       if ($.eqB(vertex.get$indexA(), $.index(t3, i)) && $.eqB(vertex.get$indexB(), $.index(t4, i))) {
         duplicate = true;
@@ -3654,8 +3574,7 @@ $$.DistanceProxy = {"":
       state = 0;
       var bestIndex = 0;
       var i = 1;
-    case 2:
-    case 3:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -3698,15 +3617,15 @@ $$.DistanceProxy = {"":
       var i = 0;
       while (true) {
         t2 = this.count;
-        if (typeof t2 !== 'number') return this.setFromShape$1$bailout(3, i, shape, t1, t2, 0);
+        if (typeof t2 !== 'number') return this.setFromShape$1$bailout(3, shape, i, t1, t2, 0);
         if (!(i < t2)) break;
         t2 = t1.length;
         if (i < 0 || i >= t2) throw $.ioore(i);
         var t3 = t1[i];
         var t4 = shape.get$vertices();
-        if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.setFromShape$1$bailout(4, i, shape, t1, t3, t4);
-        var t5 = t4.length;
-        if (i < 0 || i >= t5) throw $.ioore(i);
+        if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.setFromShape$1$bailout(4, shape, i, t1, t3, t4);
+        var t6 = t4.length;
+        if (i < 0 || i >= t6) throw $.ioore(i);
         t3.setFrom$1(t4[i]);
         ++i;
       }
@@ -3724,14 +3643,14 @@ $$.DistanceProxy = {"":
       t1 = env1;
       break;
     case 3:
-      i = env0;
-      shape = env1;
+      shape = env0;
+      i = env1;
       t1 = env2;
       t2 = env3;
       break;
     case 4:
-      i = env0;
-      shape = env1;
+      shape = env0;
+      i = env1;
       t1 = env2;
       t3 = env3;
       t4 = env4;
@@ -3742,9 +3661,7 @@ $$.DistanceProxy = {"":
       var t1 = shape.get$type();
     case 1:
       state = 0;
-    case 2:
-    case 3:
-    case 4:
+    default:
       if ((state == 0 && $.eqB(t1, 0))) {
         t1 = this.vertices;
         var t2 = t1.length;
@@ -3758,8 +3675,7 @@ $$.DistanceProxy = {"":
             t1 = shape.get$type();
           case 2:
             state = 0;
-          case 3:
-          case 4:
+          default:
             if (state == 3 || state == 4 || (state == 0 && $.eqB(t1, 1))) {
               switch (state) {
                 case 0:
@@ -3767,8 +3683,7 @@ $$.DistanceProxy = {"":
                   this.radius = shape.get$radius();
                   t1 = this.vertices;
                   var i = 0;
-                case 3:
-                case 4:
+                default:
                   L0: while (true) {
                     switch (state) {
                       case 0:
@@ -3815,7 +3730,7 @@ $$.Features = {"":
   return 'Features: (' + $.S(this.flip) + ', ' + $.S(this.incidentEdge) + ', ' + $.S(this.incidentVertex) + ' ' + $.S(this.referenceEdge) + ')';
  },
  operator$eq$1: function(other) {
-  return $.eqB(this.referenceEdge, other.get$referenceEdge()) && $.eqB(this.incidentEdge, other.get$incidentEdge()) && $.eqB(this.incidentVertex, other.get$incidentVertex()) && $.eqB(this.flip, other.get$flip());
+  return $.eqB(this.referenceEdge, other.get$referenceEdge()) && ($.eqB(this.incidentEdge, other.get$incidentEdge()) && ($.eqB(this.incidentVertex, other.get$incidentVertex()) && $.eqB(this.flip, other.get$flip())));
  },
  setFrom$1: function(f) {
   this.referenceEdge = f.get$referenceEdge();
@@ -3829,71 +3744,15 @@ $$.Manifold = {"":
  ["pointCount=", "type=", "localPoint?", "localNormal?", "points?"],
  super: "Object",
  setFrom$1: function(other) {
-  var t1 = this.points;
-  var i = 0;
-  while (true) {
-    var t2 = other.get$pointCount();
-    if (typeof t2 !== 'number') return this.setFrom$1$bailout(1, other, t2, t1, i, 0);
-    if (!(i < t2)) break;
-    t2 = t1.length;
+  for (var t1 = this.points, i = 0; $.ltB(i, other.get$pointCount()); ++i) {
+    var t2 = t1.length;
     if (i < 0 || i >= t2) throw $.ioore(i);
-    var t3 = t1[i];
-    var t4 = other.get$points();
-    if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.setFrom$1$bailout(2, other, t3, t1, t4, i);
-    var t5 = t4.length;
-    if (i < 0 || i >= t5) throw $.ioore(i);
-    t3.setFrom$1(t4[i]);
-    ++i;
+    t1[i].setFrom$1($.index(other.get$points(), i));
   }
   this.type = other.get$type();
   this.localNormal.setFrom$1(other.get$localNormal());
   this.localPoint.setFrom$1(other.get$localPoint());
   this.pointCount = other.get$pointCount();
- },
- setFrom$1$bailout: function(state, env0, env1, env2, env3, env4) {
-  switch (state) {
-    case 1:
-      var other = env0;
-      t2 = env1;
-      t1 = env2;
-      i = env3;
-      break;
-    case 2:
-      other = env0;
-      t3 = env1;
-      t1 = env2;
-      t4 = env3;
-      i = env4;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.points;
-      var i = 0;
-    case 1:
-    case 2:
-      L0: while (true) {
-        switch (state) {
-          case 0:
-            var t2 = other.get$pointCount();
-          case 1:
-            state = 0;
-            if (!$.ltB(i, t2)) break L0;
-            t2 = t1.length;
-            if (i < 0 || i >= t2) throw $.ioore(i);
-            var t3 = t1[i];
-            var t4 = other.get$points();
-          case 2:
-            state = 0;
-            t3.setFrom$1($.index(t4, i));
-            ++i;
-        }
-      }
-      this.type = other.get$type();
-      this.localNormal.setFrom$1(other.get$localNormal());
-      this.localPoint.setFrom$1(other.get$localPoint());
-      this.pointCount = other.get$pointCount();
-  }
  },
  Manifold$0: function() {
   for (var t1 = this.points, i = 0; i < 2; ++i) {
@@ -3933,44 +3792,44 @@ $$.Simplex = {"":
   var w2e12 = $.Vector_dot(w2, t4);
   if (typeof w2e12 !== 'number') return this.solve3$0$bailout(2, w2e12, w1, w2, w3, t1, t2, t3, t4, w1e12, 0, 0, 0, 0, 0);
   var d12_2 = -w1e12;
-  var t5 = this.e13;
-  t5.setFrom$1(w3).subLocal$1(w1);
-  var w1e13 = $.Vector_dot(w1, t5);
-  if (typeof w1e13 !== 'number') return this.solve3$0$bailout(3, w2e12, d12_2, w1, w2, w3, t1, t2, t3, t4, w1e13, t5, 0, 0, 0);
-  var w3e13 = $.Vector_dot(w3, t5);
-  if (typeof w3e13 !== 'number') return this.solve3$0$bailout(4, w1, w2, w3, t1, t2, t3, t4, t5, w2e12, d12_2, w1e13, w3e13, 0, 0);
+  var t7 = this.e13;
+  t7.setFrom$1(w3).subLocal$1(w1);
+  var w1e13 = $.Vector_dot(w1, t7);
+  if (typeof w1e13 !== 'number') return this.solve3$0$bailout(3, w2e12, d12_2, w1, w2, w3, t1, t2, t3, t4, w1e13, t7, 0, 0, 0);
+  var w3e13 = $.Vector_dot(w3, t7);
+  if (typeof w3e13 !== 'number') return this.solve3$0$bailout(4, w1, w2, w3, t1, t2, t3, t4, t7, w2e12, d12_2, w1e13, w3e13, 0, 0);
   var d13_2 = -w1e13;
-  var t6 = this.e23;
-  t6.setFrom$1(w3).subLocal$1(w2);
-  var w2e23 = $.Vector_dot(w2, t6);
-  if (typeof w2e23 !== 'number') return this.solve3$0$bailout(5, w1, w2e23, w2, w3, t1, t2, t3, t4, t5, w2e12, t6, d12_2, w3e13, d13_2);
-  var w3e23 = $.Vector_dot(w3, t6);
-  if (typeof w3e23 !== 'number') return this.solve3$0$bailout(6, w1, w2e23, w2, w3e23, w3, t1, t2, t3, t4, t5, w2e12, d12_2, w3e13, d13_2);
+  var t10 = this.e23;
+  t10.setFrom$1(w3).subLocal$1(w2);
+  var w2e23 = $.Vector_dot(w2, t10);
+  if (typeof w2e23 !== 'number') return this.solve3$0$bailout(5, w1, w2e23, w2, w3, t1, t2, t3, t4, t7, w2e12, t10, d12_2, w3e13, d13_2);
+  var w3e23 = $.Vector_dot(w3, t10);
+  if (typeof w3e23 !== 'number') return this.solve3$0$bailout(6, w1, w2e23, w2, w3e23, w3, t1, t2, t3, t4, t7, w2e12, d12_2, w3e13, d13_2);
   var d23_2 = -w2e23;
-  var n123 = $.Vector_crossVectors(t4, t5);
+  var n123 = $.Vector_crossVectors(t4, t7);
   if (typeof n123 !== 'number') return this.solve3$0$bailout(7, w1, w2, w3e23, w3, t1, t2, t3, d23_2, n123, w2e12, d12_2, w3e13, d13_2, 0);
-  t5 = $.Vector_crossVectors(w2, w3);
-  if (typeof t5 !== 'number') return this.solve3$0$bailout(8, w1, w2, w3e23, w3, t1, t2, t3, d23_2, n123, t5, w2e12, d12_2, w3e13, d13_2);
-  var d123_1 = n123 * t5;
-  t5 = $.Vector_crossVectors(w3, w1);
-  if (typeof t5 !== 'number') return this.solve3$0$bailout(9, w1, w2, w3e23, t1, t2, t3, d23_2, n123, w2e12, d123_1, d12_2, t5, w3e13, d13_2);
-  var d123_2 = n123 * t5;
-  t5 = $.Vector_crossVectors(w1, w2);
-  if (typeof t5 !== 'number') return this.solve3$0$bailout(10, w3e23, t1, t2, t3, d23_2, n123, w2e12, d123_1, d12_2, d123_2, t5, w3e13, d13_2, 0);
-  var d123_3 = n123 * t5;
+  t4 = $.Vector_crossVectors(w2, w3);
+  if (typeof t4 !== 'number') return this.solve3$0$bailout(8, w1, w2, w3e23, w3, t1, t2, t3, d23_2, n123, t4, w2e12, d12_2, w3e13, d13_2);
+  var d123_1 = n123 * t4;
+  t4 = $.Vector_crossVectors(w3, w1);
+  if (typeof t4 !== 'number') return this.solve3$0$bailout(9, w1, w2, w3e23, t1, t2, t3, d23_2, n123, w2e12, d123_1, d12_2, t4, w3e13, d13_2);
+  var d123_2 = n123 * t4;
+  t4 = $.Vector_crossVectors(w1, w2);
+  if (typeof t4 !== 'number') return this.solve3$0$bailout(10, w3e23, t1, t2, t3, d23_2, n123, w2e12, d123_1, d12_2, d123_2, t4, w3e13, d13_2, 0);
+  var d123_3 = n123 * t4;
   if (d12_2 <= 0.0 && d13_2 <= 0.0) {
     t1.a = 1.0;
     this.count = 1;
     return;
   }
-  if (w2e12 > 0.0 && d12_2 > 0.0 && d123_3 <= 0.0) {
+  if (w2e12 > 0.0 && (d12_2 > 0.0 && d123_3 <= 0.0)) {
     var inv_d12 = 1.0 / (w2e12 + d12_2);
     t1.a = w2e12 * inv_d12;
     t2.a = d12_2 * inv_d12;
     this.count = 2;
     return;
   }
-  if (w3e13 > 0.0 && d13_2 > 0.0 && d123_2 <= 0.0) {
+  if (w3e13 > 0.0 && (d13_2 > 0.0 && d123_2 <= 0.0)) {
     var inv_d13 = 1.0 / (w3e13 + d13_2);
     t1.a = w3e13 * inv_d13;
     t3.a = d13_2 * inv_d13;
@@ -3990,7 +3849,7 @@ $$.Simplex = {"":
     t1.setFrom$1(t3);
     return;
   }
-  if (w3e23 > 0.0 && d23_2 > 0.0 && d123_1 <= 0.0) {
+  if (w3e23 > 0.0 && (d23_2 > 0.0 && d123_1 <= 0.0)) {
     var inv_d23 = 1.0 / (w3e23 + d23_2);
     t2.a = w3e23 * inv_d23;
     t3.a = d23_2 * inv_d23;
@@ -4038,7 +3897,7 @@ $$.Simplex = {"":
       t3 = env7;
       t4 = env8;
       w1e13 = env9;
-      t5 = env10;
+      t7 = env10;
       break;
     case 4:
       w1 = env0;
@@ -4048,7 +3907,7 @@ $$.Simplex = {"":
       t2 = env4;
       t3 = env5;
       t4 = env6;
-      t5 = env7;
+      t7 = env7;
       w2e12 = env8;
       d12_2 = env9;
       w1e13 = env10;
@@ -4063,9 +3922,9 @@ $$.Simplex = {"":
       t2 = env5;
       t3 = env6;
       t4 = env7;
-      t5 = env8;
+      t7 = env8;
       w2e12 = env9;
-      t6 = env10;
+      t10 = env10;
       d12_2 = env11;
       w3e13 = env12;
       d13_2 = env13;
@@ -4080,7 +3939,7 @@ $$.Simplex = {"":
       t2 = env6;
       t3 = env7;
       t4 = env8;
-      t5 = env9;
+      t7 = env9;
       w2e12 = env10;
       d12_2 = env11;
       w3e13 = env12;
@@ -4111,7 +3970,7 @@ $$.Simplex = {"":
       t3 = env6;
       d23_2 = env7;
       n123 = env8;
-      t5 = env9;
+      t4 = env9;
       w2e12 = env10;
       d12_2 = env11;
       w3e13 = env12;
@@ -4129,7 +3988,7 @@ $$.Simplex = {"":
       w2e12 = env8;
       d123_1 = env9;
       d12_2 = env10;
-      t5 = env11;
+      t4 = env11;
       w3e13 = env12;
       d13_2 = env13;
       break;
@@ -4144,7 +4003,7 @@ $$.Simplex = {"":
       d123_1 = env7;
       d12_2 = env8;
       d123_2 = env9;
-      t5 = env10;
+      t4 = env10;
       w3e13 = env11;
       d13_2 = env12;
       break;
@@ -4166,45 +4025,45 @@ $$.Simplex = {"":
     case 2:
       state = 0;
       var d12_2 = $.neg(w1e12);
-      var t5 = this.e13;
-      t5.setFrom$1(w3).subLocal$1(w1);
-      var w1e13 = $.Vector_dot(w1, t5);
+      var t7 = this.e13;
+      t7.setFrom$1(w3).subLocal$1(w1);
+      var w1e13 = $.Vector_dot(w1, t7);
     case 3:
       state = 0;
-      var w3e13 = $.Vector_dot(w3, t5);
+      var w3e13 = $.Vector_dot(w3, t7);
     case 4:
       state = 0;
       var d13_2 = $.neg(w1e13);
-      var t6 = this.e23;
-      t6.setFrom$1(w3).subLocal$1(w2);
-      var w2e23 = $.Vector_dot(w2, t6);
+      var t10 = this.e23;
+      t10.setFrom$1(w3).subLocal$1(w2);
+      var w2e23 = $.Vector_dot(w2, t10);
     case 5:
       state = 0;
-      var w3e23 = $.Vector_dot(w3, t6);
+      var w3e23 = $.Vector_dot(w3, t10);
     case 6:
       state = 0;
       var d23_2 = $.neg(w2e23);
-      var n123 = $.Vector_crossVectors(t4, t5);
+      var n123 = $.Vector_crossVectors(t4, t7);
     case 7:
       state = 0;
-      t5 = $.Vector_crossVectors(w2, w3);
+      t4 = $.Vector_crossVectors(w2, w3);
     case 8:
       state = 0;
-      var d123_1 = $.mul(n123, t5);
-      t5 = $.Vector_crossVectors(w3, w1);
+      var d123_1 = $.mul(n123, t4);
+      t4 = $.Vector_crossVectors(w3, w1);
     case 9:
       state = 0;
-      var d123_2 = $.mul(n123, t5);
-      t5 = $.Vector_crossVectors(w1, w2);
+      var d123_2 = $.mul(n123, t4);
+      t4 = $.Vector_crossVectors(w1, w2);
     case 10:
       state = 0;
-      var d123_3 = $.mul(n123, t5);
+      var d123_3 = $.mul(n123, t4);
       if ($.leB(d12_2, 0.0) && $.leB(d13_2, 0.0)) {
         t1.set$a(1.0);
         this.count = 1;
         return;
       }
-      if ($.gtB(w2e12, 0.0) && $.gtB(d12_2, 0.0) && $.leB(d123_3, 0.0)) {
+      if ($.gtB(w2e12, 0.0) && ($.gtB(d12_2, 0.0) && $.leB(d123_3, 0.0))) {
         t3 = $.add(w2e12, d12_2);
         if (typeof t3 !== 'number') throw $.iae(t3);
         var inv_d12 = 1.0 / t3;
@@ -4213,7 +4072,7 @@ $$.Simplex = {"":
         this.count = 2;
         return;
       }
-      if ($.gtB(w3e13, 0.0) && $.gtB(d13_2, 0.0) && $.leB(d123_2, 0.0)) {
+      if ($.gtB(w3e13, 0.0) && ($.gtB(d13_2, 0.0) && $.leB(d123_2, 0.0))) {
         t4 = $.add(w3e13, d13_2);
         if (typeof t4 !== 'number') throw $.iae(t4);
         var inv_d13 = 1.0 / t4;
@@ -4235,7 +4094,7 @@ $$.Simplex = {"":
         t1.setFrom$1(t3);
         return;
       }
-      if ($.gtB(w3e23, 0.0) && $.gtB(d23_2, 0.0) && $.leB(d123_1, 0.0)) {
+      if ($.gtB(w3e23, 0.0) && ($.gtB(d23_2, 0.0) && $.leB(d123_1, 0.0))) {
         t4 = $.add(w3e23, d23_2);
         if (typeof t4 !== 'number') throw $.iae(t4);
         var inv_d23 = 1.0 / t4;
@@ -4449,260 +4308,37 @@ $$.Simplex = {"":
  },
  readCache$5: function(cache, proxyA, transformA, proxyB, transformB) {
   this.count = cache.get$count();
-  var t1 = this.vertices;
-  var i = 0;
-  while (true) {
-    var t2 = this.count;
-    if (typeof t2 !== 'number') return this.readCache$5$bailout(1, cache, proxyA, i, transformA, transformB, proxyB, t2, t1, 0, 0);
-    if (!(i < t2)) break;
-    t2 = t1.length;
+  for (var t1 = this.vertices, i = 0; $.ltB(i, this.count); ++i) {
+    var t2 = t1.length;
     if (i < 0 || i >= t2) throw $.ioore(i);
-    var t3 = t1[i];
-    var t4 = cache.get$indexA();
-    if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(2, cache, proxyA, i, transformA, transformB, proxyB, t4, t1, t3, 0);
-    var t5 = t4.length;
-    if (i < 0 || i >= t5) throw $.ioore(i);
-    t3.set$indexA(t4[i]);
-    var t6 = cache.get$indexB();
-    if (typeof t6 !== 'string' && (typeof t6 !== 'object' || t6 === null || (t6.constructor !== Array && !t6.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(3, cache, proxyA, i, transformA, transformB, t6, proxyB, t1, t3, 0);
-    var t7 = t6.length;
-    if (i < 0 || i >= t7) throw $.ioore(i);
-    t3.set$indexB(t6[i]);
-    var t8 = proxyA.get$vertices();
-    if (typeof t8 !== 'string' && (typeof t8 !== 'object' || t8 === null || (t8.constructor !== Array && !t8.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(4, cache, proxyA, i, transformA, transformB, proxyB, t8, t1, t3, 0);
-    var t9 = t3.get$indexA();
-    if (t9 !== (t9 | 0)) throw $.iae(t9);
-    var t10 = t8.length;
-    if (t9 < 0 || t9 >= t10) throw $.ioore(t9);
-    t9 = t8[t9];
-    t8 = proxyB.get$vertices();
-    if (typeof t8 !== 'string' && (typeof t8 !== 'object' || t8 === null || (t8.constructor !== Array && !t8.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(5, cache, proxyA, i, transformA, transformB, proxyB, t9, t8, t1, t3);
-    var t11 = t3.get$indexB();
-    if (t11 !== (t11 | 0)) throw $.iae(t11);
-    var t12 = t8.length;
-    if (t11 < 0 || t11 >= t12) throw $.ioore(t11);
-    t11 = t8[t11];
-    $.Transform_mulToOut(transformA, t9, t3.get$wA());
-    $.Transform_mulToOut(transformB, t11, t3.get$wB());
-    t3.get$w().setFrom$1(t3.get$wB()).subLocal$1(t3.get$wA());
-    t3.set$a(0.0);
-    ++i;
+    var v = t1[i];
+    v.set$indexA($.index(cache.get$indexA(), i));
+    v.set$indexB($.index(cache.get$indexB(), i));
+    var wALocal = $.index(proxyA.get$vertices(), v.get$indexA());
+    var wBLocal = $.index(proxyB.get$vertices(), v.get$indexB());
+    $.Transform_mulToOut(transformA, wALocal, v.get$wA());
+    $.Transform_mulToOut(transformB, wBLocal, v.get$wB());
+    v.get$w().setFrom$1(v.get$wB()).subLocal$1(v.get$wA());
+    v.set$a(0.0);
   }
-  if (typeof t2 !== 'number') return this.readCache$5$bailout(6, cache, proxyA, transformA, proxyB, transformB, t1, t2, 0, 0, 0);
-  if (t2 > 1) {
+  if ($.gtB(this.count, 1)) {
     var metric1 = cache.get$metric();
     var metric2 = this.getMetric$0();
-    if (typeof metric2 !== 'number') return this.readCache$5$bailout(7, proxyA, transformA, proxyB, transformB, metric1, metric2, t1, 0, 0, 0);
     if (typeof metric1 !== 'number') throw $.iae(metric1);
-    if (metric2 < 0.5 * metric1 || 2.0 * metric1 < metric2 || metric2 < 1.192e-7) this.count = 0;
+    if ($.ltB(metric2, 0.5 * metric1) || ($.ltB(2.0 * metric1, metric2) || $.ltB(metric2, 1.192e-7))) this.count = 0;
   }
-  t2 = this.count;
-  if (typeof t2 !== 'number') return this.readCache$5$bailout(8, t2, proxyA, transformA, proxyB, transformB, t1, 0, 0, 0, 0);
-  if (t2 === 0) {
+  if ($.eqB(this.count, 0)) {
     t2 = t1.length;
-    if (0 >= t2) throw $.ioore(0);
-    t1 = t1[0];
-    t1.set$indexA(0);
-    t1.set$indexB(0);
-    t3 = proxyA.get$vertices();
-    if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || (t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(9, transformA, proxyB, transformB, t1, t3, 0, 0, 0, 0, 0);
-    t4 = t3.length;
-    if (0 >= t4) throw $.ioore(0);
-    t3 = t3[0];
-    t5 = proxyB.get$vertices();
-    if (typeof t5 !== 'string' && (typeof t5 !== 'object' || t5 === null || (t5.constructor !== Array && !t5.is$JavaScriptIndexingBehavior()))) return this.readCache$5$bailout(10, t5, transformA, t1, transformB, t3, 0, 0, 0, 0, 0);
-    t6 = t5.length;
-    if (0 >= t6) throw $.ioore(0);
-    t5 = t5[0];
-    $.Transform_mulToOut(transformA, t3, t1.get$wA());
-    $.Transform_mulToOut(transformB, t5, t1.get$wB());
-    t1.get$w().setFrom$1(t1.get$wB()).subLocal$1(t1.get$wA());
+    if (0 < 0 || 0 >= t2) throw $.ioore(0);
+    v = t1[0];
+    v.set$indexA(0);
+    v.set$indexB(0);
+    wALocal = $.index(proxyA.get$vertices(), 0);
+    wBLocal = $.index(proxyB.get$vertices(), 0);
+    $.Transform_mulToOut(transformA, wALocal, v.get$wA());
+    $.Transform_mulToOut(transformB, wBLocal, v.get$wB());
+    v.get$w().setFrom$1(v.get$wB()).subLocal$1(v.get$wA());
     this.count = 1;
-  }
- },
- readCache$5$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9) {
-  switch (state) {
-    case 1:
-      var cache = env0;
-      var proxyA = env1;
-      i = env2;
-      var transformA = env3;
-      var transformB = env4;
-      var proxyB = env5;
-      t2 = env6;
-      t1 = env7;
-      break;
-    case 2:
-      cache = env0;
-      proxyA = env1;
-      i = env2;
-      transformA = env3;
-      transformB = env4;
-      proxyB = env5;
-      t4 = env6;
-      t1 = env7;
-      t3 = env8;
-      break;
-    case 3:
-      cache = env0;
-      proxyA = env1;
-      i = env2;
-      transformA = env3;
-      transformB = env4;
-      t5 = env5;
-      proxyB = env6;
-      t1 = env7;
-      t3 = env8;
-      break;
-    case 4:
-      cache = env0;
-      proxyA = env1;
-      i = env2;
-      transformA = env3;
-      transformB = env4;
-      proxyB = env5;
-      t6 = env6;
-      t1 = env7;
-      t3 = env8;
-      break;
-    case 5:
-      cache = env0;
-      proxyA = env1;
-      i = env2;
-      transformA = env3;
-      transformB = env4;
-      proxyB = env5;
-      wALocal = env6;
-      t6 = env7;
-      t1 = env8;
-      t3 = env9;
-      break;
-    case 6:
-      cache = env0;
-      proxyA = env1;
-      transformA = env2;
-      proxyB = env3;
-      transformB = env4;
-      t1 = env5;
-      t2 = env6;
-      break;
-    case 7:
-      proxyA = env0;
-      transformA = env1;
-      proxyB = env2;
-      transformB = env3;
-      metric1 = env4;
-      metric2 = env5;
-      t1 = env6;
-      break;
-    case 8:
-      t2 = env0;
-      proxyA = env1;
-      transformA = env2;
-      proxyB = env3;
-      transformB = env4;
-      t1 = env5;
-      break;
-    case 9:
-      transformA = env0;
-      proxyB = env1;
-      transformB = env2;
-      t1 = env3;
-      t3 = env4;
-      break;
-    case 10:
-      t3 = env0;
-      transformA = env1;
-      t1 = env2;
-      transformB = env3;
-      wALocal = env4;
-      break;
-  }
-  switch (state) {
-    case 0:
-      this.count = cache.get$count();
-      var t1 = this.vertices;
-      var i = 0;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      L0: while (true) {
-        switch (state) {
-          case 0:
-            var t2 = this.count;
-          case 1:
-            state = 0;
-            if (!$.ltB(i, t2)) break L0;
-            t2 = t1.length;
-            if (i < 0 || i >= t2) throw $.ioore(i);
-            var t3 = t1[i];
-            var t4 = cache.get$indexA();
-          case 2:
-            state = 0;
-            t3.set$indexA($.index(t4, i));
-            var t5 = cache.get$indexB();
-          case 3:
-            state = 0;
-            t3.set$indexB($.index(t5, i));
-            var t6 = proxyA.get$vertices();
-          case 4:
-            state = 0;
-            var wALocal = $.index(t6, t3.get$indexA());
-            t6 = proxyB.get$vertices();
-          case 5:
-            state = 0;
-            var wBLocal = $.index(t6, t3.get$indexB());
-            $.Transform_mulToOut(transformA, wALocal, t3.get$wA());
-            $.Transform_mulToOut(transformB, wBLocal, t3.get$wB());
-            t3.get$w().setFrom$1(t3.get$wB()).subLocal$1(t3.get$wA());
-            t3.set$a(0.0);
-            ++i;
-        }
-      }
-      t2 = this.count;
-    case 6:
-      state = 0;
-    case 7:
-      if (state == 7 || (state == 0 && $.gtB(t2, 1))) {
-        switch (state) {
-          case 0:
-            var metric1 = cache.get$metric();
-            var metric2 = this.getMetric$0();
-          case 7:
-            state = 0;
-            if (typeof metric1 !== 'number') throw $.iae(metric1);
-            if ($.ltB(metric2, 0.5 * metric1) || $.ltB(2.0 * metric1, metric2) || $.ltB(metric2, 1.192e-7)) this.count = 0;
-        }
-      }
-      t2 = this.count;
-    case 8:
-      state = 0;
-    case 9:
-    case 10:
-      if (state == 9 || state == 10 || (state == 0 && $.eqB(t2, 0))) {
-        switch (state) {
-          case 0:
-            t2 = t1.length;
-            if (0 < 0 || 0 >= t2) throw $.ioore(0);
-            t1 = t1[0];
-            t1.set$indexA(0);
-            t1.set$indexB(0);
-            t3 = proxyA.get$vertices();
-          case 9:
-            state = 0;
-            wALocal = $.index(t3, 0);
-            t3 = proxyB.get$vertices();
-          case 10:
-            state = 0;
-            wBLocal = $.index(t3, 0);
-            $.Transform_mulToOut(transformA, wALocal, t1.get$wA());
-            $.Transform_mulToOut(transformB, wBLocal, t1.get$wB());
-            t1.get$w().setFrom$1(t1.get$wB()).subLocal$1(t1.get$wA());
-            this.count = 1;
-        }
-      }
   }
  },
  Simplex$0: function() {
@@ -4736,16 +4372,16 @@ $$.SimplexCache = {"":
  SimplexCache$0: function() {
   var t1 = this.indexA;
   if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.SimplexCache$0$bailout(1, t1, 0);
-  var t2 = this.indexB;
-  if (typeof t2 !== 'object' || t2 === null || ((t2.constructor !== Array || !!t2.immutable$list) && !t2.is$JavaScriptIndexingBehavior())) return this.SimplexCache$0$bailout(2, t1, t2);
+  var t3 = this.indexB;
+  if (typeof t3 !== 'object' || t3 === null || ((t3.constructor !== Array || !!t3.immutable$list) && !t3.is$JavaScriptIndexingBehavior())) return this.SimplexCache$0$bailout(2, t1, t3);
   var i = 0;
   for (; i < 3; ++i) {
-    var t3 = t1.length;
-    if (i < 0 || i >= t3) throw $.ioore(i);
+    var t2 = t1.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
     t1[i] = 2147483647;
-    var t4 = t2.length;
+    var t4 = t3.length;
     if (i < 0 || i >= t4) throw $.ioore(i);
-    t2[i] = 2147483647;
+    t3[i] = 2147483647;
   }
  },
  SimplexCache$0$bailout: function(state, env0, env1) {
@@ -4755,7 +4391,7 @@ $$.SimplexCache = {"":
       break;
     case 2:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       break;
   }
   switch (state) {
@@ -4763,13 +4399,13 @@ $$.SimplexCache = {"":
       var t1 = this.indexA;
     case 1:
       state = 0;
-      var t2 = this.indexB;
+      var t3 = this.indexB;
     case 2:
       state = 0;
       var i = 0;
       for (; i < 3; ++i) {
         $.indexSet(t1, i, 2147483647);
-        $.indexSet(t2, i, 2147483647);
+        $.indexSet(t3, i, 2147483647);
       }
   }
  }
@@ -4802,90 +4438,89 @@ $$.TimeOfImpact = {"":
   output.set$t(input.get$tMax());
   var proxyA = input.get$proxyA();
   var proxyB = input.get$proxyB();
-  var t2 = this.sweepA;
-  t2.setFrom$1(input.get$sweepA());
-  var t3 = this.sweepB;
-  t3.setFrom$1(input.get$sweepB());
-  t2.normalize$0();
+  var t3 = this.sweepA;
+  t3.setFrom$1(input.get$sweepA());
+  var t4 = this.sweepB;
+  t4.setFrom$1(input.get$sweepB());
   t3.normalize$0();
+  t4.normalize$0();
   var tMax = input.get$tMax();
-  if (tMax !== (tMax | 0)) return this.timeOfImpact$2$bailout(2, output, input, tMax, t2, t3, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t4 = proxyA.get$radius();
-  if (typeof t4 !== 'number') return this.timeOfImpact$2$bailout(3, output, input, tMax, t4, t2, t3, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t5 = proxyB.get$radius();
-  if (typeof t5 !== 'number') return this.timeOfImpact$2$bailout(4, output, input, tMax, t4, t5, t2, t3, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var target = $.Math_max(0.005, t4 + t5 - 0.015);
-  if (typeof target !== 'number') return this.timeOfImpact$2$bailout(5, output, input, target, tMax, t2, t3, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t6 = this.cache;
-  t6.count = 0;
-  var t7 = input.get$proxyA();
-  var t8 = this.distanceInput;
-  t8.proxyA = t7;
-  t8.proxyB = input.get$proxyB();
-  t8.useRadii = false;
-  for (t1 = this.xfA, t4 = this.xfB, t5 = this.pool, t7 = this.distanceOutput, t9 = this.fcn, t10 = this.indexes, t11 = target + 0.00125, t12 = target - 0.00125, iter = 0, t13 = 0; true; ) {
-    t2.getTransform$2(t1, t13);
-    t3.getTransform$2(t4, t13);
-    t8.transformA = t1;
-    t8.transformB = t4;
-    t5.get$distance().distance$3(t7, t6, t8);
-    var t14 = t7.distance;
-    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(6, output, t9, target, t10, t2, t3, proxyA, proxyB, t6, t8, t1, t4, iter, tMax, t14, t13, t7, t5, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  if (tMax !== (tMax | 0)) return this.timeOfImpact$2$bailout(2, output, input, tMax, t3, t4, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t6 = proxyA.get$radius();
+  if (typeof t6 !== 'number') return this.timeOfImpact$2$bailout(3, output, input, tMax, t6, t3, t4, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t8 = proxyB.get$radius();
+  if (typeof t8 !== 'number') return this.timeOfImpact$2$bailout(4, output, input, tMax, t6, t8, t3, t4, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var target = $.Math_max(0.005, t6 + t8 - 0.015);
+  if (typeof target !== 'number') return this.timeOfImpact$2$bailout(5, output, input, target, tMax, t3, t4, proxyA, proxyB, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var t11 = this.cache;
+  t11.count = 0;
+  var t12 = input.get$proxyA();
+  var t13 = this.distanceInput;
+  t13.proxyA = t12;
+  t13.proxyB = input.get$proxyB();
+  t13.useRadii = false;
+  for (t1 = this.xfA, t2 = this.xfB, t5 = this.pool, t6 = this.distanceOutput, t7 = this.fcn, t8 = this.indexes, t9 = target + 0.00125, t10 = target - 0.00125, iter = 0, t12 = 0; true; ) {
+    t3.getTransform$2(t1, t12);
+    t4.getTransform$2(t2, t12);
+    t13.transformA = t1;
+    t13.transformB = t2;
+    t5.get$distance().distance$3(t6, t11, t13);
+    var t14 = t6.distance;
+    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(6, output, t7, target, t8, t3, t4, proxyA, proxyB, t11, t13, t1, t2, iter, tMax, t14, t12, t6, t5, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (t14 <= 0) {
       output.set$state(2);
       output.set$t(0);
       break;
     }
-    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(7, output, t9, target, t10, t14, t2, t3, proxyA, proxyB, t6, t8, t1, t4, iter, tMax, t5, t13, t7, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    if (t14 < t11) {
+    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(7, output, t7, target, t8, t14, t3, t4, proxyA, proxyB, t11, t13, t1, t2, iter, tMax, t5, t12, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (t14 < t9) {
       output.set$state(3);
-      output.set$t(t13);
+      output.set$t(t12);
       break;
     }
-    t9.initialize$6(t6, proxyA, t2, proxyB, t3, t13);
+    t7.initialize$6(t11, proxyA, t3, proxyB, t4, t12);
     for (var t20 = tMax, pushBackIter = 0; done = false, true; ) {
-      var s2 = t9.findMinSeparation$2(t10, t20);
-      if (typeof s2 !== 'number') return this.timeOfImpact$2$bailout(8, output, t9, pushBackIter, target, t10, t2, t3, proxyA, s2, proxyB, t6, t8, t1, t4, iter, tMax, t5, t13, t7, t20, 0, 0, 0, 0, 0, 0, 0);
-      if (s2 > t11) {
+      var s2 = t7.findMinSeparation$2(t8, t20);
+      if (typeof s2 !== 'number') return this.timeOfImpact$2$bailout(8, output, t7, pushBackIter, target, t8, t3, t4, proxyA, s2, proxyB, t11, t13, t1, t2, iter, tMax, t5, t12, t6, t20, 0, 0, 0, 0, 0, 0, 0);
+      if (s2 > t9) {
         output.set$state(4);
         output.set$t(tMax);
         done = true;
         break;
       }
-      if (s2 > t12) {
-        t13 = t20;
+      if (s2 > t10) {
+        t12 = t20;
         done = false;
         break;
       }
-      t14 = t10.length;
+      t14 = t8.length;
       if (0 >= t14) throw $.ioore(0);
-      var t15 = t10[0];
+      var t15 = t8[0];
       if (1 >= t14) throw $.ioore(1);
-      var s1 = t9.evaluate$3(t15, t10[1], t13);
-      if (typeof s1 !== 'number') return this.timeOfImpact$2$bailout(9, output, t9, pushBackIter, target, t10, s1, t2, t3, s2, proxyB, proxyA, t8, t6, t1, t4, iter, tMax, t5, t13, t7, t20, 0, 0, 0, 0, 0, 0);
-      if (s1 < t12) {
+      var s1 = t7.evaluate$3(t15, t8[1], t12);
+      if (typeof s1 !== 'number') return this.timeOfImpact$2$bailout(9, output, t7, pushBackIter, target, t8, s1, t3, t4, s2, proxyB, proxyA, t13, t11, t1, t2, iter, tMax, t5, t12, t6, t20, 0, 0, 0, 0, 0, 0);
+      if (s1 < t10) {
         output.set$state(1);
-        output.set$t(t13);
+        output.set$t(t12);
         done = true;
         break;
       }
-      if (s1 <= t11) {
+      if (s1 <= t9) {
         output.set$state(3);
-        output.set$t(t13);
+        output.set$t(t12);
         done = true;
         break;
       }
-      for (var a1 = t13, a2 = t20, rootIterCount = 0; true; ) {
-        t14 = rootIterCount & 1;
-        var t = t14 === 1 ? a1 + (target - s1) * (a2 - a1) / (s2 - s1) : 0.5 * (a1 + a2);
-        t14 = t10.length;
+      for (var a1 = t12, a2 = t20, rootIterCount = 0; true; ) {
+        var t = (rootIterCount & 1) === 1 ? a1 + (target - s1) * (a2 - a1) / (s2 - s1) : 0.5 * (a1 + a2);
+        t14 = t8.length;
         if (0 >= t14) throw $.ioore(0);
-        t15 = t10[0];
+        t15 = t8[0];
         if (1 >= t14) throw $.ioore(1);
-        var s = t9.evaluate$3(t15, t10[1], t);
-        if (typeof s !== 'number') return this.timeOfImpact$2$bailout(10, output, t9, t7, pushBackIter, t10, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, tMax, target, t2, t3, t6, t8, t1, t, t4, iter, t5, t13, s, t20, 0);
+        var s = t7.evaluate$3(t15, t8[1], t);
+        if (typeof s !== 'number') return this.timeOfImpact$2$bailout(10, output, t7, t6, pushBackIter, t8, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, tMax, target, t3, t4, t11, t13, t1, t, t2, iter, t5, t12, s, t20, 0);
         t14 = $.abs(s - target);
-        if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(11, output, t9, t14, pushBackIter, t10, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, t7, tMax, target, t2, t3, t6, t8, t1, t, t4, iter, t5, t13, s, t20);
+        if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(11, output, t7, t14, pushBackIter, t8, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, t6, tMax, target, t3, t4, t11, t13, t1, t, t2, iter, t5, t12, s, t20);
         if (t14 < 0.00125) {
           t20 = t;
           break;
@@ -4897,14 +4532,14 @@ $$.TimeOfImpact = {"":
           a2 = t;
           s2 = s;
         }
-        if (a1 !== (a1 | 0)) return this.timeOfImpact$2$bailout(12, output, t9, pushBackIter, t10, rootIterCount, proxyA, proxyB, s2, a2, a1, s1, tMax, target, t2, t3, t6, t8, t1, t4, iter, t5, t13, t7, t20, 0, 0, 0);
+        if (a1 !== (a1 | 0)) return this.timeOfImpact$2$bailout(12, output, t7, pushBackIter, t8, rootIterCount, proxyA, proxyB, s2, a2, a1, s1, tMax, target, t3, t4, t11, t13, t1, t2, iter, t5, t12, t6, t20, 0, 0, 0);
         ++rootIterCount;
-        t14 = $.TimeOfImpact_toiRootIters;
-        if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(13, output, t9, pushBackIter, t10, proxyA, proxyB, s2, a2, a1, s1, rootIterCount, t14, tMax, target, t2, t3, t6, t8, t1, t4, iter, t5, t13, t7, t20, 0, 0);
-        $.TimeOfImpact_toiRootIters = t14 + 1;
+        t15 = $.TimeOfImpact_toiRootIters;
+        if (typeof t15 !== 'number') return this.timeOfImpact$2$bailout(13, output, t7, pushBackIter, t8, proxyA, proxyB, s2, a2, a1, s1, rootIterCount, t15, tMax, target, t3, t4, t11, t13, t1, t2, iter, t5, t12, t6, t20, 0, 0);
+        $.TimeOfImpact_toiRootIters = t15 + 1;
         if (rootIterCount === 50) break;
       }
-      if (t20 !== (t20 | 0)) return this.timeOfImpact$2$bailout(14, output, t9, pushBackIter, target, t10, t2, t3, proxyA, proxyB, rootIterCount, t6, t8, t20, t1, t4, iter, tMax, t5, t13, t7, 0, 0, 0, 0, 0, 0, 0);
+      if (t20 !== (t20 | 0)) return this.timeOfImpact$2$bailout(14, output, t7, pushBackIter, target, t8, t3, t4, proxyA, proxyB, rootIterCount, t11, t13, t20, t1, t2, iter, tMax, t5, t12, t6, 0, 0, 0, 0, 0, 0, 0);
       $.TimeOfImpact_toiMaxRootIters = $.Math_max($.TimeOfImpact_toiMaxRootIters, rootIterCount);
       ++pushBackIter;
       if (pushBackIter === 8) {
@@ -4914,17 +4549,17 @@ $$.TimeOfImpact = {"":
     }
     ++iter;
     t14 = $.TimeOfImpact_toiIters;
-    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(15, output, t13, t9, target, t10, iter, t14, t2, proxyA, proxyB, t3, t6, t8, t1, t4, tMax, t5, t7, done, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof t14 !== 'number') return this.timeOfImpact$2$bailout(15, output, t12, t7, target, t8, iter, t14, t3, proxyA, proxyB, t4, t11, t13, t1, t2, tMax, t5, t6, done, 0, 0, 0, 0, 0, 0, 0, 0);
     $.TimeOfImpact_toiIters = t14 + 1;
     if (done) break;
     if (iter === 1000) {
       output.set$state(1);
-      output.set$t(t13);
+      output.set$t(t12);
       break;
     }
   }
   $.TimeOfImpact_toiMaxIters = $.Math_max($.TimeOfImpact_toiMaxIters, iter);
-  var iter, done, t13, t9, t12, t10, t11;
+  var iter, t7, done, t9, t10, t2, t5;
  },
  timeOfImpact$2$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14, env15, env16, env17, env18, env19, env20, env21, env22, env23, env24, env25, env26) {
   switch (state) {
@@ -4937,8 +4572,8 @@ $$.TimeOfImpact = {"":
       output = env0;
       input = env1;
       tMax = env2;
-      t2 = env3;
-      t3 = env4;
+      t3 = env3;
+      t4 = env4;
       proxyA = env5;
       proxyB = env6;
       break;
@@ -4946,9 +4581,9 @@ $$.TimeOfImpact = {"":
       output = env0;
       input = env1;
       tMax = env2;
-      t4 = env3;
-      t2 = env4;
-      t3 = env5;
+      t6 = env3;
+      t3 = env4;
+      t4 = env5;
       proxyA = env6;
       proxyB = env7;
       break;
@@ -4956,10 +4591,10 @@ $$.TimeOfImpact = {"":
       output = env0;
       input = env1;
       tMax = env2;
-      t4 = env3;
-      t5 = env4;
-      t2 = env5;
-      t3 = env6;
+      t6 = env3;
+      t8 = env4;
+      t3 = env5;
+      t4 = env6;
       proxyA = env7;
       proxyB = env8;
       break;
@@ -4968,102 +4603,102 @@ $$.TimeOfImpact = {"":
       input = env1;
       target = env2;
       tMax = env3;
-      t2 = env4;
-      t3 = env5;
+      t3 = env4;
+      t4 = env5;
       proxyA = env6;
       proxyB = env7;
       break;
     case 6:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       target = env2;
-      t10 = env3;
-      t2 = env4;
-      t3 = env5;
+      t8 = env3;
+      t3 = env4;
+      t4 = env5;
       proxyA = env6;
       proxyB = env7;
-      t6 = env8;
-      t8 = env9;
+      t11 = env8;
+      t13 = env9;
       t1 = env10;
-      t4 = env11;
+      t2 = env11;
       iter = env12;
       tMax = env13;
-      t12 = env14;
-      t11 = env15;
-      t7 = env16;
+      t9 = env14;
+      t10 = env15;
+      t6 = env16;
       t5 = env17;
       break;
     case 7:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       target = env2;
-      t10 = env3;
-      t12 = env4;
-      t2 = env5;
-      t3 = env6;
+      t8 = env3;
+      t9 = env4;
+      t3 = env5;
+      t4 = env6;
       proxyA = env7;
       proxyB = env8;
-      t6 = env9;
-      t8 = env10;
+      t11 = env9;
+      t13 = env10;
       t1 = env11;
-      t4 = env12;
+      t2 = env12;
       iter = env13;
       tMax = env14;
       t5 = env15;
-      t11 = env16;
-      t7 = env17;
+      t10 = env16;
+      t6 = env17;
       break;
     case 8:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       pushBackIter = env2;
       target = env3;
-      t10 = env4;
-      t2 = env5;
-      t3 = env6;
+      t8 = env4;
+      t3 = env5;
+      t4 = env6;
       proxyA = env7;
       s2 = env8;
       proxyB = env9;
-      t6 = env10;
-      t8 = env11;
+      t11 = env10;
+      t13 = env11;
       t1 = env12;
-      t4 = env13;
+      t2 = env13;
       iter = env14;
       tMax = env15;
       t5 = env16;
-      t11 = env17;
-      t7 = env18;
+      t10 = env17;
+      t6 = env18;
       t20 = env19;
       break;
     case 9:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       pushBackIter = env2;
       target = env3;
-      t10 = env4;
+      t8 = env4;
       s1 = env5;
-      t2 = env6;
-      t3 = env7;
+      t3 = env6;
+      t4 = env7;
       s2 = env8;
       proxyB = env9;
       proxyA = env10;
-      t8 = env11;
-      t6 = env12;
+      t13 = env11;
+      t11 = env12;
       t1 = env13;
-      t4 = env14;
+      t2 = env14;
       iter = env15;
       tMax = env16;
       t5 = env17;
-      t11 = env18;
-      t7 = env19;
+      t10 = env18;
+      t6 = env19;
       t20 = env20;
       break;
     case 10:
       output = env0;
-      t9 = env1;
-      t7 = env2;
+      t7 = env1;
+      t6 = env2;
       pushBackIter = env3;
-      t10 = env4;
+      t8 = env4;
       rootIterCount = env5;
       s2 = env6;
       a2 = env7;
@@ -5073,25 +4708,25 @@ $$.TimeOfImpact = {"":
       s1 = env11;
       tMax = env12;
       target = env13;
-      t2 = env14;
-      t3 = env15;
-      t6 = env16;
-      t8 = env17;
+      t3 = env14;
+      t4 = env15;
+      t11 = env16;
+      t13 = env17;
       t1 = env18;
       t = env19;
-      t4 = env20;
+      t2 = env20;
       iter = env21;
       t5 = env22;
-      t11 = env23;
+      t10 = env23;
       s = env24;
       t20 = env25;
       break;
     case 11:
       output = env0;
-      t9 = env1;
-      t12 = env2;
+      t7 = env1;
+      t9 = env2;
       pushBackIter = env3;
-      t10 = env4;
+      t8 = env4;
       rootIterCount = env5;
       s2 = env6;
       a2 = env7;
@@ -5099,27 +4734,27 @@ $$.TimeOfImpact = {"":
       a1 = env9;
       proxyB = env10;
       s1 = env11;
-      t7 = env12;
+      t6 = env12;
       tMax = env13;
       target = env14;
-      t2 = env15;
-      t3 = env16;
-      t6 = env17;
-      t8 = env18;
+      t3 = env15;
+      t4 = env16;
+      t11 = env17;
+      t13 = env18;
       t1 = env19;
       t = env20;
-      t4 = env21;
+      t2 = env21;
       iter = env22;
       t5 = env23;
-      t11 = env24;
+      t10 = env24;
       s = env25;
       t20 = env26;
       break;
     case 12:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       pushBackIter = env2;
-      t10 = env3;
+      t8 = env3;
       rootIterCount = env4;
       proxyA = env5;
       proxyB = env6;
@@ -5129,23 +4764,23 @@ $$.TimeOfImpact = {"":
       s1 = env10;
       tMax = env11;
       target = env12;
-      t2 = env13;
-      t3 = env14;
-      t6 = env15;
-      t8 = env16;
+      t3 = env13;
+      t4 = env14;
+      t11 = env15;
+      t13 = env16;
       t1 = env17;
-      t4 = env18;
+      t2 = env18;
       iter = env19;
       t5 = env20;
-      t11 = env21;
-      t7 = env22;
+      t10 = env21;
+      t6 = env22;
       t20 = env23;
       break;
     case 13:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       pushBackIter = env2;
-      t10 = env3;
+      t8 = env3;
       proxyA = env4;
       proxyB = env5;
       s2 = env6;
@@ -5156,59 +4791,59 @@ $$.TimeOfImpact = {"":
       t12 = env11;
       tMax = env12;
       target = env13;
-      t2 = env14;
-      t3 = env15;
-      t6 = env16;
-      t8 = env17;
+      t3 = env14;
+      t4 = env15;
+      t11 = env16;
+      t13 = env17;
       t1 = env18;
-      t4 = env19;
+      t2 = env19;
       iter = env20;
       t5 = env21;
-      t11 = env22;
-      t7 = env23;
+      t10 = env22;
+      t6 = env23;
       t20 = env24;
       break;
     case 14:
       output = env0;
-      t9 = env1;
+      t7 = env1;
       pushBackIter = env2;
       target = env3;
-      t10 = env4;
-      t2 = env5;
-      t3 = env6;
+      t8 = env4;
+      t3 = env5;
+      t4 = env6;
       proxyA = env7;
       proxyB = env8;
       rootIterCount = env9;
-      t6 = env10;
-      t8 = env11;
+      t11 = env10;
+      t13 = env11;
       t20 = env12;
       t1 = env13;
-      t4 = env14;
+      t2 = env14;
       iter = env15;
       tMax = env16;
       t5 = env17;
-      t11 = env18;
-      t7 = env19;
+      t10 = env18;
+      t6 = env19;
       break;
     case 15:
       output = env0;
-      t11 = env1;
-      t9 = env2;
+      t10 = env1;
+      t7 = env2;
       target = env3;
-      t10 = env4;
+      t8 = env4;
       iter = env5;
-      t12 = env6;
-      t2 = env7;
+      t9 = env6;
+      t3 = env7;
       proxyA = env8;
       proxyB = env9;
-      t3 = env10;
-      t6 = env11;
-      t8 = env12;
+      t4 = env10;
+      t11 = env11;
+      t13 = env12;
       t1 = env13;
-      t4 = env14;
+      t2 = env14;
       tMax = env15;
       t5 = env16;
-      t7 = env17;
+      t6 = env17;
       done = env18;
       break;
   }
@@ -5222,90 +4857,75 @@ $$.TimeOfImpact = {"":
       output.set$t(input.get$tMax());
       var proxyA = input.get$proxyA();
       var proxyB = input.get$proxyB();
-      var t2 = this.sweepA;
-      t2.setFrom$1(input.get$sweepA());
-      var t3 = this.sweepB;
-      t3.setFrom$1(input.get$sweepB());
-      t2.normalize$0();
+      var t3 = this.sweepA;
+      t3.setFrom$1(input.get$sweepA());
+      var t4 = this.sweepB;
+      t4.setFrom$1(input.get$sweepB());
       t3.normalize$0();
+      t4.normalize$0();
       var tMax = input.get$tMax();
     case 2:
       state = 0;
-      var t4 = proxyA.get$radius();
+      var t6 = proxyA.get$radius();
     case 3:
       state = 0;
-      var t5 = proxyB.get$radius();
+      var t8 = proxyB.get$radius();
     case 4:
       state = 0;
-      var target = $.Math_max(0.005, $.sub($.add(t4, t5), 0.015));
+      var target = $.Math_max(0.005, $.sub($.add(t6, t8), 0.015));
     case 5:
       state = 0;
-      var t6 = this.cache;
-      t6.set$count(0);
-      var t7 = input.get$proxyA();
-      var t8 = this.distanceInput;
-      t8.set$proxyA(t7);
-      t8.set$proxyB(input.get$proxyB());
-      t8.set$useRadii(false);
+      var t11 = this.cache;
+      t11.set$count(0);
+      var t12 = input.get$proxyA();
+      var t13 = this.distanceInput;
+      t13.set$proxyA(t12);
+      t13.set$proxyB(input.get$proxyB());
+      t13.set$useRadii(false);
       t1 = this.xfA;
-      t4 = this.xfB;
-      t5 = this.pool;
-      t7 = this.distanceOutput;
-      var t9 = this.fcn;
-      var t10 = this.indexes;
+      var t2 = this.xfB;
+      var t5 = this.pool;
+      t6 = this.distanceOutput;
+      var t7 = this.fcn;
+      t8 = this.indexes;
       var iter = 0;
-      var t11 = 0;
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
+      var t10 = 0;
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
             if (!true) break L0;
-            t2.getTransform$2(t1, t11);
-            t3.getTransform$2(t4, t11);
-            t8.set$transformA(t1);
-            t8.set$transformB(t4);
-            t5.get$distance().distance$3(t7, t6, t8);
-            var t12 = t7.get$distance();
+            t3.getTransform$2(t1, t10);
+            t4.getTransform$2(t2, t10);
+            t13.set$transformA(t1);
+            t13.set$transformB(t2);
+            t5.get$distance().distance$3(t6, t11, t13);
+            var t9 = t6.get$distance();
           case 6:
             state = 0;
-            if ($.leB(t12, 0)) {
+            if ($.leB(t9, 0)) {
               output.set$state(2);
               output.set$t(0);
               break L0;
             }
-            t12 = t7.get$distance();
+            t9 = t6.get$distance();
           case 7:
             state = 0;
-            if ($.ltB(t12, $.add(target, 0.00125))) {
+            if ($.ltB(t9, $.add(target, 0.00125))) {
               output.set$state(3);
-              output.set$t(t11);
+              output.set$t(t10);
               break L0;
             }
-            t9.initialize$6(t6, proxyA, t2, proxyB, t3, t11);
+            t7.initialize$6(t11, proxyA, t3, proxyB, t4, t10);
             var t20 = tMax;
             var pushBackIter = 0;
-          case 8:
-          case 9:
-          case 10:
-          case 11:
-          case 12:
-          case 13:
-          case 14:
+          default:
             L1: while (true) {
               switch (state) {
                 case 0:
                   var done = false;
                   if (!true) break L1;
-                  var s2 = t9.findMinSeparation$2(t10, t20);
+                  var s2 = t7.findMinSeparation$2(t8, t20);
                 case 8:
                   state = 0;
                   if ($.gtB(s2, $.add(target, 0.00125))) {
@@ -5315,60 +4935,56 @@ $$.TimeOfImpact = {"":
                     break L1;
                   }
                   if ($.gtB(s2, $.sub(target, 0.00125))) {
-                    t11 = t20;
+                    t10 = t20;
                     done = false;
                     break L1;
                   }
-                  t12 = t10.length;
-                  if (0 < 0 || 0 >= t12) throw $.ioore(0);
-                  var t13 = t10[0];
-                  var t14 = t10.length;
+                  t9 = t8.length;
+                  if (0 < 0 || 0 >= t9) throw $.ioore(0);
+                  t12 = t8[0];
+                  var t14 = t8.length;
                   if (1 < 0 || 1 >= t14) throw $.ioore(1);
-                  var s1 = t9.evaluate$3(t13, t10[1], t11);
+                  var s1 = t7.evaluate$3(t12, t8[1], t10);
                 case 9:
                   state = 0;
                   if ($.ltB(s1, $.sub(target, 0.00125))) {
                     output.set$state(1);
-                    output.set$t(t11);
+                    output.set$t(t10);
                     done = true;
                     break L1;
                   }
                   if ($.leB(s1, $.add(target, 0.00125))) {
                     output.set$state(3);
-                    output.set$t(t11);
+                    output.set$t(t10);
                     done = true;
                     break L1;
                   }
-                  var a1 = t11;
+                  var a1 = t10;
                   var a2 = t20;
                   var rootIterCount = 0;
-                case 10:
-                case 11:
-                case 12:
-                case 13:
+                default:
                   L2: while (true) {
                     switch (state) {
                       case 0:
                         if (!true) break L2;
-                        t12 = rootIterCount & 1;
-                        if (t12 === 1) var t = $.add(a1, $.div($.mul($.sub(target, s1), $.sub(a2, a1)), $.sub(s2, s1)));
+                        if ((rootIterCount & 1) === 1) var t = $.add(a1, $.div($.mul($.sub(target, s1), $.sub(a2, a1)), $.sub(s2, s1)));
                         else {
-                          t12 = $.add(a1, a2);
-                          if (typeof t12 !== 'number') throw $.iae(t12);
-                          t = 0.5 * t12;
+                          t9 = $.add(a1, a2);
+                          if (typeof t9 !== 'number') throw $.iae(t9);
+                          t = 0.5 * t9;
                         }
-                        t12 = t10.length;
-                        if (0 < 0 || 0 >= t12) throw $.ioore(0);
-                        t13 = t10[0];
-                        t14 = t10.length;
+                        t9 = t8.length;
+                        if (0 < 0 || 0 >= t9) throw $.ioore(0);
+                        t12 = t8[0];
+                        t14 = t8.length;
                         if (1 < 0 || 1 >= t14) throw $.ioore(1);
-                        var s = t9.evaluate$3(t13, t10[1], t);
+                        var s = t7.evaluate$3(t12, t8[1], t);
                       case 10:
                         state = 0;
-                        t12 = $.abs($.sub(s, target));
+                        t9 = $.abs($.sub(s, target));
                       case 11:
                         state = 0;
-                        if ($.ltB(t12, 0.00125)) {
+                        if ($.ltB(t9, 0.00125)) {
                           t20 = t;
                           break L2;
                         }
@@ -5400,14 +5016,14 @@ $$.TimeOfImpact = {"":
               }
             }
             ++iter;
-            t12 = $.TimeOfImpact_toiIters;
+            t9 = $.TimeOfImpact_toiIters;
           case 15:
             state = 0;
-            $.TimeOfImpact_toiIters = $.add(t12, 1);
+            $.TimeOfImpact_toiIters = $.add(t9, 1);
             if (done) break L0;
             if (iter === 1000) {
               output.set$state(1);
-              output.set$t(t11);
+              output.set$t(t10);
               break L0;
             }
         }
@@ -5769,7 +5385,7 @@ $$.BroadPhase = {"":
  },
  treeCallback$1: function(proxy) {
   if ($.eqB(proxy, this.queryProxy)) return true;
-  if ($.eqB(this._pairCount, this._pairCapacity)) {
+  if (this._pairCount === this._pairCapacity) {
     var oldBuffer = this._pairBuffer;
     this._pairCapacity = this._pairCapacity * 2;
     var t1 = $.ListFactory_List(this._pairCapacity);
@@ -5784,7 +5400,7 @@ $$.BroadPhase = {"":
       if (i < 0 || i >= t4) throw $.ioore(i);
       t1[i] = t3;
     }
-    for (i = oldBuffer.length; $.ltB(i, this._pairCapacity); ++i) {
+    for (i = oldBuffer.length; i < this._pairCapacity; ++i) {
       t1 = this._pairBuffer;
       t2 = $.Pair$();
       t3 = t1.length;
@@ -5840,27 +5456,27 @@ $$.BroadPhase = {"":
   var pairBuffer = $.ListFactory_List$from($.getRange(this._pairBuffer, 0, this._pairCount));
   $.sort(pairBuffer, new $.BroadPhase_updatePairs_anon());
   $.setRange$3(this._pairBuffer, 0, this._pairCount, pairBuffer);
-  for (i = 0; $.ltB(i, this._pairCount); ) {
+  for (i = 0; i < this._pairCount; ) {
     t2 = this._pairBuffer;
     t3 = t2.length;
     if (i < 0 || i >= t3) throw $.ioore(i);
-    t2 = t2[i];
-    callback.addPair$2(t2.get$proxyA().get$userData(), t2.get$proxyB().get$userData());
+    var primaryPair = t2[i];
+    callback.addPair$2(primaryPair.get$proxyA().get$userData(), primaryPair.get$proxyB().get$userData());
     ++i;
-    for (; $.ltB(i, this._pairCount); ) {
-      t3 = this._pairBuffer;
-      var t4 = t3.length;
-      if (i < 0 || i >= t4) throw $.ioore(i);
-      t3 = t3[i];
-      t4 = t3.get$proxyA();
-      var t5 = t2.get$proxyA();
-      if (t4 == null ? t5 == null : t4 === t5) {
-        t3 = t3.get$proxyB();
-        t4 = t2.get$proxyB();
-        t5 = !(t3 == null ? t4 == null : t3 === t4);
-        t3 = t5;
-      } else t3 = true;
-      if (t3) break;
+    for (; i < this._pairCount; ) {
+      t2 = this._pairBuffer;
+      t3 = t2.length;
+      if (i < 0 || i >= t3) throw $.ioore(i);
+      var pair = t2[i];
+      t2 = pair.get$proxyA();
+      t3 = primaryPair.get$proxyA();
+      if (t2 == null ? t3 == null : t2 === t3) {
+        t2 = pair.get$proxyB();
+        t3 = primaryPair.get$proxyB();
+        var t4 = !(t2 == null ? t3 == null : t2 === t3);
+        t2 = t4;
+      } else t2 = true;
+      if (t2) break;
       ++i;
     }
   }
@@ -5885,7 +5501,7 @@ $$.BroadPhase = {"":
   t1 = $.ListFactory_List(this._pairCapacity);
   $.setRuntimeTypeInfo(t1, ({E: 'Pair'}));
   this._pairBuffer = t1;
-  for (var i = 0; $.ltB(i, this._pairCapacity); ++i) {
+  for (var i = 0; i < this._pairCapacity; ++i) {
     t1 = this._pairBuffer;
     var t2 = $.Pair$();
     var t3 = t1.length;
@@ -5904,19 +5520,19 @@ $$.DynamicTree = {"":
  },
  rebalance$1: function(iterations) {
   if (typeof iterations !== 'number') return this.rebalance$1$bailout(1, iterations, 0, 0, 0, 0);
-  var t1 = this._root;
-  if (t1 == null) return;
+  if (this._root == null) return;
   for (var current = null, i = 0; i < iterations; ++i) {
     current = this._root;
     for (var bit = 0; current.get$isLeaf() !== true; ) {
-      t1 = this._path;
-      if (t1 !== (t1 | 0)) return this.rebalance$1$bailout(2, bit, i, t1, current, iterations);
-      var goLeft = $.shr(t1, bit) & 1;
-      current = goLeft === 0 ? current.get$childOne() : current.get$childTwo();
+      var t1 = this._path;
+      if (t1 !== (t1 | 0)) return this.rebalance$1$bailout(2, iterations, i, t1, current, bit);
+      current = ($.shr(t1, bit) & 1) === 0 ? current.get$childOne() : current.get$childTwo();
       var bit0 = bit + 1 & 31;
       bit = bit0;
     }
-    this._path = this._path + 1;
+    t1 = this._path;
+    if (typeof t1 !== 'number') return this.rebalance$1$bailout(3, iterations, i, t1, current, 0);
+    this._path = t1 + 1;
     this._removeLeaf$1(current);
     this._insertLeaf$1(current);
   }
@@ -5927,22 +5543,27 @@ $$.DynamicTree = {"":
       var iterations = env0;
       break;
     case 2:
-      bit = env0;
+      iterations = env0;
       i = env1;
       t1 = env2;
       current = env3;
-      iterations = env4;
+      bit = env4;
+      break;
+    case 3:
+      iterations = env0;
+      i = env1;
+      t1 = env2;
+      current = env3;
       break;
   }
   switch (state) {
     case 0:
     case 1:
       state = 0;
-      var t1 = this._root;
-      if (t1 == null) return;
+      if (this._root == null) return;
       var current = null;
       var i = 0;
-    case 2:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -5954,7 +5575,7 @@ $$.DynamicTree = {"":
               switch (state) {
                 case 0:
                   if (!(current.get$isLeaf() !== true)) break L1;
-                  t1 = this._path;
+                  var t1 = this._path;
                 case 2:
                   state = 0;
                   current = $.eqB($.and($.shr(t1, bit), 1), 0) ? current.get$childOne() : current.get$childTwo();
@@ -5962,7 +5583,10 @@ $$.DynamicTree = {"":
                   bit = bit0;
               }
             }
-            this._path = this._path + 1;
+            t1 = this._path;
+          case 3:
+            state = 0;
+            this._path = $.add(t1, 1);
             this._removeLeaf$1(current);
             this._insertLeaf$1(current);
             ++i;
@@ -6012,9 +5636,10 @@ $$.DynamicTree = {"":
   if (t1 == null ? argNode == null : t1 === argNode) this._lastLeaf = this._root;
  },
  _insertLeaf$1: function(node) {
-  this._insertionCount = this._insertionCount + 1;
-  var t1 = this._root;
-  if (t1 == null) {
+  var t1 = this._insertionCount;
+  if (typeof t1 !== 'number') return this._insertLeaf$1$bailout(1, node, t1, 0, 0, 0, 0, 0, 0, 0);
+  this._insertionCount = t1 + 1;
+  if (this._root == null) {
     this._root = node;
     node.set$parent(null);
     return;
@@ -6035,17 +5660,17 @@ $$.DynamicTree = {"":
       t2.subLocal$1(t1).absLocal$0();
       t3.subLocal$1(t1).absLocal$0();
       var t4 = t2.x;
-      if (typeof t4 !== 'number') return this._insertLeaf$1$bailout(1, node, t1, t2, t3, childOne, childTwo, t4, 0, 0);
-      var t5 = t2.y;
-      if (typeof t5 !== 'number') return this._insertLeaf$1$bailout(2, node, t1, t2, t3, childOne, childTwo, t4, t5, 0);
-      var normOne = t4 + t5;
-      t5 = t3.x;
-      if (typeof t5 !== 'number') return this._insertLeaf$1$bailout(3, node, t5, t1, t2, t3, childOne, childTwo, normOne, 0);
-      t4 = t3.y;
-      if (typeof t4 !== 'number') return this._insertLeaf$1$bailout(4, node, t5, t4, t1, t2, t3, childOne, childTwo, normOne);
-      sibling = normOne < t5 + t4 ? childOne : childTwo;
+      if (typeof t4 !== 'number') return this._insertLeaf$1$bailout(2, node, t1, t2, t3, childOne, childTwo, t4, 0, 0);
+      var t6 = t2.y;
+      if (typeof t6 !== 'number') return this._insertLeaf$1$bailout(3, node, t1, t2, t3, childOne, childTwo, t4, t6, 0);
+      var normOne = t4 + t6;
+      t6 = t3.x;
+      if (typeof t6 !== 'number') return this._insertLeaf$1$bailout(4, node, t6, t1, t2, t3, childOne, childTwo, normOne, 0);
+      var t8 = t3.y;
+      if (typeof t8 !== 'number') return this._insertLeaf$1$bailout(5, node, t6, t8, t1, t2, t3, childOne, childTwo, normOne);
+      sibling = normOne < t6 + t8 ? childOne : childTwo;
       t4 = sibling.get$isLeaf();
-      if (typeof t4 !== 'boolean') return this._insertLeaf$1$bailout(5, sibling, childTwo, node, t4, t2, t1, t3, childOne, 0);
+      if (typeof t4 !== 'boolean') return this._insertLeaf$1$bailout(6, childTwo, sibling, node, t4, t2, t1, t3, childOne, 0);
     } while (!t4);
   }
   var node1 = sibling.get$parent();
@@ -6081,11 +5706,6 @@ $$.DynamicTree = {"":
     case 1:
       var node = env0;
       t1 = env1;
-      t2 = env2;
-      t3 = env3;
-      childOne = env4;
-      childTwo = env5;
-      t4 = env6;
       break;
     case 2:
       node = env0;
@@ -6095,11 +5715,20 @@ $$.DynamicTree = {"":
       childOne = env4;
       childTwo = env5;
       t4 = env6;
-      t5 = env7;
       break;
     case 3:
       node = env0;
-      t5 = env1;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
+      childOne = env4;
+      childTwo = env5;
+      t4 = env6;
+      t6 = env7;
+      break;
+    case 4:
+      node = env0;
+      t6 = env1;
       t1 = env2;
       t2 = env3;
       t3 = env4;
@@ -6107,10 +5736,10 @@ $$.DynamicTree = {"":
       childTwo = env6;
       normOne = env7;
       break;
-    case 4:
+    case 5:
       node = env0;
-      t5 = env1;
-      t4 = env2;
+      t6 = env1;
+      t8 = env2;
       t1 = env3;
       t2 = env4;
       t3 = env5;
@@ -6118,9 +5747,9 @@ $$.DynamicTree = {"":
       childTwo = env7;
       normOne = env8;
       break;
-    case 5:
-      sibling = env0;
-      childTwo = env1;
+    case 6:
+      childTwo = env0;
+      sibling = env1;
       node = env2;
       t4 = env3;
       t2 = env4;
@@ -6131,9 +5760,11 @@ $$.DynamicTree = {"":
   }
   switch (state) {
     case 0:
-      this._insertionCount = this._insertionCount + 1;
-      var t1 = this._root;
-      if (t1 == null) {
+      var t1 = this._insertionCount;
+    case 1:
+      state = 0;
+      this._insertionCount = $.add(t1, 1);
+      if (this._root == null) {
         this._root = node;
         node.set$parent(null);
         return;
@@ -6141,23 +5772,15 @@ $$.DynamicTree = {"":
       t1 = this.center;
       t1.setFrom$1(node.get$box().get$center());
       var sibling = this._root;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      if (state == 1 || state == 2 || state == 3 || state == 4 || state == 5 || (state == 0 && sibling.get$isLeaf() !== true)) {
+    default:
+      if (state == 2 || state == 3 || state == 4 || state == 5 || state == 6 || (state == 0 && sibling.get$isLeaf() !== true)) {
         switch (state) {
           case 0:
             var t2 = this.deltaOne;
             var t3 = this.deltaTwo;
             var childOne = null;
             var childTwo = null;
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-          case 5:
+          default:
             L0: while (true) {
               switch (state) {
                 case 0:
@@ -6168,21 +5791,21 @@ $$.DynamicTree = {"":
                   t2.subLocal$1(t1).absLocal$0();
                   t3.subLocal$1(t1).absLocal$0();
                   var t4 = t2.get$x();
-                case 1:
-                  state = 0;
-                  var t5 = t2.get$y();
                 case 2:
                   state = 0;
-                  var normOne = $.add(t4, t5);
-                  t5 = t3.get$x();
+                  var t6 = t2.get$y();
                 case 3:
                   state = 0;
-                  t4 = t3.get$y();
+                  var normOne = $.add(t4, t6);
+                  t6 = t3.get$x();
                 case 4:
                   state = 0;
-                  sibling = $.ltB(normOne, $.add(t5, t4)) ? childOne : childTwo;
-                  t4 = sibling.get$isLeaf();
+                  var t8 = t3.get$y();
                 case 5:
+                  state = 0;
+                  sibling = $.ltB(normOne, $.add(t6, t8)) ? childOne : childTwo;
+                  t4 = sibling.get$isLeaf();
+                case 6:
                   state = 0;
                   if (!$.eqB(t4, false)) break L0;
               }
@@ -6358,8 +5981,7 @@ $$.DynamicTreeNode = {"":
   return $.toString(this.box);
  },
  get$isLeaf: function() {
-  var t1 = this.childOne;
-  return t1 == null;
+  return this.childOne == null;
  },
  next$0: function() { return this.next.$call$0(); }
 };
@@ -6394,9 +6016,8 @@ $$.PolygonShape = {"":
  ["vertexCount?", "normals?", "vertices?", "centroid?", "radius", "type"],
  super: "Shape",
  computeMass$2: function(massData, density) {
-  var t1 = this.vertexCount;
-  if (t1 === 2) {
-    t1 = massData.get$center();
+  if ($.eqB(this.vertexCount, 2)) {
+    var t1 = massData.get$center();
     var t2 = this.vertices;
     var t3 = t2.length;
     if (0 < 0 || 0 >= t3) throw $.ioore(0);
@@ -6417,18 +6038,18 @@ $$.PolygonShape = {"":
   for (t1 = this.vertices, area = 0.0, I = 0.0, i = 0; $.ltB(i, this.vertexCount); ++i) {
     t2 = t1.length;
     if (i < 0 || i >= t2) throw $.ioore(i);
-    t3 = t1[i];
+    var p2 = t1[i];
     t2 = i + 1;
     if ($.ltB(t2, this.vertexCount)) {
-      t4 = t1.length;
-      if (t2 < 0 || t2 >= t4) throw $.ioore(t2);
+      t3 = t1.length;
+      if (t2 < 0 || t2 >= t3) throw $.ioore(t2);
       var p3 = t1[t2];
     } else {
       t2 = t1.length;
       if (0 < 0 || 0 >= t2) throw $.ioore(0);
       p3 = t1[0];
     }
-    e1.setFrom$1(t3);
+    e1.setFrom$1(p2);
     e1.subLocal$1(pRef);
     e2.setFrom$1(p3);
     e2.subLocal$1(pRef);
@@ -6437,36 +6058,36 @@ $$.PolygonShape = {"":
     var triangleArea = 0.5 * D;
     area += triangleArea;
     t2 = center.x;
-    t4 = triangleArea * 0.3333333333333333;
-    var t5 = $.add($.add(pRef.x, t3.get$x()), p3.get$x());
-    if (typeof t5 !== 'number') throw $.iae(t5);
-    center.x = $.add(t2, t4 * t5);
-    var t6 = center.y;
-    var t7 = $.add($.add(pRef.y, t3.get$y()), p3.get$y());
-    if (typeof t7 !== 'number') throw $.iae(t7);
-    center.y = $.add(t6, t4 * t7);
+    t3 = triangleArea * 0.3333333333333333;
+    t4 = $.add($.add(pRef.x, p2.get$x()), p3.get$x());
+    if (typeof t4 !== 'number') throw $.iae(t4);
+    center.x = $.add(t2, t3 * t4);
+    var t5 = center.y;
+    var t6 = $.add($.add(pRef.y, p2.get$y()), p3.get$y());
+    if (typeof t6 !== 'number') throw $.iae(t6);
+    center.y = $.add(t5, t3 * t6);
     var px = pRef.x;
     var py = pRef.y;
     var ex1 = e1.x;
     var ey1 = e1.y;
     var ex2 = e2.x;
     var ey2 = e2.y;
-    var t8 = $.add($.add($.mul(ex1, ex1), $.mul(ex2, ex1)), $.mul(ex2, ex2));
+    var t7 = $.add($.add($.mul(ex1, ex1), $.mul(ex2, ex1)), $.mul(ex2, ex2));
+    if (typeof t7 !== 'number') throw $.iae(t7);
+    t7 *= 0.25;
+    var t8 = $.add($.mul(px, ex1), $.mul(px, ex2));
     if (typeof t8 !== 'number') throw $.iae(t8);
-    t8 *= 0.25;
-    var t9 = $.add($.mul(px, ex1), $.mul(px, ex2));
-    if (typeof t9 !== 'number') throw $.iae(t9);
-    var t10 = 0.3333333333333333 * (t8 + t9);
+    var t9 = 0.3333333333333333 * (t7 + t8);
     if (typeof px !== 'number') throw $.iae(px);
-    var intx2 = t10 + 0.5 * px * px;
-    t10 = $.add($.add($.mul(ey1, ey1), $.mul(ey2, ey1)), $.mul(ey2, ey2));
+    var intx2 = t9 + 0.5 * px * px;
+    t9 = $.add($.add($.mul(ey1, ey1), $.mul(ey2, ey1)), $.mul(ey2, ey2));
+    if (typeof t9 !== 'number') throw $.iae(t9);
+    t9 *= 0.25;
+    var t10 = $.add($.mul(py, ey1), $.mul(py, ey2));
     if (typeof t10 !== 'number') throw $.iae(t10);
-    t10 *= 0.25;
-    var t11 = $.add($.mul(py, ey1), $.mul(py, ey2));
-    if (typeof t11 !== 'number') throw $.iae(t11);
-    var t12 = 0.3333333333333333 * (t10 + t11);
+    var t11 = 0.3333333333333333 * (t9 + t10);
     if (typeof py !== 'number') throw $.iae(py);
-    I += D * (intx2 + (t12 + 0.5 * py * py));
+    I += D * (intx2 + (t11 + 0.5 * py * py));
   }
   massData.set$mass($.mul(density, area));
   center.mulLocal$1(1.0 / area);
@@ -6639,8 +6260,7 @@ $$.PolygonShape = {"":
       state = 0;
       var i = 1;
       var bestIndex = 0;
-    case 2:
-    case 3:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -6816,16 +6436,15 @@ $$.ContactFilter = {"":
   }
   t1 = filterA.get$maskBits();
   if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(3, t1, filterA, filterB, 0);
-  var t2 = filterB.get$categoryBits();
-  if (t2 !== (t2 | 0)) return this.shouldCollide$2$bailout(4, t1, t2, filterA, filterB);
-  t2 = (t1 & t2) >>> 0;
-  if (!(t2 === 0)) {
+  var t3 = filterB.get$categoryBits();
+  if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(4, t1, t3, filterA, filterB);
+  if (!((t1 & t3) >>> 0 === 0)) {
     t1 = filterA.get$categoryBits();
     if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(5, t1, filterB, 0, 0);
-    t2 = filterB.get$maskBits();
-    if (t2 !== (t2 | 0)) return this.shouldCollide$2$bailout(6, t1, t2, 0, 0);
-    t2 = (t1 & t2) >>> 0;
-    t1 = !(t2 === 0);
+    t3 = filterB.get$maskBits();
+    if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(6, t1, t3, 0, 0);
+    var t5 = !((t1 & t3) >>> 0 === 0);
+    t1 = t5;
   } else t1 = false;
   return t1;
  },
@@ -6846,7 +6465,7 @@ $$.ContactFilter = {"":
       break;
     case 4:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       filterA = env2;
       filterB = env3;
       break;
@@ -6856,7 +6475,7 @@ $$.ContactFilter = {"":
       break;
     case 6:
       t1 = env0;
-      t2 = env1;
+      t3 = env1;
       break;
   }
   switch (state) {
@@ -6879,22 +6498,21 @@ $$.ContactFilter = {"":
       t1 = filterA.get$maskBits();
     case 3:
       state = 0;
-      var t2 = filterB.get$categoryBits();
+      var t3 = filterB.get$categoryBits();
     case 4:
       state = 0;
-    case 5:
-    case 6:
-      if (state == 5 || state == 6 || (state == 0 && !$.eqB($.and(t1, t2), 0))) {
+    default:
+      if (state == 5 || state == 6 || (state == 0 && !$.eqB($.and(t1, t3), 0))) {
         switch (state) {
           case 0:
             t1 = filterA.get$categoryBits();
           case 5:
             state = 0;
-            t2 = filterB.get$maskBits();
+            t3 = filterB.get$maskBits();
           case 6:
             state = 0;
-            var t3 = !$.eqB($.and(t1, t2), 0);
-            t1 = t3;
+            var t5 = !$.eqB($.and(t1, t3), 0);
+            t1 = t5;
         }
       } else {
         t1 = false;
@@ -6945,38 +6563,38 @@ $$.Body = {"":
   var r = t.rotation;
   var p = t.position;
   r.get$col1().set$x(c);
-  var t2 = -s;
-  r.get$col2().set$x(t2);
+  var t3 = -s;
+  r.get$col2().set$x(t3);
   r.get$col1().set$y(s);
   r.get$col2().set$y(c);
-  t2 = r.get$col1().get$x();
-  if (typeof t2 !== 'number') return this.synchronizeTransform$0$bailout(2, t2, r, p, t1, 0, 0);
-  var t3 = t1.localCenter;
-  var t4 = t3.get$x();
-  if (typeof t4 !== 'number') return this.synchronizeTransform$0$bailout(3, t2, r, p, t4, t1, 0);
-  t4 *= t2;
-  t2 = r.get$col2().get$x();
-  if (typeof t2 !== 'number') return this.synchronizeTransform$0$bailout(4, t1, r, p, t4, t2, 0);
-  var t5 = t3.get$y();
-  if (typeof t5 !== 'number') return this.synchronizeTransform$0$bailout(5, t1, t5, r, p, t4, t2);
-  var t6 = (t4 + t2 * t5) * -1;
-  var t7 = t1.center;
-  var t8 = t7.get$x();
-  if (typeof t8 !== 'number') return this.synchronizeTransform$0$bailout(6, t1, r, p, t6, t8, 0);
-  p.set$x(t6 + t8);
-  var t9 = r.get$col1().get$y();
-  if (typeof t9 !== 'number') return this.synchronizeTransform$0$bailout(7, r, t9, p, t1, 0, 0);
-  var t10 = t3.get$x();
-  if (typeof t10 !== 'number') return this.synchronizeTransform$0$bailout(8, t1, r, t9, p, t10, 0);
-  t10 *= t9;
-  t9 = r.get$col2().get$y();
-  if (typeof t9 !== 'number') return this.synchronizeTransform$0$bailout(9, t10, t9, p, t1, 0, 0);
-  t3 = t3.get$y();
-  if (typeof t3 !== 'number') return this.synchronizeTransform$0$bailout(10, t10, t9, p, t3, t1, 0);
-  var t11 = (t10 + t9 * t3) * -1;
-  t7 = t7.get$y();
-  if (typeof t7 !== 'number') return this.synchronizeTransform$0$bailout(11, t7, p, t11, 0, 0, 0);
-  p.set$y(t11 + t7);
+  t3 = r.get$col1().get$x();
+  if (typeof t3 !== 'number') return this.synchronizeTransform$0$bailout(2, t3, r, p, t1, 0, 0);
+  var t5 = t1.localCenter;
+  var t6 = t5.get$x();
+  if (typeof t6 !== 'number') return this.synchronizeTransform$0$bailout(3, t3, r, p, t6, t1, 0);
+  t6 *= t3;
+  t3 = r.get$col2().get$x();
+  if (typeof t3 !== 'number') return this.synchronizeTransform$0$bailout(4, t1, r, p, t6, t3, 0);
+  var t9 = t5.get$y();
+  if (typeof t9 !== 'number') return this.synchronizeTransform$0$bailout(5, t1, t9, r, p, t6, t3);
+  var t11 = (t6 + t3 * t9) * -1;
+  var t12 = t1.center;
+  var t13 = t12.get$x();
+  if (typeof t13 !== 'number') return this.synchronizeTransform$0$bailout(6, t1, r, p, t11, t13, 0);
+  p.set$x(t11 + t13);
+  var t15 = r.get$col1().get$y();
+  if (typeof t15 !== 'number') return this.synchronizeTransform$0$bailout(7, r, t15, p, t1, 0, 0);
+  var t17 = t5.get$x();
+  if (typeof t17 !== 'number') return this.synchronizeTransform$0$bailout(8, t1, r, t15, p, t17, 0);
+  t17 *= t15;
+  t15 = r.get$col2().get$y();
+  if (typeof t15 !== 'number') return this.synchronizeTransform$0$bailout(9, t17, t15, p, t1, 0, 0);
+  t5 = t5.get$y();
+  if (typeof t5 !== 'number') return this.synchronizeTransform$0$bailout(10, t17, t15, p, t5, t1, 0);
+  var t21 = (t17 + t15 * t5) * -1;
+  t12 = t12.get$y();
+  if (typeof t12 !== 'number') return this.synchronizeTransform$0$bailout(11, t12, p, t21, 0, 0, 0);
+  p.set$y(t21 + t12);
  },
  synchronizeTransform$0$bailout: function(state, env0, env1, env2, env3, env4, env5) {
   switch (state) {
@@ -6986,70 +6604,70 @@ $$.Body = {"":
       t1 = env2;
       break;
     case 2:
-      t2 = env0;
+      t3 = env0;
       r = env1;
       p = env2;
       t1 = env3;
       break;
     case 3:
-      t2 = env0;
+      t3 = env0;
       r = env1;
       p = env2;
-      t3 = env3;
+      t5 = env3;
       t1 = env4;
       break;
     case 4:
       t1 = env0;
       r = env1;
       p = env2;
-      t3 = env3;
-      t2 = env4;
+      t5 = env3;
+      t3 = env4;
       break;
     case 5:
       t1 = env0;
-      t4 = env1;
+      t8 = env1;
       r = env2;
       p = env3;
-      t3 = env4;
-      t2 = env5;
+      t5 = env4;
+      t3 = env5;
       break;
     case 6:
       t1 = env0;
       r = env1;
       p = env2;
-      t5 = env3;
-      t6 = env4;
+      t10 = env3;
+      t11 = env4;
       break;
     case 7:
       r = env0;
-      t7 = env1;
+      t13 = env1;
       p = env2;
       t1 = env3;
       break;
     case 8:
       t1 = env0;
       r = env1;
-      t7 = env2;
+      t13 = env2;
       p = env3;
-      t8 = env4;
+      t15 = env4;
       break;
     case 9:
-      t8 = env0;
-      t7 = env1;
+      t15 = env0;
+      t13 = env1;
       p = env2;
       t1 = env3;
       break;
     case 10:
-      t8 = env0;
-      t7 = env1;
+      t15 = env0;
+      t13 = env1;
       p = env2;
-      t9 = env3;
+      t18 = env3;
       t1 = env4;
       break;
     case 11:
-      t11 = env0;
+      t21 = env0;
       p = env1;
-      t10 = env2;
+      t20 = env2;
       break;
   }
   switch (state) {
@@ -7063,46 +6681,46 @@ $$.Body = {"":
       var r = t.get$rotation();
       var p = t.get$position();
       r.get$col1().set$x(c);
-      var t2 = $.neg(s);
-      r.get$col2().set$x(t2);
+      var t3 = $.neg(s);
+      r.get$col2().set$x(t3);
       r.get$col1().set$y(s);
       r.get$col2().set$y(c);
-      t2 = r.get$col1().get$x();
+      t3 = r.get$col1().get$x();
     case 2:
       state = 0;
-      var t3 = t1.get$localCenter().get$x();
+      var t5 = t1.get$localCenter().get$x();
     case 3:
       state = 0;
-      t3 = $.mul(t2, t3);
-      t2 = r.get$col2().get$x();
+      t5 = $.mul(t3, t5);
+      t3 = r.get$col2().get$x();
     case 4:
       state = 0;
-      var t4 = t1.get$localCenter().get$y();
+      var t8 = t1.get$localCenter().get$y();
     case 5:
       state = 0;
-      var t5 = $.mul($.add(t3, $.mul(t2, t4)), -1);
-      var t6 = t1.get$center().get$x();
+      var t10 = $.mul($.add(t5, $.mul(t3, t8)), -1);
+      var t11 = t1.get$center().get$x();
     case 6:
       state = 0;
-      p.set$x($.add(t5, t6));
-      var t7 = r.get$col1().get$y();
+      p.set$x($.add(t10, t11));
+      var t13 = r.get$col1().get$y();
     case 7:
       state = 0;
-      var t8 = t1.get$localCenter().get$x();
+      var t15 = t1.get$localCenter().get$x();
     case 8:
       state = 0;
-      t8 = $.mul(t7, t8);
-      t7 = r.get$col2().get$y();
+      t15 = $.mul(t13, t15);
+      t13 = r.get$col2().get$y();
     case 9:
       state = 0;
-      var t9 = t1.get$localCenter().get$y();
+      var t18 = t1.get$localCenter().get$y();
     case 10:
       state = 0;
-      var t10 = $.mul($.add(t8, $.mul(t7, t9)), -1);
-      var t11 = t1.get$center().get$y();
+      var t20 = $.mul($.add(t15, $.mul(t13, t18)), -1);
+      var t21 = t1.get$center().get$y();
     case 11:
       state = 0;
-      p.set$y($.add(t10, t11));
+      p.set$y($.add(t20, t21));
   }
  },
  synchronizeFixtures$0: function() {
@@ -7119,45 +6737,22 @@ $$.Body = {"":
   }
  },
  get$fixedRotation: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$fixedRotation$bailout(1, t1);
-  t1 = t1 & 16;
-  return t1 === 16;
- },
- get$fixedRotation$bailout: function(state, t1) {
-  return $.eq($.and(t1, 16), 16);
+  return $.eq($.and(this.flags, 16), 16);
  },
  get$active: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$active$bailout(1, t1);
-  t1 = t1 & 32;
-  return t1 === 32;
- },
- get$active$bailout: function(state, t1) {
-  return $.eq($.and(t1, 32), 32);
+  return $.eq($.and(this.flags, 32), 32);
  },
  get$awake: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$awake$bailout(1, t1);
-  t1 = t1 & 2;
-  return t1 === 2;
- },
- get$awake$bailout: function(state, t1) {
-  return $.eq($.and(t1, 2), 2);
+  return $.eq($.and(this.flags, 2), 2);
  },
  set$awake: function(flag) {
   if (flag === true) {
-    var t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.set$awake$bailout(1, t1);
-    var t2 = t1 & 2;
-    if (t2 === 0) {
-      this.flags = (t1 | 2) >>> 0;
+    if ($.eqB($.and(this.flags, 2), 0)) {
+      this.flags = $.or(this.flags, 2);
       this.sleepTime = 0.0;
     }
   } else {
-    t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.set$awake$bailout(3, t1);
-    this.flags = (t1 & -3) >>> 0;
+    this.flags = $.and(this.flags, -3);
     this.sleepTime = 0.0;
     this._linearVelocity.setZero$0();
     this._angularVelocity = 0.0;
@@ -7165,65 +6760,8 @@ $$.Body = {"":
     this._torque = 0.0;
   }
  },
- set$awake$bailout: function(state, env0) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      break;
-    case 2:
-      t1 = env0;
-      break;
-    case 3:
-      t1 = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-      if (state == 1 || state == 2 || (state == 0 && flag === true)) {
-        switch (state) {
-          case 0:
-            var t1 = this.flags;
-          case 1:
-            state = 0;
-          case 2:
-            if (state == 2 || (state == 0 && $.eqB($.and(t1, 2), 0))) {
-              switch (state) {
-                case 0:
-                  t1 = this.flags;
-                case 2:
-                  state = 0;
-                  this.flags = $.or(t1, 2);
-                  this.sleepTime = 0.0;
-              }
-            }
-        }
-      } else {
-        switch (state) {
-          case 0:
-            t1 = this.flags;
-          case 3:
-            state = 0;
-            this.flags = $.and(t1, -3);
-            this.sleepTime = 0.0;
-            this._linearVelocity.setZero$0();
-            this._angularVelocity = 0.0;
-            this._force.setZero$0();
-            this._torque = 0.0;
-        }
-      }
-  }
- },
  get$bullet: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$bullet$bailout(1, t1);
-  t1 = t1 & 8;
-  return t1 === 8;
- },
- get$bullet$bailout: function(state, t1) {
-  return $.eq($.and(t1, 8), 8);
+  return $.eq($.and(this.flags, 8), 8);
  },
  set$type: function(otherType) {
   if ($.eqB(this._type, otherType)) return;
@@ -7265,319 +6803,68 @@ $$.Body = {"":
   this._inertia = 0.0;
   this.invInertia = 0.0;
   var t1 = this.sweep;
-  var t2 = t1.localCenter;
-  t2.setZero$0();
-  var t3 = this._type;
-  if (typeof t3 !== 'number') return this.resetMassData$0$bailout(1, t3, t1, 0, 0, 0, 0);
-  if (t3 === 0 || t3 === 1) {
-    t2 = t1.center;
-    t3 = this.originTransform.position;
-    t2.setFrom$1(t3);
-    t1.centerZero.setFrom$1(t3);
+  t1.get$localCenter().setZero$0();
+  if ($.eqB(this._type, 0) || $.eqB(this._type, 1)) {
+    var t2 = t1.get$center();
+    var t3 = this.originTransform;
+    t2.setFrom$1(t3.get$position());
+    t1.get$centerZero().setFrom$1(t3.get$position());
     return;
   }
-  t3 = this.tempCenter;
-  t3.setZero$0();
+  t2 = this.tempCenter;
+  t2.setZero$0();
   var massData = this._pmd;
-  for (var f = this.fixtureList, t4 = massData.center; !(f == null); f = f.get$next()) {
-    var t5 = f.get$density();
-    if (typeof t5 !== 'number') return this.resetMassData$0$bailout(3, massData, t1, f, t5, t3, 0);
-    if (t5 === 0.0) continue;
+  for (var f = this.fixtureList; !(f == null); f = f.get$next()) {
+    if ($.eqB(f.get$density(), 0.0)) continue;
     f.getMassData$1(massData);
-    t5 = this.mass;
-    if (typeof t5 !== 'number') return this.resetMassData$0$bailout(4, t1, t5, f, t3, massData, 0);
-    var t6 = massData.mass;
-    if (typeof t6 !== 'number') return this.resetMassData$0$bailout(5, t5, f, t6, t1, t3, massData);
-    this.mass = t5 + t6;
-    var temp = $.Vector$copy(t4);
-    temp.mulLocal$1(massData.mass);
-    t3.addLocal$1(temp);
-    var t7 = this._inertia;
-    if (typeof t7 !== 'number') return this.resetMassData$0$bailout(6, t1, f, t7, t3, massData, 0);
-    var t8 = massData.inertia;
-    if (typeof t8 !== 'number') return this.resetMassData$0$bailout(7, f, t7, t8, t1, t3, massData);
-    this._inertia = t7 + t8;
+    this.mass = $.add(this.mass, massData.get$mass());
+    var temp = $.Vector$copy(massData.get$center());
+    temp.mulLocal$1(massData.get$mass());
+    t2.addLocal$1(temp);
+    this._inertia = $.add(this._inertia, massData.get$inertia());
   }
-  t4 = this.mass;
-  if (typeof t4 !== 'number') return this.resetMassData$0$bailout(8, t1, t4, t3, 0, 0, 0);
-  if (t4 > 0.0) {
-    if (typeof t4 !== 'number') throw $.iae(t4);
-    this.invMass = 1.0 / t4;
-    t3.mulLocal$1(this.invMass);
+  if ($.gtB(this.mass, 0.0)) {
+    t3 = this.mass;
+    if (typeof t3 !== 'number') throw $.iae(t3);
+    this.invMass = 1.0 / t3;
+    t2.mulLocal$1(this.invMass);
   } else {
     this.mass = 1.0;
     this.invMass = 1.0;
   }
-  t4 = this._inertia;
-  if (typeof t4 !== 'number') return this.resetMassData$0$bailout(9, t4, t3, t1, 0, 0, 0);
-  if (t4 > 0.0) {
-    t5 = this.flags;
-    if (t5 !== (t5 | 0)) return this.resetMassData$0$bailout(10, t1, t5, t3, 0, 0, 0);
-    t5 = t5 & 16;
-    t5 = t5 === 0;
-  } else t5 = false;
-  if (t5) {
-    t5 = this.mass;
-    if (typeof t5 !== 'number') return this.resetMassData$0$bailout(12, t5, t4, t3, t1, 0, 0);
-    t6 = $.Vector_dot(t3, t3);
-    if (typeof t6 !== 'number') return this.resetMassData$0$bailout(13, t5, t6, t4, t3, t1, 0);
-    this._inertia = t4 - t5 * t6;
-    t7 = this._inertia;
-    if (typeof t7 !== 'number') throw $.iae(t7);
-    this.invInertia = 1.0 / t7;
+  if ($.gtB(this._inertia, 0.0) && $.eqB($.and(this.flags, 16), 0)) {
+    this._inertia = $.sub(this._inertia, $.mul(this.mass, $.Vector_dot(t2, t2)));
+    t3 = this._inertia;
+    if (typeof t3 !== 'number') throw $.iae(t3);
+    this.invInertia = 1.0 / t3;
   } else {
     this._inertia = 0.0;
     this.invInertia = 0.0;
   }
-  t4 = this.oldCenter;
-  t5 = t1.center;
-  t4.setFrom$1(t5);
-  t2.setFrom$1(t3);
-  t3 = this.originTransform;
-  t1 = t1.centerZero;
-  $.Transform_mulToOut(t3, t2, t1);
-  t5.setFrom$1(t1);
-  temp = $.Vector$copy(t5);
-  temp.subLocal$1(t4);
+  t3 = this.oldCenter;
+  t3.setFrom$1(t1.get$center());
+  t1.get$localCenter().setFrom$1(t2);
+  $.Transform_mulToOut(this.originTransform, t1.get$localCenter(), t1.get$centerZero());
+  t1.get$center().setFrom$1(t1.get$centerZero());
+  temp = $.Vector$copy(t1.get$center());
+  temp.subLocal$1(t3);
   $.Vector_crossNumAndVectorToOut(this._angularVelocity, temp, temp);
   this._linearVelocity.addLocal$1(temp);
- },
- resetMassData$0$bailout: function(state, env0, env1, env2, env3, env4, env5) {
-  switch (state) {
-    case 1:
-      t2 = env0;
-      t1 = env1;
-      break;
-    case 2:
-      t2 = env0;
-      t1 = env1;
-      break;
-    case 3:
-      massData = env0;
-      t1 = env1;
-      f = env2;
-      t3 = env3;
-      t2 = env4;
-      break;
-    case 4:
-      t1 = env0;
-      t3 = env1;
-      f = env2;
-      t2 = env3;
-      massData = env4;
-      break;
-    case 5:
-      t3 = env0;
-      f = env1;
-      t4 = env2;
-      t1 = env3;
-      t2 = env4;
-      massData = env5;
-      break;
-    case 6:
-      t1 = env0;
-      f = env1;
-      t5 = env2;
-      t2 = env3;
-      massData = env4;
-      break;
-    case 7:
-      f = env0;
-      t5 = env1;
-      t6 = env2;
-      t1 = env3;
-      t2 = env4;
-      massData = env5;
-      break;
-    case 8:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      break;
-    case 9:
-      t3 = env0;
-      t2 = env1;
-      t1 = env2;
-      break;
-    case 10:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      break;
-    case 11:
-      t3 = env0;
-      t2 = env1;
-      t1 = env2;
-      break;
-    case 12:
-      t4 = env0;
-      t3 = env1;
-      t2 = env2;
-      t1 = env3;
-      break;
-    case 13:
-      t4 = env0;
-      t5 = env1;
-      t3 = env2;
-      t2 = env3;
-      t1 = env4;
-      break;
-  }
-  switch (state) {
-    case 0:
-      this.mass = 0.0;
-      this.invMass = 0.0;
-      this._inertia = 0.0;
-      this.invInertia = 0.0;
-      var t1 = this.sweep;
-      t1.get$localCenter().setZero$0();
-      var t2 = this._type;
-    case 1:
-      state = 0;
-    case 2:
-      if (state == 2 || (state == 0 && !$.eqB(t2, 0))) {
-        switch (state) {
-          case 0:
-            t2 = this._type;
-          case 2:
-            state = 0;
-            t2 = $.eqB(t2, 1);
-        }
-      } else {
-        t2 = true;
-      }
-      if (t2) {
-        t2 = t1.get$center();
-        var t3 = this.originTransform;
-        t2.setFrom$1(t3.get$position());
-        t1.get$centerZero().setFrom$1(t3.get$position());
-        return;
-      }
-      t2 = this.tempCenter;
-      t2.setZero$0();
-      var massData = this._pmd;
-      var f = this.fixtureList;
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-      L0: while (true) {
-        switch (state) {
-          case 0:
-            if (!!(f == null)) break L0;
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-            c$0:{
-              switch (state) {
-                case 0:
-                  t3 = f.get$density();
-                case 3:
-                  state = 0;
-                  if ($.eqB(t3, 0.0)) break c$0;
-                  f.getMassData$1(massData);
-                  t3 = this.mass;
-                case 4:
-                  state = 0;
-                  var t4 = massData.get$mass();
-                case 5:
-                  state = 0;
-                  this.mass = $.add(t3, t4);
-                  var temp = $.Vector$copy(massData.get$center());
-                  temp.mulLocal$1(massData.get$mass());
-                  t2.addLocal$1(temp);
-                  var t5 = this._inertia;
-                case 6:
-                  state = 0;
-                  var t6 = massData.get$inertia();
-                case 7:
-                  state = 0;
-                  this._inertia = $.add(t5, t6);
-              }
-            }
-            f = f.get$next();
-        }
-      }
-      t3 = this.mass;
-    case 8:
-      state = 0;
-      if ($.gtB(t3, 0.0)) {
-        t3 = this.mass;
-        if (typeof t3 !== 'number') throw $.iae(t3);
-        this.invMass = 1.0 / t3;
-        t2.mulLocal$1(this.invMass);
-      } else {
-        this.mass = 1.0;
-        this.invMass = 1.0;
-      }
-      t3 = this._inertia;
-    case 9:
-      state = 0;
-    case 10:
-      if (state == 10 || (state == 0 && $.gtB(t3, 0.0))) {
-        switch (state) {
-          case 0:
-            t3 = this.flags;
-          case 10:
-            state = 0;
-            t4 = $.eqB($.and(t3, 16), 0);
-            t3 = t4;
-        }
-      } else {
-        t3 = false;
-      }
-    case 11:
-    case 12:
-    case 13:
-      if (state == 11 || state == 12 || state == 13 || (state == 0 && t3)) {
-        switch (state) {
-          case 0:
-            t3 = this._inertia;
-          case 11:
-            state = 0;
-            t4 = this.mass;
-          case 12:
-            state = 0;
-            t5 = $.Vector_dot(t2, t2);
-          case 13:
-            state = 0;
-            this._inertia = $.sub(t3, $.mul(t4, t5));
-            t6 = this._inertia;
-            if (typeof t6 !== 'number') throw $.iae(t6);
-            this.invInertia = 1.0 / t6;
-        }
-      } else {
-        this._inertia = 0.0;
-        this.invInertia = 0.0;
-      }
-      t3 = this.oldCenter;
-      t3.setFrom$1(t1.get$center());
-      t1.get$localCenter().setFrom$1(t2);
-      $.Transform_mulToOut(this.originTransform, t1.get$localCenter(), t1.get$centerZero());
-      t1.get$center().setFrom$1(t1.get$centerZero());
-      temp = $.Vector$copy(t1.get$center());
-      temp.subLocal$1(t3);
-      $.Vector_crossNumAndVectorToOut(this._angularVelocity, temp, temp);
-      this._linearVelocity.addLocal$1(temp);
-  }
  },
  getMassData$1: function(data) {
   data.set$mass(this.mass);
   var lc = this.sweep.localCenter;
   var t1 = this._inertia;
   if (typeof t1 !== 'number') return this.getMassData$1$bailout(1, data, t1, lc, 0, 0);
-  var t2 = this.mass;
-  if (typeof t2 !== 'number') return this.getMassData$1$bailout(2, data, t1, t2, lc, 0);
-  var t3 = lc.get$lengthSquared();
-  if (typeof t3 !== 'number') return this.getMassData$1$bailout(3, data, t1, t2, t3, lc);
-  data.set$inertia(t1 + t2 * t3);
-  var t4 = lc.get$x();
-  data.get$center().set$x(t4);
-  t4 = lc.get$y();
-  data.get$center().set$y(t4);
+  var t3 = this.mass;
+  if (typeof t3 !== 'number') return this.getMassData$1$bailout(2, data, t1, t3, lc, 0);
+  var t5 = lc.get$lengthSquared();
+  if (typeof t5 !== 'number') return this.getMassData$1$bailout(3, data, t1, t3, t5, lc);
+  data.set$inertia(t1 + t3 * t5);
+  var t7 = lc.get$x();
+  data.get$center().set$x(t7);
+  t7 = lc.get$y();
+  data.get$center().set$y(t7);
  },
  getMassData$1$bailout: function(state, env0, env1, env2, env3, env4) {
   switch (state) {
@@ -7589,14 +6876,14 @@ $$.Body = {"":
     case 2:
       data = env0;
       t1 = env1;
-      t2 = env2;
+      t3 = env2;
       lc = env3;
       break;
     case 3:
       data = env0;
       t1 = env1;
-      t2 = env2;
-      t3 = env3;
+      t3 = env2;
+      t5 = env3;
       lc = env4;
       break;
   }
@@ -7607,17 +6894,17 @@ $$.Body = {"":
       var t1 = this._inertia;
     case 1:
       state = 0;
-      var t2 = this.mass;
+      var t3 = this.mass;
     case 2:
       state = 0;
-      var t3 = lc.get$lengthSquared();
+      var t5 = lc.get$lengthSquared();
     case 3:
       state = 0;
-      data.set$inertia($.add(t1, $.mul(t2, t3)));
-      var t4 = lc.get$x();
-      data.get$center().set$x(t4);
-      t4 = lc.get$y();
-      data.get$center().set$y(t4);
+      data.set$inertia($.add(t1, $.mul(t3, t5)));
+      var t7 = lc.get$x();
+      data.get$center().set$x(t7);
+      t7 = lc.get$y();
+      data.get$center().set$y(t7);
   }
  },
  get$inertia: function() {
@@ -7662,208 +6949,38 @@ $$.Body = {"":
  createFixture$1: function(def) {
   var fixture = $.Fixture$();
   fixture.create$2(this, def);
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.createFixture$1$bailout(1, t1, fixture, 0);
-  t1 = t1 & 32;
-  t1 === 32 && fixture.createProxy$2(this.world.get$_contactManager().get$broadPhase(), this.originTransform);
+  $.eqB($.and(this.flags, 32), 32) && fixture.createProxy$2(this.world.get$_contactManager().get$broadPhase(), this.originTransform);
   fixture.next = this.fixtureList;
   this.fixtureList = fixture;
   this.fixtureCount = this.fixtureCount + 1;
   fixture.body = this;
-  t1 = fixture.density;
-  if (typeof t1 !== 'number') return this.createFixture$1$bailout(2, t1, fixture, 0);
-  t1 > 0.0 && this.resetMassData$0();
-  t1 = this.world;
-  var t2 = t1.get$_flags();
-  if (t2 !== (t2 | 0)) return this.createFixture$1$bailout(3, t2, fixture, t1);
-  t1.set$_flags((t2 | 1) >>> 0);
+  $.gtB(fixture.density, 0.0) && this.resetMassData$0();
+  var t1 = this.world;
+  t1.set$_flags($.or(t1.get$_flags(), 1));
   return fixture;
- },
- createFixture$1$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      fixture = env1;
-      break;
-    case 2:
-      t1 = env0;
-      fixture = env1;
-      break;
-    case 3:
-      t2 = env0;
-      fixture = env1;
-      t1 = env2;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var fixture = $.Fixture$();
-      fixture.create$2(this, def);
-      var t1 = this.flags;
-    case 1:
-      state = 0;
-      $.eqB($.and(t1, 32), 32) && fixture.createProxy$2(this.world.get$_contactManager().get$broadPhase(), this.originTransform);
-      fixture.next = this.fixtureList;
-      this.fixtureList = fixture;
-      this.fixtureCount = this.fixtureCount + 1;
-      fixture.body = this;
-      t1 = fixture.density;
-    case 2:
-      state = 0;
-      $.gtB(t1, 0.0) && this.resetMassData$0();
-      t1 = this.world;
-      var t2 = t1.get$_flags();
-    case 3:
-      state = 0;
-      t1.set$_flags($.or(t2, 1));
-      return fixture;
-  }
  },
  next$0: function() { return this.next.$call$0(); },
  Body$2: function(bd, world) {
-  if (bd.get$bullet() === true) {
-    var t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.Body$2$bailout(1, bd, t1);
-    this.flags = (t1 | 8) >>> 0;
-  }
-  if (bd.get$fixedRotation() === true) {
-    t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.Body$2$bailout(2, bd, t1);
-    this.flags = (t1 | 16) >>> 0;
-  }
-  if (bd.get$allowSleep() === true) {
-    t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.Body$2$bailout(3, bd, t1);
-    this.flags = (t1 | 4) >>> 0;
-  }
-  if (bd.get$awake() === true) {
-    t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.Body$2$bailout(4, bd, t1);
-    this.flags = (t1 | 2) >>> 0;
-  }
-  if (bd.get$active() === true) {
-    t1 = this.flags;
-    if (t1 !== (t1 | 0)) return this.Body$2$bailout(5, bd, t1);
-    this.flags = (t1 | 32) >>> 0;
-  }
-  t1 = this.originTransform;
-  t1.position.setFrom$1(bd.get$position());
-  t1.rotation.setAngle$1(bd.get$angle());
+  if (bd.get$bullet() === true) this.flags = $.or(this.flags, 8);
+  if (bd.get$fixedRotation() === true) this.flags = $.or(this.flags, 16);
+  if (bd.get$allowSleep() === true) this.flags = $.or(this.flags, 4);
+  if (bd.get$awake() === true) this.flags = $.or(this.flags, 2);
+  if (bd.get$active() === true) this.flags = $.or(this.flags, 32);
+  var t1 = this.originTransform;
+  t1.get$position().setFrom$1(bd.get$position());
+  t1.get$rotation().setAngle$1(bd.get$angle());
   var t2 = this.sweep;
-  var t3 = t2.localCenter;
-  t3.setZero$0();
-  var t4 = t2.centerZero;
-  $.Transform_mulToOut(t1, t3, t4);
-  t2.center.setFrom$1(t4);
-  t2.angle = bd.get$angle();
-  t2.angleZero = bd.get$angle();
-  t1 = this._type;
-  if (typeof t1 !== 'number') return this.Body$2$bailout(6, t1, 0);
-  if (t1 === 2) {
+  t2.get$localCenter().setZero$0();
+  $.Transform_mulToOut(t1, t2.get$localCenter(), t2.get$centerZero());
+  t2.get$center().setFrom$1(t2.get$centerZero());
+  t2.set$angle(bd.get$angle());
+  t2.set$angleZero(bd.get$angle());
+  if ($.eqB(this._type, 2)) {
     this.mass = 1;
     this.invMass = 1;
   } else {
     this.mass = 0;
     this.invMass = 0;
-  }
- },
- Body$2$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      var bd = env0;
-      t1 = env1;
-      break;
-    case 2:
-      bd = env0;
-      t1 = env1;
-      break;
-    case 3:
-      bd = env0;
-      t1 = env1;
-      break;
-    case 4:
-      bd = env0;
-      t1 = env1;
-      break;
-    case 5:
-      bd = env0;
-      t1 = env1;
-      break;
-    case 6:
-      t1 = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      if (state == 1 || (state == 0 && bd.get$bullet() === true)) {
-        switch (state) {
-          case 0:
-            var t1 = this.flags;
-          case 1:
-            state = 0;
-            this.flags = $.or(t1, 8);
-        }
-      }
-    case 2:
-      if (state == 2 || (state == 0 && bd.get$fixedRotation() === true)) {
-        switch (state) {
-          case 0:
-            t1 = this.flags;
-          case 2:
-            state = 0;
-            this.flags = $.or(t1, 16);
-        }
-      }
-    case 3:
-      if (state == 3 || (state == 0 && bd.get$allowSleep() === true)) {
-        switch (state) {
-          case 0:
-            t1 = this.flags;
-          case 3:
-            state = 0;
-            this.flags = $.or(t1, 4);
-        }
-      }
-    case 4:
-      if (state == 4 || (state == 0 && bd.get$awake() === true)) {
-        switch (state) {
-          case 0:
-            t1 = this.flags;
-          case 4:
-            state = 0;
-            this.flags = $.or(t1, 2);
-        }
-      }
-    case 5:
-      if (state == 5 || (state == 0 && bd.get$active() === true)) {
-        switch (state) {
-          case 0:
-            t1 = this.flags;
-          case 5:
-            state = 0;
-            this.flags = $.or(t1, 32);
-        }
-      }
-      t1 = this.originTransform;
-      t1.get$position().setFrom$1(bd.get$position());
-      t1.get$rotation().setAngle$1(bd.get$angle());
-      var t2 = this.sweep;
-      t2.get$localCenter().setZero$0();
-      $.Transform_mulToOut(t1, t2.get$localCenter(), t2.get$centerZero());
-      t2.get$center().setFrom$1(t2.get$centerZero());
-      t2.set$angle(bd.get$angle());
-      t2.set$angleZero(bd.get$angle());
-      t1 = this._type;
-    case 6:
-      state = 0;
-      if ($.eqB(t1, 2)) {
-        this.mass = 1;
-        this.invMass = 1;
-      } else {
-        this.mass = 0;
-        this.invMass = 0;
-      }
   }
  }
 };
@@ -7919,41 +7036,40 @@ $$.ContactManager = {"":
   var bodyB = fixtureB.get$body();
   var t1 = this.contactListener;
   !(t1 == null) && c.get$touching() === true && t1.endContact$1(c);
-  t1 = c.get$prev();
-  if (!(t1 == null)) {
+  if (!(c.get$prev() == null)) {
     t1 = c.get$next();
     c.get$prev().set$next(t1);
   }
-  t1 = c.get$next();
-  if (!(t1 == null)) {
+  if (!(c.get$next() == null)) {
     t1 = c.get$prev();
     c.get$next().set$prev(t1);
   }
   if ($.eqB(c, this.contactList)) this.contactList = c.get$next();
-  t1 = c.get$edge1().get$prev();
-  if (!(t1 == null)) {
+  if (!(c.get$edge1().get$prev() == null)) {
     t1 = c.get$edge1().get$next();
     c.get$edge1().get$prev().set$next(t1);
   }
-  t1 = c.get$edge1().get$next();
-  if (!(t1 == null)) {
+  if (!(c.get$edge1().get$next() == null)) {
     t1 = c.get$edge1().get$prev();
     c.get$edge1().get$next().set$prev(t1);
   }
   $.eqB(c.get$edge1(), bodyA.get$contactList()) && bodyA.set$contactList(c.get$edge1().get$next());
-  t1 = c.get$edge2().get$prev();
-  if (!(t1 == null)) {
+  if (!(c.get$edge2().get$prev() == null)) {
     t1 = c.get$edge2().get$next();
     c.get$edge2().get$prev().set$next(t1);
   }
-  t1 = c.get$edge2().get$next();
-  if (!(t1 == null)) {
+  if (!(c.get$edge2().get$next() == null)) {
     t1 = c.get$edge2().get$prev();
     c.get$edge2().get$next().set$prev(t1);
   }
   $.eqB(c.get$edge2(), bodyB.get$contactList()) && bodyB.set$contactList(c.get$edge2().get$next());
   this.pool.pushContact$1(c);
-  this.contactCount = this.contactCount - 1;
+  t1 = this.contactCount;
+  if (typeof t1 !== 'number') return this.destroy$1$bailout(1, t1);
+  this.contactCount = t1 - 1;
+ },
+ destroy$1$bailout: function(state, t1) {
+  this.contactCount = $.sub(t1, 1);
  },
  findNewContacts$0: function() {
   this.broadPhase.updatePairs$1(this);
@@ -7995,8 +7111,7 @@ $$.ContactManager = {"":
   c.get$edge1().set$prev(null);
   t1 = bodyA.get$contactList();
   c.get$edge1().set$next(t1);
-  t1 = bodyA.get$contactList();
-  if (!(t1 == null)) {
+  if (!(bodyA.get$contactList() == null)) {
     t1 = c.get$edge1();
     bodyA.get$contactList().set$prev(t1);
   }
@@ -8006,13 +7121,14 @@ $$.ContactManager = {"":
   c.get$edge2().set$prev(null);
   t1 = bodyB.get$contactList();
   c.get$edge2().set$next(t1);
-  t1 = bodyB.get$contactList();
-  if (!(t1 == null)) {
+  if (!(bodyB.get$contactList() == null)) {
     t1 = c.get$edge2();
     bodyB.get$contactList().set$prev(t1);
   }
   bodyB.set$contactList(c.get$edge2());
-  this.contactCount = this.contactCount + 1;
+  t1 = this.contactCount;
+  if (typeof t1 !== 'number') return this.addPair$2$bailout(3, t1, 0, 0);
+  this.contactCount = t1 + 1;
  },
  addPair$2$bailout: function(state, env0, env1, env2) {
   switch (state) {
@@ -8025,6 +7141,9 @@ $$.ContactManager = {"":
       fixtureA = env0;
       fixtureB = env1;
       t1 = env2;
+      break;
+    case 3:
+      t1 = env0;
       break;
   }
   switch (state) {
@@ -8075,8 +7194,7 @@ $$.ContactManager = {"":
       c.get$edge1().set$prev(null);
       t1 = bodyA.get$contactList();
       c.get$edge1().set$next(t1);
-      t1 = bodyA.get$contactList();
-      if (!(t1 == null)) {
+      if (!(bodyA.get$contactList() == null)) {
         t1 = c.get$edge1();
         bodyA.get$contactList().set$prev(t1);
       }
@@ -8086,13 +7204,15 @@ $$.ContactManager = {"":
       c.get$edge2().set$prev(null);
       t1 = bodyB.get$contactList();
       c.get$edge2().set$next(t1);
-      t1 = bodyB.get$contactList();
-      if (!(t1 == null)) {
+      if (!(bodyB.get$contactList() == null)) {
         t1 = c.get$edge2();
         bodyB.get$contactList().set$prev(t1);
       }
       bodyB.set$contactList(c.get$edge2());
-      this.contactCount = this.contactCount + 1;
+      t1 = this.contactCount;
+    case 3:
+      state = 0;
+      this.contactCount = $.add(t1, 1);
   }
  }
 };
@@ -8117,9 +7237,8 @@ $$.Fixture = {"":
   this.shape.computeMass$2(massData, this.density);
  },
  synchronize$3: function(broadPhase, transformOne, transformTwo) {
-  var t1 = this.proxy;
-  if (t1 == null) return;
-  t1 = this.shape;
+  if (this.proxy == null) return;
+  var t1 = this.shape;
   var t2 = this._poolOne;
   t1.computeAxisAlignedBox$2(t2, transformOne);
   t1 = this.shape;
@@ -8128,43 +7247,43 @@ $$.Fixture = {"":
   t1 = t2.lowerBound;
   var t4 = t1.get$x();
   if (typeof t4 !== 'number') return this.synchronize$3$bailout(1, broadPhase, transformOne, transformTwo, t4, t2, t3, 0, 0);
-  var t5 = t3.lowerBound;
-  var t6 = t5.get$x();
-  if (typeof t6 !== 'number') return this.synchronize$3$bailout(2, broadPhase, transformOne, transformTwo, t4, t6, t2, t3, 0);
-  t4 = t4 < t6 ? t1.get$x() : t5.get$x();
-  t6 = this.box;
-  var t7 = t6.lowerBound;
+  var t6 = t3.lowerBound;
+  var t7 = t6.get$x();
+  if (typeof t7 !== 'number') return this.synchronize$3$bailout(2, broadPhase, transformOne, transformTwo, t4, t7, t2, t3, 0);
+  t4 = t4 < t7 ? t1.get$x() : t6.get$x();
+  var t5 = this.box;
+  t7 = t5.lowerBound;
   t7.set$x(t4);
   t4 = t1.get$y();
-  if (typeof t4 !== 'number') return this.synchronize$3$bailout(3, broadPhase, transformOne, transformTwo, t6, t2, t4, t3, 0);
-  var t8 = t5.get$y();
-  if (typeof t8 !== 'number') return this.synchronize$3$bailout(4, broadPhase, transformOne, transformTwo, t6, t8, t2, t4, t3);
-  t7.set$y(t4 < t8 ? t1.get$y() : t5.get$y());
+  if (typeof t4 !== 'number') return this.synchronize$3$bailout(3, broadPhase, transformOne, transformTwo, t5, t2, t4, t3, 0);
+  var t9 = t6.get$y();
+  if (typeof t9 !== 'number') return this.synchronize$3$bailout(4, broadPhase, transformOne, transformTwo, t5, t9, t2, t4, t3);
+  t7.set$y(t4 < t9 ? t1.get$y() : t6.get$y());
   t4 = t2.upperBound;
-  t5 = t4.get$x();
-  if (typeof t5 !== 'number') return this.synchronize$3$bailout(5, broadPhase, transformOne, transformTwo, t6, t5, t2, t3, 0);
-  t7 = t3.upperBound;
-  t8 = t7.get$x();
-  if (typeof t8 !== 'number') return this.synchronize$3$bailout(6, broadPhase, transformOne, transformTwo, t6, t5, t8, t2, t3);
-  t5 = t5 > t8 ? t4.get$x() : t7.get$x();
-  t8 = t6.upperBound;
-  t8.set$x(t5);
-  t5 = t4.get$y();
-  if (typeof t5 !== 'number') return this.synchronize$3$bailout(7, broadPhase, transformOne, transformTwo, t6, t5, t2, t3, 0);
-  var t9 = t7.get$y();
-  if (typeof t9 !== 'number') return this.synchronize$3$bailout(8, broadPhase, transformOne, transformTwo, t6, t3, t5, t2, t9);
-  t8.set$y(t5 > t9 ? t4.get$y() : t7.get$y());
+  t6 = t4.get$x();
+  if (typeof t6 !== 'number') return this.synchronize$3$bailout(5, broadPhase, transformOne, transformTwo, t5, t6, t2, t3, 0);
+  var t8 = t3.upperBound;
+  t9 = t8.get$x();
+  if (typeof t9 !== 'number') return this.synchronize$3$bailout(6, broadPhase, transformOne, transformTwo, t5, t6, t9, t2, t3);
+  t6 = t6 > t9 ? t4.get$x() : t8.get$x();
+  t7 = t5.upperBound;
+  t7.set$x(t6);
+  t6 = t4.get$y();
+  if (typeof t6 !== 'number') return this.synchronize$3$bailout(7, broadPhase, transformOne, transformTwo, t5, t6, t2, t3, 0);
+  var t10 = t8.get$y();
+  if (typeof t10 !== 'number') return this.synchronize$3$bailout(8, broadPhase, transformOne, transformTwo, t5, t3, t6, t2, t10);
+  t7.set$y(t6 > t10 ? t4.get$y() : t8.get$y());
   t2 = transformTwo.get$position().get$x();
-  if (typeof t2 !== 'number') return this.synchronize$3$bailout(9, broadPhase, t1, transformOne, transformTwo, t6, t2, 0, 0);
-  t3 = transformOne.get$position().get$x();
-  if (typeof t3 !== 'number') return this.synchronize$3$bailout(10, broadPhase, t1, transformOne, transformTwo, t6, t3, t2, 0);
-  t1.set$x(t2 - t3);
-  t4 = transformTwo.get$position().get$y();
-  if (typeof t4 !== 'number') return this.synchronize$3$bailout(11, broadPhase, t1, transformOne, t4, t6, 0, 0, 0);
-  t5 = transformOne.get$position().get$y();
-  if (typeof t5 !== 'number') return this.synchronize$3$bailout(12, broadPhase, t1, t4, t6, t5, 0, 0, 0);
-  t1.set$y(t4 - t5);
-  broadPhase.moveProxy$3(this.proxy, t6, t1);
+  if (typeof t2 !== 'number') return this.synchronize$3$bailout(9, broadPhase, t1, transformOne, transformTwo, t5, t2, 0, 0);
+  t4 = transformOne.get$position().get$x();
+  if (typeof t4 !== 'number') return this.synchronize$3$bailout(10, broadPhase, t1, transformOne, transformTwo, t5, t4, t2, 0);
+  t1.set$x(t2 - t4);
+  t7 = transformTwo.get$position().get$y();
+  if (typeof t7 !== 'number') return this.synchronize$3$bailout(11, broadPhase, t1, transformOne, t7, t5, 0, 0, 0);
+  t9 = transformOne.get$position().get$y();
+  if (typeof t9 !== 'number') return this.synchronize$3$bailout(12, broadPhase, t1, t7, t5, t9, 0, 0, 0);
+  t1.set$y(t7 - t9);
+  broadPhase.moveProxy$3(this.proxy, t5, t1);
  },
  synchronize$3$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7) {
   switch (state) {
@@ -8181,7 +7300,7 @@ $$.Fixture = {"":
       transformOne = env1;
       transformTwo = env2;
       t1 = env3;
-      t4 = env4;
+      t5 = env4;
       t2 = env5;
       t3 = env6;
       break;
@@ -8199,7 +7318,7 @@ $$.Fixture = {"":
       transformOne = env1;
       transformTwo = env2;
       t4 = env3;
-      t5 = env4;
+      t6 = env4;
       t2 = env5;
       t1 = env6;
       t3 = env7;
@@ -8219,7 +7338,7 @@ $$.Fixture = {"":
       transformTwo = env2;
       t4 = env3;
       t1 = env4;
-      t5 = env5;
+      t6 = env5;
       t2 = env6;
       t3 = env7;
       break;
@@ -8240,7 +7359,7 @@ $$.Fixture = {"":
       t3 = env4;
       t1 = env5;
       t2 = env6;
-      t5 = env7;
+      t6 = env7;
       break;
     case 9:
       broadPhase = env0;
@@ -8256,29 +7375,28 @@ $$.Fixture = {"":
       transformOne = env2;
       transformTwo = env3;
       t4 = env4;
-      t1 = env5;
+      t3 = env5;
       t2 = env6;
       break;
     case 11:
       broadPhase = env0;
       disp = env1;
       transformOne = env2;
-      t3 = env3;
+      t6 = env3;
       t4 = env4;
       break;
     case 12:
       broadPhase = env0;
       disp = env1;
-      t3 = env2;
+      t6 = env2;
       t4 = env3;
-      t5 = env4;
+      t8 = env4;
       break;
   }
   switch (state) {
     case 0:
-      var t1 = this.proxy;
-      if (t1 == null) return;
-      t1 = this.shape;
+      if (this.proxy == null) return;
+      var t1 = this.shape;
       var t2 = this._poolOne;
       t1.computeAxisAlignedBox$2(t2, transformOne);
       t1 = this.shape;
@@ -8287,51 +7405,51 @@ $$.Fixture = {"":
       t1 = t2.get$lowerBound().get$x();
     case 1:
       state = 0;
-      var t4 = t3.get$lowerBound().get$x();
+      var t5 = t3.get$lowerBound().get$x();
     case 2:
       state = 0;
-      t1 = $.ltB(t1, t4) ? t2.get$lowerBound().get$x() : t3.get$lowerBound().get$x();
-      t4 = this.box;
+      t1 = $.ltB(t1, t5) ? t2.get$lowerBound().get$x() : t3.get$lowerBound().get$x();
+      var t4 = this.box;
       t4.get$lowerBound().set$x(t1);
       t1 = t2.get$lowerBound().get$y();
     case 3:
       state = 0;
-      var t5 = t3.get$lowerBound().get$y();
+      var t6 = t3.get$lowerBound().get$y();
     case 4:
       state = 0;
-      t1 = $.ltB(t1, t5) ? t2.get$lowerBound().get$y() : t3.get$lowerBound().get$y();
+      t1 = $.ltB(t1, t6) ? t2.get$lowerBound().get$y() : t3.get$lowerBound().get$y();
       t4.get$lowerBound().set$y(t1);
       t1 = t2.get$upperBound().get$x();
     case 5:
       state = 0;
-      t5 = t3.get$upperBound().get$x();
+      t6 = t3.get$upperBound().get$x();
     case 6:
       state = 0;
-      t1 = $.gtB(t1, t5) ? t2.get$upperBound().get$x() : t3.get$upperBound().get$x();
+      t1 = $.gtB(t1, t6) ? t2.get$upperBound().get$x() : t3.get$upperBound().get$x();
       t4.get$upperBound().set$x(t1);
       t1 = t2.get$upperBound().get$y();
     case 7:
       state = 0;
-      t5 = t3.get$upperBound().get$y();
+      t6 = t3.get$upperBound().get$y();
     case 8:
       state = 0;
-      t1 = $.gtB(t1, t5) ? t2.get$upperBound().get$y() : t3.get$upperBound().get$y();
+      t1 = $.gtB(t1, t6) ? t2.get$upperBound().get$y() : t3.get$upperBound().get$y();
       t4.get$upperBound().set$y(t1);
       var disp = t2.get$lowerBound();
       t2 = transformTwo.get$position().get$x();
     case 9:
       state = 0;
-      t1 = transformOne.get$position().get$x();
+      t3 = transformOne.get$position().get$x();
     case 10:
       state = 0;
-      disp.set$x($.sub(t2, t1));
-      t3 = transformTwo.get$position().get$y();
+      disp.set$x($.sub(t2, t3));
+      t6 = transformTwo.get$position().get$y();
     case 11:
       state = 0;
-      t5 = transformOne.get$position().get$y();
+      var t8 = transformOne.get$position().get$y();
     case 12:
       state = 0;
-      disp.set$y($.sub(t3, t5));
+      disp.set$y($.sub(t6, t8));
       broadPhase.moveProxy$3(this.proxy, t4, disp);
   }
  },
@@ -8373,25 +7491,22 @@ $$.Island = {"":
  super: "Object",
  report$1: function(constraints) {
   if (typeof constraints !== 'string' && (typeof constraints !== 'object' || constraints === null || (constraints.constructor !== Array && !constraints.is$JavaScriptIndexingBehavior()))) return this.report$1$bailout(1, constraints);
-  var t1 = this.listener;
-  if (t1 == null) return;
-  for (t1 = this.impulse, t2 = t1.normalImpulses, t3 = t1.tangentImpulses, i = 0; $.ltB(i, this.contactCount); ++i) {
+  if (this.listener == null) return;
+  for (var t1 = this.impulse, t2 = t1.normalImpulses, t3 = t1.tangentImpulses, i = 0; $.ltB(i, this.contactCount); ++i) {
     var c = $.index(this.contacts, i);
     var t4 = constraints.length;
     if (i < 0 || i >= t4) throw $.ioore(i);
-    var t5 = constraints[i];
-    for (var j = 0; $.ltB(j, t5.get$pointCount()); ++j) {
-      $.indexSet(t2, j, $.index(t5.get$points(), j).get$normalImpulse());
-      $.indexSet(t3, j, $.index(t5.get$points(), j).get$tangentImpulse());
+    var cc = constraints[i];
+    for (var j = 0; $.ltB(j, cc.get$pointCount()); ++j) {
+      $.indexSet(t2, j, $.index(cc.get$points(), j).get$normalImpulse());
+      $.indexSet(t3, j, $.index(cc.get$points(), j).get$tangentImpulse());
     }
     this.listener.postSolve$2(c, t1);
   }
-  var t3, t2, i;
  },
  report$1$bailout: function(state, constraints) {
-  var t1 = this.listener;
-  if (t1 == null) return;
-  for (t1 = this.impulse, i = 0; $.ltB(i, this.contactCount); ++i) {
+  if (this.listener == null) return;
+  for (var t1 = this.impulse, i = 0; $.ltB(i, this.contactCount); ++i) {
     var c = $.index(this.contacts, i);
     var cc = $.index(constraints, i);
     for (var j = 0; $.ltB(j, cc.get$pointCount()); ++j) {
@@ -8400,41 +7515,113 @@ $$.Island = {"":
     }
     this.listener.postSolve$2(c, t1);
   }
-  var i;
  },
  addJoint$1: function(joint) {
   var t1 = this.joints;
-  var t2 = this.jointCount;
-  if (typeof t2 !== 'number') return this.addJoint$1$bailout(1, joint, t1, t2);
-  this.jointCount = t2 + 1;
-  $.indexSet(t1, t2, joint);
+  if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.addJoint$1$bailout(1, joint, t1, 0);
+  var t3 = this.jointCount;
+  if (typeof t3 !== 'number') return this.addJoint$1$bailout(2, joint, t1, t3);
+  this.jointCount = t3 + 1;
+  if (t3 !== (t3 | 0)) throw $.iae(t3);
+  var t5 = t1.length;
+  if (t3 < 0 || t3 >= t5) throw $.ioore(t3);
+  t1[t3] = joint;
  },
- addJoint$1$bailout: function(state, joint, t1, t2) {
-  this.jointCount = $.add(t2, 1);
-  $.indexSet(t1, t2, joint);
+ addJoint$1$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      var joint = env0;
+      t1 = env1;
+      break;
+    case 2:
+      joint = env0;
+      t1 = env1;
+      t3 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = this.joints;
+    case 1:
+      state = 0;
+      var t3 = this.jointCount;
+    case 2:
+      state = 0;
+      this.jointCount = $.add(t3, 1);
+      $.indexSet(t1, t3, joint);
+  }
  },
  addContact$1: function(contact) {
   var t1 = this.contacts;
-  var t2 = this.contactCount;
-  if (typeof t2 !== 'number') return this.addContact$1$bailout(1, contact, t1, t2);
-  this.contactCount = t2 + 1;
-  $.indexSet(t1, t2, contact);
+  if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.addContact$1$bailout(1, contact, t1, 0);
+  var t3 = this.contactCount;
+  if (typeof t3 !== 'number') return this.addContact$1$bailout(2, contact, t1, t3);
+  this.contactCount = t3 + 1;
+  if (t3 !== (t3 | 0)) throw $.iae(t3);
+  var t5 = t1.length;
+  if (t3 < 0 || t3 >= t5) throw $.ioore(t3);
+  t1[t3] = contact;
  },
- addContact$1$bailout: function(state, contact, t1, t2) {
-  this.contactCount = $.add(t2, 1);
-  $.indexSet(t1, t2, contact);
+ addContact$1$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      var contact = env0;
+      t1 = env1;
+      break;
+    case 2:
+      contact = env0;
+      t1 = env1;
+      t3 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = this.contacts;
+    case 1:
+      state = 0;
+      var t3 = this.contactCount;
+    case 2:
+      state = 0;
+      this.contactCount = $.add(t3, 1);
+      $.indexSet(t1, t3, contact);
+  }
  },
  addBody$1: function(body) {
   body.set$islandIndex(this.bodyCount);
   var t1 = this.bodies;
-  var t2 = this.bodyCount;
-  if (typeof t2 !== 'number') return this.addBody$1$bailout(1, body, t1, t2);
-  this.bodyCount = t2 + 1;
-  $.indexSet(t1, t2, body);
+  if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.addBody$1$bailout(1, body, t1, 0);
+  var t3 = this.bodyCount;
+  if (typeof t3 !== 'number') return this.addBody$1$bailout(2, body, t1, t3);
+  this.bodyCount = t3 + 1;
+  if (t3 !== (t3 | 0)) throw $.iae(t3);
+  var t5 = t1.length;
+  if (t3 < 0 || t3 >= t5) throw $.ioore(t3);
+  t1[t3] = body;
  },
- addBody$1$bailout: function(state, body, t1, t2) {
-  this.bodyCount = $.add(t2, 1);
-  $.indexSet(t1, t2, body);
+ addBody$1$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      var body = env0;
+      t1 = env1;
+      break;
+    case 2:
+      body = env0;
+      t1 = env1;
+      t3 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      body.set$islandIndex(this.bodyCount);
+      var t1 = this.bodies;
+    case 1:
+      state = 0;
+      var t3 = this.bodyCount;
+    case 2:
+      state = 0;
+      this.bodyCount = $.add(t3, 1);
+      $.indexSet(t1, t3, body);
+  }
  },
  solve$3: function(step, gravity, allowSleep) {
   var i = 0;
@@ -8445,65 +7632,65 @@ $$.Island = {"":
     c$0:{
       t1 = this.bodies;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(2, step, gravity, allowSleep, i, t1, 0, 0, 0, 0, 0, 0);
-      var t2 = t1.length;
-      if (i < 0 || i >= t2) throw $.ioore(i);
-      t1 = t1[i];
-      t2 = t1.get$type();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(3, step, gravity, allowSleep, t1, t2, i, 0, 0, 0, 0, 0);
-      if (!(t2 === 2)) break c$0;
-      t2 = t1.get$_force().get$x();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(4, step, gravity, allowSleep, t2, t1, i, 0, 0, 0, 0, 0);
-      var t3 = t1.get$invMass();
-      if (typeof t3 !== 'number') return this.solve$3$bailout(5, step, gravity, allowSleep, t2, t3, t1, i, 0, 0, 0, 0);
-      t3 *= t2;
-      t2 = gravity.get$x();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(6, step, gravity, allowSleep, t1, t3, t2, i, 0, 0, 0, 0);
-      t2 += t3;
+      var t3 = t1.length;
+      if (i < 0 || i >= t3) throw $.ioore(i);
+      var b = t1[i];
+      t1 = b.get$type();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(3, step, gravity, allowSleep, b, t1, i, 0, 0, 0, 0, 0);
+      if (!(t1 === 2)) break c$0;
+      t1 = b.get$_force().get$x();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(4, step, gravity, allowSleep, t1, b, i, 0, 0, 0, 0, 0);
+      t3 = b.get$invMass();
+      if (typeof t3 !== 'number') return this.solve$3$bailout(5, step, gravity, allowSleep, t1, t3, b, i, 0, 0, 0, 0);
+      t3 *= t1;
+      t1 = gravity.get$x();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(6, step, gravity, allowSleep, b, t3, t1, i, 0, 0, 0, 0);
+      t1 += t3;
       t3 = step.get$dt();
-      if (typeof t3 !== 'number') return this.solve$3$bailout(7, step, gravity, allowSleep, t1, i, t2, t3, 0, 0, 0, 0);
-      t3 *= t2;
-      t2 = t1.get$_force().get$y();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(8, step, gravity, allowSleep, t2, t1, i, t3, 0, 0, 0, 0);
-      var t4 = t1.get$invMass();
-      if (typeof t4 !== 'number') return this.solve$3$bailout(9, step, gravity, t4, t2, allowSleep, t1, i, t3, 0, 0, 0);
-      t4 *= t2;
-      t2 = gravity.get$y();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(10, step, gravity, allowSleep, t4, t2, t1, i, t3, 0, 0, 0);
-      t2 += t4;
-      t4 = step.get$dt();
-      if (typeof t4 !== 'number') return this.solve$3$bailout(11, step, gravity, allowSleep, t2, t4, t1, i, t3, 0, 0, 0);
-      var velocityDelta = $.Vector$(t3, t2 * t4);
-      t1.get$linearVelocity().addLocal$1(velocityDelta);
-      t3 = t1.get$angularVelocity();
-      if (typeof t3 !== 'number') return this.solve$3$bailout(12, step, gravity, allowSleep, t1, i, t3, 0, 0, 0, 0, 0);
-      var t5 = step.get$dt();
-      if (typeof t5 !== 'number') return this.solve$3$bailout(13, step, gravity, allowSleep, t1, i, t3, t5, 0, 0, 0, 0);
-      var t6 = t1.get$invInertia();
-      if (typeof t6 !== 'number') return this.solve$3$bailout(14, step, gravity, allowSleep, t1, i, t3, t5, t6, 0, 0, 0);
-      t6 *= t5;
-      t5 = t1.get$_torque();
-      if (typeof t5 !== 'number') return this.solve$3$bailout(15, step, t6, t5, allowSleep, gravity, t1, i, t3, 0, 0, 0);
-      t1.set$angularVelocity(t3 + t6 * t5);
-      var t7 = step.get$dt();
-      if (typeof t7 !== 'number') return this.solve$3$bailout(16, step, gravity, allowSleep, t1, t7, i, 0, 0, 0, 0, 0);
-      var t8 = t1.get$linearDamping();
-      if (typeof t8 !== 'number') return this.solve$3$bailout(17, step, gravity, allowSleep, t1, t7, t8, i, 0, 0, 0, 0);
-      var a = 1.0 - t7 * t8;
-      t2 = a < 1.0;
-      if (0.0 > (t2 ? a : 1.0)) var a1 = 0.0;
+      if (typeof t3 !== 'number') return this.solve$3$bailout(7, step, gravity, allowSleep, b, i, t1, t3, 0, 0, 0, 0);
+      t3 *= t1;
+      t1 = b.get$_force().get$y();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(8, step, gravity, allowSleep, t1, b, i, t3, 0, 0, 0, 0);
+      var t8 = b.get$invMass();
+      if (typeof t8 !== 'number') return this.solve$3$bailout(9, step, gravity, t8, t1, allowSleep, b, i, t3, 0, 0, 0);
+      t8 *= t1;
+      t1 = gravity.get$y();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(10, step, gravity, allowSleep, t8, t1, b, i, t3, 0, 0, 0);
+      t1 += t8;
+      t8 = step.get$dt();
+      if (typeof t8 !== 'number') return this.solve$3$bailout(11, step, gravity, allowSleep, t1, t8, b, i, t3, 0, 0, 0);
+      var velocityDelta = $.Vector$(t3, t1 * t8);
+      b.get$linearVelocity().addLocal$1(velocityDelta);
+      t3 = b.get$angularVelocity();
+      if (typeof t3 !== 'number') return this.solve$3$bailout(12, step, gravity, allowSleep, b, i, t3, 0, 0, 0, 0, 0);
+      var t13 = step.get$dt();
+      if (typeof t13 !== 'number') return this.solve$3$bailout(13, step, gravity, allowSleep, b, i, t3, t13, 0, 0, 0, 0);
+      var t15 = b.get$invInertia();
+      if (typeof t15 !== 'number') return this.solve$3$bailout(14, step, gravity, allowSleep, b, i, t3, t13, t15, 0, 0, 0);
+      t15 *= t13;
+      t13 = b.get$_torque();
+      if (typeof t13 !== 'number') return this.solve$3$bailout(15, step, t15, t13, allowSleep, gravity, b, i, t3, 0, 0, 0);
+      b.set$angularVelocity(t3 + t15 * t13);
+      var t18 = step.get$dt();
+      if (typeof t18 !== 'number') return this.solve$3$bailout(16, step, gravity, allowSleep, b, t18, i, 0, 0, 0, 0, 0);
+      var t20 = b.get$linearDamping();
+      if (typeof t20 !== 'number') return this.solve$3$bailout(17, step, gravity, allowSleep, b, t18, t20, i, 0, 0, 0, 0);
+      var a = 1.0 - t18 * t20;
+      t1 = a < 1.0;
+      if (0.0 > (t1 ? a : 1.0)) var a1 = 0.0;
       else {
-        a1 = t2 ? a : 1.0;
+        a1 = t1 ? a : 1.0;
       }
-      t1.get$linearVelocity().mulLocal$1(a1);
-      t2 = step.get$dt();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(18, step, gravity, allowSleep, t1, t2, i, 0, 0, 0, 0, 0);
-      t3 = t1.get$angularDamping();
-      if (typeof t3 !== 'number') return this.solve$3$bailout(19, step, gravity, allowSleep, t1, t2, i, t3, 0, 0, 0, 0);
-      var a2 = 1.0 - t2 * t3;
+      b.get$linearVelocity().mulLocal$1(a1);
+      t1 = step.get$dt();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(18, step, gravity, allowSleep, b, t1, i, 0, 0, 0, 0, 0);
+      t3 = b.get$angularDamping();
+      if (typeof t3 !== 'number') return this.solve$3$bailout(19, step, gravity, allowSleep, b, t1, i, t3, 0, 0, 0, 0);
+      var a2 = 1.0 - t1 * t3;
       var b1 = a2 < 1.0 ? a2 : 1.0;
-      t2 = t1.get$angularVelocity();
-      if (typeof t2 !== 'number') return this.solve$3$bailout(20, step, gravity, allowSleep, b1, t2, t1, i, 0, 0, 0, 0);
-      t1.set$angularVelocity(t2 * (0.0 > b1 ? 0.0 : b1));
+      t1 = b.get$angularVelocity();
+      if (typeof t1 !== 'number') return this.solve$3$bailout(20, step, gravity, allowSleep, b1, t1, b, i, 0, 0, 0, 0);
+      b.set$angularVelocity(t1 * (0.0 > b1 ? 0.0 : b1));
     }
     ++i;
   }
@@ -8515,14 +7702,14 @@ $$.Island = {"":
     if (!(i2 < t1)) break;
     t1 = this.contacts;
     if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(22, step, t1, allowSleep, i1, i2, 0, 0, 0, 0, 0, 0);
-    t2 = t1.length;
-    if (i2 < 0 || i2 >= t2) throw $.ioore(i2);
+    t3 = t1.length;
+    if (i2 < 0 || i2 >= t3) throw $.ioore(i2);
     var fixtureA = t1[i2].get$fixtureA();
-    t3 = this.contacts;
-    if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || (t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(23, step, allowSleep, i1, fixtureA, i2, t3, 0, 0, 0, 0, 0);
-    t4 = t3.length;
-    if (i2 < 0 || i2 >= t4) throw $.ioore(i2);
-    var fixtureB = t3[i2].get$fixtureB();
+    var t4 = this.contacts;
+    if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(23, step, allowSleep, i1, fixtureA, i2, t4, 0, 0, 0, 0, 0);
+    var t6 = t4.length;
+    if (i2 < 0 || i2 >= t6) throw $.ioore(i2);
+    var fixtureB = t4[i2].get$fixtureB();
     var bodyA = fixtureA.get$body();
     var bodyB = fixtureB.get$body();
     t1 = bodyA.get$type();
@@ -8536,24 +7723,24 @@ $$.Island = {"":
       ++i1;
       t1 = this.contacts;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(26, step, allowSleep, i1, t1, i2, 0, 0, 0, 0, 0, 0);
-      t2 = t1.length;
-      if (i1 < 0 || i1 >= t2) throw $.ioore(i1);
-      t3 = t1[i1];
-      if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.solve$3$bailout(27, step, allowSleep, i1, t3, i2, t1, 0, 0, 0, 0, 0);
-      t4 = t1.length;
-      if (i2 < 0 || i2 >= t4) throw $.ioore(i2);
-      t5 = t1[i2];
-      if (i1 < 0 || i1 >= t4) throw $.ioore(i1);
-      t1[i1] = t5;
-      t5 = this.contacts;
-      if (typeof t5 !== 'object' || t5 === null || ((t5.constructor !== Array || !!t5.immutable$list) && !t5.is$JavaScriptIndexingBehavior())) return this.solve$3$bailout(28, step, allowSleep, i1, t3, i2, t5, 0, 0, 0, 0, 0);
-      t1 = t5.length;
-      if (i2 < 0 || i2 >= t1) throw $.ioore(i2);
-      t5[i2] = t3;
+      t3 = t1.length;
+      if (i1 < 0 || i1 >= t3) throw $.ioore(i1);
+      var temp = t1[i1];
+      if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.solve$3$bailout(27, step, allowSleep, i1, temp, i2, t1, 0, 0, 0, 0, 0);
+      var t5 = t1.length;
+      if (i2 < 0 || i2 >= t5) throw $.ioore(i2);
+      t6 = t1[i2];
+      if (i1 < 0 || i1 >= t5) throw $.ioore(i1);
+      t1[i1] = t6;
+      t6 = this.contacts;
+      if (typeof t6 !== 'object' || t6 === null || ((t6.constructor !== Array || !!t6.immutable$list) && !t6.is$JavaScriptIndexingBehavior())) return this.solve$3$bailout(28, step, allowSleep, i1, temp, i2, t6, 0, 0, 0, 0, 0);
+      var t7 = t6.length;
+      if (i2 < 0 || i2 >= t7) throw $.ioore(i2);
+      t6[i2] = temp;
     }
     ++i2;
   }
-  t2 = this._contactSolver;
+  var t2 = this._contactSolver;
   t2.init$3(this.contacts, t1, step.get$dtRatio());
   t2.warmStart$0();
   i = 0;
@@ -8563,8 +7750,8 @@ $$.Island = {"":
     if (!(i < t1)) break;
     t1 = this.joints;
     if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(30, step, i, allowSleep, t1, t2, 0, 0, 0, 0, 0, 0);
-    t3 = t1.length;
-    if (i < 0 || i >= t3) throw $.ioore(i);
+    t4 = t1.length;
+    if (i < 0 || i >= t4) throw $.ioore(i);
     t1[i].initVelocityConstraints$1(step);
     ++i;
   }
@@ -8580,8 +7767,8 @@ $$.Island = {"":
       if (!(j < t1)) break;
       t1 = this.joints;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(33, step, i, allowSleep, j, t1, t2, 0, 0, 0, 0, 0);
-      t3 = t1.length;
-      if (j < 0 || j >= t3) throw $.ioore(j);
+      t4 = t1.length;
+      if (j < 0 || j >= t4) throw $.ioore(j);
       t1[j].solveVelocityConstraints$1(step);
       ++j;
     }
@@ -8589,7 +7776,7 @@ $$.Island = {"":
     ++i;
   }
   t2.storeImpulses$0();
-  var temp = $.Vector$(0, 0);
+  temp = $.Vector$(0, 0);
   t1 = this._translation;
   i = 0;
   while (true) {
@@ -8599,50 +7786,50 @@ $$.Island = {"":
     c$0:{
       t3 = this.bodies;
       if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || (t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(35, step, allowSleep, i, t1, t3, temp, t2, 0, 0, 0, 0);
-      t4 = t3.length;
-      if (i < 0 || i >= t4) throw $.ioore(i);
-      t3 = t3[i];
-      t4 = t3.get$type();
-      if (typeof t4 !== 'number') return this.solve$3$bailout(36, step, allowSleep, t3, t4, i, t1, temp, t2, 0, 0, 0);
-      if (t4 === 0) break c$0;
-      t1.setFrom$1(t3.get$linearVelocity());
+      t5 = t3.length;
+      if (i < 0 || i >= t5) throw $.ioore(i);
+      b = t3[i];
+      t3 = b.get$type();
+      if (typeof t3 !== 'number') return this.solve$3$bailout(36, step, allowSleep, b, t3, i, t1, temp, t2, 0, 0, 0);
+      if (t3 === 0) break c$0;
+      t1.setFrom$1(b.get$linearVelocity());
       t1.mulLocal$1(step.get$dt());
-      t4 = $.Vector_dot(t1, t1);
-      if (typeof t4 !== 'number') return this.solve$3$bailout(37, step, allowSleep, t3, t4, i, t1, temp, t2, 0, 0, 0);
-      if (t4 > 4.0) {
-        t4 = $.get$length(t1);
-        if (typeof t4 !== 'number') throw $.iae(t4);
-        var ratio = 2.0 / t4;
-        t3.get$linearVelocity().mulLocal$1(ratio);
+      t3 = $.Vector_dot(t1, t1);
+      if (typeof t3 !== 'number') return this.solve$3$bailout(37, step, allowSleep, b, t3, i, t1, temp, t2, 0, 0, 0);
+      if (t3 > 4.0) {
+        t3 = $.get$length(t1);
+        if (typeof t3 !== 'number') throw $.iae(t3);
+        var ratio = 2.0 / t3;
+        b.get$linearVelocity().mulLocal$1(ratio);
       }
-      t4 = step.get$dt();
-      if (typeof t4 !== 'number') return this.solve$3$bailout(38, step, allowSleep, t3, t4, i, t1, temp, t2, 0, 0, 0);
-      t5 = t3.get$angularVelocity();
-      if (typeof t5 !== 'number') return this.solve$3$bailout(39, step, allowSleep, t3, t4, t5, i, t1, temp, t2, 0, 0);
-      var rotation = t4 * t5;
+      t3 = step.get$dt();
+      if (typeof t3 !== 'number') return this.solve$3$bailout(38, step, allowSleep, b, t3, i, t1, temp, t2, 0, 0, 0);
+      t5 = b.get$angularVelocity();
+      if (typeof t5 !== 'number') return this.solve$3$bailout(39, step, allowSleep, b, t3, t5, i, t1, temp, t2, 0, 0);
+      var rotation = t3 * t5;
       if (rotation * rotation > 2.4674011002723395) {
-        t4 = $.abs(rotation);
-        if (typeof t4 !== 'number') throw $.iae(t4);
-        ratio = 1.5707963267948966 / t4;
-        t4 = t3.get$angularVelocity();
-        if (typeof t4 !== 'number') return this.solve$3$bailout(40, step, allowSleep, t3, ratio, t4, i, t1, temp, t2, 0, 0);
-        t3.set$angularVelocity(t4 * ratio);
+        t3 = $.abs(rotation);
+        if (typeof t3 !== 'number') throw $.iae(t3);
+        ratio = 1.5707963267948966 / t3;
+        t3 = b.get$angularVelocity();
+        if (typeof t3 !== 'number') return this.solve$3$bailout(40, step, allowSleep, b, ratio, t3, i, t1, temp, t2, 0, 0);
+        b.set$angularVelocity(t3 * ratio);
       }
-      t3.get$sweep().get$centerZero().setFrom$1(t3.get$sweep().get$center());
-      t4 = t3.get$sweep().get$angle();
-      t3.get$sweep().set$angleZero(t4);
-      temp.setFrom$1(t3.get$linearVelocity());
+      b.get$sweep().get$centerZero().setFrom$1(b.get$sweep().get$center());
+      t3 = b.get$sweep().get$angle();
+      b.get$sweep().set$angleZero(t3);
+      temp.setFrom$1(b.get$linearVelocity());
       temp.mulLocal$1(step.get$dt());
-      t3.get$sweep().get$center().addLocal$1(temp);
-      t4 = t3.get$sweep();
-      t5 = t4.get$angle();
-      if (typeof t5 !== 'number') return this.solve$3$bailout(41, t5, step, allowSleep, t3, t2, i, t1, temp, t4, 0, 0);
+      b.get$sweep().get$center().addLocal$1(temp);
+      t3 = b.get$sweep();
+      t4 = t3.get$angle();
+      if (typeof t4 !== 'number') return this.solve$3$bailout(41, t4, step, allowSleep, b, t2, i, t1, temp, t3, 0, 0);
       t6 = step.get$dt();
-      if (typeof t6 !== 'number') return this.solve$3$bailout(42, t5, t6, allowSleep, step, t3, t2, i, t1, temp, t4, 0);
-      t7 = t3.get$angularVelocity();
-      if (typeof t7 !== 'number') return this.solve$3$bailout(43, t5, t6, t7, step, t3, allowSleep, t2, i, t1, temp, t4);
-      t4.set$angle(t5 + t6 * t7);
-      t3.synchronizeTransform$0();
+      if (typeof t6 !== 'number') return this.solve$3$bailout(42, t4, t6, allowSleep, step, b, t2, i, t1, temp, t3, 0);
+      t8 = b.get$angularVelocity();
+      if (typeof t8 !== 'number') return this.solve$3$bailout(43, t4, t6, t8, step, b, allowSleep, t2, i, t1, temp, t3);
+      t3.set$angle(t4 + t6 * t8);
+      b.synchronizeTransform$0();
     }
     ++i;
   }
@@ -8660,8 +7847,8 @@ $$.Island = {"":
       if (!(j < t1)) break;
       t1 = this.joints;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(46, step, contactsOkay, t1, allowSleep, j, t2, i, jointsOkay, 0, 0, 0);
-      t3 = t1.length;
-      if (j < 0 || j >= t3) throw $.ioore(j);
+      t4 = t1.length;
+      if (j < 0 || j >= t4) throw $.ioore(j);
       var jointOkay = t1[j].solvePositionConstraints$1(0.2);
       jointsOkay = jointsOkay && jointOkay === true;
       ++j;
@@ -8680,46 +7867,42 @@ $$.Island = {"":
       c$0:{
         t1 = this.bodies;
         if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(48, i, step, t1, minSleepTime, 0, 0, 0, 0, 0, 0, 0);
-        t2 = t1.length;
-        if (i < 0 || i >= t2) throw $.ioore(i);
-        t1 = t1[i];
-        t2 = t1.get$type();
-        if (typeof t2 !== 'number') return this.solve$3$bailout(49, i, step, t1, minSleepTime, t2, 0, 0, 0, 0, 0, 0);
-        if (t2 === 0) break c$0;
-        t2 = t1.get$flags();
-        if (t2 !== (t2 | 0)) return this.solve$3$bailout(50, i, step, t2, t1, minSleepTime, 0, 0, 0, 0, 0, 0);
-        t2 = t2 & 4;
-        if (t2 === 0) {
-          t1.set$sleepTime(0.0);
+        t3 = t1.length;
+        if (i < 0 || i >= t3) throw $.ioore(i);
+        b = t1[i];
+        t1 = b.get$type();
+        if (typeof t1 !== 'number') return this.solve$3$bailout(49, i, step, b, minSleepTime, t1, 0, 0, 0, 0, 0, 0);
+        if (t1 === 0) break c$0;
+        t1 = b.get$flags();
+        if (t1 !== (t1 | 0)) return this.solve$3$bailout(50, i, step, t1, b, minSleepTime, 0, 0, 0, 0, 0, 0);
+        if ((t1 & 4) === 0) {
+          b.set$sleepTime(0.0);
           minSleepTime = 0.0;
         }
-        t2 = t1.get$flags();
-        if (t2 !== (t2 | 0)) return this.solve$3$bailout(51, i, step, minSleepTime, t2, t1, 0, 0, 0, 0, 0, 0);
-        t2 = t2 & 4;
-        if (!(t2 === 0)) {
-          t2 = t1.get$angularVelocity();
-          if (typeof t2 !== 'number') return this.solve$3$bailout(52, i, step, minSleepTime, t1, t2, 0, 0, 0, 0, 0, 0);
-          t3 = t1.get$angularVelocity();
-          if (typeof t3 !== 'number') return this.solve$3$bailout(53, i, step, minSleepTime, t3, t1, t2, 0, 0, 0, 0, 0);
-          t4 = t2 * t3 > 0.0012184696791468343;
-          t2 = t4;
-        } else t2 = true;
-        if (!t2) {
-          t2 = $.Vector_dot(t1.get$linearVelocity(), t1.get$linearVelocity());
-          if (typeof t2 !== 'number') return this.solve$3$bailout(54, i, step, minSleepTime, t2, t1, 0, 0, 0, 0, 0, 0);
-          t2 = t2 > 0.0001;
-        } else t2 = true;
-        if (t2) {
-          t1.set$sleepTime(0.0);
+        t1 = b.get$flags();
+        if (t1 !== (t1 | 0)) return this.solve$3$bailout(51, i, step, minSleepTime, t1, b, 0, 0, 0, 0, 0, 0);
+        if (!((t1 & 4) === 0)) {
+          t1 = b.get$angularVelocity();
+          if (typeof t1 !== 'number') return this.solve$3$bailout(52, i, step, minSleepTime, b, t1, 0, 0, 0, 0, 0, 0);
+          t3 = b.get$angularVelocity();
+          if (typeof t3 !== 'number') return this.solve$3$bailout(53, i, step, minSleepTime, t3, b, t1, 0, 0, 0, 0, 0);
+          if (!(t1 * t3 > 0.0012184696791468343)) {
+            t1 = $.Vector_dot(b.get$linearVelocity(), b.get$linearVelocity());
+            if (typeof t1 !== 'number') return this.solve$3$bailout(54, i, step, minSleepTime, t1, b, 0, 0, 0, 0, 0, 0);
+            t1 = t1 > 0.0001;
+          } else t1 = true;
+        } else t1 = true;
+        if (t1) {
+          b.set$sleepTime(0.0);
           minSleepTime = 0.0;
         } else {
-          t2 = t1.get$sleepTime();
-          if (typeof t2 !== 'number') return this.solve$3$bailout(55, i, step, minSleepTime, t2, t1, 0, 0, 0, 0, 0, 0);
+          t1 = b.get$sleepTime();
+          if (typeof t1 !== 'number') return this.solve$3$bailout(55, i, step, minSleepTime, t1, b, 0, 0, 0, 0, 0, 0);
           t3 = step.get$dt();
-          if (typeof t3 !== 'number') return this.solve$3$bailout(56, i, step, minSleepTime, t2, t3, t1, 0, 0, 0, 0, 0);
-          t1.set$sleepTime(t2 + t3);
-          minSleepTime = $.Math_min(minSleepTime, t1.get$sleepTime());
-          if (typeof minSleepTime !== 'number') return this.solve$3$bailout(57, i, minSleepTime, step, 0, 0, 0, 0, 0, 0, 0, 0);
+          if (typeof t3 !== 'number') return this.solve$3$bailout(56, i, step, minSleepTime, t1, t3, b, 0, 0, 0, 0, 0);
+          b.set$sleepTime(t1 + t3);
+          minSleepTime = $.Math_min(minSleepTime, b.get$sleepTime());
+          if (typeof minSleepTime !== 'number') return this.solve$3$bailout(57, i, step, minSleepTime, 0, 0, 0, 0, 0, 0, 0, 0);
         }
       }
       ++i;
@@ -8732,8 +7915,8 @@ $$.Island = {"":
         if (!(i < t1)) break;
         t1 = this.bodies;
         if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.solve$3$bailout(59, i, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        t2 = t1.length;
-        if (i < 0 || i >= t2) throw $.ioore(i);
+        t3 = t1.length;
+        if (i < 0 || i >= t3) throw $.ioore(i);
         t1[i].set$awake(false);
         ++i;
       }
@@ -8777,7 +7960,7 @@ $$.Island = {"":
       gravity = env1;
       allowSleep = env2;
       t1 = env3;
-      t2 = env4;
+      t3 = env4;
       b = env5;
       i = env6;
       break;
@@ -8786,7 +7969,7 @@ $$.Island = {"":
       gravity = env1;
       allowSleep = env2;
       b = env3;
-      t2 = env4;
+      t3 = env4;
       t1 = env5;
       i = env6;
       break;
@@ -8797,7 +7980,7 @@ $$.Island = {"":
       b = env3;
       i = env4;
       t1 = env5;
-      t2 = env6;
+      t3 = env6;
       break;
     case 8:
       step = env0;
@@ -8806,37 +7989,37 @@ $$.Island = {"":
       t1 = env3;
       b = env4;
       i = env5;
-      t2 = env6;
+      t3 = env6;
       break;
     case 9:
       step = env0;
       gravity = env1;
-      t3 = env2;
+      t8 = env2;
       t1 = env3;
       allowSleep = env4;
       b = env5;
       i = env6;
-      t2 = env7;
+      t3 = env7;
       break;
     case 10:
       step = env0;
       gravity = env1;
       allowSleep = env2;
-      t3 = env3;
+      t8 = env3;
       t1 = env4;
       b = env5;
       i = env6;
-      t2 = env7;
+      t3 = env7;
       break;
     case 11:
       step = env0;
       gravity = env1;
       allowSleep = env2;
       t1 = env3;
-      t3 = env4;
+      t8 = env4;
       b = env5;
       i = env6;
-      t2 = env7;
+      t3 = env7;
       break;
     case 12:
       step = env0;
@@ -8844,7 +8027,7 @@ $$.Island = {"":
       allowSleep = env2;
       b = env3;
       i = env4;
-      t2 = env5;
+      t3 = env5;
       break;
     case 13:
       step = env0;
@@ -8852,8 +8035,8 @@ $$.Island = {"":
       allowSleep = env2;
       b = env3;
       i = env4;
-      t2 = env5;
-      t4 = env6;
+      t3 = env5;
+      t13 = env6;
       break;
     case 14:
       step = env0;
@@ -8861,26 +8044,26 @@ $$.Island = {"":
       allowSleep = env2;
       b = env3;
       i = env4;
-      t2 = env5;
-      t4 = env6;
-      t5 = env7;
+      t3 = env5;
+      t13 = env6;
+      t15 = env7;
       break;
     case 15:
       step = env0;
-      t5 = env1;
-      t4 = env2;
+      t15 = env1;
+      t13 = env2;
       allowSleep = env3;
       gravity = env4;
       b = env5;
       i = env6;
-      t2 = env7;
+      t3 = env7;
       break;
     case 16:
       step = env0;
       gravity = env1;
       allowSleep = env2;
       b = env3;
-      t6 = env4;
+      t18 = env4;
       i = env5;
       break;
     case 17:
@@ -8888,8 +8071,8 @@ $$.Island = {"":
       gravity = env1;
       allowSleep = env2;
       b = env3;
-      t6 = env4;
-      t7 = env5;
+      t18 = env4;
+      t20 = env5;
       i = env6;
       break;
     case 18:
@@ -8907,7 +8090,7 @@ $$.Island = {"":
       b = env3;
       t1 = env4;
       i = env5;
-      t2 = env6;
+      t3 = env6;
       break;
     case 20:
       step = env0;
@@ -8938,7 +8121,7 @@ $$.Island = {"":
       i1 = env2;
       fixtureA = env3;
       i2 = env4;
-      t2 = env5;
+      t3 = env5;
       break;
     case 24:
       step = env0;
@@ -9068,7 +8251,7 @@ $$.Island = {"":
       allowSleep = env1;
       b = env2;
       t3 = env3;
-      t4 = env4;
+      t5 = env4;
       i = env5;
       t2 = env6;
       temp = env7;
@@ -9098,7 +8281,7 @@ $$.Island = {"":
       break;
     case 42:
       t4 = env0;
-      t5 = env1;
+      t6 = env1;
       allowSleep = env2;
       step = env3;
       b = env4;
@@ -9110,8 +8293,8 @@ $$.Island = {"":
       break;
     case 43:
       t4 = env0;
-      t5 = env1;
-      t6 = env2;
+      t6 = env1;
+      t8 = env2;
       step = env3;
       b = env4;
       allowSleep = env5;
@@ -9192,7 +8375,7 @@ $$.Island = {"":
       i = env0;
       step = env1;
       minSleepTime = env2;
-      t2 = env3;
+      t3 = env3;
       b = env4;
       t1 = env5;
       break;
@@ -9215,13 +8398,13 @@ $$.Island = {"":
       step = env1;
       minSleepTime = env2;
       t1 = env3;
-      t2 = env4;
+      t3 = env4;
       b = env5;
       break;
     case 57:
       i = env0;
-      minSleepTime = env1;
-      step = env2;
+      step = env1;
+      minSleepTime = env2;
       break;
     case 58:
       i = env0;
@@ -9235,26 +8418,7 @@ $$.Island = {"":
   switch (state) {
     case 0:
       var i = 0;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-    case 20:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -9262,25 +8426,7 @@ $$.Island = {"":
           case 1:
             state = 0;
             if (!$.ltB(i, t1)) break L0;
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-          case 8:
-          case 9:
-          case 10:
-          case 11:
-          case 12:
-          case 13:
-          case 14:
-          case 15:
-          case 16:
-          case 17:
-          case 18:
-          case 19:
-          case 20:
+          default:
             c$0:{
               switch (state) {
                 case 0:
@@ -9295,57 +8441,57 @@ $$.Island = {"":
                   t1 = b.get$_force().get$x();
                 case 4:
                   state = 0;
-                  var t2 = b.get$invMass();
+                  var t3 = b.get$invMass();
                 case 5:
                   state = 0;
-                  t2 = $.mul(t1, t2);
+                  t3 = $.mul(t1, t3);
                   t1 = gravity.get$x();
                 case 6:
                   state = 0;
-                  t1 = $.add(t2, t1);
-                  t2 = step.get$dt();
+                  t1 = $.add(t3, t1);
+                  t3 = step.get$dt();
                 case 7:
                   state = 0;
-                  t2 = $.mul(t1, t2);
+                  t3 = $.mul(t1, t3);
                   t1 = b.get$_force().get$y();
                 case 8:
                   state = 0;
-                  var t3 = b.get$invMass();
+                  var t8 = b.get$invMass();
                 case 9:
                   state = 0;
-                  t3 = $.mul(t1, t3);
+                  t8 = $.mul(t1, t8);
                   t1 = gravity.get$y();
                 case 10:
                   state = 0;
-                  t1 = $.add(t3, t1);
-                  t3 = step.get$dt();
+                  t1 = $.add(t8, t1);
+                  t8 = step.get$dt();
                 case 11:
                   state = 0;
-                  var velocityDelta = $.Vector$(t2, $.mul(t1, t3));
+                  var velocityDelta = $.Vector$(t3, $.mul(t1, t8));
                   b.get$linearVelocity().addLocal$1(velocityDelta);
-                  t2 = b.get$angularVelocity();
+                  t3 = b.get$angularVelocity();
                 case 12:
                   state = 0;
-                  var t4 = step.get$dt();
+                  var t13 = step.get$dt();
                 case 13:
                   state = 0;
-                  var t5 = b.get$invInertia();
+                  var t15 = b.get$invInertia();
                 case 14:
                   state = 0;
-                  t5 = $.mul(t4, t5);
-                  t4 = b.get$_torque();
+                  t15 = $.mul(t13, t15);
+                  t13 = b.get$_torque();
                 case 15:
                   state = 0;
-                  b.set$angularVelocity($.add(t2, $.mul(t5, t4)));
-                  var t6 = step.get$dt();
+                  b.set$angularVelocity($.add(t3, $.mul(t15, t13)));
+                  var t18 = step.get$dt();
                 case 16:
                   state = 0;
-                  var t7 = b.get$linearDamping();
+                  var t20 = b.get$linearDamping();
                 case 17:
                   state = 0;
-                  t7 = $.mul(t6, t7);
-                  if (typeof t7 !== 'number') throw $.iae(t7);
-                  var a = 1.0 - t7;
+                  t20 = $.mul(t18, t20);
+                  if (typeof t20 !== 'number') throw $.iae(t20);
+                  var a = 1.0 - t20;
                   t1 = a < 1.0;
                   if (0.0 > (t1 ? a : 1.0)) var a1 = 0.0;
                   else {
@@ -9355,12 +8501,12 @@ $$.Island = {"":
                   t1 = step.get$dt();
                 case 18:
                   state = 0;
-                  t2 = b.get$angularDamping();
+                  t3 = b.get$angularDamping();
                 case 19:
                   state = 0;
-                  t2 = $.mul(t1, t2);
-                  if (typeof t2 !== 'number') throw $.iae(t2);
-                  var a2 = 1.0 - t2;
+                  t3 = $.mul(t1, t3);
+                  if (typeof t3 !== 'number') throw $.iae(t3);
+                  var a2 = 1.0 - t3;
                   var b1 = a2 < 1.0 ? a2 : 1.0;
                   t1 = b.get$angularVelocity();
                 case 20:
@@ -9392,10 +8538,10 @@ $$.Island = {"":
           case 22:
             state = 0;
             var fixtureA = $.index(t1, i2).get$fixtureA();
-            t2 = this.contacts;
+            t3 = this.contacts;
           case 23:
             state = 0;
-            var fixtureB = $.index(t2, i2).get$fixtureB();
+            var fixtureB = $.index(t3, i2).get$fixtureB();
             var bodyA = fixtureA.get$body();
             var bodyB = fixtureB.get$body();
             t1 = bodyA.get$type();
@@ -9413,9 +8559,7 @@ $$.Island = {"":
             } else {
               nonStatic = false;
             }
-          case 26:
-          case 27:
-          case 28:
+          default:
             if (state == 26 || state == 27 || state == 28 || (state == 0 && nonStatic)) {
               switch (state) {
                 case 0:
@@ -9446,7 +8590,7 @@ $$.Island = {"":
       L2: while (true) {
         switch (state) {
           case 0:
-            t2 = this.jointCount;
+            var t2 = this.jointCount;
           case 29:
             state = 0;
             if (!$.ltB(i, t2)) break L2;
@@ -9469,8 +8613,7 @@ $$.Island = {"":
             state = 0;
             if (!$.ltB(i, t2)) break L3;
             var j = 0;
-          case 32:
-          case 33:
+          default:
             L4: while (true) {
               switch (state) {
                 case 0:
@@ -9510,15 +8653,7 @@ $$.Island = {"":
           case 34:
             state = 0;
             if (!$.ltB(i, t3)) break L5;
-          case 35:
-          case 36:
-          case 37:
-          case 38:
-          case 39:
-          case 40:
-          case 41:
-          case 42:
-          case 43:
+          default:
             c$0:{
               switch (state) {
                 case 0:
@@ -9544,10 +8679,10 @@ $$.Island = {"":
                   t3 = step.get$dt();
                 case 38:
                   state = 0;
-                  t4 = b.get$angularVelocity();
+                  var t5 = b.get$angularVelocity();
                 case 39:
                   state = 0;
-                  var rotation = $.mul(t3, t4);
+                  var rotation = $.mul(t3, t5);
                 case 40:
                   if (state == 40 || (state == 0 && $.gtB($.mul(rotation, rotation), 2.4674011002723395))) {
                     switch (state) {
@@ -9568,16 +8703,16 @@ $$.Island = {"":
                   temp.mulLocal$1(step.get$dt());
                   b.get$sweep().get$center().addLocal$1(temp);
                   t3 = b.get$sweep();
-                  t4 = t3.get$angle();
+                  var t4 = t3.get$angle();
                 case 41:
                   state = 0;
-                  t5 = step.get$dt();
+                  var t6 = step.get$dt();
                 case 42:
                   state = 0;
-                  t6 = b.get$angularVelocity();
+                  t8 = b.get$angularVelocity();
                 case 43:
                   state = 0;
-                  t3.set$angle($.add(t4, $.mul(t5, t6)));
+                  t3.set$angle($.add(t4, $.mul(t6, t8)));
                   b.synchronizeTransform$0();
               }
             }
@@ -9598,8 +8733,7 @@ $$.Island = {"":
             var contactsOkay = t1.solvePositionConstraints$1(0.2);
             j = 0;
             var jointsOkay = true;
-          case 45:
-          case 46:
+          default:
             L7: while (true) {
               switch (state) {
                 case 0:
@@ -9638,17 +8772,7 @@ $$.Island = {"":
           case 0:
             var minSleepTime = 99999999999999.0;
             i = 0;
-          case 47:
-          case 48:
-          case 49:
-          case 50:
-          case 51:
-          case 52:
-          case 53:
-          case 54:
-          case 55:
-          case 56:
-          case 57:
+          default:
             L8: while (true) {
               switch (state) {
                 case 0:
@@ -9656,16 +8780,7 @@ $$.Island = {"":
                 case 47:
                   state = 0;
                   if (!$.ltB(i, t1)) break L8;
-                case 48:
-                case 49:
-                case 50:
-                case 51:
-                case 52:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 57:
+                default:
                   c$0:{
                     switch (state) {
                       case 0:
@@ -9687,31 +8802,28 @@ $$.Island = {"":
                         t1 = b.get$flags();
                       case 51:
                         state = 0;
-                      case 52:
-                      case 53:
-                        if (state == 52 || state == 53 || (state == 0 && !$.eqB($.and(t1, 4), 0))) {
+                      default:
+                        if (state == 52 || state == 53 || state == 54 || (state == 0 && !$.eqB($.and(t1, 4), 0))) {
                           switch (state) {
                             case 0:
                               t1 = b.get$angularVelocity();
                             case 52:
                               state = 0;
-                              t2 = b.get$angularVelocity();
+                              t3 = b.get$angularVelocity();
                             case 53:
                               state = 0;
-                              t3 = $.gtB($.mul(t1, t2), 0.0012184696791468343);
-                              t1 = t3;
-                          }
-                        } else {
-                          t1 = true;
-                        }
-                      case 54:
-                        if (state == 54 || (state == 0 && !t1)) {
-                          switch (state) {
-                            case 0:
-                              t1 = $.Vector_dot(b.get$linearVelocity(), b.get$linearVelocity());
                             case 54:
-                              state = 0;
-                              t1 = $.gtB(t1, 0.0001);
+                              if (state == 54 || (state == 0 && !$.gtB($.mul(t1, t3), 0.0012184696791468343))) {
+                                switch (state) {
+                                  case 0:
+                                    t1 = $.Vector_dot(b.get$linearVelocity(), b.get$linearVelocity());
+                                  case 54:
+                                    state = 0;
+                                    t1 = $.gtB(t1, 0.0001);
+                                }
+                              } else {
+                                t1 = true;
+                              }
                           }
                         } else {
                           t1 = true;
@@ -9728,10 +8840,10 @@ $$.Island = {"":
                               t1 = b.get$sleepTime();
                             case 55:
                               state = 0;
-                              t2 = step.get$dt();
+                              t3 = step.get$dt();
                             case 56:
                               state = 0;
-                              b.set$sleepTime($.add(t1, t2));
+                              b.set$sleepTime($.add(t1, t3));
                               minSleepTime = $.Math_min(minSleepTime, b.get$sleepTime());
                             case 57:
                               state = 0;
@@ -9748,8 +8860,7 @@ $$.Island = {"":
               switch (state) {
                 case 0:
                   i = 0;
-                case 58:
-                case 59:
+                default:
                   L9: while (true) {
                     switch (state) {
                       case 0:
@@ -9986,11 +9097,10 @@ $$.World = {"":
       var radius = circle.get$radius();
       t1 = this.axis;
       t1.setFrom$1(xf.get$rotation().get$col1());
-      var t3 = $.and(this._debugDraw.get$drawFlags(), 64);
-      var t4 = !(0 === t3);
-      var t5 = this._debugDraw;
-      if (t4) t5.drawCircle$4(t2, radius, color, t1);
-      else t5.drawSolidCircle$4(t2, radius, color, t1);
+      var t3 = !(0 === $.and(this._debugDraw.get$drawFlags(), 64));
+      var t4 = this._debugDraw;
+      if (t3) t4.drawCircle$4(t2, radius, color, t1);
+      else t4.drawSolidCircle$4(t2, radius, color, t1);
       break;
     case 1:
       var poly = fixture.get$shape();
@@ -10009,8 +9119,7 @@ $$.World = {"":
         if (i < 0 || i >= t2) throw $.ioore(i);
         $.Transform_mulToOut(xf, t1, vertices[i]);
       }
-      t1 = $.and(this._debugDraw.get$drawFlags(), 64);
-      if (!(0 === t1)) this._debugDraw.drawPolygon$3(vertices, vertexCount, color);
+      if (!(0 === $.and(this._debugDraw.get$drawFlags(), 64))) this._debugDraw.drawPolygon$3(vertices, vertexCount, color);
       else {
         t1 = $.gtB(vertexCount, 2);
         t2 = this._debugDraw;
@@ -10023,13 +9132,13 @@ $$.World = {"":
  solveTimeOfImpactGivenBody$1: function(body) {
   var bullet = body.get$bullet();
   if (typeof bullet !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(1, body, bullet, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  var t1 = this.toiInput;
-  var t2 = this._pool;
-  var t3 = this.toiOutput;
-  var t4 = t1.proxyA;
-  var t5 = t1.proxyB;
-  var t6 = t1.sweepA;
-  var t7 = t1.sweepB;
+  var t2 = this.toiInput;
+  var t3 = this._pool;
+  var t4 = this.toiOutput;
+  var t5 = t2.proxyA;
+  var t6 = t2.proxyB;
+  var t7 = t2.sweepA;
+  var t8 = t2.sweepB;
   var iter = 0;
   var toiContact = null;
   var toi = 1.0;
@@ -10041,51 +9150,49 @@ $$.World = {"":
       if ($.eqB(ce.get$contact(), toiContact)) continue;
       var other = ce.get$other();
       var type = other.get$type();
-      if (typeof type !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(2, toiOther, body, bullet, iter, t1, t2, t3, other, type, toiContact, toi, ce, count, found, 0);
+      if (typeof type !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(2, found, body, bullet, iter, t2, t3, t4, other, type, toiContact, toi, toiOther, ce, count, 0);
       if (bullet) {
-        var t8 = other.get$flags();
-        if (t8 !== (t8 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(3, toiOther, body, bullet, iter, t1, t2, t3, other, type, toiContact, toi, ce, t8, count, found);
-        t8 = t8 & 64;
-        if (t8 === 0) continue;
+        var t1 = other.get$flags();
+        if (t1 !== (t1 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(3, found, body, count, bullet, iter, t2, t3, t4, other, type, t1, toiContact, toi, ce, toiOther);
+        if ((t1 & 64) === 0) continue;
         if (!(type === 0)) {
-          t8 = ce.get$contact().get$flags();
-          if (t8 !== (t8 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(4, toiOther, body, bullet, iter, t1, t8, t2, t3, other, toiContact, toi, ce, count, found, 0);
-          t8 = t8 & 16;
-          var t9 = !(t8 === 0);
-          t8 = t9;
-        } else t8 = false;
-        if (t8) continue;
+          t1 = ce.get$contact().get$flags();
+          if (t1 !== (t1 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(4, found, body, bullet, iter, t2, t3, t4, t1, other, toiContact, toi, toiOther, ce, count, 0);
+          var t10 = !((t1 & 16) === 0);
+          t1 = t10;
+        } else t1 = false;
+        if (t1) continue;
       } else {
         if (type === 2) continue;
       }
       var contact = ce.get$contact();
-      t8 = contact.get$enabled();
-      if (typeof t8 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(5, toiOther, body, bullet, contact, t1, t8, iter, t2, t3, other, toiContact, toi, ce, count, found);
-      if (!t8) continue;
-      t8 = contact.get$toiCount();
-      if (typeof t8 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(6, toiOther, body, bullet, contact, t1, iter, t2, t3, other, t8, toiContact, toi, ce, count, found);
-      if (t8 > 10) continue;
+      t1 = contact.get$enabled();
+      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(5, found, body, bullet, contact, t2, t1, iter, t3, t4, other, toiContact, toi, toiOther, ce, count);
+      if (!t1) continue;
+      t1 = contact.get$toiCount();
+      if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(6, found, body, bullet, contact, t2, iter, t3, t4, other, t1, toiContact, toi, toiOther, ce, count);
+      if (t1 > 10) continue;
       var fixtureA = contact.get$fixtureA();
       var fixtureB = contact.get$fixtureB();
       if (fixtureA.get$isSensor() === true || fixtureB.get$isSensor() === true) continue;
       var bodyA = fixtureA.get$body();
       var bodyB = fixtureB.get$body();
-      t4.setFromShape$1(fixtureA.get$shape());
-      t5.setFromShape$1(fixtureB.get$shape());
-      t6.setFrom$1(bodyA.get$sweep());
-      t7.setFrom$1(bodyB.get$sweep());
-      t1.tMax = toi;
-      t2.get$timeOfImpact().timeOfImpact$2(t3, t1);
-      t8 = t3.state;
-      if (typeof t8 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(7, toiOther, body, bullet, contact, t8, t1, iter, t2, t3, other, toiContact, toi, ce, count, found);
-      if (t8 === 3) {
-        t8 = t3.t;
-        if (typeof t8 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(8, toiOther, body, bullet, contact, iter, t1, t2, t3, t8, other, toiContact, toi, ce, count, found);
-        t8 = t8 < toi;
-      } else t8 = false;
-      if (t8) {
-        toi = t3.t;
-        if (typeof toi !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(9, body, t2, other, t3, bullet, contact, iter, toi, ce, count, t1, 0, 0, 0, 0);
+      t5.setFromShape$1(fixtureA.get$shape());
+      t6.setFromShape$1(fixtureB.get$shape());
+      t7.setFrom$1(bodyA.get$sweep());
+      t8.setFrom$1(bodyB.get$sweep());
+      t2.tMax = toi;
+      t3.get$timeOfImpact().timeOfImpact$2(t4, t2);
+      t1 = t4.state;
+      if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(7, found, body, bullet, contact, t1, t2, iter, t3, t4, other, toiContact, toi, toiOther, ce, count);
+      if (t1 === 3) {
+        t1 = t4.t;
+        if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(8, found, body, bullet, contact, iter, t2, t3, t4, t1, other, toiContact, toi, toiOther, ce, count);
+        t1 = t1 < toi;
+      } else t1 = false;
+      if (t1) {
+        toi = t4.t;
+        if (typeof toi !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(9, body, other, t4, bullet, contact, iter, toi, t2, ce, t3, count, 0, 0, 0, 0);
         toiContact = contact;
         toiOther = other;
         found = true;
@@ -10093,7 +9200,7 @@ $$.World = {"":
       ++count;
     }
     ++iter;
-  } while ((found === true && $.gtB(count, 1) && iter < 50));
+  } while ((found === true && ($.gtB(count, 1) && iter < 50)));
   if (toiContact == null) {
     body.advance$1(1.0);
     return;
@@ -10105,21 +9212,16 @@ $$.World = {"":
   t3 = t2.contactListener;
   toiContact.update$1(t3);
   t4 = toiContact.get$enabled();
-  if (typeof t4 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(10, body, toiOther, t1, t2, t4, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  if (typeof t4 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(10, body, t1, t2, t4, toiContact, toiOther, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   if (!t4) {
     body.get$sweep().setFrom$1(t1);
     this.solveTimeOfImpactGivenBody$1(body);
   }
   t1 = toiContact.get$toiCount();
-  if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(11, body, toiOther, toiContact, t2, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(11, body, toiContact, t2, t1, toiOther, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   toiContact.set$toiCount(t1 + 1);
   t1 = this.contacts;
-  if (!(t1 === null)) {
-    t1 = t1.length;
-    if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(12, body, toiOther, toiContact, t1, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    t1 = t1 < 32;
-  } else t1 = true;
-  if (t1) {
+  if (t1.length < 32) {
     t1 = $.ListFactory_List(32);
     $.setRuntimeTypeInfo(t1, ({E: 'Contact'}));
     this.contacts = t1;
@@ -10130,24 +9232,23 @@ $$.World = {"":
     if (!(!(ce == null) && count < 32)) break;
     c$0:{
       type = ce.get$other().get$type();
-      if (typeof type !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(13, count, body, toiOther, t2, type, toiContact, ce, 0, 0, 0, 0, 0, 0, 0, 0);
+      if (typeof type !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(12, count, body, t2, type, toiContact, ce, toiOther, 0, 0, 0, 0, 0, 0, 0, 0);
       if (type === 2) break c$0;
       contact = ce.get$contact();
       t1 = contact.get$enabled();
-      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(14, count, t1, toiOther, body, t2, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
+      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(13, count, t1, toiOther, body, t2, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
       if (!t1) break c$0;
       fixtureA = contact.get$fixtureA();
       fixtureB = contact.get$fixtureB();
       if (fixtureA.get$isSensor() === true || fixtureB.get$isSensor() === true) break c$0;
       !$.eqB(contact, toiContact) && contact.update$1(t3);
       t1 = contact.get$enabled();
-      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(15, count, body, toiOther, t2, t1, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
+      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(14, count, body, toiOther, t2, t1, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
       if (!t1) break c$0;
       t1 = contact.get$touching();
-      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(16, count, body, t1, toiOther, t2, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
+      if (typeof t1 !== 'boolean') return this.solveTimeOfImpactGivenBody$1$bailout(15, count, body, t1, t2, toiOther, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
       if (!t1) break c$0;
       t1 = this.contacts;
-      if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.solveTimeOfImpactGivenBody$1$bailout(17, count, body, toiOther, t2, t1, toiContact, ce, contact, 0, 0, 0, 0, 0, 0, 0);
       t4 = t1.length;
       if (count < 0 || count >= t4) throw $.ioore(count);
       t1[count] = contact;
@@ -10161,10 +9262,10 @@ $$.World = {"":
     if (t1.solve$1(0.75) === true) break;
   }
   t1 = toiOther.get$type();
-  if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(18, t1, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  if (typeof t1 !== 'number') return this.solveTimeOfImpactGivenBody$1$bailout(16, t1, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   if (!(t1 === 0)) {
     t1 = toiContact.get$flags();
-    if (t1 !== (t1 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(19, t1, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (t1 !== (t1 | 0)) return this.solveTimeOfImpactGivenBody$1$bailout(17, t1, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     toiContact.set$flags((t1 | 16) >>> 0);
   }
  },
@@ -10175,167 +9276,160 @@ $$.World = {"":
       bullet = env1;
       break;
     case 2:
-      toiOther = env0;
+      found = env0;
       body = env1;
       bullet = env2;
       iter = env3;
-      t1 = env4;
-      t2 = env5;
-      t3 = env6;
+      t2 = env4;
+      t3 = env5;
+      t4 = env6;
       other = env7;
       type = env8;
       toiContact = env9;
       toi = env10;
-      ce = env11;
-      count = env12;
-      found = env13;
+      toiOther = env11;
+      ce = env12;
+      count = env13;
       break;
     case 3:
-      toiOther = env0;
+      found = env0;
       body = env1;
-      bullet = env2;
-      iter = env3;
-      t1 = env4;
+      count = env2;
+      bullet = env3;
+      iter = env4;
       t2 = env5;
       t3 = env6;
-      other = env7;
-      type = env8;
-      toiContact = env9;
-      toi = env10;
-      ce = env11;
-      t4 = env12;
-      count = env13;
-      found = env14;
+      t4 = env7;
+      other = env8;
+      type = env9;
+      t1 = env10;
+      toiContact = env11;
+      toi = env12;
+      ce = env13;
+      toiOther = env14;
       break;
     case 4:
-      toiOther = env0;
+      found = env0;
       body = env1;
       bullet = env2;
       iter = env3;
-      t1 = env4;
-      t4 = env5;
-      t2 = env6;
-      t3 = env7;
+      t2 = env4;
+      t3 = env5;
+      t4 = env6;
+      t1 = env7;
       other = env8;
       toiContact = env9;
       toi = env10;
-      ce = env11;
-      count = env12;
-      found = env13;
+      toiOther = env11;
+      ce = env12;
+      count = env13;
       break;
     case 5:
-      toiOther = env0;
+      found = env0;
       body = env1;
       bullet = env2;
       contact = env3;
-      t1 = env4;
-      t4 = env5;
-      iter = env6;
-      t2 = env7;
-      t3 = env8;
-      other = env9;
-      toiContact = env10;
-      toi = env11;
-      ce = env12;
-      count = env13;
-      found = env14;
-      break;
-    case 6:
-      toiOther = env0;
-      body = env1;
-      bullet = env2;
-      contact = env3;
-      t1 = env4;
-      iter = env5;
-      t2 = env6;
-      t3 = env7;
-      other = env8;
-      t4 = env9;
-      toiContact = env10;
-      toi = env11;
-      ce = env12;
-      count = env13;
-      found = env14;
-      break;
-    case 7:
-      toiOther = env0;
-      body = env1;
-      bullet = env2;
-      contact = env3;
-      t4 = env4;
+      t2 = env4;
       t1 = env5;
       iter = env6;
-      t2 = env7;
-      t3 = env8;
-      other = env9;
-      toiContact = env10;
-      toi = env11;
-      ce = env12;
-      count = env13;
-      found = env14;
-      break;
-    case 8:
-      toiOther = env0;
-      body = env1;
-      bullet = env2;
-      contact = env3;
-      iter = env4;
-      t1 = env5;
-      t2 = env6;
       t3 = env7;
       t4 = env8;
       other = env9;
       toiContact = env10;
       toi = env11;
-      ce = env12;
-      count = env13;
-      found = env14;
+      toiOther = env12;
+      ce = env13;
+      count = env14;
+      break;
+    case 6:
+      found = env0;
+      body = env1;
+      bullet = env2;
+      contact = env3;
+      t2 = env4;
+      iter = env5;
+      t3 = env6;
+      t4 = env7;
+      other = env8;
+      t1 = env9;
+      toiContact = env10;
+      toi = env11;
+      toiOther = env12;
+      ce = env13;
+      count = env14;
+      break;
+    case 7:
+      found = env0;
+      body = env1;
+      bullet = env2;
+      contact = env3;
+      t1 = env4;
+      t2 = env5;
+      iter = env6;
+      t3 = env7;
+      t4 = env8;
+      other = env9;
+      toiContact = env10;
+      toi = env11;
+      toiOther = env12;
+      ce = env13;
+      count = env14;
+      break;
+    case 8:
+      found = env0;
+      body = env1;
+      bullet = env2;
+      contact = env3;
+      iter = env4;
+      t2 = env5;
+      t3 = env6;
+      t4 = env7;
+      t1 = env8;
+      other = env9;
+      toiContact = env10;
+      toi = env11;
+      toiOther = env12;
+      ce = env13;
+      count = env14;
       break;
     case 9:
       body = env0;
-      t2 = env1;
-      other = env2;
-      t3 = env3;
-      bullet = env4;
-      contact = env5;
-      iter = env6;
-      toi = env7;
+      other = env1;
+      t4 = env2;
+      bullet = env3;
+      contact = env4;
+      iter = env5;
+      toi = env6;
+      t2 = env7;
       ce = env8;
-      count = env9;
-      t1 = env10;
+      t3 = env9;
+      count = env10;
       break;
     case 10:
       body = env0;
-      toiOther = env1;
-      t1 = env2;
-      t2 = env3;
-      t3 = env4;
-      toiContact = env5;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
+      toiContact = env4;
+      toiOther = env5;
       break;
     case 11:
       body = env0;
-      toiOther = env1;
-      toiContact = env2;
-      t2 = env3;
-      t1 = env4;
+      toiContact = env1;
+      t2 = env2;
+      t1 = env3;
+      toiOther = env4;
       break;
     case 12:
-      body = env0;
-      toiOther = env1;
-      toiContact = env2;
-      t1 = env3;
-      t2 = env4;
-      break;
-    case 13:
       count = env0;
       body = env1;
-      toiOther = env2;
-      t2 = env3;
-      type = env4;
-      toiContact = env5;
-      ce = env6;
+      t2 = env2;
+      type = env3;
+      toiContact = env4;
+      ce = env5;
+      toiOther = env6;
       break;
-    case 14:
+    case 13:
       count = env0;
       t1 = env1;
       toiOther = env2;
@@ -10345,41 +9439,31 @@ $$.World = {"":
       ce = env6;
       contact = env7;
       break;
-    case 15:
+    case 14:
       count = env0;
       body = env1;
       toiOther = env2;
       t2 = env3;
       t1 = env4;
+      toiContact = env5;
+      ce = env6;
+      contact = env7;
+      break;
+    case 15:
+      count = env0;
+      body = env1;
+      t1 = env2;
+      t2 = env3;
+      toiOther = env4;
       toiContact = env5;
       ce = env6;
       contact = env7;
       break;
     case 16:
-      count = env0;
-      body = env1;
-      t1 = env2;
-      toiOther = env3;
-      t2 = env4;
-      toiContact = env5;
-      ce = env6;
-      contact = env7;
-      break;
-    case 17:
-      count = env0;
-      body = env1;
-      toiOther = env2;
-      t2 = env3;
-      t1 = env4;
-      toiContact = env5;
-      ce = env6;
-      contact = env7;
-      break;
-    case 18:
       t1 = env0;
       toiContact = env1;
       break;
-    case 19:
+    case 17:
       t1 = env0;
       toiContact = env1;
       break;
@@ -10389,49 +9473,28 @@ $$.World = {"":
       var bullet = body.get$bullet();
     case 1:
       state = 0;
-      var t1 = this.toiInput;
-      var t2 = this._pool;
-      var t3 = this.toiOutput;
+      var t2 = this.toiInput;
+      var t3 = this._pool;
+      var t4 = this.toiOutput;
       var iter = 0;
       var toiContact = null;
       var toi = 1.0;
       var toiOther = null;
       var count = null;
       var found = null;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
             var ce = body.get$contactList();
             count = 0;
             found = false;
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-          case 8:
-          case 9:
+          default:
             L1: while (true) {
               switch (state) {
                 case 0:
                   if (!!(ce == null)) break L1;
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
+                default:
                   c$1:{
                     switch (state) {
                       case 0:
@@ -10440,73 +9503,72 @@ $$.World = {"":
                         var type = other.get$type();
                       case 2:
                         state = 0;
-                      case 3:
-                      case 4:
+                      default:
                         if (state == 3 || state == 4 || (state == 0 && $.eqB(bullet, true))) {
                           switch (state) {
                             case 0:
-                              var t4 = other.get$flags();
+                              var t1 = other.get$flags();
                             case 3:
                               state = 0;
-                              if ($.eqB($.and(t4, 64), 0)) break c$1;
+                              if ($.eqB($.and(t1, 64), 0)) break c$1;
                             case 4:
                               if (state == 4 || (state == 0 && !$.eqB(type, 0))) {
                                 switch (state) {
                                   case 0:
-                                    t4 = ce.get$contact().get$flags();
+                                    t1 = ce.get$contact().get$flags();
                                   case 4:
                                     state = 0;
-                                    var t5 = !$.eqB($.and(t4, 16), 0);
-                                    t4 = t5;
+                                    var t6 = !$.eqB($.and(t1, 16), 0);
+                                    t1 = t6;
                                 }
                               } else {
-                                t4 = false;
+                                t1 = false;
                               }
-                              if (t4) break c$1;
+                              if (t1) break c$1;
                           }
                         } else {
                           if ($.eqB(type, 2)) break c$1;
                         }
                         var contact = ce.get$contact();
-                        t4 = contact.get$enabled();
+                        t1 = contact.get$enabled();
                       case 5:
                         state = 0;
-                        if ($.eqB(t4, false)) break c$1;
-                        t4 = contact.get$toiCount();
+                        if ($.eqB(t1, false)) break c$1;
+                        t1 = contact.get$toiCount();
                       case 6:
                         state = 0;
-                        if ($.gtB(t4, 10)) break c$1;
+                        if ($.gtB(t1, 10)) break c$1;
                         var fixtureA = contact.get$fixtureA();
                         var fixtureB = contact.get$fixtureB();
                         if (fixtureA.get$isSensor() === true || fixtureB.get$isSensor() === true) break c$1;
                         var bodyA = fixtureA.get$body();
                         var bodyB = fixtureB.get$body();
-                        t1.get$proxyA().setFromShape$1(fixtureA.get$shape());
-                        t1.get$proxyB().setFromShape$1(fixtureB.get$shape());
-                        t1.get$sweepA().setFrom$1(bodyA.get$sweep());
-                        t1.get$sweepB().setFrom$1(bodyB.get$sweep());
-                        t1.set$tMax(toi);
-                        t2.get$timeOfImpact().timeOfImpact$2(t3, t1);
-                        t4 = t3.get$state();
+                        t2.get$proxyA().setFromShape$1(fixtureA.get$shape());
+                        t2.get$proxyB().setFromShape$1(fixtureB.get$shape());
+                        t2.get$sweepA().setFrom$1(bodyA.get$sweep());
+                        t2.get$sweepB().setFrom$1(bodyB.get$sweep());
+                        t2.set$tMax(toi);
+                        t3.get$timeOfImpact().timeOfImpact$2(t4, t2);
+                        t1 = t4.get$state();
                       case 7:
                         state = 0;
                       case 8:
-                        if (state == 8 || (state == 0 && $.eqB(t4, 3))) {
+                        if (state == 8 || (state == 0 && $.eqB(t1, 3))) {
                           switch (state) {
                             case 0:
-                              t4 = t3.get$t();
+                              t1 = t4.get$t();
                             case 8:
                               state = 0;
-                              t4 = $.ltB(t4, toi);
+                              t1 = $.ltB(t1, toi);
                           }
                         } else {
-                          t4 = false;
+                          t1 = false;
                         }
                       case 9:
-                        if (state == 9 || (state == 0 && t4)) {
+                        if (state == 9 || (state == 0 && t1)) {
                           switch (state) {
                             case 0:
-                              toi = t3.get$t();
+                              toi = t4.get$t();
                             case 9:
                               state = 0;
                               toiContact = contact;
@@ -10521,7 +9583,7 @@ $$.World = {"":
               }
             }
             ++iter;
-            if (!(found === true && $.gtB(count, 1) && iter < 50)) break L0;
+            if (!(found === true && ($.gtB(count, 1) && iter < 50))) break L0;
         }
       }
       if (toiContact == null) {
@@ -10545,49 +9607,32 @@ $$.World = {"":
       state = 0;
       toiContact.set$toiCount($.add(t1, 1));
       t1 = this.contacts;
-    case 12:
-      if (state == 12 || (state == 0 && !(t1 == null))) {
-        switch (state) {
-          case 0:
-            t1 = $.get$length(t1);
-          case 12:
-            state = 0;
-            t1 = $.ltB(t1, 32);
-        }
-      } else {
-        t1 = true;
-      }
-      if (t1) {
+      if (t1 === null || t1.length < 32) {
         t1 = $.ListFactory_List(32);
         $.setRuntimeTypeInfo(t1, ({E: 'Contact'}));
         this.contacts = t1;
       }
       ce = body.get$contactList();
       count = 0;
+    case 12:
     case 13:
     case 14:
     case 15:
-    case 16:
-    case 17:
       L2: while (true) {
         switch (state) {
           case 0:
             if (!(!(ce == null) && count < 32)) break L2;
-          case 13:
-          case 14:
-          case 15:
-          case 16:
-          case 17:
+          default:
             c$0:{
               switch (state) {
                 case 0:
                   type = ce.get$other().get$type();
-                case 13:
+                case 12:
                   state = 0;
                   if ($.eqB(type, 2)) break c$0;
                   contact = ce.get$contact();
                   t1 = contact.get$enabled();
-                case 14:
+                case 13:
                   state = 0;
                   if ($.eqB(t1, false)) break c$0;
                   fixtureA = contact.get$fixtureA();
@@ -10595,17 +9640,17 @@ $$.World = {"":
                   if (fixtureA.get$isSensor() === true || fixtureB.get$isSensor() === true) break c$0;
                   !$.eqB(contact, toiContact) && contact.update$1(t2.get$contactListener());
                   t1 = contact.get$enabled();
-                case 15:
+                case 14:
                   state = 0;
                   if ($.eqB(t1, false)) break c$0;
                   t1 = contact.get$touching();
-                case 16:
+                case 15:
                   state = 0;
                   if ($.eqB(t1, false)) break c$0;
                   t1 = this.contacts;
-                case 17:
-                  state = 0;
-                  $.indexSet(t1, count, contact);
+                  t3 = t1.length;
+                  if (count < 0 || count >= t3) throw $.ioore(count);
+                  t1[count] = contact;
                   ++count;
               }
             }
@@ -10618,14 +9663,14 @@ $$.World = {"":
         if (t1.solve$1(0.75) === true) break;
       }
       t1 = toiOther.get$type();
-    case 18:
+    case 16:
       state = 0;
-    case 19:
-      if (state == 19 || (state == 0 && !$.eqB(t1, 0))) {
+    case 17:
+      if (state == 17 || (state == 0 && !$.eqB(t1, 0))) {
         switch (state) {
           case 0:
             t1 = toiContact.get$flags();
-          case 19:
+          case 17:
             state = 0;
             toiContact.set$flags($.or(t1, 16));
         }
@@ -10638,7 +9683,7 @@ $$.World = {"":
     c.set$toiCount(0);
   }
   for (var body = this._bodyList; !(body == null); body = body.get$next()) {
-    if ($.eqB($.and(body.get$flags(), 1), 0) || $.eqB(body.get$type(), 1) || $.eqB(body.get$type(), 0)) body.set$flags($.or(body.get$flags(), 64));
+    if ($.eqB($.and(body.get$flags(), 1), 0) || ($.eqB(body.get$type(), 1) || $.eqB(body.get$type(), 0))) body.set$flags($.or(body.get$flags(), 64));
     else body.set$flags($.and(body.get$flags(), -65));
   }
   for (body = this._bodyList; !(body == null); body = body.get$next()) {
@@ -10669,7 +9714,7 @@ $$.World = {"":
     j.set$islandFlag(false);
   }
   var stackSize = this._bodyCount;
-  if ($.ltB($.get$length(this.stack), stackSize)) {
+  if (this.stack.length < stackSize) {
     t2 = $.ListFactory_List(stackSize);
     $.setRuntimeTypeInfo(t2, ({E: 'Body'}));
     this.stack = t2;
@@ -10679,12 +9724,17 @@ $$.World = {"":
     if ($.eqB(seed.get$awake(), false) || $.eqB(seed.get$active(), false)) continue;
     if ($.eqB(seed.get$type(), 0)) continue;
     $.clear(t1);
-    $.indexSet(this.stack, 0, seed);
+    var t5 = this.stack;
+    var t6 = t5.length;
+    if (0 < 0 || 0 >= t6) throw $.ioore(0);
+    t5[0] = seed;
     seed.set$flags($.or(seed.get$flags(), 1));
     for (var stackCount = 1; stackCount > 0; ) {
-      var t5 = this.stack;
+      t5 = this.stack;
       --stackCount;
-      b = $.index(t5, stackCount);
+      t6 = t5.length;
+      if (stackCount < 0 || stackCount >= t6) throw $.ioore(stackCount);
+      b = t5[stackCount];
       t1.addBody$1(b);
       b.set$awake(true);
       if ($.eqB(b.get$type(), 0)) continue;
@@ -10701,7 +9751,9 @@ $$.World = {"":
         if ($.eqB($.and(other.get$flags(), 1), 1)) continue;
         t5 = this.stack;
         var stackCount0 = stackCount + 1;
-        $.indexSet(t5, stackCount, other);
+        t6 = t5.length;
+        if (stackCount < 0 || stackCount >= t6) throw $.ioore(stackCount);
+        t5[stackCount] = other;
         other.set$flags($.or(other.get$flags(), 1));
         stackCount = stackCount0;
       }
@@ -10714,7 +9766,9 @@ $$.World = {"":
         if ($.eqB($.and(other.get$flags(), 1), 1)) continue;
         t5 = this.stack;
         stackCount0 = stackCount + 1;
-        $.indexSet(t5, stackCount, other);
+        t6 = t5.length;
+        if (stackCount < 0 || stackCount >= t6) throw $.ioore(stackCount);
+        t5[stackCount] = other;
         other.set$flags($.or(other.get$flags(), 1));
         stackCount = stackCount0;
       }
@@ -10736,13 +9790,7 @@ $$.World = {"":
   return this._jointList;
  },
  get$locked: function() {
-  var t1 = this._flags;
-  if (t1 !== (t1 | 0)) return this.get$locked$bailout(1, t1);
-  t1 = t1 & 2;
-  return t1 === 2;
- },
- get$locked$bailout: function(state, t1) {
-  return $.eq($.and(t1, 2), 2);
+  return $.eq($.and(this._flags, 2), 2);
  },
  get$contactCount: function() {
   return this._contactManager.get$contactCount();
@@ -10755,8 +9803,7 @@ $$.World = {"":
   if (t1 == null) return;
   var drawFlags = t1.get$drawFlags();
   if (drawFlags !== (drawFlags | 0)) return this.drawDebugData$0$bailout(1, drawFlags);
-  t1 = drawFlags & 1;
-  if (t1 === 1) {
+  if ((drawFlags & 1) === 1) {
     var xf = $.Transform$();
     var color = $.Color3$();
     for (var b = this._bodyList; !(b == null); b = b.get$next()) {
@@ -10787,14 +9834,12 @@ $$.World = {"":
       }
     }
   }
-  t1 = drawFlags & 2;
-  if (t1 === 2) {
+  if ((drawFlags & 2) === 2) {
     for (var j = this._jointList; !(j == null); j = j.get$_lib0_next()) {
       this.drawJoint$1(j);
     }
   }
-  t1 = drawFlags & 8;
-  if (t1 === 8) {
+  if ((drawFlags & 8) === 8) {
     color = $.Color3$fromRGB(0.3, 0.9, 0.9);
     for (var c = this._contactManager.contactList, t1 = this.cA, t2 = this.cB; !(c == null); c = c.get$next()) {
       var fixtureA = c.get$fixtureA();
@@ -10804,22 +9849,21 @@ $$.World = {"":
       this._debugDraw.drawSegment$3(t1, t2, color);
     }
   }
-  t1 = drawFlags & 4;
-  if (t1 === 4) {
+  if ((drawFlags & 4) === 4) {
     color = $.Color3$fromRGB(0.9, 0.3, 0.9);
-    for (b = this._bodyList, t1 = drawFlags & 64, t2 = !(0 === t1); !(b == null); b = b.get$next()) {
+    for (b = this._bodyList, t1 = !(0 === (drawFlags & 64)); !(b == null); b = b.get$next()) {
       if (b.get$active() !== true) continue;
       for (f = b.get$fixtureList(); !(f == null); f = f.get$next()) {
         var aabb = f.get$proxy().get$box();
         var vs = $.ListFactory_List(4);
         $.setRuntimeTypeInfo(vs, ({E: 'Vector'}));
-        for (var i = 0; t1 = vs.length, i < t1; ++i) {
-          t1 = $.Vector$(0, 0);
+        for (var i = 0; t2 = vs.length, i < t2; ++i) {
+          t2 = $.Vector$(0, 0);
           var t3 = vs.length;
           if (i < 0 || i >= t3) throw $.ioore(i);
-          vs[i] = t1;
+          vs[i] = t2;
         }
-        if (0 >= t1) throw $.ioore(0);
+        if (0 >= t2) throw $.ioore(0);
         vs[0].setCoords$2(aabb.get$lowerBound().get$x(), aabb.get$lowerBound().get$y());
         t3 = vs.length;
         if (1 >= t3) throw $.ioore(1);
@@ -10830,14 +9874,13 @@ $$.World = {"":
         var t5 = vs.length;
         if (3 >= t5) throw $.ioore(3);
         vs[3].setCoords$2(aabb.get$lowerBound().get$x(), aabb.get$upperBound().get$y());
-        t1 = this._debugDraw;
-        if (t2) t1.drawPolygon$3(vs, 4, color);
-        else t1.drawSolidPolygon$3(vs, 4, color);
+        t2 = this._debugDraw;
+        if (t1) t2.drawPolygon$3(vs, 4, color);
+        else t2.drawSolidPolygon$3(vs, 4, color);
       }
     }
   }
-  t1 = drawFlags & 16;
-  if (t1 === 16) {
+  if ((drawFlags & 16) === 16) {
     xf = $.Transform$();
     color = $.Color3$fromRGB(1, 0, 0);
     for (b = this._bodyList, t1 = xf.position; !(b == null); b = b.get$next()) {
@@ -10919,11 +9962,10 @@ $$.World = {"":
         var t4 = vs.length;
         if (3 >= t4) throw $.ioore(3);
         vs[3].setCoords$2(aabb.get$lowerBound().get$x(), aabb.get$upperBound().get$y());
-        t1 = $.and(drawFlags, 64);
-        t2 = !(0 === t1);
-        t3 = this._debugDraw;
-        if (t2) t3.drawPolygon$3(vs, 4, color);
-        else t3.drawSolidPolygon$3(vs, 4, color);
+        t1 = !(0 === $.and(drawFlags, 64));
+        t2 = this._debugDraw;
+        if (t1) t2.drawPolygon$3(vs, 4, color);
+        else t2.drawSolidPolygon$3(vs, 4, color);
       }
     }
   }
@@ -10944,165 +9986,27 @@ $$.World = {"":
   }
  },
  step$3: function(dt, velocityIterations, positionIterations) {
-  if (typeof dt !== 'number') return this.step$3$bailout(1, dt, velocityIterations, positionIterations, 0);
-  var t1 = this._flags;
-  if (t1 !== (t1 | 0)) return this.step$3$bailout(2, dt, velocityIterations, positionIterations, t1);
-  t1 = t1 & 1;
-  if (t1 === 1) {
+  if ($.eqB($.and(this._flags, 1), 1)) {
     this._contactManager.findNewContacts$0();
-    t1 = this._flags;
-    if (t1 !== (t1 | 0)) return this.step$3$bailout(3, dt, velocityIterations, positionIterations, t1);
-    this._flags = (t1 & -2) >>> 0;
+    this._flags = $.and(this._flags, -2);
   }
-  t1 = this._flags;
-  if (t1 !== (t1 | 0)) return this.step$3$bailout(4, dt, velocityIterations, positionIterations, t1);
-  this._flags = (t1 | 2) >>> 0;
-  var t2 = this.timestep;
-  t2.dt = dt;
-  t2.velocityIterations = velocityIterations;
-  t2.positionIterations = positionIterations;
-  if (dt > 0.0) t2.inv_dt = 1.0 / dt;
-  else t2.inv_dt = 0.0;
-  t1 = this._inverseTimestep;
-  if (typeof t1 !== 'number') return this.step$3$bailout(5, dt, t2, t1, 0);
-  t2.dtRatio = t1 * dt;
-  t2.warmStarting = this._warmStarting;
+  this._flags = $.or(this._flags, 2);
+  var t1 = this.timestep;
+  t1.set$dt(dt);
+  t1.set$velocityIterations(velocityIterations);
+  t1.set$positionIterations(positionIterations);
+  if ($.gtB(dt, 0.0)) {
+    if (typeof dt !== 'number') throw $.iae(dt);
+    t1.set$inv_dt(1.0 / dt);
+  } else t1.set$inv_dt(0.0);
+  t1.set$dtRatio($.mul(this._inverseTimestep, dt));
+  t1.set$warmStarting(this._warmStarting);
   this._contactManager.collide$0();
-  t1 = t2.dt;
-  if (typeof t1 !== 'number') return this.step$3$bailout(6, t2, t1, 0, 0);
-  t1 > 0.0 && this.solve$1(t2);
-  if (this._continuousPhysics) {
-    t1 = t2.dt;
-    if (typeof t1 !== 'number') return this.step$3$bailout(7, t2, t1, 0, 0);
-    t1 = t1 > 0.0;
-  } else t1 = false;
-  t1 && this.solveTimeOfImpact$0();
-  t1 = t2.dt;
-  if (typeof t1 !== 'number') return this.step$3$bailout(8, t2, t1, 0, 0);
-  if (t1 > 0.0) this._inverseTimestep = t2.inv_dt;
-  t1 = this._flags;
-  if (t1 !== (t1 | 0)) return this.step$3$bailout(9, t1, 0, 0, 0);
-  t1 = t1 & 4;
-  t1 === 4 && this.clearForces$0();
-  t1 = this._flags;
-  if (t1 !== (t1 | 0)) return this.step$3$bailout(10, t1, 0, 0, 0);
-  this._flags = (t1 & -3) >>> 0;
- },
- step$3$bailout: function(state, env0, env1, env2, env3) {
-  switch (state) {
-    case 1:
-      var dt = env0;
-      var velocityIterations = env1;
-      var positionIterations = env2;
-      break;
-    case 2:
-      dt = env0;
-      velocityIterations = env1;
-      positionIterations = env2;
-      t1 = env3;
-      break;
-    case 3:
-      dt = env0;
-      velocityIterations = env1;
-      positionIterations = env2;
-      t1 = env3;
-      break;
-    case 4:
-      dt = env0;
-      velocityIterations = env1;
-      positionIterations = env2;
-      t1 = env3;
-      break;
-    case 5:
-      dt = env0;
-      t2 = env1;
-      t1 = env2;
-      break;
-    case 6:
-      t2 = env0;
-      t1 = env1;
-      break;
-    case 7:
-      t2 = env0;
-      t1 = env1;
-      break;
-    case 8:
-      t2 = env0;
-      t1 = env1;
-      break;
-    case 9:
-      t1 = env0;
-      break;
-    case 10:
-      t1 = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-      var t1 = this._flags;
-    case 2:
-      state = 0;
-    case 3:
-      if (state == 3 || (state == 0 && $.eqB($.and(t1, 1), 1))) {
-        switch (state) {
-          case 0:
-            this._contactManager.findNewContacts$0();
-            t1 = this._flags;
-          case 3:
-            state = 0;
-            this._flags = $.and(t1, -2);
-        }
-      }
-      t1 = this._flags;
-    case 4:
-      state = 0;
-      this._flags = $.or(t1, 2);
-      var t2 = this.timestep;
-      t2.set$dt(dt);
-      t2.set$velocityIterations(velocityIterations);
-      t2.set$positionIterations(positionIterations);
-      if ($.gtB(dt, 0.0)) {
-        if (typeof dt !== 'number') throw $.iae(dt);
-        t2.set$inv_dt(1.0 / dt);
-      } else t2.set$inv_dt(0.0);
-      t1 = this._inverseTimestep;
-    case 5:
-      state = 0;
-      t2.set$dtRatio($.mul(t1, dt));
-      t2.set$warmStarting(this._warmStarting);
-      this._contactManager.collide$0();
-      t1 = t2.get$dt();
-    case 6:
-      state = 0;
-      $.gtB(t1, 0.0) && this.solve$1(t2);
-    case 7:
-      if (state == 7 || (state == 0 && this._continuousPhysics === true)) {
-        switch (state) {
-          case 0:
-            t1 = t2.get$dt();
-          case 7:
-            state = 0;
-            t1 = $.gtB(t1, 0.0);
-        }
-      } else {
-        t1 = false;
-      }
-      t1 && this.solveTimeOfImpact$0();
-      t1 = t2.get$dt();
-    case 8:
-      state = 0;
-      if ($.gtB(t1, 0.0)) this._inverseTimestep = t2.get$inv_dt();
-      t1 = this._flags;
-    case 9:
-      state = 0;
-      $.eqB($.and(t1, 4), 4) && this.clearForces$0();
-      t1 = this._flags;
-    case 10:
-      state = 0;
-      this._flags = $.and(t1, -3);
-  }
+  $.gtB(t1.get$dt(), 0.0) && this.solve$1(t1);
+  this._continuousPhysics === true && $.gtB(t1.get$dt(), 0.0) && this.solveTimeOfImpact$0();
+  if ($.gtB(t1.get$dt(), 0.0)) this._inverseTimestep = t1.get$inv_dt();
+  $.eqB($.and(this._flags, 4), 4) && this.clearForces$0();
+  this._flags = $.and(this._flags, -3);
  },
  createBody$1: function(def) {
   if (this.get$locked() === true) return;
@@ -11219,10 +10123,9 @@ $$.Contact = {"":
   var t2 = this.flags;
   if (t2 !== (t2 | 0)) return this.update$1$bailout(1, listener, t1, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   this.flags = (t2 | 4) >>> 0;
-  var t3 = this.flags;
-  if (t3 !== (t3 | 0)) return this.update$1$bailout(2, listener, t3, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  t3 = t3 & 2;
-  var wasTouching = t3 === 2;
+  var t4 = this.flags;
+  if (t4 !== (t4 | 0)) return this.update$1$bailout(2, listener, t4, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  var wasTouching = (t4 & 2) === 2;
   var sensorA = this.fixtureA.get$isSensor();
   var sensorB = this.fixtureB.get$isSensor();
   var sensor = sensorA === true || sensorB === true;
@@ -11244,29 +10147,29 @@ $$.Contact = {"":
     t2 = t1.points;
     var i = 0;
     while (true) {
-      t3 = this.manifold.get$pointCount();
-      if (typeof t3 !== 'number') return this.update$1$bailout(5, listener, wasTouching, bodyA, bodyB, t1, t3, touching, i, sensor, 0, 0, 0);
+      var t3 = this.manifold.get$pointCount();
+      if (typeof t3 !== 'number') return this.update$1$bailout(5, i, listener, wasTouching, bodyB, bodyA, t1, t3, touching, sensor, 0, 0, 0);
       if (!(i < t3)) break;
       t3 = this.manifold.get$points();
-      if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || (t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))) return this.update$1$bailout(6, listener, t3, wasTouching, bodyB, bodyA, t1, touching, sensor, i, 0, 0, 0);
-      var t4 = t3.length;
-      if (i < 0 || i >= t4) throw $.ioore(i);
-      t3 = t3[i];
-      t3.set$normalImpulse(0.0);
-      t3.set$tangentImpulse(0.0);
-      var id2 = t3.get$id();
+      if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || (t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))) return this.update$1$bailout(6, i, listener, t3, bodyB, wasTouching, t1, bodyA, touching, sensor, 0, 0, 0);
+      var t5 = t3.length;
+      if (i < 0 || i >= t5) throw $.ioore(i);
+      var mp2 = t3[i];
+      mp2.set$normalImpulse(0.0);
+      mp2.set$tangentImpulse(0.0);
+      var id2 = mp2.get$id();
       var j = 0;
       while (true) {
-        t4 = t1.pointCount;
-        if (typeof t4 !== 'number') return this.update$1$bailout(7, listener, bodyA, sensor, bodyB, t4, wasTouching, t3, t1, id2, touching, j, i);
-        if (!(j < t4)) break;
-        if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2 === null || (t2.constructor !== Array && !t2.is$JavaScriptIndexingBehavior()))) return this.update$1$bailout(8, listener, bodyA, sensor, bodyB, wasTouching, t3, t2, t1, id2, touching, j, i);
+        t3 = t1.pointCount;
+        if (typeof t3 !== 'number') return this.update$1$bailout(7, i, listener, bodyA, bodyB, t3, wasTouching, mp2, t1, id2, touching, j, sensor);
+        if (!(j < t3)) break;
+        if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2 === null || (t2.constructor !== Array && !t2.is$JavaScriptIndexingBehavior()))) return this.update$1$bailout(8, i, listener, bodyA, bodyB, wasTouching, mp2, t2, t1, id2, touching, j, sensor);
         t4 = t2.length;
         if (j < 0 || j >= t4) throw $.ioore(j);
-        var t5 = t2[j];
-        if (t5.get$id().isEqual$1(id2) === true) {
-          t3.set$normalImpulse(t5.get$normalImpulse());
-          t3.set$tangentImpulse(t5.get$tangentImpulse());
+        var mp1 = t2[j];
+        if (mp1.get$id().isEqual$1(id2) === true) {
+          mp2.set$normalImpulse(mp1.get$normalImpulse());
+          mp2.set$tangentImpulse(mp1.get$tangentImpulse());
           break;
         }
         ++j;
@@ -11296,7 +10199,7 @@ $$.Contact = {"":
       break;
     case 2:
       listener = env0;
-      t3 = env1;
+      t4 = env1;
       t1 = env2;
       break;
     case 3:
@@ -11316,31 +10219,31 @@ $$.Contact = {"":
       sensor = env6;
       break;
     case 5:
-      listener = env0;
-      wasTouching = env1;
-      bodyA = env2;
-      bodyB = env3;
-      t1 = env4;
-      t2 = env5;
-      touching = env6;
-      i = env7;
-      sensor = env8;
-      break;
-    case 6:
-      listener = env0;
-      t2 = env1;
+      i = env0;
+      listener = env1;
       wasTouching = env2;
       bodyB = env3;
       bodyA = env4;
       t1 = env5;
-      touching = env6;
-      sensor = env7;
-      i = env8;
+      t2 = env6;
+      touching = env7;
+      sensor = env8;
+      break;
+    case 6:
+      i = env0;
+      listener = env1;
+      t2 = env2;
+      bodyB = env3;
+      wasTouching = env4;
+      t1 = env5;
+      bodyA = env6;
+      touching = env7;
+      sensor = env8;
       break;
     case 7:
-      listener = env0;
-      bodyA = env1;
-      sensor = env2;
+      i = env0;
+      listener = env1;
+      bodyA = env2;
       bodyB = env3;
       t2 = env4;
       wasTouching = env5;
@@ -11349,12 +10252,12 @@ $$.Contact = {"":
       id2 = env8;
       touching = env9;
       j = env10;
-      i = env11;
+      sensor = env11;
       break;
     case 8:
-      listener = env0;
-      bodyA = env1;
-      sensor = env2;
+      i = env0;
+      listener = env1;
+      bodyA = env2;
       bodyB = env3;
       wasTouching = env4;
       mp2 = env5;
@@ -11363,7 +10266,7 @@ $$.Contact = {"":
       id2 = env8;
       touching = env9;
       j = env10;
-      i = env11;
+      sensor = env11;
       break;
     case 9:
       listener = env0;
@@ -11383,10 +10286,10 @@ $$.Contact = {"":
     case 1:
       state = 0;
       this.flags = $.or(t2, 4);
-      var t3 = this.flags;
+      var t4 = this.flags;
     case 2:
       state = 0;
-      var wasTouching = $.eq($.and(t3, 2), 2);
+      var wasTouching = $.eq($.and(t4, 2), 2);
       var sensorA = this.fixtureA.get$isSensor();
       var sensorB = this.fixtureB.get$isSensor();
       var sensor = sensorA === true || sensorB === true;
@@ -11394,12 +10297,7 @@ $$.Contact = {"":
       var bodyB = this.fixtureB.get$body();
       var xfA = bodyA.get$originTransform();
       var xfB = bodyB.get$originTransform();
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
+    default:
       if (state == 3 || (state == 0 && sensor)) {
         switch (state) {
           case 0:
@@ -11419,10 +10317,7 @@ $$.Contact = {"":
             state = 0;
             touching = $.gt(t2, 0);
             var i = 0;
-          case 5:
-          case 6:
-          case 7:
-          case 8:
+          default:
             L0: while (true) {
               switch (state) {
                 case 0:
@@ -11438,8 +10333,7 @@ $$.Contact = {"":
                   mp2.set$tangentImpulse(0.0);
                   var id2 = mp2.get$id();
                   var j = 0;
-                case 7:
-                case 8:
+                default:
                   L1: while (true) {
                     switch (state) {
                       case 0:
@@ -11469,7 +10363,7 @@ $$.Contact = {"":
         }
       }
       t2 = touching === true;
-      t3 = this.flags;
+      var t3 = this.flags;
     case 9:
       state = 0;
       if (t2) this.flags = $.or(t3, 2);
@@ -11489,22 +10383,10 @@ $$.Contact = {"":
   this.flags = $.or(t1, 8);
  },
  get$enabled: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$enabled$bailout(1, t1);
-  t1 = t1 & 4;
-  return t1 === 4;
- },
- get$enabled$bailout: function(state, t1) {
-  return $.eq($.and(t1, 4), 4);
+  return $.eq($.and(this.flags, 4), 4);
  },
  get$touching: function() {
-  var t1 = this.flags;
-  if (t1 !== (t1 | 0)) return this.get$touching$bailout(1, t1);
-  t1 = t1 & 2;
-  return t1 === 2;
- },
- get$touching$bailout: function(state, t1) {
-  return $.eq($.and(t1, 2), 2);
+  return $.eq($.and(this.flags, 2), 2);
  },
  init$2: function(fixA, fixB) {
   this.flags = 0;
@@ -11559,8 +10441,8 @@ $$.ContactConstraint = {"":
     var t3 = t1[i];
     var t4 = cp.get$points();
     if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.setFrom$1$bailout(2, cp, t3, t4, i, t1);
-    var t5 = t4.length;
-    if (i < 0 || i >= t5) throw $.ioore(i);
+    var t6 = t4.length;
+    if (i < 0 || i >= t6) throw $.ioore(i);
     t3.setFrom$1(t4[i]);
     ++i;
   }
@@ -11598,8 +10480,7 @@ $$.ContactConstraint = {"":
       this.manifold = cp.get$manifold();
       var t1 = this.points;
       var i = 0;
-    case 1:
-    case 2:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -11690,71 +10571,70 @@ $$.ContactSolver = {"":
     if (typeof t5 !== 'number') return this.solvePositionConstraints$1$bailout(2, baumgarte, t5, psm, t1, i, t2, minSeparation, t3, t4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (!(i < t5)) break;
     t5 = this.constraints;
-    if (typeof t5 !== 'string' && (typeof t5 !== 'object' || t5 === null || (t5.constructor !== Array && !t5.is$JavaScriptIndexingBehavior()))) return this.solvePositionConstraints$1$bailout(3, baumgarte, t5, psm, t1, t2, i, minSeparation, t3, t4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var t6 = t5.length;
     if (i < 0 || i >= t6) throw $.ioore(i);
-    t5 = t5[i];
-    var bodyA = t5.get$bodyA();
-    var bodyB = t5.get$bodyB();
-    var t7 = bodyA.get$mass();
-    if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(4, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, t5, bodyA, bodyB, t7, 0, 0, 0, 0, 0, 0, 0, 0);
+    var c = t5[i];
+    var bodyA = c.get$bodyA();
+    var bodyB = c.get$bodyB();
+    t5 = bodyA.get$mass();
+    if (typeof t5 !== 'number') return this.solvePositionConstraints$1$bailout(3, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, c, bodyA, bodyB, t5, 0, 0, 0, 0, 0, 0, 0, 0);
     var t8 = bodyA.get$invMass();
-    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(5, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, t5, bodyA, bodyB, t7, t8, 0, 0, 0, 0, 0, 0, 0);
-    var invMassA = t7 * t8;
+    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(4, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, c, bodyA, bodyB, t5, t8, 0, 0, 0, 0, 0, 0, 0);
+    var invMassA = t5 * t8;
     t8 = bodyA.get$mass();
-    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(6, baumgarte, psm, t1, t2, i, minSeparation, t3, t4, t5, bodyA, bodyB, invMassA, t8, 0, 0, 0, 0, 0, 0, 0);
-    t7 = bodyA.get$invInertia();
-    if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(7, baumgarte, psm, t1, t2, i, minSeparation, t3, t4, t5, bodyA, bodyB, invMassA, t8, t7, 0, 0, 0, 0, 0, 0);
-    var invIA = t8 * t7;
-    t7 = bodyB.get$mass();
-    if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(8, baumgarte, t7, psm, t1, t2, i, minSeparation, t3, t4, t5, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0);
-    t8 = bodyB.get$invMass();
-    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(9, baumgarte, t7, t8, psm, t1, t2, i, minSeparation, t3, t4, t5, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0);
-    var invMassB = t7 * t8;
-    t8 = bodyB.get$mass();
-    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(10, baumgarte, invMassB, t8, psm, t1, t2, i, minSeparation, t3, t4, t5, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0);
-    t7 = bodyB.get$invInertia();
-    if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(11, baumgarte, invMassB, t8, psm, t1, t2, t7, minSeparation, t3, t4, i, t5, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0);
-    var invIB = t8 * t7;
-    t6 = invMassA + invMassB;
+    if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(5, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, c, bodyA, bodyB, invMassA, t8, 0, 0, 0, 0, 0, 0, 0);
+    var t10 = bodyA.get$invInertia();
+    if (typeof t10 !== 'number') return this.solvePositionConstraints$1$bailout(6, baumgarte, psm, t1, i, t2, minSeparation, t3, t4, c, bodyA, bodyB, invMassA, t8, t10, 0, 0, 0, 0, 0, 0);
+    var invIA = t8 * t10;
+    t10 = bodyB.get$mass();
+    if (typeof t10 !== 'number') return this.solvePositionConstraints$1$bailout(7, baumgarte, t10, psm, t1, t2, i, minSeparation, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0);
+    var t12 = bodyB.get$invMass();
+    if (typeof t12 !== 'number') return this.solvePositionConstraints$1$bailout(8, baumgarte, t10, t12, psm, t1, t2, i, minSeparation, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0);
+    var invMassB = t10 * t12;
+    t12 = bodyB.get$mass();
+    if (typeof t12 !== 'number') return this.solvePositionConstraints$1$bailout(9, baumgarte, invMassB, t12, psm, t1, t2, i, minSeparation, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0);
+    var t14 = bodyB.get$invInertia();
+    if (typeof t14 !== 'number') return this.solvePositionConstraints$1$bailout(10, baumgarte, invMassB, t12, psm, t1, t2, t14, minSeparation, t3, t4, i, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0);
+    var invIB = t12 * t14;
+    t5 = invMassA + invMassB;
     var j = 0;
     while (true) {
-      t7 = t5.get$pointCount();
-      if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(12, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, i, minSeparation, t5, bodyA, bodyB, t7, invMassA, invIA, 0, 0, 0);
-      if (!(j < t7)) break;
-      psm.initialize$2(t5, j);
+      t6 = c.get$pointCount();
+      if (typeof t6 !== 'number') return this.solvePositionConstraints$1$bailout(11, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, i, minSeparation, c, bodyA, bodyB, t6, invMassA, invIA, 0, 0, 0);
+      if (!(j < t6)) break;
+      psm.initialize$2(c, j);
       var separation = psm.separation;
-      if (typeof separation !== 'number') return this.solvePositionConstraints$1$bailout(13, baumgarte, separation, normal, invMassB, psm, t1, t2, invIB, t3, j, t4, i, minSeparation, point, bodyA, bodyB, t5, invMassA, invIA, 0);
+      if (typeof separation !== 'number') return this.solvePositionConstraints$1$bailout(12, baumgarte, separation, normal, invMassB, psm, t1, t2, invIB, t3, j, t4, i, minSeparation, point, bodyA, bodyB, c, invMassA, invIA, 0);
       t1.setFrom$1(point).subLocal$1(bodyA.get$sweep().get$center());
       t2.setFrom$1(point).subLocal$1(bodyB.get$sweep().get$center());
       minSeparation = $.Math_min(minSeparation, separation);
-      if (typeof minSeparation !== 'number') return this.solvePositionConstraints$1$bailout(14, baumgarte, separation, invIA, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, invMassA, normal, 0, 0);
+      if (typeof minSeparation !== 'number') return this.solvePositionConstraints$1$bailout(13, baumgarte, separation, invIA, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, c, bodyA, bodyB, invMassA, normal, 0, 0);
       var C = $.MathBox_clamp(baumgarte * (separation + 0.005), -0.2, 0.0);
-      if (typeof C !== 'number') return this.solvePositionConstraints$1$bailout(15, invIA, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, C, invMassA, normal, 0, 0);
+      if (typeof C !== 'number') return this.solvePositionConstraints$1$bailout(14, invIA, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, c, bodyA, bodyB, C, invMassA, normal, 0, 0);
       var rnA = $.Vector_crossVectors(t1, normal);
-      if (typeof rnA !== 'number') return this.solvePositionConstraints$1$bailout(16, normal, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, C, invMassA, rnA, invIA, 0);
+      if (typeof rnA !== 'number') return this.solvePositionConstraints$1$bailout(15, invIA, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, c, bodyA, bodyB, C, invMassA, rnA, normal, 0);
       var rnB = $.Vector_crossVectors(t2, normal);
-      if (typeof rnB !== 'number') return this.solvePositionConstraints$1$bailout(17, normal, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, C, invMassA, rnA, rnB, invIA);
-      var K = t6 + invIA * rnA * rnA + invIB * rnB * rnB;
+      if (typeof rnB !== 'number') return this.solvePositionConstraints$1$bailout(16, normal, baumgarte, invMassB, psm, t1, t2, invIB, t3, j, t4, minSeparation, i, c, bodyA, bodyB, C, invMassA, rnA, rnB, invIA);
+      var K = t5 + invIA * rnA * rnA + invIB * rnB * rnB;
       var impulse = K > 0.0 ? -C / K : 0.0;
       t3.setFrom$1(normal).mulLocal$1(impulse);
       t4.setFrom$1(t3).mulLocal$1(invMassA);
       bodyA.get$sweep().get$center().subLocal$1(t4);
-      t7 = bodyA.get$sweep();
-      t8 = t7.get$angle();
-      if (typeof t8 !== 'number') return this.solvePositionConstraints$1$bailout(18, baumgarte, invMassB, t7, t8, t1, t2, invIB, t3, j, t4, minSeparation, psm, i, t5, bodyA, bodyB, invMassA, invIA, 0, 0);
+      t6 = bodyA.get$sweep();
+      var t7 = t6.get$angle();
+      if (typeof t7 !== 'number') return this.solvePositionConstraints$1$bailout(17, baumgarte, invMassB, t6, t7, t1, t2, invIB, t3, j, t4, minSeparation, psm, i, c, bodyA, bodyB, invMassA, invIA, 0, 0);
       var t9 = $.Vector_crossVectors(t1, t3);
-      if (typeof t9 !== 'number') return this.solvePositionConstraints$1$bailout(19, baumgarte, invMassB, t7, t8, psm, invIB, t2, t9, t3, j, t4, minSeparation, t1, i, t5, bodyA, bodyB, invMassA, invIA, 0);
-      t7.set$angle(t8 - invIA * t9);
+      if (typeof t9 !== 'number') return this.solvePositionConstraints$1$bailout(18, baumgarte, invMassB, t6, t7, psm, invIB, t2, t9, t3, j, t4, minSeparation, t1, i, c, bodyA, bodyB, invMassA, invIA, 0);
+      t6.set$angle(t7 - invIA * t9);
       bodyA.synchronizeTransform$0();
       t4.setFrom$1(t3).mulLocal$1(invMassB);
       bodyB.get$sweep().get$center().addLocal$1(t4);
-      t7 = bodyB.get$sweep();
-      var t10 = t7.get$angle();
-      if (typeof t10 !== 'number') return this.solvePositionConstraints$1$bailout(20, baumgarte, invMassB, psm, t1, invIB, t2, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, t7, t10, invMassA, invIA, 0, 0);
-      var t11 = $.Vector_crossVectors(t2, t3);
-      if (typeof t11 !== 'number') return this.solvePositionConstraints$1$bailout(21, baumgarte, invMassB, psm, t1, invIB, t2, t3, j, t4, minSeparation, i, t5, bodyA, bodyB, t7, t10, invMassA, t11, invIA, 0);
-      t7.set$angle(t10 + invIB * t11);
+      t6 = bodyB.get$sweep();
+      var t11 = t6.get$angle();
+      if (typeof t11 !== 'number') return this.solvePositionConstraints$1$bailout(19, baumgarte, invMassB, psm, t1, invIB, t2, t3, j, t4, minSeparation, i, c, bodyA, bodyB, t6, t11, invMassA, invIA, 0, 0);
+      var t13 = $.Vector_crossVectors(t2, t3);
+      if (typeof t13 !== 'number') return this.solvePositionConstraints$1$bailout(20, baumgarte, invMassB, psm, t1, invIB, t2, t3, j, t4, minSeparation, i, c, bodyA, bodyB, t6, t11, invMassA, t13, invIA, 0);
+      t6.set$angle(t11 + invIB * t13);
       bodyB.synchronizeTransform$0();
       ++j;
     }
@@ -11780,14 +10660,17 @@ $$.ContactSolver = {"":
       break;
     case 3:
       baumgarte = env0;
-      t5 = env1;
-      psm = env2;
-      t1 = env3;
+      psm = env1;
+      t1 = env2;
+      i = env3;
       t2 = env4;
-      i = env5;
-      minSeparation = env6;
-      t3 = env7;
-      t4 = env8;
+      minSeparation = env5;
+      t3 = env6;
+      t4 = env7;
+      c = env8;
+      bodyA = env9;
+      bodyB = env10;
+      t5 = env11;
       break;
     case 4:
       baumgarte = env0;
@@ -11802,6 +10685,7 @@ $$.ContactSolver = {"":
       bodyA = env9;
       bodyB = env10;
       t5 = env11;
+      t8 = env12;
       break;
     case 5:
       baumgarte = env0;
@@ -11815,15 +10699,15 @@ $$.ContactSolver = {"":
       c = env8;
       bodyA = env9;
       bodyB = env10;
-      t5 = env11;
-      t6 = env12;
+      invMassA = env11;
+      t8 = env12;
       break;
     case 6:
       baumgarte = env0;
       psm = env1;
       t1 = env2;
-      t2 = env3;
-      i = env4;
+      i = env3;
+      t2 = env4;
       minSeparation = env5;
       t3 = env6;
       t4 = env7;
@@ -11831,27 +10715,12 @@ $$.ContactSolver = {"":
       bodyA = env9;
       bodyB = env10;
       invMassA = env11;
-      t6 = env12;
+      t8 = env12;
+      t10 = env13;
       break;
     case 7:
       baumgarte = env0;
-      psm = env1;
-      t1 = env2;
-      t2 = env3;
-      i = env4;
-      minSeparation = env5;
-      t3 = env6;
-      t4 = env7;
-      c = env8;
-      bodyA = env9;
-      bodyB = env10;
-      invMassA = env11;
-      t6 = env12;
-      t5 = env13;
-      break;
-    case 8:
-      baumgarte = env0;
-      t5 = env1;
+      t10 = env1;
       psm = env2;
       t1 = env3;
       t2 = env4;
@@ -11865,10 +10734,27 @@ $$.ContactSolver = {"":
       invMassA = env12;
       invIA = env13;
       break;
+    case 8:
+      baumgarte = env0;
+      t10 = env1;
+      t12 = env2;
+      psm = env3;
+      t1 = env4;
+      t2 = env5;
+      i = env6;
+      minSeparation = env7;
+      t3 = env8;
+      t4 = env9;
+      c = env10;
+      bodyA = env11;
+      bodyB = env12;
+      invMassA = env13;
+      invIA = env14;
+      break;
     case 9:
       baumgarte = env0;
-      t5 = env1;
-      t6 = env2;
+      invMassB = env1;
+      t12 = env2;
       psm = env3;
       t1 = env4;
       t2 = env5;
@@ -11885,28 +10771,11 @@ $$.ContactSolver = {"":
     case 10:
       baumgarte = env0;
       invMassB = env1;
-      t6 = env2;
+      t12 = env2;
       psm = env3;
       t1 = env4;
       t2 = env5;
-      i = env6;
-      minSeparation = env7;
-      t3 = env8;
-      t4 = env9;
-      c = env10;
-      bodyA = env11;
-      bodyB = env12;
-      invMassA = env13;
-      invIA = env14;
-      break;
-    case 11:
-      baumgarte = env0;
-      invMassB = env1;
-      t6 = env2;
-      psm = env3;
-      t1 = env4;
-      t2 = env5;
-      t5 = env6;
+      t14 = env6;
       minSeparation = env7;
       t3 = env8;
       t4 = env9;
@@ -11917,7 +10786,7 @@ $$.ContactSolver = {"":
       invMassA = env14;
       invIA = env15;
       break;
-    case 12:
+    case 11:
       baumgarte = env0;
       invMassB = env1;
       psm = env2;
@@ -11936,7 +10805,7 @@ $$.ContactSolver = {"":
       invMassA = env15;
       invIA = env16;
       break;
-    case 13:
+    case 12:
       baumgarte = env0;
       separation = env1;
       normal = env2;
@@ -11957,7 +10826,7 @@ $$.ContactSolver = {"":
       invMassA = env17;
       invIA = env18;
       break;
-    case 14:
+    case 13:
       baumgarte = env0;
       separation = env1;
       invIA = env2;
@@ -11974,6 +10843,26 @@ $$.ContactSolver = {"":
       c = env13;
       bodyA = env14;
       bodyB = env15;
+      invMassA = env16;
+      normal = env17;
+      break;
+    case 14:
+      invIA = env0;
+      baumgarte = env1;
+      invMassB = env2;
+      psm = env3;
+      t1 = env4;
+      t2 = env5;
+      invIB = env6;
+      t3 = env7;
+      j = env8;
+      t4 = env9;
+      minSeparation = env10;
+      i = env11;
+      c = env12;
+      bodyA = env13;
+      bodyB = env14;
+      C = env15;
       invMassA = env16;
       normal = env17;
       break;
@@ -11995,30 +10884,10 @@ $$.ContactSolver = {"":
       bodyB = env14;
       C = env15;
       invMassA = env16;
-      normal = env17;
+      rnA = env17;
+      normal = env18;
       break;
     case 16:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      psm = env3;
-      t1 = env4;
-      t2 = env5;
-      invIB = env6;
-      t3 = env7;
-      j = env8;
-      t4 = env9;
-      minSeparation = env10;
-      i = env11;
-      c = env12;
-      bodyA = env13;
-      bodyB = env14;
-      C = env15;
-      invMassA = env16;
-      rnA = env17;
-      invIA = env18;
-      break;
-    case 17:
       normal = env0;
       baumgarte = env1;
       invMassB = env2;
@@ -12040,7 +10909,7 @@ $$.ContactSolver = {"":
       rnB = env18;
       invIA = env19;
       break;
-    case 18:
+    case 17:
       baumgarte = env0;
       invMassB = env1;
       t5 = env2;
@@ -12060,7 +10929,7 @@ $$.ContactSolver = {"":
       invMassA = env16;
       invIA = env17;
       break;
-    case 19:
+    case 18:
       baumgarte = env0;
       invMassB = env1;
       t5 = env2;
@@ -12068,7 +10937,7 @@ $$.ContactSolver = {"":
       psm = env4;
       invIB = env5;
       t2 = env6;
-      t7 = env7;
+      t8 = env7;
       t3 = env8;
       j = env9;
       t4 = env10;
@@ -12080,6 +10949,26 @@ $$.ContactSolver = {"":
       bodyB = env16;
       invMassA = env17;
       invIA = env18;
+      break;
+    case 19:
+      baumgarte = env0;
+      invMassB = env1;
+      psm = env2;
+      t1 = env3;
+      invIB = env4;
+      t2 = env5;
+      t3 = env6;
+      j = env7;
+      t4 = env8;
+      minSeparation = env9;
+      i = env10;
+      c = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t5 = env14;
+      t10 = env15;
+      invMassA = env16;
+      invIA = env17;
       break;
     case 20:
       baumgarte = env0;
@@ -12097,29 +10986,9 @@ $$.ContactSolver = {"":
       bodyA = env12;
       bodyB = env13;
       t5 = env14;
-      t8 = env15;
+      t10 = env15;
       invMassA = env16;
-      invIA = env17;
-      break;
-    case 21:
-      baumgarte = env0;
-      invMassB = env1;
-      psm = env2;
-      t1 = env3;
-      invIB = env4;
-      t2 = env5;
-      t3 = env6;
-      j = env7;
-      t4 = env8;
-      minSeparation = env9;
-      i = env10;
-      c = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t5 = env14;
-      t8 = env15;
-      invMassA = env16;
-      t9 = env17;
+      t12 = env17;
       invIA = env18;
       break;
   }
@@ -12134,26 +11003,7 @@ $$.ContactSolver = {"":
       var t4 = this.temp1;
       var i = 0;
       var minSeparation = 0.0;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-    case 20:
-    case 21:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -12162,76 +11012,67 @@ $$.ContactSolver = {"":
             state = 0;
             if (!$.ltB(i, t5)) break L0;
             t5 = this.constraints;
-          case 3:
-            state = 0;
-            var c = $.index(t5, i);
+            var t6 = t5.length;
+            if (i < 0 || i >= t6) throw $.ioore(i);
+            var c = t5[i];
             var bodyA = c.get$bodyA();
             var bodyB = c.get$bodyB();
             t5 = bodyA.get$mass();
+          case 3:
+            state = 0;
+            var t8 = bodyA.get$invMass();
           case 4:
             state = 0;
-            var t6 = bodyA.get$invMass();
+            var invMassA = $.mul(t5, t8);
+            t8 = bodyA.get$mass();
           case 5:
             state = 0;
-            var invMassA = $.mul(t5, t6);
-            t6 = bodyA.get$mass();
+            var t10 = bodyA.get$invInertia();
           case 6:
             state = 0;
-            t5 = bodyA.get$invInertia();
+            var invIA = $.mul(t8, t10);
+            t10 = bodyB.get$mass();
           case 7:
             state = 0;
-            var invIA = $.mul(t6, t5);
-            t5 = bodyB.get$mass();
+            var t12 = bodyB.get$invMass();
           case 8:
             state = 0;
-            t6 = bodyB.get$invMass();
+            var invMassB = $.mul(t10, t12);
+            t12 = bodyB.get$mass();
           case 9:
             state = 0;
-            var invMassB = $.mul(t5, t6);
-            t6 = bodyB.get$mass();
+            var t14 = bodyB.get$invInertia();
           case 10:
             state = 0;
-            t5 = bodyB.get$invInertia();
-          case 11:
-            state = 0;
-            var invIB = $.mul(t6, t5);
+            var invIB = $.mul(t12, t14);
             var j = 0;
-          case 12:
-          case 13:
-          case 14:
-          case 15:
-          case 16:
-          case 17:
-          case 18:
-          case 19:
-          case 20:
-          case 21:
+          default:
             L1: while (true) {
               switch (state) {
                 case 0:
                   t5 = c.get$pointCount();
-                case 12:
+                case 11:
                   state = 0;
                   if (!$.ltB(j, t5)) break L1;
                   psm.initialize$2(c, j);
                   var normal = psm.get$normal();
                   var point = psm.get$point();
                   var separation = psm.get$separation();
-                case 13:
+                case 12:
                   state = 0;
                   t1.setFrom$1(point).subLocal$1(bodyA.get$sweep().get$center());
                   t2.setFrom$1(point).subLocal$1(bodyB.get$sweep().get$center());
                   minSeparation = $.Math_min(minSeparation, separation);
-                case 14:
+                case 13:
                   state = 0;
                   var C = $.MathBox_clamp($.mul(baumgarte, $.add(separation, 0.005)), -0.2, 0.0);
-                case 15:
+                case 14:
                   state = 0;
                   var rnA = $.Vector_crossVectors(t1, normal);
-                case 16:
+                case 15:
                   state = 0;
                   var rnB = $.Vector_crossVectors(t2, normal);
-                case 17:
+                case 16:
                   state = 0;
                   var K = $.add($.add($.add(invMassA, invMassB), $.mul($.mul(invIA, rnA), rnA)), $.mul($.mul(invIB, rnB), rnB));
                   var impulse = $.gtB(K, 0.0) ? $.div($.neg(C), K) : 0.0;
@@ -12240,23 +11081,23 @@ $$.ContactSolver = {"":
                   bodyA.get$sweep().get$center().subLocal$1(t4);
                   t5 = bodyA.get$sweep();
                   t6 = t5.get$angle();
+                case 17:
+                  state = 0;
+                  t8 = $.Vector_crossVectors(t1, t3);
                 case 18:
                   state = 0;
-                  var t7 = $.Vector_crossVectors(t1, t3);
-                case 19:
-                  state = 0;
-                  t5.set$angle($.sub(t6, $.mul(invIA, t7)));
+                  t5.set$angle($.sub(t6, $.mul(invIA, t8)));
                   bodyA.synchronizeTransform$0();
                   t4.setFrom$1(t3).mulLocal$1(invMassB);
                   bodyB.get$sweep().get$center().addLocal$1(t4);
                   t5 = bodyB.get$sweep();
-                  var t8 = t5.get$angle();
+                  t10 = t5.get$angle();
+                case 19:
+                  state = 0;
+                  t12 = $.Vector_crossVectors(t2, t3);
                 case 20:
                   state = 0;
-                  var t9 = $.Vector_crossVectors(t2, t3);
-                case 21:
-                  state = 0;
-                  t5.set$angle($.add(t8, $.mul(invIB, t9)));
+                  t5.set$angle($.add(t10, $.mul(invIB, t12)));
                   bodyB.synchronizeTransform$0();
                   ++j;
               }
@@ -12269,10 +11110,13 @@ $$.ContactSolver = {"":
  },
  storeImpulses$0: function() {
   for (var i = 0; $.ltB(i, this.constraintCount); ++i) {
-    var c = $.index(this.constraints, i);
+    var t1 = this.constraints;
+    var t2 = t1.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    var c = t1[i];
     var m = c.get$manifold();
     for (var j = 0; $.ltB(j, c.get$pointCount()); ++j) {
-      var t1 = $.index(c.get$points(), j).get$normalImpulse();
+      t1 = $.index(c.get$points(), j).get$normalImpulse();
       $.index(m.get$points(), j).set$normalImpulse(t1);
       t1 = $.index(c.get$points(), j).get$tangentImpulse();
       $.index(m.get$points(), j).set$tangentImpulse(t1);
@@ -12296,470 +11140,477 @@ $$.ContactSolver = {"":
     if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(1, t7, t8, i, t9, t10, t3, t4, t5, t11, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (!(i < t11)) break;
     t11 = this.constraints;
-    if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || (t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(2, t7, t8, i, t9, t10, t3, t4, t5, t11, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var t12 = t11.length;
     if (i < 0 || i >= t12) throw $.ioore(i);
-    t11 = t11[i];
-    var bodyA = t11.get$bodyA();
-    var bodyB = t11.get$bodyB();
+    var c = t11[i];
+    var bodyA = c.get$bodyA();
+    var bodyB = c.get$bodyB();
     var wA = bodyA.get$angularVelocity();
-    if (typeof wA !== 'number') return this.solveVelocityConstraints$0$bailout(3, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof wA !== 'number') return this.solveVelocityConstraints$0$bailout(2, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var wB = bodyB.get$angularVelocity();
-    if (typeof wB !== 'number') return this.solveVelocityConstraints$0$bailout(4, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, wB, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof wB !== 'number') return this.solveVelocityConstraints$0$bailout(3, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, wB, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var vA = bodyA.get$linearVelocity();
     var vB = bodyB.get$linearVelocity();
     var invMassA = bodyA.get$invMass();
-    if (typeof invMassA !== 'number') return this.solveVelocityConstraints$0$bailout(5, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof invMassA !== 'number') return this.solveVelocityConstraints$0$bailout(4, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invIA = bodyA.get$invInertia();
-    if (typeof invIA !== 'number') return this.solveVelocityConstraints$0$bailout(6, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof invIA !== 'number') return this.solveVelocityConstraints$0$bailout(5, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invMassB = bodyB.get$invMass();
-    if (typeof invMassB !== 'number') return this.solveVelocityConstraints$0$bailout(7, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof invMassB !== 'number') return this.solveVelocityConstraints$0$bailout(6, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invIB = bodyB.get$invInertia();
-    if (typeof invIB !== 'number') return this.solveVelocityConstraints$0$bailout(8, t2, t7, t8, i, t9, t10, t3, t4, t11, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, invIB, t6, t1, 0, 0, 0, 0, 0, 0, 0, 0);
-    var t13 = t11.get$normal().get$y();
-    if (typeof t13 !== 'number') throw $.iae(t13);
-    t1.x = 1.0 * t13;
-    var t14 = t11.get$normal().get$x();
-    if (typeof t14 !== 'number') throw $.iae(t14);
-    t1.y = -1.0 * t14;
-    var friction = t11.get$friction();
-    if (typeof friction !== 'number') return this.solveVelocityConstraints$0$bailout(9, i, t3, t4, t11, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t1, t2, 0, 0, 0, 0, 0, 0, 0);
+    if (typeof invIB !== 'number') return this.solveVelocityConstraints$0$bailout(7, t2, t7, t8, i, t9, t10, t3, t4, c, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, invIB, t6, t1, 0, 0, 0, 0, 0, 0, 0, 0);
+    var t18 = c.get$normal().get$y();
+    if (typeof t18 !== 'number') throw $.iae(t18);
+    t1.x = 1.0 * t18;
+    var t19 = c.get$normal().get$x();
+    if (typeof t19 !== 'number') throw $.iae(t19);
+    t1.y = -1.0 * t19;
+    var friction = c.get$friction();
+    if (typeof friction !== 'number') return this.solveVelocityConstraints$0$bailout(8, i, t3, t4, c, bodyA, t5, wA, wB, vA, vB, invMassA, bodyB, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t1, t2, 0, 0, 0, 0, 0, 0, 0);
     var j = 0;
     while (true) {
-      t12 = t11.get$pointCount();
-      if (typeof t12 !== 'number') return this.solveVelocityConstraints$0$bailout(10, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, t12, 0, 0, 0, 0, 0);
-      if (!(j < t12)) break;
-      t12 = t11.get$points();
-      if (typeof t12 !== 'string' && (typeof t12 !== 'object' || t12 === null || (t12.constructor !== Array && !t12.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(11, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0, 0, 0);
-      t13 = t12.length;
+      t11 = c.get$pointCount();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(9, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, t11, 0, 0, 0, 0, 0);
+      if (!(j < t11)) break;
+      t11 = c.get$points();
+      if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || (t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(10, i, t11, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0, 0, 0);
+      var t13 = t11.length;
       if (j < 0 || j >= t13) throw $.ioore(j);
-      t12 = t12[j];
-      var a = t12.get$rA();
-      t14 = -wB;
-      var t15 = t12.get$rB().get$y();
-      if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(12, i, t12, a, t3, t14, t4, t15, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t15 *= t14;
-      t14 = vB.get$x();
-      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(13, i, t12, a, t3, t4, t15, t14, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t14 += t15;
-      t15 = vA.get$x();
-      if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(14, i, t12, a, t3, t4, t11, t14, t5, bodyB, bodyA, t15, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t15 = t14 - t15;
-      t14 = a.get$y();
-      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(15, i, t12, a, t3, t4, t11, bodyA, t5, bodyB, t15, t14, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t2.x = t15 + wA * t14;
-      var t16 = t12.get$rB().get$x();
-      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(16, i, t12, a, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t16, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
-      t16 *= wB;
-      var t17 = vB.get$y();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(17, i, t12, a, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t16, t17, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t17 += t16;
-      t16 = vA.get$y();
-      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(18, i, t12, a, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t17, t16, t9, t8, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      t16 = t17 - t16;
-      t17 = a.get$x();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(19, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t16, t17, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
-      t2.y = t16 - wA * t17;
-      var t18 = t2.x;
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(20, i, t12, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t18, wB, j, wA, t1, t2, 0, 0, 0, 0);
-      var t19 = t1.x;
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(21, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t18, wB, j, t19, wA, t1, t2, 0, 0, 0);
-      t19 *= t18;
-      t18 = t2.y;
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(22, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, t19, t18, wA, t1, t2, 0, 0, 0);
-      var t20 = t1.y;
-      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(23, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, t19, t18, t20, wA, t1, t2, 0, 0);
-      var vt = t19 + t18 * t20;
-      t19 = t12.get$tangentMass();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(24, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, vt, t19, t2, 0, 0, 0);
-      var lambda = t19 * -vt;
-      t19 = t12.get$normalImpulse();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(25, lambda, t19, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
-      var maxFriction = friction * t19;
-      t19 = t12.get$tangentImpulse();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(26, lambda, maxFriction, t19, i, t12, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      var newImpulse = $.MathBox_clamp(t19 + lambda, -maxFriction, maxFriction);
-      if (typeof newImpulse !== 'number') return this.solveVelocityConstraints$0$bailout(27, i, t12, t3, newImpulse, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0, 0);
-      var t21 = t12.get$tangentImpulse();
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(28, i, t12, t3, newImpulse, t21, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
-      var lambda0 = newImpulse - t21;
-      t21 = t1.x;
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(29, i, t12, t3, newImpulse, t4, lambda0, t21, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
-      var Px = t21 * lambda0;
-      t21 = t1.y;
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(30, i, t12, t3, newImpulse, t4, lambda0, t11, Px, t5, bodyB, bodyA, t21, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
-      var Py = t21 * lambda0;
-      t21 = vA.get$x();
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(31, i, t12, t3, newImpulse, t4, t11, bodyA, t5, bodyB, Py, vA, Px, vB, invMassA, invIA, invMassB, invIB, t6, t21, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
-      vA.set$x(t21 - Px * invMassA);
-      var t22 = vA.get$y();
-      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(32, i, t12, t3, newImpulse, t4, t11, bodyA, t5, bodyB, Py, vA, Px, vB, invMassA, invIA, invMassB, invIB, t22, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
-      vA.set$y(t22 - Py * invMassA);
-      var t23 = t12.get$rA().get$x();
-      if (typeof t23 !== 'number') return this.solveVelocityConstraints$0$bailout(33, i, t12, t3, newImpulse, t4, t11, bodyA, bodyB, Px, Py, t5, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t23, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
-      t23 *= Py;
-      var t24 = t12.get$rA().get$y();
-      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(34, i, t12, t3, newImpulse, t4, t11, bodyA, bodyB, Px, Py, t5, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t23, t9, t24, t10, friction, wB, j, wA, t1, t2);
-      wA -= invIA * (t23 - t24 * Px);
-      var t25 = vB.get$x();
-      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(35, i, t12, t3, newImpulse, t4, t11, bodyA, t5, Px, Py, bodyB, vB, invMassA, vA, invMassB, invIB, invIA, t6, t7, t8, t9, t10, friction, wA, t25, wB, j, t1, t2, 0);
-      vB.set$x(t25 + Px * invMassB);
-      var t26 = vB.get$y();
-      if (typeof t26 !== 'number') return this.solveVelocityConstraints$0$bailout(36, i, t12, t3, newImpulse, t4, t11, bodyA, t5, Px, Py, vA, vB, invMassA, bodyB, invMassB, invIB, invIA, t6, t7, t8, t9, t10, friction, wA, wB, j, t26, t1, t2, 0);
-      vB.set$y(t26 + Py * invMassB);
-      var t27 = t12.get$rB().get$x();
-      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(37, i, t12, t3, newImpulse, t4, Px, bodyA, t5, t11, Py, bodyB, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t9, t10, friction, wA, wB, j, t1, t27, t2, 0);
-      t27 *= Py;
-      var t28 = t12.get$rB().get$y();
-      if (typeof t28 !== 'number') return this.solveVelocityConstraints$0$bailout(38, t28, i, t12, t3, newImpulse, t4, Px, bodyA, t5, t11, bodyB, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t9, t10, friction, wA, wB, j, t1, t2, t27, 0);
-      wB += invIB * (t27 - t28 * Px);
-      t12.set$tangentImpulse(newImpulse);
+      var ccp = t11[j];
+      var a = ccp.get$rA();
+      t11 = -wB;
+      var t14 = ccp.get$rB().get$y();
+      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(11, i, ccp, a, t3, t11, t4, t14, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t14 *= t11;
+      t11 = vB.get$x();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(12, i, ccp, a, t3, t4, t14, t11, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t11 += t14;
+      t14 = vA.get$x();
+      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(13, i, ccp, a, t3, t4, c, t11, t5, bodyB, bodyA, t14, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t14 = t11 - t14;
+      t11 = a.get$y();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(14, i, ccp, a, t3, t4, c, bodyA, t5, bodyB, t14, t11, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t2.x = t14 + wA * t11;
+      t19 = ccp.get$rB().get$x();
+      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(15, i, ccp, a, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t19, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
+      t19 *= wB;
+      var t21 = vB.get$y();
+      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(16, i, ccp, a, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t19, t21, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t21 += t19;
+      t19 = vA.get$y();
+      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(17, i, ccp, a, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t21, t19, t9, t8, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      t19 = t21 - t19;
+      t21 = a.get$x();
+      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(18, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t19, t21, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
+      t2.y = t19 - wA * t21;
+      var t25 = t2.x;
+      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(19, i, ccp, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t25, wB, j, wA, t1, t2, 0, 0, 0, 0);
+      var t27 = t1.x;
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(20, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, t25, wB, j, t27, wA, t1, t2, 0, 0, 0);
+      t27 *= t25;
+      t25 = t2.y;
+      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(21, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, t27, t25, wA, t1, t2, 0, 0, 0);
+      var t30 = t1.y;
+      if (typeof t30 !== 'number') return this.solveVelocityConstraints$0$bailout(22, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, t27, t25, t30, wA, t1, t2, 0, 0);
+      var vt = t27 + t25 * t30;
+      t27 = ccp.get$tangentMass();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(23, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, vt, t27, t2, 0, 0, 0);
+      var lambda = t27 * -vt;
+      t27 = ccp.get$normalImpulse();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(24, lambda, t27, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
+      var maxFriction = friction * t27;
+      t27 = ccp.get$tangentImpulse();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(25, lambda, maxFriction, t27, i, ccp, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      var newImpulse = $.MathBox_clamp(t27 + lambda, -maxFriction, maxFriction);
+      if (typeof newImpulse !== 'number') return this.solveVelocityConstraints$0$bailout(26, i, ccp, t3, newImpulse, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0, 0);
+      var t36 = ccp.get$tangentImpulse();
+      if (typeof t36 !== 'number') return this.solveVelocityConstraints$0$bailout(27, i, ccp, t3, newImpulse, t36, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0, 0);
+      var lambda0 = newImpulse - t36;
+      t36 = t1.x;
+      if (typeof t36 !== 'number') return this.solveVelocityConstraints$0$bailout(28, i, ccp, t3, newImpulse, t4, lambda0, t36, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0, 0);
+      var Px = t36 * lambda0;
+      t36 = t1.y;
+      if (typeof t36 !== 'number') return this.solveVelocityConstraints$0$bailout(29, i, ccp, t3, newImpulse, t4, lambda0, c, Px, t5, bodyB, bodyA, t36, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
+      var Py = t36 * lambda0;
+      t36 = vA.get$x();
+      if (typeof t36 !== 'number') return this.solveVelocityConstraints$0$bailout(30, i, ccp, t3, newImpulse, t4, c, bodyA, t5, bodyB, Py, vA, Px, vB, invMassA, invIA, invMassB, invIB, t6, t36, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
+      vA.set$x(t36 - Px * invMassA);
+      var t41 = vA.get$y();
+      if (typeof t41 !== 'number') return this.solveVelocityConstraints$0$bailout(31, i, ccp, t3, newImpulse, t4, c, bodyA, t5, bodyB, Py, vA, Px, vB, invMassA, invIA, invMassB, invIB, t41, t6, t7, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
+      vA.set$y(t41 - Py * invMassA);
+      var t43 = ccp.get$rA().get$x();
+      if (typeof t43 !== 'number') return this.solveVelocityConstraints$0$bailout(32, i, ccp, t3, newImpulse, t4, c, bodyA, bodyB, Px, Py, t5, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t43, t8, t9, t10, friction, wB, j, wA, t1, t2, 0);
+      t43 *= Py;
+      var t45 = ccp.get$rA().get$y();
+      if (typeof t45 !== 'number') return this.solveVelocityConstraints$0$bailout(33, i, ccp, t3, newImpulse, t4, c, bodyA, bodyB, Px, Py, t5, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t43, t9, t45, t10, friction, wB, j, wA, t1, t2);
+      wA -= invIA * (t43 - t45 * Px);
+      var t47 = vB.get$x();
+      if (typeof t47 !== 'number') return this.solveVelocityConstraints$0$bailout(34, i, ccp, t3, newImpulse, t4, c, bodyA, t5, Px, Py, bodyB, vB, invMassA, vA, invMassB, invIB, invIA, t6, t7, t8, t9, t10, friction, wA, t47, wB, j, t1, t2, 0);
+      vB.set$x(t47 + Px * invMassB);
+      var t49 = vB.get$y();
+      if (typeof t49 !== 'number') return this.solveVelocityConstraints$0$bailout(35, i, ccp, t3, newImpulse, t4, c, bodyA, t5, Px, Py, vA, vB, invMassA, bodyB, invMassB, invIB, invIA, t6, t7, t8, t9, t10, friction, wA, wB, j, t49, t1, t2, 0);
+      vB.set$y(t49 + Py * invMassB);
+      var t51 = ccp.get$rB().get$x();
+      if (typeof t51 !== 'number') return this.solveVelocityConstraints$0$bailout(36, i, ccp, t3, newImpulse, t4, Px, bodyA, t5, c, Py, bodyB, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t9, t10, friction, wA, wB, j, t1, t51, t2, 0);
+      t51 *= Py;
+      var t53 = ccp.get$rB().get$y();
+      if (typeof t53 !== 'number') return this.solveVelocityConstraints$0$bailout(37, t53, i, ccp, t3, newImpulse, t4, Px, bodyA, t5, c, bodyB, vB, invMassA, invIA, invMassB, invIB, vA, t6, t7, t8, t9, t10, friction, wA, wB, j, t1, t2, t51, 0);
+      wB += invIB * (t51 - t53 * Px);
+      ccp.set$tangentImpulse(newImpulse);
       ++j;
     }
-    t12 = t11.get$pointCount();
-    if (typeof t12 !== 'number') return this.solveVelocityConstraints$0$bailout(39, i, t3, t4, t11, bodyA, t5, bodyB, t12, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0, 0);
-    t12 = t12 === 1;
+    t11 = c.get$pointCount();
+    if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(38, i, t3, t4, c, bodyA, t5, bodyB, t11, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0, 0);
+    t11 = t11 === 1;
     t13 = -wB;
-    if (t12) {
-      t12 = t11.get$points();
-      if (typeof t12 !== 'string' && (typeof t12 !== 'object' || t12 === null || (t12.constructor !== Array && !t12.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(40, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0, 0);
-      t14 = t12.length;
+    if (t11) {
+      t11 = c.get$points();
+      if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || (t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(39, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, t11, invIB, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0, 0);
+      t14 = t11.length;
       if (0 >= t14) throw $.ioore(0);
-      t12 = t12[0];
-      var a1 = t12.get$rA();
-      t15 = t12.get$rB().get$y();
-      if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(41, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t13, t15, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      t15 *= t13;
+      ccp = t11[0];
+      var a1 = ccp.get$rA();
+      t11 = ccp.get$rB().get$y();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(40, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t13, t11, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      t11 *= t13;
       t13 = vB.get$x();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(42, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t15, t13, t9, t8, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      t13 += t15;
-      t15 = vA.get$x();
-      if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(43, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t8, t9, t13, t15, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      t15 = t13 - t15;
+      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(41, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t11, t13, t9, t8, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      t13 += t11;
+      t11 = vA.get$x();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(42, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t8, t9, t13, t11, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      t11 = t13 - t11;
       t13 = a1.get$y();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(44, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t8, t9, t10, t15, t13, wB, wA, t1, t2, 0, 0, 0, 0);
-      t2.x = t15 + wA * t13;
-      t16 = t12.get$rB().get$x();
-      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(45, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t8, t9, t10, wB, t16, wA, t1, t2, 0, 0, 0, 0, 0);
-      t16 *= wB;
-      t17 = vB.get$y();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(46, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t8, t9, t10, wB, t16, t17, wA, t1, t2, 0, 0, 0, 0);
-      t17 += t16;
-      t16 = vA.get$y();
-      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(47, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, a1, t6, t7, t8, t9, t10, wB, t17, t16, wA, t1, t2, 0, 0, 0, 0);
-      t16 = t17 - t16;
-      t17 = a1.get$x();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(48, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t16, t17, t2, t1, 0, 0, 0, 0, 0);
-      t2.y = t16 - wA * t17;
-      var b = t11.get$normal();
-      t18 = t2.x;
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(49, b, t18, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
-      t19 = b.get$x();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(50, b, t18, i, t19, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      t19 *= t18;
-      t18 = t2.y;
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(51, b, i, t19, t18, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      t20 = b.get$y();
-      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(52, i, t19, t18, t20, t4, t3, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      var vn = t19 + t18 * t20;
-      t19 = t12.get$normalMass();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(53, i, t3, t4, vn, t19, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
-      t19 = -t19;
-      t21 = t12.get$velocityBias();
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(54, i, t3, t4, vn, t19, bodyA, t5, bodyB, t21, vA, t11, invMassA, invIA, vB, invMassB, invIB, t12, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      lambda = t19 * (vn - t21);
-      t19 = t12.get$normalImpulse();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(55, i, t3, t4, t11, bodyA, t5, bodyB, lambda, t19, vB, vA, invIA, invMassA, invIB, invMassB, t6, t12, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
-      a = t19 + lambda;
-      newImpulse = a > 0.0 ? a : 0.0;
-      t13 = t12.get$normalImpulse();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(56, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t13, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
-      lambda = newImpulse - t13;
-      t13 = t11.get$normal().get$x();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(57, i, t3, t4, t11, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, lambda, t9, t13, t10, wB, wA, t1, t2, 0, 0, 0, 0);
-      Px = t13 * lambda;
-      t13 = t11.get$normal().get$y();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(58, i, t3, t4, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, lambda, t9, t10, Px, t13, wB, wA, t1, t2, 0, 0, 0, 0);
-      Py = t13 * lambda;
-      t13 = vA.get$x();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(59, i, t3, t4, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, t13, wB, wA, t1, t2, 0, 0, 0, 0);
-      vA.set$x(t13 - Px * invMassA);
-      t14 = vA.get$y();
-      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(60, i, t3, t4, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t14, wA, t1, t2, 0, 0, 0, 0);
-      vA.set$y(t14 - Py * invMassA);
-      t15 = t12.get$rA().get$x();
-      if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(61, i, t3, t4, bodyA, bodyB, t5, vA, vB, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, wA, t1, t15, t2, 0, 0, 0, 0, 0);
-      t15 *= Py;
-      t16 = t12.get$rA().get$y();
-      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(62, i, t3, t4, bodyA, bodyB, t5, vA, vB, invIA, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, wA, t1, t15, t2, t16, 0, 0, 0, 0);
-      wA -= invIA * (t15 - t16 * Px);
-      t17 = vB.get$x();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(63, i, wA, t17, t3, t4, bodyA, bodyB, t5, vA, vB, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t1, t2, 0, 0, 0, 0, 0, 0);
-      vB.set$x(t17 + Px * invMassB);
-      t18 = vB.get$y();
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(64, i, wA, t3, t4, t18, bodyA, bodyB, t5, vA, vB, invMassB, invIB, t12, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t1, t2, 0, 0, 0, 0, 0, 0);
-      vB.set$y(t18 + Py * invMassB);
-      t19 = t12.get$rB().get$x();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(65, t2, t7, newImpulse, t8, i, t9, wA, t10, Px, t3, t4, Py, wB, bodyA, bodyB, t5, t19, vA, vB, invIB, t12, t6, t1, 0, 0, 0, 0, 0, 0, 0);
-      t19 *= Py;
-      t20 = t12.get$rB().get$y();
-      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(66, t2, t7, newImpulse, t8, i, t9, wA, t10, Px, t3, t4, wB, bodyA, bodyB, t5, vA, vB, t19, t20, invIB, t12, t6, t1, 0, 0, 0, 0, 0, 0, 0);
-      wB += invIB * (t19 - t20 * Px);
-      t12.set$normalImpulse(newImpulse);
-    } else {
-      t12 = t11.get$points();
-      if (typeof t12 !== 'string' && (typeof t12 !== 'object' || t12 === null || (t12.constructor !== Array && !t12.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(67, wB, t7, t8, t12, i, t9, t10, t3, t4, wA, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
-      t14 = t12.length;
-      if (0 >= t14) throw $.ioore(0);
-      t12 = t12[0];
-      t15 = t11.get$points();
-      if (typeof t15 !== 'string' && (typeof t15 !== 'object' || t15 === null || (t15.constructor !== Array && !t15.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(68, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0);
-      t16 = t15.length;
-      if (1 >= t16) throw $.ioore(1);
-      t15 = t15[1];
-      a = $.Vector$(t12.get$normalImpulse(), t15.get$normalImpulse());
-      t17 = t12.get$rB().get$y();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(69, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, t13, t17, wB, wA, t1, t2, 0, 0, 0);
-      t17 *= t13;
-      t18 = vB.get$x();
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(70, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t17, t18, wA, t1, t2, 0, 0, 0);
-      t18 += t17;
-      t17 = vA.get$x();
-      if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(71, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t18, t17, wA, t1, t2, 0, 0, 0);
-      t17 = t18 - t17;
-      t18 = t12.get$rA().get$y();
-      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(72, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t17, wA, t18, t1, t2, 0, 0, 0);
-      t3.x = t17 + wA * t18;
-      t19 = t12.get$rB().get$x();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(73, t19, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0, 0);
+      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(43, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t8, t9, t10, t11, t13, wB, wA, t1, t2, 0, 0, 0, 0);
+      t2.x = t11 + wA * t13;
+      t19 = ccp.get$rB().get$x();
+      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(44, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t8, t9, t10, wB, t19, wA, t1, t2, 0, 0, 0, 0, 0);
       t19 *= wB;
-      t20 = vB.get$y();
-      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(74, t19, i, t20, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t20 += t19;
+      t21 = vB.get$y();
+      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(45, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t8, t9, t10, wB, t19, t21, wA, t1, t2, 0, 0, 0, 0);
+      t21 += t19;
       t19 = vA.get$y();
-      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(75, i, t20, t19, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t19 = t20 - t19;
-      t20 = t12.get$rA().get$x();
-      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(76, i, t3, t19, t4, t20, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t3.y = t19 - wA * t20;
-      t21 = t15.get$rB().get$y();
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(77, i, t3, t4, t11, bodyA, bodyB, t5, t13, vA, vB, invMassA, invIA, invMassB, invIB, t21, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t21 *= t13;
-      t13 = vB.get$x();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(78, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t13, t6, t21, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t13 += t21;
-      t21 = vA.get$x();
-      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(79, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t13, t6, t21, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t21 = t13 - t21;
-      t13 = t15.get$rA().get$y();
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(80, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t21, t13, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t4.x = t21 + wA * t13;
-      t22 = t15.get$rB().get$x();
-      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(81, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t22, t15, a, wB, wA, t1, t2, 0, 0, 0, 0);
-      t22 *= wB;
-      t23 = vB.get$y();
-      if (typeof t23 !== 'number') return this.solveVelocityConstraints$0$bailout(82, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, t22, t23, a, wB, wA, t1, t2, 0, 0, 0);
-      t23 += t22;
-      t22 = vA.get$y();
-      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(83, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, t23, t22, wB, wA, t1, t2, 0, 0, 0);
-      t22 = t23 - t22;
-      t23 = t15.get$rA().get$x();
-      if (typeof t23 !== 'number') return this.solveVelocityConstraints$0$bailout(84, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, t22, wB, t23, wA, t1, t2, 0, 0, 0);
-      t4.y = t22 - wA * t23;
-      t24 = t3.x;
-      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(85, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t24, t1, t2, 0, 0, 0, 0);
-      t25 = t11.get$normal().get$x();
-      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(86, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t24, t25, t2, t1, 0, 0, 0);
-      t25 *= t24;
-      t24 = t3.y;
-      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(87, t24, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, t25, 0, 0, 0);
-      t26 = t11.get$normal().get$y();
-      if (typeof t26 !== 'number') return this.solveVelocityConstraints$0$bailout(88, t24, t26, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, t25, 0, 0);
-      var vn1 = t25 + t24 * t26;
-      t25 = t4.x;
-      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(89, i, vn1, t25, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t12, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      t27 = t11.get$normal().get$x();
-      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(90, i, vn1, t25, t3, t27, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, t12, t10, t15, a, wB, wA, t1, t2, 0, 0);
+      if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(46, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, a1, t6, t7, t8, t9, t10, wB, t21, t19, wA, t1, t2, 0, 0, 0, 0);
+      t19 = t21 - t19;
+      t21 = a1.get$x();
+      if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(47, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t19, t21, t2, t1, 0, 0, 0, 0, 0);
+      t2.y = t19 - wA * t21;
+      var b = c.get$normal();
+      t25 = t2.x;
+      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(48, b, t25, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
+      t27 = b.get$x();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(49, b, t25, i, t27, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
       t27 *= t25;
-      t25 = t4.y;
-      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(91, i, vn1, t3, t4, t27, t25, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0);
-      t28 = t11.get$normal().get$y();
-      if (typeof t28 !== 'number') return this.solveVelocityConstraints$0$bailout(92, i, vn1, t3, t4, t27, t25, t28, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0);
-      var vn2 = t27 + t25 * t28;
-      t27 = t12.get$velocityBias();
-      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(93, i, vn1, t3, t4, t11, bodyA, bodyB, t5, vn2, vA, vB, invMassA, invIA, invMassB, invIB, t27, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0);
-      t27 = vn1 - t27;
-      var t29 = t15.get$velocityBias();
-      if (typeof t29 !== 'number') return this.solveVelocityConstraints$0$bailout(94, i, t3, t4, t11, bodyA, bodyB, t5, vn2, vA, vB, invMassA, invIA, invMassB, invIB, t29, t6, t27, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0);
-      b = $.Vector$(t27, vn2 - t29);
-      t27 = t11.get$K().get$col1().get$x();
-      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(95, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t27, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      var t30 = a.x;
-      if (typeof t30 !== 'number') return this.solveVelocityConstraints$0$bailout(96, i, t3, t4, t30, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t27, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0);
-      t30 *= t27;
-      t27 = t11.get$K().get$col2().get$x();
-      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(97, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t30, t8, t12, t9, t10, t15, t27, a, wB, wA, t1, t2, 0, 0);
-      var t31 = a.y;
-      if (typeof t31 !== 'number') return this.solveVelocityConstraints$0$bailout(98, i, t3, t4, t11, bodyA, bodyB, t5, t31, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t30, t8, t12, t9, t10, t15, t27, a, wB, wA, t1, t2, 0);
-      t5.x = t30 + t27 * t31;
-      var t32 = t11.get$K().get$col1().get$y();
-      if (typeof t32 !== 'number') return this.solveVelocityConstraints$0$bailout(99, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, t32, wB, wA, t1, t2, 0, 0, 0);
-      var t33 = a.x;
-      if (typeof t33 !== 'number') return this.solveVelocityConstraints$0$bailout(100, i, t3, t4, t11, bodyA, bodyB, t5, t33, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, t32, wB, wA, t1, t2, 0, 0);
-      t33 *= t32;
-      t32 = t11.get$K().get$col2().get$y();
-      if (typeof t32 !== 'number') return this.solveVelocityConstraints$0$bailout(101, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, t33, t32, wA, t1, t2, 0, 0);
-      var t34 = a.y;
-      if (typeof t34 !== 'number') return this.solveVelocityConstraints$0$bailout(102, i, t3, t4, t11, bodyA, bodyB, t5, t34, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, t33, t32, wA, t1, t2, 0);
-      t5.y = t33 + t32 * t34;
-      var t35 = b.x;
-      if (typeof t35 !== 'number') return this.solveVelocityConstraints$0$bailout(103, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t35, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      var t36 = t5.x;
-      if (typeof t36 !== 'number') return this.solveVelocityConstraints$0$bailout(104, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t35, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, t36, 0, 0);
-      b.x = t35 - t36;
-      var t37 = b.y;
-      if (typeof t37 !== 'number') return this.solveVelocityConstraints$0$bailout(105, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t37, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0, 0);
-      var t38 = t5.y;
-      if (typeof t38 !== 'number') return this.solveVelocityConstraints$0$bailout(106, i, t38, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t37, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, wA, t1, t2, 0, 0);
-      b.y = t37 - t38;
-      t13 = b.x;
-      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(107, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, wA, t1, t2, 0, 0, 0);
-      t14 = b.y;
-      if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(108, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0, 0);
-      t16 = t7.x;
-      t17 = t7.y;
-      t18 = t13 >= 0.0;
-      t19 = t14 >= 0.0;
+      t25 = t2.y;
+      if (typeof t25 !== 'number') return this.solveVelocityConstraints$0$bailout(50, b, i, t27, t25, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      t30 = b.get$y();
+      if (typeof t30 !== 'number') return this.solveVelocityConstraints$0$bailout(51, i, t27, t25, t30, t4, t3, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      var vn = t27 + t25 * t30;
+      t27 = ccp.get$normalMass();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(52, i, t3, t4, vn, t27, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
+      t27 = -t27;
+      var t33 = ccp.get$velocityBias();
+      if (typeof t33 !== 'number') return this.solveVelocityConstraints$0$bailout(53, i, t3, t4, vn, t27, bodyA, t5, bodyB, t33, vA, c, invMassA, invIA, vB, invMassB, invIB, ccp, t6, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      lambda = t27 * (vn - t33);
+      t27 = ccp.get$normalImpulse();
+      if (typeof t27 !== 'number') return this.solveVelocityConstraints$0$bailout(54, i, t3, t4, c, bodyA, t5, bodyB, lambda, t27, vB, vA, invIA, invMassA, invIB, invMassB, t6, ccp, t7, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
+      a = t27 + lambda;
+      newImpulse = a > 0.0 ? a : 0.0;
+      t11 = ccp.get$normalImpulse();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(55, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t11, t8, t9, t10, wB, wA, t1, t2, 0, 0, 0, 0, 0);
+      lambda = newImpulse - t11;
+      t11 = c.get$normal().get$x();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(56, i, t3, t4, c, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, lambda, t9, t11, t10, wB, wA, t1, t2, 0, 0, 0, 0);
+      Px = t11 * lambda;
+      t11 = c.get$normal().get$y();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(57, i, t3, t4, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, lambda, t9, t10, Px, t11, wB, wA, t1, t2, 0, 0, 0, 0);
+      Py = t11 * lambda;
+      t11 = vA.get$x();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(58, i, t3, t4, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, t11, wB, wA, t1, t2, 0, 0, 0, 0);
+      vA.set$x(t11 - Px * invMassA);
+      var t16 = vA.get$y();
+      if (typeof t16 !== 'number') return this.solveVelocityConstraints$0$bailout(59, i, t3, t4, bodyA, t5, bodyB, vA, vB, invMassA, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t16, wA, t1, t2, 0, 0, 0, 0);
+      vA.set$y(t16 - Py * invMassA);
+      t18 = ccp.get$rA().get$x();
+      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(60, i, t3, t4, bodyA, bodyB, t5, vA, vB, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, wA, t1, t18, t2, 0, 0, 0, 0, 0);
+      t18 *= Py;
+      var t20 = ccp.get$rA().get$y();
+      if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(61, i, t3, t4, bodyA, bodyB, t5, vA, vB, invIA, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, wA, t1, t18, t2, t20, 0, 0, 0, 0);
+      wA -= invIA * (t18 - t20 * Px);
+      var t22 = vB.get$x();
+      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(62, i, wA, t22, t3, t4, bodyA, bodyB, t5, vA, vB, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t1, t2, 0, 0, 0, 0, 0, 0);
+      vB.set$x(t22 + Px * invMassB);
+      var t24 = vB.get$y();
+      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(63, i, wA, t3, t4, t24, bodyA, bodyB, t5, vA, vB, invMassB, invIB, ccp, t6, t7, newImpulse, t8, t9, t10, Px, Py, wB, t1, t2, 0, 0, 0, 0, 0, 0);
+      vB.set$y(t24 + Py * invMassB);
+      var t26 = ccp.get$rB().get$x();
+      if (typeof t26 !== 'number') return this.solveVelocityConstraints$0$bailout(64, t2, t7, newImpulse, t8, i, t9, wA, t10, Px, t3, t4, Py, wB, bodyA, bodyB, t5, t26, vA, vB, invIB, ccp, t6, t1, 0, 0, 0, 0, 0, 0, 0);
+      t26 *= Py;
+      var t28 = ccp.get$rB().get$y();
+      if (typeof t28 !== 'number') return this.solveVelocityConstraints$0$bailout(65, t2, t7, newImpulse, t8, i, t9, wA, t10, Px, t3, t4, wB, bodyA, bodyB, t5, vA, vB, t26, t28, invIB, ccp, t6, t1, 0, 0, 0, 0, 0, 0, 0);
+      wB += invIB * (t26 - t28 * Px);
+      ccp.set$normalImpulse(newImpulse);
+    } else {
+      t11 = c.get$points();
+      if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || (t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(66, wB, t7, t8, wA, i, t9, t10, t11, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
+      t14 = t11.length;
+      if (0 >= t14) throw $.ioore(0);
+      var cp1 = t11[0];
+      t11 = c.get$points();
+      if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || (t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))) return this.solveVelocityConstraints$0$bailout(67, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, t11, wB, wA, t1, t2, 0, 0, 0, 0, 0, 0);
+      t16 = t11.length;
+      if (1 >= t16) throw $.ioore(1);
+      var cp2 = t11[1];
+      a = $.Vector$(cp1.get$normalImpulse(), cp2.get$normalImpulse());
+      t11 = cp1.get$rB().get$y();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(68, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, t13, wB, t11, wA, t1, t2, 0, 0, 0);
+      t11 *= t13;
+      t18 = vB.get$x();
+      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(69, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, t18, wA, t1, t2, 0, 0, 0);
+      t18 += t11;
+      t11 = vA.get$x();
+      if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(70, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t18, t11, wA, t1, t2, 0, 0, 0);
+      t11 = t18 - t11;
+      t18 = cp1.get$rA().get$y();
+      if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(71, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, wA, t18, t1, t2, 0, 0, 0);
+      t3.x = t11 + wA * t18;
+      t22 = cp1.get$rB().get$x();
+      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(72, t22, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0, 0);
+      t22 *= wB;
+      t24 = vB.get$y();
+      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(73, i, t22, t24, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t24 += t22;
+      t22 = vA.get$y();
+      if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(74, i, t24, t3, t22, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t22 = t24 - t22;
+      t24 = cp1.get$rA().get$x();
+      if (typeof t24 !== 'number') return this.solveVelocityConstraints$0$bailout(75, i, t3, t4, t22, t24, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t3.y = t22 - wA * t24;
+      t28 = cp2.get$rB().get$y();
+      if (typeof t28 !== 'number') return this.solveVelocityConstraints$0$bailout(76, i, t3, t4, c, bodyA, bodyB, t5, t13, vA, t28, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t28 *= t13;
+      t13 = vB.get$x();
+      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(77, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t13, invMassB, invIB, t6, t28, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t13 += t28;
+      t28 = vA.get$x();
+      if (typeof t28 !== 'number') return this.solveVelocityConstraints$0$bailout(78, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t13, t6, t28, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t28 = t13 - t28;
+      t13 = cp2.get$rA().get$y();
+      if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(79, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t28, t7, t13, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t4.x = t28 + wA * t13;
+      t33 = cp2.get$rB().get$x();
+      if (typeof t33 !== 'number') return this.solveVelocityConstraints$0$bailout(80, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, t33, a, wB, wA, t1, t2, 0, 0, 0, 0);
+      t33 *= wB;
+      var t35 = vB.get$y();
+      if (typeof t35 !== 'number') return this.solveVelocityConstraints$0$bailout(81, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, t33, t35, a, wB, wA, t1, t2, 0, 0, 0);
+      t35 += t33;
+      t33 = vA.get$y();
+      if (typeof t33 !== 'number') return this.solveVelocityConstraints$0$bailout(82, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, t35, t33, wB, wA, t1, t2, 0, 0, 0);
+      t33 = t35 - t33;
+      t35 = cp2.get$rA().get$x();
+      if (typeof t35 !== 'number') return this.solveVelocityConstraints$0$bailout(83, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t33, t35, wA, t1, t2, 0, 0, 0);
+      t4.y = t33 - wA * t35;
+      var t39 = t3.x;
+      if (typeof t39 !== 'number') return this.solveVelocityConstraints$0$bailout(84, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t39, t1, t2, 0, 0, 0, 0);
+      t41 = c.get$normal().get$x();
+      if (typeof t41 !== 'number') return this.solveVelocityConstraints$0$bailout(85, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t39, t1, t41, t2, 0, 0, 0);
+      t41 *= t39;
+      t39 = t3.y;
+      if (typeof t39 !== 'number') return this.solveVelocityConstraints$0$bailout(86, t39, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, t41, 0, 0, 0);
+      var t44 = c.get$normal().get$y();
+      if (typeof t44 !== 'number') return this.solveVelocityConstraints$0$bailout(87, t39, t44, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, t41, 0, 0);
+      var vn1 = t41 + t39 * t44;
+      t41 = t4.x;
+      if (typeof t41 !== 'number') return this.solveVelocityConstraints$0$bailout(88, i, vn1, t41, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      t47 = c.get$normal().get$x();
+      if (typeof t47 !== 'number') return this.solveVelocityConstraints$0$bailout(89, i, vn1, t41, t3, t4, t47, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      t47 *= t41;
+      t41 = t4.y;
+      if (typeof t41 !== 'number') return this.solveVelocityConstraints$0$bailout(90, i, vn1, t3, t4, t47, t41, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      var t50 = c.get$normal().get$y();
+      if (typeof t50 !== 'number') return this.solveVelocityConstraints$0$bailout(91, i, vn1, t3, t4, t47, t41, t50, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0);
+      var vn2 = t47 + t41 * t50;
+      t47 = cp1.get$velocityBias();
+      if (typeof t47 !== 'number') return this.solveVelocityConstraints$0$bailout(92, i, vn1, t3, t4, c, bodyA, bodyB, t5, vn2, vA, t47, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      t47 = vn1 - t47;
+      t53 = cp2.get$velocityBias();
+      if (typeof t53 !== 'number') return this.solveVelocityConstraints$0$bailout(93, i, t3, t4, c, bodyA, bodyB, t5, vn2, vA, vB, invMassA, invIA, t53, invMassB, invIB, t6, t47, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      b = $.Vector$(t47, vn2 - t53);
+      t47 = c.get$K().get$col1().get$x();
+      if (typeof t47 !== 'number') return this.solveVelocityConstraints$0$bailout(94, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t47, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      var t56 = a.x;
+      if (typeof t56 !== 'number') return this.solveVelocityConstraints$0$bailout(95, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t47, t7, t8, t9, cp1, t10, cp2, a, wB, t56, wA, t1, t2, 0, 0);
+      t56 *= t47;
+      t47 = c.get$K().get$col2().get$x();
+      if (typeof t47 !== 'number') return this.solveVelocityConstraints$0$bailout(96, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t56, t9, cp1, t10, cp2, t47, a, wB, wA, t1, t2, 0, 0);
+      var t59 = a.y;
+      if (typeof t59 !== 'number') return this.solveVelocityConstraints$0$bailout(97, i, t3, t4, c, bodyA, bodyB, t5, t59, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t56, t9, cp1, t10, cp2, t47, a, wB, wA, t1, t2, 0);
+      t5.x = t56 + t47 * t59;
+      var t61 = c.get$K().get$col1().get$y();
+      if (typeof t61 !== 'number') return this.solveVelocityConstraints$0$bailout(98, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, t61, wB, wA, t1, t2, 0, 0, 0);
+      var t63 = a.x;
+      if (typeof t63 !== 'number') return this.solveVelocityConstraints$0$bailout(99, i, t3, t4, c, bodyA, bodyB, t5, t63, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, t61, wB, wA, t1, t2, 0, 0);
+      t63 *= t61;
+      t61 = c.get$K().get$col2().get$y();
+      if (typeof t61 !== 'number') return this.solveVelocityConstraints$0$bailout(100, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, t63, t61, wA, t1, t2, 0, 0);
+      var t66 = a.y;
+      if (typeof t66 !== 'number') return this.solveVelocityConstraints$0$bailout(101, i, t3, t4, c, bodyA, bodyB, t5, t66, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, t63, t61, wA, t1, t2, 0);
+      t5.y = t63 + t61 * t66;
+      var t68 = b.x;
+      if (typeof t68 !== 'number') return this.solveVelocityConstraints$0$bailout(102, i, t3, t4, c, bodyA, bodyB, t5, vA, t68, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      var t70 = t5.x;
+      if (typeof t70 !== 'number') return this.solveVelocityConstraints$0$bailout(103, t70, i, t3, t4, c, bodyA, bodyB, t5, vA, t68, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      b.x = t68 - t70;
+      var t72 = b.y;
+      if (typeof t72 !== 'number') return this.solveVelocityConstraints$0$bailout(104, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, t72, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+      var t74 = t5.y;
+      if (typeof t74 !== 'number') return this.solveVelocityConstraints$0$bailout(105, i, t74, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, t72, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+      b.y = t72 - t74;
       for (; true; ) {
-        $.Matrix22_mulMatrixAndVectorToOut(t11.get$normalMass(), b, t6);
+        $.Matrix22_mulMatrixAndVectorToOut(c.get$normalMass(), b, t6);
         t6.mulLocal$1(-1);
-        t20 = t6.get$x();
-        if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(109, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, t20, wB, t13, t14, wA, t1, t2, 0, 0);
-        if (t20 >= 0.0) {
-          t20 = t6.get$y();
-          if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(110, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t20, t14, wA, t1, t2, 0, 0);
-          t20 = t20 >= 0.0;
-        } else t20 = false;
-        if (t20) {
+        t11 = t6.get$x();
+        if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(106, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, wA, t1, t2, 0, 0, 0);
+        if (t11 >= 0.0) {
+          t11 = t6.get$y();
+          if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(107, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, wA, t1, t2, 0, 0, 0);
+          t11 = t11 >= 0.0;
+        } else t11 = false;
+        if (t11) {
           t7.setFrom$1(t6).subLocal$1(a);
-          t8.setFrom$1(t11.get$normal()).mulLocal$1(t16);
-          t9.setFrom$1(t11.get$normal()).mulLocal$1(t17);
+          t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
+          t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
           t10.setFrom$1(t8).addLocal$1(t9);
           t5.setFrom$1(t10).mulLocal$1(invMassA);
           vA.subLocal$1(t5);
           t5.setFrom$1(t10).mulLocal$1(invMassB);
           vB.addLocal$1(t5);
-          t13 = $.Vector_crossVectors(t12.get$rA(), t8);
-          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(111, t7, t8, i, t12, t10, t15, t3, t9, t4, t13, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-          t14 = $.Vector_crossVectors(t15.get$rA(), t9);
-          if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(112, t7, t8, i, t12, t10, t15, t14, t3, t9, t4, t13, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
-          var wA0 = wA - invIA * (t13 + t14);
-          t18 = $.Vector_crossVectors(t12.get$rB(), t8);
-          if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(113, t7, t8, t9, i, t10, t15, t3, t12, t4, wA0, wB, bodyA, bodyB, t18, vA, vB, t5, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-          t19 = $.Vector_crossVectors(t15.get$rB(), t9);
-          if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(114, t7, t8, i, t12, t10, t15, t3, t9, t4, wA0, wB, bodyA, bodyB, t18, vA, vB, t19, t5, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-          var wB0 = wB + invIB * (t18 + t19);
-          t12.set$normalImpulse(t6.get$x());
-          t15.set$normalImpulse(t6.get$y());
+          t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+          if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(108, t7, t8, t9, i, cp1, t10, t11, cp2, t4, t3, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
+          t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(109, t7, t8, t9, i, cp1, t10, t11, cp2, t13, t3, t4, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
+          var wA0 = wA - invIA * (t11 + t13);
+          var t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+          if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(110, t7, t8, t9, i, cp1, t10, cp2, t3, t4, wA0, wB, bodyA, bodyB, t15, vA, vB, t5, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          var t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+          if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(111, t7, t8, i, cp1, t10, t9, cp2, t3, t4, wA0, wB, bodyA, bodyB, t15, vA, vB, t17, t5, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
+          var wB0 = wB + invIB * (t15 + t17);
+          cp1.set$normalImpulse(t6.get$x());
+          cp2.set$normalImpulse(t6.get$y());
           wA = wA0;
           wB = wB0;
           break;
         }
-        t20 = t12.get$normalMass();
-        if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(115, i, t20, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0, 0);
-        t6.set$x(-t20 * t13);
+        t11 = cp1.get$normalMass();
+        if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(112, i, t11, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+        t11 = -t11;
+        t13 = b.x;
+        if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(113, i, t11, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t13, wA, t1, t2, 0, 0);
+        t6.set$x(t11 * t13);
         t6.set$y(0.0);
-        t21 = t11.get$K().get$col1().get$y();
-        if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(116, i, t3, t4, t11, bodyA, bodyB, t5, t21, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0, 0);
-        t22 = t6.get$x();
-        if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(117, i, t3, t4, t11, bodyA, bodyB, t5, t21, vA, vB, invMassA, invIA, invMassB, invIB, t6, t22, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0);
-        vn2 = t21 * t22 + t14;
-        t20 = t6.get$x();
-        if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(118, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, vn2, t6, t20, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0);
-        if (t20 >= 0.0 && vn2 >= 0.0) {
+        t15 = c.get$K().get$col1().get$y();
+        if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(114, i, t3, t4, c, bodyA, t15, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0, 0);
+        t17 = t6.get$x();
+        if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(115, i, t3, t4, c, bodyA, t15, bodyB, t17, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+        t17 *= t15;
+        t15 = b.y;
+        if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(116, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, t17, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t15, t1, t2, 0, 0);
+        vn2 = t17 + t15;
+        t11 = t6.get$x();
+        if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(117, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, vn2, invMassB, invIB, b, t6, t11, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+        if (t11 >= 0.0 && vn2 >= 0.0) {
           t7.setFrom$1(t6).subLocal$1(a);
-          t8.setFrom$1(t11.get$normal()).mulLocal$1(t16);
-          t9.setFrom$1(t11.get$normal()).mulLocal$1(t17);
+          t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
+          t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
           t10.setFrom$1(t8).addLocal$1(t9);
           t5.setFrom$1(t10).mulLocal$1(invMassA);
           vA.subLocal$1(t5);
           t5.setFrom$1(t10).mulLocal$1(invMassB);
           vB.addLocal$1(t5);
-          t13 = $.Vector_crossVectors(t12.get$rA(), t8);
-          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(119, t7, t8, i, t12, t10, t15, t3, t9, t4, t13, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-          t14 = $.Vector_crossVectors(t15.get$rA(), t9);
-          if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(120, t7, t5, t8, i, t12, t10, t15, t3, t9, t4, t13, wB, bodyA, bodyB, t14, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
-          wA0 = wA - invIA * (t13 + t14);
-          t18 = $.Vector_crossVectors(t12.get$rB(), t8);
-          if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(121, t2, t7, t8, t9, i, t10, t15, t3, t12, t4, wB, bodyA, bodyB, t5, vA, vB, wA0, invIB, t1, t6, t18, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-          t19 = $.Vector_crossVectors(t15.get$rB(), t9);
-          if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(122, t2, t19, t7, t8, i, t12, t10, t15, t3, t9, t4, wB, bodyA, bodyB, t5, vA, vB, wA0, invIB, t1, t6, t18, 0, 0, 0, 0, 0, 0, 0, 0);
-          wB0 = wB + invIB * (t18 + t19);
-          t12.set$normalImpulse(t6.get$x());
-          t15.set$normalImpulse(t6.get$y());
+          t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+          if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(118, t7, t8, t9, i, cp1, t10, cp2, t3, t4, t11, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
+          t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(119, t7, t5, t8, t9, i, cp1, t10, cp2, t3, t4, t11, wB, bodyA, bodyB, t13, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
+          wA0 = wA - invIA * (t11 + t13);
+          t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+          if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(120, t2, t7, t8, t9, i, cp1, t10, cp2, t3, t4, wB, bodyA, bodyB, t5, vA, vB, wA0, invIB, t1, t6, t15, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+          if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(121, t2, t7, t17, t8, i, cp1, t10, t9, cp2, t3, t4, wB, bodyA, bodyB, t5, vA, vB, wA0, invIB, t1, t6, t15, 0, 0, 0, 0, 0, 0, 0, 0);
+          wB0 = wB + invIB * (t15 + t17);
+          cp1.set$normalImpulse(t6.get$x());
+          cp2.set$normalImpulse(t6.get$y());
           wA = wA0;
           wB = wB0;
           break;
         }
         t6.set$x(0.0);
-        t20 = t15.get$normalMass();
-        if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(123, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t20, t13, t14, wA, t1, t2, 0, 0);
-        t6.set$y(-t20 * t14);
-        t21 = t11.get$K().get$col2().get$x();
-        if (typeof t21 !== 'number') return this.solveVelocityConstraints$0$bailout(124, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t21, t2, t1, 0, 0);
-        t22 = t6.get$y();
-        if (typeof t22 !== 'number') return this.solveVelocityConstraints$0$bailout(125, t1, i, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t21, t2, t22, 0);
-        vn1 = t21 * t22 + t13;
-        t20 = t6.get$y();
-        if (typeof t20 !== 'number') return this.solveVelocityConstraints$0$bailout(126, vn1, i, t20, t3, t4, t11, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t12, t9, t10, t15, a, wB, t13, t14, wA, t1, t2, 0);
-        if (t20 >= 0.0 && vn1 >= 0.0) {
+        t11 = cp2.get$normalMass();
+        if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(122, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, wA, t1, t2, 0, 0, 0);
+        t11 = -t11;
+        t13 = b.y;
+        if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(123, i, t3, t4, c, bodyA, bodyB, t5, t13, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, t11, wA, t1, t2, 0, 0);
+        t6.set$y(t11 * t13);
+        t15 = c.get$K().get$col2().get$x();
+        if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(124, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t15, t2, 0, 0, 0);
+        t17 = t6.get$y();
+        if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(125, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t15, t2, t17, 0, 0);
+        t17 *= t15;
+        t15 = b.x;
+        if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(126, t17, i, t3, t4, c, bodyA, bodyB, t5, t15, vA, vB, invMassA, invIA, invMassB, invIB, b, t6, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+        vn1 = t17 + t15;
+        t11 = t6.get$y();
+        if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(127, vn1, i, t11, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, wB, wA, t1, t2, 0, 0);
+        if (t11 >= 0.0 && vn1 >= 0.0) {
           t7.setFrom$1(t6).subLocal$1(a);
-          t8.setFrom$1(t11.get$normal()).mulLocal$1(t16);
-          t9.setFrom$1(t11.get$normal()).mulLocal$1(t17);
+          t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
+          t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
           t10.setFrom$1(t8).addLocal$1(t9);
           t5.setFrom$1(t10).mulLocal$1(invMassA);
           vA.subLocal$1(t5);
           t5.setFrom$1(t10).mulLocal$1(invMassB);
           vB.addLocal$1(t5);
-          t13 = $.Vector_crossVectors(t12.get$rA(), t8);
-          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(127, t2, t7, t8, i, t12, t10, t15, t3, t9, t4, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t13, t6, t1, 0, 0, 0, 0, 0, 0, 0, 0);
-          t14 = $.Vector_crossVectors(t15.get$rA(), t9);
-          if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(128, t2, t7, t8, i, t12, t10, t15, t3, t1, t9, t4, wB, bodyA, bodyB, t5, vA, vB, invIA, wA, invIB, t13, t6, t14, 0, 0, 0, 0, 0, 0, 0);
-          wA0 = wA - invIA * (t13 + t14);
-          t18 = $.Vector_crossVectors(t12.get$rB(), t8);
-          if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(129, t7, wA0, t8, i, t12, t18, t15, t3, t10, t9, t4, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-          t19 = $.Vector_crossVectors(t15.get$rB(), t9);
-          if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(130, t7, wA0, t8, i, t12, t18, t15, t3, t10, t19, t4, t9, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-          wB0 = wB + invIB * (t18 + t19);
-          t12.set$normalImpulse(t6.get$x());
-          t15.set$normalImpulse(t6.get$y());
+          t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+          if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(128, t2, t7, t8, t9, i, cp1, t10, cp2, t3, t4, wB, bodyA, bodyB, t5, vA, vB, invIA, t11, wA, invIB, t6, t1, 0, 0, 0, 0, 0, 0, 0, 0);
+          t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(129, t2, t7, t8, t9, i, cp1, t10, cp2, t3, t4, t1, wB, bodyA, bodyB, t5, vA, vB, invIA, t11, wA, invIB, t6, t13, 0, 0, 0, 0, 0, 0, 0);
+          wA0 = wA - invIA * (t11 + t13);
+          t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+          if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(130, t7, t8, wA0, i, cp1, t10, t15, cp2, t3, t9, t4, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+          if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(131, t7, t8, wA0, i, cp1, t10, t15, cp2, t3, t9, t17, t4, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
+          wB0 = wB + invIB * (t15 + t17);
+          cp1.set$normalImpulse(t6.get$x());
+          cp2.set$normalImpulse(t6.get$y());
           wA = wA0;
           wB = wB0;
           break;
         }
         t6.set$x(0.0);
         t6.set$y(0.0);
-        if (t18 && t19) {
+        vn1 = b.x;
+        if (typeof vn1 !== 'number') return this.solveVelocityConstraints$0$bailout(132, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, b, t7, t8, t9, cp1, t10, cp2, a, vn1, wB, wA, t1, t2, 0, 0, 0);
+        vn2 = b.y;
+        if (typeof vn2 !== 'number') return this.solveVelocityConstraints$0$bailout(133, i, t3, t4, c, bodyA, bodyB, t5, vA, vB, invMassA, invIA, invMassB, invIB, t6, t7, t8, t9, cp1, t10, cp2, a, vn1, vn2, wB, wA, t1, t2, 0, 0, 0);
+        if (vn1 >= 0.0 && vn2 >= 0.0) {
           t7.setFrom$1(t6).subLocal$1(a);
-          t8.setFrom$1(t11.get$normal()).mulLocal$1(t16);
-          t9.setFrom$1(t11.get$normal()).mulLocal$1(t17);
+          t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
+          t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
           t10.setFrom$1(t8).addLocal$1(t9);
           t5.setFrom$1(t10).mulLocal$1(invMassA);
           vA.subLocal$1(t5);
           t5.setFrom$1(t10).mulLocal$1(invMassB);
           vB.addLocal$1(t5);
-          t13 = $.Vector_crossVectors(t12.get$rA(), t8);
-          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(131, t7, t5, t8, i, t12, t10, t15, t3, t9, t4, wB, bodyA, bodyB, t13, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
-          t14 = $.Vector_crossVectors(t15.get$rA(), t9);
-          if (typeof t14 !== 'number') return this.solveVelocityConstraints$0$bailout(132, t7, t5, t8, i, t12, t10, t15, t3, t9, t4, wB, bodyA, bodyB, t13, vA, vB, t14, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
-          wA0 = wA - invIA * (t13 + t14);
-          t18 = $.Vector_crossVectors(t12.get$rB(), t8);
-          if (typeof t18 !== 'number') return this.solveVelocityConstraints$0$bailout(133, t2, t18, t7, t8, t9, i, t10, t15, t3, t12, t4, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, wA0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-          t19 = $.Vector_crossVectors(t15.get$rB(), t9);
-          if (typeof t19 !== 'number') return this.solveVelocityConstraints$0$bailout(134, t2, t18, t7, t8, t19, i, t10, t15, t3, t12, t4, t9, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, wA0, t6, 0, 0, 0, 0, 0, 0, 0, 0);
-          wB0 = wB + invIB * (t18 + t19);
-          t12.set$normalImpulse(t6.get$x());
-          t15.set$normalImpulse(t6.get$y());
+          t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+          if (typeof t11 !== 'number') return this.solveVelocityConstraints$0$bailout(134, t7, t5, t8, t9, i, cp1, t10, cp2, t3, t4, wB, bodyA, bodyB, t11, vA, vB, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0, 0);
+          t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+          if (typeof t13 !== 'number') return this.solveVelocityConstraints$0$bailout(135, t7, t5, t8, t9, i, cp1, t10, cp2, t3, t4, wB, bodyA, bodyB, t11, vA, vB, t13, invIA, wA, invIB, t1, t6, t2, 0, 0, 0, 0, 0, 0, 0);
+          wA0 = wA - invIA * (t11 + t13);
+          t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+          if (typeof t15 !== 'number') return this.solveVelocityConstraints$0$bailout(136, t2, t7, t15, t8, t9, i, cp1, t10, cp2, t3, t4, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, wA0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+          if (typeof t17 !== 'number') return this.solveVelocityConstraints$0$bailout(137, t2, t7, t15, t8, i, cp1, t17, t9, cp2, t10, t4, t3, wB, bodyA, bodyB, t5, vA, vB, invIB, t1, t6, wA0, 0, 0, 0, 0, 0, 0, 0, 0);
+          wB0 = wB + invIB * (t15 + t17);
+          cp1.set$normalImpulse(t6.get$x());
+          cp2.set$normalImpulse(t6.get$y());
           wA = wA0;
           wB = wB0;
           break;
@@ -12798,20 +11649,6 @@ $$.ContactSolver = {"":
       t10 = env4;
       t3 = env5;
       t4 = env6;
-      t5 = env7;
-      t11 = env8;
-      t1 = env9;
-      t6 = env10;
-      t2 = env11;
-      break;
-    case 3:
-      t7 = env0;
-      t8 = env1;
-      i = env2;
-      t9 = env3;
-      t10 = env4;
-      t3 = env5;
-      t4 = env6;
       c = env7;
       bodyA = env8;
       t5 = env9;
@@ -12821,7 +11658,7 @@ $$.ContactSolver = {"":
       t6 = env13;
       t2 = env14;
       break;
-    case 4:
+    case 3:
       t7 = env0;
       t8 = env1;
       i = env2;
@@ -12839,7 +11676,7 @@ $$.ContactSolver = {"":
       t6 = env14;
       t2 = env15;
       break;
-    case 5:
+    case 4:
       t7 = env0;
       t8 = env1;
       i = env2;
@@ -12860,7 +11697,7 @@ $$.ContactSolver = {"":
       t6 = env17;
       t2 = env18;
       break;
-    case 6:
+    case 5:
       t7 = env0;
       t8 = env1;
       i = env2;
@@ -12882,7 +11719,7 @@ $$.ContactSolver = {"":
       t6 = env18;
       t2 = env19;
       break;
-    case 7:
+    case 6:
       t7 = env0;
       t8 = env1;
       i = env2;
@@ -12905,7 +11742,7 @@ $$.ContactSolver = {"":
       t6 = env19;
       t2 = env20;
       break;
-    case 8:
+    case 7:
       t2 = env0;
       t7 = env1;
       t8 = env2;
@@ -12929,7 +11766,7 @@ $$.ContactSolver = {"":
       t6 = env20;
       t1 = env21;
       break;
-    case 9:
+    case 8:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -12954,7 +11791,7 @@ $$.ContactSolver = {"":
       t1 = env21;
       t2 = env22;
       break;
-    case 10:
+    case 9:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -12981,7 +11818,7 @@ $$.ContactSolver = {"":
       t2 = env23;
       t11 = env24;
       break;
-    case 11:
+    case 10:
       i = env0;
       t11 = env1;
       t3 = env2;
@@ -13008,14 +11845,44 @@ $$.ContactSolver = {"":
       t1 = env23;
       t2 = env24;
       break;
-    case 12:
+    case 11:
       i = env0;
       ccp = env1;
       a = env2;
       t3 = env3;
       t11 = env4;
       t4 = env5;
-      t12 = env6;
+      t13 = env6;
+      c = env7;
+      bodyA = env8;
+      t5 = env9;
+      bodyB = env10;
+      vA = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
+      invIB = env16;
+      t6 = env17;
+      t7 = env18;
+      t8 = env19;
+      t9 = env20;
+      t10 = env21;
+      friction = env22;
+      wB = env23;
+      j = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 12:
+      i = env0;
+      ccp = env1;
+      a = env2;
+      t3 = env3;
+      t4 = env4;
+      t13 = env5;
+      t11 = env6;
       c = env7;
       bodyA = env8;
       t5 = env9;
@@ -13044,12 +11911,12 @@ $$.ContactSolver = {"":
       a = env2;
       t3 = env3;
       t4 = env4;
-      t12 = env5;
+      c = env5;
       t11 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t5 = env10;
+      t5 = env7;
+      bodyB = env8;
+      bodyA = env9;
+      t13 = env10;
       vA = env11;
       vB = env12;
       invMassA = env13;
@@ -13075,11 +11942,11 @@ $$.ContactSolver = {"":
       t3 = env3;
       t4 = env4;
       c = env5;
-      t11 = env6;
+      bodyA = env6;
       t5 = env7;
       bodyB = env8;
-      bodyA = env9;
-      t12 = env10;
+      t13 = env9;
+      t11 = env10;
       vA = env11;
       vB = env12;
       invMassA = env13;
@@ -13108,25 +11975,24 @@ $$.ContactSolver = {"":
       bodyA = env6;
       t5 = env7;
       bodyB = env8;
-      t12 = env9;
-      t11 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t6 = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      wB = env23;
-      j = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t18 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      t10 = env20;
+      friction = env21;
+      wB = env22;
+      j = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
       break;
     case 16:
       i = env0;
@@ -13145,17 +12011,18 @@ $$.ContactSolver = {"":
       invMassB = env13;
       invIB = env14;
       t6 = env15;
-      t13 = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
-      t10 = env20;
-      friction = env21;
-      wB = env22;
-      j = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
+      t18 = env16;
+      t20 = env17;
+      t7 = env18;
+      t8 = env19;
+      t9 = env20;
+      t10 = env21;
+      friction = env22;
+      wB = env23;
+      j = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
       break;
     case 17:
       i = env0;
@@ -13174,39 +12041,9 @@ $$.ContactSolver = {"":
       invMassB = env13;
       invIB = env14;
       t6 = env15;
-      t13 = env16;
-      t14 = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      wB = env23;
-      j = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 18:
-      i = env0;
-      ccp = env1;
-      a = env2;
-      t3 = env3;
-      t4 = env4;
-      c = env5;
-      bodyA = env6;
-      t5 = env7;
-      bodyB = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t6 = env15;
       t7 = env16;
-      t14 = env17;
-      t13 = env18;
+      t20 = env17;
+      t18 = env18;
       t9 = env19;
       t8 = env20;
       t10 = env21;
@@ -13217,7 +12054,7 @@ $$.ContactSolver = {"":
       t1 = env26;
       t2 = env27;
       break;
-    case 19:
+    case 18:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13236,8 +12073,8 @@ $$.ContactSolver = {"":
       t7 = env15;
       t8 = env16;
       t9 = env17;
-      t13 = env18;
-      t14 = env19;
+      t18 = env18;
+      t20 = env19;
       t10 = env20;
       friction = env21;
       wB = env22;
@@ -13246,7 +12083,7 @@ $$.ContactSolver = {"":
       t1 = env25;
       t2 = env26;
       break;
-    case 20:
+    case 19:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13267,12 +12104,41 @@ $$.ContactSolver = {"":
       t9 = env17;
       t10 = env18;
       friction = env19;
-      t15 = env20;
+      t24 = env20;
       wB = env21;
       j = env22;
       wA = env23;
       t1 = env24;
       t2 = env25;
+      break;
+    case 20:
+      i = env0;
+      ccp = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      t5 = env6;
+      bodyB = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      t10 = env18;
+      friction = env19;
+      t24 = env20;
+      wB = env21;
+      j = env22;
+      t26 = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
       break;
     case 21:
       i = env0;
@@ -13295,10 +12161,10 @@ $$.ContactSolver = {"":
       t9 = env17;
       t10 = env18;
       friction = env19;
-      t15 = env20;
-      wB = env21;
-      j = env22;
-      t16 = env23;
+      wB = env20;
+      j = env21;
+      t26 = env22;
+      t24 = env23;
       wA = env24;
       t1 = env25;
       t2 = env26;
@@ -13326,43 +12192,14 @@ $$.ContactSolver = {"":
       friction = env19;
       wB = env20;
       j = env21;
-      t16 = env22;
-      t15 = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 23:
-      i = env0;
-      ccp = env1;
-      t3 = env2;
-      t4 = env3;
-      c = env4;
-      bodyA = env5;
-      t5 = env6;
-      bodyB = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
-      wB = env20;
-      j = env21;
-      t16 = env22;
-      t15 = env23;
-      t17 = env24;
+      t26 = env22;
+      t24 = env23;
+      t29 = env24;
       wA = env25;
       t1 = env26;
       t2 = env27;
       break;
-    case 24:
+    case 23:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13388,12 +12225,12 @@ $$.ContactSolver = {"":
       wA = env22;
       t1 = env23;
       vt = env24;
-      t16 = env25;
+      t26 = env25;
       t2 = env26;
       break;
-    case 25:
+    case 24:
       lambda = env0;
-      t16 = env1;
+      t26 = env1;
       i = env2;
       ccp = env3;
       t3 = env4;
@@ -13420,10 +12257,10 @@ $$.ContactSolver = {"":
       t1 = env25;
       t2 = env26;
       break;
-    case 26:
+    case 25:
       lambda = env0;
       maxFriction = env1;
-      t16 = env2;
+      t26 = env2;
       i = env3;
       ccp = env4;
       t3 = env5;
@@ -13450,7 +12287,7 @@ $$.ContactSolver = {"":
       t1 = env26;
       t2 = env27;
       break;
-    case 27:
+    case 26:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13478,12 +12315,12 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 28:
+    case 27:
       i = env0;
       ccp = env1;
       t3 = env2;
       newImpulse = env3;
-      t18 = env4;
+      t35 = env4;
       t4 = env5;
       c = env6;
       bodyA = env7;
@@ -13507,14 +12344,14 @@ $$.ContactSolver = {"":
       t1 = env25;
       t2 = env26;
       break;
-    case 29:
+    case 28:
       i = env0;
       ccp = env1;
       t3 = env2;
       newImpulse = env3;
       t4 = env4;
       lambda0 = env5;
-      t18 = env6;
+      t35 = env6;
       c = env7;
       bodyA = env8;
       bodyB = env9;
@@ -13537,7 +12374,7 @@ $$.ContactSolver = {"":
       t1 = env26;
       t2 = env27;
       break;
-    case 30:
+    case 29:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13549,7 +12386,7 @@ $$.ContactSolver = {"":
       t5 = env8;
       bodyB = env9;
       bodyA = env10;
-      t18 = env11;
+      t35 = env11;
       vA = env12;
       vB = env13;
       invMassA = env14;
@@ -13557,6 +12394,37 @@ $$.ContactSolver = {"":
       invMassB = env16;
       invIB = env17;
       t6 = env18;
+      t7 = env19;
+      t8 = env20;
+      t9 = env21;
+      t10 = env22;
+      friction = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t1 = env27;
+      t2 = env28;
+      break;
+    case 30:
+      i = env0;
+      ccp = env1;
+      t3 = env2;
+      newImpulse = env3;
+      t4 = env4;
+      c = env5;
+      bodyA = env6;
+      t5 = env7;
+      bodyB = env8;
+      Py = env9;
+      vA = env10;
+      Px = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
+      invIB = env16;
+      t6 = env17;
+      t35 = env18;
       t7 = env19;
       t8 = env20;
       t9 = env21;
@@ -13586,8 +12454,8 @@ $$.ContactSolver = {"":
       invIA = env14;
       invMassB = env15;
       invIB = env16;
-      t6 = env17;
-      t18 = env18;
+      t40 = env17;
+      t6 = env18;
       t7 = env19;
       t8 = env20;
       t9 = env21;
@@ -13607,19 +12475,19 @@ $$.ContactSolver = {"":
       t4 = env4;
       c = env5;
       bodyA = env6;
-      t5 = env7;
-      bodyB = env8;
+      bodyB = env7;
+      Px = env8;
       Py = env9;
-      vA = env10;
-      Px = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t19 = env17;
-      t6 = env18;
-      t7 = env19;
+      t5 = env10;
+      vB = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      vA = env16;
+      t6 = env17;
+      t7 = env18;
+      t42 = env19;
       t8 = env20;
       t9 = env21;
       t10 = env22;
@@ -13650,41 +12518,10 @@ $$.ContactSolver = {"":
       vA = env16;
       t6 = env17;
       t7 = env18;
-      t20 = env19;
-      t8 = env20;
-      t9 = env21;
-      t10 = env22;
-      friction = env23;
-      wB = env24;
-      j = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
-      break;
-    case 34:
-      i = env0;
-      ccp = env1;
-      t3 = env2;
-      newImpulse = env3;
-      t4 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      Px = env8;
-      Py = env9;
-      t5 = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      vA = env16;
-      t6 = env17;
-      t7 = env18;
       t8 = env19;
-      t20 = env20;
+      t42 = env20;
       t9 = env21;
-      t21 = env22;
+      t44 = env22;
       t10 = env23;
       friction = env24;
       wB = env25;
@@ -13693,7 +12530,7 @@ $$.ContactSolver = {"":
       t1 = env28;
       t2 = env29;
       break;
-    case 35:
+    case 34:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13718,13 +12555,13 @@ $$.ContactSolver = {"":
       t10 = env21;
       friction = env22;
       wA = env23;
-      t22 = env24;
+      t46 = env24;
       wB = env25;
       j = env26;
       t1 = env27;
       t2 = env28;
       break;
-    case 36:
+    case 35:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13751,11 +12588,11 @@ $$.ContactSolver = {"":
       wA = env23;
       wB = env24;
       j = env25;
-      t23 = env26;
+      t48 = env26;
       t1 = env27;
       t2 = env28;
       break;
-    case 37:
+    case 36:
       i = env0;
       ccp = env1;
       t3 = env2;
@@ -13783,11 +12620,11 @@ $$.ContactSolver = {"":
       wB = env24;
       j = env25;
       t1 = env26;
-      t24 = env27;
+      t50 = env27;
       t2 = env28;
       break;
-    case 38:
-      t25 = env0;
+    case 37:
+      t52 = env0;
       i = env1;
       ccp = env2;
       t3 = env3;
@@ -13815,9 +12652,9 @@ $$.ContactSolver = {"":
       j = env25;
       t1 = env26;
       t2 = env27;
-      t24 = env28;
+      t50 = env28;
       break;
-    case 39:
+    case 38:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -13842,7 +12679,7 @@ $$.ContactSolver = {"":
       t1 = env21;
       t2 = env22;
       break;
-    case 40:
+    case 39:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -13855,8 +12692,8 @@ $$.ContactSolver = {"":
       invMassA = env9;
       invIA = env10;
       invMassB = env11;
-      invIB = env12;
-      t11 = env13;
+      t11 = env12;
+      invIB = env13;
       t6 = env14;
       t7 = env15;
       t8 = env16;
@@ -13866,6 +12703,34 @@ $$.ContactSolver = {"":
       wA = env20;
       t1 = env21;
       t2 = env22;
+      break;
+    case 40:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      ccp = env13;
+      a1 = env14;
+      t6 = env15;
+      t11 = env16;
+      t13 = env17;
+      t7 = env18;
+      t8 = env19;
+      t9 = env20;
+      t10 = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t2 = env25;
       break;
     case 41:
       i = env0;
@@ -13884,11 +12749,11 @@ $$.ContactSolver = {"":
       ccp = env13;
       a1 = env14;
       t6 = env15;
-      t11 = env16;
-      t12 = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
+      t7 = env16;
+      t13 = env17;
+      t11 = env18;
+      t9 = env19;
+      t8 = env20;
       t10 = env21;
       wB = env22;
       wA = env23;
@@ -13913,10 +12778,10 @@ $$.ContactSolver = {"":
       a1 = env14;
       t6 = env15;
       t7 = env16;
-      t12 = env17;
-      t11 = env18;
-      t9 = env19;
-      t8 = env20;
+      t8 = env17;
+      t9 = env18;
+      t11 = env19;
+      t13 = env20;
       t10 = env21;
       wB = env22;
       wA = env23;
@@ -13943,43 +12808,15 @@ $$.ContactSolver = {"":
       t7 = env16;
       t8 = env17;
       t9 = env18;
-      t11 = env19;
-      t12 = env20;
-      t10 = env21;
-      wB = env22;
-      wA = env23;
-      t1 = env24;
-      t2 = env25;
-      break;
-    case 44:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      ccp = env13;
-      a1 = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
       t10 = env19;
-      t12 = env20;
+      t13 = env20;
       t11 = env21;
       wB = env22;
       wA = env23;
       t1 = env24;
       t2 = env25;
       break;
-    case 45:
+    case 44:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14001,10 +12838,38 @@ $$.ContactSolver = {"":
       t9 = env18;
       t10 = env19;
       wB = env20;
-      t13 = env21;
+      t18 = env21;
       wA = env22;
       t1 = env23;
       t2 = env24;
+      break;
+    case 45:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      ccp = env13;
+      a1 = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      t10 = env19;
+      wB = env20;
+      t18 = env21;
+      t20 = env22;
+      wA = env23;
+      t1 = env24;
+      t2 = env25;
       break;
     case 46:
       i = env0;
@@ -14028,41 +12893,13 @@ $$.ContactSolver = {"":
       t9 = env18;
       t10 = env19;
       wB = env20;
-      t13 = env21;
-      t14 = env22;
+      t20 = env21;
+      t18 = env22;
       wA = env23;
       t1 = env24;
       t2 = env25;
       break;
     case 47:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      ccp = env13;
-      a1 = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      t10 = env19;
-      wB = env20;
-      t14 = env21;
-      t13 = env22;
-      wA = env23;
-      t1 = env24;
-      t2 = env25;
-      break;
-    case 48:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14084,14 +12921,14 @@ $$.ContactSolver = {"":
       t10 = env18;
       wB = env19;
       wA = env20;
-      t13 = env21;
-      t14 = env22;
+      t18 = env21;
+      t20 = env22;
       t2 = env23;
       t1 = env24;
       break;
-    case 49:
+    case 48:
       b = env0;
-      t15 = env1;
+      t24 = env1;
       i = env2;
       t3 = env3;
       t4 = env4;
@@ -14116,11 +12953,11 @@ $$.ContactSolver = {"":
       t1 = env23;
       t2 = env24;
       break;
-    case 50:
+    case 49:
       b = env0;
-      t15 = env1;
+      t24 = env1;
       i = env2;
-      t16 = env3;
+      t26 = env3;
       t3 = env4;
       t4 = env5;
       c = env6;
@@ -14144,11 +12981,11 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 51:
+    case 50:
       b = env0;
       i = env1;
-      t16 = env2;
-      t15 = env3;
+      t26 = env2;
+      t24 = env3;
       t3 = env4;
       t4 = env5;
       c = env6;
@@ -14172,11 +13009,11 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 52:
+    case 51:
       i = env0;
-      t16 = env1;
-      t15 = env2;
-      t17 = env3;
+      t26 = env1;
+      t24 = env2;
+      t29 = env3;
       t4 = env4;
       t3 = env5;
       c = env6;
@@ -14200,12 +13037,12 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 53:
+    case 52:
       i = env0;
       t3 = env1;
       t4 = env2;
       vn = env3;
-      t16 = env4;
+      t26 = env4;
       c = env5;
       bodyA = env6;
       t5 = env7;
@@ -14227,16 +13064,16 @@ $$.ContactSolver = {"":
       t1 = env23;
       t2 = env24;
       break;
-    case 54:
+    case 53:
       i = env0;
       t3 = env1;
       t4 = env2;
       vn = env3;
-      t16 = env4;
+      t26 = env4;
       bodyA = env5;
       t5 = env6;
       bodyB = env7;
-      t18 = env8;
+      t32 = env8;
       vA = env9;
       c = env10;
       invMassA = env11;
@@ -14255,7 +13092,7 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 55:
+    case 54:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14264,7 +13101,7 @@ $$.ContactSolver = {"":
       t5 = env5;
       bodyB = env6;
       lambda = env7;
-      t16 = env8;
+      t26 = env8;
       vB = env9;
       vA = env10;
       invIA = env11;
@@ -14282,7 +13119,7 @@ $$.ContactSolver = {"":
       t1 = env23;
       t2 = env24;
       break;
-    case 56:
+    case 55:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14309,7 +13146,7 @@ $$.ContactSolver = {"":
       t1 = env23;
       t2 = env24;
       break;
-    case 57:
+    case 56:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14337,7 +13174,7 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 58:
+    case 57:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14365,7 +13202,7 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 59:
+    case 58:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14393,7 +13230,7 @@ $$.ContactSolver = {"":
       t1 = env24;
       t2 = env25;
       break;
-    case 60:
+    case 59:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -14416,10 +13253,37 @@ $$.ContactSolver = {"":
       Px = env19;
       Py = env20;
       wB = env21;
-      t12 = env22;
+      t16 = env22;
       wA = env23;
       t1 = env24;
       t2 = env25;
+      break;
+    case 60:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t5 = env5;
+      vA = env6;
+      vB = env7;
+      invIA = env8;
+      invMassB = env9;
+      invIB = env10;
+      ccp = env11;
+      t6 = env12;
+      t7 = env13;
+      newImpulse = env14;
+      t8 = env15;
+      t9 = env16;
+      t10 = env17;
+      Px = env18;
+      Py = env19;
+      wB = env20;
+      wA = env21;
+      t1 = env22;
+      t18 = env23;
+      t2 = env24;
       break;
     case 61:
       i = env0;
@@ -14445,41 +13309,14 @@ $$.ContactSolver = {"":
       wB = env20;
       wA = env21;
       t1 = env22;
-      t13 = env23;
+      t18 = env23;
       t2 = env24;
+      t20 = env25;
       break;
     case 62:
       i = env0;
-      t3 = env1;
-      t4 = env2;
-      bodyA = env3;
-      bodyB = env4;
-      t5 = env5;
-      vA = env6;
-      vB = env7;
-      invIA = env8;
-      invMassB = env9;
-      invIB = env10;
-      ccp = env11;
-      t6 = env12;
-      t7 = env13;
-      newImpulse = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      Px = env18;
-      Py = env19;
-      wB = env20;
-      wA = env21;
-      t1 = env22;
-      t13 = env23;
-      t2 = env24;
-      t14 = env25;
-      break;
-    case 63:
-      i = env0;
       wA = env1;
-      t15 = env2;
+      t22 = env2;
       t3 = env3;
       t4 = env4;
       bodyA = env5;
@@ -14502,12 +13339,12 @@ $$.ContactSolver = {"":
       t1 = env22;
       t2 = env23;
       break;
-    case 64:
+    case 63:
       i = env0;
       wA = env1;
       t3 = env2;
       t4 = env3;
-      t16 = env4;
+      t24 = env4;
       bodyA = env5;
       bodyB = env6;
       t5 = env7;
@@ -14528,7 +13365,7 @@ $$.ContactSolver = {"":
       t1 = env22;
       t2 = env23;
       break;
-    case 65:
+    case 64:
       t2 = env0;
       t7 = env1;
       newImpulse = env2;
@@ -14545,7 +13382,7 @@ $$.ContactSolver = {"":
       bodyA = env13;
       bodyB = env14;
       t5 = env15;
-      t17 = env16;
+      t26 = env16;
       vA = env17;
       vB = env18;
       invIB = env19;
@@ -14553,7 +13390,7 @@ $$.ContactSolver = {"":
       t6 = env21;
       t1 = env22;
       break;
-    case 66:
+    case 65:
       t2 = env0;
       t7 = env1;
       newImpulse = env2;
@@ -14571,24 +13408,24 @@ $$.ContactSolver = {"":
       t5 = env14;
       vA = env15;
       vB = env16;
-      t17 = env17;
-      t18 = env18;
+      t26 = env17;
+      t28 = env18;
       invIB = env19;
       ccp = env20;
       t6 = env21;
       t1 = env22;
       break;
-    case 67:
+    case 66:
       wB = env0;
       t7 = env1;
       t8 = env2;
-      t11 = env3;
+      wA = env3;
       i = env4;
       t9 = env5;
       t10 = env6;
-      t3 = env7;
-      t4 = env8;
-      wA = env9;
+      t11 = env7;
+      t3 = env8;
+      t4 = env9;
       c = env10;
       bodyA = env11;
       bodyB = env12;
@@ -14602,6 +13439,32 @@ $$.ContactSolver = {"":
       t1 = env20;
       t6 = env21;
       t2 = env22;
+      break;
+    case 67:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      t11 = env19;
+      wB = env20;
+      wA = env21;
+      t1 = env22;
+      t2 = env23;
       break;
     case 68:
       i = env0;
@@ -14620,14 +13483,17 @@ $$.ContactSolver = {"":
       t6 = env13;
       t7 = env14;
       t8 = env15;
-      cp1 = env16;
-      t9 = env17;
+      t9 = env16;
+      cp1 = env17;
       t10 = env18;
-      t11 = env19;
-      wB = env20;
-      wA = env21;
-      t1 = env22;
-      t2 = env23;
+      cp2 = env19;
+      a = env20;
+      t11 = env21;
+      wB = env22;
+      t14 = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
       break;
     case 69:
       i = env0;
@@ -14646,14 +13512,14 @@ $$.ContactSolver = {"":
       t6 = env13;
       t7 = env14;
       t8 = env15;
-      cp1 = env16;
-      t9 = env17;
+      t9 = env16;
+      cp1 = env17;
       t10 = env18;
       cp2 = env19;
       a = env20;
-      t11 = env21;
-      t12 = env22;
-      wB = env23;
+      wB = env21;
+      t14 = env22;
+      t11 = env23;
       wA = env24;
       t1 = env25;
       t2 = env26;
@@ -14675,14 +13541,14 @@ $$.ContactSolver = {"":
       t6 = env13;
       t7 = env14;
       t8 = env15;
-      cp1 = env16;
-      t9 = env17;
+      t9 = env16;
+      cp1 = env17;
       t10 = env18;
       cp2 = env19;
       a = env20;
       wB = env21;
-      t12 = env22;
-      t11 = env23;
+      t11 = env22;
+      t14 = env23;
       wA = env24;
       t1 = env25;
       t2 = env26;
@@ -14704,513 +13570,50 @@ $$.ContactSolver = {"":
       t6 = env13;
       t7 = env14;
       t8 = env15;
-      cp1 = env16;
-      t9 = env17;
+      t9 = env16;
+      cp1 = env17;
       t10 = env18;
       cp2 = env19;
       a = env20;
       wB = env21;
-      t11 = env22;
-      t12 = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 72:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      t12 = env22;
+      t14 = env22;
       wA = env23;
       t11 = env24;
       t1 = env25;
       t2 = env26;
       break;
+    case 72:
+      t19 = env0;
+      i = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t2 = env25;
+      break;
     case 73:
-      t13 = env0;
-      i = env1;
-      t3 = env2;
-      t4 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      wA = env23;
-      t1 = env24;
-      t2 = env25;
-      break;
-    case 74:
-      t13 = env0;
-      i = env1;
-      t14 = env2;
-      t3 = env3;
-      t4 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t5 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 75:
       i = env0;
-      t14 = env1;
-      t13 = env2;
-      t3 = env3;
-      t4 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t5 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 76:
-      i = env0;
-      t3 = env1;
-      t13 = env2;
-      t4 = env3;
-      t14 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t5 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 77:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      t15 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t16 = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 78:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t15 = env13;
-      t6 = env14;
-      t16 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 79:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t15 = env13;
-      t6 = env14;
-      t16 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 80:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t16 = env14;
-      t15 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 81:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      t17 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      wA = env23;
-      t1 = env24;
-      t2 = env25;
-      break;
-    case 82:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      t17 = env20;
-      t18 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 83:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      t18 = env21;
-      t17 = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 84:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      t17 = env21;
-      wB = env22;
-      t18 = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 85:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      wA = env22;
-      t19 = env23;
-      t1 = env24;
-      t2 = env25;
-      break;
-    case 86:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      wA = env22;
-      t19 = env23;
-      t20 = env24;
-      t2 = env25;
-      t1 = env26;
-      break;
-    case 87:
-      t19 = env0;
-      i = env1;
-      t3 = env2;
-      t4 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      wA = env23;
-      t1 = env24;
-      t2 = env25;
-      t20 = env26;
-      break;
-    case 88:
-      t19 = env0;
-      t21 = env1;
-      i = env2;
-      t3 = env3;
-      t4 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t5 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      t20 = env27;
-      break;
-    case 89:
-      i = env0;
-      vn1 = env1;
-      t20 = env2;
+      t19 = env1;
+      t21 = env2;
       t3 = env3;
       t4 = env4;
       c = env5;
@@ -15236,13 +13639,477 @@ $$.ContactSolver = {"":
       t1 = env25;
       t2 = env26;
       break;
+    case 74:
+      i = env0;
+      t21 = env1;
+      t3 = env2;
+      t19 = env3;
+      t4 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t5 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 75:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      t19 = env3;
+      t21 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t5 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 76:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      t25 = env7;
+      vA = env8;
+      t26 = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 77:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      t25 = env11;
+      invMassB = env12;
+      invIB = env13;
+      t6 = env14;
+      t26 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 78:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t25 = env13;
+      t6 = env14;
+      t26 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 79:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t26 = env14;
+      t7 = env15;
+      t25 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 80:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      t31 = env20;
+      a = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t2 = env25;
+      break;
+    case 81:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      t31 = env20;
+      t33 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 82:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      a = env20;
+      t33 = env21;
+      t31 = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 83:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      a = env20;
+      wB = env21;
+      t31 = env22;
+      t33 = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 84:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      a = env20;
+      wB = env21;
+      wA = env22;
+      t37 = env23;
+      t1 = env24;
+      t2 = env25;
+      break;
+    case 85:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      a = env20;
+      wB = env21;
+      wA = env22;
+      t37 = env23;
+      t1 = env24;
+      t39 = env25;
+      t2 = env26;
+      break;
+    case 86:
+      t37 = env0;
+      i = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t2 = env25;
+      t39 = env26;
+      break;
+    case 87:
+      t37 = env0;
+      t42 = env1;
+      i = env2;
+      t3 = env3;
+      t4 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t5 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      t39 = env27;
+      break;
+    case 88:
+      i = env0;
+      vn1 = env1;
+      t39 = env2;
+      t3 = env3;
+      t4 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t5 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 89:
+      i = env0;
+      vn1 = env1;
+      t39 = env2;
+      t3 = env3;
+      t4 = env4;
+      t45 = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      t5 = env9;
+      vA = env10;
+      vB = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t6 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
     case 90:
       i = env0;
       vn1 = env1;
-      t20 = env2;
-      t3 = env3;
-      t22 = env4;
-      t4 = env5;
+      t3 = env2;
+      t4 = env3;
+      t45 = env4;
+      t39 = env5;
       c = env6;
       bodyA = env7;
       bodyB = env8;
@@ -15271,39 +14138,9 @@ $$.ContactSolver = {"":
       vn1 = env1;
       t3 = env2;
       t4 = env3;
-      t22 = env4;
-      t20 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t5 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t6 = env16;
-      t7 = env17;
-      t8 = env18;
-      cp1 = env19;
-      t9 = env20;
-      t10 = env21;
-      cp2 = env22;
-      a = env23;
-      wB = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 92:
-      i = env0;
-      vn1 = env1;
-      t3 = env2;
-      t4 = env3;
-      t22 = env4;
-      t20 = env5;
-      t23 = env6;
+      t45 = env4;
+      t39 = env5;
+      t48 = env6;
       c = env7;
       bodyA = env8;
       bodyB = env9;
@@ -15317,8 +14154,8 @@ $$.ContactSolver = {"":
       t6 = env17;
       t7 = env18;
       t8 = env19;
-      cp1 = env20;
-      t9 = env21;
+      t9 = env20;
+      cp1 = env21;
       t10 = env22;
       cp2 = env23;
       a = env24;
@@ -15327,7 +14164,7 @@ $$.ContactSolver = {"":
       t1 = env27;
       t2 = env28;
       break;
-    case 93:
+    case 92:
       i = env0;
       vn1 = env1;
       t3 = env2;
@@ -15338,17 +14175,47 @@ $$.ContactSolver = {"":
       t5 = env7;
       vn2 = env8;
       vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t22 = env15;
+      t45 = env10;
+      vB = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
       t6 = env16;
       t7 = env17;
       t8 = env18;
-      cp1 = env19;
-      t9 = env20;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 93:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vn2 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t51 = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      t45 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
       t10 = env21;
       cp2 = env22;
       a = env23;
@@ -15365,27 +14232,26 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      vn2 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t24 = env14;
-      t6 = env15;
-      t22 = env16;
-      t7 = env17;
-      t8 = env18;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      b = env14;
+      t45 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
       cp1 = env19;
-      t9 = env20;
-      t10 = env21;
-      cp2 = env22;
-      a = env23;
-      wB = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
       break;
     case 95:
       i = env0;
@@ -15401,45 +14267,46 @@ $$.ContactSolver = {"":
       invIA = env10;
       invMassB = env11;
       invIB = env12;
-      b = env13;
-      t6 = env14;
-      t22 = env15;
+      t6 = env13;
+      b = env14;
+      t45 = env15;
       t7 = env16;
       t8 = env17;
-      cp1 = env18;
-      t9 = env19;
+      t9 = env18;
+      cp1 = env19;
       t10 = env20;
       cp2 = env21;
       a = env22;
       wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
+      t54 = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
       break;
     case 96:
       i = env0;
       t3 = env1;
       t4 = env2;
-      t25 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
       b = env14;
-      t6 = env15;
-      t22 = env16;
-      t7 = env17;
-      t8 = env18;
+      t7 = env15;
+      t8 = env16;
+      t54 = env17;
+      t9 = env18;
       cp1 = env19;
-      t9 = env20;
-      t10 = env21;
-      cp2 = env22;
+      t10 = env20;
+      cp2 = env21;
+      t45 = env22;
       a = env23;
       wB = env24;
       wA = env25;
@@ -15454,27 +14321,28 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      b = env13;
+      t57 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
       t6 = env14;
-      t7 = env15;
-      t25 = env16;
+      b = env15;
+      t7 = env16;
       t8 = env17;
-      cp1 = env18;
+      t54 = env18;
       t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      t22 = env22;
-      a = env23;
-      wB = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      t45 = env23;
+      a = env24;
+      wB = env25;
+      wA = env26;
+      t1 = env27;
+      t2 = env28;
       break;
     case 98:
       i = env0;
@@ -15484,30 +14352,58 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      t26 = env7;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      b = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      t59 = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 99:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      t61 = env7;
       vA = env8;
       vB = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      b = env14;
-      t6 = env15;
+      t6 = env14;
+      b = env15;
       t7 = env16;
-      t25 = env17;
-      t8 = env18;
+      t8 = env17;
+      t9 = env18;
       cp1 = env19;
-      t9 = env20;
-      t10 = env21;
-      cp2 = env22;
-      t22 = env23;
-      a = env24;
-      wB = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      t59 = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
       break;
-    case 99:
+    case 100:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -15521,47 +14417,18 @@ $$.ContactSolver = {"":
       invIA = env10;
       invMassB = env11;
       invIB = env12;
-      b = env13;
-      t6 = env14;
+      t6 = env13;
+      b = env14;
       t7 = env15;
       t8 = env16;
-      cp1 = env17;
-      t9 = env18;
+      t9 = env17;
+      cp1 = env18;
       t10 = env19;
       cp2 = env20;
       a = env21;
-      t27 = env22;
-      wB = env23;
-      wA = env24;
-      t1 = env25;
-      t2 = env26;
-      break;
-    case 100:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      t28 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      b = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      t27 = env23;
-      wB = env24;
+      wB = env22;
+      t61 = env23;
+      t59 = env24;
       wA = env25;
       t1 = env26;
       t2 = env27;
@@ -15574,27 +14441,28 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      b = env13;
+      t64 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
       t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
+      b = env15;
+      t7 = env16;
+      t8 = env17;
       t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      t28 = env23;
-      t27 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      t61 = env24;
+      t59 = env25;
+      wA = env26;
+      t1 = env27;
+      t2 = env28;
       break;
     case 102:
       i = env0;
@@ -15604,50 +14472,19 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      t29 = env7;
-      vA = env8;
+      vA = env7;
+      t66 = env8;
       vB = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      b = env14;
-      t6 = env15;
+      t6 = env14;
+      b = env15;
       t7 = env16;
       t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      t28 = env24;
-      t27 = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
-      break;
-    case 103:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      t30 = env11;
-      invMassB = env12;
-      invIB = env13;
-      b = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
+      t9 = env18;
+      cp1 = env19;
       t10 = env20;
       cp2 = env21;
       a = env22;
@@ -15655,6 +14492,36 @@ $$.ContactSolver = {"":
       wA = env24;
       t1 = env25;
       t2 = env26;
+      break;
+    case 103:
+      t68 = env0;
+      i = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      t66 = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t6 = env15;
+      b = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
       break;
     case 104:
       i = env0;
@@ -15668,15 +14535,15 @@ $$.ContactSolver = {"":
       vB = env8;
       invMassA = env9;
       invIA = env10;
-      t30 = env11;
-      invMassB = env12;
+      invMassB = env11;
+      t70 = env12;
       invIB = env13;
-      b = env14;
-      t6 = env15;
+      t6 = env14;
+      b = env15;
       t7 = env16;
       t8 = env17;
-      cp1 = env18;
-      t9 = env19;
+      t9 = env18;
+      cp1 = env19;
       t10 = env20;
       cp2 = env21;
       a = env22;
@@ -15684,9 +14551,38 @@ $$.ContactSolver = {"":
       wA = env24;
       t1 = env25;
       t2 = env26;
-      t31 = env27;
       break;
     case 105:
+      i = env0;
+      t72 = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      t70 = env13;
+      invIB = env14;
+      t6 = env15;
+      b = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 106:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -15698,52 +14594,22 @@ $$.ContactSolver = {"":
       vB = env8;
       invMassA = env9;
       invIA = env10;
-      t32 = env11;
-      invMassB = env12;
-      invIB = env13;
-      b = env14;
-      t6 = env15;
-      t7 = env16;
-      t8 = env17;
+      invMassB = env11;
+      invIB = env12;
+      b = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
       cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      wB = env22;
+      t11 = env23;
       wA = env24;
       t1 = env25;
       t2 = env26;
-      break;
-    case 106:
-      i = env0;
-      t33 = env1;
-      t3 = env2;
-      t4 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      t32 = env12;
-      invMassB = env13;
-      invIB = env14;
-      b = env15;
-      t6 = env16;
-      t7 = env17;
-      t8 = env18;
-      cp1 = env19;
-      t9 = env20;
-      t10 = env21;
-      cp2 = env22;
-      a = env23;
-      wB = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
       break;
     case 107:
       i = env0;
@@ -15763,8 +14629,8 @@ $$.ContactSolver = {"":
       t6 = env14;
       t7 = env15;
       t8 = env16;
-      cp1 = env17;
-      t9 = env18;
+      t9 = env17;
+      cp1 = env18;
       t10 = env19;
       cp2 = env20;
       a = env21;
@@ -15775,6 +14641,376 @@ $$.ContactSolver = {"":
       t2 = env26;
       break;
     case 108:
+      t7 = env0;
+      t8 = env1;
+      t9 = env2;
+      i = env3;
+      cp1 = env4;
+      t10 = env5;
+      t11 = env6;
+      cp2 = env7;
+      t4 = env8;
+      t3 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t5 = env13;
+      vA = env14;
+      vB = env15;
+      invIA = env16;
+      wA = env17;
+      invIB = env18;
+      t1 = env19;
+      t6 = env20;
+      t2 = env21;
+      break;
+    case 109:
+      t7 = env0;
+      t8 = env1;
+      t9 = env2;
+      i = env3;
+      cp1 = env4;
+      t10 = env5;
+      t11 = env6;
+      cp2 = env7;
+      t13 = env8;
+      t3 = env9;
+      t4 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t5 = env14;
+      vA = env15;
+      vB = env16;
+      invIA = env17;
+      wA = env18;
+      invIB = env19;
+      t1 = env20;
+      t6 = env21;
+      t2 = env22;
+      break;
+    case 110:
+      t7 = env0;
+      t8 = env1;
+      t9 = env2;
+      i = env3;
+      cp1 = env4;
+      t10 = env5;
+      cp2 = env6;
+      t3 = env7;
+      t4 = env8;
+      wA0 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t15 = env13;
+      vA = env14;
+      vB = env15;
+      t5 = env16;
+      invIB = env17;
+      t1 = env18;
+      t6 = env19;
+      t2 = env20;
+      break;
+    case 111:
+      t7 = env0;
+      t8 = env1;
+      i = env2;
+      cp1 = env3;
+      t10 = env4;
+      t9 = env5;
+      cp2 = env6;
+      t3 = env7;
+      t4 = env8;
+      wA0 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t15 = env13;
+      vA = env14;
+      vB = env15;
+      t17 = env16;
+      t5 = env17;
+      invIB = env18;
+      t1 = env19;
+      t6 = env20;
+      t2 = env21;
+      break;
+    case 112:
+      i = env0;
+      t11 = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 113:
+      i = env0;
+      t11 = env1;
+      t3 = env2;
+      t4 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      t13 = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 114:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      t15 = env5;
+      bodyB = env6;
+      t5 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 115:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      t15 = env5;
+      bodyB = env6;
+      t17 = env7;
+      t5 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t6 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 116:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      t17 = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      wA = env24;
+      t15 = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 117:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      vn2 = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t11 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
+      break;
+    case 118:
+      t7 = env0;
+      t8 = env1;
+      t9 = env2;
+      i = env3;
+      cp1 = env4;
+      t10 = env5;
+      cp2 = env6;
+      t3 = env7;
+      t4 = env8;
+      t11 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t5 = env13;
+      vA = env14;
+      vB = env15;
+      invIA = env16;
+      wA = env17;
+      invIB = env18;
+      t1 = env19;
+      t6 = env20;
+      t2 = env21;
+      break;
+    case 119:
+      t7 = env0;
+      t5 = env1;
+      t8 = env2;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
+      t4 = env9;
+      t11 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t13 = env14;
+      vA = env15;
+      vB = env16;
+      invIA = env17;
+      wA = env18;
+      invIB = env19;
+      t1 = env20;
+      t6 = env21;
+      t2 = env22;
+      break;
+    case 120:
+      t2 = env0;
+      t7 = env1;
+      t8 = env2;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
+      t4 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t5 = env13;
+      vA = env14;
+      vB = env15;
+      wA0 = env16;
+      invIB = env17;
+      t1 = env18;
+      t6 = env19;
+      t15 = env20;
+      break;
+    case 121:
+      t2 = env0;
+      t7 = env1;
+      t17 = env2;
+      t8 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      t9 = env7;
+      cp2 = env8;
+      t3 = env9;
+      t4 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t5 = env14;
+      vA = env15;
+      vB = env16;
+      wA0 = env17;
+      invIB = env18;
+      t1 = env19;
+      t6 = env20;
+      t15 = env21;
+      break;
+    case 122:
       i = env0;
       t3 = env1;
       t4 = env2;
@@ -15792,391 +15028,16 @@ $$.ContactSolver = {"":
       t6 = env14;
       t7 = env15;
       t8 = env16;
-      cp1 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      t11 = env23;
-      t12 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 109:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
       t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      t13 = env21;
-      wB = env22;
-      t11 = env23;
-      t12 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 110:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      t11 = env22;
-      t13 = env23;
-      t12 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 111:
-      t7 = env0;
-      t8 = env1;
-      i = env2;
-      cp1 = env3;
-      t10 = env4;
-      cp2 = env5;
-      t3 = env6;
-      t9 = env7;
-      t4 = env8;
-      t11 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t5 = env13;
-      vA = env14;
-      vB = env15;
-      invIA = env16;
-      wA = env17;
-      invIB = env18;
-      t1 = env19;
-      t6 = env20;
-      t2 = env21;
-      break;
-    case 112:
-      t7 = env0;
-      t8 = env1;
-      i = env2;
-      cp1 = env3;
-      t10 = env4;
-      cp2 = env5;
-      t12 = env6;
-      t3 = env7;
-      t9 = env8;
-      t4 = env9;
-      t11 = env10;
-      wB = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t5 = env14;
-      vA = env15;
-      vB = env16;
-      invIA = env17;
-      wA = env18;
-      invIB = env19;
-      t1 = env20;
-      t6 = env21;
-      t2 = env22;
-      break;
-    case 113:
-      t7 = env0;
-      t8 = env1;
-      t9 = env2;
-      i = env3;
-      t10 = env4;
-      cp2 = env5;
-      t3 = env6;
-      cp1 = env7;
-      t4 = env8;
-      wA0 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t13 = env13;
-      vA = env14;
-      vB = env15;
-      t5 = env16;
-      invIB = env17;
-      t1 = env18;
-      t6 = env19;
-      t2 = env20;
-      break;
-    case 114:
-      t7 = env0;
-      t8 = env1;
-      i = env2;
-      cp1 = env3;
-      t10 = env4;
-      cp2 = env5;
-      t3 = env6;
-      t9 = env7;
-      t4 = env8;
-      wA0 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t13 = env13;
-      vA = env14;
-      vB = env15;
-      t14 = env16;
-      t5 = env17;
-      invIB = env18;
-      t1 = env19;
-      t6 = env20;
-      t2 = env21;
-      break;
-    case 115:
-      i = env0;
-      t13 = env1;
-      t3 = env2;
-      t4 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
-      t9 = env18;
+      cp1 = env18;
       t10 = env19;
       cp2 = env20;
       a = env21;
       wB = env22;
       t11 = env23;
-      t12 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 116:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      t14 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      t11 = env23;
-      t12 = env24;
-      wA = env25;
-      t1 = env26;
-      t2 = env27;
-      break;
-    case 117:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      t14 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t15 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      t11 = env24;
-      t12 = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
-      break;
-    case 118:
-      i = env0;
-      t3 = env1;
-      t4 = env2;
-      c = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      vn2 = env13;
-      t6 = env14;
-      t13 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      t11 = env24;
-      t12 = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
-      break;
-    case 119:
-      t7 = env0;
-      t8 = env1;
-      i = env2;
-      cp1 = env3;
-      t10 = env4;
-      cp2 = env5;
-      t3 = env6;
-      t9 = env7;
-      t4 = env8;
-      t11 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t5 = env13;
-      vA = env14;
-      vB = env15;
-      invIA = env16;
-      wA = env17;
-      invIB = env18;
-      t1 = env19;
-      t6 = env20;
-      t2 = env21;
-      break;
-    case 120:
-      t7 = env0;
-      t5 = env1;
-      t8 = env2;
-      i = env3;
-      cp1 = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t9 = env8;
-      t4 = env9;
-      t11 = env10;
-      wB = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t12 = env14;
-      vA = env15;
-      vB = env16;
-      invIA = env17;
-      wA = env18;
-      invIB = env19;
-      t1 = env20;
-      t6 = env21;
-      t2 = env22;
-      break;
-    case 121:
-      t2 = env0;
-      t7 = env1;
-      t8 = env2;
-      t9 = env3;
-      i = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      cp1 = env8;
-      t4 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t5 = env13;
-      vA = env14;
-      vB = env15;
-      wA0 = env16;
-      invIB = env17;
-      t1 = env18;
-      t6 = env19;
-      t13 = env20;
-      break;
-    case 122:
-      t2 = env0;
-      t14 = env1;
-      t7 = env2;
-      t8 = env3;
-      i = env4;
-      cp1 = env5;
-      t10 = env6;
-      cp2 = env7;
-      t3 = env8;
-      t9 = env9;
-      t4 = env10;
-      wB = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t5 = env14;
-      vA = env15;
-      vB = env16;
-      wA0 = env17;
-      invIB = env18;
-      t1 = env19;
-      t6 = env20;
-      t13 = env21;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
       break;
     case 123:
       i = env0;
@@ -16186,24 +15047,24 @@ $$.ContactSolver = {"":
       bodyA = env4;
       bodyB = env5;
       t5 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      t13 = env22;
-      t11 = env23;
-      t12 = env24;
+      t13 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      b = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      t10 = env20;
+      cp2 = env21;
+      a = env22;
+      wB = env23;
+      t11 = env24;
       wA = env25;
       t1 = env26;
       t2 = env27;
@@ -16222,24 +15083,53 @@ $$.ContactSolver = {"":
       invIA = env10;
       invMassB = env11;
       invIB = env12;
-      t6 = env13;
-      t7 = env14;
-      t8 = env15;
-      cp1 = env16;
+      b = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
       t9 = env17;
-      t10 = env18;
-      cp2 = env19;
-      a = env20;
-      wB = env21;
-      t11 = env22;
-      t12 = env23;
-      wA = env24;
-      t14 = env25;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t15 = env25;
       t2 = env26;
-      t1 = env27;
       break;
     case 125:
-      t1 = env0;
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      b = env13;
+      t6 = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      wB = env22;
+      wA = env23;
+      t1 = env24;
+      t15 = env25;
+      t2 = env26;
+      t17 = env27;
+      break;
+    case 126:
+      t17 = env0;
       i = env1;
       t3 = env2;
       t4 = env3;
@@ -16247,32 +15137,31 @@ $$.ContactSolver = {"":
       bodyA = env5;
       bodyB = env6;
       t5 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t6 = env14;
-      t7 = env15;
-      t8 = env16;
-      cp1 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp2 = env20;
-      a = env21;
-      wB = env22;
-      t11 = env23;
-      t12 = env24;
+      t15 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t6 = env16;
+      t7 = env17;
+      t8 = env18;
+      t9 = env19;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
       wA = env25;
-      t14 = env26;
+      t1 = env26;
       t2 = env27;
-      t15 = env28;
       break;
-    case 126:
+    case 127:
       vn1 = env0;
       i = env1;
-      t13 = env2;
+      t11 = env2;
       t3 = env3;
       t4 = env4;
       c = env5;
@@ -16286,30 +15175,29 @@ $$.ContactSolver = {"":
       invMassB = env13;
       invIB = env14;
       t6 = env15;
-      t7 = env16;
-      t8 = env17;
-      cp1 = env18;
+      b = env16;
+      t7 = env17;
+      t8 = env18;
       t9 = env19;
-      t10 = env20;
-      cp2 = env21;
-      a = env22;
-      wB = env23;
-      t11 = env24;
-      t12 = env25;
-      wA = env26;
-      t1 = env27;
-      t2 = env28;
+      cp1 = env20;
+      t10 = env21;
+      cp2 = env22;
+      a = env23;
+      wB = env24;
+      wA = env25;
+      t1 = env26;
+      t2 = env27;
       break;
-    case 127:
+    case 128:
       t2 = env0;
       t7 = env1;
       t8 = env2;
-      i = env3;
-      cp1 = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t9 = env8;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
       t4 = env9;
       wB = env10;
       bodyA = env11;
@@ -16318,24 +15206,24 @@ $$.ContactSolver = {"":
       vA = env14;
       vB = env15;
       invIA = env16;
-      wA = env17;
-      invIB = env18;
-      t11 = env19;
+      t11 = env17;
+      wA = env18;
+      invIB = env19;
       t6 = env20;
       t1 = env21;
       break;
-    case 128:
+    case 129:
       t2 = env0;
       t7 = env1;
       t8 = env2;
-      i = env3;
-      cp1 = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t1 = env8;
-      t9 = env9;
-      t4 = env10;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
+      t4 = env9;
+      t1 = env10;
       wB = env11;
       bodyA = env12;
       bodyB = env13;
@@ -16343,22 +15231,22 @@ $$.ContactSolver = {"":
       vA = env15;
       vB = env16;
       invIA = env17;
-      wA = env18;
-      invIB = env19;
-      t11 = env20;
+      t11 = env18;
+      wA = env19;
+      invIB = env20;
       t6 = env21;
-      t12 = env22;
+      t13 = env22;
       break;
-    case 129:
+    case 130:
       t7 = env0;
-      wA0 = env1;
-      t8 = env2;
+      t8 = env1;
+      wA0 = env2;
       i = env3;
       cp1 = env4;
-      t13 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t10 = env8;
+      t10 = env5;
+      t15 = env6;
+      cp2 = env7;
+      t3 = env8;
       t9 = env9;
       t4 = env10;
       wB = env11;
@@ -16372,19 +15260,19 @@ $$.ContactSolver = {"":
       t6 = env19;
       t2 = env20;
       break;
-    case 130:
+    case 131:
       t7 = env0;
-      wA0 = env1;
-      t8 = env2;
+      t8 = env1;
+      wA0 = env2;
       i = env3;
       cp1 = env4;
-      t13 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t10 = env8;
-      t14 = env9;
-      t4 = env10;
-      t9 = env11;
+      t10 = env5;
+      t15 = env6;
+      cp2 = env7;
+      t3 = env8;
+      t9 = env9;
+      t17 = env10;
+      t4 = env11;
       wB = env12;
       bodyA = env13;
       bodyB = env14;
@@ -16396,16 +15284,74 @@ $$.ContactSolver = {"":
       t6 = env20;
       t2 = env21;
       break;
-    case 131:
+    case 132:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      b = env14;
+      t7 = env15;
+      t8 = env16;
+      t9 = env17;
+      cp1 = env18;
+      t10 = env19;
+      cp2 = env20;
+      a = env21;
+      vn1 = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 133:
+      i = env0;
+      t3 = env1;
+      t4 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t5 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      invMassB = env11;
+      invIB = env12;
+      t6 = env13;
+      t7 = env14;
+      t8 = env15;
+      t9 = env16;
+      cp1 = env17;
+      t10 = env18;
+      cp2 = env19;
+      a = env20;
+      vn1 = env21;
+      vn2 = env22;
+      wB = env23;
+      wA = env24;
+      t1 = env25;
+      t2 = env26;
+      break;
+    case 134:
       t7 = env0;
       t5 = env1;
       t8 = env2;
-      i = env3;
-      cp1 = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t9 = env8;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
       t4 = env9;
       wB = env10;
       bodyA = env11;
@@ -16420,16 +15366,16 @@ $$.ContactSolver = {"":
       t6 = env20;
       t2 = env21;
       break;
-    case 132:
+    case 135:
       t7 = env0;
       t5 = env1;
       t8 = env2;
-      i = env3;
-      cp1 = env4;
-      t10 = env5;
-      cp2 = env6;
-      t3 = env7;
-      t9 = env8;
+      t9 = env3;
+      i = env4;
+      cp1 = env5;
+      t10 = env6;
+      cp2 = env7;
+      t3 = env8;
       t4 = env9;
       wB = env10;
       bodyA = env11;
@@ -16437,7 +15383,7 @@ $$.ContactSolver = {"":
       t11 = env13;
       vA = env14;
       vB = env15;
-      t12 = env16;
+      t13 = env16;
       invIA = env17;
       wA = env18;
       invIB = env19;
@@ -16445,17 +15391,17 @@ $$.ContactSolver = {"":
       t6 = env21;
       t2 = env22;
       break;
-    case 133:
+    case 136:
       t2 = env0;
-      t13 = env1;
-      t7 = env2;
+      t7 = env1;
+      t15 = env2;
       t8 = env3;
       t9 = env4;
       i = env5;
-      t10 = env6;
-      cp2 = env7;
-      t3 = env8;
-      cp1 = env9;
+      cp1 = env6;
+      t10 = env7;
+      cp2 = env8;
+      t3 = env9;
       t4 = env10;
       wB = env11;
       bodyA = env12;
@@ -16465,22 +15411,22 @@ $$.ContactSolver = {"":
       vB = env16;
       invIB = env17;
       t1 = env18;
-      wA0 = env19;
-      t6 = env20;
+      t6 = env19;
+      wA0 = env20;
       break;
-    case 134:
+    case 137:
       t2 = env0;
-      t13 = env1;
-      t7 = env2;
+      t7 = env1;
+      t15 = env2;
       t8 = env3;
-      t14 = env4;
-      i = env5;
-      t10 = env6;
-      cp2 = env7;
-      t3 = env8;
-      cp1 = env9;
+      i = env4;
+      cp1 = env5;
+      t17 = env6;
+      t9 = env7;
+      cp2 = env8;
+      t10 = env9;
       t4 = env10;
-      t9 = env11;
+      t3 = env11;
       wB = env12;
       bodyA = env13;
       bodyB = env14;
@@ -16489,8 +15435,8 @@ $$.ContactSolver = {"":
       vB = env17;
       invIB = env18;
       t1 = env19;
-      wA0 = env20;
-      t6 = env21;
+      t6 = env20;
+      wA0 = env21;
       break;
   }
   switch (state) {
@@ -16506,140 +15452,7 @@ $$.ContactSolver = {"":
       var t9 = this.P2;
       var t10 = this.temp1;
       var i = 0;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-    case 24:
-    case 25:
-    case 26:
-    case 27:
-    case 28:
-    case 29:
-    case 30:
-    case 31:
-    case 32:
-    case 33:
-    case 34:
-    case 35:
-    case 36:
-    case 37:
-    case 38:
-    case 39:
-    case 40:
-    case 41:
-    case 42:
-    case 43:
-    case 44:
-    case 45:
-    case 46:
-    case 47:
-    case 48:
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
-    case 55:
-    case 56:
-    case 57:
-    case 58:
-    case 59:
-    case 60:
-    case 61:
-    case 62:
-    case 63:
-    case 64:
-    case 65:
-    case 66:
-    case 67:
-    case 68:
-    case 69:
-    case 70:
-    case 71:
-    case 72:
-    case 73:
-    case 74:
-    case 75:
-    case 76:
-    case 77:
-    case 78:
-    case 79:
-    case 80:
-    case 81:
-    case 82:
-    case 83:
-    case 84:
-    case 85:
-    case 86:
-    case 87:
-    case 88:
-    case 89:
-    case 90:
-    case 91:
-    case 92:
-    case 93:
-    case 94:
-    case 95:
-    case 96:
-    case 97:
-    case 98:
-    case 99:
-    case 100:
-    case 101:
-    case 102:
-    case 103:
-    case 104:
-    case 105:
-    case 106:
-    case 107:
-    case 108:
-    case 109:
-    case 110:
-    case 111:
-    case 112:
-    case 113:
-    case 114:
-    case 115:
-    case 116:
-    case 117:
-    case 118:
-    case 119:
-    case 120:
-    case 121:
-    case 122:
-    case 123:
-    case 124:
-    case 125:
-    case 126:
-    case 127:
-    case 128:
-    case 129:
-    case 130:
-    case 131:
-    case 132:
-    case 133:
-    case 134:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -16648,194 +15461,167 @@ $$.ContactSolver = {"":
             state = 0;
             if (!$.ltB(i, t11)) break L0;
             t11 = this.constraints;
-          case 2:
-            state = 0;
-            var c = $.index(t11, i);
+            var t12 = t11.length;
+            if (i < 0 || i >= t12) throw $.ioore(i);
+            var c = t11[i];
             var bodyA = c.get$bodyA();
             var bodyB = c.get$bodyB();
             var wA = bodyA.get$angularVelocity();
-          case 3:
+          case 2:
             state = 0;
             var wB = bodyB.get$angularVelocity();
-          case 4:
+          case 3:
             state = 0;
             var vA = bodyA.get$linearVelocity();
             var vB = bodyB.get$linearVelocity();
             var invMassA = bodyA.get$invMass();
-          case 5:
+          case 4:
             state = 0;
             var invIA = bodyA.get$invInertia();
-          case 6:
+          case 5:
             state = 0;
             var invMassB = bodyB.get$invMass();
-          case 7:
+          case 6:
             state = 0;
             var invIB = bodyB.get$invInertia();
+          case 7:
+            state = 0;
+            var t18 = c.get$normal().get$y();
+            if (typeof t18 !== 'number') throw $.iae(t18);
+            t1.set$x(1.0 * t18);
+            var t19 = c.get$normal().get$x();
+            if (typeof t19 !== 'number') throw $.iae(t19);
+            t1.set$y(-1.0 * t19);
+            var friction = c.get$friction();
           case 8:
             state = 0;
-            t11 = c.get$normal().get$y();
-            if (typeof t11 !== 'number') throw $.iae(t11);
-            t1.set$x(1.0 * t11);
-            var t12 = c.get$normal().get$x();
-            if (typeof t12 !== 'number') throw $.iae(t12);
-            t1.set$y(-1.0 * t12);
-            var friction = c.get$friction();
-          case 9:
-            state = 0;
             var j = 0;
-          case 10:
-          case 11:
-          case 12:
-          case 13:
-          case 14:
-          case 15:
-          case 16:
-          case 17:
-          case 18:
-          case 19:
-          case 20:
-          case 21:
-          case 22:
-          case 23:
-          case 24:
-          case 25:
-          case 26:
-          case 27:
-          case 28:
-          case 29:
-          case 30:
-          case 31:
-          case 32:
-          case 33:
-          case 34:
-          case 35:
-          case 36:
-          case 37:
-          case 38:
+          default:
             L1: while (true) {
               switch (state) {
                 case 0:
                   t11 = c.get$pointCount();
-                case 10:
+                case 9:
                   state = 0;
                   if (!$.ltB(j, t11)) break L1;
                   t11 = c.get$points();
-                case 11:
+                case 10:
                   state = 0;
                   var ccp = $.index(t11, j);
                   var a = ccp.get$rA();
                   t11 = $.neg(wB);
-                  t12 = ccp.get$rB().get$y();
+                  var t13 = ccp.get$rB().get$y();
+                case 11:
+                  state = 0;
+                  t13 = $.mul(t11, t13);
+                  t11 = vB.get$x();
                 case 12:
                   state = 0;
-                  t12 = $.mul(t11, t12);
-                  t11 = vB.get$x();
+                  t11 = $.add(t13, t11);
+                  t13 = vA.get$x();
                 case 13:
                   state = 0;
-                  t11 = $.add(t12, t11);
-                  t12 = vA.get$x();
+                  t13 = $.sub(t11, t13);
+                  t11 = a.get$y();
                 case 14:
                   state = 0;
-                  t12 = $.sub(t11, t12);
-                  t11 = a.get$y();
+                  t2.set$x($.add(t13, $.mul(wA, t11)));
+                  t18 = ccp.get$rB().get$x();
                 case 15:
                   state = 0;
-                  t2.set$x($.add(t12, $.mul(wA, t11)));
-                  var t13 = ccp.get$rB().get$x();
+                  t18 = $.mul(wB, t18);
+                  var t20 = vB.get$y();
                 case 16:
                   state = 0;
-                  t13 = $.mul(wB, t13);
-                  var t14 = vB.get$y();
+                  t20 = $.add(t18, t20);
+                  t18 = vA.get$y();
                 case 17:
                   state = 0;
-                  t14 = $.add(t13, t14);
-                  t13 = vA.get$y();
+                  t18 = $.sub(t20, t18);
+                  t20 = a.get$x();
                 case 18:
                   state = 0;
-                  t13 = $.sub(t14, t13);
-                  t14 = a.get$x();
+                  t2.set$y($.sub(t18, $.mul(wA, t20)));
+                  var t24 = t2.get$x();
                 case 19:
                   state = 0;
-                  t2.set$y($.sub(t13, $.mul(wA, t14)));
-                  var t15 = t2.get$x();
+                  var t26 = t1.get$x();
                 case 20:
                   state = 0;
-                  var t16 = t1.get$x();
+                  t26 = $.mul(t24, t26);
+                  t24 = t2.get$y();
                 case 21:
                   state = 0;
-                  t16 = $.mul(t15, t16);
-                  t15 = t2.get$y();
+                  var t29 = t1.get$y();
                 case 22:
                   state = 0;
-                  var t17 = t1.get$y();
+                  var vt = $.add(t26, $.mul(t24, t29));
+                  t26 = ccp.get$tangentMass();
                 case 23:
                   state = 0;
-                  var vt = $.add(t16, $.mul(t15, t17));
-                  t16 = ccp.get$tangentMass();
+                  var lambda = $.mul(t26, $.neg(vt));
+                  t26 = ccp.get$normalImpulse();
                 case 24:
                   state = 0;
-                  var lambda = $.mul(t16, $.neg(vt));
-                  t16 = ccp.get$normalImpulse();
+                  var maxFriction = $.mul(friction, t26);
+                  t26 = ccp.get$tangentImpulse();
                 case 25:
                   state = 0;
-                  var maxFriction = $.mul(friction, t16);
-                  t16 = ccp.get$tangentImpulse();
+                  var newImpulse = $.MathBox_clamp($.add(t26, lambda), $.neg(maxFriction), maxFriction);
                 case 26:
                   state = 0;
-                  var newImpulse = $.MathBox_clamp($.add(t16, lambda), $.neg(maxFriction), maxFriction);
+                  var t35 = ccp.get$tangentImpulse();
                 case 27:
                   state = 0;
-                  var t18 = ccp.get$tangentImpulse();
+                  var lambda0 = $.sub(newImpulse, t35);
+                  t35 = t1.get$x();
                 case 28:
                   state = 0;
-                  var lambda0 = $.sub(newImpulse, t18);
-                  t18 = t1.get$x();
+                  var Px = $.mul(t35, lambda0);
+                  t35 = t1.get$y();
                 case 29:
                   state = 0;
-                  var Px = $.mul(t18, lambda0);
-                  t18 = t1.get$y();
+                  var Py = $.mul(t35, lambda0);
+                  t35 = vA.get$x();
                 case 30:
                   state = 0;
-                  var Py = $.mul(t18, lambda0);
-                  t18 = vA.get$x();
+                  vA.set$x($.sub(t35, $.mul(Px, invMassA)));
+                  var t40 = vA.get$y();
                 case 31:
                   state = 0;
-                  vA.set$x($.sub(t18, $.mul(Px, invMassA)));
-                  var t19 = vA.get$y();
+                  vA.set$y($.sub(t40, $.mul(Py, invMassA)));
+                  var t42 = ccp.get$rA().get$x();
                 case 32:
                   state = 0;
-                  vA.set$y($.sub(t19, $.mul(Py, invMassA)));
-                  var t20 = ccp.get$rA().get$x();
+                  t42 = $.mul(t42, Py);
+                  var t44 = ccp.get$rA().get$y();
                 case 33:
                   state = 0;
-                  t20 = $.mul(t20, Py);
-                  var t21 = ccp.get$rA().get$y();
+                  wA = $.sub(wA, $.mul(invIA, $.sub(t42, $.mul(t44, Px))));
+                  var t46 = vB.get$x();
                 case 34:
                   state = 0;
-                  wA = $.sub(wA, $.mul(invIA, $.sub(t20, $.mul(t21, Px))));
-                  var t22 = vB.get$x();
+                  vB.set$x($.add(t46, $.mul(Px, invMassB)));
+                  var t48 = vB.get$y();
                 case 35:
                   state = 0;
-                  vB.set$x($.add(t22, $.mul(Px, invMassB)));
-                  var t23 = vB.get$y();
+                  vB.set$y($.add(t48, $.mul(Py, invMassB)));
+                  var t50 = ccp.get$rB().get$x();
                 case 36:
                   state = 0;
-                  vB.set$y($.add(t23, $.mul(Py, invMassB)));
-                  var t24 = ccp.get$rB().get$x();
+                  t50 = $.mul(t50, Py);
+                  var t52 = ccp.get$rB().get$y();
                 case 37:
                   state = 0;
-                  t24 = $.mul(t24, Py);
-                  var t25 = ccp.get$rB().get$y();
-                case 38:
-                  state = 0;
-                  wB = $.add(wB, $.mul(invIB, $.sub(t24, $.mul(t25, Px))));
+                  wB = $.add(wB, $.mul(invIB, $.sub(t50, $.mul(t52, Px))));
                   ccp.set$tangentImpulse(newImpulse);
                   ++j;
               }
             }
             t11 = c.get$pointCount();
-          case 39:
+          case 38:
             state = 0;
+          case 39:
           case 40:
           case 41:
           case 42:
@@ -16931,335 +15717,304 @@ $$.ContactSolver = {"":
           case 132:
           case 133:
           case 134:
-            if (state == 40 || state == 41 || state == 42 || state == 43 || state == 44 || state == 45 || state == 46 || state == 47 || state == 48 || state == 49 || state == 50 || state == 51 || state == 52 || state == 53 || state == 54 || state == 55 || state == 56 || state == 57 || state == 58 || state == 59 || state == 60 || state == 61 || state == 62 || state == 63 || state == 64 || state == 65 || state == 66 || (state == 0 && $.eqB(t11, 1))) {
+          case 135:
+          case 136:
+          case 137:
+            if (state == 39 || state == 40 || state == 41 || state == 42 || state == 43 || state == 44 || state == 45 || state == 46 || state == 47 || state == 48 || state == 49 || state == 50 || state == 51 || state == 52 || state == 53 || state == 54 || state == 55 || state == 56 || state == 57 || state == 58 || state == 59 || state == 60 || state == 61 || state == 62 || state == 63 || state == 64 || state == 65 || (state == 0 && $.eqB(t11, 1))) {
               switch (state) {
                 case 0:
                   t11 = c.get$points();
-                case 40:
+                case 39:
                   state = 0;
                   ccp = $.index(t11, 0);
                   var a1 = ccp.get$rA();
                   t11 = $.neg(wB);
-                  t12 = ccp.get$rB().get$y();
+                  t13 = ccp.get$rB().get$y();
+                case 40:
+                  state = 0;
+                  t13 = $.mul(t11, t13);
+                  t11 = vB.get$x();
                 case 41:
                   state = 0;
-                  t12 = $.mul(t11, t12);
-                  t11 = vB.get$x();
+                  t11 = $.add(t13, t11);
+                  t13 = vA.get$x();
                 case 42:
                   state = 0;
-                  t11 = $.add(t12, t11);
-                  t12 = vA.get$x();
+                  t13 = $.sub(t11, t13);
+                  t11 = a1.get$y();
                 case 43:
                   state = 0;
-                  t12 = $.sub(t11, t12);
-                  t11 = a1.get$y();
+                  t2.set$x($.add(t13, $.mul(wA, t11)));
+                  t18 = ccp.get$rB().get$x();
                 case 44:
                   state = 0;
-                  t2.set$x($.add(t12, $.mul(wA, t11)));
-                  t13 = ccp.get$rB().get$x();
+                  t18 = $.mul(wB, t18);
+                  t20 = vB.get$y();
                 case 45:
                   state = 0;
-                  t13 = $.mul(wB, t13);
-                  t14 = vB.get$y();
+                  t20 = $.add(t18, t20);
+                  t18 = vA.get$y();
                 case 46:
                   state = 0;
-                  t14 = $.add(t13, t14);
-                  t13 = vA.get$y();
+                  t18 = $.sub(t20, t18);
+                  t20 = a1.get$x();
                 case 47:
                   state = 0;
-                  t13 = $.sub(t14, t13);
-                  t14 = a1.get$x();
+                  t2.set$y($.sub(t18, $.mul(wA, t20)));
+                  var b = c.get$normal();
+                  t24 = t2.get$x();
                 case 48:
                   state = 0;
-                  t2.set$y($.sub(t13, $.mul(wA, t14)));
-                  var b = c.get$normal();
-                  t15 = t2.get$x();
+                  t26 = b.get$x();
                 case 49:
                   state = 0;
-                  t16 = b.get$x();
+                  t26 = $.mul(t24, t26);
+                  t24 = t2.get$y();
                 case 50:
                   state = 0;
-                  t16 = $.mul(t15, t16);
-                  t15 = t2.get$y();
+                  t29 = b.get$y();
                 case 51:
                   state = 0;
-                  t17 = b.get$y();
+                  var vn = $.add(t26, $.mul(t24, t29));
+                  t26 = ccp.get$normalMass();
                 case 52:
                   state = 0;
-                  var vn = $.add(t16, $.mul(t15, t17));
-                  t16 = ccp.get$normalMass();
+                  t26 = $.neg(t26);
+                  var t32 = ccp.get$velocityBias();
                 case 53:
                   state = 0;
-                  t16 = $.neg(t16);
-                  t18 = ccp.get$velocityBias();
+                  lambda = $.mul(t26, $.sub(vn, t32));
+                  t26 = ccp.get$normalImpulse();
                 case 54:
                   state = 0;
-                  lambda = $.mul(t16, $.sub(vn, t18));
-                  t16 = ccp.get$normalImpulse();
-                case 55:
-                  state = 0;
-                  a = $.add(t16, lambda);
+                  a = $.add(t26, lambda);
                   newImpulse = $.gtB(a, 0.0) ? a : 0.0;
                   t11 = ccp.get$normalImpulse();
-                case 56:
+                case 55:
                   state = 0;
                   lambda = $.sub(newImpulse, t11);
                   t11 = c.get$normal().get$x();
-                case 57:
+                case 56:
                   state = 0;
                   Px = $.mul(t11, lambda);
                   t11 = c.get$normal().get$y();
-                case 58:
+                case 57:
                   state = 0;
                   Py = $.mul(t11, lambda);
                   t11 = vA.get$x();
-                case 59:
+                case 58:
                   state = 0;
                   vA.set$x($.sub(t11, $.mul(Px, invMassA)));
-                  t12 = vA.get$y();
+                  var t16 = vA.get$y();
+                case 59:
+                  state = 0;
+                  vA.set$y($.sub(t16, $.mul(Py, invMassA)));
+                  t18 = ccp.get$rA().get$x();
                 case 60:
                   state = 0;
-                  vA.set$y($.sub(t12, $.mul(Py, invMassA)));
-                  t13 = ccp.get$rA().get$x();
+                  t18 = $.mul(t18, Py);
+                  t20 = ccp.get$rA().get$y();
                 case 61:
                   state = 0;
-                  t13 = $.mul(t13, Py);
-                  t14 = ccp.get$rA().get$y();
+                  wA = $.sub(wA, $.mul(invIA, $.sub(t18, $.mul(t20, Px))));
+                  var t22 = vB.get$x();
                 case 62:
                   state = 0;
-                  wA = $.sub(wA, $.mul(invIA, $.sub(t13, $.mul(t14, Px))));
-                  t15 = vB.get$x();
+                  vB.set$x($.add(t22, $.mul(Px, invMassB)));
+                  t24 = vB.get$y();
                 case 63:
                   state = 0;
-                  vB.set$x($.add(t15, $.mul(Px, invMassB)));
-                  t16 = vB.get$y();
+                  vB.set$y($.add(t24, $.mul(Py, invMassB)));
+                  t26 = ccp.get$rB().get$x();
                 case 64:
                   state = 0;
-                  vB.set$y($.add(t16, $.mul(Py, invMassB)));
-                  t17 = ccp.get$rB().get$x();
+                  t26 = $.mul(t26, Py);
+                  var t28 = ccp.get$rB().get$y();
                 case 65:
                   state = 0;
-                  t17 = $.mul(t17, Py);
-                  t18 = ccp.get$rB().get$y();
-                case 66:
-                  state = 0;
-                  wB = $.add(wB, $.mul(invIB, $.sub(t17, $.mul(t18, Px))));
+                  wB = $.add(wB, $.mul(invIB, $.sub(t26, $.mul(t28, Px))));
                   ccp.set$normalImpulse(newImpulse);
               }
             } else {
               switch (state) {
                 case 0:
                   t11 = c.get$points();
-                case 67:
+                case 66:
                   state = 0;
                   var cp1 = $.index(t11, 0);
                   t11 = c.get$points();
-                case 68:
+                case 67:
                   state = 0;
                   var cp2 = $.index(t11, 1);
                   a = $.Vector$(cp1.get$normalImpulse(), cp2.get$normalImpulse());
                   t11 = $.neg(wB);
-                  t12 = cp1.get$rB().get$y();
+                  var t14 = cp1.get$rB().get$y();
+                case 68:
+                  state = 0;
+                  t14 = $.mul(t11, t14);
+                  t11 = vB.get$x();
                 case 69:
                   state = 0;
-                  t12 = $.mul(t11, t12);
-                  t11 = vB.get$x();
+                  t11 = $.add(t14, t11);
+                  t14 = vA.get$x();
                 case 70:
                   state = 0;
-                  t11 = $.add(t12, t11);
-                  t12 = vA.get$x();
+                  t14 = $.sub(t11, t14);
+                  t11 = cp1.get$rA().get$y();
                 case 71:
                   state = 0;
-                  t12 = $.sub(t11, t12);
-                  t11 = cp1.get$rA().get$y();
+                  t3.set$x($.add(t14, $.mul(wA, t11)));
+                  t19 = cp1.get$rB().get$x();
                 case 72:
                   state = 0;
-                  t3.set$x($.add(t12, $.mul(wA, t11)));
-                  t13 = cp1.get$rB().get$x();
+                  t19 = $.mul(wB, t19);
+                  var t21 = vB.get$y();
                 case 73:
                   state = 0;
-                  t13 = $.mul(wB, t13);
-                  t14 = vB.get$y();
+                  t21 = $.add(t19, t21);
+                  t19 = vA.get$y();
                 case 74:
                   state = 0;
-                  t14 = $.add(t13, t14);
-                  t13 = vA.get$y();
+                  t19 = $.sub(t21, t19);
+                  t21 = cp1.get$rA().get$x();
                 case 75:
                   state = 0;
-                  t13 = $.sub(t14, t13);
-                  t14 = cp1.get$rA().get$x();
+                  t3.set$y($.sub(t19, $.mul(wA, t21)));
+                  var t25 = $.neg(wB);
+                  t26 = cp2.get$rB().get$y();
                 case 76:
                   state = 0;
-                  t3.set$y($.sub(t13, $.mul(wA, t14)));
-                  t15 = $.neg(wB);
-                  t16 = cp2.get$rB().get$y();
+                  t26 = $.mul(t25, t26);
+                  t25 = vB.get$x();
                 case 77:
                   state = 0;
-                  t16 = $.mul(t15, t16);
-                  t15 = vB.get$x();
+                  t25 = $.add(t26, t25);
+                  t26 = vA.get$x();
                 case 78:
                   state = 0;
-                  t15 = $.add(t16, t15);
-                  t16 = vA.get$x();
+                  t26 = $.sub(t25, t26);
+                  t25 = cp2.get$rA().get$y();
                 case 79:
                   state = 0;
-                  t16 = $.sub(t15, t16);
-                  t15 = cp2.get$rA().get$y();
+                  t4.set$x($.add(t26, $.mul(wA, t25)));
+                  var t31 = cp2.get$rB().get$x();
                 case 80:
                   state = 0;
-                  t4.set$x($.add(t16, $.mul(wA, t15)));
-                  t17 = cp2.get$rB().get$x();
+                  t31 = $.mul(wB, t31);
+                  var t33 = vB.get$y();
                 case 81:
                   state = 0;
-                  t17 = $.mul(wB, t17);
-                  t18 = vB.get$y();
+                  t33 = $.add(t31, t33);
+                  t31 = vA.get$y();
                 case 82:
                   state = 0;
-                  t18 = $.add(t17, t18);
-                  t17 = vA.get$y();
+                  t31 = $.sub(t33, t31);
+                  t33 = cp2.get$rA().get$x();
                 case 83:
                   state = 0;
-                  t17 = $.sub(t18, t17);
-                  t18 = cp2.get$rA().get$x();
+                  t4.set$y($.sub(t31, $.mul(wA, t33)));
+                  var t37 = t3.get$x();
                 case 84:
                   state = 0;
-                  t4.set$y($.sub(t17, $.mul(wA, t18)));
-                  t19 = t3.get$x();
+                  var t39 = c.get$normal().get$x();
                 case 85:
                   state = 0;
-                  t20 = c.get$normal().get$x();
+                  t39 = $.mul(t37, t39);
+                  t37 = t3.get$y();
                 case 86:
                   state = 0;
-                  t20 = $.mul(t19, t20);
-                  t19 = t3.get$y();
+                  t42 = c.get$normal().get$y();
                 case 87:
                   state = 0;
-                  t21 = c.get$normal().get$y();
+                  var vn1 = $.add(t39, $.mul(t37, t42));
+                  t39 = t4.get$x();
                 case 88:
                   state = 0;
-                  var vn1 = $.add(t20, $.mul(t19, t21));
-                  t20 = t4.get$x();
+                  var t45 = c.get$normal().get$x();
                 case 89:
                   state = 0;
-                  t22 = c.get$normal().get$x();
+                  t45 = $.mul(t39, t45);
+                  t39 = t4.get$y();
                 case 90:
                   state = 0;
-                  t22 = $.mul(t20, t22);
-                  t20 = t4.get$y();
+                  t48 = c.get$normal().get$y();
                 case 91:
                   state = 0;
-                  t23 = c.get$normal().get$y();
+                  var vn2 = $.add(t45, $.mul(t39, t48));
+                  t45 = cp1.get$velocityBias();
                 case 92:
                   state = 0;
-                  var vn2 = $.add(t22, $.mul(t20, t23));
-                  t22 = cp1.get$velocityBias();
+                  t45 = $.sub(vn1, t45);
+                  var t51 = cp2.get$velocityBias();
                 case 93:
                   state = 0;
-                  t22 = $.sub(vn1, t22);
-                  t24 = cp2.get$velocityBias();
+                  b = $.Vector$(t45, $.sub(vn2, t51));
+                  t45 = c.get$K().get$col1().get$x();
                 case 94:
                   state = 0;
-                  b = $.Vector$(t22, $.sub(vn2, t24));
-                  t22 = c.get$K().get$col1().get$x();
+                  var t54 = a.x;
                 case 95:
                   state = 0;
-                  t25 = a.x;
+                  t54 = $.mul(t45, t54);
+                  t45 = c.get$K().get$col2().get$x();
                 case 96:
                   state = 0;
-                  t25 = $.mul(t22, t25);
-                  t22 = c.get$K().get$col2().get$x();
+                  var t57 = a.y;
                 case 97:
                   state = 0;
-                  var t26 = a.y;
+                  t5.set$x($.add(t54, $.mul(t45, t57)));
+                  var t59 = c.get$K().get$col1().get$y();
                 case 98:
                   state = 0;
-                  t5.set$x($.add(t25, $.mul(t22, t26)));
-                  var t27 = c.get$K().get$col1().get$y();
+                  var t61 = a.x;
                 case 99:
                   state = 0;
-                  var t28 = a.x;
+                  t61 = $.mul(t59, t61);
+                  t59 = c.get$K().get$col2().get$y();
                 case 100:
                   state = 0;
-                  t28 = $.mul(t27, t28);
-                  t27 = c.get$K().get$col2().get$y();
+                  var t64 = a.y;
                 case 101:
                   state = 0;
-                  var t29 = a.y;
+                  t5.set$y($.add(t61, $.mul(t59, t64)));
+                  var t66 = b.x;
                 case 102:
                   state = 0;
-                  t5.set$y($.add(t28, $.mul(t27, t29)));
-                  var t30 = b.x;
+                  var t68 = t5.get$x();
                 case 103:
                   state = 0;
-                  var t31 = t5.get$x();
+                  b.x = $.sub(t66, t68);
+                  var t70 = b.y;
                 case 104:
                   state = 0;
-                  b.x = $.sub(t30, t31);
-                  var t32 = b.y;
+                  var t72 = t5.get$y();
                 case 105:
                   state = 0;
-                  var t33 = t5.get$y();
-                case 106:
-                  state = 0;
-                  b.y = $.sub(t32, t33);
-                  t11 = b.x;
-                case 107:
-                  state = 0;
-                  t12 = b.y;
-                case 108:
-                  state = 0;
-                case 109:
-                case 110:
-                case 111:
-                case 112:
-                case 113:
-                case 114:
-                case 115:
-                case 116:
-                case 117:
-                case 118:
-                case 119:
-                case 120:
-                case 121:
-                case 122:
-                case 123:
-                case 124:
-                case 125:
-                case 126:
-                case 127:
-                case 128:
-                case 129:
-                case 130:
-                case 131:
-                case 132:
-                case 133:
-                case 134:
+                  b.y = $.sub(t70, t72);
+                default:
                   L2: while (true) {
                     switch (state) {
                       case 0:
                         if (!true) break L2;
                         $.Matrix22_mulMatrixAndVectorToOut(c.get$normalMass(), b, t6);
                         t6.mulLocal$1(-1);
-                        t13 = t6.get$x();
-                      case 109:
+                        t11 = t6.get$x();
+                      case 106:
                         state = 0;
-                      case 110:
-                        if (state == 110 || (state == 0 && $.geB(t13, 0.0))) {
+                      case 107:
+                        if (state == 107 || (state == 0 && $.geB(t11, 0.0))) {
                           switch (state) {
                             case 0:
-                              t13 = t6.get$y();
-                            case 110:
+                              t11 = t6.get$y();
+                            case 107:
                               state = 0;
-                              t13 = $.geB(t13, 0.0);
+                              t11 = $.geB(t11, 0.0);
                           }
                         } else {
-                          t13 = false;
+                          t11 = false;
                         }
-                      case 111:
-                      case 112:
-                      case 113:
-                      case 114:
-                        if (state == 111 || state == 112 || state == 113 || state == 114 || (state == 0 && t13)) {
+                      default:
+                        if (state == 108 || state == 109 || state == 110 || state == 111 || (state == 0 && t11)) {
                           switch (state) {
                             case 0:
                               t7.setFrom$1(t6).subLocal$1(a);
@@ -17271,19 +16026,19 @@ $$.ContactSolver = {"":
                               t5.setFrom$1(t10).mulLocal$1(invMassB);
                               vB.addLocal$1(t5);
                               t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+                            case 108:
+                              state = 0;
+                              t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+                            case 109:
+                              state = 0;
+                              var wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t13)));
+                              var t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+                            case 110:
+                              state = 0;
+                              var t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
                             case 111:
                               state = 0;
-                              t12 = $.Vector_crossVectors(cp2.get$rA(), t9);
-                            case 112:
-                              state = 0;
-                              var wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t12)));
-                              t13 = $.Vector_crossVectors(cp1.get$rB(), t8);
-                            case 113:
-                              state = 0;
-                              t14 = $.Vector_crossVectors(cp2.get$rB(), t9);
-                            case 114:
-                              state = 0;
-                              var wB0 = $.add(wB, $.mul(invIB, $.add(t13, t14)));
+                              var wB0 = $.add(wB, $.mul(invIB, $.add(t15, t17)));
                               cp1.set$normalImpulse(t6.get$x());
                               cp2.set$normalImpulse(t6.get$y());
                               wA = wA0;
@@ -17291,26 +16046,34 @@ $$.ContactSolver = {"":
                               break L2;
                           }
                         }
-                        t13 = cp1.get$normalMass();
+                        t11 = cp1.get$normalMass();
+                      case 112:
+                        state = 0;
+                        t11 = $.neg(t11);
+                        t13 = b.x;
+                      case 113:
+                        state = 0;
+                        t6.set$x($.mul(t11, t13));
+                        t6.set$y(0.0);
+                        t15 = c.get$K().get$col1().get$y();
+                      case 114:
+                        state = 0;
+                        t17 = t6.get$x();
                       case 115:
                         state = 0;
-                        t6.set$x($.mul($.neg(t13), t11));
-                        t6.set$y(0.0);
-                        t14 = c.get$K().get$col1().get$y();
+                        t17 = $.mul(t15, t17);
+                        t15 = b.y;
                       case 116:
                         state = 0;
-                        t15 = t6.get$x();
+                        vn2 = $.add(t17, t15);
+                        t11 = t6.get$x();
                       case 117:
                         state = 0;
-                        vn2 = $.add($.mul(t14, t15), t12);
-                        t13 = t6.get$x();
                       case 118:
-                        state = 0;
                       case 119:
                       case 120:
                       case 121:
-                      case 122:
-                        if (state == 119 || state == 120 || state == 121 || state == 122 || (state == 0 && ($.geB(t13, 0.0) && $.geB(vn2, 0.0)))) {
+                        if (state == 118 || state == 119 || state == 120 || state == 121 || (state == 0 && ($.geB(t11, 0.0) && $.geB(vn2, 0.0)))) {
                           switch (state) {
                             case 0:
                               t7.setFrom$1(t6).subLocal$1(a);
@@ -17322,19 +16085,19 @@ $$.ContactSolver = {"":
                               t5.setFrom$1(t10).mulLocal$1(invMassB);
                               vB.addLocal$1(t5);
                               t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
+                            case 118:
+                              state = 0;
+                              t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
                             case 119:
                               state = 0;
-                              t12 = $.Vector_crossVectors(cp2.get$rA(), t9);
+                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t13)));
+                              t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
                             case 120:
                               state = 0;
-                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t12)));
-                              t13 = $.Vector_crossVectors(cp1.get$rB(), t8);
+                              t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
                             case 121:
                               state = 0;
-                              t14 = $.Vector_crossVectors(cp2.get$rB(), t9);
-                            case 122:
-                              state = 0;
-                              wB0 = $.add(wB, $.mul(invIB, $.add(t13, t14)));
+                              wB0 = $.add(wB, $.mul(invIB, $.add(t15, t17)));
                               cp1.set$normalImpulse(t6.get$x());
                               cp2.set$normalImpulse(t6.get$y());
                               wA = wA0;
@@ -17343,25 +16106,33 @@ $$.ContactSolver = {"":
                           }
                         }
                         t6.set$x(0.0);
-                        t13 = cp2.get$normalMass();
+                        t11 = cp2.get$normalMass();
+                      case 122:
+                        state = 0;
+                        t11 = $.neg(t11);
+                        t13 = b.y;
                       case 123:
                         state = 0;
-                        t6.set$y($.mul($.neg(t13), t12));
-                        t14 = c.get$K().get$col2().get$x();
+                        t6.set$y($.mul(t11, t13));
+                        t15 = c.get$K().get$col2().get$x();
                       case 124:
                         state = 0;
-                        t15 = t6.get$y();
+                        t17 = t6.get$y();
                       case 125:
                         state = 0;
-                        vn1 = $.add($.mul(t14, t15), t11);
-                        t13 = t6.get$y();
+                        t17 = $.mul(t15, t17);
+                        t15 = b.x;
                       case 126:
                         state = 0;
+                        vn1 = $.add(t17, t15);
+                        t11 = t6.get$y();
                       case 127:
+                        state = 0;
                       case 128:
                       case 129:
                       case 130:
-                        if (state == 127 || state == 128 || state == 129 || state == 130 || (state == 0 && ($.geB(t13, 0.0) && $.geB(vn1, 0.0)))) {
+                      case 131:
+                        if (state == 128 || state == 129 || state == 130 || state == 131 || (state == 0 && ($.geB(t11, 0.0) && $.geB(vn1, 0.0)))) {
                           switch (state) {
                             case 0:
                               t7.setFrom$1(t6).subLocal$1(a);
@@ -17373,19 +16144,19 @@ $$.ContactSolver = {"":
                               t5.setFrom$1(t10).mulLocal$1(invMassB);
                               vB.addLocal$1(t5);
                               t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
-                            case 127:
-                              state = 0;
-                              t12 = $.Vector_crossVectors(cp2.get$rA(), t9);
                             case 128:
                               state = 0;
-                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t12)));
-                              t13 = $.Vector_crossVectors(cp1.get$rB(), t8);
+                              t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
                             case 129:
                               state = 0;
-                              t14 = $.Vector_crossVectors(cp2.get$rB(), t9);
+                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t13)));
+                              t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
                             case 130:
                               state = 0;
-                              wB0 = $.add(wB, $.mul(invIB, $.add(t13, t14)));
+                              t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+                            case 131:
+                              state = 0;
+                              wB0 = $.add(wB, $.mul(invIB, $.add(t15, t17)));
                               cp1.set$normalImpulse(t6.get$x());
                               cp2.set$normalImpulse(t6.get$y());
                               wA = wA0;
@@ -17395,11 +16166,17 @@ $$.ContactSolver = {"":
                         }
                         t6.set$x(0.0);
                         t6.set$y(0.0);
-                      case 131:
+                        vn1 = b.x;
                       case 132:
+                        state = 0;
+                        vn2 = b.y;
                       case 133:
+                        state = 0;
                       case 134:
-                        if (state == 131 || state == 132 || state == 133 || state == 134 || (state == 0 && ($.geB(t11, 0.0) && $.geB(t12, 0.0)))) {
+                      case 135:
+                      case 136:
+                      case 137:
+                        if (state == 134 || state == 135 || state == 136 || state == 137 || (state == 0 && ($.geB(vn1, 0.0) && $.geB(vn2, 0.0)))) {
                           switch (state) {
                             case 0:
                               t7.setFrom$1(t6).subLocal$1(a);
@@ -17411,19 +16188,19 @@ $$.ContactSolver = {"":
                               t5.setFrom$1(t10).mulLocal$1(invMassB);
                               vB.addLocal$1(t5);
                               t11 = $.Vector_crossVectors(cp1.get$rA(), t8);
-                            case 131:
-                              state = 0;
-                              t12 = $.Vector_crossVectors(cp2.get$rA(), t9);
-                            case 132:
-                              state = 0;
-                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t12)));
-                              t13 = $.Vector_crossVectors(cp1.get$rB(), t8);
-                            case 133:
-                              state = 0;
-                              t14 = $.Vector_crossVectors(cp2.get$rB(), t9);
                             case 134:
                               state = 0;
-                              wB0 = $.add(wB, $.mul(invIB, $.add(t13, t14)));
+                              t13 = $.Vector_crossVectors(cp2.get$rA(), t9);
+                            case 135:
+                              state = 0;
+                              wA0 = $.sub(wA, $.mul(invIA, $.add(t11, t13)));
+                              t15 = $.Vector_crossVectors(cp1.get$rB(), t8);
+                            case 136:
+                              state = 0;
+                              t17 = $.Vector_crossVectors(cp2.get$rB(), t9);
+                            case 137:
+                              state = 0;
+                              wB0 = $.add(wB, $.mul(invIB, $.add(t15, t17)));
                               cp1.set$normalImpulse(t6.get$x());
                               cp2.set$normalImpulse(t6.get$y());
                               wA = wA0;
@@ -17447,7 +16224,10 @@ $$.ContactSolver = {"":
  },
  warmStart$0: function() {
   for (var t1 = this.tangent, i = 0; $.ltB(i, this.constraintCount); ++i) {
-    var c = this.constraints[i];
+    var t2 = this.constraints;
+    var t3 = t2.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    var c = t2[i];
     var bodyA = c.get$bodyA();
     var bodyB = c.get$bodyB();
     var invMassA = bodyA.get$invMass();
@@ -17464,8 +16244,8 @@ $$.ContactSolver = {"":
       var ccp = $.index(c.get$points(), j);
       var Px = $.add($.mul(ccp.get$normalImpulse(), normal.get$x()), $.mul(ccp.get$tangentImpulse(), t1.x));
       var Py = $.add($.mul(ccp.get$normalImpulse(), normal.get$y()), $.mul(ccp.get$tangentImpulse(), t1.y));
-      var t2 = bodyA.get$angularVelocity();
-      var t3 = $.sub($.mul(ccp.get$rA().get$x(), Py), $.mul(ccp.get$rA().get$y(), Px));
+      t2 = bodyA.get$angularVelocity();
+      t3 = $.sub($.mul(ccp.get$rA().get$x(), Py), $.mul(ccp.get$rA().get$y(), Px));
       if (typeof t3 !== 'number') throw $.iae(t3);
       bodyA.set$angularVelocity($.sub(t2, invIA * t3));
       var t4 = bodyA.get$linearVelocity();
@@ -17528,15 +16308,15 @@ $$.ContactSolver = {"":
     case 0:
       var t1 = this.tangent;
       var i = 0;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
             if (!$.ltB(i, this.constraintCount)) break L0;
-            var c = $.index(this.constraints, i);
+            var t2 = this.constraints;
+            var t3 = t2.length;
+            if (i < 0 || i >= t3) throw $.ioore(i);
+            var c = t2[i];
             var bodyA = c.get$bodyA();
             var bodyB = c.get$bodyB();
             var invMassA = bodyA.get$invMass();
@@ -17558,7 +16338,7 @@ $$.ContactSolver = {"":
               var Px = $.add($.mul(ccp.get$normalImpulse(), normal.get$x()), $.mul(ccp.get$tangentImpulse(), t1.get$x()));
               var Py = $.add($.mul(ccp.get$normalImpulse(), normal.get$y()), $.mul(ccp.get$tangentImpulse(), t1.get$y()));
               bodyA.set$angularVelocity($.sub(bodyA.get$angularVelocity(), $.mul(invIA, $.sub($.mul(ccp.get$rA().get$x(), Py), $.mul(ccp.get$rA().get$y(), Px)))));
-              var t2 = bodyA.get$linearVelocity();
+              t2 = bodyA.get$linearVelocity();
               t2.set$x($.sub(t2.get$x(), $.mul(Px, invMassA)));
               t2 = bodyA.get$linearVelocity();
               t2.set$y($.sub(t2.get$y(), $.mul(Py, invMassA)));
@@ -17579,58 +16359,62 @@ $$.ContactSolver = {"":
   this.constraintCount = contactCount;
   if ($.ltB(this.constraints.length, contactCount)) {
     var old = this.constraints;
-    var t1 = $.ListFactory_List($.Math_max($.mul(old.length, 2), this.constraintCount));
+    var t1 = $.ListFactory_List($.Math_max(old.length * 2, this.constraintCount));
     $.setRuntimeTypeInfo(t1, ({E: 'ContactConstraint'}));
     this.constraints = t1;
     $.setRange$3(this.constraints, 0, old.length, old);
-    var i = old.length;
-    if (typeof i !== 'number') return this.init$3$bailout(2, contacts, impulseRatio, i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    for (; $.ltB(i, this.constraints.length); ++i) {
-      $.indexSet(this.constraints, i, $.ContactConstraint$());
+    for (var i = old.length; t1 = this.constraints, i < t1.length; ++i) {
+      var t2 = $.ContactConstraint$();
+      var t3 = t1.length;
+      if (i < 0 || i >= t3) throw $.ioore(i);
+      t1[i] = t2;
     }
   }
   for (t1 = this.worldManifold, t2 = this.tangent, t3 = this.temp2, t4 = this.temp1, t5 = t1.normal, t6 = t1.points, i = 0; $.ltB(i, this.constraintCount); ++i) {
     var t7 = contacts.length;
     if (i < 0 || i >= t7) throw $.ioore(i);
-    var t8 = contacts[i];
-    var fixtureA = t8.get$fixtureA();
-    var fixtureB = t8.get$fixtureB();
+    var contact = contacts[i];
+    var fixtureA = contact.get$fixtureA();
+    var fixtureB = contact.get$fixtureB();
     var shapeA = fixtureA.get$shape();
     var shapeB = fixtureB.get$shape();
     var radiusA = shapeA.get$radius();
     var radiusB = shapeB.get$radius();
     var bodyA = fixtureA.get$body();
     var bodyB = fixtureB.get$body();
-    var manifold = t8.get$manifold();
+    var manifold = contact.get$manifold();
     var friction = $.Settings_mixFriction(fixtureA.get$friction(), fixtureB.get$friction());
     var restitution = $.Settings_mixRestitution(fixtureA.get$restitution(), fixtureB.get$restitution());
-    if (typeof restitution !== 'number') return this.init$3$bailout(3, bodyB, manifold, impulseRatio, contacts, friction, restitution, i, t1, t4, t2, t3, radiusA, radiusB, bodyA, 0, 0, 0, 0);
+    if (typeof restitution !== 'number') return this.init$3$bailout(2, bodyB, manifold, impulseRatio, contacts, friction, restitution, i, t1, t4, t2, t3, radiusA, radiusB, bodyA, 0, 0, 0, 0);
     var vA = bodyA.get$linearVelocity();
     var vB = bodyB.get$linearVelocity();
     var wA = bodyA.get$angularVelocity();
-    if (typeof wA !== 'number') return this.init$3$bailout(4, bodyB, manifold, impulseRatio, contacts, friction, restitution, vA, i, vB, wA, t1, t4, t2, t3, radiusA, radiusB, bodyA, 0);
+    if (typeof wA !== 'number') return this.init$3$bailout(3, bodyB, manifold, impulseRatio, contacts, friction, restitution, vA, i, vB, wA, t1, t4, t2, t3, radiusA, radiusB, bodyA, 0);
     var wB = bodyB.get$angularVelocity();
-    if (typeof wB !== 'number') return this.init$3$bailout(5, bodyB, manifold, impulseRatio, contacts, friction, restitution, vA, i, vB, wB, t1, wA, t4, t2, t3, radiusA, radiusB, bodyA);
+    if (typeof wB !== 'number') return this.init$3$bailout(4, bodyB, manifold, impulseRatio, contacts, friction, restitution, vA, i, vB, wB, t1, wA, t4, t2, t3, radiusA, radiusB, bodyA);
     t1.initialize$5(manifold, bodyA.get$originTransform(), radiusA, bodyB.get$originTransform(), radiusB);
-    var cc = this.constraints[i];
+    var t11 = this.constraints;
+    var t12 = t11.length;
+    if (i < 0 || i >= t12) throw $.ioore(i);
+    var cc = t11[i];
     cc.set$bodyA(bodyA);
     cc.set$bodyB(bodyB);
     cc.set$manifold(manifold);
-    t8 = t5.get$x();
-    cc.get$normal().set$x(t8);
-    t8 = t5.get$y();
-    cc.get$normal().set$y(t8);
+    t11 = t5.get$x();
+    cc.get$normal().set$x(t11);
+    t11 = t5.get$y();
+    cc.get$normal().set$y(t11);
     cc.set$pointCount(manifold.get$pointCount());
     cc.set$friction(friction);
     cc.set$restitution(restitution);
-    t8 = manifold.get$localNormal().get$x();
-    cc.get$localNormal().set$x(t8);
-    t8 = manifold.get$localNormal().get$y();
-    cc.get$localNormal().set$y(t8);
-    t8 = manifold.get$localPoint().get$x();
-    cc.get$localPoint().set$x(t8);
-    t8 = manifold.get$localPoint().get$y();
-    cc.get$localPoint().set$y(t8);
+    t11 = manifold.get$localNormal().get$x();
+    cc.get$localNormal().set$x(t11);
+    t11 = manifold.get$localNormal().get$y();
+    cc.get$localNormal().set$y(t11);
+    t11 = manifold.get$localPoint().get$x();
+    cc.get$localPoint().set$x(t11);
+    t11 = manifold.get$localPoint().get$y();
+    cc.get$localPoint().set$y(t11);
     cc.set$radius($.add(radiusA, radiusB));
     cc.set$type(manifold.get$type());
     for (t7 = -wA, t8 = -wB, t9 = -restitution, j = 0; $.ltB(j, cc.get$pointCount()); ++j) {
@@ -17639,10 +16423,10 @@ $$.ContactSolver = {"":
       var t10 = cp.get$normalImpulse();
       if (typeof t10 !== 'number') throw $.iae(t10);
       ccp.set$normalImpulse(impulseRatio * t10);
-      var t11 = cp.get$tangentImpulse();
+      t11 = cp.get$tangentImpulse();
       if (typeof t11 !== 'number') throw $.iae(t11);
       ccp.set$tangentImpulse(impulseRatio * t11);
-      var t12 = cp.get$localPoint().get$x();
+      t12 = cp.get$localPoint().get$x();
       ccp.get$localPoint().set$x(t12);
       t12 = cp.get$localPoint().get$y();
       ccp.get$localPoint().set$y(t12);
@@ -17746,7 +16530,7 @@ $$.ContactSolver = {"":
       } else cc.set$pointCount(1);
     }
   }
-  var t3, t4, t9, j, t2, t6, t5;
+  var t4, t8, t9, j, t6, t5;
  },
  init$3$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14, env15, env16, env17) {
   switch (state) {
@@ -17755,17 +16539,7 @@ $$.ContactSolver = {"":
       var contactCount = env1;
       var impulseRatio = env2;
       break;
-    case 1:
-      contacts = env0;
-      contactCount = env1;
-      impulseRatio = env2;
-      break;
     case 2:
-      contacts = env0;
-      impulseRatio = env1;
-      i = env2;
-      break;
-    case 3:
       bodyB = env0;
       manifold = env1;
       impulseRatio = env2;
@@ -17781,7 +16555,7 @@ $$.ContactSolver = {"":
       radiusB = env12;
       bodyA = env13;
       break;
-    case 4:
+    case 3:
       bodyB = env0;
       manifold = env1;
       impulseRatio = env2;
@@ -17800,7 +16574,7 @@ $$.ContactSolver = {"":
       radiusB = env15;
       bodyA = env16;
       break;
-    case 5:
+    case 4:
       bodyB = env0;
       manifold = env1;
       impulseRatio = env2;
@@ -17825,34 +16599,27 @@ $$.ContactSolver = {"":
     case 0:
     case 1:
       state = 0;
-    case 1:
-      state = 0;
       this.constraintCount = contactCount;
-    case 2:
-      if (state == 2 || (state == 0 && $.ltB($.get$length(this.constraints), contactCount))) {
-        switch (state) {
-          case 0:
-            var old = this.constraints;
-            var t1 = $.ListFactory_List($.Math_max($.mul($.get$length(old), 2), this.constraintCount));
-            $.setRuntimeTypeInfo(t1, ({E: 'ContactConstraint'}));
-            this.constraints = t1;
-            $.setRange$3(this.constraints, 0, $.get$length(old), old);
-            var i = $.get$length(old);
-          case 2:
-            state = 0;
-            for (; $.ltB(i, $.get$length(this.constraints)); i = $.add(i, 1)) {
-              $.indexSet(this.constraints, i, $.ContactConstraint$());
-            }
+      if ($.ltB(this.constraints.length, contactCount)) {
+        var old = this.constraints;
+        var t1 = $.ListFactory_List($.Math_max(old.length * 2, this.constraintCount));
+        $.setRuntimeTypeInfo(t1, ({E: 'ContactConstraint'}));
+        this.constraints = t1;
+        $.setRange$3(this.constraints, 0, old.length, old);
+        for (var i = old.length; i < this.constraints.length; ++i) {
+          t1 = this.constraints;
+          var t2 = $.ContactConstraint$();
+          var t3 = t1.length;
+          if (i < 0 || i >= t3) throw $.ioore(i);
+          t1[i] = t2;
         }
       }
       t1 = this.worldManifold;
-      var t2 = this.tangent;
-      var t3 = this.temp2;
+      t2 = this.tangent;
+      t3 = this.temp2;
       var t4 = this.temp1;
       i = 0;
-    case 3:
-    case 4:
-    case 5:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
@@ -17869,36 +16636,39 @@ $$.ContactSolver = {"":
             var manifold = contact.get$manifold();
             var friction = $.Settings_mixFriction(fixtureA.get$friction(), fixtureB.get$friction());
             var restitution = $.Settings_mixRestitution(fixtureA.get$restitution(), fixtureB.get$restitution());
-          case 3:
+          case 2:
             state = 0;
             var vA = bodyA.get$linearVelocity();
             var vB = bodyB.get$linearVelocity();
             var wA = bodyA.get$angularVelocity();
-          case 4:
+          case 3:
             state = 0;
             var wB = bodyB.get$angularVelocity();
-          case 5:
+          case 4:
             state = 0;
             t1.initialize$5(manifold, bodyA.get$originTransform(), radiusA, bodyB.get$originTransform(), radiusB);
-            var cc = $.index(this.constraints, i);
+            var t8 = this.constraints;
+            var t9 = t8.length;
+            if (i < 0 || i >= t9) throw $.ioore(i);
+            var cc = t8[i];
             cc.set$bodyA(bodyA);
             cc.set$bodyB(bodyB);
             cc.set$manifold(manifold);
-            var t5 = t1.get$normal().get$x();
-            cc.get$normal().set$x(t5);
-            t5 = t1.get$normal().get$y();
-            cc.get$normal().set$y(t5);
+            t8 = t1.get$normal().get$x();
+            cc.get$normal().set$x(t8);
+            t8 = t1.get$normal().get$y();
+            cc.get$normal().set$y(t8);
             cc.set$pointCount(manifold.get$pointCount());
             cc.set$friction(friction);
             cc.set$restitution(restitution);
-            t5 = manifold.get$localNormal().get$x();
-            cc.get$localNormal().set$x(t5);
-            t5 = manifold.get$localNormal().get$y();
-            cc.get$localNormal().set$y(t5);
-            t5 = manifold.get$localPoint().get$x();
-            cc.get$localPoint().set$x(t5);
-            t5 = manifold.get$localPoint().get$y();
-            cc.get$localPoint().set$y(t5);
+            t8 = manifold.get$localNormal().get$x();
+            cc.get$localNormal().set$x(t8);
+            t8 = manifold.get$localNormal().get$y();
+            cc.get$localNormal().set$y(t8);
+            t8 = manifold.get$localPoint().get$x();
+            cc.get$localPoint().set$x(t8);
+            t8 = manifold.get$localPoint().get$y();
+            cc.get$localPoint().set$y(t8);
             cc.set$radius($.add(radiusA, radiusB));
             cc.set$type(manifold.get$type());
             for (var j = 0; $.ltB(j, cc.get$pointCount()); ++j) {
@@ -17906,7 +16676,7 @@ $$.ContactSolver = {"":
               var ccp = $.index(cc.get$points(), j);
               ccp.set$normalImpulse($.mul(impulseRatio, cp.get$normalImpulse()));
               ccp.set$tangentImpulse($.mul(impulseRatio, cp.get$tangentImpulse()));
-              t5 = cp.get$localPoint().get$x();
+              var t5 = cp.get$localPoint().get$x();
               ccp.get$localPoint().set$x(t5);
               t5 = cp.get$localPoint().get$y();
               ccp.get$localPoint().set$y(t5);
@@ -17986,8 +16756,12 @@ $$.ContactSolver = {"":
   }
  },
  ContactSolver$0: function() {
-  for (var i = 0; $.ltB(i, $.get$length(this.constraints)); ++i) {
-    $.indexSet(this.constraints, i, $.ContactConstraint$());
+  for (var i = 0; i < this.constraints.length; ++i) {
+    var t1 = this.constraints;
+    var t2 = $.ContactConstraint$();
+    var t3 = t1.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    t1[i] = t2;
   }
  }
 };
@@ -18088,8 +16862,11 @@ $$.TimeOfImpactSolver = {"":
  super: "Object",
  solve$1: function(baumgarte) {
   if (typeof baumgarte !== 'number') return this.solve$1$bailout(1, baumgarte, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  for (var t1 = this.psm, t2 = this.rA, t3 = this.rB, t4 = this.P, t5 = this.temp, normal = t1.normal, point = t1.point, i = 0, minSeparation = 0; i < this.count; ++i) {
-    var c = this.constraints[i];
+  for (var t1 = this.psm, t2 = this.rA, t3 = this.rB, t4 = this.P, t5 = this.temp, normal = t1.normal, point = t1.point, i = 0, minSeparation = 0; $.ltB(i, this.count); ++i) {
+    var t6 = this.constraints;
+    var t7 = t6.length;
+    if (i < 0 || i >= t7) throw $.ioore(i);
+    var c = t6[i];
     var bodyA = c.get$bodyA();
     var bodyB = c.get$bodyB();
     var massA = bodyA.get$mass();
@@ -18104,13 +16881,13 @@ $$.TimeOfImpactSolver = {"":
     if (typeof invMassB !== 'number') return this.solve$1$bailout(4, baumgarte, massB, invMassA, i, minSeparation, invIA, invMassB, t1, bodyA, bodyB, c, t2, t3, t4, t5);
     var invIB = $.mul(massB, bodyB.get$invInertia());
     if (typeof invIB !== 'number') return this.solve$1$bailout(5, baumgarte, invMassA, i, minSeparation, invIA, invMassB, invIB, t1, bodyA, bodyB, c, t2, t3, t4, t5);
-    for (var t6 = invMassA + invMassB, j = 0; $.ltB(j, c.get$pointCount()); ++j) {
+    for (t6 = invMassA + invMassB, j = 0; $.ltB(j, c.get$pointCount()); ++j) {
       t1.initialize$2(c, j);
       var separation = t1.separation;
       t2.setFrom$1(point).subLocal$1(bodyA.get$sweep().get$center());
       t3.setFrom$1(point).subLocal$1(bodyB.get$sweep().get$center());
       minSeparation = $.Math_min(minSeparation, separation);
-      var t7 = separation + 0.005;
+      t7 = $.add(separation, 0.005);
       if (typeof t7 !== 'number') throw $.iae(t7);
       var C = $.MathBox_clamp(baumgarte * t7, -0.2, 0.0);
       var rnA = $.Vector_crossVectors(t2, normal);
@@ -18140,6 +16917,7 @@ $$.TimeOfImpactSolver = {"":
     }
   }
   return $.ge(minSeparation, -0.0075);
+  var j;
  },
  solve$1$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14) {
   switch (state) {
@@ -18224,15 +17002,15 @@ $$.TimeOfImpactSolver = {"":
       var t5 = this.temp;
       var i = 0;
       var minSeparation = 0;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    default:
       L0: while (true) {
         switch (state) {
           case 0:
             if (!$.ltB(i, this.count)) break L0;
-            var c = $.index(this.constraints, i);
+            var t6 = this.constraints;
+            var t7 = t6.length;
+            if (i < 0 || i >= t7) throw $.ioore(i);
+            var c = t6[i];
             var bodyA = c.get$bodyA();
             var bodyB = c.get$bodyB();
             var massA = bodyA.get$mass();
@@ -18267,7 +17045,7 @@ $$.TimeOfImpactSolver = {"":
               t4.setFrom$1(normal).mulLocal$1(impulse);
               t5.setFrom$1(t4).mulLocal$1(invMassA);
               bodyA.get$sweep().get$center().subLocal$1(t5);
-              var t6 = bodyA.get$sweep();
+              t6 = bodyA.get$sweep();
               t6.set$angle($.sub(t6.get$angle(), $.mul(invIA, $.Vector_crossVectors(t2, t4))));
               bodyA.synchronizeTransform$0();
               t5.setFrom$1(t4).mulLocal$1(invMassB);
@@ -18288,30 +17066,34 @@ $$.TimeOfImpactSolver = {"":
   this.toiBody = argToiBody;
   if ($.geB(this.count, this.constraints.length)) {
     var old = this.constraints;
-    var t1 = $.ListFactory_List($.Math_max(this.count, $.mul(old.length, 2)));
+    var t1 = $.ListFactory_List($.Math_max(this.count, old.length * 2));
     $.setRuntimeTypeInfo(t1, ({E: 'TimeOfImpactConstraint'}));
     this.constraints = t1;
     $.setRange$3(this.constraints, 0, old.length, old);
-    var i = old.length;
-    if (typeof i !== 'number') return this.initialize$3$bailout(2, contacts, i, 0);
-    for (; $.ltB(i, this.constraints.length); ++i) {
-      $.indexSet(this.constraints, i, $.TimeOfImpactConstraint$());
+    for (var i = old.length; t1 = this.constraints, i < t1.length; ++i) {
+      var t2 = $.TimeOfImpactConstraint$();
+      var t3 = t1.length;
+      if (i < 0 || i >= t3) throw $.ioore(i);
+      t1[i] = t2;
     }
   }
-  for (i = 0; i < this.count; ++i) {
+  for (i = 0; $.ltB(i, this.count); ++i) {
     t1 = contacts.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t2 = contacts[i];
-    var fixtureA = t2.get$fixtureA();
-    var fixtureB = t2.get$fixtureB();
+    var contact = contacts[i];
+    var fixtureA = contact.get$fixtureA();
+    var fixtureB = contact.get$fixtureB();
     var shapeA = fixtureA.get$shape();
     var shapeB = fixtureB.get$shape();
     var radiusA = shapeA.get$radius();
     var radiusB = shapeB.get$radius();
     var bodyA = fixtureA.get$body();
     var bodyB = fixtureB.get$body();
-    var manifold = t2.get$manifold();
-    var constraint = this.constraints[i];
+    var manifold = contact.get$manifold();
+    t2 = this.constraints;
+    t3 = t2.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    var constraint = t2[i];
     constraint.set$bodyA(bodyA);
     constraint.set$bodyB(bodyB);
     constraint.get$localNormal().setFrom$1(manifold.get$localNormal());
@@ -18325,70 +17107,58 @@ $$.TimeOfImpactSolver = {"":
     }
   }
  },
- initialize$3$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      var contacts = env0;
-      var argCount = env1;
-      var argToiBody = env2;
-      break;
-    case 2:
-      contacts = env0;
-      i = env1;
-      break;
+ initialize$3$bailout: function(state, contacts, argCount, argToiBody) {
+  this.count = argCount;
+  this.toiBody = argToiBody;
+  if ($.geB(this.count, this.constraints.length)) {
+    var old = this.constraints;
+    var t1 = $.ListFactory_List($.Math_max(this.count, old.length * 2));
+    $.setRuntimeTypeInfo(t1, ({E: 'TimeOfImpactConstraint'}));
+    this.constraints = t1;
+    $.setRange$3(this.constraints, 0, old.length, old);
+    for (var i = old.length; i < this.constraints.length; ++i) {
+      t1 = this.constraints;
+      var t2 = $.TimeOfImpactConstraint$();
+      var t3 = t1.length;
+      if (i < 0 || i >= t3) throw $.ioore(i);
+      t1[i] = t2;
+    }
   }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-      this.count = argCount;
-      this.toiBody = argToiBody;
-    case 2:
-      if (state == 2 || (state == 0 && $.geB(this.count, $.get$length(this.constraints)))) {
-        switch (state) {
-          case 0:
-            var old = this.constraints;
-            var t1 = $.ListFactory_List($.Math_max(this.count, $.mul($.get$length(old), 2)));
-            $.setRuntimeTypeInfo(t1, ({E: 'TimeOfImpactConstraint'}));
-            this.constraints = t1;
-            $.setRange$3(this.constraints, 0, $.get$length(old), old);
-            var i = $.get$length(old);
-          case 2:
-            state = 0;
-            for (; $.ltB(i, $.get$length(this.constraints)); i = $.add(i, 1)) {
-              $.indexSet(this.constraints, i, $.TimeOfImpactConstraint$());
-            }
-        }
-      }
-      for (i = 0; $.ltB(i, this.count); ++i) {
-        var contact = $.index(contacts, i);
-        var fixtureA = contact.get$fixtureA();
-        var fixtureB = contact.get$fixtureB();
-        var shapeA = fixtureA.get$shape();
-        var shapeB = fixtureB.get$shape();
-        var radiusA = shapeA.get$radius();
-        var radiusB = shapeB.get$radius();
-        var bodyA = fixtureA.get$body();
-        var bodyB = fixtureB.get$body();
-        var manifold = contact.get$manifold();
-        var constraint = $.index(this.constraints, i);
-        constraint.set$bodyA(bodyA);
-        constraint.set$bodyB(bodyB);
-        constraint.get$localNormal().setFrom$1(manifold.get$localNormal());
-        constraint.get$localPoint().setFrom$1(manifold.get$localPoint());
-        constraint.set$type(manifold.get$type());
-        constraint.set$pointCount(manifold.get$pointCount());
-        constraint.set$radius($.add(radiusA, radiusB));
-        for (var j = 0; $.ltB(j, constraint.get$pointCount()); ++j) {
-          var cp = $.index(manifold.get$points(), j);
-          $.indexSet(constraint.get$localPoints(), j, cp.get$localPoint());
-        }
-      }
+  for (i = 0; $.ltB(i, this.count); ++i) {
+    var contact = $.index(contacts, i);
+    var fixtureA = contact.get$fixtureA();
+    var fixtureB = contact.get$fixtureB();
+    var shapeA = fixtureA.get$shape();
+    var shapeB = fixtureB.get$shape();
+    var radiusA = shapeA.get$radius();
+    var radiusB = shapeB.get$radius();
+    var bodyA = fixtureA.get$body();
+    var bodyB = fixtureB.get$body();
+    var manifold = contact.get$manifold();
+    t1 = this.constraints;
+    t2 = t1.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    var constraint = t1[i];
+    constraint.set$bodyA(bodyA);
+    constraint.set$bodyB(bodyB);
+    constraint.get$localNormal().setFrom$1(manifold.get$localNormal());
+    constraint.get$localPoint().setFrom$1(manifold.get$localPoint());
+    constraint.set$type(manifold.get$type());
+    constraint.set$pointCount(manifold.get$pointCount());
+    constraint.set$radius($.add(radiusA, radiusB));
+    for (var j = 0; $.ltB(j, constraint.get$pointCount()); ++j) {
+      var cp = $.index(manifold.get$points(), j);
+      $.indexSet(constraint.get$localPoints(), j, cp.get$localPoint());
+    }
   }
  },
  TimeOfImpactSolver$0: function() {
-  for (var i = 0; $.ltB(i, $.get$length(this.constraints)); ++i) {
-    $.indexSet(this.constraints, i, $.TimeOfImpactConstraint$());
+  for (var i = 0; i < this.constraints.length; ++i) {
+    var t1 = this.constraints;
+    var t2 = $.TimeOfImpactConstraint$();
+    var t3 = t1.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    t1[i] = t2;
   }
  }
 };
@@ -18452,8 +17222,8 @@ $$.TimeOfImpactConstraint = {"":
     var t3 = t1[i];
     var t4 = argOther.get$localPoints();
     if (typeof t4 !== 'string' && (typeof t4 !== 'object' || t4 === null || (t4.constructor !== Array && !t4.is$JavaScriptIndexingBehavior()))) return this.setFrom$1$bailout(1, i, argOther, t1, t3, t4);
-    var t5 = t4.length;
-    if (i < 0 || i >= t5) throw $.ioore(i);
+    var t6 = t4.length;
+    if (i < 0 || i >= t6) throw $.ioore(i);
     t3.setFrom$1(t4[i]);
   }
   this.localNormal.setFrom$1(argOther.get$localNormal());
@@ -18559,14 +17329,12 @@ $$.Color3 = {"":
   if (t1 == null ? t2 == null : t1 === t2) {
     t1 = this.y;
     t2 = other.y;
-    t2 = t1 == null ? t2 == null : t1 === t2;
-    t1 = t2;
-  } else t1 = false;
-  if (t1) {
-    t1 = this.z;
-    t2 = other.z;
-    t2 = t1 == null ? t2 == null : t1 === t2;
-    t1 = t2;
+    if (t1 == null ? t2 == null : t1 === t2) {
+      t1 = this.z;
+      t2 = other.z;
+      t2 = t1 == null ? t2 == null : t1 === t2;
+      t1 = t2;
+    } else t1 = false;
   } else t1 = false;
   return t1;
  },
@@ -18610,25 +17378,25 @@ $$.Matrix22 = {"":
   var t1 = this.col1;
   var t2 = t1.get$x();
   if (typeof t2 !== 'number') return this.addLocal$1$bailout(1, other, t1, t2, 0);
-  var t3 = other.get$col1().get$x();
-  if (typeof t3 !== 'number') return this.addLocal$1$bailout(2, other, t1, t2, t3);
-  t1.set$x(t2 + t3);
-  var t4 = t1.get$y();
-  if (typeof t4 !== 'number') return this.addLocal$1$bailout(3, other, t1, t4, 0);
-  var t5 = other.get$col1().get$y();
-  if (typeof t5 !== 'number') return this.addLocal$1$bailout(4, other, t1, t4, t5);
-  t1.set$y(t4 + t5);
+  var t4 = other.get$col1().get$x();
+  if (typeof t4 !== 'number') return this.addLocal$1$bailout(2, other, t1, t2, t4);
+  t1.set$x(t2 + t4);
+  var t6 = t1.get$y();
+  if (typeof t6 !== 'number') return this.addLocal$1$bailout(3, other, t1, t6, 0);
+  var t8 = other.get$col1().get$y();
+  if (typeof t8 !== 'number') return this.addLocal$1$bailout(4, other, t1, t6, t8);
+  t1.set$y(t6 + t8);
   t1 = this.col2;
-  var t6 = t1.get$x();
-  if (typeof t6 !== 'number') return this.addLocal$1$bailout(5, other, t6, t1, 0);
-  var t7 = other.get$col2().get$x();
-  if (typeof t7 !== 'number') return this.addLocal$1$bailout(6, other, t6, t1, t7);
-  t1.set$x(t6 + t7);
-  var t8 = t1.get$y();
-  if (typeof t8 !== 'number') return this.addLocal$1$bailout(7, other, t8, t1, 0);
-  var t9 = other.get$col2().get$y();
-  if (typeof t9 !== 'number') return this.addLocal$1$bailout(8, t8, t1, t9, 0);
-  t1.set$y(t8 + t9);
+  var t10 = t1.get$x();
+  if (typeof t10 !== 'number') return this.addLocal$1$bailout(5, other, t10, t1, 0);
+  var t12 = other.get$col2().get$x();
+  if (typeof t12 !== 'number') return this.addLocal$1$bailout(6, other, t10, t1, t12);
+  t1.set$x(t10 + t12);
+  var t14 = t1.get$y();
+  if (typeof t14 !== 'number') return this.addLocal$1$bailout(7, other, t14, t1, 0);
+  var t16 = other.get$col2().get$y();
+  if (typeof t16 !== 'number') return this.addLocal$1$bailout(8, t14, t1, t16, 0);
+  t1.set$y(t14 + t16);
   return this;
  },
  addLocal$1$bailout: function(state, env0, env1, env2, env3) {
@@ -18642,39 +17410,39 @@ $$.Matrix22 = {"":
       other = env0;
       t1 = env1;
       t2 = env2;
-      t3 = env3;
+      t4 = env3;
       break;
     case 3:
       other = env0;
       t1 = env1;
-      t4 = env2;
+      t6 = env2;
       break;
     case 4:
       other = env0;
       t1 = env1;
-      t4 = env2;
-      t5 = env3;
+      t6 = env2;
+      t8 = env3;
       break;
     case 5:
       other = env0;
-      t6 = env1;
+      t10 = env1;
       t1 = env2;
       break;
     case 6:
       other = env0;
-      t6 = env1;
+      t10 = env1;
       t1 = env2;
-      t7 = env3;
+      t12 = env3;
       break;
     case 7:
       other = env0;
-      t8 = env1;
+      t14 = env1;
       t1 = env2;
       break;
     case 8:
-      t8 = env0;
+      t14 = env0;
       t1 = env1;
-      t9 = env2;
+      t16 = env2;
       break;
   }
   switch (state) {
@@ -18683,32 +17451,32 @@ $$.Matrix22 = {"":
       var t2 = t1.get$x();
     case 1:
       state = 0;
-      var t3 = other.get$col1().get$x();
+      var t4 = other.get$col1().get$x();
     case 2:
       state = 0;
-      t1.set$x($.add(t2, t3));
-      var t4 = t1.get$y();
+      t1.set$x($.add(t2, t4));
+      var t6 = t1.get$y();
     case 3:
       state = 0;
-      var t5 = other.get$col1().get$y();
+      var t8 = other.get$col1().get$y();
     case 4:
       state = 0;
-      t1.set$y($.add(t4, t5));
+      t1.set$y($.add(t6, t8));
       t1 = this.col2;
-      var t6 = t1.get$x();
+      var t10 = t1.get$x();
     case 5:
       state = 0;
-      var t7 = other.get$col2().get$x();
+      var t12 = other.get$col2().get$x();
     case 6:
       state = 0;
-      t1.set$x($.add(t6, t7));
-      var t8 = t1.get$y();
+      t1.set$x($.add(t10, t12));
+      var t14 = t1.get$y();
     case 7:
       state = 0;
-      var t9 = other.get$col2().get$y();
+      var t16 = other.get$col2().get$y();
     case 8:
       state = 0;
-      t1.set$y($.add(t8, t9));
+      t1.set$y($.add(t14, t16));
       return this;
   }
  },
@@ -18716,20 +17484,20 @@ $$.Matrix22 = {"":
   var t1 = this.col1;
   var a = t1.get$x();
   if (typeof a !== 'number') return this.invertLocal$0$bailout(1, a, t1, 0, 0, 0, 0);
-  var t2 = this.col2;
-  var b = t2.get$x();
-  if (typeof b !== 'number') return this.invertLocal$0$bailout(2, a, b, t1, t2, 0, 0);
+  var t3 = this.col2;
+  var b = t3.get$x();
+  if (typeof b !== 'number') return this.invertLocal$0$bailout(2, a, b, t1, t3, 0, 0);
   var c = t1.get$y();
-  if (typeof c !== 'number') return this.invertLocal$0$bailout(3, t2, a, b, t1, c, 0);
-  var d = t2.get$y();
-  if (typeof d !== 'number') return this.invertLocal$0$bailout(4, a, b, t1, t2, c, d);
+  if (typeof c !== 'number') return this.invertLocal$0$bailout(3, t3, a, b, t1, c, 0);
+  var d = t3.get$y();
+  if (typeof d !== 'number') return this.invertLocal$0$bailout(4, a, b, t1, t3, c, d);
   var det = a * d - b * c;
   if (!(det === 0)) det = 1.0 / det;
   t1.set$x(det * d);
-  var t3 = -det;
-  t2.set$x(t3 * b);
-  t1.set$y(t3 * c);
-  t2.set$y(det * a);
+  var t2 = -det;
+  t3.set$x(t2 * b);
+  t1.set$y(t2 * c);
+  t3.set$y(det * a);
   return this;
  },
  invertLocal$0$bailout: function(state, env0, env1, env2, env3, env4, env5) {
@@ -18742,10 +17510,10 @@ $$.Matrix22 = {"":
       a = env0;
       b = env1;
       t1 = env2;
-      t2 = env3;
+      t3 = env3;
       break;
     case 3:
-      t2 = env0;
+      t3 = env0;
       a = env1;
       b = env2;
       t1 = env3;
@@ -18755,7 +17523,7 @@ $$.Matrix22 = {"":
       a = env0;
       b = env1;
       t1 = env2;
-      t2 = env3;
+      t3 = env3;
       c = env4;
       d = env5;
       break;
@@ -18766,14 +17534,14 @@ $$.Matrix22 = {"":
       var a = t1.get$x();
     case 1:
       state = 0;
-      var t2 = this.col2;
-      var b = t2.get$x();
+      var t3 = this.col2;
+      var b = t3.get$x();
     case 2:
       state = 0;
       var c = t1.get$y();
     case 3:
       state = 0;
-      var d = t2.get$y();
+      var d = t3.get$y();
     case 4:
       state = 0;
       var det = $.sub($.mul(a, d), $.mul(b, c));
@@ -18782,9 +17550,9 @@ $$.Matrix22 = {"":
         det = 1.0 / det;
       }
       t1.set$x($.mul(det, d));
-      t2.set$x($.mul($.neg(det), b));
+      t3.set$x($.mul($.neg(det), b));
       t1.set$y($.mul($.neg(det), c));
-      t2.set$y($.mul(det, a));
+      t3.set$y($.mul(det, a));
       return this;
   }
  },
@@ -18800,15 +17568,7 @@ $$.Matrix22 = {"":
  },
  operator$eq$1: function(other) {
   if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Matrix22)) {
-    var t1 = this.col1;
-    var t2 = other.get$col1();
-    if (t1 == null ? t2 == null : t1 === t2) {
-      t1 = this.col2;
-      t2 = other.get$col2();
-      t2 = t1 == null ? t2 == null : t1 === t2;
-      t1 = t2;
-    } else t1 = false;
-    return t1;
+    return $.eqB(this.col1, other.get$col1()) && $.eqB(this.col2, other.get$col2());
   }
   return false;
  },
@@ -18877,30 +17637,30 @@ $$.Sweep = {"":
   t2 = xf.get$position();
   var t6 = t2.get$x();
   if (typeof t6 !== 'number') return this.getTransform$2$bailout(1, xf, t2, t6, 0, 0, 0, 0);
-  var t7 = xf.get$rotation().get$col1().get$x();
-  if (typeof t7 !== 'number') return this.getTransform$2$bailout(2, xf, t7, t2, t6, 0, 0, 0);
-  var t8 = this.localCenter;
-  var t9 = t8.x;
-  if (typeof t9 !== 'number') return this.getTransform$2$bailout(3, xf, t7, t9, t8, t2, t6, 0);
-  t9 *= t7;
-  t7 = xf.get$rotation().get$col2().get$x();
-  if (typeof t7 !== 'number') return this.getTransform$2$bailout(4, xf, t9, t7, t8, t2, t6, 0);
-  var t10 = t8.y;
-  if (typeof t10 !== 'number') return this.getTransform$2$bailout(5, xf, t9, t7, t10, t8, t2, t6);
-  t2.set$x(t6 - (t9 + t7 * t10));
+  var t8 = xf.get$rotation().get$col1().get$x();
+  if (typeof t8 !== 'number') return this.getTransform$2$bailout(2, xf, t8, t2, t6, 0, 0, 0);
+  var t10 = this.localCenter;
+  var t11 = t10.x;
+  if (typeof t11 !== 'number') return this.getTransform$2$bailout(3, xf, t8, t11, t10, t2, t6, 0);
+  t11 *= t8;
+  t8 = xf.get$rotation().get$col2().get$x();
+  if (typeof t8 !== 'number') return this.getTransform$2$bailout(4, xf, t11, t8, t10, t2, t6, 0);
+  var t14 = t10.y;
+  if (typeof t14 !== 'number') return this.getTransform$2$bailout(5, xf, t11, t8, t14, t10, t2, t6);
+  t2.set$x(t6 - (t11 + t8 * t14));
   t2 = xf.get$position();
-  var t11 = t2.get$y();
-  if (typeof t11 !== 'number') return this.getTransform$2$bailout(6, xf, t2, t11, t8, 0, 0, 0);
-  var t12 = xf.get$rotation().get$col1().get$y();
-  if (typeof t12 !== 'number') return this.getTransform$2$bailout(7, xf, t2, t11, t8, t12, 0, 0);
-  var t13 = t8.x;
-  if (typeof t13 !== 'number') return this.getTransform$2$bailout(8, xf, t2, t11, t12, t13, t8, 0);
-  t13 *= t12;
-  t12 = xf.get$rotation().get$col2().get$y();
-  if (typeof t12 !== 'number') return this.getTransform$2$bailout(9, t2, t11, t8, t13, t12, 0, 0);
-  t8 = t8.y;
-  if (typeof t8 !== 'number') return this.getTransform$2$bailout(10, t8, t2, t11, t13, t12, 0, 0);
-  t2.set$y(t11 - (t13 + t12 * t8));
+  var t16 = t2.get$y();
+  if (typeof t16 !== 'number') return this.getTransform$2$bailout(6, xf, t2, t16, t10, 0, 0, 0);
+  var t18 = xf.get$rotation().get$col1().get$y();
+  if (typeof t18 !== 'number') return this.getTransform$2$bailout(7, xf, t2, t16, t10, t18, 0, 0);
+  var t20 = t10.x;
+  if (typeof t20 !== 'number') return this.getTransform$2$bailout(8, xf, t2, t16, t18, t20, t10, 0);
+  t20 *= t18;
+  t18 = xf.get$rotation().get$col2().get$y();
+  if (typeof t18 !== 'number') return this.getTransform$2$bailout(9, t2, t16, t10, t20, t18, 0, 0);
+  t10 = t10.y;
+  if (typeof t10 !== 'number') return this.getTransform$2$bailout(10, t10, t2, t16, t20, t18, 0, 0);
+  t2.set$y(t16 - (t20 + t18 * t10));
  },
  getTransform$2$bailout: function(state, env0, env1, env2, env3, env4, env5, env6) {
   switch (state) {
@@ -18911,69 +17671,69 @@ $$.Sweep = {"":
       break;
     case 2:
       xf = env0;
-      t7 = env1;
+      t8 = env1;
       t2 = env2;
       t6 = env3;
       break;
     case 3:
       xf = env0;
-      t7 = env1;
-      t9 = env2;
-      t8 = env3;
+      t8 = env1;
+      t11 = env2;
+      t10 = env3;
       t2 = env4;
       t6 = env5;
       break;
     case 4:
       xf = env0;
-      t9 = env1;
-      t7 = env2;
-      t8 = env3;
+      t11 = env1;
+      t8 = env2;
+      t10 = env3;
       t2 = env4;
       t6 = env5;
       break;
     case 5:
       xf = env0;
-      t9 = env1;
-      t7 = env2;
-      t10 = env3;
-      t8 = env4;
+      t11 = env1;
+      t8 = env2;
+      t14 = env3;
+      t10 = env4;
       t2 = env5;
       t6 = env6;
       break;
     case 6:
       xf = env0;
       t2 = env1;
-      t11 = env2;
-      t8 = env3;
+      t16 = env2;
+      t10 = env3;
       break;
     case 7:
       xf = env0;
       t2 = env1;
-      t11 = env2;
-      t8 = env3;
-      t12 = env4;
+      t16 = env2;
+      t10 = env3;
+      t18 = env4;
       break;
     case 8:
       xf = env0;
       t2 = env1;
-      t11 = env2;
-      t12 = env3;
-      t13 = env4;
-      t8 = env5;
+      t16 = env2;
+      t18 = env3;
+      t20 = env4;
+      t10 = env5;
       break;
     case 9:
       t2 = env0;
-      t11 = env1;
-      t8 = env2;
-      t13 = env3;
-      t12 = env4;
+      t16 = env1;
+      t10 = env2;
+      t20 = env3;
+      t18 = env4;
       break;
     case 10:
-      t8 = env0;
+      t10 = env0;
       t2 = env1;
-      t11 = env2;
-      t13 = env3;
-      t12 = env4;
+      t16 = env2;
+      t20 = env3;
+      t18 = env4;
       break;
   }
   switch (state) {
@@ -19007,85 +17767,47 @@ $$.Sweep = {"":
       var t6 = t2.get$x();
     case 1:
       state = 0;
-      var t7 = xf.get$rotation().get$col1().get$x();
+      var t8 = xf.get$rotation().get$col1().get$x();
     case 2:
       state = 0;
-      var t8 = this.localCenter;
-      var t9 = t8.get$x();
+      var t10 = this.localCenter;
+      var t11 = t10.get$x();
     case 3:
       state = 0;
-      t9 = $.mul(t7, t9);
-      t7 = xf.get$rotation().get$col2().get$x();
+      t11 = $.mul(t8, t11);
+      t8 = xf.get$rotation().get$col2().get$x();
     case 4:
       state = 0;
-      var t10 = t8.get$y();
+      var t14 = t10.get$y();
     case 5:
       state = 0;
-      t2.set$x($.sub(t6, $.add(t9, $.mul(t7, t10))));
+      t2.set$x($.sub(t6, $.add(t11, $.mul(t8, t14))));
       t2 = xf.get$position();
-      var t11 = t2.get$y();
+      var t16 = t2.get$y();
     case 6:
       state = 0;
-      var t12 = xf.get$rotation().get$col1().get$y();
+      var t18 = xf.get$rotation().get$col1().get$y();
     case 7:
       state = 0;
-      var t13 = t8.get$x();
+      var t20 = t10.get$x();
     case 8:
       state = 0;
-      t13 = $.mul(t12, t13);
-      t12 = xf.get$rotation().get$col2().get$y();
+      t20 = $.mul(t18, t20);
+      t18 = xf.get$rotation().get$col2().get$y();
     case 9:
       state = 0;
-      t8 = t8.get$y();
+      t10 = t10.get$y();
     case 10:
       state = 0;
-      t2.set$y($.sub(t11, $.add(t13, $.mul(t12, t8))));
+      t2.set$y($.sub(t16, $.add(t20, $.mul(t18, t10))));
   }
  },
  normalize$0: function() {
-  var t1 = this.angleZero;
-  if (typeof t1 !== 'number') return this.normalize$0$bailout(1, t1, 0);
-  var t2 = $.floor(t1 / 6.283185307179586);
-  if (typeof t2 !== 'number') throw $.iae(t2);
-  var d = 6.283185307179586 * t2;
-  t2 = this.angleZero;
-  if (typeof t2 !== 'number') return this.normalize$0$bailout(2, d, t2);
-  this.angleZero = t2 - d;
-  var t3 = this.angle;
-  if (typeof t3 !== 'number') return this.normalize$0$bailout(3, t3, d);
-  this.angle = t3 - d;
- },
- normalize$0$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      break;
-    case 2:
-      d = env0;
-      t2 = env1;
-      break;
-    case 3:
-      t3 = env0;
-      d = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.angleZero;
-    case 1:
-      state = 0;
-      var t2 = $.floor($.div(t1, 6.283185307179586));
-      if (typeof t2 !== 'number') throw $.iae(t2);
-      var d = 6.283185307179586 * t2;
-      t2 = this.angleZero;
-    case 2:
-      state = 0;
-      this.angleZero = $.sub(t2, d);
-      var t3 = this.angle;
-    case 3:
-      state = 0;
-      this.angle = $.sub(t3, d);
-  }
+  var t1 = $.floor($.div(this.angleZero, 6.283185307179586));
+  if (typeof t1 !== 'number') throw $.iae(t1);
+  var d = 6.283185307179586 * t1;
+  this.angleZero = $.sub(this.angleZero, d);
+  this.angle = $.sub(this.angle, d);
  },
  setFrom$1: function(other) {
   this.localCenter.setFrom$1(other.get$localCenter());
@@ -19095,7 +17817,7 @@ $$.Sweep = {"":
   this.angle = other.get$angle();
  },
  operator$eq$1: function(other) {
-  return $.eqB(this.localCenter, other.get$localCenter()) && $.eqB(this.centerZero, other.get$centerZero()) && $.eqB(this.center, other.get$center()) && $.eqB(this.angleZero, other.get$angleZero()) && $.eqB(this.angle, other.get$angle());
+  return $.eqB(this.localCenter, other.get$localCenter()) && ($.eqB(this.centerZero, other.get$centerZero()) && ($.eqB(this.center, other.get$center()) && ($.eqB(this.angleZero, other.get$angleZero()) && $.eqB(this.angle, other.get$angle()))));
  }
 };
 
@@ -19119,35 +17841,9 @@ $$.Vector = {"":
   return '(' + $.S(this.x) + ', ' + $.S(this.y) + ')';
  },
  negateLocal$0: function() {
-  var t1 = this.x;
-  if (typeof t1 !== 'number') return this.negateLocal$0$bailout(1, t1);
-  this.x = -t1;
-  var t2 = this.y;
-  if (typeof t2 !== 'number') return this.negateLocal$0$bailout(2, t2);
-  this.y = -t2;
+  this.x = $.neg(this.x);
+  this.y = $.neg(this.y);
   return this;
- },
- negateLocal$0$bailout: function(state, env0) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      break;
-    case 2:
-      t2 = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.x;
-    case 1:
-      state = 0;
-      this.x = $.neg(t1);
-      var t2 = this.y;
-    case 2:
-      state = 0;
-      this.y = $.neg(t2);
-      return this;
-  }
  },
  normalize$0: function() {
   var len = $.get$length(this);
@@ -19176,43 +17872,9 @@ $$.Vector = {"":
   return this;
  },
  mulLocal$1: function(d) {
-  if (typeof d !== 'number') return this.mulLocal$1$bailout(1, d, 0);
-  var t1 = this.x;
-  if (typeof t1 !== 'number') return this.mulLocal$1$bailout(2, d, t1);
-  this.x = t1 * d;
-  var t2 = this.y;
-  if (typeof t2 !== 'number') return this.mulLocal$1$bailout(3, d, t2);
-  this.y = t2 * d;
+  this.x = $.mul(this.x, d);
+  this.y = $.mul(this.y, d);
   return this;
- },
- mulLocal$1$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      var d = env0;
-      break;
-    case 2:
-      d = env0;
-      t1 = env1;
-      break;
-    case 3:
-      d = env0;
-      t2 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-      var t1 = this.x;
-    case 2:
-      state = 0;
-      this.x = $.mul(t1, d);
-      var t2 = this.y;
-    case 3:
-      state = 0;
-      this.y = $.mul(t2, d);
-      return this;
-  }
  },
  setFrom$1: function(v) {
   this.setCoords$2(v.get$x(), v.get$y());
@@ -19224,108 +17886,14 @@ $$.Vector = {"":
   return this;
  },
  subLocal$1: function(other) {
-  var t1 = this.x;
-  if (typeof t1 !== 'number') return this.subLocal$1$bailout(1, other, t1, 0);
-  var t2 = other.get$x();
-  if (typeof t2 !== 'number') return this.subLocal$1$bailout(2, other, t2, t1);
-  this.x = t1 - t2;
-  var t3 = this.y;
-  if (typeof t3 !== 'number') return this.subLocal$1$bailout(3, other, t3, 0);
-  var t4 = other.get$y();
-  if (typeof t4 !== 'number') return this.subLocal$1$bailout(4, t3, t4, 0);
-  this.y = t3 - t4;
+  this.x = $.sub(this.x, other.get$x());
+  this.y = $.sub(this.y, other.get$y());
   return this;
- },
- subLocal$1$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      var other = env0;
-      t1 = env1;
-      break;
-    case 2:
-      other = env0;
-      t2 = env1;
-      t1 = env2;
-      break;
-    case 3:
-      other = env0;
-      t3 = env1;
-      break;
-    case 4:
-      t3 = env0;
-      t4 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.x;
-    case 1:
-      state = 0;
-      var t2 = other.get$x();
-    case 2:
-      state = 0;
-      this.x = $.sub(t1, t2);
-      var t3 = this.y;
-    case 3:
-      state = 0;
-      var t4 = other.get$y();
-    case 4:
-      state = 0;
-      this.y = $.sub(t3, t4);
-      return this;
-  }
  },
  addLocal$1: function(v) {
-  var t1 = this.x;
-  if (typeof t1 !== 'number') return this.addLocal$1$bailout(1, v, t1, 0);
-  var t2 = v.get$x();
-  if (typeof t2 !== 'number') return this.addLocal$1$bailout(2, v, t2, t1);
-  this.x = t1 + t2;
-  var t3 = this.y;
-  if (typeof t3 !== 'number') return this.addLocal$1$bailout(3, v, t3, 0);
-  var t4 = v.get$y();
-  if (typeof t4 !== 'number') return this.addLocal$1$bailout(4, t3, t4, 0);
-  this.y = t3 + t4;
+  this.x = $.add(this.x, v.get$x());
+  this.y = $.add(this.y, v.get$y());
   return this;
- },
- addLocal$1$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      var v = env0;
-      t1 = env1;
-      break;
-    case 2:
-      v = env0;
-      t2 = env1;
-      t1 = env2;
-      break;
-    case 3:
-      v = env0;
-      t3 = env1;
-      break;
-    case 4:
-      t3 = env0;
-      t4 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.x;
-    case 1:
-      state = 0;
-      var t2 = v.get$x();
-    case 2:
-      state = 0;
-      this.x = $.add(t1, t2);
-      var t3 = this.y;
-    case 3:
-      state = 0;
-      var t4 = v.get$y();
-    case 4:
-      state = 0;
-      this.y = $.add(t3, t4);
-      return this;
-  }
  },
  operator$eq$1: function(other) {
   if (other == null) return false;
@@ -19525,30 +18093,42 @@ $$._EventLoop__runHelper_next = {"":
  }
 };
 
-Isolate.$defineClass('BoundClosure', 'Closure', ['self', 'target'], {
+$$.BoundClosure = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$1: function(p0) { return this.self[this.target](p0); }
-});
-Isolate.$defineClass('BoundClosure0', 'Closure', ['self', 'target'], {
+};
+$$.BoundClosure0 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$0: function() { return this.self[this.target](); }
-});
-Isolate.$defineClass('BoundClosure1', 'Closure', ['self', 'target'], {
+};
+$$.BoundClosure1 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$3: function(p0, p1, p2) { return this.self[this.target](p0, p1, p2); }
-});
-Isolate.$defineClass('BoundClosure2', 'Closure', ['self', 'target'], {
+};
+$$.BoundClosure2 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$2: function(p0, p1) { return this.self[this.target](p0, p1); }
-});
-Isolate.$defineClass('BoundClosure3', 'Closure', ['self', 'target'], {
+};
+$$.BoundClosure3 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$1: function(p0) { return this.self[this.target](p0); },
  $call$0: function() {
   return this.$call$1(null)
 }
-});
-Isolate.$defineClass('BoundClosure4', 'Closure', ['self', 'target'], {
+};
+$$.BoundClosure4 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
 $call$1: function(p0) { return this.self[this.target](p0); },
  $call$0: function() {
   return this.$call$1(null)
 }
-});
+};
 $.mul$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) return a * b;
   return a.operator$mul$1(b);
@@ -19592,10 +18172,7 @@ $.eqB = function(a, b) {
   if (a == null) return b == null;
   if (b == null) return false;
   if (typeof a === "object") {
-    if (!!a.operator$eq$1) {
-      var t1 = a.operator$eq$1(b);
-      return t1 === true;
-    }
+    if (!!a.operator$eq$1) return a.operator$eq$1(b) === true;
   }
   return a === b;
 };
@@ -19768,11 +18345,9 @@ $.typeNameInIE = function(obj) {
 
 $.constructorNameFallback = function(obj) {
   var constructor$ = (obj.constructor);
-  var t1 = (typeof(constructor$));
-  if (t1 === 'function') {
+  if ((typeof(constructor$)) === 'function') {
     var name$ = (constructor$.name);
-    t1 = (typeof(name$));
-    if (t1 === 'string' && $.isEmpty(name$) !== true && !(name$ === 'Object')) return name$;
+    if ((typeof(name$)) === 'string' && ($.isEmpty(name$) !== true && (!(name$ === 'Object') && !(name$ === 'Function.prototype')))) return name$;
   }
   var string = (Object.prototype.toString.call(obj));
   return $.substring$2(string, 8, string.length - 1);
@@ -19808,7 +18383,23 @@ $._serializeMessage = function(message) {
 };
 
 $.Math_max = function(a, b) {
-  return $.ltB($.compareTo(a, b), 0) ? b : a;
+  if (typeof a === 'number') {
+    if (typeof b === 'number') {
+      if (a > b) return a;
+      if (a < b) return b;
+      if (typeof b === 'number') {
+        if (typeof a === 'number') {
+          if (a === 0.0) return a + b;
+        }
+        if ($.isNaN(b) === true) return b;
+        return a;
+      }
+      if (b === 0 && $.isNegative(a) === true) return b;
+      return a;
+    }
+    throw $.captureStackTrace($.IllegalArgumentException$(b));
+  }
+  throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
 $.tdiv = function(a, b) {
@@ -19819,28 +18410,28 @@ $.tdiv = function(a, b) {
 $.AxisAlignedBox_testOverlap = function(a, b) {
   var t1 = b.get$lowerBound().get$x();
   if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(1, a, b, t1, 0);
-  var t2 = a.get$upperBound().get$x();
-  if (typeof t2 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(2, a, b, t2, t1);
-  if (!(t1 > t2)) {
+  var t3 = a.get$upperBound().get$x();
+  if (typeof t3 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(2, a, b, t3, t1);
+  if (!(t1 > t3)) {
     t1 = b.get$lowerBound().get$y();
     if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(3, a, b, t1, 0);
-    t2 = a.get$upperBound().get$y();
-    if (typeof t2 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(4, a, b, t2, t1);
-    t2 = t1 > t2;
-    t1 = t2;
+    t3 = a.get$upperBound().get$y();
+    if (typeof t3 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(4, a, b, t3, t1);
+    t3 = t1 > t3;
+    t1 = t3;
   } else t1 = true;
   if (!t1) {
     t1 = a.get$lowerBound().get$x();
     if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(5, a, b, t1, 0);
-    t2 = b.get$upperBound().get$x();
-    if (typeof t2 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(6, a, b, t2, t1);
-    if (!(t1 > t2)) {
+    t3 = b.get$upperBound().get$x();
+    if (typeof t3 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(6, a, b, t3, t1);
+    if (!(t1 > t3)) {
       t1 = a.get$lowerBound().get$y();
       if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(7, b, t1, 0, 0);
-      t2 = b.get$upperBound().get$y();
-      if (typeof t2 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(8, t1, t2, 0, 0);
-      t2 = t1 > t2;
-      t1 = t2;
+      t3 = b.get$upperBound().get$y();
+      if (typeof t3 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(8, t1, t3, 0, 0);
+      t3 = t1 > t3;
+      t1 = t3;
     } else t1 = true;
   } else t1 = true;
   return !t1;
@@ -19858,6 +18449,7 @@ $.typeNameInChrome = function(obj) {
   var name$ = (obj.constructor.name);
   if (name$ === 'Window') return 'DOMWindow';
   if (name$ === 'CanvasPixelArray') return 'Uint8ClampedArray';
+  if (name$ === 'WebKitMutationObserver') return 'MutationObserver';
   return name$;
 };
 
@@ -19895,35 +18487,36 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
   if (index1 !== (index1 | 0)) throw $.iae(index1);
   var t1 = a.length;
   if (index1 < 0 || index1 >= t1) throw $.ioore(index1);
-  var el2 = a[index1];
+  var el1 = a[index1];
   if (index2 !== (index2 | 0)) throw $.iae(index2);
   if (index2 < 0 || index2 >= t1) throw $.ioore(index2);
-  var el20 = a[index2];
+  var el2 = a[index2];
   if (index3 !== (index3 | 0)) throw $.iae(index3);
   if (index3 < 0 || index3 >= t1) throw $.ioore(index3);
-  var el1 = a[index3];
+  var el3 = a[index3];
   if (index4 !== (index4 | 0)) throw $.iae(index4);
   if (index4 < 0 || index4 >= t1) throw $.ioore(index4);
   var el4 = a[index4];
   if (index5 !== (index5 | 0)) throw $.iae(index5);
   if (index5 < 0 || index5 >= t1) throw $.ioore(index5);
-  var el40 = a[index5];
-  if ($.gtB(compare.$call$2(el2, el20), 0)) var el10 = el20;
-  else {
-    el10 = el2;
-    el2 = el20;
+  var el5 = a[index5];
+  if ($.gtB(compare.$call$2(el1, el2), 0)) {
+    var t0 = el1;
+    el1 = el2;
+    el2 = t0;
   }
-  if ($.gtB(compare.$call$2(el4, el40), 0)) {
-    var el5 = el4;
-    el4 = el40;
-  } else el5 = el40;
-  if ($.gtB(compare.$call$2(el10, el1), 0)) var el3 = el10;
-  else {
+  if ($.gtB(compare.$call$2(el4, el5), 0)) {
+    t0 = el5;
+    el5 = el4;
+    el4 = t0;
+  }
+  if ($.gtB(compare.$call$2(el1, el3), 0)) {
+    t0 = el3;
     el3 = el1;
-    el1 = el10;
+    el1 = t0;
   }
   if ($.gtB(compare.$call$2(el2, el3), 0)) {
-    var t0 = el3;
+    t0 = el3;
     el3 = el2;
     el2 = t0;
   }
@@ -19974,7 +18567,7 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
   if (index4 < 0 || index4 >= t5) throw $.ioore(index4);
   a[index4] = t6;
   var less = left + 1;
-  if (typeof less !== 'number') return $.DualPivotQuicksort__dualPivotQuicksort$bailout(2, a, left, right, compare, index5, el2, less, el4, index1, 0, 0, 0, 0, 0);
+  if (typeof less !== 'number') return $.DualPivotQuicksort__dualPivotQuicksort$bailout(2, a, left, right, compare, index5, el2, index1, el4, less, 0, 0, 0, 0, 0);
   var great = right - 1;
   if (typeof great !== 'number') return $.DualPivotQuicksort__dualPivotQuicksort$bailout(3, a, left, right, compare, index5, el2, great, less, el4, index1, 0, 0, 0, 0);
   var pivots_are_equal = $.eqB(compare.$call$2(el2, el4), 0);
@@ -19983,21 +18576,21 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
       if (k !== (k | 0)) throw $.iae(k);
       t1 = a.length;
       if (k < 0 || k >= t1) throw $.ioore(k);
-      t2 = a[k];
-      var comp = compare.$call$2(t2, el2);
-      if (typeof comp !== 'number') return $.DualPivotQuicksort__dualPivotQuicksort$bailout(4, a, less, k, compare, left, right, great, index1, index5, el2, pivots_are_equal, t2, comp, el4);
+      var ak = a[k];
+      var comp = compare.$call$2(ak, el2);
+      if (typeof comp !== 'number') return $.DualPivotQuicksort__dualPivotQuicksort$bailout(4, a, less, k, compare, left, right, great, index1, index5, el2, pivots_are_equal, ak, comp, el4);
       if (comp === 0) continue;
       if (comp < 0) {
         if (!(k === less)) {
           if (less !== (less | 0)) throw $.iae(less);
           t1 = a.length;
           if (less < 0 || less >= t1) throw $.ioore(less);
-          t3 = a[less];
+          t2 = a[less];
           if (k < 0 || k >= t1) throw $.ioore(k);
-          a[k] = t3;
-          t3 = a.length;
-          if (less < 0 || less >= t3) throw $.ioore(less);
-          a[less] = t2;
+          a[k] = t2;
+          t2 = a.length;
+          if (less < 0 || less >= t2) throw $.ioore(less);
+          a[less] = ak;
         }
         ++less;
       } else {
@@ -20012,33 +18605,33 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
           } else {
             t1 = $.ltB(comp, 0);
             var great0 = great - 1;
-            t3 = a.length;
+            t2 = a.length;
             if (t1) {
               if (less !== (less | 0)) throw $.iae(less);
-              if (less < 0 || less >= t3) throw $.ioore(less);
+              if (less < 0 || less >= t2) throw $.ioore(less);
               t1 = a[less];
-              if (k < 0 || k >= t3) throw $.ioore(k);
+              if (k < 0 || k >= t2) throw $.ioore(k);
               a[k] = t1;
               var less0 = less + 1;
               t1 = a.length;
               if (great < 0 || great >= t1) throw $.ioore(great);
-              t4 = a[great];
+              t3 = a[great];
               if (less < 0 || less >= t1) throw $.ioore(less);
-              a[less] = t4;
-              t4 = a.length;
-              if (great < 0 || great >= t4) throw $.ioore(great);
-              a[great] = t2;
+              a[less] = t3;
+              t3 = a.length;
+              if (great < 0 || great >= t3) throw $.ioore(great);
+              a[great] = ak;
               great = great0;
               less = less0;
               break;
             } else {
-              if (great < 0 || great >= t3) throw $.ioore(great);
+              if (great < 0 || great >= t2) throw $.ioore(great);
               t1 = a[great];
-              if (k < 0 || k >= t3) throw $.ioore(k);
+              if (k < 0 || k >= t2) throw $.ioore(k);
               a[k] = t1;
               t1 = a.length;
               if (great < 0 || great >= t1) throw $.ioore(great);
-              a[great] = t2;
+              a[great] = ak;
               great = great0;
               break;
             }
@@ -20051,22 +18644,22 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
       if (k !== (k | 0)) throw $.iae(k);
       t1 = a.length;
       if (k < 0 || k >= t1) throw $.ioore(k);
-      t2 = a[k];
-      if ($.ltB(compare.$call$2(t2, el2), 0)) {
+      ak = a[k];
+      if ($.ltB(compare.$call$2(ak, el2), 0)) {
         if (!(k === less)) {
           if (less !== (less | 0)) throw $.iae(less);
           t1 = a.length;
           if (less < 0 || less >= t1) throw $.ioore(less);
-          t3 = a[less];
+          t2 = a[less];
           if (k < 0 || k >= t1) throw $.ioore(k);
-          a[k] = t3;
-          t3 = a.length;
-          if (less < 0 || less >= t3) throw $.ioore(less);
-          a[less] = t2;
+          a[k] = t2;
+          t2 = a.length;
+          if (less < 0 || less >= t2) throw $.ioore(less);
+          a[less] = ak;
         }
         ++less;
       } else {
-        if ($.gtB(compare.$call$2(t2, el4), 0)) {
+        if ($.gtB(compare.$call$2(ak, el4), 0)) {
           for (; true; ) {
             if (great !== (great | 0)) throw $.iae(great);
             t1 = a.length;
@@ -20080,32 +18673,32 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
               if (great < 0 || great >= t1) throw $.ioore(great);
               t1 = $.ltB(compare.$call$2(a[great], el2), 0);
               great0 = great - 1;
-              t3 = a.length;
+              t2 = a.length;
               if (t1) {
                 if (less !== (less | 0)) throw $.iae(less);
-                if (less < 0 || less >= t3) throw $.ioore(less);
+                if (less < 0 || less >= t2) throw $.ioore(less);
                 t1 = a[less];
-                if (k < 0 || k >= t3) throw $.ioore(k);
+                if (k < 0 || k >= t2) throw $.ioore(k);
                 a[k] = t1;
                 less0 = less + 1;
                 t1 = a.length;
                 if (great < 0 || great >= t1) throw $.ioore(great);
-                t4 = a[great];
+                t3 = a[great];
                 if (less < 0 || less >= t1) throw $.ioore(less);
-                a[less] = t4;
-                t4 = a.length;
-                if (great < 0 || great >= t4) throw $.ioore(great);
-                a[great] = t2;
+                a[less] = t3;
+                t3 = a.length;
+                if (great < 0 || great >= t3) throw $.ioore(great);
+                a[great] = ak;
                 great = great0;
                 less = less0;
               } else {
-                if (great < 0 || great >= t3) throw $.ioore(great);
+                if (great < 0 || great >= t2) throw $.ioore(great);
                 t1 = a[great];
-                if (k < 0 || k >= t3) throw $.ioore(k);
+                if (k < 0 || k >= t2) throw $.ioore(k);
                 a[k] = t1;
                 t1 = a.length;
                 if (great < 0 || great >= t1) throw $.ioore(great);
-                a[great] = t2;
+                a[great] = ak;
                 great = great0;
               }
               break;
@@ -20157,22 +18750,22 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
       if (k !== (k | 0)) throw $.iae(k);
       t1 = a.length;
       if (k < 0 || k >= t1) throw $.ioore(k);
-      t2 = a[k];
-      if ($.eqB(compare.$call$2(t2, el2), 0)) {
+      ak = a[k];
+      if ($.eqB(compare.$call$2(ak, el2), 0)) {
         if (!(k === less)) {
           if (less !== (less | 0)) throw $.iae(less);
           t1 = a.length;
           if (less < 0 || less >= t1) throw $.ioore(less);
-          t3 = a[less];
+          t2 = a[less];
           if (k < 0 || k >= t1) throw $.ioore(k);
-          a[k] = t3;
-          t3 = a.length;
-          if (less < 0 || less >= t3) throw $.ioore(less);
-          a[less] = t2;
+          a[k] = t2;
+          t2 = a.length;
+          if (less < 0 || less >= t2) throw $.ioore(less);
+          a[less] = ak;
         }
         ++less;
       } else {
-        if ($.eqB(compare.$call$2(t2, el4), 0)) {
+        if ($.eqB(compare.$call$2(ak, el4), 0)) {
           for (; true; ) {
             if (great !== (great | 0)) throw $.iae(great);
             t1 = a.length;
@@ -20185,33 +18778,33 @@ $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
               t1 = a.length;
               if (great < 0 || great >= t1) throw $.ioore(great);
               t1 = $.ltB(compare.$call$2(a[great], el2), 0);
+              t2 = a.length;
               great0 = great - 1;
-              t3 = a.length;
               if (t1) {
                 if (less !== (less | 0)) throw $.iae(less);
-                if (less < 0 || less >= t3) throw $.ioore(less);
+                if (less < 0 || less >= t2) throw $.ioore(less);
                 t1 = a[less];
-                if (k < 0 || k >= t3) throw $.ioore(k);
+                if (k < 0 || k >= t2) throw $.ioore(k);
                 a[k] = t1;
                 less0 = less + 1;
                 t1 = a.length;
                 if (great < 0 || great >= t1) throw $.ioore(great);
-                t4 = a[great];
+                t3 = a[great];
                 if (less < 0 || less >= t1) throw $.ioore(less);
-                a[less] = t4;
-                t4 = a.length;
-                if (great < 0 || great >= t4) throw $.ioore(great);
-                a[great] = t2;
+                a[less] = t3;
+                t3 = a.length;
+                if (great < 0 || great >= t3) throw $.ioore(great);
+                a[great] = ak;
                 great = great0;
                 less = less0;
               } else {
-                if (great < 0 || great >= t3) throw $.ioore(great);
+                if (great < 0 || great >= t2) throw $.ioore(great);
                 t1 = a[great];
-                if (k < 0 || k >= t3) throw $.ioore(k);
+                if (k < 0 || k >= t2) throw $.ioore(k);
                 a[k] = t1;
                 t1 = a.length;
                 if (great < 0 || great >= t1) throw $.ioore(great);
-                a[great] = t2;
+                a[great] = ak;
                 great = great0;
               }
               break;
@@ -20364,8 +18957,7 @@ $.contains$1 = function(receiver, other) {
 };
 
 $._browserPrefix = function() {
-  var t1 = $._cachedBrowserPrefix;
-  if (t1 == null) {
+  if ($._cachedBrowserPrefix == null) {
     if ($._Device_isFirefox() === true) $._cachedBrowserPrefix = '-moz-';
     else $._cachedBrowserPrefix = '-webkit-';
   }
@@ -20398,7 +18990,7 @@ $.neg = function(a) {
 };
 
 $._MessageTraverser_isPrimitive = function(x) {
-  return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
+  return x == null || (typeof x === 'string' || (typeof x === 'number' || typeof x === 'boolean'));
 };
 
 $.Matrix22_mulMatrixAndVectorToOut = function(matrix, vector, out) {
@@ -20491,6 +19083,12 @@ $.regExpTest = function(regExp, str) {
   return $.regExpGetNative(regExp).test(str);
 };
 
+$.typeNameInOpera = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  return name$;
+};
+
 $.HashSetImplementation$ = function() {
   var t1 = new $.HashSetImplementation(null);
   t1.HashSetImplementation$0();
@@ -20547,23 +19145,11 @@ $.regExpExec = function(regExp, str) {
 };
 
 $.geB = function(a, b) {
-  if (typeof a === 'number' && typeof b === 'number') var t1 = (a >= b);
-  else {
-    t1 = $.ge$slow(a, b);
-    t1 = t1 === true;
-  }
-  return t1;
-};
-
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
+  return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b) === true;
 };
 
 $.stringContainsUnchecked = function(receiver, other, startIndex) {
-  if (typeof other === 'string') {
-    var t1 = $.indexOf$2(receiver, other, startIndex);
-    return !(t1 === -1);
-  }
+  if (typeof other === 'string') return !($.indexOf$2(receiver, other, startIndex) === -1);
   if (typeof other === 'object' && other !== null && !!other.is$JSSyntaxRegExp) return other.hasMatch$1($.substring$1(receiver, startIndex));
   return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
 };
@@ -20596,8 +19182,7 @@ $.Primitives_objectTypeName = function(object) {
     var decompiled = (String(object.constructor).match(/^\s*function\s*(\S*)\s*\(/)[1]);
     if (typeof decompiled === 'string') name$ = decompiled;
   }
-  var t1 = $.charCodeAt(name$, 0);
-  return t1 === 36 ? $.substring$1(name$, 1) : name$;
+  return $.charCodeAt(name$, 0) === 36 ? $.substring$1(name$, 1) : name$;
 };
 
 $.regExpAttachGlobalNative = function(regExp) {
@@ -20605,12 +19190,7 @@ $.regExpAttachGlobalNative = function(regExp) {
 };
 
 $.leB = function(a, b) {
-  if (typeof a === 'number' && typeof b === 'number') var t1 = (a <= b);
-  else {
-    t1 = $.le$slow(a, b);
-    t1 = t1 === true;
-  }
-  return t1;
+  return typeof a === 'number' && typeof b === 'number' ? (a <= b) : $.le$slow(a, b) === true;
 };
 
 $.isNegative = function(receiver) {
@@ -20658,6 +19238,10 @@ $.CanvasDraw$ = function(viewport, ctx) {
   var t1 = new $.CanvasDraw(ctx, viewport, 1);
   t1.CanvasDraw$2(viewport, ctx);
   return t1;
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
 $.Maps_mapToString = function(m) {
@@ -21083,12 +19667,7 @@ $.Velocity$ = function() {
 };
 
 $.ltB = function(a, b) {
-  if (typeof a === 'number' && typeof b === 'number') var t1 = (a < b);
-  else {
-    t1 = $.lt$slow(a, b);
-    t1 = t1 === true;
-  }
-  return t1;
+  return typeof a === 'number' && typeof b === 'number' ? (a < b) : $.lt$slow(a, b) === true;
 };
 
 $._currentIsolate = function() {
@@ -21208,9 +19787,8 @@ $._dynamicMetadata = function(table) {
 };
 
 $._dynamicMetadata0 = function() {
-  var t1 = (typeof($dynamicMetadata));
-  if (t1 === 'undefined') {
-    t1 = [];
+  if ((typeof($dynamicMetadata)) === 'undefined') {
+    var t1 = [];
     $._dynamicMetadata(t1);
   }
   return $dynamicMetadata;
@@ -21272,32 +19850,32 @@ $.DualPivotQuicksort_insertionSort_ = function(a, left, right, compare) {
     if (i !== (i | 0)) throw $.iae(i);
     var t1 = a.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
-    var t2 = a[i];
+    var el = a[i];
     var j = i;
     while (true) {
       if (j > left) {
         t1 = j - 1;
         if (t1 !== (t1 | 0)) throw $.iae(t1);
-        var t3 = a.length;
-        if (t1 < 0 || t1 >= t3) throw $.ioore(t1);
-        var t4 = $.gtB(compare.$call$2(a[t1], t2), 0);
-        t1 = t4;
+        var t2 = a.length;
+        if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
+        var t3 = $.gtB(compare.$call$2(a[t1], el), 0);
+        t1 = t3;
       } else t1 = false;
       if (!t1) break;
       t1 = j - 1;
       if (t1 !== (t1 | 0)) throw $.iae(t1);
-      t3 = a.length;
-      if (t1 < 0 || t1 >= t3) throw $.ioore(t1);
+      t2 = a.length;
+      if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
       t1 = a[t1];
       if (j !== (j | 0)) throw $.iae(j);
-      if (j < 0 || j >= t3) throw $.ioore(j);
+      if (j < 0 || j >= t2) throw $.ioore(j);
       a[j] = t1;
       --j;
     }
     if (j !== (j | 0)) throw $.iae(j);
     t1 = a.length;
     if (j < 0 || j >= t1) throw $.ioore(j);
-    a[j] = t2;
+    a[j] = el;
   }
 };
 
@@ -21343,8 +19921,7 @@ $.index$slow = function(a, index) {
   if (typeof a === 'string' || $.isJsArray(a) === true) {
     if (!((typeof index === 'number') && (index === (index | 0)))) {
       if (!(typeof index === 'number')) throw $.captureStackTrace($.IllegalArgumentException$(index));
-      var t1 = $.truncate(index);
-      if (!(t1 === index)) throw $.captureStackTrace($.IllegalArgumentException$(index));
+      if (!($.truncate(index) === index)) throw $.captureStackTrace($.IllegalArgumentException$(index));
     }
     if ($.ltB(index, 0) || $.geB(index, $.get$length(a))) throw $.captureStackTrace($.IndexOutOfRangeException$(index));
     return a[index];
@@ -21413,9 +19990,9 @@ $.StringBase__toJsStringArray = function(strings) {
     for (var i = 0; i < length$; ++i) {
       var t1 = strings.length;
       if (i < 0 || i >= t1) throw $.ioore(i);
-      var t2 = strings[i];
-      $.checkNull(t2);
-      if (!(typeof t2 === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(t2));
+      var string = strings[i];
+      $.checkNull(string);
+      if (!(typeof string === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(string));
     }
     var array = strings;
   } else {
@@ -21423,12 +20000,12 @@ $.StringBase__toJsStringArray = function(strings) {
     for (i = 0; i < length$; ++i) {
       t1 = strings.length;
       if (i < 0 || i >= t1) throw $.ioore(i);
-      t2 = strings[i];
-      $.checkNull(t2);
-      if (!(typeof t2 === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(t2));
+      string = strings[i];
+      $.checkNull(string);
+      if (!(typeof string === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(string));
       t1 = array.length;
       if (i < 0 || i >= t1) throw $.ioore(i);
-      array[i] = t2;
+      array[i] = string;
     }
   }
   return array;
@@ -21448,8 +20025,8 @@ $.DynamicTree$ = function() {
   return t4;
 };
 
-$.IndexOutOfRangeException$ = function(_index) {
-  return new $.IndexOutOfRangeException(_index);
+$.IndexOutOfRangeException$ = function(_value) {
+  return new $.IndexOutOfRangeException(_value);
 };
 
 $.Transform_mulTransToOut = function(T, v, out) {
@@ -21565,8 +20142,7 @@ $.Matrix22$ = function(c1, c2) {
 $.removeLast = function(receiver) {
   if ($.isJsArray(receiver) === true) {
     $.checkGrowable(receiver, 'removeLast');
-    var t1 = $.get$length(receiver);
-    if (t1 === 0) throw $.captureStackTrace($.IndexOutOfRangeException$(-1));
+    if ($.get$length(receiver) === 0) throw $.captureStackTrace($.IndexOutOfRangeException$(-1));
     return receiver.pop();
   }
   return receiver.removeLast$0();
@@ -21697,14 +20273,22 @@ $.makeLiteralMap = function(keyValuePairs) {
 };
 
 $.Math_min = function(a, b) {
-  var c = $.compareTo(a, b);
-  if ($.eqB(c, 0)) return a;
-  if ($.ltB(c, 0)) {
-    if (typeof b === 'number' && $.isNaN(b) === true) return b;
-    return a;
+  if (typeof a === 'number') {
+    if (typeof b === 'number') {
+      if (a > b) return b;
+      if (a < b) return a;
+      if (typeof b === 'number') {
+        if (typeof a === 'number') {
+          if (a === 0.0) return (a + b) * a * b;
+        }
+        if (a === 0 && $.isNegative(b) === true || $.isNaN(b) === true) return b;
+        return a;
+      }
+      return a;
+    }
+    throw $.captureStackTrace($.IllegalArgumentException$(b));
   }
-  if (typeof a === 'number' && $.isNaN(a) === true) return a;
-  return b;
+  throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
 $.startsWith = function(receiver, other) {
@@ -21735,12 +20319,7 @@ $.Fixture$ = function() {
 $.dynamicBind = function(obj, name$, methods, arguments$) {
   var tag = $.getTypeNameOf(obj);
   var method = (methods[tag]);
-  if (method == null) {
-    var t1 = $._dynamicMetadata0();
-    var t2 = !(t1 == null);
-    t1 = t2;
-  } else t1 = false;
-  if (t1) {
+  if (method == null && !($._dynamicMetadata0() == null)) {
     for (var i = 0; $.ltB(i, $.get$length($._dynamicMetadata0())); ++i) {
       var entry = $.index($._dynamicMetadata0(), i);
       if ($.contains$1(entry.get$set(), tag) === true) {
@@ -21757,12 +20336,12 @@ $.dynamicBind = function(obj, name$, methods, arguments$) {
 };
 
 $.getFunctionForTypeNameOf = function() {
-  var t1 = (typeof(navigator));
-  if (!(t1 === 'object')) return $.typeNameInChrome;
+  if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
   var userAgent = (navigator.userAgent);
   if ($.contains$1(userAgent, $.CTC3) === true) return $.typeNameInChrome;
   if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
   if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
+  if ($.contains$1(userAgent, 'Opera') === true) return $.typeNameInOpera;
   return $.constructorNameFallback;
 };
 
@@ -21774,18 +20353,14 @@ $.index = function(a, index) {
   return $.index$slow(a, index);
 };
 
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
-};
-
 $.ContactID$ = function() {
   return new $.ContactID($.Features$());
 };
 
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.World$ = function(gravity, doSleep, argPool) {
@@ -21814,6 +20389,10 @@ $.World$ = function(gravity, doSleep, argPool) {
 $.DistanceOutput$ = function() {
   var t1 = $.Vector$(0, 0);
   return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
 };
 
 $.xor = function(a, b) {
@@ -21942,12 +20521,7 @@ $.BodyDef$ = function() {
 };
 
 $.gtB = function(a, b) {
-  if (typeof a === 'number' && typeof b === 'number') var t1 = (a > b);
-  else {
-    t1 = $.gt$slow(a, b);
-    t1 = t1 === true;
-  }
-  return t1;
+  return typeof a === 'number' && typeof b === 'number' ? (a > b) : $.gt$slow(a, b) === true;
 };
 
 $.Expect__fail = function(message) {
@@ -21997,7 +20571,7 @@ $.unwrapException = function(ex) {
   if (ex instanceof TypeError) {
     var type = (ex.type);
     var name$ = (ex.arguments ? ex.arguments[0] : "");
-    if ($.eqB(type, 'property_not_function') || $.eqB(type, 'called_non_callable') || $.eqB(type, 'non_object_property_call') || $.eqB(type, 'non_object_property_load')) {
+    if ($.eqB(type, 'property_not_function') || ($.eqB(type, 'called_non_callable') || ($.eqB(type, 'non_object_property_call') || $.eqB(type, 'non_object_property_load')))) {
       if (typeof name$ === 'string' && $.startsWith(name$, '$call$') === true) return $.ObjectNotClosureException$();
       return $.NullPointerException$(null, $.CTC);
     }
@@ -22006,7 +20580,7 @@ $.unwrapException = function(ex) {
       return $.NoSuchMethodException$('', name$, [], null);
     }
     if (typeof message === 'string') {
-      if ($.endsWith(message, 'is null') === true || $.endsWith(message, 'is undefined') === true || $.endsWith(message, 'is null or undefined') === true) return $.NullPointerException$(null, $.CTC);
+      if ($.endsWith(message, 'is null') === true || ($.endsWith(message, 'is undefined') === true || $.endsWith(message, 'is null or undefined') === true)) return $.NullPointerException$(null, $.CTC);
       if ($.endsWith(message, 'is not a function') === true) return $.NoSuchMethodException$('', '<unknown>', [], null);
     }
     return $.ExceptionImplementation$(typeof message === 'string' ? message : '');
@@ -22027,8 +20601,7 @@ $.ceil = function(receiver) {
 };
 
 $.getTypeNameOf = function(obj) {
-  var t1 = $._getTypeNameOf;
-  if (t1 == null) $._getTypeNameOf = $.getFunctionForTypeNameOf();
+  if ($._getTypeNameOf == null) $._getTypeNameOf = $.getFunctionForTypeNameOf();
   return $._getTypeNameOf.$call$1(obj);
 };
 
@@ -22050,6 +20623,66 @@ $.Transform_mulToOut = function(transform, vector, out) {
   out.set$y(tempY);
 };
 
+$._Lists_indexOf$bailout = function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      var a = env0;
+      var element = env1;
+      var startIndex = env2;
+      var endIndex = env3;
+      break;
+    case 2:
+      a = env0;
+      element = env1;
+      startIndex = env2;
+      endIndex = env3;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      if ($.geB(startIndex, $.get$length(a))) return -1;
+      if ($.ltB(startIndex, 0)) startIndex = 0;
+    case 2:
+      state = 0;
+      for (var i = startIndex; $.ltB(i, endIndex); i = $.add(i, 1)) {
+        if ($.eqB($.index(a, i), element)) return i;
+      }
+      return -1;
+  }
+};
+
+$.Arrays_indexOf$bailout = function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      var a = env0;
+      var element = env1;
+      var startIndex = env2;
+      var endIndex = env3;
+      break;
+    case 2:
+      a = env0;
+      element = env1;
+      startIndex = env2;
+      endIndex = env3;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      if ($.geB(startIndex, $.get$length(a))) return -1;
+      if ($.ltB(startIndex, 0)) startIndex = 0;
+    case 2:
+      state = 0;
+      for (var i = startIndex; $.ltB(i, endIndex); i = $.add(i, 1)) {
+        if ($.eqB($.index(a, i), element)) return i;
+      }
+      return -1;
+  }
+};
+
 $.DualPivotQuicksort__dualPivotQuicksort$bailout = function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13) {
   switch (state) {
     case 1:
@@ -22065,9 +20698,9 @@ $.DualPivotQuicksort__dualPivotQuicksort$bailout = function(state, env0, env1, e
       compare = env3;
       index5 = env4;
       el2 = env5;
-      less = env6;
+      index1 = env6;
       el4 = env7;
-      index1 = env8;
+      less = env8;
       break;
     case 3:
       a = env0;
@@ -22334,6 +20967,111 @@ $.allMatchesInStringUnchecked$bailout = function(state, needle, haystack, length
   return result;
 };
 
+$.AxisAlignedBox_testOverlap$bailout = function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      var a = env0;
+      var b = env1;
+      t1 = env2;
+      break;
+    case 2:
+      a = env0;
+      b = env1;
+      t3 = env2;
+      t1 = env3;
+      break;
+    case 3:
+      a = env0;
+      b = env1;
+      t1 = env2;
+      break;
+    case 4:
+      a = env0;
+      b = env1;
+      t3 = env2;
+      t1 = env3;
+      break;
+    case 5:
+      a = env0;
+      b = env1;
+      t1 = env2;
+      break;
+    case 6:
+      a = env0;
+      b = env1;
+      t3 = env2;
+      t1 = env3;
+      break;
+    case 7:
+      b = env0;
+      t1 = env1;
+      break;
+    case 8:
+      t1 = env0;
+      t3 = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = b.get$lowerBound().get$x();
+    case 1:
+      state = 0;
+      var t3 = a.get$upperBound().get$x();
+    case 2:
+      state = 0;
+    default:
+      if (state == 3 || state == 4 || (state == 0 && !$.gtB(t1, t3))) {
+        switch (state) {
+          case 0:
+            t1 = b.get$lowerBound().get$y();
+          case 3:
+            state = 0;
+            t3 = a.get$upperBound().get$y();
+          case 4:
+            state = 0;
+            t3 = $.gtB(t1, t3);
+            t1 = t3;
+        }
+      } else {
+        t1 = true;
+      }
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+      if (state == 5 || state == 6 || state == 7 || state == 8 || (state == 0 && !t1)) {
+        switch (state) {
+          case 0:
+            t1 = a.get$lowerBound().get$x();
+          case 5:
+            state = 0;
+            t3 = b.get$upperBound().get$x();
+          case 6:
+            state = 0;
+          default:
+            if (state == 7 || state == 8 || (state == 0 && !$.gtB(t1, t3))) {
+              switch (state) {
+                case 0:
+                  t1 = a.get$lowerBound().get$y();
+                case 7:
+                  state = 0;
+                  t3 = b.get$upperBound().get$y();
+                case 8:
+                  state = 0;
+                  t3 = $.gtB(t1, t3);
+                  t1 = t3;
+              }
+            } else {
+              t1 = true;
+            }
+        }
+      } else {
+        t1 = true;
+      }
+      return !t1;
+  }
+};
+
 $.Arrays_copy$bailout = function(state, env0, env1, env2, env3, env4) {
   switch (state) {
     case 1:
@@ -22342,20 +21080,6 @@ $.Arrays_copy$bailout = function(state, env0, env1, env2, env3, env4) {
       var dst = env2;
       var dstStart = env3;
       var count = env4;
-      break;
-    case 1:
-      src = env0;
-      srcStart = env1;
-      dst = env2;
-      dstStart = env3;
-      count = env4;
-      break;
-    case 1:
-      src = env0;
-      srcStart = env1;
-      dst = env2;
-      dstStart = env3;
-      count = env4;
       break;
     case 2:
       src = env0;
@@ -22374,10 +21098,6 @@ $.Arrays_copy$bailout = function(state, env0, env1, env2, env3, env4) {
   }
   switch (state) {
     case 0:
-    case 1:
-      state = 0;
-    case 1:
-      state = 0;
     case 1:
       state = 0;
       if (srcStart == null) srcStart = 0;
@@ -22409,6 +21129,17 @@ $.DualPivotQuicksort_insertionSort_$bailout = function(state, a, left, right, co
     }
     $.indexSet(a, j, el);
   }
+};
+
+$._Lists_getRange$bailout = function(state, a, start, length$, accumulator) {
+  if ($.ltB(length$, 0)) throw $.captureStackTrace($.IllegalArgumentException$('length'));
+  if ($.ltB(start, 0)) throw $.captureStackTrace($.IndexOutOfRangeException$(start));
+  var end = $.add(start, length$);
+  if ($.gtB(end, $.get$length(a))) throw $.captureStackTrace($.IndexOutOfRangeException$(end));
+  for (var i = start; $.ltB(i, end); i = $.add(i, 1)) {
+    $.add$1(accumulator, $.index(a, i));
+  }
+  return accumulator;
 };
 
 $.buildDynamicMetadata$bailout = function(state, env0, env1, env2, env3, env4, env5, env6) {
@@ -22455,200 +21186,6 @@ $.buildDynamicMetadata$bailout = function(state, env0, env1, env2, env3, env4, e
   }
 };
 
-$._Lists_indexOf$bailout = function(state, env0, env1, env2, env3) {
-  switch (state) {
-    case 1:
-      var a = env0;
-      var element = env1;
-      var startIndex = env2;
-      var endIndex = env3;
-      break;
-    case 1:
-      a = env0;
-      element = env1;
-      startIndex = env2;
-      endIndex = env3;
-      break;
-    case 2:
-      a = env0;
-      element = env1;
-      startIndex = env2;
-      endIndex = env3;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-    case 1:
-      state = 0;
-      if ($.geB(startIndex, $.get$length(a))) return -1;
-      if ($.ltB(startIndex, 0)) startIndex = 0;
-    case 2:
-      state = 0;
-      for (var i = startIndex; $.ltB(i, endIndex); i = $.add(i, 1)) {
-        if ($.eqB($.index(a, i), element)) return i;
-      }
-      return -1;
-  }
-};
-
-$.Arrays_indexOf$bailout = function(state, env0, env1, env2, env3) {
-  switch (state) {
-    case 1:
-      var a = env0;
-      var element = env1;
-      var startIndex = env2;
-      var endIndex = env3;
-      break;
-    case 1:
-      a = env0;
-      element = env1;
-      startIndex = env2;
-      endIndex = env3;
-      break;
-    case 2:
-      a = env0;
-      element = env1;
-      startIndex = env2;
-      endIndex = env3;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-    case 1:
-      state = 0;
-      if ($.geB(startIndex, $.get$length(a))) return -1;
-      if ($.ltB(startIndex, 0)) startIndex = 0;
-    case 2:
-      state = 0;
-      for (var i = startIndex; $.ltB(i, endIndex); i = $.add(i, 1)) {
-        if ($.eqB($.index(a, i), element)) return i;
-      }
-      return -1;
-  }
-};
-
-$.AxisAlignedBox_testOverlap$bailout = function(state, env0, env1, env2, env3) {
-  switch (state) {
-    case 1:
-      var a = env0;
-      var b = env1;
-      t1 = env2;
-      break;
-    case 2:
-      a = env0;
-      b = env1;
-      t2 = env2;
-      t1 = env3;
-      break;
-    case 3:
-      a = env0;
-      b = env1;
-      t1 = env2;
-      break;
-    case 4:
-      a = env0;
-      b = env1;
-      t2 = env2;
-      t1 = env3;
-      break;
-    case 5:
-      a = env0;
-      b = env1;
-      t1 = env2;
-      break;
-    case 6:
-      a = env0;
-      b = env1;
-      t2 = env2;
-      t1 = env3;
-      break;
-    case 7:
-      b = env0;
-      t1 = env1;
-      break;
-    case 8:
-      t1 = env0;
-      t2 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = b.get$lowerBound().get$x();
-    case 1:
-      state = 0;
-      var t2 = a.get$upperBound().get$x();
-    case 2:
-      state = 0;
-    case 3:
-    case 4:
-      if (state == 3 || state == 4 || (state == 0 && !$.gtB(t1, t2))) {
-        switch (state) {
-          case 0:
-            t1 = b.get$lowerBound().get$y();
-          case 3:
-            state = 0;
-            t2 = a.get$upperBound().get$y();
-          case 4:
-            state = 0;
-            t2 = $.gtB(t1, t2);
-            t1 = t2;
-        }
-      } else {
-        t1 = true;
-      }
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-      if (state == 5 || state == 6 || state == 7 || state == 8 || (state == 0 && !t1)) {
-        switch (state) {
-          case 0:
-            t1 = a.get$lowerBound().get$x();
-          case 5:
-            state = 0;
-            t2 = b.get$upperBound().get$x();
-          case 6:
-            state = 0;
-          case 7:
-          case 8:
-            if (state == 7 || state == 8 || (state == 0 && !$.gtB(t1, t2))) {
-              switch (state) {
-                case 0:
-                  t1 = a.get$lowerBound().get$y();
-                case 7:
-                  state = 0;
-                  t2 = b.get$upperBound().get$y();
-                case 8:
-                  state = 0;
-                  t2 = $.gtB(t1, t2);
-                  t1 = t2;
-              }
-            } else {
-              t1 = true;
-            }
-        }
-      } else {
-        t1 = true;
-      }
-      return !t1;
-  }
-};
-
-$._Lists_getRange$bailout = function(state, a, start, length$, accumulator) {
-  if ($.ltB(length$, 0)) throw $.captureStackTrace($.IllegalArgumentException$('length'));
-  if ($.ltB(start, 0)) throw $.captureStackTrace($.IndexOutOfRangeException$(start));
-  var end = $.add(start, length$);
-  if ($.gtB(end, $.get$length(a))) throw $.captureStackTrace($.IndexOutOfRangeException$(end));
-  for (var i = start; $.ltB(i, end); i = $.add(i, 1)) {
-    $.add$1(accumulator, $.index(a, i));
-  }
-  return accumulator;
-};
-
 $.StringBase__toJsStringArray$bailout = function(state, strings) {
   $.checkNull(strings);
   var length$ = $.get$length(strings);
@@ -22675,6 +21212,8 @@ $.StringBase__toJsStringArray$bailout = function(state, strings) {
 
 $.dynamicBind.$call$4 = $.dynamicBind;
 $.dynamicBind.$name = "dynamicBind";
+$.typeNameInOpera.$call$1 = $.typeNameInOpera;
+$.typeNameInOpera.$name = "typeNameInOpera";
 $.throwNoSuchMethod.$call$3 = $.throwNoSuchMethod;
 $.throwNoSuchMethod.$name = "throwNoSuchMethod";
 $.typeNameInIE.$call$1 = $.typeNameInIE;
@@ -23248,6 +21787,12 @@ $.$defineNativeClass('HTMLFormElement', ["length?"], {
  }
 });
 
+$.$defineNativeClass('Gamepad', ["id?"], {
+});
+
+$.$defineNativeClass('GamepadList', ["length?"], {
+});
+
 $.$defineNativeClass('HTMLHRElement', ["width!"], {
 });
 
@@ -23601,6 +22146,9 @@ $.$defineNativeClass('MediaStreamTrack', ["enabled?"], {
 });
 
 $.$defineNativeClass('MediaStreamTrackList', ["length?"], {
+ add$1: function(track) {
+  return this.add(track);
+ }
 });
 
 $.$defineNativeClass('MessageEvent', ["ports?"], {
@@ -23704,8 +22252,7 @@ $.$defineNativeClass('Node', [], {
   return this.childNodes;;
  },
  remove$0: function() {
-  var t1 = this.get$parent();
-  !(t1 == null) && this.get$parent().$dom_removeChild$1(this);
+  !(this.get$parent() == null) && this.get$parent().$dom_removeChild$1(this);
   return this;
  },
  get$nodes: function() {
@@ -24113,8 +22660,7 @@ $.$defineNativeClass('Storage', [], {
   return this.length;;
  },
  isEmpty$0: function() {
-  var t1 = this.$dom_key$1(0);
-  return t1 == null;
+  return this.$dom_key$1(0) == null;
  },
  get$length: function() {
   return this.get$$$dom_length();
@@ -24146,8 +22692,7 @@ $.$defineNativeClass('Storage', [], {
   return this.$dom_getItem$1(key);
  },
  containsKey$1: function(key) {
-  var t1 = this.$dom_getItem$1(key);
-  return !(t1 == null);
+  return !(this.$dom_getItem$1(key) == null);
  },
  is$Map: function() { return true; }
 });
@@ -24459,9 +23004,6 @@ $.$defineNativeClass('HTMLVideoElement', ["width!", "height!"], {
 $.$defineNativeClass('WebGLActiveInfo', ["type?"], {
 });
 
-$.$defineNativeClass('WheelEvent', ["y?", "x?"], {
-});
-
 $.$defineNativeClass('DOMWindow', ["parent?", "navigator?", "length?"], {
  setTimeout$2: function(handler, timeout) {
   return this.setTimeout($.convertDartClosureToJS(handler, 0),timeout);
@@ -24566,40 +23108,42 @@ $.$defineNativeClass('Worker', [], {
  }
 });
 
-// 216 dynamic classes.
-// 357 classes
-// 29 !leaf
+// 217 dynamic classes.
+// 360 classes
+// 30 !leaf
 (function(){
   var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
   var v1/*class(_SVGComponentTransferFunctionElementImpl)*/ = 'SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement';
   var v2/*class(_SVGElementImpl)*/ = [v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGComponentTransferFunctionElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGComponentTransferFunctionElementImpl)*/,'SVGElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement'].join('|');
-  var v3/*class(_ElementImpl)*/ = [v2/*class(_SVGElementImpl)*/,v2/*class(_SVGElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
-  var v4/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
-  var v5/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
-  var v6/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
+  var v3/*class(_MouseEventImpl)*/ = 'MouseEvent|WheelEvent|WheelEvent';
+  var v4/*class(_ElementImpl)*/ = [v2/*class(_SVGElementImpl)*/,v2/*class(_SVGElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
+  var v5/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
+  var v6/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
+  var v7/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
   var table = [
     // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
     ['SVGTextPositioningElement', v0/*class(_SVGTextPositioningElementImpl)*/],
     ['StyleSheet', 'StyleSheet|CSSStyleSheet|CSSStyleSheet'],
     ['Uint8Array', 'Uint8Array|Uint8ClampedArray|Uint8ClampedArray'],
     ['AudioParam', 'AudioParam|AudioGain|AudioGain'],
-    ['WorkerContext', 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext'],
     ['Blob', 'Blob|File|File'],
+    ['WorkerContext', 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext'],
     ['CSSRule', 'CSSRule|CSSUnknownRule|CSSStyleRule|CSSPageRule|CSSMediaRule|WebKitCSSKeyframesRule|WebKitCSSKeyframeRule|CSSImportRule|CSSFontFaceRule|CSSCharsetRule|CSSUnknownRule|CSSStyleRule|CSSPageRule|CSSMediaRule|WebKitCSSKeyframesRule|WebKitCSSKeyframeRule|CSSImportRule|CSSFontFaceRule|CSSCharsetRule'],
     ['CSSValueList', 'CSSValueList|WebKitCSSFilterValue|WebKitCSSTransformValue|WebKitCSSFilterValue|WebKitCSSTransformValue'],
-    ['CharacterData', v6/*class(_CharacterDataImpl)*/],
+    ['CharacterData', v7/*class(_CharacterDataImpl)*/],
     ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList|DOMSettableTokenList'],
-    ['HTMLDocument', v5/*class(_DocumentImpl)*/],
-    ['DocumentFragment', v4/*class(_DocumentFragmentImpl)*/],
+    ['HTMLDocument', v6/*class(_DocumentImpl)*/],
+    ['DocumentFragment', v5/*class(_DocumentFragmentImpl)*/],
     ['SVGComponentTransferFunctionElement', v1/*class(_SVGComponentTransferFunctionElementImpl)*/],
     ['SVGElement', v2/*class(_SVGElementImpl)*/],
-    ['Element', v3/*class(_ElementImpl)*/],
+    ['Element', v4/*class(_ElementImpl)*/],
     ['Entry', 'Entry|FileEntry|DirectoryEntry|FileEntry|DirectoryEntry'],
     ['EntrySync', 'EntrySync|FileEntrySync|DirectoryEntrySync|FileEntrySync|DirectoryEntrySync'],
-    ['Event', 'Event|WebGLContextEvent|UIEvent|WheelEvent|TouchEvent|TextEvent|SVGZoomEvent|MouseEvent|KeyboardEvent|CompositionEvent|WheelEvent|TouchEvent|TextEvent|SVGZoomEvent|MouseEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|WheelEvent|TouchEvent|TextEvent|SVGZoomEvent|MouseEvent|KeyboardEvent|CompositionEvent|WheelEvent|TouchEvent|TextEvent|SVGZoomEvent|MouseEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'],
+    ['MouseEvent', v3/*class(_MouseEventImpl)*/],
+    ['Event', [v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,'Event|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
     ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLOptionsCollection'],
     ['IDBCursor', 'IDBCursor|IDBCursorWithValue|IDBCursorWithValue'],
-    ['Node', [v3/*class(_ElementImpl)*/,v4/*class(_DocumentFragmentImpl)*/,v5/*class(_DocumentImpl)*/,v6/*class(_CharacterDataImpl)*/,v3/*class(_ElementImpl)*/,v4/*class(_DocumentFragmentImpl)*/,v5/*class(_DocumentImpl)*/,v6/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|')],
+    ['Node', [v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|')],
     ['NodeList', 'NodeList|RadioNodeList|RadioNodeList']];
 $.dynamicSetMetadata(table);
 })();
@@ -24629,8 +23173,8 @@ if (typeof window != 'undefined' && typeof document != 'undefined' &&
   $.startRootIsolate($.main);
 }
 function init() {
-  Isolate.$isolateProperties = {};
-Isolate.$defineClass = function(cls, superclass, fields, prototype) {
+Isolate.$isolateProperties = {};
+Isolate.$defineClass = function(cls, fields, prototype) {
   var generateGetterSetter = function(field, prototype) {
   var len = field.length;
   var lastChar = field[len - 1];
@@ -24664,18 +23208,22 @@ Isolate.$defineClass = function(cls, superclass, fields, prototype) {
     str += "return " + cls + ";";
     constructor = new Function(str)();
   }
-  Isolate.$isolateProperties[cls] = constructor;
   constructor.prototype = prototype;
-  if (superclass !== "") {
-    Isolate.$pendingClasses[cls] = superclass;
-  }
+  return constructor;
 };
+var supportsProto = false;
+var tmp = Isolate.$defineClass('c', ['f?'], {}).prototype;
+if (tmp.__proto__) {
+  tmp.__proto__ = {};
+  if (typeof tmp.get$f !== "undefined") supportsProto = true;
+}
 Isolate.$pendingClasses = {};
 Isolate.$finishClasses = function(collectedClasses) {
-  for (var collected in collectedClasses) {
-    if (Object.prototype.hasOwnProperty.call(collectedClasses, collected)) {
-      var desc = collectedClasses[collected];
-      Isolate.$defineClass(collected, desc.super, desc[''], desc);
+  for (var cls in collectedClasses) {
+    if (Object.prototype.hasOwnProperty.call(collectedClasses, cls)) {
+      var desc = collectedClasses[cls];
+      Isolate.$isolateProperties[cls] = Isolate.$defineClass(cls, desc[''], desc);
+      if (desc['super'] !== "") Isolate.$pendingClasses[cls] = desc['super'];
     }
   }
   var pendingClasses = Isolate.$pendingClasses;
@@ -24690,7 +23238,7 @@ Isolate.$finishClasses = function(collectedClasses) {
     var constructor = Isolate.$isolateProperties[cls];
     var superConstructor = Isolate.$isolateProperties[superclass];
     var prototype = constructor.prototype;
-    if (prototype.__proto__) {
+    if (supportsProto) {
       prototype.__proto__ = superConstructor.prototype;
       prototype.constructor = constructor;
     } else {
