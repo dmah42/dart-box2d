@@ -15,7 +15,6 @@
 #library('FrictionJointTest');
 #import('dart:html');
 #import('../lib/box2d.dart');
-#import('../lib/box2d_html.dart');
 #source('demo.dart');
 
 class FrictionJointTest extends Demo {
