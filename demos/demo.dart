@@ -52,8 +52,8 @@ class Demo {
   /** Frame count for fps */
   int frameCount;
 
-  /** Current fps */
-  int fps;
+  /** Microseconds for world step update */
+  int elapsedUs;
 
   // TODO(dominich): Make this library-private once optional positional
   // parameters are introduced.
@@ -71,17 +71,11 @@ class Demo {
   void step(num timestamp) {
     final stopwatch = new Stopwatch.start();
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-    final int elapsedUs = stopwatch.elapsedInUs();
+    elapsedUs = stopwatch.elapsedInUs();
 
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    if (fps !== null) {
-      query("#fps").innerHTML = "FPS: ${fps.toStringAsFixed(2)}";
-    }
-    ctx.setFillColor('red');
-    ctx.font = '10pt monospace';
-    ctx.fillText('world.step time: ${elapsedUs / 1000} ms', 620, 40);
     ++frameCount;
 
     window.requestAnimationFrame((num time) { step(time); });
@@ -111,7 +105,11 @@ class Demo {
     world.debugDraw = debugDraw;
 
     frameCount = 0;
-    window.setInterval(() { fps = frameCount; frameCount = 0; }, 1000);
+    window.setInterval(() {
+      query("#fps").innerHTML = "FPS: ${frameCount.toString()}";
+      query("#world-step").innerHTML = "${elapsedUs / 1000}";
+      frameCount = 0;
+    }, 1000);
   }
 
   abstract void initialize();
