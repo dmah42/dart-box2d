@@ -49,7 +49,7 @@ class Sweep {
    * Returns true if given object is equal to this sweep. Two sweeps are equal
    * if their fields are equal.
    */
-  bool operator == (other) {
+  bool operator ==(other) {
     return localCenter == other.localCenter && centerZero == other.centerZero
         && center == other.center && angleZero == other.angleZero &&
         angle == other.angle;

@@ -126,8 +126,7 @@ class CanvasDraw extends DebugDraw {
     ctx.strokeText(s, x, y);
   }
 
-  /** Sets the rendering context stroke and fill color based on the given
-   *  color3. */
+  /** Sets the rendering context stroke and fill color to [color]. */
   void set _color(Color3 color) {
     ctx.setStrokeColor(color.x, color.y, color.z, 0.9);
     ctx.setFillColor(color.x, color.y, color.z, 0.8);

@@ -31,11 +31,7 @@ class Vector {
    * Returns true if given object is a Vector with the same x and y values as
    * this vector. Returns false otherwise.
    */
-  bool operator == (other) {
-    if (other == null)
-      return false;
-    return x === other.x && y === other.y;
-  }
+  bool operator ==(other) => other!== null && x === other.x && y === other.y;
 
   /**
    * Update the current vector by adding v.

@@ -35,11 +35,9 @@ class Transform {
       : position = new Vector.copy(other.position),
         rotation = new Matrix22.copy(other.rotation);
 
-  bool operator == (other) {
-    if (other == null)
-      return false;
-
-    return position == other.position && rotation == other.rotation;
+  bool operator ==(other) {
+    return other !== null &&
+        position == other.position && rotation == other.rotation;
   }
 
   /**

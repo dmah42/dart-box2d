@@ -53,7 +53,7 @@ class Features {
   /**
    * Returns true if this Features object is equal to the given object.
    */
-  bool operator == (other) =>
+  bool operator ==(other) =>
     referenceEdge == other.referenceEdge &&
     incidentEdge == other.incidentEdge &&
     incidentVertex == other.incidentVertex && flip == other.flip;

@@ -23,8 +23,8 @@ class Matrix22 {
    * Constructs a new Matrix. Defaults to both columns being default vectors.
    */
   Matrix22([Vector c1 = null, Vector c2 = null]) {
-    if (c1 == null) c1 = new Vector();
-    if (c2 == null) c2 = new Vector();
+    if (c1 === null) c1 = new Vector();
+    if (c2 === null) c2 = new Vector();
     col1 = c1;
     col2 = c2;
   }
@@ -48,11 +48,9 @@ class Matrix22 {
    * Returns true if given object is a Matrix22 and its col1 and col2 are equal
    * to the col1 and col2 of this Matrix22.
    */
-  bool operator==(other) {
-    if (other != null && other is Matrix22)
-      return col1 == other.col1 && col2 == other.col2;
- 
-    return false;
+  bool operator ==(other) {
+    return other !== null && other is Matrix22 &&
+        col1 == other.col1 && col2 == other.col2;
   }
 
   /**

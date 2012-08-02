@@ -28,11 +28,9 @@ class Vector3 {
     z = argCopy.z;
   }
 
-  bool operator==(other) {
-    if (other != null && other is Vector3)
-      return x == other.x && y == other.y && z == other.z;
-
-    return false;
+  bool operator ==(other) {
+    return other !== null && other is Vector3 &&
+        x === other.x && y === other.y && z === other.z;
   }
 
   /** Sets this vector equal to the given vector. */
