@@ -15,8 +15,6 @@
 
 #import('dart:html');
 
-#import('box2d.dart');
-
 #source('callbacks/CanvasDraw.dart');
 #source('callbacks/PairCallback.dart');
 #source('callbacks/TreeCallback.dart');
