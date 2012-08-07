@@ -619,6 +619,39 @@ $$._DoubleLinkedQueueIterator = {"":
  }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_stop", "_start"],
+ super: "Object",
+ frequency$0: function() {
+  return $.Clock_frequency();
+ },
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+ },
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null) return 0;
+  var t2 = this._stop;
+  return t2 == null ? $.sub($.Clock_now(), this._start) : $.sub(t2, t1);
+ },
+ reset$0: function() {
+  if (this._start == null) return;
+  this._start = $.Clock_now();
+  if (!(this._stop == null)) this._stop = this._start;
+ },
+ start$0: function() {
+  if (this._start == null) this._start = $.Clock_now();
+  else {
+    if (this._stop == null) return;
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
+    this._stop = null;
+  }
+ },
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
+ }
+};
+
 $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
@@ -1064,8 +1097,10 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon(this), 1000);
  },
  step$1: function(timestamp) {
+  var stopwatch = $.StopwatchImplementation$start();
   var t1 = this.world;
   t1.step$3(0.016666666666666666, 10, 10);
+  var elapsedUs = stopwatch.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
   if (!(this.get$name() == null)) {
@@ -1078,6 +1113,9 @@ $$.Demo = {"":
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
+  this.ctx.setFillColor$1('red');
+  this.ctx.set$font('10pt monospace');
+  this.ctx.fillText$3('world.step time: ' + $.S($.div(elapsedUs, 1000)) + ' ms', 620, 40);
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -18234,15 +18272,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
-$.regExpMatchStart = function(m) {
-  return m.index;
-};
-
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
+};
+
+$.regExpMatchStart = function(m) {
+  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -18288,14 +18326,6 @@ $.tdiv = function(a, b) {
   return a.operator$tdiv$1(b);
 };
 
-$.JSSyntaxRegExp$_globalVersionOf = function(other) {
-  var t1 = other.get$pattern();
-  var t2 = other.get$multiLine();
-  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
-  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
-  return t1;
-};
-
 $.AxisAlignedBox_testOverlap = function(a, b) {
   var t1 = b.get$lowerBound().get$x();
   if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(1, a, b, t1, 0);
@@ -18324,6 +18354,14 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
     } else t1 = true;
   } else t1 = true;
   return !t1;
+};
+
+$.JSSyntaxRegExp$_globalVersionOf = function(other) {
+  var t1 = other.get$pattern();
+  var t2 = other.get$multiLine();
+  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
+  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
+  return t1;
 };
 
 $.typeNameInChrome = function(obj) {
@@ -18823,13 +18861,13 @@ $.mul = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a * b) : $.mul$slow(a, b);
 };
 
-$.Settings_mixFriction = function(friction1, friction2) {
-  return $.Math_sqrt($.mul(friction1, friction2));
-};
-
 $.contains$1 = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.contains$1(other);
   return $.contains$2(receiver, other, 0);
+};
+
+$.Settings_mixFriction = function(friction1, friction2) {
+  return $.Math_sqrt($.mul(friction1, friction2));
 };
 
 $._browserPrefix = function() {
@@ -18923,15 +18961,15 @@ $.Collections_filter = function(source, destination, f) {
   return destination;
 };
 
-$.or = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
-  return a.operator$or$1(b);
-};
-
 $.DoubleLinkedQueueEntry$ = function(e) {
   var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
   t1.DoubleLinkedQueueEntry$1(e);
   return t1;
+};
+
+$.or = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
+  return a.operator$or$1(b);
 };
 
 $.DefaultWorldPool$ = function() {
@@ -19052,6 +19090,11 @@ $.regExpAttachGlobalNative = function(regExp) {
   regExp._re = $.regExpMakeNative(regExp, true);
 };
 
+$.iterator = function(receiver) {
+  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
+  return receiver.iterator$0();
+};
+
 $.leB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a <= b) : $.le$slow(a, b) === true;
 };
@@ -19079,11 +19122,6 @@ $.regExpMakeNative = function(regExp, global) {
     var e = t1;
     throw $.captureStackTrace($.IllegalJSRegExpException$(pattern, (String(e))));
   }
-};
-
-$.iterator = function(receiver) {
-  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
-  return receiver.iterator$0();
 };
 
 $.Sweep$ = function() {
@@ -19331,8 +19369,8 @@ $.main = function() {
   $.BallCage_main();
 };
 
-$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
-  return new $._WorkerSendPort(_receivePortId, _workerId, isolateId);
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
@@ -19343,6 +19381,10 @@ $.HashSetIterator$ = function(set_) {
   var t1 = new $.HashSetIterator(-1, set_.get$_backingMap().get$_keys());
   t1.HashSetIterator$1(set_);
   return t1;
+};
+
+$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
+  return new $._WorkerSendPort(_receivePortId, _workerId, isolateId);
 };
 
 $.IllegalArgumentException$ = function(arg) {
@@ -19540,6 +19582,10 @@ $.ltB = function(a, b) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
+};
+
+$.Clock_now = function() {
+  return $.Primitives_dateNow();
 };
 
 $.convertDartClosureToJS = function(closure, arity) {
@@ -19845,18 +19891,10 @@ $._MainManagerStub$ = function() {
   return new $._MainManagerStub();
 };
 
-$.DynamicTree$ = function() {
-  var t1 = $.ListFactory_List(4);
-  $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
+$.Island$ = function() {
+  var t1 = $.ContactSolver$();
   var t2 = $.Vector$(0, 0);
-  var t3 = $.AxisAlignedBox$(null, null);
-  var t4 = $.DoubleLinkedQueue$();
-  $.setRuntimeTypeInfo(t4, ({E: 'DynamicTreeNode'}));
-  var t5 = $.Vector$(0, 0);
-  var t6 = $.Vector$(0, 0);
-  t4 = new $.DynamicTree($.Vector$(0, 0), t6, t5, t3, t2, 0, t1, t4, 0, 0, null, 0, null);
-  t4.DynamicTree$0();
-  return t4;
+  return new $.Island($.ContactImpulse$(), t2, t1, null, null, null, null, null, null, null, null, null, null, null, null, null);
 };
 
 $.StringBase__toJsStringArray = function(strings) {
@@ -19888,10 +19926,18 @@ $.StringBase__toJsStringArray = function(strings) {
   return array;
 };
 
-$.Island$ = function() {
-  var t1 = $.ContactSolver$();
+$.DynamicTree$ = function() {
+  var t1 = $.ListFactory_List(4);
+  $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
   var t2 = $.Vector$(0, 0);
-  return new $.Island($.ContactImpulse$(), t2, t1, null, null, null, null, null, null, null, null, null, null, null, null, null);
+  var t3 = $.AxisAlignedBox$(null, null);
+  var t4 = $.DoubleLinkedQueue$();
+  $.setRuntimeTypeInfo(t4, ({E: 'DynamicTreeNode'}));
+  var t5 = $.Vector$(0, 0);
+  var t6 = $.Vector$(0, 0);
+  t4 = new $.DynamicTree($.Vector$(0, 0), t6, t5, t3, t2, 0, t1, t4, 0, 0, null, 0, null);
+  t4.DynamicTree$0();
+  return t4;
 };
 
 $.IndexOutOfRangeException$ = function(_value) {
@@ -19916,6 +19962,16 @@ $.getTraceFromException = function(exception) {
   return $.StackTrace$((exception.stack));
 };
 
+$.charCodeAt = function(receiver, index) {
+  if (typeof receiver === 'string') {
+    if (!(typeof index === 'number')) throw $.captureStackTrace($.IllegalArgumentException$(index));
+    if (index < 0) throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+    if (index >= receiver.length) throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+    return receiver.charCodeAt(index);
+  }
+  return receiver.charCodeAt$1(index);
+};
+
 $.toString = function(value) {
   if (typeof value == "object" && value !== null) {
     if ($.isJsArray(value) === true) return $.Collections_collectionToString(value);
@@ -19925,16 +19981,6 @@ $.toString = function(value) {
   if (value == null) return 'null';
   if (typeof value == "function") return 'Closure';
   return String(value);
-};
-
-$.charCodeAt = function(receiver, index) {
-  if (typeof receiver === 'string') {
-    if (!(typeof index === 'number')) throw $.captureStackTrace($.IllegalArgumentException$(index));
-    if (index < 0) throw $.captureStackTrace($.IndexOutOfRangeException$(index));
-    if (index >= receiver.length) throw $.captureStackTrace($.IndexOutOfRangeException$(index));
-    return receiver.charCodeAt(index);
-  }
-  return receiver.charCodeAt$1(index);
 };
 
 $._EventLoop$ = function() {
@@ -20047,21 +20093,6 @@ $.Arrays_indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$._Lists_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if ($.geB(startIndex, a.length)) return -1;
-  if ($.ltB(startIndex, 0)) startIndex = 0;
-  if (typeof startIndex !== 'number') return $._Lists_indexOf$bailout(2, a, element, startIndex, endIndex);
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i !== (i | 0)) throw $.iae(i);
-    var t1 = a.length;
-    if (i < 0 || i >= t1) throw $.ioore(i);
-    if ($.eqB(a[i], element)) return i;
-  }
-  return -1;
-};
-
 $.HashMapImplementation__firstProbe = function(hashCode, length$) {
   return $.and(hashCode, $.sub(length$, 1));
 };
@@ -20081,13 +20112,25 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
+$._Lists_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if ($.geB(startIndex, a.length)) return -1;
+  if ($.ltB(startIndex, 0)) startIndex = 0;
+  if (typeof startIndex !== 'number') return $._Lists_indexOf$bailout(2, a, element, startIndex, endIndex);
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i !== (i | 0)) throw $.iae(i);
+    var t1 = a.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    if ($.eqB(a[i], element)) return i;
+  }
+  return -1;
+};
+
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
 };
 
 $.gt$slow = function(a, b) {
@@ -20105,6 +20148,15 @@ $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
+};
+
 $.DistanceProxy$ = function() {
   var t1 = $.ListFactory_List(8);
   $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
@@ -20117,6 +20169,10 @@ $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
   }
+};
+
+$.Clock_frequency = function() {
+  return 1000;
 };
 
 $.forEach = function(receiver, f) {
@@ -20229,9 +20285,12 @@ $.ContactID$ = function() {
   return new $.ContactID($.Features$());
 };
 
-$.xor = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
-  return a.operator$xor$1(b);
+$.index = function(a, index) {
+  if (typeof a == "string" || a.constructor === Array) {
+    var key = (index >>> 0);
+    if (key === index && key < (a.length)) return a[key];
+  }
+  return $.index$slow(a, index);
 };
 
 $.World$ = function(gravity, doSleep, argPool) {
@@ -20262,6 +20321,21 @@ $.DistanceOutput$ = function() {
   return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
 };
 
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
+};
+
+$.xor = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
+  return a.operator$xor$1(b);
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+};
+
 $.Math_sin = function(x) {
   return $.MathNatives_sin(x);
 };
@@ -20285,20 +20359,6 @@ $.captureStackTrace = function(ex) {
   jsError.dartException = ex;
   jsError.toString = $.toStringWrapper.$call$0;
   return jsError;
-};
-
-$.index = function(a, index) {
-  if (typeof a == "string" || a.constructor === Array) {
-    var key = (index >>> 0);
-    if (key === index && key < (a.length)) return a[key];
-  }
-  return $.index$slow(a, index);
-};
-
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.StackOverflowException$ = function() {
@@ -20330,10 +20390,6 @@ $.HashMapImplementation$ = function() {
   var t1 = new $.HashMapImplementation(null, null, null, null, null);
   t1.HashMapImplementation$0();
   return t1;
-};
-
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
 };
 
 $.substring$1 = function(receiver, startIndex) {

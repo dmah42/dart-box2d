@@ -619,6 +619,39 @@ $$._DoubleLinkedQueueIterator = {"":
  }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_stop", "_start"],
+ super: "Object",
+ frequency$0: function() {
+  return $.Clock_frequency();
+ },
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+ },
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null) return 0;
+  var t2 = this._stop;
+  return t2 == null ? $.sub($.Clock_now(), this._start) : $.sub(t2, t1);
+ },
+ reset$0: function() {
+  if (this._start == null) return;
+  this._start = $.Clock_now();
+  if (!(this._stop == null)) this._stop = this._start;
+ },
+ start$0: function() {
+  if (this._start == null) this._start = $.Clock_now();
+  else {
+    if (this._stop == null) return;
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
+    this._stop = null;
+  }
+ },
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
+ }
+};
+
 $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
@@ -1064,8 +1097,10 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon(this), 1000);
  },
  step$1: function(timestamp) {
+  var stopwatch = $.StopwatchImplementation$start();
   var t1 = this.world;
   t1.step$3(0.016666666666666666, 10, 10);
+  var elapsedUs = stopwatch.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
   if (!(this.get$name() == null)) {
@@ -1078,6 +1113,9 @@ $$.Demo = {"":
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
+  this.ctx.setFillColor$1('red');
+  this.ctx.set$font('10pt monospace');
+  this.ctx.fillText$3('world.step time: ' + $.S($.div(elapsedUs, 1000)) + ' ms', 620, 40);
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -23777,15 +23815,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
-$.regExpMatchStart = function(m) {
-  return m.index;
-};
-
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
+};
+
+$.regExpMatchStart = function(m) {
+  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -23826,6 +23864,11 @@ $.Math_max = function(a, b) {
   throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return $.truncate((a) / (b));
+  return a.operator$tdiv$1(b);
+};
+
 $.AxisAlignedBox_testOverlap = function(a, b) {
   var t1 = b.get$lowerBound().get$x();
   if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(1, a, b, t1, 0);
@@ -23862,11 +23905,6 @@ $.JSSyntaxRegExp$_globalVersionOf = function(other) {
   t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
   t1.JSSyntaxRegExp$_globalVersionOf$1(other);
   return t1;
-};
-
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return $.truncate((a) / (b));
-  return a.operator$tdiv$1(b);
 };
 
 $.JointEdge$ = function() {
@@ -24687,10 +24725,6 @@ $.Matrix33$ = function() {
   return new $.Matrix33($.Vector3$(0, 0, 0), t2, t1);
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
-};
-
 $.Maps_mapToString = function(m) {
   var result = $.StringBufferImpl$('');
   $.Maps__emitMap(m, result, $.ListFactory_List(null));
@@ -24703,6 +24737,10 @@ $.Vector3_crossToOut = function(a, b, out) {
   out.set$x($.sub($.mul(a.get$y(), b.get$z()), $.mul(a.get$z(), b.get$y())));
   out.set$y(tempy);
   out.set$z(tempz);
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
 $.Collections__emitObject = function(o, result, visiting) {
@@ -24958,6 +24996,10 @@ $.main = function() {
   $.BlobTest_main();
 };
 
+$.Primitives_dateNow = function() {
+  return Date.now();
+};
+
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
   return $.tdiv($.mul(capacity, 3), 4);
 };
@@ -25167,6 +25209,10 @@ $.ltB = function(a, b) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
+};
+
+$.Clock_now = function() {
+  return $.Primitives_dateNow();
 };
 
 $.convertDartClosureToJS = function(closure, arity) {
@@ -25748,6 +25794,17 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
 
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
+};
+
+$.gt$slow = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return a > b;
+  return a.operator$gt$1(b);
+};
+
 $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
   if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
@@ -25763,20 +25820,6 @@ $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
-};
-
-$.gt$slow = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return a > b;
-  return a.operator$gt$1(b);
-};
-
 $.PositionSolverManifold$ = function() {
   var t1 = $.Vector$(0, 0);
   var t2 = $.Vector$(0, 0);
@@ -25787,6 +25830,15 @@ $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
+};
+
 $.DistanceProxy$ = function() {
   var t1 = $.ListFactory_List(8);
   $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
@@ -25795,15 +25847,14 @@ $.DistanceProxy$ = function() {
   return t1;
 };
 
+$.Clock_frequency = function() {
+  return 1000;
+};
+
 $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
   }
-};
-
-$.forEach = function(receiver, f) {
-  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
-  return $.Collections_forEach(receiver, f);
 };
 
 $.hashCode = function(receiver) {
@@ -25853,6 +25904,11 @@ $.Math_min = function(a, b) {
   throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
+$.forEach = function(receiver, f) {
+  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
+  return $.Collections_forEach(receiver, f);
+};
+
 $.startsWith = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.startsWith$1(other);
   $.checkString(other);
@@ -25865,17 +25921,17 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.S($.getTypeNameOf(obj));
 };
 
-$._Collections_forEach = function(iterable, f) {
-  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
-    f.$call$1(t1.next$0());
-  }
-};
-
 $.Fixture$ = function() {
   var t1 = $.AxisAlignedBox$(null, null);
   var t2 = $.Filter$();
   var t3 = $.AxisAlignedBox$(null, null);
   return new $.Fixture($.AxisAlignedBox$(null, null), t3, null, null, t2, null, null, null, null, null, null, null, t1);
+};
+
+$._Collections_forEach = function(iterable, f) {
+  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
+    f.$call$1(t1.next$0());
+  }
 };
 
 $.dynamicBind = function(obj, name$, methods, arguments$) {
@@ -25929,11 +25985,6 @@ $.ContactID$ = function() {
   return new $.ContactID($.Features$());
 };
 
-$.xor = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
-  return a.operator$xor$1(b);
-};
-
 $.World$ = function(gravity, doSleep, argPool) {
   var t1 = $.ListFactory_List(2);
   $.setRuntimeTypeInfo(t1, ({E: 'List<ContactRegister>'}));
@@ -25960,6 +26011,11 @@ $.World$ = function(gravity, doSleep, argPool) {
 $.DistanceOutput$ = function() {
   var t1 = $.Vector$(0, 0);
   return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
+};
+
+$.xor = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
+  return a.operator$xor$1(b);
 };
 
 $.Math_sin = function(x) {

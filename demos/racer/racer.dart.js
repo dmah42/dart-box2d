@@ -643,6 +643,39 @@ $$._DoubleLinkedQueueIterator = {"":
  }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_stop", "_start"],
+ super: "Object",
+ frequency$0: function() {
+  return $.Clock_frequency();
+ },
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+ },
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null) return 0;
+  var t2 = this._stop;
+  return t2 == null ? $.sub($.Clock_now(), this._start) : $.sub(t2, t1);
+ },
+ reset$0: function() {
+  if (this._start == null) return;
+  this._start = $.Clock_now();
+  if (!(this._stop == null)) this._stop = this._start;
+ },
+ start$0: function() {
+  if (this._start == null) this._start = $.Clock_now();
+  else {
+    if (this._stop == null) return;
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
+    this._stop = null;
+  }
+ },
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
+ }
+};
+
 $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
@@ -1139,8 +1172,10 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon(this), 1000);
  },
  step$1: function(timestamp) {
+  var stopwatch = $.StopwatchImplementation$start();
   var t1 = this.world;
   t1.step$3(0.016666666666666666, 10, 10);
+  var elapsedUs = stopwatch.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
   if (!(this.get$name() == null)) {
@@ -1153,6 +1188,9 @@ $$.Demo = {"":
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
+  this.ctx.setFillColor$1('red');
+  this.ctx.set$font('10pt monospace');
+  this.ctx.fillText$3('world.step time: ' + $.S($.div(elapsedUs, 1000)) + ' ms', 620, 40);
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -24582,15 +24620,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
-$.regExpMatchStart = function(m) {
-  return m.index;
-};
-
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
+};
+
+$.regExpMatchStart = function(m) {
+  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -25370,12 +25408,12 @@ $.CanvasViewportTransform$ = function(extents, center) {
   return new $.CanvasViewportTransform(20, $.Vector$copy(center), t1);
 };
 
-$.checkGrowable = function(list, reason) {
-  if (!!(list.fixed$length)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
-};
-
 $.TimeStep$ = function() {
   return new $.TimeStep(true, 0, 0, 0, 0, 0);
+};
+
+$.checkGrowable = function(list, reason) {
+  if (!!(list.fixed$length)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
 };
 
 $._SpeechRecognitionEventsImpl$ = function(_ptr) {
@@ -25473,6 +25511,11 @@ $.regExpAttachGlobalNative = function(regExp) {
   regExp._re = $.regExpMakeNative(regExp, true);
 };
 
+$.iterator = function(receiver) {
+  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
+  return receiver.iterator$0();
+};
+
 $.leB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a <= b) : $.le$slow(a, b) === true;
 };
@@ -25522,11 +25565,6 @@ $.CanvasDraw$ = function(viewport, ctx) {
   var t1 = new $.CanvasDraw(ctx, viewport, 1);
   t1.CanvasDraw$2(viewport, ctx);
   return t1;
-};
-
-$.iterator = function(receiver) {
-  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
-  return receiver.iterator$0();
 };
 
 $.Matrix33$ = function() {
@@ -25841,6 +25879,10 @@ $.main = function() {
   $.Racer_main();
 };
 
+$.Primitives_dateNow = function() {
+  return Date.now();
+};
+
 $._AbstractWorkerEventsImpl$ = function(_ptr) {
   return new $._AbstractWorkerEventsImpl(_ptr);
 };
@@ -26070,6 +26112,10 @@ $.ltB = function(a, b) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
+};
+
+$.Clock_now = function() {
+  return $.Primitives_dateNow();
 };
 
 $.convertDartClosureToJS = function(closure, arity) {
@@ -26505,12 +26551,12 @@ $._MessageTraverserVisitedMap$ = function() {
   return new $._MessageTraverserVisitedMap();
 };
 
-$._TextTrackEventsImpl$ = function(_ptr) {
-  return new $._TextTrackEventsImpl(_ptr);
-};
-
 $.getTraceFromException = function(exception) {
   return $.StackTrace$((exception.stack));
+};
+
+$._TextTrackEventsImpl$ = function(_ptr) {
+  return new $._TextTrackEventsImpl(_ptr);
 };
 
 $.charCodeAt = function(receiver, index) {
@@ -26672,13 +26718,10 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
 };
 
 $.gt$slow = function(a, b) {
@@ -26719,6 +26762,10 @@ $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
+$.Clock_frequency = function() {
+  return 1000;
+};
+
 $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
@@ -26742,6 +26789,15 @@ $.hashCode = function(receiver) {
 
 $._JsVisitedMap$ = function() {
   return new $._JsVisitedMap(null);
+};
+
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
 };
 
 $.makeLiteralMap = function(keyValuePairs) {
@@ -27069,17 +27125,6 @@ $._FileWriterEventsImpl$ = function(_ptr) {
   return new $._FileWriterEventsImpl(_ptr);
 };
 
-$.shl = function(a, b) {
-  if ($.checkNumbers(a, b) === true) {
-    a = (a);
-    b = (b);
-    if (b < 0) throw $.captureStackTrace($.IllegalArgumentException$(b));
-    if (b > 31) return 0;
-    return (a << b) >>> 0;
-  }
-  return a.operator$shl$1(b);
-};
-
 $.NoSuchMethodException$ = function(_receiver, _functionName, _arguments, existingArgumentNames) {
   return new $.NoSuchMethodException(existingArgumentNames, _arguments, _functionName, _receiver);
 };
@@ -27134,6 +27179,17 @@ $.Math_cos = function(x) {
 
 $.MathNatives_cos = function(value) {
   return Math.cos($.checkNum(value));
+};
+
+$.shl = function(a, b) {
+  if ($.checkNumbers(a, b) === true) {
+    a = (a);
+    b = (b);
+    if (b < 0) throw $.captureStackTrace($.IllegalArgumentException$(b));
+    if (b > 31) return 0;
+    return (a << b) >>> 0;
+  }
+  return a.operator$shl$1(b);
 };
 
 $.sub = function(a, b) {

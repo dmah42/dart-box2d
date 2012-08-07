@@ -619,6 +619,39 @@ $$._DoubleLinkedQueueIterator = {"":
  }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_stop", "_start"],
+ super: "Object",
+ frequency$0: function() {
+  return $.Clock_frequency();
+ },
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+ },
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null) return 0;
+  var t2 = this._stop;
+  return t2 == null ? $.sub($.Clock_now(), this._start) : $.sub(t2, t1);
+ },
+ reset$0: function() {
+  if (this._start == null) return;
+  this._start = $.Clock_now();
+  if (!(this._stop == null)) this._stop = this._start;
+ },
+ start$0: function() {
+  if (this._start == null) this._start = $.Clock_now();
+  else {
+    if (this._stop == null) return;
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
+    this._stop = null;
+  }
+ },
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
+ }
+};
+
 $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
@@ -1064,8 +1097,10 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon(this), 1000);
  },
  step$1: function(timestamp) {
+  var stopwatch = $.StopwatchImplementation$start();
   var t1 = this.world;
   t1.step$3(0.016666666666666666, 10, 10);
+  var elapsedUs = stopwatch.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
   if (!(this.get$name() == null)) {
@@ -1078,6 +1113,9 @@ $$.Demo = {"":
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
+  this.ctx.setFillColor$1('red');
+  this.ctx.set$font('10pt monospace');
+  this.ctx.fillText$3('world.step time: ' + $.S($.div(elapsedUs, 1000)) + ' ms', 620, 40);
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -18459,15 +18497,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
-$.regExpMatchStart = function(m) {
-  return m.index;
-};
-
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
+};
+
+$.regExpMatchStart = function(m) {
+  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -18513,14 +18551,6 @@ $.tdiv = function(a, b) {
   return a.operator$tdiv$1(b);
 };
 
-$.JSSyntaxRegExp$_globalVersionOf = function(other) {
-  var t1 = other.get$pattern();
-  var t2 = other.get$multiLine();
-  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
-  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
-  return t1;
-};
-
 $.AxisAlignedBox_testOverlap = function(a, b) {
   var t1 = b.get$lowerBound().get$x();
   if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(1, a, b, t1, 0);
@@ -18549,6 +18579,14 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
     } else t1 = true;
   } else t1 = true;
   return !t1;
+};
+
+$.JSSyntaxRegExp$_globalVersionOf = function(other) {
+  var t1 = other.get$pattern();
+  var t2 = other.get$multiLine();
+  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
+  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
+  return t1;
 };
 
 $.typeNameInChrome = function(obj) {
@@ -19153,15 +19191,15 @@ $.Collections_filter = function(source, destination, f) {
   return destination;
 };
 
-$.or = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
-  return a.operator$or$1(b);
-};
-
 $.DoubleLinkedQueueEntry$ = function(e) {
   var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
   t1.DoubleLinkedQueueEntry$1(e);
   return t1;
+};
+
+$.or = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a | b) >>> 0;
+  return a.operator$or$1(b);
 };
 
 $.DefaultWorldPool$ = function() {
@@ -19246,14 +19284,14 @@ $.geB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b) === true;
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
-};
-
 $.stringContainsUnchecked = function(receiver, other, startIndex) {
   if (typeof other === 'string') return !($.indexOf$2(receiver, other, startIndex) === -1);
   if (typeof other === 'object' && other !== null && !!other.is$JSSyntaxRegExp) return other.hasMatch$1($.substring$1(receiver, startIndex));
   return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
 $.Settings_mixRestitution = function(restitution1, restitution2) {
@@ -19286,6 +19324,11 @@ $.regExpAttachGlobalNative = function(regExp) {
   regExp._re = $.regExpMakeNative(regExp, true);
 };
 
+$.iterator = function(receiver) {
+  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
+  return receiver.iterator$0();
+};
+
 $.leB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a <= b) : $.le$slow(a, b) === true;
 };
@@ -19313,11 +19356,6 @@ $.regExpMakeNative = function(regExp, global) {
     var e = t1;
     throw $.captureStackTrace($.IllegalJSRegExpException$(pattern, (String(e))));
   }
-};
-
-$.iterator = function(receiver) {
-  if ($.isJsArray(receiver) === true) return $.ListIterator$(receiver);
-  return receiver.iterator$0();
 };
 
 $.Sweep$ = function() {
@@ -19557,6 +19595,10 @@ $.main = function() {
   domino.runAnimation$0();
 };
 
+$.Primitives_dateNow = function() {
+  return Date.now();
+};
+
 $._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
   return new $._WorkerSendPort(_receivePortId, _workerId, isolateId);
 };
@@ -19766,6 +19808,10 @@ $.ltB = function(a, b) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
+};
+
+$.Clock_now = function() {
+  return $.Primitives_dateNow();
 };
 
 $.convertDartClosureToJS = function(closure, arity) {
@@ -20280,6 +20326,17 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
 
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
+};
+
+$.gt$slow = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return a > b;
+  return a.operator$gt$1(b);
+};
+
 $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
   if (typeof endIndex !== 'number') return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
@@ -20295,20 +20352,6 @@ $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
-};
-
-$.gt$slow = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return a > b;
-  return a.operator$gt$1(b);
-};
-
 $.PositionSolverManifold$ = function() {
   var t1 = $.Vector$(0, 0);
   var t2 = $.Vector$(0, 0);
@@ -20319,6 +20362,15 @@ $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
+};
+
 $.DistanceProxy$ = function() {
   var t1 = $.ListFactory_List(8);
   $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
@@ -20327,15 +20379,14 @@ $.DistanceProxy$ = function() {
   return t1;
 };
 
+$.Clock_frequency = function() {
+  return 1000;
+};
+
 $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
     f.$call$1(t1.next$0());
   }
-};
-
-$.forEach = function(receiver, f) {
-  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
-  return $.Collections_forEach(receiver, f);
 };
 
 $.hashCode = function(receiver) {
@@ -20385,6 +20436,11 @@ $.Math_min = function(a, b) {
   throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
+$.forEach = function(receiver, f) {
+  if ($.isJsArray(receiver) !== true) return receiver.forEach$1(f);
+  return $.Collections_forEach(receiver, f);
+};
+
 $.startsWith = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.startsWith$1(other);
   $.checkString(other);
@@ -20397,17 +20453,17 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.S($.getTypeNameOf(obj));
 };
 
-$._Collections_forEach = function(iterable, f) {
-  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
-    f.$call$1(t1.next$0());
-  }
-};
-
 $.Fixture$ = function() {
   var t1 = $.AxisAlignedBox$(null, null);
   var t2 = $.Filter$();
   var t3 = $.AxisAlignedBox$(null, null);
   return new $.Fixture($.AxisAlignedBox$(null, null), t3, null, null, t2, null, null, null, null, null, null, null, t1);
+};
+
+$._Collections_forEach = function(iterable, f) {
+  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
+    f.$call$1(t1.next$0());
+  }
 };
 
 $.dynamicBind = function(obj, name$, methods, arguments$) {
@@ -20439,13 +20495,26 @@ $.getFunctionForTypeNameOf = function() {
   return $.constructorNameFallback;
 };
 
-$.ContactID$ = function() {
-  return new $.ContactID($.Features$());
+$.index = function(a, index) {
+  if (typeof a == "string" || a.constructor === Array) {
+    var key = (index >>> 0);
+    if (key === index && key < (a.length)) return a[key];
+  }
+  return $.index$slow(a, index);
 };
 
-$.xor = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
-  return a.operator$xor$1(b);
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+};
+
+$.ContactID$ = function() {
+  return new $.ContactID($.Features$());
 };
 
 $.World$ = function(gravity, doSleep, argPool) {
@@ -20476,12 +20545,9 @@ $.DistanceOutput$ = function() {
   return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
 };
 
-$.index = function(a, index) {
-  if (typeof a == "string" || a.constructor === Array) {
-    var key = (index >>> 0);
-    if (key === index && key < (a.length)) return a[key];
-  }
-  return $.index$slow(a, index);
+$.xor = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
+  return a.operator$xor$1(b);
 };
 
 $.Math_sin = function(x) {
@@ -20497,18 +20563,8 @@ $.MathNatives_sin = function(value) {
   return Math.sin($.checkNum(value));
 };
 
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
-};
-
 $.ListFactory_List = function(length$) {
   return $.Primitives_newList(length$);
-};
-
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
 };
 
 $.PolygonShape$ = function() {

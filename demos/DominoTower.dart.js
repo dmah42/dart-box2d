@@ -619,6 +619,39 @@ $$._DoubleLinkedQueueIterator = {"":
  }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_stop", "_start"],
+ super: "Object",
+ frequency$0: function() {
+  return $.Clock_frequency();
+ },
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+ },
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null) return 0;
+  var t2 = this._stop;
+  return t2 == null ? $.sub($.Clock_now(), this._start) : $.sub(t2, t1);
+ },
+ reset$0: function() {
+  if (this._start == null) return;
+  this._start = $.Clock_now();
+  if (!(this._stop == null)) this._stop = this._start;
+ },
+ start$0: function() {
+  if (this._start == null) this._start = $.Clock_now();
+  else {
+    if (this._stop == null) return;
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
+    this._stop = null;
+  }
+ },
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
+ }
+};
+
 $$.StringBufferImpl = {"":
  ["_length", "_buffer"],
  super: "Object",
@@ -1084,8 +1117,10 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon(this), 1000);
  },
  step$1: function(timestamp) {
+  var stopwatch = $.StopwatchImplementation$start();
   var t1 = this.world;
   t1.step$3(0.016666666666666666, 10, 10);
+  var elapsedUs = stopwatch.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
   t1.drawDebugData$0();
   if (!(this.get$name() == null)) {
@@ -1098,6 +1133,9 @@ $$.Demo = {"":
     this.ctx.set$font('12pt monospace');
     this.ctx.fillText$3('FPS: ' + $.S($.toStringAsFixed(this.fps, 2)), 20, 40);
   }
+  this.ctx.setFillColor$1('red');
+  this.ctx.set$font('10pt monospace');
+  this.ctx.fillText$3('world.step time: ' + $.S($.div(elapsedUs, 1000)) + ' ms', 620, 40);
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -18350,15 +18388,15 @@ $.constructorNameFallback = function(obj) {
   return $.substring$2(string, 8, string.length - 1);
 };
 
-$.regExpMatchStart = function(m) {
-  return m.index;
-};
-
 $.PolygonAndCircleContact$ = function(argPool) {
   var t1 = $.Manifold$();
   var t2 = $.ContactEdge$();
   var t3 = $.ContactEdge$();
   return new $.PolygonAndCircleContact($.Manifold$(), argPool, null, t1, null, null, t3, t2, null, null, null);
+};
+
+$.regExpMatchStart = function(m) {
+  return m.index;
 };
 
 $.NotImplementedException$ = function(message) {
@@ -18404,14 +18442,6 @@ $.tdiv = function(a, b) {
   return a.operator$tdiv$1(b);
 };
 
-$.JSSyntaxRegExp$_globalVersionOf = function(other) {
-  var t1 = other.get$pattern();
-  var t2 = other.get$multiLine();
-  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
-  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
-  return t1;
-};
-
 $.AxisAlignedBox_testOverlap = function(a, b) {
   var t1 = b.get$lowerBound().get$x();
   if (typeof t1 !== 'number') return $.AxisAlignedBox_testOverlap$bailout(1, a, b, t1, 0);
@@ -18440,6 +18470,14 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
     } else t1 = true;
   } else t1 = true;
   return !t1;
+};
+
+$.JSSyntaxRegExp$_globalVersionOf = function(other) {
+  var t1 = other.get$pattern();
+  var t2 = other.get$multiLine();
+  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
+  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
+  return t1;
 };
 
 $.typeNameInChrome = function(obj) {
@@ -18899,14 +18937,6 @@ $.ContactSolver$ = function() {
   return t1;
 };
 
-$._Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
-};
-
 $.buildDynamicMetadata = function(inputTable) {
   if (typeof inputTable !== 'string' && (typeof inputTable !== 'object' || inputTable === null || (inputTable.constructor !== Array && !inputTable.is$JavaScriptIndexingBehavior()))) return $.buildDynamicMetadata$bailout(1, inputTable, 0, 0, 0, 0, 0, 0);
   var result = [];
@@ -18928,6 +18958,14 @@ $.buildDynamicMetadata = function(inputTable) {
   }
   return result;
   var t1;
+};
+
+$._Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $.BroadPhase$ = function() {
@@ -19018,11 +19056,6 @@ $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
 };
 
-$.filter = function(receiver, predicate) {
-  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
-  return $.Collections_filter(receiver, [], predicate);
-};
-
 $.ExpectException$ = function(message) {
   return new $.ExpectException(message);
 };
@@ -19036,12 +19069,15 @@ $.toStringWrapper = function() {
   return $.toString((this.dartException));
 };
 
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
+$.filter = function(receiver, predicate) {
+  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
+  return $.Collections_filter(receiver, [], predicate);
+};
+
+$.DoubleLinkedQueueEntry$ = function(e) {
+  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
+  t1.DoubleLinkedQueueEntry$1(e);
+  return t1;
 };
 
 $.or = function(a, b) {
@@ -19049,10 +19085,12 @@ $.or = function(a, b) {
   return a.operator$or$1(b);
 };
 
-$.DoubleLinkedQueueEntry$ = function(e) {
-  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
-  t1.DoubleLinkedQueueEntry$1(e);
-  return t1;
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $.DefaultWorldPool$ = function() {
@@ -19452,8 +19490,8 @@ $.main = function() {
   $.DominoTower_main();
 };
 
-$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
-  return new $._WorkerSendPort(_receivePortId, _workerId, isolateId);
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
@@ -19464,6 +19502,10 @@ $.HashSetIterator$ = function(set_) {
   var t1 = new $.HashSetIterator(-1, set_.get$_backingMap().get$_keys());
   t1.HashSetIterator$1(set_);
   return t1;
+};
+
+$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
+  return new $._WorkerSendPort(_receivePortId, _workerId, isolateId);
 };
 
 $.IllegalArgumentException$ = function(arg) {
@@ -19661,6 +19703,10 @@ $.ltB = function(a, b) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
+};
+
+$.Clock_now = function() {
+  return $.Primitives_dateNow();
 };
 
 $.convertDartClosureToJS = function(closure, arity) {
@@ -20175,13 +20221,10 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$(index));
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
 };
 
 $.gt$slow = function(a, b) {
@@ -20214,6 +20257,15 @@ $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
+};
+
 $.DistanceProxy$ = function() {
   var t1 = $.ListFactory_List(8);
   $.setRuntimeTypeInfo(t1, ({E: 'Vector'}));
@@ -20228,6 +20280,10 @@ $.DominoTower$ = function() {
   t1 = new $.DominoTower(null, 10, null, null, null, null, null, null, null, t1);
   t1.Demo$2(null, 10);
   return t1;
+};
+
+$.Clock_frequency = function() {
+  return 1000;
 };
 
 $.Collections_forEach = function(iterable, f) {
@@ -20342,10 +20398,6 @@ $.getFunctionForTypeNameOf = function() {
   return $.constructorNameFallback;
 };
 
-$.ContactID$ = function() {
-  return new $.ContactID($.Features$());
-};
-
 $.index = function(a, index) {
   if (typeof a == "string" || a.constructor === Array) {
     var key = (index >>> 0);
@@ -20354,9 +20406,18 @@ $.index = function(a, index) {
   return $.index$slow(a, index);
 };
 
-$.xor = function(a, b) {
-  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
-  return a.operator$xor$1(b);
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+};
+
+$.ContactID$ = function() {
+  return new $.ContactID($.Features$());
 };
 
 $.World$ = function(gravity, doSleep, argPool) {
@@ -20387,14 +20448,9 @@ $.DistanceOutput$ = function() {
   return new $.DistanceOutput(null, null, $.Vector$(0, 0), t1);
 };
 
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
-};
-
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+$.xor = function(a, b) {
+  if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
+  return a.operator$xor$1(b);
 };
 
 $.Math_sin = function(x) {
