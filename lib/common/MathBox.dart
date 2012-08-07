@@ -15,7 +15,7 @@
 //TODO(gregbglw): Pull what is shared from here and in touch/Math.dart into a
 // common util.
 class MathBox {
-  static final num _2PI = Math.PI * 2;
+  static final num TWO_PI = Math.PI * 2;
 
   MathBox() { }
 

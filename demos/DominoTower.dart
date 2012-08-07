@@ -1,7 +1,3 @@
-#library('DominoTower');
-#import('dart:html');
-#import('../lib/box2d.dart');
-
 // Copyright 2012 Google Inc. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#library('DominoTower');
+#import('dart:html');
+#import('../lib/box2d.dart');
 #source('demo.dart');
 
 class DominoTower extends Demo {

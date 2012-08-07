@@ -93,6 +93,7 @@
     description="Run dart_analyzer over library and all demos." />
 
   <target name="analyze-lib">
+    <dart_analyze file="lib/box2d_nohtml.dart" />
     <dart_analyze file="lib/box2d.dart" />
   </target>
 
@@ -110,6 +111,7 @@
   </target>
 
   <target name="generate-doc" description="Generate DartDoc for library.">
+    <dartdoc file="lib/box2d_nohtml.dart" outDir="doc" />
     <dartdoc file="lib/box2d.dart" outDir="doc" />
   </target>
 
