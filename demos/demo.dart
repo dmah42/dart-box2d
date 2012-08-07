@@ -52,8 +52,14 @@ class Demo {
   /** Frame count for fps */
   int frameCount;
 
+  /** HTML element used to display the FPS counter */
+  Element fpsCounter;
+
   /** Microseconds for world step update */
   int elapsedUs;
+
+  /** HTML element used to display the world step time */
+  Element worldStepTime;
 
   // TODO(dominich): Make this library-private once optional positional
   // parameters are introduced.
@@ -105,9 +111,11 @@ class Demo {
     world.debugDraw = debugDraw;
 
     frameCount = 0;
+    fpsCounter = query("#fps-counter");
+    worldStepTime = query("#world-step-time");
     window.setInterval(() {
-      query("#fps").innerHTML = "FPS: ${frameCount.toString()}";
-      query("#world-step").innerHTML = "${elapsedUs / 1000}";
+      fpsCounter.innerHTML = "${frameCount.toString()}";
+      worldStepTime.innerHTML = "${elapsedUs / 1000}";
       frameCount = 0;
     }, 1000);
   }

@@ -19,11 +19,21 @@
         top: 35px;
         position: absolute;
       }
+
+      #world-step {
+        color: #f00;
+        left: 620px;
+        top: 40px;
+        position: absolute;
+      }
     </style>
   </head>
   <body>
     <h1 id="title"></h1>
-    <div id="fps"></div>
+    <div id="fps">FPS: <span id="fps-counter"></span></div>
+    <div id="world-step">
+      world.step time: <span id="world-step-time"></span> ms
+    </div>
     <script type="text/javascript">
       var demos = [
         'BallCage',
@@ -73,7 +83,7 @@
       }
     </script>
     <script
-      src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
+      src="https://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
     </script>
   </body>
 </html>
