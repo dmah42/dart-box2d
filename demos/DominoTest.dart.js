@@ -1711,6 +1711,229 @@ $$._JsVisitedMap = {"":
  }
 };
 
+$$.CanvasDraw = {"":
+ ["ctx", "viewportTransform", "drawFlags"],
+ super: "DebugDraw",
+ set$_color: function(color) {
+  var t1 = this.ctx;
+  t1.setStrokeColor$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
+  t1.setFillColor$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
+ },
+ drawTransform$2: function(xf, color) {
+  this.drawCircle$3(xf.get$position(), 0.1, color);
+ },
+ _pathCircle$3: function(center, radius, color) {
+  this.set$_color(color);
+  this.getWorldToScreenToOut$2(center, center);
+  var t1 = this.ctx;
+  t1.beginPath$0();
+  t1.arc$6(center.get$x(), center.get$y(), radius, 0, 6.283185307179586, true);
+  t1.closePath$0();
+ },
+ drawPoint$3: function(point, radiusOnScreen, color) {
+  this._pathCircle$3(point, radiusOnScreen, color);
+  this.ctx.fill$0();
+ },
+ drawSolidCircle$4: function(center, radius, color, axis) {
+  this.drawPoint$3(center, $.mul(radius, this.viewportTransform.get$scale()), color);
+ },
+ drawCircle$4: function(center, radius, color, axis) {
+  this._pathCircle$3(center, $.mul(radius, this.viewportTransform.get$scale()), color);
+  this.ctx.stroke$0();
+ },
+ drawCircle$3: function(center,radius,color) {
+  return this.drawCircle$4(center,radius,color,null)
+},
+ drawSegment$3: function(p1, p2, color) {
+  this.set$_color(color);
+  this.getWorldToScreenToOut$2(p1, p1);
+  this.getWorldToScreenToOut$2(p2, p2);
+  var t1 = this.ctx;
+  t1.beginPath$0();
+  t1.moveTo$2(p1.get$x(), p1.get$y());
+  t1.lineTo$2(p2.get$x(), p2.get$y());
+  t1.closePath$0();
+  t1.stroke$0();
+ },
+ _pathPolygon$3: function(vertices, vertexCount, color) {
+  if (typeof vertices !== 'string' && (typeof vertices !== 'object' || vertices === null || (vertices.constructor !== Array && !vertices.is$JavaScriptIndexingBehavior()))) return this._pathPolygon$3$bailout(1, vertices, vertexCount, color);
+  if (typeof vertexCount !== 'number') return this._pathPolygon$3$bailout(1, vertices, vertexCount, color);
+  this.set$_color(color);
+  for (var i = 0; i < vertexCount; ++i) {
+    var t1 = vertices.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    this.getWorldToScreenToOut$2(vertices[i], vertices[i]);
+  }
+  t1 = this.ctx;
+  t1.beginPath$0();
+  var t2 = vertices.length;
+  if (0 >= t2) throw $.ioore(0);
+  var t3 = vertices[0].get$x();
+  var t4 = vertices.length;
+  if (0 >= t4) throw $.ioore(0);
+  t1.moveTo$2(t3, vertices[0].get$y());
+  for (i = 1; i < vertexCount; ++i) {
+    t2 = vertices.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    t3 = vertices[i].get$x();
+    t4 = vertices.length;
+    if (i < 0 || i >= t4) throw $.ioore(i);
+    t1.lineTo$2(t3, vertices[i].get$y());
+  }
+  t2 = vertices.length;
+  if (0 >= t2) throw $.ioore(0);
+  t3 = vertices[0].get$x();
+  t4 = vertices.length;
+  if (0 >= t4) throw $.ioore(0);
+  t1.lineTo$2(t3, vertices[0].get$y());
+  t1.closePath$0();
+ },
+ _pathPolygon$3$bailout: function(state, vertices, vertexCount, color) {
+  this.set$_color(color);
+  for (var i = 0; $.ltB(i, vertexCount); ++i) {
+    this.getWorldToScreenToOut$2($.index(vertices, i), $.index(vertices, i));
+  }
+  var t1 = this.ctx;
+  t1.beginPath$0();
+  t1.moveTo$2($.index(vertices, 0).get$x(), $.index(vertices, 0).get$y());
+  for (i = 1; $.ltB(i, vertexCount); ++i) {
+    t1.lineTo$2($.index(vertices, i).get$x(), $.index(vertices, i).get$y());
+  }
+  t1.lineTo$2($.index(vertices, 0).get$x(), $.index(vertices, 0).get$y());
+  t1.closePath$0();
+ },
+ drawSolidPolygon$3: function(vertices, vertexCount, color) {
+  this._pathPolygon$3(vertices, vertexCount, color);
+  this.ctx.fill$0();
+ },
+ drawPolygon$3: function(vertices, vertexCount, color) {
+  this._pathPolygon$3(vertices, vertexCount, color);
+  this.ctx.stroke$0();
+ },
+ CanvasDraw$2: function(viewport, ctx) {
+ }
+};
+
+$$.ContactFilter = {"":
+ [],
+ super: "Object",
+ shouldCollide$2: function(fixtureA, fixtureB) {
+  var filterA = fixtureA.get$filter();
+  var filterB = fixtureB.get$filter();
+  var t1 = filterA.get$groupIndex();
+  if (typeof t1 !== 'number') return this.shouldCollide$2$bailout(1, t1, filterA, filterB, 0);
+  if (!(t1 === 0) && $.eqB(filterA.get$groupIndex(), filterB.get$groupIndex())) {
+    t1 = filterA.get$groupIndex();
+    if (typeof t1 !== 'number') return this.shouldCollide$2$bailout(2, t1, 0, 0, 0);
+    return t1 > 0;
+  }
+  t1 = filterA.get$maskBits();
+  if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(3, t1, filterA, filterB, 0);
+  var t3 = filterB.get$categoryBits();
+  if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(4, t1, t3, filterA, filterB);
+  if (!((t1 & t3) >>> 0 === 0)) {
+    t1 = filterA.get$categoryBits();
+    if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(5, t1, filterB, 0, 0);
+    t3 = filterB.get$maskBits();
+    if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(6, t1, t3, 0, 0);
+    var t5 = !((t1 & t3) >>> 0 === 0);
+    t1 = t5;
+  } else t1 = false;
+  return t1;
+ },
+ shouldCollide$2$bailout: function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      filterA = env1;
+      filterB = env2;
+      break;
+    case 2:
+      t1 = env0;
+      break;
+    case 3:
+      t1 = env0;
+      filterA = env1;
+      filterB = env2;
+      break;
+    case 4:
+      t1 = env0;
+      t3 = env1;
+      filterA = env2;
+      filterB = env3;
+      break;
+    case 5:
+      t1 = env0;
+      filterB = env1;
+      break;
+    case 6:
+      t1 = env0;
+      t3 = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var filterA = fixtureA.get$filter();
+      var filterB = fixtureB.get$filter();
+      var t1 = filterA.get$groupIndex();
+    case 1:
+      state = 0;
+    case 2:
+      if (state == 2 || (state == 0 && (!$.eqB(t1, 0) && $.eqB(filterA.get$groupIndex(), filterB.get$groupIndex())))) {
+        switch (state) {
+          case 0:
+            t1 = filterA.get$groupIndex();
+          case 2:
+            state = 0;
+            return $.gt(t1, 0);
+        }
+      }
+      t1 = filterA.get$maskBits();
+    case 3:
+      state = 0;
+      var t3 = filterB.get$categoryBits();
+    case 4:
+      state = 0;
+    default:
+      if (state == 5 || state == 6 || (state == 0 && !$.eqB($.and(t1, t3), 0))) {
+        switch (state) {
+          case 0:
+            t1 = filterA.get$categoryBits();
+          case 5:
+            state = 0;
+            t3 = filterB.get$maskBits();
+          case 6:
+            state = 0;
+            var t5 = !$.eqB($.and(t1, t3), 0);
+            t1 = t5;
+        }
+      } else {
+        t1 = false;
+      }
+      return t1;
+  }
+ }
+};
+
+$$.ContactImpulse = {"":
+ ["tangentImpulses?", "normalImpulses?"],
+ super: "Object"
+};
+
+$$.DebugDraw = {"":
+ ["drawFlags?"],
+ super: "Object",
+ getWorldToScreenToOut$2: function(argWorld, argScreen) {
+  this.viewportTransform.getWorldToScreen$2(argWorld, argScreen);
+ },
+ get$flags: function() {
+  return this.drawFlags;
+ },
+ set$flags: function(flags) {
+  this.drawFlags = flags;
+ }
+};
+
 $$.AxisAlignedBox = {"":
  ["upperBound?", "lowerBound?"],
  super: "Object",
@@ -6325,226 +6548,640 @@ $$.Shape = {"":
  super: "Object"
 };
 
-$$.CanvasDraw = {"":
- ["ctx", "viewportTransform", "drawFlags"],
- super: "DebugDraw",
- set$_color: function(color) {
-  var t1 = this.ctx;
-  t1.setStrokeColor$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
-  t1.setFillColor$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
+$$.CanvasViewportTransform = {"":
+ ["scale=", "center?", "extents"],
+ super: "Object",
+ getWorldToScreen$2: function(argWorld, argScreen) {
+  var t1 = $.mul(argWorld.get$x(), this.scale);
+  var t2 = this.extents;
+  var gridCorrectedX = $.add(t1, t2.get$x());
+  var gridCorrectedY = $.sub(t2.get$y(), $.mul(argWorld.get$y(), this.scale));
+  argScreen.setCoords$2($.add(gridCorrectedX, this.get$translation().get$x()), $.add(gridCorrectedY, $.neg(this.get$translation().get$y())));
  },
- drawTransform$2: function(xf, color) {
-  this.drawCircle$3(xf.get$position(), 0.1, color);
- },
- _pathCircle$3: function(center, radius, color) {
-  this.set$_color(color);
-  this.getWorldToScreenToOut$2(center, center);
-  var t1 = this.ctx;
-  t1.beginPath$0();
-  t1.arc$6(center.get$x(), center.get$y(), radius, 0, 6.283185307179586, true);
-  t1.closePath$0();
- },
- drawPoint$3: function(point, radiusOnScreen, color) {
-  this._pathCircle$3(point, radiusOnScreen, color);
-  this.ctx.fill$0();
- },
- drawSolidCircle$4: function(center, radius, color, axis) {
-  this.drawPoint$3(center, $.mul(radius, this.viewportTransform.get$scale()), color);
- },
- drawCircle$4: function(center, radius, color, axis) {
-  this._pathCircle$3(center, $.mul(radius, this.viewportTransform.get$scale()), color);
-  this.ctx.stroke$0();
- },
- drawCircle$3: function(center,radius,color) {
-  return this.drawCircle$4(center,radius,color,null)
-},
- drawSegment$3: function(p1, p2, color) {
-  this.set$_color(color);
-  this.getWorldToScreenToOut$2(p1, p1);
-  this.getWorldToScreenToOut$2(p2, p2);
-  var t1 = this.ctx;
-  t1.beginPath$0();
-  t1.moveTo$2(p1.get$x(), p1.get$y());
-  t1.lineTo$2(p2.get$x(), p2.get$y());
-  t1.closePath$0();
-  t1.stroke$0();
- },
- _pathPolygon$3: function(vertices, vertexCount, color) {
-  if (typeof vertices !== 'string' && (typeof vertices !== 'object' || vertices === null || (vertices.constructor !== Array && !vertices.is$JavaScriptIndexingBehavior()))) return this._pathPolygon$3$bailout(1, vertices, vertexCount, color);
-  if (typeof vertexCount !== 'number') return this._pathPolygon$3$bailout(1, vertices, vertexCount, color);
-  this.set$_color(color);
-  for (var i = 0; i < vertexCount; ++i) {
-    var t1 = vertices.length;
-    if (i < 0 || i >= t1) throw $.ioore(i);
-    this.getWorldToScreenToOut$2(vertices[i], vertices[i]);
-  }
-  t1 = this.ctx;
-  t1.beginPath$0();
-  var t2 = vertices.length;
-  if (0 >= t2) throw $.ioore(0);
-  var t3 = vertices[0].get$x();
-  var t4 = vertices.length;
-  if (0 >= t4) throw $.ioore(0);
-  t1.moveTo$2(t3, vertices[0].get$y());
-  for (i = 1; i < vertexCount; ++i) {
-    t2 = vertices.length;
-    if (i < 0 || i >= t2) throw $.ioore(i);
-    t3 = vertices[i].get$x();
-    t4 = vertices.length;
-    if (i < 0 || i >= t4) throw $.ioore(i);
-    t1.lineTo$2(t3, vertices[i].get$y());
-  }
-  t2 = vertices.length;
-  if (0 >= t2) throw $.ioore(0);
-  t3 = vertices[0].get$x();
-  t4 = vertices.length;
-  if (0 >= t4) throw $.ioore(0);
-  t1.lineTo$2(t3, vertices[0].get$y());
-  t1.closePath$0();
- },
- _pathPolygon$3$bailout: function(state, vertices, vertexCount, color) {
-  this.set$_color(color);
-  for (var i = 0; $.ltB(i, vertexCount); ++i) {
-    this.getWorldToScreenToOut$2($.index(vertices, i), $.index(vertices, i));
-  }
-  var t1 = this.ctx;
-  t1.beginPath$0();
-  t1.moveTo$2($.index(vertices, 0).get$x(), $.index(vertices, 0).get$y());
-  for (i = 1; $.ltB(i, vertexCount); ++i) {
-    t1.lineTo$2($.index(vertices, i).get$x(), $.index(vertices, i).get$y());
-  }
-  t1.lineTo$2($.index(vertices, 0).get$x(), $.index(vertices, 0).get$y());
-  t1.closePath$0();
- },
- drawSolidPolygon$3: function(vertices, vertexCount, color) {
-  this._pathPolygon$3(vertices, vertexCount, color);
-  this.ctx.fill$0();
- },
- drawPolygon$3: function(vertices, vertexCount, color) {
-  this._pathPolygon$3(vertices, vertexCount, color);
-  this.ctx.stroke$0();
- },
- CanvasDraw$2: function(viewport, ctx) {
+ get$translation: function() {
+  var result = $.Vector$copy(this.extents);
+  result.subLocal$1(this.center);
+  return result;
  }
 };
 
-$$.ContactFilter = {"":
- [],
+$$.Color3 = {"":
+ ["z?", "y=", "x="],
  super: "Object",
- shouldCollide$2: function(fixtureA, fixtureB) {
-  var filterA = fixtureA.get$filter();
-  var filterB = fixtureB.get$filter();
-  var t1 = filterA.get$groupIndex();
-  if (typeof t1 !== 'number') return this.shouldCollide$2$bailout(1, t1, filterA, filterB, 0);
-  if (!(t1 === 0) && $.eqB(filterA.get$groupIndex(), filterB.get$groupIndex())) {
-    t1 = filterA.get$groupIndex();
-    if (typeof t1 !== 'number') return this.shouldCollide$2$bailout(2, t1, 0, 0, 0);
-    return t1 > 0;
-  }
-  t1 = filterA.get$maskBits();
-  if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(3, t1, filterA, filterB, 0);
-  var t3 = filterB.get$categoryBits();
-  if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(4, t1, t3, filterA, filterB);
-  if (!((t1 & t3) >>> 0 === 0)) {
-    t1 = filterA.get$categoryBits();
-    if (t1 !== (t1 | 0)) return this.shouldCollide$2$bailout(5, t1, filterB, 0, 0);
-    t3 = filterB.get$maskBits();
-    if (t3 !== (t3 | 0)) return this.shouldCollide$2$bailout(6, t1, t3, 0, 0);
-    var t5 = !((t1 & t3) >>> 0 === 0);
-    t1 = t5;
+ operator$eq$1: function(other) {
+  if (!((typeof other === 'object' && other !== null) && !!other.is$Color3)) return false;
+  var t1 = this.x;
+  var t2 = other.x;
+  if (t1 == null ? t2 == null : t1 === t2) {
+    t1 = this.y;
+    t2 = other.y;
+    if (t1 == null ? t2 == null : t1 === t2) {
+      t1 = this.z;
+      t2 = other.z;
+      t2 = t1 == null ? t2 == null : t1 === t2;
+      t1 = t2;
+    } else t1 = false;
   } else t1 = false;
   return t1;
  },
- shouldCollide$2$bailout: function(state, env0, env1, env2, env3) {
+ setFrom$1: function(argColor) {
+  this.x = argColor.get$x();
+  this.y = argColor.get$y();
+  this.z = argColor.get$z();
+ },
+ setFromRGB$3: function(r, g, b) {
+  this.x = r;
+  this.y = g;
+  this.z = b;
+ },
+ is$Color3: true
+};
+
+$$.Matrix22 = {"":
+ ["col2?", "col1?"],
+ super: "Object",
+ toString$0: function() {
+  return $.S(this.col1) + ', ' + $.S(this.col2);
+ },
+ addLocal$1: function(other) {
+  var t1 = this.col1;
+  var t2 = t1.get$x();
+  if (typeof t2 !== 'number') return this.addLocal$1$bailout(1, other, t1, t2, 0);
+  var t4 = other.get$col1().get$x();
+  if (typeof t4 !== 'number') return this.addLocal$1$bailout(2, other, t1, t2, t4);
+  t1.set$x(t2 + t4);
+  var t6 = t1.get$y();
+  if (typeof t6 !== 'number') return this.addLocal$1$bailout(3, other, t1, t6, 0);
+  var t8 = other.get$col1().get$y();
+  if (typeof t8 !== 'number') return this.addLocal$1$bailout(4, other, t1, t6, t8);
+  t1.set$y(t6 + t8);
+  t1 = this.col2;
+  var t10 = t1.get$x();
+  if (typeof t10 !== 'number') return this.addLocal$1$bailout(5, other, t10, t1, 0);
+  var t12 = other.get$col2().get$x();
+  if (typeof t12 !== 'number') return this.addLocal$1$bailout(6, other, t10, t1, t12);
+  t1.set$x(t10 + t12);
+  var t14 = t1.get$y();
+  if (typeof t14 !== 'number') return this.addLocal$1$bailout(7, other, t14, t1, 0);
+  var t16 = other.get$col2().get$y();
+  if (typeof t16 !== 'number') return this.addLocal$1$bailout(8, t14, t1, t16, 0);
+  t1.set$y(t14 + t16);
+  return this;
+ },
+ addLocal$1$bailout: function(state, env0, env1, env2, env3) {
   switch (state) {
     case 1:
-      t1 = env0;
-      filterA = env1;
-      filterB = env2;
+      var other = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 2:
-      t1 = env0;
+      other = env0;
+      t1 = env1;
+      t2 = env2;
+      t4 = env3;
       break;
     case 3:
-      t1 = env0;
-      filterA = env1;
-      filterB = env2;
+      other = env0;
+      t1 = env1;
+      t6 = env2;
       break;
     case 4:
-      t1 = env0;
-      t3 = env1;
-      filterA = env2;
-      filterB = env3;
+      other = env0;
+      t1 = env1;
+      t6 = env2;
+      t8 = env3;
       break;
     case 5:
-      t1 = env0;
-      filterB = env1;
+      other = env0;
+      t10 = env1;
+      t1 = env2;
       break;
     case 6:
-      t1 = env0;
-      t3 = env1;
+      other = env0;
+      t10 = env1;
+      t1 = env2;
+      t12 = env3;
+      break;
+    case 7:
+      other = env0;
+      t14 = env1;
+      t1 = env2;
+      break;
+    case 8:
+      t14 = env0;
+      t1 = env1;
+      t16 = env2;
       break;
   }
   switch (state) {
     case 0:
-      var filterA = fixtureA.get$filter();
-      var filterB = fixtureB.get$filter();
-      var t1 = filterA.get$groupIndex();
+      var t1 = this.col1;
+      var t2 = t1.get$x();
     case 1:
       state = 0;
+      var t4 = other.get$col1().get$x();
     case 2:
-      if (state == 2 || (state == 0 && (!$.eqB(t1, 0) && $.eqB(filterA.get$groupIndex(), filterB.get$groupIndex())))) {
-        switch (state) {
-          case 0:
-            t1 = filterA.get$groupIndex();
-          case 2:
-            state = 0;
-            return $.gt(t1, 0);
-        }
-      }
-      t1 = filterA.get$maskBits();
+      state = 0;
+      t1.set$x($.add(t2, t4));
+      var t6 = t1.get$y();
     case 3:
       state = 0;
-      var t3 = filterB.get$categoryBits();
+      var t8 = other.get$col1().get$y();
     case 4:
       state = 0;
-    default:
-      if (state == 5 || state == 6 || (state == 0 && !$.eqB($.and(t1, t3), 0))) {
-        switch (state) {
-          case 0:
-            t1 = filterA.get$categoryBits();
-          case 5:
-            state = 0;
-            t3 = filterB.get$maskBits();
-          case 6:
-            state = 0;
-            var t5 = !$.eqB($.and(t1, t3), 0);
-            t1 = t5;
-        }
-      } else {
-        t1 = false;
-      }
-      return t1;
+      t1.set$y($.add(t6, t8));
+      t1 = this.col2;
+      var t10 = t1.get$x();
+    case 5:
+      state = 0;
+      var t12 = other.get$col2().get$x();
+    case 6:
+      state = 0;
+      t1.set$x($.add(t10, t12));
+      var t14 = t1.get$y();
+    case 7:
+      state = 0;
+      var t16 = other.get$col2().get$y();
+    case 8:
+      state = 0;
+      t1.set$y($.add(t14, t16));
+      return this;
   }
+ },
+ invertLocal$0: function() {
+  var t1 = this.col1;
+  var a = t1.get$x();
+  if (typeof a !== 'number') return this.invertLocal$0$bailout(1, a, t1, 0, 0, 0, 0);
+  var t3 = this.col2;
+  var b = t3.get$x();
+  if (typeof b !== 'number') return this.invertLocal$0$bailout(2, a, b, t1, t3, 0, 0);
+  var c = t1.get$y();
+  if (typeof c !== 'number') return this.invertLocal$0$bailout(3, t3, a, b, t1, c, 0);
+  var d = t3.get$y();
+  if (typeof d !== 'number') return this.invertLocal$0$bailout(4, a, b, t1, t3, c, d);
+  var det = a * d - b * c;
+  if (!(det === 0)) det = 1.0 / det;
+  t1.set$x(det * d);
+  var t2 = -det;
+  t3.set$x(t2 * b);
+  t1.set$y(t2 * c);
+  t3.set$y(det * a);
+  return this;
+ },
+ invertLocal$0$bailout: function(state, env0, env1, env2, env3, env4, env5) {
+  switch (state) {
+    case 1:
+      a = env0;
+      t1 = env1;
+      break;
+    case 2:
+      a = env0;
+      b = env1;
+      t1 = env2;
+      t3 = env3;
+      break;
+    case 3:
+      t3 = env0;
+      a = env1;
+      b = env2;
+      t1 = env3;
+      c = env4;
+      break;
+    case 4:
+      a = env0;
+      b = env1;
+      t1 = env2;
+      t3 = env3;
+      c = env4;
+      d = env5;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = this.col1;
+      var a = t1.get$x();
+    case 1:
+      state = 0;
+      var t3 = this.col2;
+      var b = t3.get$x();
+    case 2:
+      state = 0;
+      var c = t1.get$y();
+    case 3:
+      state = 0;
+      var d = t3.get$y();
+    case 4:
+      state = 0;
+      var det = $.sub($.mul(a, d), $.mul(b, c));
+      if (!$.eqB(det, 0)) {
+        if (typeof det !== 'number') throw $.iae(det);
+        det = 1.0 / det;
+      }
+      t1.set$x($.mul(det, d));
+      t3.set$x($.mul($.neg(det), b));
+      t1.set$y($.mul($.neg(det), c));
+      t3.set$y($.mul(det, a));
+      return this;
+  }
+ },
+ setFrom$1: function(matrix) {
+  this.col1.setFrom$1(matrix.get$col1());
+  this.col2.setFrom$1(matrix.get$col2());
+ },
+ setAngle$1: function(angle) {
+  var cosin = $.Math_cos(angle);
+  var sin = $.Math_sin(angle);
+  this.col1.setCoords$2(cosin, sin);
+  this.col2.setCoords$2($.neg(sin), cosin);
+ },
+ operator$eq$1: function(other) {
+  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Matrix22)) {
+    return $.eqB(this.col1, other.get$col1()) && $.eqB(this.col2, other.get$col2());
+  }
+  return false;
+ },
+ Matrix22$2: function(c1, c2) {
+  if (c1 == null) c1 = $.Vector$(0, 0);
+  if (c2 == null) c2 = $.Vector$(0, 0);
+  this.col1 = c1;
+  this.col2 = c2;
+ },
+ is$Matrix22: true
+};
+
+$$.Sweep = {"":
+ ["angle=", "angleZero=", "center?", "centerZero?", "localCenter?"],
+ super: "Object",
+ advance$1: function(time) {
+  if (typeof time !== 'number') throw $.iae(time);
+  var t1 = 1 - time;
+  var t2 = this.centerZero;
+  var t3 = t2.get$x();
+  if (typeof t3 !== 'number') throw $.iae(t3);
+  t3 *= t1;
+  var t4 = this.center;
+  var t5 = t4.get$x();
+  if (typeof t5 !== 'number') throw $.iae(t5);
+  t2.set$x(t3 + time * t5);
+  var t6 = t2.get$y();
+  if (typeof t6 !== 'number') throw $.iae(t6);
+  t6 *= t1;
+  t4 = t4.get$y();
+  if (typeof t4 !== 'number') throw $.iae(t4);
+  t2.set$y(t6 + time * t4);
+  t2 = this.angleZero;
+  if (typeof t2 !== 'number') throw $.iae(t2);
+  t2 *= t1;
+  t1 = this.angle;
+  if (typeof t1 !== 'number') throw $.iae(t1);
+  this.angleZero = t2 + time * t1;
+ },
+ getTransform$2: function(xf, alpha) {
+  if (typeof alpha !== 'number') throw $.iae(alpha);
+  var t1 = 1.0 - alpha;
+  var t2 = this.centerZero;
+  var t3 = t2.x;
+  if (typeof t3 !== 'number') throw $.iae(t3);
+  t3 *= t1;
+  var t4 = this.center;
+  var t5 = t4.x;
+  if (typeof t5 !== 'number') throw $.iae(t5);
+  t3 += alpha * t5;
+  xf.get$position().set$x(t3);
+  t2 = t2.y;
+  if (typeof t2 !== 'number') throw $.iae(t2);
+  t2 *= t1;
+  t4 = t4.y;
+  if (typeof t4 !== 'number') throw $.iae(t4);
+  t2 += alpha * t4;
+  xf.get$position().set$y(t2);
+  t2 = xf.get$rotation();
+  t3 = this.angleZero;
+  if (typeof t3 !== 'number') throw $.iae(t3);
+  t3 *= t1;
+  t1 = this.angle;
+  if (typeof t1 !== 'number') throw $.iae(t1);
+  t2.setAngle$1(t3 + alpha * t1);
+  t2 = xf.get$position();
+  var t6 = t2.get$x();
+  if (typeof t6 !== 'number') return this.getTransform$2$bailout(1, xf, t2, t6, 0, 0, 0, 0);
+  var t8 = xf.get$rotation().get$col1().get$x();
+  if (typeof t8 !== 'number') return this.getTransform$2$bailout(2, xf, t8, t2, t6, 0, 0, 0);
+  var t10 = this.localCenter;
+  var t11 = t10.x;
+  if (typeof t11 !== 'number') return this.getTransform$2$bailout(3, xf, t8, t11, t10, t2, t6, 0);
+  t11 *= t8;
+  t8 = xf.get$rotation().get$col2().get$x();
+  if (typeof t8 !== 'number') return this.getTransform$2$bailout(4, xf, t11, t8, t10, t2, t6, 0);
+  var t14 = t10.y;
+  if (typeof t14 !== 'number') return this.getTransform$2$bailout(5, xf, t11, t8, t14, t10, t2, t6);
+  t2.set$x(t6 - (t11 + t8 * t14));
+  t2 = xf.get$position();
+  var t16 = t2.get$y();
+  if (typeof t16 !== 'number') return this.getTransform$2$bailout(6, xf, t2, t16, t10, 0, 0, 0);
+  var t18 = xf.get$rotation().get$col1().get$y();
+  if (typeof t18 !== 'number') return this.getTransform$2$bailout(7, xf, t2, t16, t10, t18, 0, 0);
+  var t20 = t10.x;
+  if (typeof t20 !== 'number') return this.getTransform$2$bailout(8, xf, t2, t16, t18, t20, t10, 0);
+  t20 *= t18;
+  t18 = xf.get$rotation().get$col2().get$y();
+  if (typeof t18 !== 'number') return this.getTransform$2$bailout(9, t2, t16, t10, t20, t18, 0, 0);
+  t10 = t10.y;
+  if (typeof t10 !== 'number') return this.getTransform$2$bailout(10, t10, t2, t16, t20, t18, 0, 0);
+  t2.set$y(t16 - (t20 + t18 * t10));
+ },
+ getTransform$2$bailout: function(state, env0, env1, env2, env3, env4, env5, env6) {
+  switch (state) {
+    case 1:
+      var xf = env0;
+      t2 = env1;
+      t6 = env2;
+      break;
+    case 2:
+      xf = env0;
+      t8 = env1;
+      t2 = env2;
+      t6 = env3;
+      break;
+    case 3:
+      xf = env0;
+      t8 = env1;
+      t11 = env2;
+      t10 = env3;
+      t2 = env4;
+      t6 = env5;
+      break;
+    case 4:
+      xf = env0;
+      t11 = env1;
+      t8 = env2;
+      t10 = env3;
+      t2 = env4;
+      t6 = env5;
+      break;
+    case 5:
+      xf = env0;
+      t11 = env1;
+      t8 = env2;
+      t14 = env3;
+      t10 = env4;
+      t2 = env5;
+      t6 = env6;
+      break;
+    case 6:
+      xf = env0;
+      t2 = env1;
+      t16 = env2;
+      t10 = env3;
+      break;
+    case 7:
+      xf = env0;
+      t2 = env1;
+      t16 = env2;
+      t10 = env3;
+      t18 = env4;
+      break;
+    case 8:
+      xf = env0;
+      t2 = env1;
+      t16 = env2;
+      t18 = env3;
+      t20 = env4;
+      t10 = env5;
+      break;
+    case 9:
+      t2 = env0;
+      t16 = env1;
+      t10 = env2;
+      t20 = env3;
+      t18 = env4;
+      break;
+    case 10:
+      t10 = env0;
+      t2 = env1;
+      t16 = env2;
+      t20 = env3;
+      t18 = env4;
+      break;
+  }
+  switch (state) {
+    case 0:
+      if (typeof alpha !== 'number') throw $.iae(alpha);
+      var t1 = 1.0 - alpha;
+      var t2 = this.centerZero;
+      var t3 = t2.get$x();
+      if (typeof t3 !== 'number') throw $.iae(t3);
+      t3 *= t1;
+      var t4 = this.center;
+      var t5 = t4.get$x();
+      if (typeof t5 !== 'number') throw $.iae(t5);
+      t3 += alpha * t5;
+      xf.get$position().set$x(t3);
+      t2 = t2.get$y();
+      if (typeof t2 !== 'number') throw $.iae(t2);
+      t2 *= t1;
+      t4 = t4.get$y();
+      if (typeof t4 !== 'number') throw $.iae(t4);
+      t2 += alpha * t4;
+      xf.get$position().set$y(t2);
+      t2 = xf.get$rotation();
+      t3 = this.angleZero;
+      if (typeof t3 !== 'number') throw $.iae(t3);
+      t3 *= t1;
+      t1 = this.angle;
+      if (typeof t1 !== 'number') throw $.iae(t1);
+      t2.setAngle$1(t3 + alpha * t1);
+      t2 = xf.get$position();
+      var t6 = t2.get$x();
+    case 1:
+      state = 0;
+      var t8 = xf.get$rotation().get$col1().get$x();
+    case 2:
+      state = 0;
+      var t10 = this.localCenter;
+      var t11 = t10.get$x();
+    case 3:
+      state = 0;
+      t11 = $.mul(t8, t11);
+      t8 = xf.get$rotation().get$col2().get$x();
+    case 4:
+      state = 0;
+      var t14 = t10.get$y();
+    case 5:
+      state = 0;
+      t2.set$x($.sub(t6, $.add(t11, $.mul(t8, t14))));
+      t2 = xf.get$position();
+      var t16 = t2.get$y();
+    case 6:
+      state = 0;
+      var t18 = xf.get$rotation().get$col1().get$y();
+    case 7:
+      state = 0;
+      var t20 = t10.get$x();
+    case 8:
+      state = 0;
+      t20 = $.mul(t18, t20);
+      t18 = xf.get$rotation().get$col2().get$y();
+    case 9:
+      state = 0;
+      t10 = t10.get$y();
+    case 10:
+      state = 0;
+      t2.set$y($.sub(t16, $.add(t20, $.mul(t18, t10))));
+  }
+ },
+ normalize$0: function() {
+  var t1 = $.floor($.div(this.angleZero, 6.283185307179586));
+  if (typeof t1 !== 'number') throw $.iae(t1);
+  var d = 6.283185307179586 * t1;
+  this.angleZero = $.sub(this.angleZero, d);
+  this.angle = $.sub(this.angle, d);
+ },
+ setFrom$1: function(other) {
+  this.localCenter.setFrom$1(other.get$localCenter());
+  this.centerZero.setFrom$1(other.get$centerZero());
+  this.center.setFrom$1(other.get$center());
+  this.angleZero = other.get$angleZero();
+  this.angle = other.get$angle();
+ },
+ operator$eq$1: function(other) {
+  return $.eqB(this.localCenter, other.get$localCenter()) && ($.eqB(this.centerZero, other.get$centerZero()) && ($.eqB(this.center, other.get$center()) && ($.eqB(this.angleZero, other.get$angleZero()) && $.eqB(this.angle, other.get$angle()))));
  }
 };
 
-$$.ContactImpulse = {"":
- ["tangentImpulses?", "normalImpulses?"],
- super: "Object"
+$$.Transform = {"":
+ ["rotation?", "position?"],
+ super: "Object",
+ setFrom$1: function(other) {
+  this.position.setFrom$1(other.get$position());
+  this.rotation.setFrom$1(other.get$rotation());
+ },
+ operator$eq$1: function(other) {
+  if (other == null) return false;
+  return $.eqB(this.position, other.get$position()) && $.eqB(this.rotation, other.get$rotation());
+ }
 };
 
-$$.DebugDraw = {"":
- ["drawFlags?"],
+$$.Vector = {"":
+ ["y=", "x="],
  super: "Object",
- getWorldToScreenToOut$2: function(argWorld, argScreen) {
-  this.viewportTransform.getWorldToScreen$2(argWorld, argScreen);
+ toString$0: function() {
+  return '(' + $.S(this.x) + ', ' + $.S(this.y) + ')';
  },
- get$flags: function() {
-  return this.drawFlags;
+ negateLocal$0: function() {
+  this.x = $.neg(this.x);
+  this.y = $.neg(this.y);
+  return this;
  },
- set$flags: function(flags) {
-  this.drawFlags = flags;
+ normalize$0: function() {
+  var len = $.get$length(this);
+  if ($.ltB(len, 1.192e-7)) return 0;
+  if (typeof len !== 'number') throw $.iae(len);
+  var invLength = 1.0 / len;
+  this.x = $.mul(this.x, invLength);
+  this.y = $.mul(this.y, invLength);
+  return len;
+ },
+ absLocal$0: function() {
+  this.x = $.abs(this.x);
+  this.y = $.abs(this.y);
+ },
+ get$lengthSquared: function() {
+  var t1 = this.x;
+  t1 = $.mul(t1, t1);
+  var t2 = this.y;
+  return $.add(t1, $.mul(t2, t2));
+ },
+ get$length: function() {
+  return $.Math_sqrt(this.get$lengthSquared());
+ },
+ setZero$0: function() {
+  this.setCoords$2(0, 0);
+  return this;
+ },
+ mulLocal$1: function(d) {
+  this.x = $.mul(this.x, d);
+  this.y = $.mul(this.y, d);
+  return this;
+ },
+ setFrom$1: function(v) {
+  this.setCoords$2(v.get$x(), v.get$y());
+  return this;
+ },
+ setCoords$2: function(xCoord, yCoord) {
+  this.x = xCoord;
+  this.y = yCoord;
+  return this;
+ },
+ subLocal$1: function(other) {
+  var t1 = this.x;
+  if (typeof t1 !== 'number') return this.subLocal$1$bailout(1, other, t1, 0);
+  var t3 = other.get$x();
+  if (typeof t3 !== 'number') return this.subLocal$1$bailout(2, other, t3, t1);
+  this.x = t1 - t3;
+  var t5 = this.y;
+  if (typeof t5 !== 'number') return this.subLocal$1$bailout(3, other, t5, 0);
+  var t7 = other.get$y();
+  if (typeof t7 !== 'number') return this.subLocal$1$bailout(4, t5, t7, 0);
+  this.y = t5 - t7;
+  return this;
+ },
+ subLocal$1$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      var other = env0;
+      t1 = env1;
+      break;
+    case 2:
+      other = env0;
+      t3 = env1;
+      t1 = env2;
+      break;
+    case 3:
+      other = env0;
+      t5 = env1;
+      break;
+    case 4:
+      t5 = env0;
+      t7 = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = this.x;
+    case 1:
+      state = 0;
+      var t3 = other.get$x();
+    case 2:
+      state = 0;
+      this.x = $.sub(t1, t3);
+      var t5 = this.y;
+    case 3:
+      state = 0;
+      var t7 = other.get$y();
+    case 4:
+      state = 0;
+      this.y = $.sub(t5, t7);
+      return this;
+  }
+ },
+ addLocal$1: function(v) {
+  this.x = $.add(this.x, v.get$x());
+  this.y = $.add(this.y, v.get$y());
+  return this;
+ },
+ operator$eq$1: function(other) {
+  if (other == null) return false;
+  var t1 = this.x;
+  var t2 = other.get$x();
+  if (t1 == null ? t2 == null : t1 === t2) {
+    t1 = this.y;
+    t2 = other.get$y();
+    t2 = t1 == null ? t2 == null : t1 === t2;
+    t1 = t2;
+  } else t1 = false;
+  return t1;
  }
 };
 
@@ -17375,643 +18012,6 @@ $$.DefaultWorldPool = {"":
   this.distance = $.Distance$_construct();
   this.collision = $.Collision$_construct(this);
   this.timeOfImpact = $.TimeOfImpact$_construct(this);
- }
-};
-
-$$.Color3 = {"":
- ["z?", "y=", "x="],
- super: "Object",
- operator$eq$1: function(other) {
-  if (!((typeof other === 'object' && other !== null) && !!other.is$Color3)) return false;
-  var t1 = this.x;
-  var t2 = other.x;
-  if (t1 == null ? t2 == null : t1 === t2) {
-    t1 = this.y;
-    t2 = other.y;
-    if (t1 == null ? t2 == null : t1 === t2) {
-      t1 = this.z;
-      t2 = other.z;
-      t2 = t1 == null ? t2 == null : t1 === t2;
-      t1 = t2;
-    } else t1 = false;
-  } else t1 = false;
-  return t1;
- },
- setFrom$1: function(argColor) {
-  this.x = argColor.get$x();
-  this.y = argColor.get$y();
-  this.z = argColor.get$z();
- },
- setFromRGB$3: function(r, g, b) {
-  this.x = r;
-  this.y = g;
-  this.z = b;
- },
- is$Color3: true
-};
-
-$$.CanvasViewportTransform = {"":
- ["scale=", "center?", "extents"],
- super: "Object",
- getWorldToScreen$2: function(argWorld, argScreen) {
-  var t1 = $.mul(argWorld.get$x(), this.scale);
-  var t2 = this.extents;
-  var gridCorrectedX = $.add(t1, t2.get$x());
-  var gridCorrectedY = $.sub(t2.get$y(), $.mul(argWorld.get$y(), this.scale));
-  argScreen.setCoords$2($.add(gridCorrectedX, this.get$translation().get$x()), $.add(gridCorrectedY, $.neg(this.get$translation().get$y())));
- },
- get$translation: function() {
-  var result = $.Vector$copy(this.extents);
-  result.subLocal$1(this.center);
-  return result;
- }
-};
-
-$$.Matrix22 = {"":
- ["col2?", "col1?"],
- super: "Object",
- toString$0: function() {
-  return $.S(this.col1) + ', ' + $.S(this.col2);
- },
- addLocal$1: function(other) {
-  var t1 = this.col1;
-  var t2 = t1.get$x();
-  if (typeof t2 !== 'number') return this.addLocal$1$bailout(1, other, t1, t2, 0);
-  var t4 = other.get$col1().get$x();
-  if (typeof t4 !== 'number') return this.addLocal$1$bailout(2, other, t1, t2, t4);
-  t1.set$x(t2 + t4);
-  var t6 = t1.get$y();
-  if (typeof t6 !== 'number') return this.addLocal$1$bailout(3, other, t1, t6, 0);
-  var t8 = other.get$col1().get$y();
-  if (typeof t8 !== 'number') return this.addLocal$1$bailout(4, other, t1, t6, t8);
-  t1.set$y(t6 + t8);
-  t1 = this.col2;
-  var t10 = t1.get$x();
-  if (typeof t10 !== 'number') return this.addLocal$1$bailout(5, other, t10, t1, 0);
-  var t12 = other.get$col2().get$x();
-  if (typeof t12 !== 'number') return this.addLocal$1$bailout(6, other, t10, t1, t12);
-  t1.set$x(t10 + t12);
-  var t14 = t1.get$y();
-  if (typeof t14 !== 'number') return this.addLocal$1$bailout(7, other, t14, t1, 0);
-  var t16 = other.get$col2().get$y();
-  if (typeof t16 !== 'number') return this.addLocal$1$bailout(8, t14, t1, t16, 0);
-  t1.set$y(t14 + t16);
-  return this;
- },
- addLocal$1$bailout: function(state, env0, env1, env2, env3) {
-  switch (state) {
-    case 1:
-      var other = env0;
-      t1 = env1;
-      t2 = env2;
-      break;
-    case 2:
-      other = env0;
-      t1 = env1;
-      t2 = env2;
-      t4 = env3;
-      break;
-    case 3:
-      other = env0;
-      t1 = env1;
-      t6 = env2;
-      break;
-    case 4:
-      other = env0;
-      t1 = env1;
-      t6 = env2;
-      t8 = env3;
-      break;
-    case 5:
-      other = env0;
-      t10 = env1;
-      t1 = env2;
-      break;
-    case 6:
-      other = env0;
-      t10 = env1;
-      t1 = env2;
-      t12 = env3;
-      break;
-    case 7:
-      other = env0;
-      t14 = env1;
-      t1 = env2;
-      break;
-    case 8:
-      t14 = env0;
-      t1 = env1;
-      t16 = env2;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.col1;
-      var t2 = t1.get$x();
-    case 1:
-      state = 0;
-      var t4 = other.get$col1().get$x();
-    case 2:
-      state = 0;
-      t1.set$x($.add(t2, t4));
-      var t6 = t1.get$y();
-    case 3:
-      state = 0;
-      var t8 = other.get$col1().get$y();
-    case 4:
-      state = 0;
-      t1.set$y($.add(t6, t8));
-      t1 = this.col2;
-      var t10 = t1.get$x();
-    case 5:
-      state = 0;
-      var t12 = other.get$col2().get$x();
-    case 6:
-      state = 0;
-      t1.set$x($.add(t10, t12));
-      var t14 = t1.get$y();
-    case 7:
-      state = 0;
-      var t16 = other.get$col2().get$y();
-    case 8:
-      state = 0;
-      t1.set$y($.add(t14, t16));
-      return this;
-  }
- },
- invertLocal$0: function() {
-  var t1 = this.col1;
-  var a = t1.get$x();
-  if (typeof a !== 'number') return this.invertLocal$0$bailout(1, a, t1, 0, 0, 0, 0);
-  var t3 = this.col2;
-  var b = t3.get$x();
-  if (typeof b !== 'number') return this.invertLocal$0$bailout(2, a, b, t1, t3, 0, 0);
-  var c = t1.get$y();
-  if (typeof c !== 'number') return this.invertLocal$0$bailout(3, t3, a, b, t1, c, 0);
-  var d = t3.get$y();
-  if (typeof d !== 'number') return this.invertLocal$0$bailout(4, a, b, t1, t3, c, d);
-  var det = a * d - b * c;
-  if (!(det === 0)) det = 1.0 / det;
-  t1.set$x(det * d);
-  var t2 = -det;
-  t3.set$x(t2 * b);
-  t1.set$y(t2 * c);
-  t3.set$y(det * a);
-  return this;
- },
- invertLocal$0$bailout: function(state, env0, env1, env2, env3, env4, env5) {
-  switch (state) {
-    case 1:
-      a = env0;
-      t1 = env1;
-      break;
-    case 2:
-      a = env0;
-      b = env1;
-      t1 = env2;
-      t3 = env3;
-      break;
-    case 3:
-      t3 = env0;
-      a = env1;
-      b = env2;
-      t1 = env3;
-      c = env4;
-      break;
-    case 4:
-      a = env0;
-      b = env1;
-      t1 = env2;
-      t3 = env3;
-      c = env4;
-      d = env5;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.col1;
-      var a = t1.get$x();
-    case 1:
-      state = 0;
-      var t3 = this.col2;
-      var b = t3.get$x();
-    case 2:
-      state = 0;
-      var c = t1.get$y();
-    case 3:
-      state = 0;
-      var d = t3.get$y();
-    case 4:
-      state = 0;
-      var det = $.sub($.mul(a, d), $.mul(b, c));
-      if (!$.eqB(det, 0)) {
-        if (typeof det !== 'number') throw $.iae(det);
-        det = 1.0 / det;
-      }
-      t1.set$x($.mul(det, d));
-      t3.set$x($.mul($.neg(det), b));
-      t1.set$y($.mul($.neg(det), c));
-      t3.set$y($.mul(det, a));
-      return this;
-  }
- },
- setFrom$1: function(matrix) {
-  this.col1.setFrom$1(matrix.get$col1());
-  this.col2.setFrom$1(matrix.get$col2());
- },
- setAngle$1: function(angle) {
-  var cosin = $.Math_cos(angle);
-  var sin = $.Math_sin(angle);
-  this.col1.setCoords$2(cosin, sin);
-  this.col2.setCoords$2($.neg(sin), cosin);
- },
- operator$eq$1: function(other) {
-  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Matrix22)) {
-    return $.eqB(this.col1, other.get$col1()) && $.eqB(this.col2, other.get$col2());
-  }
-  return false;
- },
- Matrix22$2: function(c1, c2) {
-  if (c1 == null) c1 = $.Vector$(0, 0);
-  if (c2 == null) c2 = $.Vector$(0, 0);
-  this.col1 = c1;
-  this.col2 = c2;
- },
- is$Matrix22: true
-};
-
-$$.Sweep = {"":
- ["angle=", "angleZero=", "center?", "centerZero?", "localCenter?"],
- super: "Object",
- advance$1: function(time) {
-  if (typeof time !== 'number') throw $.iae(time);
-  var t1 = 1 - time;
-  var t2 = this.centerZero;
-  var t3 = t2.get$x();
-  if (typeof t3 !== 'number') throw $.iae(t3);
-  t3 *= t1;
-  var t4 = this.center;
-  var t5 = t4.get$x();
-  if (typeof t5 !== 'number') throw $.iae(t5);
-  t2.set$x(t3 + time * t5);
-  var t6 = t2.get$y();
-  if (typeof t6 !== 'number') throw $.iae(t6);
-  t6 *= t1;
-  t4 = t4.get$y();
-  if (typeof t4 !== 'number') throw $.iae(t4);
-  t2.set$y(t6 + time * t4);
-  t2 = this.angleZero;
-  if (typeof t2 !== 'number') throw $.iae(t2);
-  t2 *= t1;
-  t1 = this.angle;
-  if (typeof t1 !== 'number') throw $.iae(t1);
-  this.angleZero = t2 + time * t1;
- },
- getTransform$2: function(xf, alpha) {
-  if (typeof alpha !== 'number') throw $.iae(alpha);
-  var t1 = 1.0 - alpha;
-  var t2 = this.centerZero;
-  var t3 = t2.x;
-  if (typeof t3 !== 'number') throw $.iae(t3);
-  t3 *= t1;
-  var t4 = this.center;
-  var t5 = t4.x;
-  if (typeof t5 !== 'number') throw $.iae(t5);
-  t3 += alpha * t5;
-  xf.get$position().set$x(t3);
-  t2 = t2.y;
-  if (typeof t2 !== 'number') throw $.iae(t2);
-  t2 *= t1;
-  t4 = t4.y;
-  if (typeof t4 !== 'number') throw $.iae(t4);
-  t2 += alpha * t4;
-  xf.get$position().set$y(t2);
-  t2 = xf.get$rotation();
-  t3 = this.angleZero;
-  if (typeof t3 !== 'number') throw $.iae(t3);
-  t3 *= t1;
-  t1 = this.angle;
-  if (typeof t1 !== 'number') throw $.iae(t1);
-  t2.setAngle$1(t3 + alpha * t1);
-  t2 = xf.get$position();
-  var t6 = t2.get$x();
-  if (typeof t6 !== 'number') return this.getTransform$2$bailout(1, xf, t2, t6, 0, 0, 0, 0);
-  var t8 = xf.get$rotation().get$col1().get$x();
-  if (typeof t8 !== 'number') return this.getTransform$2$bailout(2, xf, t8, t2, t6, 0, 0, 0);
-  var t10 = this.localCenter;
-  var t11 = t10.x;
-  if (typeof t11 !== 'number') return this.getTransform$2$bailout(3, xf, t8, t11, t10, t2, t6, 0);
-  t11 *= t8;
-  t8 = xf.get$rotation().get$col2().get$x();
-  if (typeof t8 !== 'number') return this.getTransform$2$bailout(4, xf, t11, t8, t10, t2, t6, 0);
-  var t14 = t10.y;
-  if (typeof t14 !== 'number') return this.getTransform$2$bailout(5, xf, t11, t8, t14, t10, t2, t6);
-  t2.set$x(t6 - (t11 + t8 * t14));
-  t2 = xf.get$position();
-  var t16 = t2.get$y();
-  if (typeof t16 !== 'number') return this.getTransform$2$bailout(6, xf, t2, t16, t10, 0, 0, 0);
-  var t18 = xf.get$rotation().get$col1().get$y();
-  if (typeof t18 !== 'number') return this.getTransform$2$bailout(7, xf, t2, t16, t10, t18, 0, 0);
-  var t20 = t10.x;
-  if (typeof t20 !== 'number') return this.getTransform$2$bailout(8, xf, t2, t16, t18, t20, t10, 0);
-  t20 *= t18;
-  t18 = xf.get$rotation().get$col2().get$y();
-  if (typeof t18 !== 'number') return this.getTransform$2$bailout(9, t2, t16, t10, t20, t18, 0, 0);
-  t10 = t10.y;
-  if (typeof t10 !== 'number') return this.getTransform$2$bailout(10, t10, t2, t16, t20, t18, 0, 0);
-  t2.set$y(t16 - (t20 + t18 * t10));
- },
- getTransform$2$bailout: function(state, env0, env1, env2, env3, env4, env5, env6) {
-  switch (state) {
-    case 1:
-      var xf = env0;
-      t2 = env1;
-      t6 = env2;
-      break;
-    case 2:
-      xf = env0;
-      t8 = env1;
-      t2 = env2;
-      t6 = env3;
-      break;
-    case 3:
-      xf = env0;
-      t8 = env1;
-      t11 = env2;
-      t10 = env3;
-      t2 = env4;
-      t6 = env5;
-      break;
-    case 4:
-      xf = env0;
-      t11 = env1;
-      t8 = env2;
-      t10 = env3;
-      t2 = env4;
-      t6 = env5;
-      break;
-    case 5:
-      xf = env0;
-      t11 = env1;
-      t8 = env2;
-      t14 = env3;
-      t10 = env4;
-      t2 = env5;
-      t6 = env6;
-      break;
-    case 6:
-      xf = env0;
-      t2 = env1;
-      t16 = env2;
-      t10 = env3;
-      break;
-    case 7:
-      xf = env0;
-      t2 = env1;
-      t16 = env2;
-      t10 = env3;
-      t18 = env4;
-      break;
-    case 8:
-      xf = env0;
-      t2 = env1;
-      t16 = env2;
-      t18 = env3;
-      t20 = env4;
-      t10 = env5;
-      break;
-    case 9:
-      t2 = env0;
-      t16 = env1;
-      t10 = env2;
-      t20 = env3;
-      t18 = env4;
-      break;
-    case 10:
-      t10 = env0;
-      t2 = env1;
-      t16 = env2;
-      t20 = env3;
-      t18 = env4;
-      break;
-  }
-  switch (state) {
-    case 0:
-      if (typeof alpha !== 'number') throw $.iae(alpha);
-      var t1 = 1.0 - alpha;
-      var t2 = this.centerZero;
-      var t3 = t2.get$x();
-      if (typeof t3 !== 'number') throw $.iae(t3);
-      t3 *= t1;
-      var t4 = this.center;
-      var t5 = t4.get$x();
-      if (typeof t5 !== 'number') throw $.iae(t5);
-      t3 += alpha * t5;
-      xf.get$position().set$x(t3);
-      t2 = t2.get$y();
-      if (typeof t2 !== 'number') throw $.iae(t2);
-      t2 *= t1;
-      t4 = t4.get$y();
-      if (typeof t4 !== 'number') throw $.iae(t4);
-      t2 += alpha * t4;
-      xf.get$position().set$y(t2);
-      t2 = xf.get$rotation();
-      t3 = this.angleZero;
-      if (typeof t3 !== 'number') throw $.iae(t3);
-      t3 *= t1;
-      t1 = this.angle;
-      if (typeof t1 !== 'number') throw $.iae(t1);
-      t2.setAngle$1(t3 + alpha * t1);
-      t2 = xf.get$position();
-      var t6 = t2.get$x();
-    case 1:
-      state = 0;
-      var t8 = xf.get$rotation().get$col1().get$x();
-    case 2:
-      state = 0;
-      var t10 = this.localCenter;
-      var t11 = t10.get$x();
-    case 3:
-      state = 0;
-      t11 = $.mul(t8, t11);
-      t8 = xf.get$rotation().get$col2().get$x();
-    case 4:
-      state = 0;
-      var t14 = t10.get$y();
-    case 5:
-      state = 0;
-      t2.set$x($.sub(t6, $.add(t11, $.mul(t8, t14))));
-      t2 = xf.get$position();
-      var t16 = t2.get$y();
-    case 6:
-      state = 0;
-      var t18 = xf.get$rotation().get$col1().get$y();
-    case 7:
-      state = 0;
-      var t20 = t10.get$x();
-    case 8:
-      state = 0;
-      t20 = $.mul(t18, t20);
-      t18 = xf.get$rotation().get$col2().get$y();
-    case 9:
-      state = 0;
-      t10 = t10.get$y();
-    case 10:
-      state = 0;
-      t2.set$y($.sub(t16, $.add(t20, $.mul(t18, t10))));
-  }
- },
- normalize$0: function() {
-  var t1 = $.floor($.div(this.angleZero, 6.283185307179586));
-  if (typeof t1 !== 'number') throw $.iae(t1);
-  var d = 6.283185307179586 * t1;
-  this.angleZero = $.sub(this.angleZero, d);
-  this.angle = $.sub(this.angle, d);
- },
- setFrom$1: function(other) {
-  this.localCenter.setFrom$1(other.get$localCenter());
-  this.centerZero.setFrom$1(other.get$centerZero());
-  this.center.setFrom$1(other.get$center());
-  this.angleZero = other.get$angleZero();
-  this.angle = other.get$angle();
- },
- operator$eq$1: function(other) {
-  return $.eqB(this.localCenter, other.get$localCenter()) && ($.eqB(this.centerZero, other.get$centerZero()) && ($.eqB(this.center, other.get$center()) && ($.eqB(this.angleZero, other.get$angleZero()) && $.eqB(this.angle, other.get$angle()))));
- }
-};
-
-$$.Transform = {"":
- ["rotation?", "position?"],
- super: "Object",
- setFrom$1: function(other) {
-  this.position.setFrom$1(other.get$position());
-  this.rotation.setFrom$1(other.get$rotation());
- },
- operator$eq$1: function(other) {
-  if (other == null) return false;
-  return $.eqB(this.position, other.get$position()) && $.eqB(this.rotation, other.get$rotation());
- }
-};
-
-$$.Vector = {"":
- ["y=", "x="],
- super: "Object",
- toString$0: function() {
-  return '(' + $.S(this.x) + ', ' + $.S(this.y) + ')';
- },
- negateLocal$0: function() {
-  this.x = $.neg(this.x);
-  this.y = $.neg(this.y);
-  return this;
- },
- normalize$0: function() {
-  var len = $.get$length(this);
-  if ($.ltB(len, 1.192e-7)) return 0;
-  if (typeof len !== 'number') throw $.iae(len);
-  var invLength = 1.0 / len;
-  this.x = $.mul(this.x, invLength);
-  this.y = $.mul(this.y, invLength);
-  return len;
- },
- absLocal$0: function() {
-  this.x = $.abs(this.x);
-  this.y = $.abs(this.y);
- },
- get$lengthSquared: function() {
-  var t1 = this.x;
-  t1 = $.mul(t1, t1);
-  var t2 = this.y;
-  return $.add(t1, $.mul(t2, t2));
- },
- get$length: function() {
-  return $.Math_sqrt(this.get$lengthSquared());
- },
- setZero$0: function() {
-  this.setCoords$2(0, 0);
-  return this;
- },
- mulLocal$1: function(d) {
-  this.x = $.mul(this.x, d);
-  this.y = $.mul(this.y, d);
-  return this;
- },
- setFrom$1: function(v) {
-  this.setCoords$2(v.get$x(), v.get$y());
-  return this;
- },
- setCoords$2: function(xCoord, yCoord) {
-  this.x = xCoord;
-  this.y = yCoord;
-  return this;
- },
- subLocal$1: function(other) {
-  var t1 = this.x;
-  if (typeof t1 !== 'number') return this.subLocal$1$bailout(1, other, t1, 0);
-  var t3 = other.get$x();
-  if (typeof t3 !== 'number') return this.subLocal$1$bailout(2, other, t3, t1);
-  this.x = t1 - t3;
-  var t5 = this.y;
-  if (typeof t5 !== 'number') return this.subLocal$1$bailout(3, other, t5, 0);
-  var t7 = other.get$y();
-  if (typeof t7 !== 'number') return this.subLocal$1$bailout(4, t5, t7, 0);
-  this.y = t5 - t7;
-  return this;
- },
- subLocal$1$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      var other = env0;
-      t1 = env1;
-      break;
-    case 2:
-      other = env0;
-      t3 = env1;
-      t1 = env2;
-      break;
-    case 3:
-      other = env0;
-      t5 = env1;
-      break;
-    case 4:
-      t5 = env0;
-      t7 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var t1 = this.x;
-    case 1:
-      state = 0;
-      var t3 = other.get$x();
-    case 2:
-      state = 0;
-      this.x = $.sub(t1, t3);
-      var t5 = this.y;
-    case 3:
-      state = 0;
-      var t7 = other.get$y();
-    case 4:
-      state = 0;
-      this.y = $.sub(t5, t7);
-      return this;
-  }
- },
- addLocal$1: function(v) {
-  this.x = $.add(this.x, v.get$x());
-  this.y = $.add(this.y, v.get$y());
-  return this;
- },
- operator$eq$1: function(other) {
-  if (other == null) return false;
-  var t1 = this.x;
-  var t2 = other.get$x();
-  if (t1 == null ? t2 == null : t1 === t2) {
-    t1 = this.y;
-    t2 = other.get$y();
-    t2 = t1 == null ? t2 == null : t1 === t2;
-    t1 = t2;
-  } else t1 = false;
-  return t1;
  }
 };
 
