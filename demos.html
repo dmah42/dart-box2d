@@ -18,13 +18,15 @@
         left: 800px;
         top: 35px;
         position: absolute;
+        display: none;
       }
 
       #world-step {
         color: #f00;
-        left: 620px;
-        top: 40px;
+        left: 660px;
+        top: 50px;
         position: absolute;
+        display: none;
       }
     </style>
   </head>
@@ -32,7 +34,7 @@
     <h1 id="title"></h1>
     <div id="fps">FPS: <span id="fps-counter"></span></div>
     <div id="world-step">
-      world.step time: <span id="world-step-time"></span> ms
+      world.step time: <span id="world-step-time"></span>
     </div>
     <script type="text/javascript">
       var demos = [
@@ -63,12 +65,16 @@
       var demo = getQueryVariable('demo');
       if (demo && demos.indexOf(demo) != -1) {
         console.log('Loading ' + demo);
+        document.getElementById('fps').style.display = 'block';
+        document.getElementById('world-step').style.display = 'block';
         var script = document.createElement('script');
         script.setAttribute('type', 'application/dart');
         script.setAttribute('src', 'demos/' + demo + '.dart');
         document.body.appendChild(script);
       } else {
         console.log('Creating menu');
+        document.getElementById('fps').style.display = 'none';
+        document.getElementById('world-step').style.display = 'none';
         document.body.appendChild(document.createTextNode('Choose a demo:'));
         var menu = document.createElement('ul');
         for (var d in demos) {
