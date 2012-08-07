@@ -126,9 +126,8 @@ class Fixture {
     box.upperBound.y = _poolOne.upperBound.y > _poolTwo.upperBound.y ?
         _poolOne.upperBound.y : _poolTwo.upperBound.y;
 
-    Vector disp = _poolOne.lowerBound;
-    disp.x = transformTwo.position.x - transformOne.position.x;
-    disp.y = transformTwo.position.y - transformOne.position.y;
+    vec2 disp = _poolOne.lowerBound;
+    disp.copyFromVector(transformTwo.position).selfSub(transformOne.position);
 
     broadPhase.moveProxy(proxy, box, disp);
   }

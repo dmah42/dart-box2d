@@ -20,13 +20,13 @@ part of box2d;
 class ContactConstraint {
   List<ContactConstraintPoint> points;
 
-  final Vector localNormal;
-  final Vector localPoint;
-  final Vector normal;
+  final vec2 localNormal;
+  final vec2 localPoint;
+  final vec2 normal;
 
-  final Matrix22 normalMass;
+  final mat2x2 normalMass;
   //TODO(gregbglw): What does K mean? Find out and change the name.
-  final Matrix22 K;
+  final mat2x2 K;
 
   Body bodyA;
   Body bodyB;
@@ -44,11 +44,11 @@ class ContactConstraint {
     points = new List<ContactConstraintPoint>(Settings.MAX_MANIFOLD_POINTS),
     pointCount = 0,
     manifold = null,
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    normal = new Vector(),
-    normalMass = new Matrix22(),
-    K = new Matrix22() {
+    localNormal = new vec2(),
+    localPoint = new vec2(),
+    normal = new vec2(),
+    normalMass = new mat2x2(),
+    K = new mat2x2() {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
         points[i] = new ContactConstraintPoint();
     }
@@ -56,11 +56,11 @@ class ContactConstraint {
 
   void setFrom(ContactConstraint cp) {
     pointCount = cp.pointCount;
-    localNormal.setFrom(cp.localNormal);
-    localPoint.setFrom(cp.localPoint);
-    normal.setFrom(cp.normal);
-    normalMass.setFrom(cp.normalMass);
-    K.setFrom(cp.K);
+    localNormal.copyFromVector(cp.localNormal);
+    localPoint.copyFromVector(cp.localPoint);
+    normal.copyFromVector(cp.normal);
+    normalMass.copyFromMatrix(cp.normalMass);
+    K.copyFromMatrix(cp.K);
     bodyA = cp.bodyA;
     bodyB = cp.bodyB;
     type = cp.type;

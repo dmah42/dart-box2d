@@ -21,22 +21,22 @@ part of box2d;
 
 class Transform {
   /** The translation caused by a transform. */
-  final Vector position;
+  final vec2 position;
 
   /** A matrix representing a rotation. */
-  final Matrix22 rotation;
+  final mat2x2 rotation;
 
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new Vector(), rotation = new Matrix22();
+  Transform() : position = new vec2(), rotation = new mat2x2();
 
   /**
    * Constructs a new transform equal to the given transform.
    */
   Transform.copy(Transform other)
-      : position = new Vector.copy(other.position),
-        rotation = new Matrix22.copy(other.rotation);
+      : position = new vec2.copy(other.position),
+        rotation = new mat2x2.copy(other.rotation);
 
   bool operator ==(other) {
     return position == other.position && rotation == other.rotation;
@@ -45,47 +45,47 @@ class Transform {
   /**
    * Sets this transform with the given position and rotation.
    */
-  void setFromPositionAndRotation(Vector argPosition, Matrix22 argRotation) {
-    position.setFrom(argPosition);
-    rotation.setFrom(argRotation);
+  void setFromPositionAndRotation(vec2 argPosition, mat2x2 argRotation) {
+    position.copyFromVector(argPosition);
+    rotation.copyFromMatrix(argRotation);
   }
 
   /**
    * Sets this transform equal to the given transform.
    */
   void setFrom(Transform other) {
-    position.setFrom(other.position);
-    rotation.setFrom(other.rotation);
+    position.copyFromVector(other.position);
+    rotation.copyFromMatrix(other.rotation);
   }
 
   /**
-   * Multiply the given transform and given vector and return a new Vector with
+   * Multiply the given transform and given vector and return a new vec2 with
    * the result.
    */
-  static Vector mul(Transform T, Vector v) {
-    return new Vector(T.position.x + T.rotation.col1.x * v.x +
-        T.rotation.col2.x * v.y, T.position.y + T.rotation.col1.y * v.x +
-        T.rotation.col2.y * v.y);
+  static vec2 mul(Transform T, vec2 v) {
+    return new vec2(T.position.x + T.rotation.col0.x * v.x +
+        T.rotation.col1.x * v.y, T.position.y + T.rotation.col0.y * v.x +
+        T.rotation.col1.y * v.y);
   }
 
   /**
    * Multiplies the given transform and the given vector and places the result
    * in the given out parameter.
    */
-  static void mulToOut(Transform transform, Vector vector, Vector out) {
+  static void mulToOut(Transform transform, vec2 vector, vec2 out) {
     assert(out != null);
-    num tempY = transform.position.y + transform.rotation.col1.y *
-        vector.x + transform.rotation.col2.y * vector.y;
-    out.x = transform.position.x + transform.rotation.col1.x * vector.x +
-        transform.rotation.col2.x * vector.y;
+    num tempY = transform.position.y + transform.rotation.col0.y *
+        vector.x + transform.rotation.col1.y * vector.y;
+    out.x = transform.position.x + transform.rotation.col0.x * vector.x +
+        transform.rotation.col1.x * vector.y;
     out.y = tempY;
   }
 
-  static void mulTransToOut(Transform T, Vector v, Vector out) {
+  static void mulTransToOut(Transform T, vec2 v, vec2 out) {
     num v1x = v.x - T.position.x;
     num v1y = v.y - T.position.y;
-    Vector b = T.rotation.col1;
-    Vector b1 = T.rotation.col2;
+    vec2 b = T.rotation.col0;
+    vec2 b1 = T.rotation.col1;
     num tempy = v1x * b1.x + v1y * b1.y;
     out.x = v1x * b.x + v1y * b.y;
     out.y = tempy;

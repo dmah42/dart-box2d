@@ -20,27 +20,6 @@ class MathBox {
   MathBox();
 
   /**
-   * Return the distance between the two given vectors, but squared.
-   */
-  static num distanceSquared(Vector v1, Vector v2) {
-    num dx = (v1.x - v2.x);
-    num dy = (v1.y - v2.y);
-    return dx * dx + dy * dy;
-  }
-
-  /**
-   * Return the distance between the two given vectors.
-   */
-  static num distance(Vector v1, Vector v2) {
-    return Math.sqrt(distanceSquared(v1, v2));
-  }
-
-  /** Returns the closest value to [a] that is in between [low] and [high] */
-  static num clamp(num a, num low, num high) {
-    return Math.max(low, Math.min(a, high));
-  }
-
-  /**
    * Given a value within the range specified by [fromMin] and [fromMax],
    * returns a value with the same relative position in the range specified
    * from [toMin] and [toMax]. For example, given a [val] of 2 in the
@@ -52,9 +31,4 @@ class MathBox {
     final num res = toMin + mult * (toMax - toMin);
     return res;
   }
-
-  /** Convert from [deg] degrees to radians. */
-  static num degToRad(num deg) => (Math.PI / 180.0) * deg;
-  /** Convert from [rad] radians to degrees. */
-  static num radToDeg(num rad) => (180.0 / Math.PI) * rad;
 }

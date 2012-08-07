@@ -26,10 +26,10 @@ class TimeOfImpactSolver {
 
   /** Pooling. */
   final TimeOfImpactSolverManifold psm;
-  final Vector rA;
-  final Vector rB;
-  final Vector P;
-  final Vector temp;
+  final vec2 rA;
+  final vec2 rB;
+  final vec2 P;
+  final vec2 temp;
 
   TimeOfImpactSolver() :
     count = 0,
@@ -38,10 +38,10 @@ class TimeOfImpactSolver {
 
     // Initialize pool variables.
     psm = new TimeOfImpactSolverManifold(),
-    rA = new Vector(),
-    rB = new Vector(),
-    P = new Vector(),
-    temp = new Vector() {
+    rA = new vec2(),
+    rB = new vec2(),
+    P = new vec2(),
+    temp = new vec2() {
     for (int i = 0; i<constraints.length; i++){
       constraints[i] = new TimeOfImpactConstraint();
     }
@@ -79,8 +79,8 @@ class TimeOfImpactSolver {
       TimeOfImpactConstraint constraint = constraints[i];
       constraint.bodyA = bodyA;
       constraint.bodyB = bodyB;
-      constraint.localNormal.setFrom(manifold.localNormal);
-      constraint.localPoint.setFrom(manifold.localPoint);
+      constraint.localNormal.copyFromVector(manifold.localNormal);
+      constraint.localPoint.copyFromVector(manifold.localPoint);
       constraint.type = manifold.type;
       constraint.pointCount = manifold.pointCount;
       constraint.radius = radiusA + radiusB;
@@ -121,39 +121,39 @@ class TimeOfImpactSolver {
       // Solve normal constraints
       for (int j = 0; j < c.pointCount; ++j){
         psm.initialize(c, j);
-        Vector normal = psm.normal;
+        vec2 normal = psm.normal;
 
-        Vector point = psm.point;
+        vec2 point = psm.point;
         num separation = psm.separation;
 
-        rA.setFrom(point).subLocal(bodyA.sweep.center);
-        rB.setFrom(point).subLocal(bodyB.sweep.center);
+        rA.copyFromVector(point).selfSub(bodyA.sweep.center);
+        rB.copyFromVector(point).selfSub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
 
         // Prevent large corrections and allow slop.
-        num C = MathBox.clamp(baumgarte * (separation +
-            Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
+        num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
+                      -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
         // Compute the effective mass.
-        num rnA = Vector.crossVectors(rA, normal);
-        num rnB = Vector.crossVectors(rB, normal);
+        num rnA = cross(rA, normal);
+        num rnB = cross(rB, normal);
         num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.setFrom(normal).mulLocal(impulse);
+        P.copyFromVector(normal).selfScale(impulse);
 
-        temp.setFrom(P).mulLocal(invMassA);
-        bodyA.sweep.center.subLocal(temp);
-        bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+        temp.copyFromVector(P).selfScale(invMassA);
+        bodyA.sweep.center.selfSub(temp);
+        bodyA.sweep.angle -= invIA * cross(rA, P);
         bodyA.synchronizeTransform();
 
-        temp.setFrom(P).mulLocal(invMassB);
-        bodyB.sweep.center.addLocal(temp);
-        bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+        temp.copyFromVector(P).selfScale(invMassB);
+        bodyB.sweep.center.selfAdd(temp);
+        bodyB.sweep.angle += invIB * cross(rB, P);
         bodyB.synchronizeTransform();
       }
     }
@@ -165,69 +165,69 @@ class TimeOfImpactSolver {
 }
 
 class TimeOfImpactSolverManifold {
-  final Vector normal;
-  final Vector point;
+  final vec2 normal;
+  final vec2 point;
   num separation;
 
   /** Pooling */
-  final Vector pointA;
-  final Vector pointB;
-  final Vector temp;
-  final Vector planePoint;
-  final Vector clipPoint;
+  final vec2 pointA;
+  final vec2 pointB;
+  final vec2 temp;
+  final vec2 planePoint;
+  final vec2 clipPoint;
 
   /** constructor that initiliazes everything. */
   TimeOfImpactSolverManifold() :
-    normal = new Vector(),
-    point = new Vector(),
+    normal = new vec2(),
+    point = new vec2(),
     separation = 0,
-    pointA = new Vector(),
-    pointB = new Vector(),
-    temp = new Vector(),
-    planePoint = new Vector(),
-    clipPoint = new Vector() { }
+    pointA = new vec2(),
+    pointB = new vec2(),
+    temp = new vec2(),
+    planePoint = new vec2(),
+    clipPoint = new vec2() { }
 
   void initialize(TimeOfImpactConstraint cc, int index) {
     assert(cc.pointCount > 0);
 
     switch (cc.type) {
       case ManifoldType.CIRCLES:
-        pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-        pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
-        if (MathBox.distanceSquared(pointA, pointB) > Settings.EPSILON
-            * Settings.EPSILON) {
-          normal.setFrom(pointB).subLocal(pointA);
+        pointA.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoint));
+        pointB.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+        if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
+          normal.copyFromVector(pointB).selfSub(pointA);
           normal.normalize();
         } else {
-          normal.setCoords(1, 0);
+          normal.x = 1;
+          normal.y = 0;
         }
 
-        point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-        temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector.dot(temp, normal) - cc.radius;
+        point.copyFromVector(pointA).selfAdd(pointB).selfScale(.5);
+        temp.copyFromVector(pointB).selfSub(pointA);
+        separation = dot(temp, normal) - cc.radius;
         break;
 
       case ManifoldType.FACE_A:
-        normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
-        planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+        normal.copyFromVector(cc.bodyA.getWorldVector(cc.localNormal));
+        planePoint.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoint));
 
-        clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
+        clipPoint.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        separation = dot(temp, normal) - cc.radius;
+        point.copyFromVector(clipPoint);
         break;
 
       case ManifoldType.FACE_B:
-        normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
-        planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+        normal.copyFromVector(cc.bodyB.getWorldVector(cc.localNormal));
+        planePoint.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoint));
 
-        clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
+        clipPoint.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        separation = dot(temp, normal) - cc.radius;
+        point.copyFromVector(clipPoint);
 
         // Ensure normal points from A to B
-        normal.negateLocal();
+        normal.selfNegate();
         break;
     }
   }

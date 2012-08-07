@@ -36,14 +36,14 @@ class Collision {
   final EdgeResults results1;
   final EdgeResults results2;
   final List<ClipVertex> incidentEdge;
-  final Vector localTangent;
-  final Vector localNormal;
-  final Vector planePoint;
-  final Vector tangent;
-  final Vector normal;
-  final Vector normal1;
-  final Vector v11;
-  final Vector v12;
+  final vec2 localTangent;
+  final vec2 localNormal;
+  final vec2 planePoint;
+  final vec2 tangent;
+  final vec2 normal;
+  final vec2 normal1;
+  final vec2 v11;
+  final vec2 v12;
   final List<ClipVertex> clipPoints1;
   final List<ClipVertex> clipPoints2;
 
@@ -59,14 +59,14 @@ class Collision {
     results1 = new EdgeResults(),
     results2 = new EdgeResults(),
     incidentEdge = new List<ClipVertex>(2),
-    localTangent = new Vector(),
-    localNormal = new Vector(),
-    planePoint = new Vector(),
-    tangent = new Vector(),
-    normal = new Vector(),
-    normal1 = new Vector(),
-    v11 = new Vector(),
-    v12 = new Vector(),
+    localTangent = new vec2(),
+    localNormal = new vec2(),
+    planePoint = new vec2(),
+    tangent = new vec2(),
+    normal = new vec2(),
+    normal1 = new vec2(),
+    v11 = new vec2(),
+    v12 = new vec2(),
     clipPoints1 = new List<ClipVertex>(2),
     clipPoints2 = new List<ClipVertex>(2) {
     incidentEdge[0] = new ClipVertex();
@@ -90,8 +90,8 @@ class Collision {
 
     cache.count = 0;
 
-    _pool.distance.distance(output, cache, input);
-    return output.distance < 10.0 * Settings.EPSILON;
+    _pool.distance.computeDistance(output, cache, input);
+    return output._distance < 10.0 * Settings.EPSILON;
   }
 
   /**
@@ -140,14 +140,14 @@ class Collision {
    * Sutherland-Hodgman clipping.
    */
   static int clipSegmentToLine(List<ClipVertex> vOut, List<ClipVertex> vIn,
-      Vector norm, num offset) {
+      vec2 norm, num offset) {
 
     // Start with no output points
     int numOut = 0;
 
     // Calculate the distance of end points to the line
-    num distance0 = Vector.dot(norm, vIn[0].v) - offset;
-    num distance1 = Vector.dot(norm, vIn[1].v) - offset;
+    num distance0 = dot(norm, vIn[0].v) - offset;
+    num distance1 = dot(norm, vIn[1].v) - offset;
 
     // If the points are behind the plane
     if (distance0 <= 0.0)
@@ -161,8 +161,8 @@ class Collision {
       // Find intersection point of edge and plane
       num interp = distance0 / (distance0 - distance1);
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-      vOut[numOut].v.setFrom(vIn[1].v).
-          subLocal(vIn[0].v).mulLocal(interp).addLocal(vIn[0].v);
+      vOut[numOut].v.copyFromVector(vIn[1].v).selfSub(vIn[0].v).
+          selfScale(interp).selfAdd(vIn[0].v);
       final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
       vOut[numOut].id.setFrom(vin.id);
       ++numOut;
@@ -181,18 +181,18 @@ class Collision {
       CircleShape circle2, Transform xfB) {
     manifold.pointCount = 0;
 
-    final Vector v = circle1.position;
-    final num pAy = xfA.position.y + xfA.rotation.col1.y *
-        v.x + xfA.rotation.col2.y * v.y;
+    final vec2 v = circle1.position;
+    final num pAy = xfA.position.y + xfA.rotation.col0.y *
+        v.x + xfA.rotation.col1.y * v.y;
 
-    final num pAx = xfA.position.x + xfA.rotation.col1.x *
-        v.x + xfA.rotation.col2.x * v.y;
+    final num pAx = xfA.position.x + xfA.rotation.col0.x *
+        v.x + xfA.rotation.col1.x * v.y;
 
-    final Vector v1 = circle2.position;
-    final num pBy = xfB.position.y + xfB.rotation.col1.y * v1.x +
-        xfB.rotation.col2.y * v1.y;
-    final num pBx = xfB.position.x + xfB.rotation.col1.x * v1.x +
-        xfB.rotation.col2.x * v1.y;
+    final vec2 v1 = circle2.position;
+    final num pBy = xfB.position.y + xfB.rotation.col0.y * v1.x +
+        xfB.rotation.col1.y * v1.y;
+    final num pBx = xfB.position.x + xfB.rotation.col0.x * v1.x +
+        xfB.rotation.col1.x * v1.y;
 
     final num dx = pBx - pAx;
     final num dy = pBy - pAy;
@@ -204,11 +204,12 @@ class Collision {
       return;
 
     manifold.type = ManifoldType.CIRCLES;
-    manifold.localPoint.setFrom(circle1.position);
-    manifold.localNormal.setZero();
+    manifold.localPoint.copyFromVector(circle1.position);
+    manifold.localNormal.x = 0;
+    manifold.localNormal.y = 0;
     manifold.pointCount = 1;
 
-    manifold.points[0].localPoint.setFrom(circle2.position);
+    manifold.points[0].localPoint.copyFromVector(circle2.position);
     manifold.points[0].id.zero();
   }
 
@@ -218,16 +219,16 @@ class Collision {
   void collidePolygonAndCircle(Manifold manifold, PolygonShape polygon,
       Transform xfA, CircleShape circle, Transform xfB) {
     manifold.pointCount = 0;
-    Vector v = circle.position;
+    vec2 v = circle.position;
 
-    final num cy = xfB.position.y + xfB.rotation.col1.y * v.x +
-        xfB.rotation.col2.y * v.y;
-    final num cx = xfB.position.x + xfB.rotation.col1.x * v.x +
-        xfB.rotation.col2.x * v.y;
+    final num cy = xfB.position.y + xfB.rotation.col0.y * v.x +
+        xfB.rotation.col1.y * v.y;
+    final num cx = xfB.position.x + xfB.rotation.col0.x * v.x +
+        xfB.rotation.col1.x * v.y;
     final num v1x = cx - xfA.position.x;
     final num v1y = cy - xfA.position.y;
-    final Vector b = xfA.rotation.col1;
-    final Vector b1 = xfA.rotation.col2;
+    final vec2 b = xfA.rotation.col0;
+    final vec2 b1 = xfA.rotation.col1;
     final num cLocaly = v1x * b1.x + v1y * b1.y;
     final num cLocalx = v1x * b.x + v1y * b.y;
 
@@ -237,14 +238,14 @@ class Collision {
     final num radius = polygon.radius + circle.radius;
     final int vertexCount = polygon.vertexCount;
 
-    final List<Vector> vertices = polygon.vertices;
-    final List<Vector> normals = polygon.normals;
+    final List<vec2> vertices = polygon.vertices;
+    final List<vec2> normals = polygon.normals;
 
     for (int i = 0; i < vertexCount; ++i) {
-      final Vector vertex = vertices[i];
+      final vec2 vertex = vertices[i];
       final num tempx = cLocalx - vertex.x;
       final num tempy = cLocaly - vertex.y;
-      final Vector norm = normals[i];
+      final vec2 norm = normals[i];
       final num s = norm.x * tempx + norm.y * tempy;
 
       // early out
@@ -260,15 +261,15 @@ class Collision {
     // Vertices that subtend the incident face.
     final int vertIndex1 = normalIndex;
     final int vertIndex2 = vertIndex1 + 1 < vertexCount ? vertIndex1 + 1 : 0;
-    final Vector v1 = vertices[vertIndex1];
-    final Vector v2 = vertices[vertIndex2];
+    final vec2 v1 = vertices[vertIndex1];
+    final vec2 v2 = vertices[vertIndex2];
 
     // If the center is inside the polygon ...
     if (separation < Settings.EPSILON) {
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
 
-      Vector norm = normals[normalIndex];
+      vec2 norm = normals[normalIndex];
       manifold.localNormal.x = norm.x;
       manifold.localNormal.y = norm.y;
       manifold.localPoint.x = (v1.x + v2.x) * .5;
@@ -304,8 +305,8 @@ class Collision {
       manifold.localNormal.x = cLocalx - v1.x;
       manifold.localNormal.y = cLocaly - v1.y;
       manifold.localNormal.normalize();
-      manifold.localPoint.setFrom(v1);
-      manifold.points[0].localPoint.setFrom(circle.position);
+      manifold.localPoint.copyFromVector(v1);
+      manifold.points[0].localPoint.copyFromVector(circle.position);
       manifold.points[0].id.zero();
     } else if (u2 <= 0.0) {
       final num dx = cLocalx - v2.x;
@@ -318,28 +319,28 @@ class Collision {
       manifold.localNormal.x = cLocalx - v2.x;
       manifold.localNormal.y = cLocaly - v2.y;
       manifold.localNormal.normalize();
-      manifold.localPoint.setFrom(v2);
-      manifold.points[0].localPoint.setFrom(circle.position);
+      manifold.localPoint.copyFromVector(v2);
+      manifold.points[0].localPoint.copyFromVector(circle.position);
       manifold.points[0].id.zero();
     } else {
-      // Vector faceCenter = 0.5 * (v1 + v2);
+      // vec2 faceCenter = 0.5 * (v1 + v2);
       // (temp is faceCenter)
       final num fcx = (v1.x + v2.x) * .5;
       final num fcy = (v1.y + v2.y) * .5;
 
       final num tx = cLocalx - fcx;
       final num ty = cLocaly - fcy;
-      final Vector norm = normals[vertIndex1];
+      final vec2 norm = normals[vertIndex1];
       separation = tx * norm.x + ty * norm.y;
       if (separation > radius)
         return;
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
-      manifold.localNormal.setFrom(normals[vertIndex1]);
+      manifold.localNormal.copyFromVector(normals[vertIndex1]);
       manifold.localPoint.x = fcx;
       manifold.localPoint.y = fcy;
-      manifold.points[0].localPoint.setFrom(circle.position);
+      manifold.points[0].localPoint.copyFromVector(circle.position);
       manifold.points[0].id.zero();
     }
   }
@@ -351,21 +352,21 @@ class Collision {
   num edgeSeparation(PolygonShape poly1, Transform xf1, int edge1,
       PolygonShape poly2, Transform xf2) {
     final int count1 = poly1.vertexCount;
-    final List<Vector> vertices1 = poly1.vertices;
-    final List<Vector> normals1 = poly1.normals;
+    final List<vec2> vertices1 = poly1.vertices;
+    final List<vec2> normals1 = poly1.normals;
 
     final int count2 = poly2.vertexCount;
-    final List<Vector> vertices2 = poly2.vertices;
+    final List<vec2> vertices2 = poly2.vertices;
 
     assert (0 <= edge1 && edge1 < count1);
     // Convert normal from poly1's frame into poly2's frame.
-    final Matrix22 R = xf1.rotation;
-    final Vector v = normals1[edge1];
-    final num normal1Worldy = R.col1.y * v.x + R.col2.y * v.y;
-    final num normal1Worldx = R.col1.x * v.x + R.col2.x * v.y;
-    final Matrix22 R1 = xf2.rotation;
-    final num normal1x = normal1Worldx * R1.col1.x + normal1Worldy * R1.col1.y;
-    final num normal1y = normal1Worldx * R1.col2.x + normal1Worldy * R1.col2.y;
+    final mat2x2 R = xf1.rotation;
+    final vec2 v = normals1[edge1];
+    final num normal1Worldy = R.col0.y * v.x + R.col1.y * v.y;
+    final num normal1Worldx = R.col0.x * v.x + R.col1.x * v.y;
+    final mat2x2 R1 = xf2.rotation;
+    final num normal1x = normal1Worldx * R1.col0.x + normal1Worldy * R1.col0.y;
+    final num normal1y = normal1Worldx * R1.col1.x + normal1Worldy * R1.col1.y;
     // end inline
 
     // Find support vertex on poly2 for -normal.
@@ -373,20 +374,20 @@ class Collision {
     num minDot = Settings.BIG_NUMBER;
 
     for (int i = 0; i < count2; ++i) {
-      final Vector a = vertices2[i];
-      final num dot = a.x * normal1x + a.y * normal1y;
-      if (dot < minDot) {
-        minDot = dot;
+      final vec2 a = vertices2[i];
+      final num dot_ = a.x * normal1x + a.y * normal1y;
+      if (dot_ < minDot) {
+        minDot = dot_;
         index = i;
       }
     }
 
-    final Vector v3 = vertices1[edge1];
-    final num v1y = xf1.position.y + R.col1.y * v3.x + R.col2.y * v3.y;
-    final num v1x = xf1.position.x + R.col1.x * v3.x + R.col2.x * v3.y;
-    final Vector v4 = vertices2[index];
-    final num v2y = xf2.position.y + R1.col1.y * v4.x + R1.col2.y * v4.y - v1y;
-    final num v2x = xf2.position.x + R1.col1.x * v4.x + R1.col2.x * v4.y - v1x;
+    final vec2 v3 = vertices1[edge1];
+    final num v1y = xf1.position.y + R.col0.y * v3.x + R.col1.y * v3.y;
+    final num v1x = xf1.position.x + R.col0.x * v3.x + R.col1.x * v3.y;
+    final vec2 v4 = vertices2[index];
+    final num v2y = xf2.position.y + R1.col0.y * v4.x + R1.col1.y * v4.y - v1y;
+    final num v2x = xf2.position.x + R1.col0.x * v4.x + R1.col1.x * v4.y - v1x;
 
     return v2x * normal1Worldx + v2y * normal1Worldy;
   }
@@ -398,34 +399,33 @@ class Collision {
   void findMaxSeparation(EdgeResults results, PolygonShape poly1, Transform xf1,
       PolygonShape poly2, Transform xf2) {
     int count1 = poly1.vertexCount;
-    final List<Vector> normals1 = poly1.normals;
-    Vector v = poly2.centroid;
+    final List<vec2> normals1 = poly1.normals;
+    vec2 v = poly2.centroid;
 
-    final num predy = xf2.position.y + xf2.rotation.col1.y * v.x +
-        xf2.rotation.col2.y * v.y;
-    final num predx = xf2.position.x + xf2.rotation.col1.x * v.x +
-        xf2.rotation.col2.x * v.y;
-    final Vector v1 = poly1.centroid;
-    final num tempy = xf1.position.y + xf1.rotation.col1.y * v1.x +
-        xf1.rotation.col2.y * v1.y;
-    final num tempx = xf1.position.x + xf1.rotation.col1.x * v1.x +
-        xf1.rotation.col2.x * v1.y;
+    final num predy = xf2.position.y + xf2.rotation.col0.y * v.x +
+        xf2.rotation.col1.y * v.y;
+    final num predx = xf2.position.x + xf2.rotation.col0.x * v.x +
+        xf2.rotation.col1.x * v.y;
+    final vec2 v1 = poly1.centroid;
+    final num tempy = xf1.position.y + xf1.rotation.col0.y * v1.x +
+        xf1.rotation.col1.y * v1.y;
+    final num tempx = xf1.position.x + xf1.rotation.col0.x * v1.x +
+        xf1.rotation.col1.x * v1.y;
     final num dx = predx - tempx;
     final num dy = predy - tempy;
 
-    final Matrix22 R = xf1.rotation;
-    final num dLocal1x = dx * R.col1.x + dy * R.col1.y;
-    final num dLocal1y = dx * R.col2.x + dy * R.col2.y;
+    final mat2x2 R = xf1.rotation;
+    final num dLocal1x = dx * R.col0.x + dy * R.col0.y;
+    final num dLocal1y = dx * R.col1.x + dy * R.col1.y;
 
     // Find edge normal on poly1 that has the largest projection onto d.
     int edge = 0;
-    num dot;
     num maxDot = Settings.SMALL_NUMBER;
     for (int i = 0; i < count1; i++) {
-      final Vector norm = normals1[i];
-      dot = norm.x * dLocal1x + norm.y * dLocal1y;
-      if (dot > maxDot) {
-        maxDot = dot;
+      final vec2 norm = normals1[i];
+      num dot_ = norm.x * dLocal1x + norm.y * dLocal1y;
+      if (dot_ > maxDot) {
+        maxDot = dot_;
         edge = i;
       }
     }
@@ -483,25 +483,26 @@ class Collision {
   void findIncidentEdge(List<ClipVertex> c, PolygonShape poly1, Transform xf1,
       int edge1, PolygonShape poly2, Transform xf2) {
     int count1 = poly1.vertexCount;
-    final List<Vector> normals1 = poly1.normals;
+    final List<vec2> normals1 = poly1.normals;
 
     int count2 = poly2.vertexCount;
-    final List<Vector> vertices2 = poly2.vertices;
-    final List<Vector> normals2 = poly2.normals;
+    final List<vec2> vertices2 = poly2.vertices;
+    final List<vec2> normals2 = poly2.normals;
 
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
-    Matrix22.mulMatrixAndVectorToOut(xf1.rotation, normals1[edge1], normal1);
-    Matrix22.mulTransMatrixAndVectorToOut(xf2.rotation, normal1, normal1);
+    normals1[edge1].copyFromVector(normal1);
+    xf1.rotation.transformDirect(normals1[edge1]);
+    xf2.rotation.transposed().transformDirect(normal1);
 
     // Find the incident edge on poly2.
     int index = 0;
     num minDot = Settings.BIG_NUMBER;
     for (int i = 0; i < count2; ++i) {
-      num dot = Vector.dot(normal1, normals2[i]);
-      if (dot < minDot) {
-        minDot = dot;
+      num dot_ = dot(normal1, normals2[i]);
+      if (dot_ < minDot) {
+        minDot = dot_;
         index = i;
       }
     }
@@ -568,25 +569,28 @@ class Collision {
     findIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
 
     int count1 = poly1.vertexCount;
-    List<Vector> vertices1 = poly1.vertices;
+    List<vec2> vertices1 = poly1.vertices;
 
-    v11.setFrom(vertices1[edge1]);
-    v12.setFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
+    v11.copyFromVector(vertices1[edge1]);
+    v12.copyFromVector(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
 
-    localTangent.setFrom(v12).subLocal(v11);
+    localTangent.copyFromVector(v12).selfSub(v11);
     localTangent.normalize();
 
-    // Vector localNormal = Cross(dv, 1.0);
-    Vector.crossVectorAndNumToOut(localTangent, 1, localNormal);
+    // vec2 localNormal = Cross(dv, 1.0);
+    localNormal.x = -localTangent.y;
+    localNormal.y = localTangent.x;
 
-    // Vector planePoint = 0.5 * (v11 + v12)
-    planePoint.setFrom(v11).addLocal(v12).mulLocal(.5);
+    // vec2 planePoint = 0.5 * (v11 + v12)
+    planePoint.copyFromVector(v11).selfAdd(v12).selfScale(.5);
 
-    // Vector sideNormal = Mul(xf1.rotation, v12 - v11);
-    Matrix22.mulMatrixAndVectorToOut(xf1.rotation, localTangent, tangent);
+    // vec2 sideNormal = Mul(xf1.rotation, v12 - v11);
+    tangent.copyFromVector(localTangent);
+    xf1.rotation.transformDirect(tangent);
 
-    // Vector frontNormal = Cross(sideNormal, 1.0);
-    Vector.crossVectorAndNumToOut(tangent, 1, normal);
+    // vec2 frontNormal = Cross(sideNormal, 1.0);
+    normal.x = -tangent.y;
+    normal.y = tangent.y;
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);
@@ -594,11 +598,11 @@ class Collision {
     Transform.mulToOut(xf1, v12, v12);
 
     // Face offset
-    num frontOffset = Vector.dot(normal, v11);
+    num frontOffset = dot(normal, v11);
 
     // Side offsets, extended by polytope skin thickness.
-    num sideOffset1 = -Vector.dot(tangent, v11) + totalRadius;
-    num sideOffset2 = Vector.dot(tangent, v12) + totalRadius;
+    num sideOffset1 = -dot(tangent, v11) + totalRadius;
+    num sideOffset2 = dot(tangent, v12) + totalRadius;
 
     // Clip incident edge against extruded edge1 side edges.
     // ClipVertex clipPoints1[2];
@@ -608,9 +612,9 @@ class Collision {
     // Clip to box side 1
     // np = ClipSegmentToLine(clipPoints1, incidentEdge, -sideNormal,
     // sideOffset1);
-    tangent.negateLocal();
+    tangent.selfNegate();
     np = clipSegmentToLine(clipPoints1, incidentEdge, tangent, sideOffset1);
-    tangent.negateLocal();
+    tangent.selfNegate();
 
     if (np < 2)
       return;
@@ -622,12 +626,12 @@ class Collision {
       return;
 
     // Now clipPoints2 contains the clipped points.
-    manifold.localNormal.setFrom(localNormal);
-    manifold.localPoint.setFrom(planePoint);
+    manifold.localNormal.copyFromVector(localNormal);
+    manifold.localPoint.copyFromVector(planePoint);
 
     int pointCount = 0;
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
-      num separation = Vector.dot(normal, clipPoints2[i].v) - frontOffset;
+      num separation = dot(normal, clipPoints2[i].v) - frontOffset;
 
       if (separation <= totalRadius) {
         ManifoldPoint cp = manifold.points[pointCount];
@@ -647,15 +651,15 @@ class Collision {
  * Used for computing contact manifolds.
  */
 class ClipVertex {
-  Vector v;
+  vec2 v;
   ContactID id;
 
   ClipVertex() :
-    v = new Vector(),
+    v = new vec2(),
     id = new ContactID() { }
 
   void setFrom(ClipVertex cv){
-    v.setFrom(cv.v);
+    v.copyFromVector(cv.v);
     id.setFrom(cv.id);
   }
 }

@@ -87,7 +87,7 @@ class BroadPhase implements TreeCallback {
    * Call MoveProxy as many times as you like, then when you are done
    * call UpdatePairs to constize the proxy pairs (for your time step).
    */
-  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, vec2 displacement) {
     if (_tree.moveProxy(proxy, box, displacement))
       _bufferMove(proxy);
   }

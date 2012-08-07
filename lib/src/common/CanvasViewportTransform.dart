@@ -48,5 +48,4 @@ class CanvasViewportTransform extends IViewportTransform {
     // Scale everything according to the current scale and mirror the y-axis.
     ctx.scale(scale, -scale);
   }
-
 }

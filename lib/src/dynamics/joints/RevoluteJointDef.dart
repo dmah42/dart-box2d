@@ -32,12 +32,12 @@ class RevoluteJointDef extends JointDef {
   /**
    *  The local anchor point relative to body1's origin.
    */
-  Vector localAnchorA;
+  vec2 localAnchorA;
 
   /**
    *  The local anchor point relative to body2's origin.
    */
-  Vector localAnchorB;
+  vec2 localAnchorB;
 
   /**
    *  The body2 angle minus body1 angle in the reference state (radians).
@@ -77,8 +77,8 @@ class RevoluteJointDef extends JointDef {
 
   RevoluteJointDef() :
     super(),
-    localAnchorA = new Vector(0.0, 0.0),
-    localAnchorB = new Vector(0.0, 0.0),
+    localAnchorA = new vec2(0.0, 0.0),
+    localAnchorB = new vec2(0.0, 0.0),
     referenceAngle = 0.0,
     lowerAngle = 0.0,
     upperAngle = 0.0,
@@ -93,7 +93,7 @@ class RevoluteJointDef extends JointDef {
    * Initialize the bodies, anchors, and reference angle using the world
    * anchor.
    */
-  void initialize(Body b1, Body b2, Vector anchor) {
+  void initialize(Body b1, Body b2, vec2 anchor) {
     bodyA = b1;
     bodyB = b2;
     bodyA.getLocalPointToOut(anchor, localAnchorA);

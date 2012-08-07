@@ -18,7 +18,7 @@
 part of box2d;
 
 class DistanceProxy {
-  final List<Vector> vertices;
+  final List<vec2> vertices;
   int count;
   num radius;
 
@@ -26,12 +26,12 @@ class DistanceProxy {
    * Constructs a new DistanceProxy.
    */
   DistanceProxy() :
-    vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+    vertices = new List<vec2>(Settings.MAX_POLYGON_VERTICES),
     count = 0,
     radius = 0 {
 
       for(int i = 0; i < vertices.length; ++i)
-        vertices[i] = new Vector();
+        vertices[i] = new vec2();
     }
 
   /**
@@ -41,7 +41,7 @@ class DistanceProxy {
   void setFromShape(shape) {
     // If the shape is a circle...
     if (shape.type == ShapeType.CIRCLE) {
-      vertices[0].setFrom(shape.position);
+      vertices[0].copyFromVector(shape.position);
       count = 1;
       radius = shape.radius;
 
@@ -50,7 +50,7 @@ class DistanceProxy {
       count = shape.vertexCount;
       radius = shape.radius;
       for(int i = 0; i < count; i++) {
-        vertices[i].setFrom(shape.vertices[i]);
+        vertices[i].copyFromVector(shape.vertices[i]);
       }
     } else {
       // Should always be a circle or a polygon.
@@ -61,11 +61,11 @@ class DistanceProxy {
   /**
    * Get the supporting vertex index in the given direction.
    */
-  int getSupport(Vector direction) {
+  int getSupport(vec2 direction) {
     int bestIndex = 0;
-    num bestValue = Vector.dot(vertices[0], direction);
+    num bestValue = dot(vertices[0], direction);
     for (int i = 1; i < count; ++i) {
-      num value = Vector.dot(vertices[i], direction);
+      num value = dot(vertices[i], direction);
       if(value > bestValue) {
         bestIndex = i;
         bestValue = value;
@@ -78,5 +78,5 @@ class DistanceProxy {
   /**
    * Get the supporting vertex in the given direction.
    */
-  Vector getSupportVertex(Vector direction) => vertices[getSupport(direction)];
+  vec2 getSupportVertex(vec2 direction) => vertices[getSupport(direction)];
 }

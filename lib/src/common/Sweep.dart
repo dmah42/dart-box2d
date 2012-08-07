@@ -16,11 +16,11 @@ part of box2d;
 
 class Sweep {
   /** Local center of mass position. */
-  final Vector localCenter;
+  final vec2 localCenter;
 
   /** Center world positions. */
-  final Vector centerZero;
-  final Vector center;
+  final vec2 centerZero;
+  final vec2 center;
 
   /** World angles. */
   num angleZero;
@@ -30,20 +30,20 @@ class Sweep {
    * Constructs a new Sweep with centers initialized to the origin and angles
    * set to zero.
    */
-  Sweep()
-      : localCenter = new Vector(),
-        centerZero = new Vector(),
-        center = new Vector(),
-        angleZero = 0,
-        angle = 0;
+  Sweep() :
+    localCenter = new vec2(),
+    centerZero = new vec2(),
+    center = new vec2(),
+    angleZero = 0,
+    angle = 0;
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
    */
   Sweep.copy(Sweep other)
-      : localCenter = new Vector.copy(other.localCenter),
-        centerZero = new Vector.copy(other.centerZero),
-        center = new Vector.copy(other.center),
+      : localCenter = new vec2.copy(other.localCenter),
+        centerZero = new vec2.copy(other.centerZero),
+        center = new vec2.copy(other.center),
         angleZero = other.angleZero,
         angle = other.angle;
 
@@ -61,9 +61,9 @@ class Sweep {
    * Sets this Sweep equal to the given Sweep.
    */
   void setFrom(Sweep other) {
-    localCenter.setFrom(other.localCenter);
-    centerZero.setFrom(other.centerZero);
-    center.setFrom(other.center);
+    localCenter.copyFromVector(other.localCenter);
+    centerZero.copyFromVector(other.centerZero);
+    center.copyFromVector(other.center);
     angleZero = other.angleZero;
     angle = other.angle;
   }
@@ -83,12 +83,12 @@ class Sweep {
 
     xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
     xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
-    xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
+    xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
 
     // Shift to origin
-    xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+    xf.position.x -= xf.rotation.col0.x * localCenter.x + xf.rotation.col1.x
         * localCenter.y;
-    xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+    xf.position.y -= xf.rotation.col0.y * localCenter.x + xf.rotation.col1.y
         * localCenter.y;
   }
 

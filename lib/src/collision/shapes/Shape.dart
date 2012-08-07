@@ -40,7 +40,7 @@ abstract class Shape {
    * transform:  the shape world transform.
    * point: a point in world coordinates.
    */
-  bool testPoint(Transform transform, Vector point);
+  bool testPoint(Transform transform, vec2 point);
 
   /**
    * Computes the associated axis aligned bounding box for a child shape

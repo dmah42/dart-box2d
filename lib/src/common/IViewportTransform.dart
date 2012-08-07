@@ -35,7 +35,7 @@ class IViewportTransform {
    * This should be the actual half-width and 
    * half-height, not anything transformed or scaled.
    */
-  Vector extents;
+  vec2 extents;
 
   /**
    * Returns the scaling factor used in converting from world sizes to rendering
@@ -46,33 +46,30 @@ class IViewportTransform {
   /**
    * center of the viewport.
    */
-  Vector center;
+  vec2 center;
 
   /**
    * Sets the transform's center to the given x and y coordinates,
    * and using the given scale.
    */
   void setCamera(num x, num y, num s) {
-    center.setCoords(x, y);
+    center.x = x;
+    center.y = y;
     scale = s;
   }
+
   /**
    * The current translation is the difference in canvas units between the
    * actual center of the canvas and the currently specified center. For
    * example, if the actual canvas center is (5, 5) but the current center is
    * (6, 6), the translation is (1, 1).
    */
-  Vector get translation {
-    Vector result = new Vector.copy(extents);
-    result.subLocal(center);
-    return result;
-  }
+  vec2 get translation => extents - center;
 
-  void set translation(Vector translation) {
+  void set translation(vec2 translation) {
     center.setFrom(extents);
-    center.subLocal(translation);
+    center.selfSub(translation);
   }
-
 
   /**
    * Takes the world coordinate (argWorld) puts the corresponding

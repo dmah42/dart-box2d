@@ -22,7 +22,7 @@ class CircleShape extends Shape {
   /**
    * The current position of the center of this circle.
    */
-  final Vector position;
+  final vec2 position;
 
   /**
    * A constructor for internal use only. Instead use Body.createShape with a
@@ -30,7 +30,7 @@ class CircleShape extends Shape {
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new Vector() {
+    position = new vec2() {
   }
 
   /**
@@ -38,7 +38,7 @@ class CircleShape extends Shape {
    */
   CircleShape.copy(CircleShape other) :
     super(other.type, other.radius),
-    position = new Vector.copy(other.position) { }
+    position = new vec2.copy(other.position) { }
 
 
   /**
@@ -46,13 +46,13 @@ class CircleShape extends Shape {
    * rotation transform is applied. Implements superclass abstract method of
    * the same name.
    */
-  bool testPoint(Transform transform, Vector point) {
-    Vector center = new Vector();
-    transform.rotation.multiplyVectorToOut(position, center);
-    center.addLocal(transform.position);
+  bool testPoint(Transform transform, vec2 point) {
+    vec2 center = new vec2.copy(position);
+    transform.rotation.transformDirect(center);
+    center.selfAdd(transform.position);
 
-    Vector d = center.subLocal(point).negateLocal();
-    return Vector.dot(d, d) <= radius * radius;
+    vec2 d = center.selfSub(point).selfNegate();
+    return dot(d, d) <= radius * radius;
   }
 
   /**
@@ -60,12 +60,14 @@ class CircleShape extends Shape {
    * applied. Stores the result in the given box.
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-    Vector p = new Vector();
-    Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
-    p.addLocal(argTransform.position);
+    vec2 p = new vec2.copy(position);
+    argTransform.rotation.transformDirect(p);
+    p.selfAdd(argTransform.position);
 
-    argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
-    argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+    argBox.lowerBound.x = p.x - radius;
+    argBox.lowerBound.y = p.y - radius;
+    argBox.upperBound.x = p.x + radius;
+    argBox.upperBound.y = p.y + radius;
   }
 
   /** Returns a clone of this circle. */
@@ -77,10 +79,10 @@ class CircleShape extends Shape {
    */
   void computeMass(MassData massData, num density) {
     massData.mass = density * Math.PI * radius * radius;
-    massData.center.setFrom(position);
+    massData.center.copyFromVector(position);
 
     // Store inertia above the local origin.
     massData.inertia = massData.mass * (.5 * radius * radius +
-        Vector.dot(position, position));
+        dot(position, position));
   }
 }

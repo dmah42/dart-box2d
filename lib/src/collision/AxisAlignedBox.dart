@@ -18,18 +18,18 @@ part of box2d;
 
 class AxisAlignedBox {
   /** Bottom left vertex of bounding box. */
-  Vector lowerBound;
+  vec2 lowerBound;
 
   /** Top right vertex of bounding box. */
-  Vector upperBound;
+  vec2 upperBound;
 
   /**
    * Constructs a new box with the given lower and upper bounds. If no bounds
    * are specified, constructs the box with both bounds at the origin.
    */
   AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound == null) lowerBound = new Vector();
-    if (upperBound == null) upperBound = new Vector();
+    if (lowerBound === null) lowerBound = new vec2();
+    if (upperBound === null) upperBound = new vec2();
   }
 
   /**
@@ -47,9 +47,9 @@ class AxisAlignedBox {
   }
 
   /** Sets the bounds to the given values. */
-  AxisAlignedBox setBounds(Vector lower, Vector upper) {
-    lowerBound.setFrom(lower);
-    upperBound.setFrom(upper);
+  AxisAlignedBox setBounds(vec2 lower, vec2 upper) {
+    lowerBound.copyFromVector(lower);
+    upperBound.copyFromVector(upper);
     return this;
   }
 
@@ -62,16 +62,12 @@ class AxisAlignedBox {
    * Returns true if the lower bound is strictly less than the upper bound and
    * both bounds are themselves valid (Vector.isValid() returns true).
    */
-  bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
+  bool isValid() => !lowerBound.isInfinite() && !upperBound.isInfinite() &&
+                    !lowerBound.isNaN() && !upperBound.isNaN() &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */
-  Vector get center {
-    Vector c = new Vector.copy(lowerBound);
-    c.addLocal(upperBound);
-    c.mulLocal(.5);
-    return c;
-  }
+  vec2 get center => (lowerBound + upperBound).selfScale(0.5);
 
   /** Returns true if this box contains the given box. */
   bool contains(AxisAlignedBox aabb) =>
@@ -80,8 +76,8 @@ class AxisAlignedBox {
 
   /** Sets this box to be a copy of the given box. */
   void setFrom(AxisAlignedBox other) {
-    lowerBound.setFrom(other.lowerBound);
-    upperBound.setFrom(other.upperBound);
+    lowerBound.copyFromVector(other.lowerBound);
+    upperBound.copyFromVector(other.upperBound);
   }
 
   String toString() => "$lowerBound, $upperBound";
