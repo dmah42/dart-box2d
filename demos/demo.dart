@@ -115,9 +115,11 @@ class Demo {
     worldStepTime = query("#world-step-time");
     window.setInterval(() {
       fpsCounter.innerHTML = "${frameCount.toString()}";
-      worldStepTime.innerHTML = "${elapsedUs / 1000}";
       frameCount = 0;
     }, 1000);
+    window.setInterval(() {
+      worldStepTime.innerHTML = "${elapsedUs / 1000} ms";
+    }, 200);
   }
 
   abstract void initialize();
