@@ -36,8 +36,7 @@ class Transform {
         rotation = new Matrix22.copy(other.rotation);
 
   bool operator ==(other) {
-    return other !== null &&
-        position == other.position && rotation == other.rotation;
+    return position == other.position && rotation == other.rotation;
   }
 
   /**

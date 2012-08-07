@@ -49,8 +49,7 @@ class Matrix22 {
    * to the col1 and col2 of this Matrix22.
    */
   bool operator ==(other) {
-    return other !== null && other is Matrix22 &&
-        col1 == other.col1 && col2 == other.col2;
+    return other is Matrix22 && col1 == other.col1 && col2 == other.col2;
   }
 
   /**

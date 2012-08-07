@@ -29,8 +29,7 @@ class Vector3 {
   }
 
   bool operator ==(other) {
-    return other !== null && other is Vector3 &&
-        x === other.x && y === other.y && z === other.z;
+    return other is Vector3 && x == other.x && y == other.y && z == other.z;
   }
 
   /** Sets this vector equal to the given vector. */
