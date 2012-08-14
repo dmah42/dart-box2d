@@ -196,10 +196,10 @@ class ContactSolver {
         num invMassB = bodyB.invMass;
         num invIB = bodyB.invInertia;
 
-        num rn1A = ccp1.rA.x * cc.normal.y - ccp1.rA.y * cc.normal.x; // vec2.crossVectors(ccp1.rA, cc.normal);
-        num rn1B = ccp1.rB.x * cc.normal.y - ccp1.rB.y * cc.normal.x; // vec2.crossVectors(ccp1.rB, cc.normal);
-        num rn2A = ccp2.rA.x * cc.normal.y - ccp2.rA.y * cc.normal.x; // vec2.crossVectors(ccp2.rA, cc.normal);
-        num rn2B = ccp2.rB.x * cc.normal.y - ccp2.rB.y * cc.normal.x; // vec2.crossVectors(ccp2.rB, cc.normal);
+        num rn1A = cross(ccp1.rA, cc.normal);
+        num rn1B = cross(ccp1.rB, cc.normal);
+        num rn2A = cross(ccp2.rA, cc.normal);
+        num rn2B = cross(ccp2.rB, cc.normal);
 
         num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
             * rn1B;
@@ -240,8 +240,9 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final vec2 normal = c.normal;
-      tangent.x = normal.y;
-      tangent.y = -normal.x;
+      // TODO(dominich): crossToOut.
+      final vec2 _cross = cross(normal, 1);
+      tangent.copyFrom(_cross);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];

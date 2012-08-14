@@ -326,14 +326,13 @@ class SeparationFunction {
       localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.copyFrom(localPointB2).selfSub(localPointB1);
-      //vec2.crossVectorAndNumToOut(temp, 1, axis);
-      axis.x = temp.y;
-      axis.y = -temp.x;
+      // TODO(dominich): Remove when crossToOut exists.
+      final vec2 _cross = cross(temp, 1);
+      axis.copyFrom(_cross);
       axis.normalize();
 
       normal.copyFrom(axis);
       xfb.rotation.transformDirect(normal);
-      //Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
 
       localPoint.copyFrom(localPointB1).selfAdd(localPointB2).selfScale(0.5);
       Transform.mulToOut(xfb, localPoint, pointB);
@@ -357,14 +356,13 @@ class SeparationFunction {
       localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
 
       temp.copyFrom(localPointA2).selfSub(localPointA1);
-      //vec2.crossVectorAndNumToOut(temp, 1.0, axis);
-      axis.x = temp.y;
-      axis.y = -temp.x;
+      // TODO(dominich): Remove when crossToOut exists.
+      final vec2 _cross = cross(temp, 1);
+      axis.copyFrom(_cross);
       axis.normalize();
 
       normal.copyFrom(axis);
       xfa.rotation.transformDirect(normal);
-      //Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
 
       localPoint.copyFrom(localPointA1).selfAdd(localPointA2).selfScale(0.5);
       Transform.mulToOut(xfa, localPoint, pointA);

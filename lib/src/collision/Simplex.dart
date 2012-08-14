@@ -116,18 +116,15 @@ class Simplex {
         e12.copyFrom(v2.w).selfSub(v1.w);
         // use out for a temp variable real quick
         out.copyFrom(v1.w).selfNegate();
-        // num sgn = cross(e12, out);
-        num sgn = e12.x * out.y - e12.y * out.x;
+        num sgn = cross(e12, out);
 
         if (sgn > 0) {
           // Origin is left of e12.
-          out.x = -e12.y;
-          out.y = e12.x;
+          out = cross(1, e12);
         }
         else {
           // Origin is right of e12.
-          out.x = e12.y;
-          out.y = -e12.x;
+          out = cross(e12, 1);
         }
         break;
       default :
@@ -218,7 +215,7 @@ class Simplex {
       case 3 :
         case3.copyFrom(v2.w).selfSub(v1.w);
         case33.copyFrom(v3.w).selfSub(v1.w);
-        return case3.x * case33.y - case3.y * case33.x;
+        return cross(case3, case33);
 
       default :
         assert (false);
@@ -295,12 +292,11 @@ class Simplex {
     num d23_2 = -w2e23;
 
     // Triangle123
-    num n123 = e12.x * e13.y - e12.y * e13.x;
-    //cross(e12, e13);
+    num n123 = cross(e12, e13);
 
-    num d123_1 = n123 * (w2.x * w3.y - w2.y * w3.x); // cross(w2, w3);
-    num d123_2 = n123 * (w3.x * w1.y - w3.y * w1.x); // cross(w3, w1);
-    num d123_3 = n123 * (w1.x * w2.y - w1.y * w2.x); // cross(w1, w2);
+    num d123_1 = n123 * cross(w2, w3);
+    num d123_2 = n123 * cross(w3, w1);
+    num d123_3 = n123 * cross(w1, w2);
 
     // w1 region
     if (d12_2 <= 0.0 && d13_2 <= 0.0) {

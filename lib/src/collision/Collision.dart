@@ -492,8 +492,8 @@ class Collision {
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
-    normals1[edge1].copyFrom(normal1);
-    xf1.rotation.transformDirect(normals1[edge1]);
+    normal1.copyFrom(normals1[edge1]);
+    xf1.rotation.transformDirect(normal1);
     xf2.rotation.transposed().transformDirect(normal1);
 
     // Find the incident edge on poly2.
@@ -589,8 +589,9 @@ class Collision {
     xf1.rotation.transformDirect(tangent);
 
     // vec2 frontNormal = Cross(sideNormal, 1.0);
-    normal.x = -tangent.y;
-    normal.y = tangent.y;
+    // TODO(dominich): Remove this when there's a crossToOut method
+    final vec2 tempNormal = cross(tangent, 1);
+    normal.copyFrom(tempNormal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);

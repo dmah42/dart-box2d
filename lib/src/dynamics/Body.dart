@@ -510,11 +510,7 @@ class Body {
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
-    num tempY = _angularVelocity * temp.x;
-    temp.x = -_angularVelocity * temp.y;
-    temp.y = tempY;
-    //vec2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.selfAdd(temp);
+    _linearVelocity.selfAdd(cross(_angularVelocity, temp));
   }
 
   /**
@@ -583,11 +579,7 @@ class Body {
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
-    num tempY = _angularVelocity * temp.x;
-    temp.x = -_angularVelocity * temp.y;
-    temp.y = tempY;
-    //vec2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.selfAdd(temp);
+    _linearVelocity.selfAdd(cross(_angularVelocity, temp));
   }
 
   /**
@@ -687,10 +679,7 @@ class Body {
 
   void getLinearVelocityFromWorldPointToOut(vec2 worldPoint, vec2 out) {
     out.copyFrom(worldPoint).selfSub(sweep.center);
-    num tempY = _angularVelocity * out.x;
-    out.x = -_angularVelocity * out.y;
-    out.y = tempY;
-    //Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+    out = cross(_angularVelocity, out);
     out.selfAdd(_linearVelocity);
   }
 

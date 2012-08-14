@@ -118,9 +118,7 @@ class PolygonShape extends Shape {
       edge.copyFrom(vertices[i2]).selfSub(vertices[i1]);
 
       assert (edge.length2 > Settings.EPSILON * Settings.EPSILON);
-      normals[i].x = edge.y;
-      normals[i].y = -edge.x;
-      //vec2.crossVectorAndNumToOut(edge, 1, normals[i]);
+      normals[i] = cross(edge, 1);
       normals[i].normalize();
     }
 
@@ -172,10 +170,7 @@ class PolygonShape extends Shape {
     vertices[1].copyFrom(v2);
     centroid.copyFrom(v1).selfAdd(v2).selfScale(0.5);
     normals[0].copyFrom(v2).selfSub(v1);
-    num tempy = -normals[0].x;
-    normals[0].x = normals[0].y;
-    normals[0].y = tempy;
-    //vec2.crossVectorAndNumToOut(normals[0], 1, normals[0]);
+    normals[0] = cross(normals[0], 1);
     normals[0].normalize();
     normals[1].copyFrom(normals[0]).selfNegate();
   }
@@ -211,12 +206,11 @@ class PolygonShape extends Shape {
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
-      // TODO(dominich): Use vector min method when available.
-      lower.x = min(v.x, lower.x);
-      lower.y = min(v.y, lower.y);
-
-      upper.x = min(v.x, upper.x);
-      upper.y = min(v.y, upper.y);
+      // TODO(dominich): Remove when min/maxToOut exists.
+      final vec2 _min = min(v, lower);
+      lower.copyFrom(_min);
+      final vec2 _max = max(v, upper);
+      upper.copyFrom(_max);
       //vec2.minToOut(lower, v, lower);
       //vec2.maxToOut(upper, v, upper);
     }
@@ -264,10 +258,7 @@ class PolygonShape extends Shape {
       e1.copyFrom(p2).selfSub(p1);
       e2.copyFrom(p3).selfSub(p1);
 
-      final num D = e1.x * e2.y - e1.y * e2.x;
-      // vec2.crossVectors(e1, e2);
-
-      final num triangleArea = 0.5 * D;
+      final num triangleArea = 0.5 * cross(e1, e2);
       area += triangleArea;
 
       // Area weighted centroid
@@ -340,9 +331,7 @@ class PolygonShape extends Shape {
       e1.copyFrom(p2).selfSub(p1);
       e2.copyFrom(p3).selfSub(p1);
 
-      final num D = e1.x * e2.y - e1.y * e2.x;
-      // vec2.crossVectors(e1, e2);
-
+      final num D = cross(e1, e2);
       final num triangleArea = 0.5 * D;
       area += triangleArea;
 

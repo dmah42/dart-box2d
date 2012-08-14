@@ -127,6 +127,6 @@ class Tire {
   final Set<GroundArea> _groundAreas;
 
   // Cached Vectors to reduce unnecessary object creation.
-  final Vector _worldLeft = new Vector(1.0, 0.0);
-  final Vector _worldUp = new Vector(0.0, 1.0);
+  final vec2 _worldLeft = new vec2(1.0, 0.0);
+  final vec2 _worldUp = new vec2(0.0, 1.0);
 }
