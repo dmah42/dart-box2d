@@ -58,7 +58,7 @@ class ManifoldPoint {
    * Sets this ManifoldPoint to be equal to the given point.
    */
   void setFrom(ManifoldPoint other) {
-    localPoint.copyFromVector(other.localPoint);
+    localPoint.copyFrom(other.localPoint);
     normalImpulse = other.normalImpulse;
     tangentImpulse = other.tangentImpulse;
     id.setFrom(other.id);

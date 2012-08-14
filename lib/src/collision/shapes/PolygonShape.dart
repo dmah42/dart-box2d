@@ -106,7 +106,7 @@ class PolygonShape extends Shape {
     // Copy vertices.
     for (int i = 0; i < vertexCount; ++i) {
       assert(vertices[i] != null);
-      vertices[i].copyFromVector(otherVertices[i]);
+      vertices[i].copyFrom(otherVertices[i]);
     }
 
     vec2 edge = new vec2();
@@ -115,7 +115,7 @@ class PolygonShape extends Shape {
     for (int i = 0; i < vertexCount; ++i) {
       final int i1 = i;
       final int i2 = i + 1 < vertexCount ? i + 1 : 0;
-      edge.copyFromVector(vertices[i2]).selfSub(vertices[i1]);
+      edge.copyFrom(vertices[i2]).selfSub(vertices[i1]);
 
       assert (edge.length2 > Settings.EPSILON * Settings.EPSILON);
       normals[i].x = edge.y;
@@ -143,7 +143,7 @@ class PolygonShape extends Shape {
     normals[1].xy = new vec2(1, 0); // setCoords(1.0, 0.0);
     normals[2].xy = new vec2(0, 1); // setCoords(0.0, 1.0);
     normals[3].xy = new vec2(-1, 0); // setCoords(-1.0, 0.0);
-    centroid.copyFromVector(new vec2.zero()); // setZero();
+    centroid.copyFrom(new vec2.zero()); // setZero();
   }
 
   /**
@@ -155,7 +155,7 @@ class PolygonShape extends Shape {
     setAsBox(hx, hy);
 
     Transform xf = new Transform();
-    xf.position.copyFromVector(center);
+    xf.position.copyFrom(center);
     xf.rotation.setRotation(angle);
 
     // Transform vertices and normals.
@@ -168,16 +168,16 @@ class PolygonShape extends Shape {
   /** Set this as a single edge. */
   void setAsEdge(vec2 v1, vec2 v2) {
     vertexCount = 2;
-    vertices[0].copyFromVector(v1);
-    vertices[1].copyFromVector(v2);
-    centroid.copyFromVector(v1).selfAdd(v2).selfScale(0.5);
-    normals[0].copyFromVector(v2).selfSub(v1);
+    vertices[0].copyFrom(v1);
+    vertices[1].copyFrom(v2);
+    centroid.copyFrom(v1).selfAdd(v2).selfScale(0.5);
+    normals[0].copyFrom(v2).selfSub(v1);
     num tempy = -normals[0].x;
     normals[0].x = normals[0].y;
     normals[0].y = tempy;
     //vec2.crossVectorAndNumToOut(normals[0], 1, normals[0]);
     normals[0].normalize();
-    normals[1].copyFromVector(normals[0]).selfNegate();
+    normals[1].copyFrom(normals[0]).selfNegate();
   }
 
   /**
@@ -190,7 +190,7 @@ class PolygonShape extends Shape {
     vec2 temp = new vec2();
 
     for (int i = 0; i < vertexCount; ++i) {
-      temp.copyFromVector(pLocal).selfSub(vertices[i]);
+      temp.copyFrom(pLocal).selfSub(vertices[i]);
       if (dot(normals[i], temp) > 0)
         return false;
     }
@@ -207,7 +207,7 @@ class PolygonShape extends Shape {
     final vec2 v = new vec2();
 
     Transform.mulToOut(argXf, vertices[0], lower);
-    upper.copyFromVector(lower);
+    upper.copyFrom(lower);
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
@@ -242,7 +242,7 @@ class PolygonShape extends Shape {
     num area = 0.0;
 
     if (count == 2) {
-      out.copyFromVector(vs[0]).selfAdd(vs[1]).selfScale(.5);
+      out.copyFrom(vs[0]).selfAdd(vs[1]).selfScale(.5);
       return;
     }
 
@@ -261,8 +261,8 @@ class PolygonShape extends Shape {
       final vec2 p2 = vs[i];
       final vec2 p3 = i + 1 < count ? vs[i + 1] : vs[0];
 
-      e1.copyFromVector(p2).selfSub(p1);
-      e2.copyFromVector(p3).selfSub(p1);
+      e1.copyFrom(p2).selfSub(p1);
+      e2.copyFrom(p3).selfSub(p1);
 
       final num D = e1.x * e2.y - e1.y * e2.x;
       // vec2.crossVectors(e1, e2);
@@ -312,7 +312,7 @@ class PolygonShape extends Shape {
     // A line segment has zero mass.
     if (vertexCount == 2) {
       // massData.center = 0.5 * (vertices[0] + vertices[1]);
-      massData.center.copyFromVector(vertices[0]).selfAdd(vertices[1]).selfScale(0.5);
+      massData.center.copyFrom(vertices[0]).selfAdd(vertices[1]).selfScale(0.5);
       massData.mass = 0.0;
       massData.inertia = 0.0;
       return;
@@ -337,8 +337,8 @@ class PolygonShape extends Shape {
       final vec2 p2 = vertices[i];
       final vec2 p3 = i + 1 < vertexCount ? vertices[i + 1] : vertices[0];
 
-      e1.copyFromVector(p2).selfSub(p1);
-      e2.copyFromVector(p3).selfSub(p1);
+      e1.copyFrom(p2).selfSub(p1);
+      e2.copyFrom(p3).selfSub(p1);
 
       final num D = e1.x * e2.y - e1.y * e2.x;
       // vec2.crossVectors(e1, e2);
@@ -371,7 +371,7 @@ class PolygonShape extends Shape {
     // Center of mass
     assert (area > Settings.EPSILON);
     center.selfScale(1.0 / area);
-    massData.center.copyFromVector(center);
+    massData.center.copyFrom(center);
 
     // Inertia tensor relative to the local origin.
     massData.inertia = I * density;

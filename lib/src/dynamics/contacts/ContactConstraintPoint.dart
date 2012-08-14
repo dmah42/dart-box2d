@@ -39,9 +39,9 @@ class ContactConstraintPoint {
 
   /** Sets this point equal to the given point. */
   void setFrom(ContactConstraintPoint cp) {
-    localPoint.copyFromVector(cp.localPoint);
-    rA.copyFromVector(cp.rA);
-    rB.copyFromVector(cp.rB);
+    localPoint.copyFrom(cp.localPoint);
+    rA.copyFrom(cp.rA);
+    rB.copyFrom(cp.rB);
     normalImpulse = cp.normalImpulse;
     tangentImpulse = cp.tangentImpulse;
     normalMass = cp.normalMass;

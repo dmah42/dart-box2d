@@ -82,8 +82,8 @@ class Manifold {
       points[i].setFrom(other.points[i]);
 
     type = other.type;
-    localNormal.copyFromVector(other.localNormal);
-    localPoint.copyFromVector(other.localPoint);
+    localNormal.copyFrom(other.localNormal);
+    localPoint.copyFrom(other.localPoint);
     pointCount = other.pointCount;
   }
 }

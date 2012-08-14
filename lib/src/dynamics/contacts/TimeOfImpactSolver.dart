@@ -79,8 +79,8 @@ class TimeOfImpactSolver {
       TimeOfImpactConstraint constraint = constraints[i];
       constraint.bodyA = bodyA;
       constraint.bodyB = bodyB;
-      constraint.localNormal.copyFromVector(manifold.localNormal);
-      constraint.localPoint.copyFromVector(manifold.localPoint);
+      constraint.localNormal.copyFrom(manifold.localNormal);
+      constraint.localPoint.copyFrom(manifold.localPoint);
       constraint.type = manifold.type;
       constraint.pointCount = manifold.pointCount;
       constraint.radius = radiusA + radiusB;
@@ -126,8 +126,8 @@ class TimeOfImpactSolver {
         vec2 point = psm.point;
         num separation = psm.separation;
 
-        rA.copyFromVector(point).selfSub(bodyA.sweep.center);
-        rB.copyFromVector(point).selfSub(bodyB.sweep.center);
+        rA.copyFrom(point).selfSub(bodyA.sweep.center);
+        rB.copyFrom(point).selfSub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -144,14 +144,14 @@ class TimeOfImpactSolver {
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.copyFromVector(normal).selfScale(impulse);
+        P.copyFrom(normal).selfScale(impulse);
 
-        temp.copyFromVector(P).selfScale(invMassA);
+        temp.copyFrom(P).selfScale(invMassA);
         bodyA.sweep.center.selfSub(temp);
         bodyA.sweep.angle -= invIA * cross(rA, P);
         bodyA.synchronizeTransform();
 
-        temp.copyFromVector(P).selfScale(invMassB);
+        temp.copyFrom(P).selfScale(invMassB);
         bodyB.sweep.center.selfAdd(temp);
         bodyB.sweep.angle += invIB * cross(rB, P);
         bodyB.synchronizeTransform();
@@ -192,39 +192,39 @@ class TimeOfImpactSolverManifold {
 
     switch (cc.type) {
       case ManifoldType.CIRCLES:
-        pointA.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoint));
-        pointB.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+        pointA.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+        pointB.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.copyFromVector(pointB).selfSub(pointA);
+          normal.copyFrom(pointB).selfSub(pointA);
           normal.normalize();
         } else {
           normal.x = 1;
           normal.y = 0;
         }
 
-        point.copyFromVector(pointA).selfAdd(pointB).selfScale(.5);
-        temp.copyFromVector(pointB).selfSub(pointA);
+        point.copyFrom(pointA).selfAdd(pointB).selfScale(.5);
+        temp.copyFrom(pointB).selfSub(pointA);
         separation = dot(temp, normal) - cc.radius;
         break;
 
       case ManifoldType.FACE_A:
-        normal.copyFromVector(cc.bodyA.getWorldVector(cc.localNormal));
-        planePoint.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoint));
+        normal.copyFrom(cc.bodyA.getWorldVector(cc.localNormal));
+        planePoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
-        clipPoint.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        clipPoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+        temp.copyFrom(clipPoint).selfSub(planePoint);
         separation = dot(temp, normal) - cc.radius;
-        point.copyFromVector(clipPoint);
+        point.copyFrom(clipPoint);
         break;
 
       case ManifoldType.FACE_B:
-        normal.copyFromVector(cc.bodyB.getWorldVector(cc.localNormal));
-        planePoint.copyFromVector(cc.bodyB.getWorldPoint(cc.localPoint));
+        normal.copyFrom(cc.bodyB.getWorldVector(cc.localNormal));
+        planePoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
-        clipPoint.copyFromVector(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        clipPoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+        temp.copyFrom(clipPoint).selfSub(planePoint);
         separation = dot(temp, normal) - cc.radius;
-        point.copyFromVector(clipPoint);
+        point.copyFrom(clipPoint);
 
         // Ensure normal points from A to B
         normal.selfNegate();

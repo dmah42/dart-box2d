@@ -375,25 +375,25 @@ class ContactSolver {
         b.y -= temp2.y;
 
         while (true) {
-          x.copyFromVector(b);
+          x.copyFrom(b);
           c.normalMass.transformDirect(x);
           x.selfNegate();
 
           if (x.x >= 0.0 && x.y >= 0.0){
             // Resubstitute for the incremental impulse
             //vec2 d = x - a;
-            d.copyFromVector(x).selfSub(a);
+            d.copyFrom(x).selfSub(a);
 
             // Apply incremental impulse
             // vec2 P1 = d.x * normal;
             // vec2 P2 = d.y * normal;
-            P1.copyFromVector(c.normal).selfScale(d.x);
-            P2.copyFromVector(c.normal).selfScale(d.y);
+            P1.copyFrom(c.normal).selfScale(d.x);
+            P2.copyFrom(c.normal).selfScale(d.y);
 
-            temp1.copyFromVector(P1).selfAdd(P2);
-            temp2.copyFromVector(temp1).selfScale(invMassA);
+            temp1.copyFrom(P1).selfAdd(P2);
+            temp2.copyFrom(temp1).selfScale(invMassA);
             vA.selfSub(temp2);
-            temp2.copyFromVector(temp1).selfScale(invMassB);
+            temp2.copyFrom(temp1).selfScale(invMassB);
             vB.selfAdd(temp2);
 
             wA -= invIA * (cross(cp1.rA, P1) + cross(cp2.rA, P2));
@@ -413,16 +413,16 @@ class ContactSolver {
 
           if (x.x >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.copyFromVector(x).selfSub(a);
+            d.copyFrom(x).selfSub(a);
 
             // Apply incremental impulse
-            P1.copyFromVector(c.normal).selfScale(d.x);
-            P2.copyFromVector(c.normal).selfScale(d.y);
+            P1.copyFrom(c.normal).selfScale(d.x);
+            P2.copyFrom(c.normal).selfScale(d.y);
 
-            temp1.copyFromVector(P1).selfAdd(P2);
-            temp2.copyFromVector(temp1).selfScale(invMassA);
+            temp1.copyFrom(P1).selfAdd(P2);
+            temp2.copyFrom(temp1).selfScale(invMassA);
             vA.selfSub(temp2);
-            temp2.copyFromVector(temp1).selfScale(invMassB);
+            temp2.copyFrom(temp1).selfScale(invMassB);
             vB.selfAdd(temp2);
 
             wA -= invIA * (cross(cp1.rA, P1) + cross(cp2.rA, P2));
@@ -442,16 +442,16 @@ class ContactSolver {
 
           if (x.y >= 0.0 && vn1 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.copyFromVector(x).selfSub(a);
+            d.copyFrom(x).selfSub(a);
 
             // Apply incremental impulse
-            P1.copyFromVector(c.normal).selfScale(d.x);
-            P2.copyFromVector(c.normal).selfScale(d.y);
+            P1.copyFrom(c.normal).selfScale(d.x);
+            P2.copyFrom(c.normal).selfScale(d.y);
 
-            temp1.copyFromVector(P1).selfAdd(P2);
-            temp2.copyFromVector(temp1).selfScale(invMassA);
+            temp1.copyFrom(P1).selfAdd(P2);
+            temp2.copyFrom(temp1).selfScale(invMassA);
             vA.selfSub(temp2);
-            temp2.copyFromVector(temp1).selfScale(invMassB);
+            temp2.copyFrom(temp1).selfScale(invMassB);
             vB.selfAdd(temp2);
 
             wA -= invIA * (cross(cp1.rA, P1) + cross(cp2.rA, P2));
@@ -471,16 +471,16 @@ class ContactSolver {
 
           if (vn1 >= 0.0 && vn2 >= 0.0 ) {
             // Resubstitute for the incremental impulse
-            d.copyFromVector(x).selfSub(a);
+            d.copyFrom(x).selfSub(a);
 
             // Apply incremental impulse
-            P1.copyFromVector(c.normal).selfScale(d.x);
-            P2.copyFromVector(c.normal).selfScale(d.y);
+            P1.copyFrom(c.normal).selfScale(d.x);
+            P2.copyFrom(c.normal).selfScale(d.y);
 
-            temp1.copyFromVector(P1).selfAdd(P2);
-            temp2.copyFromVector(temp1).selfScale(invMassA);
+            temp1.copyFrom(P1).selfAdd(P2);
+            temp2.copyFrom(temp1).selfScale(invMassA);
             vA.selfSub(temp2);
-            temp2.copyFromVector(temp1).selfScale(invMassB);
+            temp2.copyFrom(temp1).selfScale(invMassB);
             vB.selfAdd(temp2);
 
             wA -= invIA * (cross(cp1.rA, P1) + cross(cp2.rA, P2));
@@ -499,9 +499,9 @@ class ContactSolver {
         }
       }
 
-      bodyA.linearVelocity.copyFromVector(vA);
+      bodyA.linearVelocity.copyFrom(vA);
       bodyA.angularVelocity = wA;
-      bodyB.linearVelocity.copyFromVector(vB);
+      bodyB.linearVelocity.copyFrom(vB);
       bodyB.angularVelocity = wB;
     }
   }
@@ -543,8 +543,8 @@ class ContactSolver {
         vec2 point = psm.point;
         num separation = psm.separation;
 
-        rA.copyFromVector(point).selfSub(bodyA.sweep.center);
-        rB.copyFromVector(point).selfSub(bodyB.sweep.center);
+        rA.copyFrom(point).selfSub(bodyA.sweep.center);
+        rB.copyFrom(point).selfSub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -561,14 +561,14 @@ class ContactSolver {
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.copyFromVector(normal).selfScale(impulse);
+        P.copyFrom(normal).selfScale(impulse);
 
-        temp1.copyFromVector(P).selfScale(invMassA);
+        temp1.copyFrom(P).selfScale(invMassA);
         bodyA.sweep.center.selfSub(temp1);;
         bodyA.sweep.angle -= invIA * cross(rA, P);
         bodyA.synchronizeTransform();
 
-        temp1.copyFromVector(P).selfScale(invMassB);
+        temp1.copyFrom(P).selfScale(invMassB);
         bodyB.sweep.center.selfAdd(temp1);
         bodyB.sweep.angle += invIB * cross(rB, P);
         bodyB.synchronizeTransform();
@@ -613,15 +613,15 @@ class PositionSolverManifold {
         cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
         cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.copyFromVector(pointB).selfSub(pointA);
+          normal.copyFrom(pointB).selfSub(pointA);
           normal.normalize();
         } else {
           normal.x = 1;
           normal.y = 0;
         }
 
-        point.copyFromVector(pointA).selfAdd(pointB).selfScale(.5);
-        temp.copyFromVector(pointB).selfSub(pointA);
+        point.copyFrom(pointA).selfAdd(pointB).selfScale(.5);
+        temp.copyFrom(pointB).selfSub(pointA);
         separation = dot(temp, normal) - cc.radius;
         break;
 
@@ -631,9 +631,9 @@ class PositionSolverManifold {
 
         cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
             clipPoint);
-        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        temp.copyFrom(clipPoint).selfSub(planePoint);
         separation = dot(temp, normal) - cc.radius;
-        point.copyFromVector(clipPoint);
+        point.copyFrom(clipPoint);
         break;
 
       case ManifoldType.FACE_B:
@@ -641,9 +641,9 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
         cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-        temp.copyFromVector(clipPoint).selfSub(planePoint);
+        temp.copyFrom(clipPoint).selfSub(planePoint);
         separation = dot(temp, normal) - cc.radius;
-        point.copyFromVector(clipPoint);
+        point.copyFrom(clipPoint);
 
         // Ensure normal points from A to B
         normal.selfNegate();

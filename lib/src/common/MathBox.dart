@@ -31,4 +31,33 @@ class MathBox {
     final num res = toMin + mult * (toMax - toMin);
     return res;
   }
+
+  // Solve Ax = b without calculating the inverse of A.
+  static vec3 solve33(mat3x3 A, vec3 b) {
+    vec3 out = cross(A.col1, A.col2);
+    num det = dot(A.col0, out);
+    if (det != 0.0) det = 1.0 / det;
+
+    out = cross(A.col1, A.col2);
+    num x = det * dot(b, out);
+    out = cross(b, A.col2);
+    num y = det * dot(A.col0, out);
+    out = cross(A.col1, b);
+    num z = det * dot(A.col0, out);
+    out.x = x;
+    out.y = y;
+    out.z = z;
+    return out;
+  }
+
+  // Solve Ax = b without calculating the inverse of A.
+  static vec2 solve22(Dynamic A, vec2 b) {
+    assert(A is mat2x2 || A is mat3x3);
+    num a11 = A.col0.x, a12 = A.col1.x, a21 = A.col0.y, a22 = A.col1.y;
+    num det = a11 * a22 - a12 * a21;
+    if (det != 0.0) det = 1.0 / det;
+    final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
+    out.selfScale(det);
+    return out;
+  }
 }

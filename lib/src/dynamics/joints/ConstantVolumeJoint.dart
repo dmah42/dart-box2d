@@ -170,7 +170,7 @@ class ConstantVolumeJoint extends Joint {
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      d[i].copyFromVector(bodies[next].worldCenter);
+      d[i].copyFrom(bodies[next].worldCenter);
       d[i].selfSub(bodies[prev].worldCenter);
     }
 
@@ -211,7 +211,7 @@ class ConstantVolumeJoint extends Joint {
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      d[i].copyFromVector(bodies[next].worldCenter);
+      d[i].copyFrom(bodies[next].worldCenter);
       d[i].selfSub(bodies[prev].worldCenter);
       dotMassSum += d[i].length2 / bodies[i].mass;
       crossMassSum += cross(bodies[i].linearVelocity, d[i]);

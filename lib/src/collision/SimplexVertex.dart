@@ -33,9 +33,9 @@ class SimplexVertex {
     indexB = 0 { }
 
   void setFrom(SimplexVertex sv) {
-    wA.copyFromVector(sv.wA);
-    wB.copyFromVector(sv.wB);
-    w.copyFromVector(sv.w);
+    wA.copyFrom(sv.wA);
+    wB.copyFrom(sv.wB);
+    w.copyFrom(sv.w);
     a = sv.a;
     indexA = sv.indexA;
     indexB = sv.indexB;

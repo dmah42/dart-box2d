@@ -79,7 +79,7 @@ class CircleShape extends Shape {
    */
   void computeMass(MassData massData, num density) {
     massData.mass = density * Math.PI * radius * radius;
-    massData.center.copyFromVector(position);
+    massData.center.copyFrom(position);
 
     // Store inertia above the local origin.
     massData.inertia = massData.mass * (.5 * radius * radius +

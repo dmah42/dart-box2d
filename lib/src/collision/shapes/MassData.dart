@@ -48,6 +48,6 @@ class MassData {
   void setFrom(MassData md) {
     mass = md.mass;
     inertia = md.inertia;
-    center.copyFromVector(md.center);
+    center.copyFrom(md.center);
   }
 }

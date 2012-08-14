@@ -132,18 +132,18 @@ class Distance {
       // Compute a tentative new simplex vertex using support points.
       SimplexVertex vertex = vertices[simplex.count];
 
-      temp.copyFromVector(searchDirection.selfNegate());
+      temp.copyFrom(searchDirection.selfNegate());
       transformA.rotation.transformDirect(temp);
       vertex.indexA = proxyA.getSupport(temp);
       Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA],
           vertex.wA);
       // Vec2 wBLocal;
-      temp.copyFromVector(searchDirection.selfNegate());
+      temp.copyFrom(searchDirection.selfNegate());
       transformB.rotation.transformDirect(temp);
       vertex.indexB = proxyB.getSupport(temp);
       Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB],
           vertex.wB);
-      vertex.w.copyFromVector(vertex.wB).selfSub(vertex.wA);
+      vertex.w.copyFrom(vertex.wB).selfSub(vertex.wA);
 
       // Iteration count is equated to the number of support point calls.
       ++iter;
@@ -186,17 +186,17 @@ class Distance {
         // Shapes are still no overlapped.
         // Move the witness points to the outer surface.
         output._distance -= rA + rB;
-        normal.copyFromVector(output.pointB).selfSub(output.pointA);
+        normal.copyFrom(output.pointB).selfSub(output.pointA);
         normal.normalize();
-        temp.copyFromVector(normal).selfScale(rA);
+        temp.copyFrom(normal).selfScale(rA);
         output.pointA.selfAdd(temp);
-        temp.copyFromVector(normal).selfScale(rB);
+        temp.copyFrom(normal).selfScale(rB);
         output.pointB.selfSub(temp);
       } else {
         // Shapes are overlapped when radii are considered.
         // Move the witness points to the middle.
         output.pointA.selfAdd(output.pointB).selfScale(.5);
-        output.pointB.copyFromVector(output.pointA);
+        output.pointB.copyFrom(output.pointA);
         output._distance = 0.0;
       }
     }

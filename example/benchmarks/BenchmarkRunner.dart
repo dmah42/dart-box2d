@@ -13,9 +13,12 @@
 // limitations under the License.
 
 library BenchmarkRunner;
+
 import 'dart:math';
+
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
+
 part 'Benchmark.dart';
 part 'BallCageBench.dart';
 part 'BallDropBench.dart';

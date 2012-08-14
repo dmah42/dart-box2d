@@ -40,10 +40,10 @@ class TimeOfImpactConstraint {
 
   void setFrom(TimeOfImpactConstraint argOther){
     for(int i=0; i<localPoints.length; i++){
-      localPoints[i].copyFromVector(argOther.localPoints[i]);
+      localPoints[i].copyFrom(argOther.localPoints[i]);
     }
-    localNormal.copyFromVector(argOther.localNormal);
-    localPoint.copyFromVector(argOther.localPoint);
+    localNormal.copyFrom(argOther.localNormal);
+    localPoint.copyFrom(argOther.localPoint);
     type = argOther.type;
     radius = argOther.radius;
     pointCount = argOther.pointCount;

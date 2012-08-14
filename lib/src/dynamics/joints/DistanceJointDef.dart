@@ -64,8 +64,8 @@ class DistanceJointDef extends JointDef {
   void initialize(Body b1, Body b2, vec2 anchor1, vec2 anchor2) {
     bodyA = b1;
     bodyB = b2;
-    localAnchorA.copyFromVector(bodyA.getLocalPoint(anchor1));
-    localAnchorB.copyFromVector(bodyB.getLocalPoint(anchor2));
+    localAnchorA.copyFrom(bodyA.getLocalPoint(anchor1));
+    localAnchorB.copyFrom(bodyB.getLocalPoint(anchor2));
     length = (new vec2.copy(anchor2)).selfSub(anchor1).length;
   }
 }

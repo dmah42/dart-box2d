@@ -46,16 +46,16 @@ class Transform {
    * Sets this transform with the given position and rotation.
    */
   void setFromPositionAndRotation(vec2 argPosition, mat2x2 argRotation) {
-    position.copyFromVector(argPosition);
-    rotation.copyFromMatrix(argRotation);
+    position.copyFrom(argPosition);
+    rotation.copyFrom(argRotation);
   }
 
   /**
    * Sets this transform equal to the given transform.
    */
   void setFrom(Transform other) {
-    position.copyFromVector(other.position);
-    rotation.copyFromMatrix(other.rotation);
+    position.copyFrom(other.position);
+    rotation.copyFrom(other.rotation);
   }
 
   /**

@@ -22,15 +22,15 @@ class Car {
     _body.userData = "Car";
     _body.angularDamping = 3;
 
-    final List<Vector> vertices = new List<Vector>(8);
-    vertices[0] = new Vector( 1.5, 0.0);
-    vertices[1] = new Vector( 3.0, 2.5);
-    vertices[2] = new Vector( 2.8, 5.5);
-    vertices[3] = new Vector( 1.0, 10.0);
-    vertices[4] = new Vector(-1.0, 10.0);
-    vertices[5] = new Vector(-2.8, 5.5);
-    vertices[6] = new Vector(-3.0, 2.5);
-    vertices[7] = new Vector(-1.5, 0.0);
+    final List<vec2> vertices = new List<vec2>(8);
+    vertices[0] = new vec2( 1.5, 0.0);
+    vertices[1] = new vec2( 3.0, 2.5);
+    vertices[2] = new vec2( 2.8, 5.5);
+    vertices[3] = new vec2( 1.0, 10.0);
+    vertices[4] = new vec2(-1.0, 10.0);
+    vertices[5] = new vec2(-2.8, 5.5);
+    vertices[6] = new vec2(-3.0, 2.5);
+    vertices[7] = new vec2(-1.5, 0.0);
 
     final PolygonShape shape = new PolygonShape();
     shape.setFrom(vertices, vertices.length);
@@ -96,7 +96,7 @@ class Car {
     final double turnPerTimeStep = _turnSpeedPerSec * 1000 / time;
     final double angleNow = _flJoint.jointAngle;
     double angleToTurn = desiredAngle - angleNow;
-    angleToTurn = MathBox.clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
+    angleToTurn = clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
     final double angle = angleNow + angleToTurn;
     _flJoint.setLimits(angle, angle);
     _frJoint.setLimits(angle, angle);

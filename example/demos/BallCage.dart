@@ -70,22 +70,22 @@ class BallCage extends Demo {
       final num shiftX = START_X + circleShape.radius * 2 * i;
       final num shiftY = START_Y + circleShape.radius * 2 * i;
 
-      circleBodyDef.position = new Vector(shiftX, START_Y);
+      circleBodyDef.position = new vec2(shiftX, START_Y);
       Body circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(shiftX, borderLimitY);
+      circleBodyDef.position = new vec2(shiftX, borderLimitY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(START_X, shiftY);
+      circleBodyDef.position = new vec2(START_X, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(borderLimitX, shiftY);
+      circleBodyDef.position = new vec2(borderLimitX, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
@@ -103,8 +103,8 @@ class BallCage extends Demo {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new Vector(0, -20);
-    activeBodyDef.position = new Vector(15, 15);
+    activeBodyDef.linearVelocity = new vec2(0, -20);
+    activeBodyDef.position = new vec2(15, 15);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);

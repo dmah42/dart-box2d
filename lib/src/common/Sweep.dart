@@ -61,9 +61,9 @@ class Sweep {
    * Sets this Sweep equal to the given Sweep.
    */
   void setFrom(Sweep other) {
-    localCenter.copyFromVector(other.localCenter);
-    centerZero.copyFromVector(other.centerZero);
-    center.copyFromVector(other.center);
+    localCenter.copyFrom(other.localCenter);
+    centerZero.copyFrom(other.centerZero);
+    center.copyFrom(other.center);
     angleZero = other.angleZero;
     angle = other.angle;
   }

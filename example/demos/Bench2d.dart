@@ -39,7 +39,7 @@ class Bench2d {
   World world;
 
   Bench2d() {
-    final gravity = new Vector(0, GRAVITY);
+    final gravity = new vec2(0, GRAVITY);
     bool doSleep = true;
     world = new World(gravity, doSleep, new DefaultWorldPool());
   }
@@ -57,7 +57,7 @@ class Bench2d {
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.
-    final extents = new Vector(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    final extents = new vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
     viewport = new CanvasViewportTransform(extents, extents);
     viewport.scale = _VIEWPORT_SCALE;
 
@@ -74,7 +74,7 @@ class Bench2d {
       Body ground = world.createBody(bd);
 
       PolygonShape shape = new PolygonShape();
-      shape.setAsEdge(new Vector(-40.0, 0), new Vector(40.0, 0));
+      shape.setAsEdge(new vec2(-40.0, 0), new vec2(40.0, 0));
 
       final fixDef = new FixtureDef();
       fixDef.shape = shape;
@@ -92,10 +92,10 @@ class Bench2d {
       fixDef.shape = shape;
       fixDef.density = 5;
 
-      Vector x = new Vector(-7.0, 0.75);
-      Vector y = new Vector();
-      Vector deltaX = new Vector(0.5625, 1);
-      Vector deltaY = new Vector(1.125, 0.0);
+      vec2 x = new vec2(-7.0, 0.75);
+      vec2 y = new vec2();
+      vec2 deltaX = new vec2(0.5625, 1);
+      vec2 deltaY = new vec2(1.125, 0.0);
 
       for (int i = 0; i < PYRAMID_SIZE; ++i){
         y.setFrom(x);

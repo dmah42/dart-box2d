@@ -65,10 +65,18 @@ class IViewportTransform {
    * (6, 6), the translation is (1, 1).
    */
   vec2 get translation => extents - center;
-
   void set translation(vec2 translation) {
-    center.setFrom(extents);
-    center.selfSub(translation);
+    center.copyFromVector(extents).selfSub(translation);
+  }
+
+  /**
+   * Sets the transform's center to the given x and y coordinates,
+   * and using the given scale.
+   */
+  void setCamera(num x, num y, num s) {
+    center.x = x;
+    center.y = y;
+    scale = s;
   }
 
   /**
@@ -76,14 +84,14 @@ class IViewportTransform {
    * screen coordinate in argScreen.  It should be safe to give the
    * same object as both parameters.
    */
-  void getWorldToScreen(Vector argWorld, Vector argScreen) {
+  void getWorldToScreen(vec2 argWorld, vec2 argScreen) {
     // Correct for canvas considering the upper-left corner, rather than the
     // center, to be the origin.
     num gridCorrectedX = (argWorld.x * scale) + extents.x;
     num gridCorrectedY = extents.y - (argWorld.y * scale);
 
-    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
-        -translation.y);
+    argScreen.x = gridCorrectedX + translation.x;
+    argScreen.y = gridCorrectedY - translation.y;
   }
 
   /**
@@ -91,12 +99,13 @@ class IViewportTransform {
    * corresponding world coordinates in argWorld. It should be safe
    * to give the same object as both parameters.
    */
-  void getScreenToWorld(Vector argScreen, Vector argWorld) {
+  void getScreenToWorld(vec2 argScreen, vec2 argWorld) {
     num translationCorrectedX = argScreen.x - translation.x;
     num translationCorrectedY = argScreen.y + translation.y;
 
     num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
     num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+    argWorld.x = gridCorrectedX;
+    argWorld.y = gridCorrectedY;
   }
 }

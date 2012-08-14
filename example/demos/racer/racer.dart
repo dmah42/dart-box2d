@@ -34,7 +34,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super("Racer", new Vector(0, 0), 2.5), _lastTime = 0;
+  Racer() : super("Racer", new vec2(0, 0), 2.5), _lastTime = 0;
 
   void initialize() {
     _createGround();
@@ -81,13 +81,11 @@ class Racer extends Demo implements ContactListener {
     fixtureDef.isSensor = true;
 
     fixtureDef.userData = new GroundArea(0.001, false);
-    shape.setAsBoxWithCenterAndAngle(
-        27, 21, new Vector(-30, 30), MathBox.degToRad(20));
+    shape.setAsBoxWithCenterAndAngle(27, 21, new vec2(-30, 30), radians(20));
     _groundBody.createFixture(fixtureDef);
 
     fixtureDef.userData = new GroundArea(0.2, false);
-    shape.setAsBoxWithCenterAndAngle(
-        27, 15, new Vector(20, 40), MathBox.degToRad(-40));
+    shape.setAsBoxWithCenterAndAngle(27, 15, new vec2(20, 40), radians(-40));
     _groundBody.createFixture(fixtureDef);
   }
 
@@ -104,20 +102,20 @@ class Racer extends Demo implements ContactListener {
     final int boundaryX = 150;
     final int boundaryY = 100;
 
-    shape.setAsEdge(new Vector(-boundaryX, -boundaryY),
-        new Vector( boundaryX, -boundaryY));
+    shape.setAsEdge(new vec2(-boundaryX, -boundaryY),
+        new vec2( boundaryX, -boundaryY));
     Fixture boundaryFixture = boundaryBody.createFixture(fixtureDef);
 
-    shape.setAsEdge(new Vector(boundaryX, -boundaryY),
-        new Vector(boundaryX,  boundaryY));
+    shape.setAsEdge(new vec2(boundaryX, -boundaryY),
+        new vec2(boundaryX,  boundaryY));
     boundaryFixture = boundaryBody.createFixture(fixtureDef);
 
-    shape.setAsEdge(new Vector( boundaryX, boundaryY),
-        new Vector(-boundaryX, boundaryY));
+    shape.setAsEdge(new vec2( boundaryX, boundaryY),
+        new vec2(-boundaryX, boundaryY));
     boundaryFixture = boundaryBody.createFixture(fixtureDef);
 
-    shape.setAsEdge(new Vector(-boundaryX,  boundaryY),
-        new Vector(-boundaryX, -boundaryY));
+    shape.setAsEdge(new vec2(-boundaryX,  boundaryY),
+        new vec2(-boundaryX, -boundaryY));
     boundaryFixture = boundaryBody.createFixture(fixtureDef);
   }
 

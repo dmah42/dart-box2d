@@ -41,7 +41,7 @@ class DistanceProxy {
   void setFromShape(shape) {
     // If the shape is a circle...
     if (shape.type == ShapeType.CIRCLE) {
-      vertices[0].copyFromVector(shape.position);
+      vertices[0].copyFrom(shape.position);
       count = 1;
       radius = shape.radius;
 
@@ -50,7 +50,7 @@ class DistanceProxy {
       count = shape.vertexCount;
       radius = shape.radius;
       for(int i = 0; i < count; i++) {
-        vertices[i].copyFromVector(shape.vertices[i]);
+        vertices[i].copyFrom(shape.vertices[i]);
       }
     } else {
       // Should always be a circle or a polygon.

@@ -50,9 +50,9 @@ class BoxTest extends Demo {
     // Set shape 3 times and create fixture on the body for each
     shape.setAsBox(50.0, 0.4);
     ground.createFixtureFromShape(shape);
-    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector(-10.0, 0.0), 0.0);
+    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new vec2(-10.0, 0.0), 0.0);
     ground.createFixtureFromShape(shape);
-    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector( 10.0, 0.0), 0.0);
+    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new vec2( 10.0, 0.0), 0.0);
     ground.createFixtureFromShape(shape);
 
     // Add composite body to list
@@ -62,7 +62,7 @@ class BoxTest extends Demo {
   void _createBox() {
     // Create shape
     final PolygonShape shape = new PolygonShape();
-    shape.setAsBoxWithCenterAndAngle(3.0, 1.5, new Vector(0, 0), Math.PI / 2);
+    shape.setAsBoxWithCenterAndAngle(3.0, 1.5, new vec2(0, 0), Math.PI / 2);
 
     // Define fixture (links body and shape)
     final FixtureDef activeFixtureDef = new FixtureDef();
@@ -73,7 +73,7 @@ class BoxTest extends Demo {
     // Define body
     final BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
-    bodyDef.position = new Vector(0, 30.0);
+    bodyDef.position = new vec2(0, 30.0);
 
     // Create body and fixture from definitions
     final Body fallingBox = world.createBody(bodyDef);

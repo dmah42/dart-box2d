@@ -152,11 +152,11 @@ class Body {
       flags |= ACTIVE_FLAG;
     }
 
-    originTransform.position.copyFromVector(bd.position);
+    originTransform.position.copyFrom(bd.position);
     originTransform.rotation.setRotation(bd.angle);
     sweep.localCenter.x = sweep.localCenter.y = 0; // setZero();
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFromVector(sweep.centerZero);
+    sweep.center.copyFrom(sweep.centerZero);
     sweep.angle = bd.angle;
     sweep.angleZero = bd.angle;
 
@@ -307,10 +307,10 @@ class Body {
     }
 
     originTransform.rotation.setRotation(argAngle);
-    originTransform.position.copyFromVector(argPosition);
+    originTransform.position.copyFrom(argPosition);
 
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFromVector(sweep.centerZero);
+    sweep.center.copyFrom(sweep.centerZero);
 
     sweep.angleZero = argAngle;
     sweep.angle = argAngle;
@@ -346,7 +346,7 @@ class Body {
       awake = true;
     }
 
-    _linearVelocity.copyFromVector(v);
+    _linearVelocity.copyFrom(v);
   }
 
   num get angularVelocity => _angularVelocity; 
@@ -503,10 +503,10 @@ class Body {
     }
 
     // Move center of mass.
-    oldCenter.copyFromVector(sweep.center);
-    sweep.localCenter.copyFromVector(data.center);
+    oldCenter.copyFrom(sweep.center);
+    sweep.localCenter.copyFrom(data.center);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFromVector(sweep.centerZero);
+    sweep.center.copyFrom(sweep.centerZero);
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
@@ -533,8 +533,8 @@ class Body {
 
     // Static and kinematic bodies have zero mass.
     if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
-      sweep.center.copyFromVector(originTransform.position);
-      sweep.centerZero.copyFromVector(originTransform.position);
+      sweep.center.copyFrom(originTransform.position);
+      sweep.centerZero.copyFrom(originTransform.position);
       return;
     }
 
@@ -576,10 +576,10 @@ class Body {
     }
 
     // Move center of mass.
-    oldCenter.copyFromVector(sweep.center);
-    sweep.localCenter.copyFromVector(tempCenter);
+    oldCenter.copyFrom(sweep.center);
+    sweep.localCenter.copyFrom(tempCenter);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFromVector(sweep.centerZero);
+    sweep.center.copyFrom(sweep.centerZero);
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
@@ -628,7 +628,7 @@ class Body {
    * given out paramater.
    */
   void getWorldVectorToOut(vec2 localVector, vec2 out) {
-    out.copyFromVector(localVector);
+    out.copyFrom(localVector);
     originTransform.rotation.transformDirect(out);
   }
 
@@ -669,7 +669,7 @@ class Body {
    * out parameter.
    */
   void getLocalVectorToOut(vec2 worldVector, vec2 out) {
-    out.copyFromVector(worldVector);
+    out.copyFrom(worldVector);
     originTransform.rotation.transposed().transformDirect(out);
   }
 
@@ -686,7 +686,7 @@ class Body {
   }
 
   void getLinearVelocityFromWorldPointToOut(vec2 worldPoint, vec2 out) {
-    out.copyFromVector(worldPoint).selfSub(sweep.center);
+    out.copyFrom(worldPoint).selfSub(sweep.center);
     num tempY = _angularVelocity * out.x;
     out.x = -_angularVelocity * out.y;
     out.y = tempY;
@@ -880,7 +880,7 @@ class Body {
   void synchronizeFixtures() {
     final Transform xf1 = _pxf;
     xf1.rotation.setRotation(sweep.angleZero);
-    xf1.position.copyFromVector(sweep.localCenter);
+    xf1.position.copyFrom(sweep.localCenter);
     xf1.rotation.transformDirect(xf1.position);
     xf1.position.selfNegate().selfAdd(sweep.centerZero);
 
@@ -917,7 +917,7 @@ class Body {
 
   void advance(num t) {
     sweep.advance(t);
-    sweep.center.copyFromVector(sweep.centerZero);
+    sweep.center.copyFrom(sweep.centerZero);
     sweep.angle = sweep.angleZero;
     synchronizeTransform();
   }

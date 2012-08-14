@@ -43,9 +43,9 @@ class BlobTest extends Demo {
       bodies.add(ground);
       ground.createFixtureFromShape(sd);
 
-      sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector(-10.0, 0.0), 0.0);
+      sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new vec2(-10.0, 0.0), 0.0);
       ground.createFixtureFromShape(sd);
-      sd.setAsBoxWithCenterAndAngle(0.4,50.0,new Vector(10.0,0.0), 0.0);
+      sd.setAsBoxWithCenterAndAngle(0.4,50.0,new vec2(10.0,0.0), 0.0);
       ground.createFixtureFromShape(sd);
     }
 
@@ -64,7 +64,7 @@ class BlobTest extends Demo {
 
       num x = cx + rx * Math.sin(angle);
       num y = cy + ry * Math.cos(angle);
-      bd.position.setFrom(new Vector(x,y));
+      bd.position.setFrom(new vec2(x,y));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);
       bodies.add(body);
@@ -86,8 +86,8 @@ class BlobTest extends Demo {
     BodyDef bd2 = new BodyDef();
     bd2.type = BodyType.DYNAMIC;
     PolygonShape psd = new PolygonShape();
-    psd.setAsBoxWithCenterAndAngle(3.0,1.5,new Vector(cx,cy+15.0),0.0);
-    bd2.position = new Vector(cx,cy+15.0);
+    psd.setAsBoxWithCenterAndAngle(3.0,1.5,new vec2(cx,cy+15.0),0.0);
+    bd2.position = new vec2(cx,cy+15.0);
     Body fallingBox = world.createBody(bd2);
     bodies.add(fallingBox);
     fallingBox.createFixtureFromShape(psd, 1.0);

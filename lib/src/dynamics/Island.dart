@@ -173,7 +173,7 @@ class Island {
       }
 
       // Check for large velocities.
-      _translation.copyFromVector(b.linearVelocity).selfScale(time_step.dt);
+      _translation.copyFrom(b.linearVelocity).selfScale(time_step.dt);
       if (dot(_translation, _translation) > Settings.MAX_TRANSLATION_SQUARED) {
         num ratio = Settings.MAX_TRANSLATION / _translation.length;
         b.linearVelocity.selfScale(ratio);
@@ -186,11 +186,11 @@ class Island {
       }
 
       // Store positions for continuous collision.
-      b.sweep.centerZero.copyFromVector(b.sweep.center);
+      b.sweep.centerZero.copyFrom(b.sweep.center);
       b.sweep.angleZero = b.sweep.angle;
 
       // Integrate
-      temp.copyFromVector(b.linearVelocity).selfScale(time_step.dt);
+      temp.copyFrom(b.linearVelocity).selfScale(time_step.dt);
       b.sweep.center.selfAdd(temp);
       b.sweep.angle += time_step.dt * b.angularVelocity;
 
