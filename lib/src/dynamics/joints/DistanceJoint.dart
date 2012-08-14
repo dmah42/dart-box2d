@@ -151,8 +151,8 @@ class DistanceJoint extends Joint {
     final v2 = cross(b2.angularVelocity, r2);
     //crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
     //crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
-    v1.addLocal(b1.linearVelocity);
-    v2.addLocal(b2.linearVelocity);
+    v1.selfAdd(b1.linearVelocity);
+    v2.selfAdd(b2.linearVelocity);
 
     num Cdot = dot(u, v2.selfSub(v1));
 
