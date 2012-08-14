@@ -13,8 +13,7 @@
 // limitations under the License.
 
 #library('BenchmarkRunner');
-#import('../lib/box2d.dart');
-#import('dart:html');
+#import('../lib/box2d_nohtml.dart');
 #source('Benchmark.dart');
 #source('BallCageBench.dart');
 #source('BallDropBench.dart');
@@ -22,10 +21,9 @@
 #source('DominoPlatformBench.dart');
 #source('DominoTowerBench.dart');
 
-/**
- * Runs the Dart Box2D benchmarks. Outputs results in browser.
- */
+/** Runs the Dart Box2D benchmarks. Outputs results to console. */
 class BenchmarkRunner {
+  // TODO(dominich): Add timeout for benchmarks.
   /**
    * The different values for position/velocity solve iterations that one wishes
    * to benchmark. These are the arguments provided to the world's step
@@ -34,9 +32,7 @@ class BenchmarkRunner {
    */
   List<int> solveLoops;
 
-  /**
-   * The different values for number of steps that one wishes to benchmark.
-   */
+  /** The different values for number of steps that one wishes to benchmark. */
   List<int> steps;
 
   /** The benchmarks to be run. Initialized in runBenchmarks. */
@@ -46,16 +42,10 @@ class BenchmarkRunner {
   StringBuffer resultsWriter;
 
   BenchmarkRunner() :
-    resultsWriter = new StringBuffer(),
-    benchmarks = new List<Benchmark>(),
-    solveLoops = const [10, 30],
-    steps = const [10, 100, 500, 2000] { }
-
-  static void main() {
-    final runner = new BenchmarkRunner();
-    runner.setupBenchmarks();
-    runner.runBenchmarks();
-  }
+      resultsWriter = new StringBuffer(),
+      benchmarks = new List<Benchmark>(),
+      solveLoops = const [10, 30],
+      steps = const [10, 100, 500, 2000];
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method
@@ -63,25 +53,22 @@ class BenchmarkRunner {
    * they are run.
    */
   void setupBenchmarks() {
-    addBenchmark(new BallDropBench(solveLoops, steps));
-    addBenchmark(new BallCageBench(solveLoops, steps));
-    addBenchmark(new CircleStressBench(solveLoops, steps));
-    addBenchmark(new DominoPlatformBench(solveLoops, steps));
-    addBenchmark(new DominoTowerBench(solveLoops, steps));
+    _addBenchmark(new BallDropBench(solveLoops, steps));
+    _addBenchmark(new BallCageBench(solveLoops, steps));
+    _addBenchmark(new CircleStressBench(solveLoops, steps));
+    _addBenchmark(new DominoPlatformBench(solveLoops, steps));
+    _addBenchmark(new DominoTowerBench(solveLoops, steps));
   }
 
   /**
-   * Runs and records the results of each benchmark included in
-   * setupBenchmarks().
+   * Runs and records the results of each benchmark included in setupBenchmarks().
    */
   void runBenchmarks() {
     for (Benchmark benchmark in benchmarks) {
       print('Running ${benchmark.name}');
       resultsWriter.clear();
       benchmark.runBenchmark(resultsWriter);
-      print(resultsWriter);
-      print('');
-      print("------------------------------------------------");
+      print("$resultsWriter------------------------------------------------");
     }
   }
 
@@ -89,11 +76,12 @@ class BenchmarkRunner {
    * Initializes the given benchmark and adds to the end of the queue of
    * benchmarks to run.
    */
-  void addBenchmark(Benchmark benchmark) {
-    benchmarks.add(benchmark);
-  }
+  void _addBenchmark(Benchmark benchmark) => benchmarks.add(benchmark);
 }
 
 void main() {
-  BenchmarkRunner.main();
+  // TODO(dominich): Options for which benchmarks to run and step sizes.
+  final runner = new BenchmarkRunner();
+  runner.setupBenchmarks();
+  runner.runBenchmarks();
 }

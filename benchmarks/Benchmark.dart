@@ -36,9 +36,7 @@ class Benchmark {
    */
   List<int> solveLoops;
 
-  /**
-   * The different number of world steps to test.
-   */
+  /** The different number of world steps to test. */
   List<int> _steps;
 
   /**
@@ -50,9 +48,7 @@ class Benchmark {
   /** Sets up the physics world. */
   abstract void initialize();
 
-  String get name() {
-    return "No Name Provided";
-  }
+  String get name() => "No Name Provided";
 
   /**
    * Resets the world to a fresh state. Call this before running a benchmark
@@ -62,9 +58,7 @@ class Benchmark {
     bodies = new List<Body>();
 
     // Setup the World.
-    final gravity = new Vector(0, GRAVITY);
-    bool doSleep = true;
-    world = new World(gravity, doSleep, new DefaultWorldPool());
+    world = new World(new Vector(0, GRAVITY), true, new DefaultWorldPool());
   }
 
   /**
@@ -74,11 +68,7 @@ class Benchmark {
   void _recordResults(int time, StringBuffer resultsWriter, benchmarkIterations,
       steps) {
     resultsWriter.add(name);
-    resultsWriter.add(" ($steps steps, $benchmarkIterations solve loops)");
-    resultsWriter.add(" : ");
-
-    resultsWriter.add(time);
-    resultsWriter.add('ms');
+    resultsWriter.add(" ($steps steps, $benchmarkIterations solve loops) : $time ms");
 
     // Calculate and write-out steps/second.
     num stepsPerSecond = (steps / (time / 1000));
@@ -87,10 +77,8 @@ class Benchmark {
     // Write out the checksum. This should be compared manually to other
     // implementations of the Box2D benchmarks.
     resultsWriter.add('\n');
-    resultsWriter.add("Checksum: ");
-    resultsWriter.add(checksum);
-    resultsWriter.add('\n');
-    resultsWriter.add('\n');
+    resultsWriter.add("Checksum: $checksum");
+    resultsWriter.add('\n\n');
   }
 
   /**
@@ -103,15 +91,13 @@ class Benchmark {
         // Initialize the world to start fresh.
         initialize();
 
-        final watch = new Stopwatch();
-        watch.start();
+        final watch = new Stopwatch.start();
 
         // Step the world forward in a nice loop.
         for (int i = 0; i < stepCount; ++i)
           world.step(TIME_STEP, solveCount, solveCount);
 
         // Record the running time.
-        watch.stop();
         _recordResults(watch.elapsedInMs(), resultsWriter, solveCount,
             stepCount);
       }
