@@ -46,7 +46,7 @@ class FrictionJointTest extends Demo {
 
     // Define body
     final BodyDef bodyDef = new BodyDef();
-    bodyDef.position.setCoords(0.0, 0.0);
+    bodyDef.position.splat(0.0);
 
     // Create body
     _ground = world.createBody(bodyDef);

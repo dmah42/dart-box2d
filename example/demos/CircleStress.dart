@@ -128,9 +128,8 @@ class CircleStress extends Demo {
         fd.density = 25;
         fd.friction = .1;
         fd.restitution = .9;
-        num xPos = radius * Math.cos(2 * Math.PI * (i / numPieces.toDouble()));
-        num yPos = radius * Math.sin(2 * Math.PI * (i / numPieces.toDouble()));
-        cd.position.setCoords(xPos, yPos);
+        cd.position.x = radius * Math.cos(MathBox.TWO_PI * (i / numPieces));
+        cd.position.y = radius * Math.sin(MathBox.TWO_PI * (i / numPieces));
 
         body.createFixture(fd);
       }

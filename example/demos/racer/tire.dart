@@ -45,11 +45,11 @@ class Tire {
   }
 
   void updateFriction() {
-    final vec2 impulse = _lateralVelocity.mulLocal(-_body.mass);
+    final vec2 impulse = _lateralVelocity * -_body.mass;
     if (impulse.length > _maxLateralImpulse) {
-      impulse.mulLocal(_maxLateralImpulse / impulse.length);
+      impulse.selfScale(_maxLateralImpulse / impulse.length);
     }
-    _body.applyLinearImpulse(impulse.mulLocal(_currentTraction),
+    _body.applyLinearImpulse(impulse.selfScale(_currentTraction),
                              _body.worldCenter);
     _body.applyAngularImpulse(
         0.1 * _currentTraction * _body.inertia * (-_body.angularVelocity));
@@ -59,7 +59,7 @@ class Tire {
     currentForwardNormal.normalize();
     final double dragForceMagnitude = -2 * currentForwardSpeed;
     _body.applyForce(
-        currentForwardNormal.mulLocal(_currentTraction * dragForceMagnitude),
+        currentForwardNormal.selfScale(_currentTraction * dragForceMagnitude),
         _body.worldCenter);
   }
 

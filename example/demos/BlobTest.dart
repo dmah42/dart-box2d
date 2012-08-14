@@ -37,7 +37,7 @@ class BlobTest extends Demo {
       sd.setAsBox(50.0, 0.4);
 
       BodyDef bd = new BodyDef();
-      bd.position.setCoords(0.0, 0.0);
+      bd.position.splat(0);
       assert(world != null);
       ground = world.createBody(bd);
       bodies.add(ground);
@@ -61,10 +61,8 @@ class BlobTest extends Demo {
       num angle = MathBox.translateAndScale(i, 0, nBodies, 0, Math.PI * 2);
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true;
-
-      num x = cx + rx * Math.sin(angle);
-      num y = cy + ry * Math.cos(angle);
-      bd.position.setFrom(new vec2(x,y));
+      bd.position.x = cx + rx * Math.sin(angle);
+      bd.position.y = cy + ry * Math.cos(angle);
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);
       bodies.add(body);

@@ -42,7 +42,7 @@ class BallDropBench extends Benchmark {
     // Define and create the ball body. Attach the fixture.
     final bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
-    bodyDef.position = new Vector(X_START, Y_START);
+    bodyDef.position = new vec2(X_START, Y_START);
     final ballBody = world.createBody(bodyDef);
     ballBody.createFixture(fd);
     bodies.add(ballBody);

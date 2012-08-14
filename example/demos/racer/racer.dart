@@ -34,7 +34,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super("Racer", new vec2(0, 0), 2.5), _lastTime = 0;
+  Racer() : super("Racer", new vec2.zero(), 2.5), _lastTime = 0;
 
   void initialize() {
     _createGround();

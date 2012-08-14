@@ -61,7 +61,7 @@ abstract class Benchmark {
     bodies = new List<Body>();
 
     // Setup the World.
-    world = new World(new Vector(0, GRAVITY), true, new DefaultWorldPool());
+    world = new World(new vec2(0, GRAVITY), true, new DefaultWorldPool());
   }
 
   /**
@@ -114,11 +114,11 @@ abstract class Benchmark {
    * producing the same output across different box2D implementations.
    */
   num get checksum {
-    final positionSum = new Vector();
-    final velocitySum = new Vector();
+    final positionSum = new vec2();
+    final velocitySum = new vec2();
     for (Body b in bodies) {
-      positionSum.addLocal(b.position);
-      velocitySum.addLocal(b.linearVelocity);
+      positionSum.selfAdd(b.position);
+      velocitySum.selfAdd(b.linearVelocity);
     }
 
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;
