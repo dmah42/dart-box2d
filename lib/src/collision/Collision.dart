@@ -578,7 +578,9 @@ class Collision {
     localTangent.normalize();
 
     // vec2 localNormal = Cross(dv, 1.0);
-    localNormal = cross(localTangent, 1);
+    // TODO(dominich): Remove when crossToOut is live.
+    final vec2 _localNormal = cross(localTangent, 1);
+    localNormal.copyFrom(_localNormal);
 
     // vec2 planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).selfAdd(v12).selfScale(.5);
