@@ -59,7 +59,6 @@ class WorldManifold {
         normal.y = 0;
         pointA.x = xfA.position.x + xfA.rotation.col0.x *
             manifold.localPoint.x + xfA.rotation.col1.x * manifold.localPoint.y;
-            manifold.localPoint.x + xfA.rotation.col1.y * manifold.localPoint.y;
         pointB.x = xfB.position.x + xfB.rotation.col0.x *
             manifold.points[0].localPoint.x + xfB.rotation.col1.x *
             manifold.points[0].localPoint.y;

@@ -175,24 +175,21 @@ class Collision {
    * Compute the collision manifold between two circles.
    *
    */
-  //TODO(gregbglw): Consider introducing operator overloading for matrix/vector
-  //operations and then replace many of the inlined calculations with those.
   void collideCircles(Manifold manifold, CircleShape circle1, Transform xfA,
       CircleShape circle2, Transform xfB) {
     manifold.pointCount = 0;
 
     final vec2 v = circle1.position;
+    final num pAx = xfA.position.x + xfA.rotation.col0.x *
+        v.x + xfA.rotation.col1.x * v.y;
     final num pAy = xfA.position.y + xfA.rotation.col0.y *
         v.x + xfA.rotation.col1.y * v.y;
 
-    final num pAx = xfA.position.x + xfA.rotation.col0.x *
-        v.x + xfA.rotation.col1.x * v.y;
-
     final vec2 v1 = circle2.position;
-    final num pBy = xfB.position.y + xfB.rotation.col0.y * v1.x +
-        xfB.rotation.col1.y * v1.y;
     final num pBx = xfB.position.x + xfB.rotation.col0.x * v1.x +
         xfB.rotation.col1.x * v1.y;
+    final num pBy = xfB.position.y + xfB.rotation.col0.y * v1.x +
+        xfB.rotation.col1.y * v1.y;
 
     final num dx = pBx - pAx;
     final num dy = pBy - pAy;
@@ -492,6 +489,9 @@ class Collision {
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
+    // TODO(dominich): Check the transform matches mulMatrixAndVectorToOut.
+    // TODO(dominich): Check transposed transform matches
+    //                 mulTransMatrixAndVectorToOut.
     normal1.copyFrom(normals1[edge1]);
     xf1.rotation.transformDirect(normal1);
     xf2.rotation.transposed().transformDirect(normal1);
@@ -578,8 +578,7 @@ class Collision {
     localTangent.normalize();
 
     // vec2 localNormal = Cross(dv, 1.0);
-    localNormal.x = -localTangent.y;
-    localNormal.y = localTangent.x;
+    localNormal = cross(localTangent, 1);
 
     // vec2 planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).selfAdd(v12).selfScale(.5);

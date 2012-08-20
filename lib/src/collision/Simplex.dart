@@ -143,8 +143,7 @@ class Simplex {
     switch (count) {
       case 0 :
         assert (false);
-        out.x = 0;
-        out.y = 0;
+        out.splat(0);
         return;
       case 1 :
         out.copyFrom(v1.w);
@@ -155,13 +154,11 @@ class Simplex {
         out.copyFrom(case2);
         return;
       case 3 :
-        out.x = 0;
-        out.y = 0;
+        out.splat(0);
         return;
       default :
         assert (false);
-        out.x = 0;
-        out.y = 0;
+        out.splat(0);
         return;
     }
   }

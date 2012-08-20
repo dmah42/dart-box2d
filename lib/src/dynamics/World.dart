@@ -615,6 +615,7 @@ class World {
             vs[i] = new vec2();
           }
 
+          // TODO(dominich): lose vec2 allocs when 'set(num num)' exists.
           vs[0].xy = new vec2(aabb.lowerBound.x, aabb.lowerBound.y);
           vs[1].xy = new vec2(aabb.upperBound.x, aabb.lowerBound.y);
           vs[2].xy = new vec2(aabb.upperBound.x, aabb.upperBound.y);

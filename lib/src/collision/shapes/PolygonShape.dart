@@ -180,7 +180,7 @@ class PolygonShape extends Shape {
    */
   bool testPoint(Transform xf, vec2 p) {
     vec2 pLocal = (new vec2.copy(p)).selfSub(xf.position);
-    xf.rotation.transformDirect(pLocal);
+    xf.rotation.transposed().transformDirect(pLocal);
 
     vec2 temp = new vec2();
 

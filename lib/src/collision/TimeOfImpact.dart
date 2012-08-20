@@ -387,10 +387,10 @@ class SeparationFunction {
     switch (type) {
       case SeparationType.POINTS:
         axisA.copyFrom(axis);
-        xfa.rotation.transformDirect(axisA);
+        xfa.rotation.transposed().transformDirect(axisA);
         //Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
         axisB.copyFrom(axis).selfNegate();
-        xfb.rotation.transformDirect(axisB);
+        xfb.rotation.transposed().transformDirect(axisB);
         //Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
         //    axisB);
         //axis.negateLocal();
@@ -412,7 +412,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPoint, pointA);
 
         axisB.copyFrom(normal).selfNegate();
-        xfb.rotation.transformDirect(axisB);
+        xfb.rotation.transposed().transformDirect(axisB);
 
         indexes[0] = -1;
         indexes[1] = proxyB.getSupport(axisB);
@@ -428,7 +428,7 @@ class SeparationFunction {
         Transform.mulToOut(xfb, localPoint, pointB);
 
         axisA.copyFrom(normal).selfNegate();
-        xfa.rotation.transformDirect(axisA);
+        xfa.rotation.transposed().transformDirect(axisA);
 
         indexes[1] = -1;
         indexes[0] = proxyA.getSupport(axisA);
@@ -453,9 +453,9 @@ class SeparationFunction {
     switch (type) {
       case SeparationType.POINTS:
         axisA.copyFrom(axis);
-        xfa.rotation.transformDirect(axisA);
+        xfa.rotation.transposed().transformDirect(axisA);
         axisB.copyFrom(axis).selfNegate();
-        xfb.rotation.transformDirect(axisB);
+        xfb.rotation.transposed().transformDirect(axisB);
 
         localPointA.copyFrom(proxyA.vertices[indexA]);
         localPointB.copyFrom(proxyB.vertices[indexB]);
@@ -471,7 +471,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPoint, pointA);
 
         axisB.copyFrom(normal).selfNegate();
-        xfb.rotation.transformDirect(axisB);
+        xfb.rotation.transposed().transformDirect(axisB);
 
         localPointB.copyFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
@@ -483,7 +483,7 @@ class SeparationFunction {
         Transform.mulToOut(xfb, localPoint, pointB);
 
         axisA.copyFrom(normal).selfNegate();
-        xfa.rotation.transformDirect(axisA);
+        xfa.rotation.transposed().transformDirect(axisA);
 
         localPointA.copyFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
