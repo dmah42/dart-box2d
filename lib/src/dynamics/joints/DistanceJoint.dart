@@ -71,8 +71,8 @@ class DistanceJoint extends Joint {
     vec2 r2 = new vec2();
 
     // Compute the effective mass matrix.
-    r1.copyFrom(localAnchor1).selfSub(b1.localCenter);
-    r2.copyFrom(localAnchor2).selfSub(b2.localCenter);
+    r1.copyFrom(localAnchor1).sub(b1.localCenter);
+    r2.copyFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 
@@ -82,7 +82,7 @@ class DistanceJoint extends Joint {
     // Handle singularity.
     num len = u.length;
     if (len > Settings.LINEAR_SLOP) {
-      u.selfScale(1.0 / len);
+      u.scale(1.0 / len);
     } else {
       u.x = u.y = 0;
     }
@@ -121,7 +121,7 @@ class DistanceJoint extends Joint {
       impulse *= time_step.dtRatio;
 
       vec2 P = new vec2();
-      P.copyFrom(u).selfScale(impulse);
+      P.copyFrom(u).scale(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
@@ -142,8 +142,8 @@ class DistanceJoint extends Joint {
     final r1 = new vec2();
     final r2 = new vec2();
 
-    r1.copyFrom(localAnchor1).selfSub(b1.localCenter);
-    r2.copyFrom(localAnchor2).selfSub(b2.localCenter);
+    r1.copyFrom(localAnchor1).sub(b1.localCenter);
+    r2.copyFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 
@@ -151,10 +151,10 @@ class DistanceJoint extends Joint {
     final v2 = cross(b2.angularVelocity, r2);
     //crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
     //crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
-    v1.selfAdd(b1.linearVelocity);
-    v2.selfAdd(b2.linearVelocity);
+    v1.add(b1.linearVelocity);
+    v2.add(b2.linearVelocity);
 
-    num Cdot = dot(u, v2.selfSub(v1));
+    num Cdot = dot(u, v2.sub(v1));
 
     num imp = -mass * (Cdot + bias + gamma * impulse);
     impulse += imp;
@@ -181,8 +181,8 @@ class DistanceJoint extends Joint {
     final r2 = new vec2();
     final d = new vec2();
 
-    r1.copyFrom(localAnchor1).selfSub(b1.localCenter);
-    r2.copyFrom(localAnchor2).selfSub(b2.localCenter);
+    r1.copyFrom(localAnchor1).sub(b1.localCenter);
+    r2.copyFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 

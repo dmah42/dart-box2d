@@ -161,8 +161,8 @@ class Collision {
       // Find intersection point of edge and plane
       num interp = distance0 / (distance0 - distance1);
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-      vOut[numOut].v.copyFrom(vIn[1].v).selfSub(vIn[0].v).
-          selfScale(interp).selfAdd(vIn[0].v);
+      vOut[numOut].v.copyFrom(vIn[1].v);
+      vOut[numOut].v.sub(vIn[0].v).scale(interp).add(vIn[0].v);
       final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
       vOut[numOut].id.setFrom(vin.id);
       ++numOut;
@@ -357,11 +357,11 @@ class Collision {
 
     assert (0 <= edge1 && edge1 < count1);
     // Convert normal from poly1's frame into poly2's frame.
-    final mat2x2 R = xf1.rotation;
+    final mat2 R = xf1.rotation;
     final vec2 v = normals1[edge1];
     final num normal1Worldy = R.col0.y * v.x + R.col1.y * v.y;
     final num normal1Worldx = R.col0.x * v.x + R.col1.x * v.y;
-    final mat2x2 R1 = xf2.rotation;
+    final mat2 R1 = xf2.rotation;
     final num normal1x = normal1Worldx * R1.col0.x + normal1Worldy * R1.col0.y;
     final num normal1y = normal1Worldx * R1.col1.x + normal1Worldy * R1.col1.y;
     // end inline
@@ -411,7 +411,7 @@ class Collision {
     final num dx = predx - tempx;
     final num dy = predy - tempy;
 
-    final mat2x2 R = xf1.rotation;
+    final mat2 R = xf1.rotation;
     final num dLocal1x = dx * R.col0.x + dy * R.col0.y;
     final num dLocal1y = dx * R.col1.x + dy * R.col1.y;
 
@@ -574,7 +574,7 @@ class Collision {
     v11.copyFrom(vertices1[edge1]);
     v12.copyFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
 
-    localTangent.copyFrom(v12).selfSub(v11);
+    localTangent.copyFrom(v12).sub(v11);
     localTangent.normalize();
 
     // vec2 localNormal = Cross(dv, 1.0);
@@ -583,7 +583,7 @@ class Collision {
     localNormal.copyFrom(_localNormal);
 
     // vec2 planePoint = 0.5 * (v11 + v12)
-    planePoint.copyFrom(v11).selfAdd(v12).selfScale(.5);
+    planePoint.copyFrom(v11).add(v12).scale(.5);
 
     // vec2 sideNormal = Mul(xf1.rotation, v12 - v11);
     tangent.copyFrom(localTangent);
@@ -614,9 +614,9 @@ class Collision {
     // Clip to box side 1
     // np = ClipSegmentToLine(clipPoints1, incidentEdge, -sideNormal,
     // sideOffset1);
-    tangent.selfNegate();
+    tangent.negate_();
     np = clipSegmentToLine(clipPoints1, incidentEdge, tangent, sideOffset1);
-    tangent.selfNegate();
+    tangent.negate_();
 
     if (np < 2)
       return;

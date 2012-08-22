@@ -24,19 +24,19 @@ class Transform {
   final vec2 position;
 
   /** A matrix representing a rotation. */
-  final mat2x2 rotation;
+  final mat2 rotation;
 
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new vec2(), rotation = new mat2x2();
+  Transform() : position = new vec2(), rotation = new mat2();
 
   /**
    * Constructs a new transform equal to the given transform.
    */
   Transform.copy(Transform other)
       : position = new vec2.copy(other.position),
-        rotation = new mat2x2.copy(other.rotation);
+        rotation = new mat2.copy(other.rotation);
 
   bool operator ==(other) {
     return position == other.position && rotation == other.rotation;
@@ -45,7 +45,7 @@ class Transform {
   /**
    * Sets this transform with the given position and rotation.
    */
-  void setFromPositionAndRotation(vec2 argPosition, mat2x2 argRotation) {
+  void setFromPositionAndRotation(vec2 argPosition, mat2 argRotation) {
     position.copyFrom(argPosition);
     rotation.copyFrom(argRotation);
   }

@@ -126,8 +126,8 @@ class TimeOfImpactSolver {
         vec2 point = psm.point;
         num separation = psm.separation;
 
-        rA.copyFrom(point).selfSub(bodyA.sweep.center);
-        rB.copyFrom(point).selfSub(bodyB.sweep.center);
+        rA.copyFrom(point).sub(bodyA.sweep.center);
+        rB.copyFrom(point).sub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -144,15 +144,15 @@ class TimeOfImpactSolver {
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.copyFrom(normal).selfScale(impulse);
+        P.copyFrom(normal).scale(impulse);
 
-        temp.copyFrom(P).selfScale(invMassA);
-        bodyA.sweep.center.selfSub(temp);
+        temp.copyFrom(P).scale(invMassA);
+        bodyA.sweep.center.sub(temp);
         bodyA.sweep.angle -= invIA * cross(rA, P);
         bodyA.synchronizeTransform();
 
-        temp.copyFrom(P).selfScale(invMassB);
-        bodyB.sweep.center.selfAdd(temp);
+        temp.copyFrom(P).scale(invMassB);
+        bodyB.sweep.center.add(temp);
         bodyB.sweep.angle += invIB * cross(rB, P);
         bodyB.synchronizeTransform();
       }
@@ -195,15 +195,15 @@ class TimeOfImpactSolverManifold {
         pointA.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
         pointB.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.copyFrom(pointB).selfSub(pointA);
+          normal.copyFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
           normal.x = 1;
           normal.y = 0;
         }
 
-        point.copyFrom(pointA).selfAdd(pointB).selfScale(.5);
-        temp.copyFrom(pointB).selfSub(pointA);
+        point.copyFrom(pointA).add(pointB).scale(.5);
+        temp.copyFrom(pointB).sub(pointA);
         separation = dot(temp, normal) - cc.radius;
         break;
 
@@ -212,7 +212,7 @@ class TimeOfImpactSolverManifold {
         planePoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
         clipPoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.copyFrom(clipPoint).selfSub(planePoint);
+        temp.copyFrom(clipPoint).sub(planePoint);
         separation = dot(temp, normal) - cc.radius;
         point.copyFrom(clipPoint);
         break;
@@ -222,12 +222,12 @@ class TimeOfImpactSolverManifold {
         planePoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
         clipPoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.copyFrom(clipPoint).selfSub(planePoint);
+        temp.copyFrom(clipPoint).sub(planePoint);
         separation = dot(temp, normal) - cc.radius;
         point.copyFrom(clipPoint);
 
         // Ensure normal points from A to B
-        normal.selfNegate();
+        normal.negate_();
         break;
     }
   }

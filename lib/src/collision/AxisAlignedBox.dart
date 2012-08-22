@@ -67,7 +67,7 @@ class AxisAlignedBox {
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */
-  vec2 get center => (lowerBound + upperBound).selfScale(0.5);
+  vec2 get center => (lowerBound + upperBound).scale(0.5);
 
   /** Returns true if this box contains the given box. */
   bool contains(AxisAlignedBox aabb) =>

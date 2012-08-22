@@ -32,7 +32,7 @@ class RevoluteJoint extends Joint {
   num _motorImpulse;
 
   // Effective mass for point-to-point constraint.
-  final mat3x3 mass;
+  final mat3 mass;
 
   // Effective mass for motor/limit angular constraint.
   num motorMass;
@@ -59,7 +59,7 @@ class RevoluteJoint extends Joint {
     localAnchor2 = new vec2(),
     impulse = new vec3(),
     _motorImpulse = 0,
-    mass = new mat3x3() {
+    mass = new mat3() {
     localAnchor1.copyFrom(def.localAnchorA);
     localAnchor2.copyFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
@@ -85,8 +85,8 @@ class RevoluteJoint extends Joint {
     }
 
     // Compute the effective mass matrix.
-    final vec2 r1 = (new vec2.copy(localAnchor1)).selfSub(b1.localCenter);
-    final vec2 r2 = (new vec2.copy(localAnchor2)).selfSub(b2.localCenter);
+    final vec2 r1 = localAnchor1 - b1.localCenter;
+    final vec2 r2 = localAnchor2 - b2.localCenter;
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 
@@ -140,18 +140,18 @@ class RevoluteJoint extends Joint {
 
     if (time_step.warmStarting) {
       // Scale impulses to support a variable time time_step.
-      impulse.selfScale(time_step.dtRatio);
+      impulse.scale(time_step.dtRatio);
       _motorImpulse *= time_step.dtRatio;
 
-      vec2 temp = new vec2();
       vec2 P = new vec2.copy(impulse.xy);
+      vec2 temp = new vec2.copy(P);
 
-      temp.copyFrom(P).selfScale(m1);
-      b1.linearVelocity.selfSub(temp);
+      temp.scale(m1);
+      b1.linearVelocity.sub(temp);
       b1.angularVelocity -= i1 * (cross(r1, P) + _motorImpulse + impulse.z);
 
-      temp.copyFrom(P).selfScale(m2);
-      b2.linearVelocity.selfAdd(temp);
+      temp.copyFrom(P).scale(m2);
+      b2.linearVelocity.add(temp);
       b2.angularVelocity += i2 * (cross(r2, P) + _motorImpulse + impulse.z);
 
     } else {
@@ -185,34 +185,32 @@ class RevoluteJoint extends Joint {
       w2 += i2 * imp;
     }
 
-    final vec2 r1 = new vec2();
-    final vec2 r2 = new vec2();
     vec2 temp = new vec2();
 
     // Solve limit constraint.
     if (_enableLimit && limitState != LimitState.INACTIVE) {
 
-      r1.copyFrom(localAnchor1).selfSub(b1.localCenter);
-      r2.copyFrom(localAnchor2).selfSub(b2.localCenter);
+      final vec2 r1 = localAnchor1 - b1.localCenter;
+      final vec2 r2 = localAnchor2 - b2.localCenter;
       b1.originTransform.rotation.transformDirect(r1);
       b2.originTransform.rotation.transformDirect(r2);
 
       // Solve point-to-point constraint
       temp = cross(w1, r1);
       final vec2 Cdot1 = cross(w2, r2);
-      Cdot1.selfAdd(v2).selfSub(v1).selfSub(temp);
+      Cdot1.add(v2).sub(v1).sub(temp);
       num Cdot2 = w2 - w1;
       vec3 Cdot = new vec3(Cdot1, Cdot1, Cdot2);
 
-      vec3 imp = MathBox.solve33(mass, Cdot.selfNegate());
+      vec3 imp = MathBox.solve33(mass, Cdot.negate_());
 
       if (limitState == LimitState.EQUAL) {
-        impulse.selfAdd(imp);
+        impulse.add(imp);
       }
       else if (limitState == LimitState.AT_LOWER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse < 0.0) {
-          temp = MathBox.solve22(mass, Cdot1.selfNegate());
+          temp = MathBox.solve22(mass, Cdot1.negate_());
           imp.x = temp.x;
           imp.y = temp.y;
           impulse.x += temp.x;
@@ -222,7 +220,7 @@ class RevoluteJoint extends Joint {
       } else if (limitState == LimitState.AT_UPPER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse > 0.0) {
-          temp = MathBox.solve22(mass, Cdot1.selfNegate());
+          temp = MathBox.solve22(mass, Cdot1.negate_());
           imp.x = temp.x;
           imp.y = temp.y;
           imp.z = -impulse.z;
@@ -233,35 +231,35 @@ class RevoluteJoint extends Joint {
       }
       final vec2 P = new vec2.copy(imp.xy);
 
-      temp.copyFrom(P).selfScale(m1);
-      v1.selfSub(temp);
+      temp.copyFrom(P).scale(m1);
+      v1.sub(temp);
       w1 -= i1 * (cross(r1, P) + imp.z);
 
-      temp.copyFrom(P).selfScale(m2);
-      v2.selfAdd(temp);
+      temp.copyFrom(P).scale(m2);
+      v2.add(temp);
       w2 += i2 * (cross(r2, P) + imp.z);
 
     } else {
-      r1.copyFrom(localAnchor1).selfSub(b1.localCenter);
-      r2.copyFrom(localAnchor2).selfSub(b2.localCenter);
+      final vec2 r1 = localAnchor1 - b1.localCenter;
+      final vec2 r2 = localAnchor2 - b2.localCenter;
       b1.originTransform.rotation.transformDirect(r1);
       b2.originTransform.rotation.transformDirect(r2);
 
       // Solve point-to-point constraint
       temp = cross(w1, r1);
       vec2 Cdot = cross(w2, r2);
-      Cdot.selfAdd(v2).selfSub(v1).selfSub(temp);
-      vec2 imp = MathBox.solve22(mass, Cdot.selfNegate()); // just leave negated
+      Cdot.add(v2).sub(v1).sub(temp);
+      vec2 imp = MathBox.solve22(mass, Cdot.negate_()); // just leave negated
 
       impulse.x += imp.x;
       impulse.y += imp.y;
 
-      temp.copyFrom(imp).selfScale(m1);
-      v1.selfSub(temp);
+      temp.copyFrom(imp).scale(m1);
+      v1.sub(temp);
       w1 -= i1 * cross(r1, imp);
 
-      temp.copyFrom(imp).selfScale(m2);
-      v2.selfAdd(temp);
+      temp.copyFrom(imp).scale(m2);
+      v2.add(temp);
       w2 += i2 * cross(r2, imp);
     }
 
@@ -313,13 +311,12 @@ class RevoluteJoint extends Joint {
     {
       vec2 imp = new vec2();
 
-      final vec2 r1 = (new vec2.copy(localAnchor1)).selfSub(b1.localCenter);
-      final vec2 r2 = (new vec2.copy(localAnchor2)).selfSub(b2.localCenter);
+      final vec2 r1 = localAnchor1 - b1.localCenter;
+      final vec2 r2 = localAnchor2 - b2.localCenter;
       b1.originTransform.rotation.transformDirect(r1);
       b2.originTransform.rotation.transformDirect(r2);
 
-      final vec2 C = (new vec2.copy(b2.sweep.center)).selfAdd(r2);
-      C.selfSub(b1.sweep.center).selfSub(r1);
+      final vec2 C = b2.sweep.center + r2 - (b1.sweep.center + r1);
       positionError = C.length;
 
       num invMass1 = b1.invMass, invMass2 = b2.invMass;
@@ -335,46 +332,46 @@ class RevoluteJoint extends Joint {
         if (m > 0.0) {
           m = 1.0 / m;
         }
-        imp.copyFrom(C).selfNegate().selfScale(m);
+        imp.copyFrom(C).negate_().scale(m);
         final num k_beta = 0.5;
         // using u as temp variable
-        u.copyFrom(imp).selfScale(k_beta * invMass1);
-        b1.sweep.center.selfSub(u);
-        u.copyFrom(imp).selfScale(k_beta * invMass2);
-        b2.sweep.center.selfAdd(u);
+        u.copyFrom(imp).scale(k_beta * invMass1);
+        b1.sweep.center.sub(u);
+        u.copyFrom(imp).scale(k_beta * invMass2);
+        b2.sweep.center.add(u);
 
-        C.copyFrom(b2.sweep.center).selfAdd(r2);
-        C.selfSub(b1.sweep.center).selfSub(r1);
+        C.copyFrom(b2.sweep.center).add(r2);
+        C.sub(b1.sweep.center).sub(r1);
       }
 
-      mat2x2 K1 = new mat2x2();
+      mat2 K1 = new mat2();
       K1.col0.x = invMass1 + invMass2;
       K1.col1.x = 0.0;
       K1.col0.y = 0.0;
       K1.col1.y = invMass1 + invMass2;
 
-      mat2x2 K2 = new mat2x2();
+      mat2 K2 = new mat2();
       K2.col0.x = invI1 * r1.y * r1.y;
       K2.col1.x = -invI1 * r1.x * r1.y;
       K2.col0.y = -invI1 * r1.x * r1.y;
       K2.col1.y = invI1 * r1.x * r1.x;
 
-      mat2x2 K3 = new mat2x2();
+      mat2 K3 = new mat2();
       K3.col0.x = invI2 * r2.y * r2.y;
       K3.col1.x = -invI2 * r2.x * r2.y;
       K3.col0.y = -invI2 * r2.x * r2.y;
       K3.col1.y = invI2 * r2.x * r2.x;
 
-      K1.selfAdd(K2).selfAdd(K3);
-      imp = MathBox.solve22(K1, C.selfNegate()); // just leave c negated
+      K1.add(K2).add(K3);
+      imp = MathBox.solve22(K1, C.negate_()); // just leave c negated
 
       // using C as temp variable
-      C.copyFrom(imp).selfScale(b1.invMass);
-      b1.sweep.center.selfSub(C);
+      C.copyFrom(imp).scale(b1.invMass);
+      b1.sweep.center.sub(C);
       b1.sweep.angle -= b1.invInertia * cross(r1, imp);
 
-      C.copyFrom(imp).selfScale(b2.invMass);
-      b2.sweep.center.selfAdd(C);
+      C.copyFrom(imp).scale(b2.invMass);
+      b2.sweep.center.add(C);
       b2.sweep.angle += b2.invInertia * cross(r2, imp);
 
       b1.synchronizeTransform();
@@ -395,7 +392,7 @@ class RevoluteJoint extends Joint {
 
   void getReactionForce(num inv_dt, vec2 argOut) {
     argOut.xy = impulse.xy;
-    argOut.selfScale(inv_dt);
+    argOut.scale(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) {

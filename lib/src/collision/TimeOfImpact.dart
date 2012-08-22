@@ -314,7 +314,7 @@ class SeparationFunction {
       localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
       Transform.mulToOut(xfb, localPointB, pointB);
-      axis.copyFrom(pointB).selfSub(pointA);
+      axis.copyFrom(pointB).sub(pointA);
       num s = axis.length;
       axis.normalize();
       return s;
@@ -325,7 +325,7 @@ class SeparationFunction {
       localPointB1.copyFrom(proxyB.vertices[cache.indexB[0]]);
       localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
 
-      temp.copyFrom(localPointB2).selfSub(localPointB1);
+      temp.copyFrom(localPointB2).sub(localPointB1);
       // TODO(dominich): Remove when crossToOut exists.
       final vec2 _cross = cross(temp, 1);
       axis.copyFrom(_cross);
@@ -334,16 +334,16 @@ class SeparationFunction {
       normal.copyFrom(axis);
       xfb.rotation.transformDirect(normal);
 
-      localPoint.copyFrom(localPointB1).selfAdd(localPointB2).selfScale(0.5);
+      localPoint.copyFrom(localPointB1).add(localPointB2).scale(0.5);
       Transform.mulToOut(xfb, localPoint, pointB);
 
       localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
 
-      temp.copyFrom(pointA).selfSub(pointB);
+      temp.copyFrom(pointA).sub(pointB);
       num s = dot(temp, normal);
       if (s < 0.0) {
-        axis.selfNegate();
+        axis.negate_();
         s = -s;
       }
 
@@ -355,7 +355,7 @@ class SeparationFunction {
       localPointA1.copyFrom(proxyA.vertices[cache.indexA[0]]);
       localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
 
-      temp.copyFrom(localPointA2).selfSub(localPointA1);
+      temp.copyFrom(localPointA2).sub(localPointA1);
       // TODO(dominich): Remove when crossToOut exists.
       final vec2 _cross = cross(temp, 1);
       axis.copyFrom(_cross);
@@ -364,16 +364,16 @@ class SeparationFunction {
       normal.copyFrom(axis);
       xfa.rotation.transformDirect(normal);
 
-      localPoint.copyFrom(localPointA1).selfAdd(localPointA2).selfScale(0.5);
+      localPoint.copyFrom(localPointA1).add(localPointA2).scale(0.5);
       Transform.mulToOut(xfa, localPoint, pointA);
 
       localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfb, localPointB, pointB);
 
-      temp.copyFrom(pointB).selfSub(pointA);
+      temp.copyFrom(pointB).sub(pointA);
       num s = dot(temp, normal);
       if (s < 0.0) {
-        axis.selfNegate();
+        axis.negate_();
         s = -s;
       }
       return s;
@@ -389,7 +389,7 @@ class SeparationFunction {
         axisA.copyFrom(axis);
         xfa.rotation.transposed().transformDirect(axisA);
         //Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
-        axisB.copyFrom(axis).selfNegate();
+        axisB.copyFrom(axis).negate_();
         xfb.rotation.transposed().transformDirect(axisB);
         //Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
         //    axisB);
@@ -404,14 +404,14 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.selfSub(pointA), axis);
+        return dot(pointB.sub(pointA), axis);
 
       case SeparationType.FACE_A:
         normal.copyFrom(axis);
         xfa.rotation.transformDirect(normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        axisB.copyFrom(normal).selfNegate();
+        axisB.copyFrom(normal).negate_();
         xfb.rotation.transposed().transformDirect(axisB);
 
         indexes[0] = -1;
@@ -420,14 +420,14 @@ class SeparationFunction {
         localPointB.copyFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.selfSub(pointA), normal);
+        return dot(pointB.sub(pointA), normal);
 
       case SeparationType.FACE_B:
         normal.copyFrom(axis);
         xfb.rotation.transformDirect(normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        axisA.copyFrom(normal).selfNegate();
+        axisA.copyFrom(normal).negate_();
         xfa.rotation.transposed().transformDirect(axisA);
 
         indexes[1] = -1;
@@ -436,7 +436,7 @@ class SeparationFunction {
         localPointA.copyFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        return dot(pointA.selfSub(pointB), normal);
+        return dot(pointA.sub(pointB), normal);
 
       default:
         assert (false);
@@ -454,7 +454,7 @@ class SeparationFunction {
       case SeparationType.POINTS:
         axisA.copyFrom(axis);
         xfa.rotation.transposed().transformDirect(axisA);
-        axisB.copyFrom(axis).selfNegate();
+        axisB.copyFrom(axis).negate_();
         xfb.rotation.transposed().transformDirect(axisB);
 
         localPointA.copyFrom(proxyA.vertices[indexA]);
@@ -463,32 +463,32 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.selfSub(pointA), axis);
+        return dot(pointB.sub(pointA), axis);
 
       case SeparationType.FACE_A:
         normal.copyFrom(axis);
         xfa.rotation.transformDirect(normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        axisB.copyFrom(normal).selfNegate();
+        axisB.copyFrom(normal).negate_();
         xfb.rotation.transposed().transformDirect(axisB);
 
         localPointB.copyFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        return dot(pointB.selfSub(pointA), normal);
+        return dot(pointB.sub(pointA), normal);
 
       case SeparationType.FACE_B:
         normal.copyFrom(axis);
         xfb.rotation.transformDirect(normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        axisA.copyFrom(normal).selfNegate();
+        axisA.copyFrom(normal).negate_();
         xfa.rotation.transposed().transformDirect(axisA);
 
         localPointA.copyFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        return dot(pointA.selfSub(pointB), normal);
+        return dot(pointA.sub(pointB), normal);
 
       default:
         assert (false);

@@ -67,7 +67,7 @@ class Simplex {
       vec2 wBLocal = proxyB.vertices[v.indexB];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.copyFrom(v.wB).selfSub(v.wA);
+      v.w.copyFrom(v.wB).sub(v.wA);
       v.a = 0.0;
     }
 
@@ -92,7 +92,7 @@ class Simplex {
       vec2 wBLocal = proxyB.vertices[0];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.copyFrom(v.wB).selfSub(v.wA);
+      v.w.copyFrom(v.wB).sub(v.wA);
       count = 1;
     }
   }
@@ -110,12 +110,12 @@ class Simplex {
   void getSearchDirection(vec2 out) {
     switch (count) {
       case 1 :
-        out.copyFrom(v1.w).selfNegate();
+        out.copyFrom(v1.w).negate_();
         return;
       case 2 :
-        e12.copyFrom(v2.w).selfSub(v1.w);
+        e12.copyFrom(v2.w).sub(v1.w);
         // use out for a temp variable real quick
-        out.copyFrom(v1.w).selfNegate();
+        out.copyFrom(v1.w).negate_();
         num sgn = cross(e12, out);
 
         if (sgn > 0) {
@@ -149,8 +149,8 @@ class Simplex {
         out.copyFrom(v1.w);
         return;
       case 2 :
-        case22.copyFrom(v2.w).selfScale(v2.a);
-        case2.copyFrom(v1.w).selfScale(v1.a).selfAdd(case22);
+        case22.copyFrom(v2.w).scale(v2.a);
+        case2.copyFrom(v1.w).scale(v1.a).add(case22);
         out.copyFrom(case2);
         return;
       case 3 :
@@ -176,18 +176,18 @@ class Simplex {
         break;
 
       case 2 :
-        case2.copyFrom(v1.wA).selfScale(v1.a);
-        pA.copyFrom(v2.wA).selfScale(v2.a).selfAdd(case2);
-        case2.copyFrom(v1.wB).selfScale(v1.a);
-        pB.copyFrom(v2.wB).selfScale(v2.a).selfAdd(case2);
+        case2.copyFrom(v1.wA).scale(v1.a);
+        pA.copyFrom(v2.wA).scale(v2.a).add(case2);
+        case2.copyFrom(v1.wB).scale(v1.a);
+        pB.copyFrom(v2.wB).scale(v2.a).add(case2);
 
         break;
 
       case 3 :
-        pA.copyFrom(v1.wA).selfScale(v1.a);
-        case3.copyFrom(v2.wA).selfScale(v2.a);
-        case33.copyFrom(v3.wA).selfScale(v3.a);
-        pA.selfAdd(case3).selfAdd(case33);
+        pA.copyFrom(v1.wA).scale(v1.a);
+        case3.copyFrom(v2.wA).scale(v2.a);
+        case33.copyFrom(v3.wA).scale(v3.a);
+        pA.add(case3).add(case33);
         pB.copyFrom(pA);
         break;
 
@@ -210,8 +210,8 @@ class Simplex {
         return distance(v1.w, v2.w);
 
       case 3 :
-        case3.copyFrom(v2.w).selfSub(v1.w);
-        case33.copyFrom(v3.w).selfSub(v1.w);
+        case3.copyFrom(v2.w).sub(v1.w);
+        case33.copyFrom(v3.w).sub(v1.w);
         return cross(case3, case33);
 
       default :
@@ -226,7 +226,7 @@ class Simplex {
   void solve2() {
     vec2 w1 = v1.w;
     vec2 w2 = v2.w;
-    e12.copyFrom(w2).selfSub(w1);
+    e12.copyFrom(w2).sub(w1);
 
     // w1 region
     num d12_2 = -dot(w1, e12);
@@ -268,21 +268,21 @@ class Simplex {
     vec2 w3 = v3.w;
 
     // Edge12
-    e12.copyFrom(w2).selfSub(w1);
+    e12.copyFrom(w2).sub(w1);
     num w1e12 = dot(w1, e12);
     num w2e12 = dot(w2, e12);
     num d12_1 = w2e12;
     num d12_2 = -w1e12;
 
     // Edge13
-    e13.copyFrom(w3).selfSub(w1);
+    e13.copyFrom(w3).sub(w1);
     num w1e13 = dot(w1, e13);
     num w3e13 = dot(w3, e13);
     num d13_1 = w3e13;
     num d13_2 = -w1e13;
 
     // Edge23
-    e23.copyFrom(w3).selfSub(w2);
+    e23.copyFrom(w3).sub(w2);
     num w2e23 = dot(w2, e23);
     num w3e23 = dot(w3, e23);
     num d23_1 = w3e23;

@@ -113,14 +113,14 @@ class Island {
       final velocityDelta = new vec2(
           (b._force.x * b.invMass + gravity.x) * time_step.dt,
           (b._force.y * b.invMass + gravity.y) * time_step.dt);
-      b.linearVelocity.selfAdd(velocityDelta);
+      b.linearVelocity.add(velocityDelta);
       num newAngularVelocity = b.angularVelocity +
           (time_step.dt * b.invInertia * b._torque);
       b.angularVelocity = newAngularVelocity;
 
       num a = (1.0 - time_step.dt * b.linearDamping);
       num a1 = (0.0 > (a < 1.0 ? a : 1.0) ? 0.0 : (a < 1.0 ? a : 1.0));
-      b.linearVelocity.selfScale(a1);
+      b.linearVelocity.scale(a1);
 
       num a2 = (1.0 - time_step.dt * b.angularDamping);
       num b1 = (a2 < 1.0 ? a2 : 1.0);
@@ -173,10 +173,10 @@ class Island {
       }
 
       // Check for large velocities.
-      _translation.copyFrom(b.linearVelocity).selfScale(time_step.dt);
+      _translation.copyFrom(b.linearVelocity).scale(time_step.dt);
       if (dot(_translation, _translation) > Settings.MAX_TRANSLATION_SQUARED) {
         num ratio = Settings.MAX_TRANSLATION / _translation.length;
-        b.linearVelocity.selfScale(ratio);
+        b.linearVelocity.scale(ratio);
       }
 
       num rotation = time_step.dt * b.angularVelocity;
@@ -190,8 +190,8 @@ class Island {
       b.sweep.angleZero = b.sweep.angle;
 
       // Integrate
-      temp.copyFrom(b.linearVelocity).selfScale(time_step.dt);
-      b.sweep.center.selfAdd(temp);
+      temp.copyFrom(b.linearVelocity).scale(time_step.dt);
+      b.sweep.center.add(temp);
       b.sweep.angle += time_step.dt * b.angularVelocity;
 
       // Compute new transform

@@ -120,7 +120,7 @@ class WorldManifold {
       case ManifoldType.FACE_B :
         final vec2 planePoint = pool3;
 
-        final mat2x2 R = xfB.rotation;
+        final mat2 R = xfB.rotation;
         normal.x = R.col0.x * manifold.localNormal.x + R.col1.x *
             manifold.localNormal.y;
         normal.y = R.col0.y * manifold.localNormal.x + R.col1.y *

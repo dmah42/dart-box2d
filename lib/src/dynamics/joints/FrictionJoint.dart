@@ -41,7 +41,7 @@ class FrictionJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
-    argOut.copyFrom(_linearImpulse).selfScale(inv_dt);
+    argOut.copyFrom(_linearImpulse).scale(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;
@@ -65,8 +65,8 @@ class FrictionJoint extends Joint {
     vec2 r1 = new vec2();
     vec2 r2 = new vec2();
 
-    r1.copyFrom(_localAnchorA).selfSub(bodyA.localCenter);
-    r2.copyFrom(_localAnchorB).selfSub(bodyB.localCenter);
+    r1.copyFrom(_localAnchorA).sub(bodyA.localCenter);
+    r2.copyFrom(_localAnchorB).sub(bodyB.localCenter);
     bodyA.originTransform.rotation.transformDirect(r1);
     bodyB.originTransform.rotation.transformDirect(r2);
 
@@ -79,7 +79,7 @@ class FrictionJoint extends Joint {
     // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
     // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
 
-    mat2x2 K = new mat2x2();
+    mat2 K = new mat2();
     K.col0.x = bodyA.invMass + bodyB.invMass +
                bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
     K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
@@ -87,7 +87,7 @@ class FrictionJoint extends Joint {
     K.col1.y = bodyA.invMass + bodyB.invMass +
                bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-    mat2x2 linearMass = new mat2x2();
+    mat2 linearMass = new mat2();
     linearMass.copyFrom(K);
     linearMass.invert();
 
@@ -98,7 +98,7 @@ class FrictionJoint extends Joint {
 
     if (time_step.warmStarting) {
       // Scale impulses.
-      _linearImpulse.selfScale(time_step.dtRatio);
+      _linearImpulse.scale(time_step.dtRatio);
       _angularImpulse *= time_step.dtRatio;
 
       vec2 P = new vec2();
@@ -138,20 +138,18 @@ class FrictionJoint extends Joint {
 
     // Solve linear friction
     {
-      vec2 r1 = new vec2();
-      vec2 r2 = new vec2();
+      final vec2 r1 = _localAnchorA - bodyA.localCenter;
+      final vec2 r2 = _localAnchorB - bodyB.localCenter;
 
-      r1.copyFrom(_localAnchorA).selfSub(bodyA.localCenter);
-      r2.copyFrom(_localAnchorB).selfSub(bodyB.localCenter);
       bodyA.originTransform.rotation.transformDirect(r1);
       bodyB.originTransform.rotation.transformDirect(r2);
 
       vec2 temp = cross(bodyA.angularVelocity, r1);
       vec2 Cdot = cross(bodyB.angularVelocity, r2);
 
-      Cdot.selfAdd(bodyB.linearVelocity).selfSub(bodyA.linearVelocity).selfSub(temp);
+      Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 
-      mat2x2 K = new mat2x2();
+      mat2 K = new mat2();
       K.col0.x = bodyA.invMass + bodyB.invMass +
                  bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
       K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
@@ -159,24 +157,24 @@ class FrictionJoint extends Joint {
       K.col1.y = bodyA.invMass + bodyB.invMass +
                  bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-      mat2x2 linearMass = new mat2x2();
+      mat2 linearMass = new mat2();
       linearMass.copyFrom(K);
       linearMass.invert();
 
       vec2 impulse = new vec2.copy(Cdot);
       linearMass.transformDirect(impulse);
-      impulse.selfNegate();
+      impulse.negate_();
 
       vec2 oldImpulse = new vec2.copy(_linearImpulse);
-      _linearImpulse.selfAdd(impulse);
+      _linearImpulse.add(impulse);
 
       num maxImpulse = time_step.dt * _maxForce;
       if (_linearImpulse.length2 > maxImpulse * maxImpulse) {
         _linearImpulse.normalize();
-        _linearImpulse.selfScale(maxImpulse);
+        _linearImpulse.scale(maxImpulse);
       }
 
-      impulse.copyFrom(_linearImpulse).selfSub(oldImpulse);
+      impulse.copyFrom(_linearImpulse).sub(oldImpulse);
 
       bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
       bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;

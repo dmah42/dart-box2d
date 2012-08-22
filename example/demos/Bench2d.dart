@@ -106,10 +106,10 @@ class Bench2d {
           bd.position.copyFrom(y);
           Body body = world.createBody(bd);
           body.createFixture(fixDef);
-          y.selfAdd(deltaY);
+          y.add(deltaY);
         }
 
-        x.selfAdd(deltaX);
+        x.add(deltaX);
       }
     }
   }

@@ -24,9 +24,9 @@ class ContactConstraint {
   final vec2 localPoint;
   final vec2 normal;
 
-  final mat2x2 normalMass;
+  final mat2 normalMass;
   //TODO(gregbglw): What does K mean? Find out and change the name.
-  final mat2x2 K;
+  final mat2 K;
 
   Body bodyA;
   Body bodyB;
@@ -47,8 +47,8 @@ class ContactConstraint {
     localNormal = new vec2(),
     localPoint = new vec2(),
     normal = new vec2(),
-    normalMass = new mat2x2(),
-    K = new mat2x2() {
+    normalMass = new mat2(),
+    K = new mat2() {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
         points[i] = new ContactConstraintPoint();
     }

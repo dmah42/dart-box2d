@@ -510,7 +510,7 @@ class Body {
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
-    _linearVelocity.selfAdd(cross(_angularVelocity, temp));
+    _linearVelocity.add(cross(_angularVelocity, temp));
   }
 
   /**
@@ -546,15 +546,15 @@ class Body {
       f.getMassData(massData);
       mass += massData.mass;
       final temp = new vec2.copy(massData.center);
-      temp.selfScale(massData.mass);
-      tempCenter.selfAdd(temp);
+      temp.scale(massData.mass);
+      tempCenter.add(temp);
       _inertia += massData.inertia;
     }
 
     // Compute center of mass.
     if (mass > 0.0) {
       invMass = 1.0 / mass;
-      tempCenter.selfScale(invMass);
+      tempCenter.scale(invMass);
     } else {
       // Force all dynamic bodies to have a positive mass.
       mass = 1.0;
@@ -579,7 +579,7 @@ class Body {
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
-    _linearVelocity.selfAdd(cross(_angularVelocity, temp));
+    _linearVelocity.add(cross(_angularVelocity, temp));
   }
 
   /**
@@ -678,9 +678,9 @@ class Body {
   }
 
   void getLinearVelocityFromWorldPointToOut(vec2 worldPoint, vec2 out) {
-    out.copyFrom(worldPoint).selfSub(sweep.center);
+    out.copyFrom(worldPoint).sub(sweep.center);
     out = cross(_angularVelocity, out);
-    out.selfAdd(_linearVelocity);
+    out.add(_linearVelocity);
   }
 
   /**
@@ -871,7 +871,7 @@ class Body {
     xf1.rotation.setRotation(sweep.angleZero);
     xf1.position.copyFrom(sweep.localCenter);
     xf1.rotation.transformDirect(xf1.position);
-    xf1.position.selfNegate().selfAdd(sweep.centerZero);
+    xf1.position.negate_().add(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;
     for (Fixture f = fixtureList; f != null; f = f.next)
@@ -882,7 +882,7 @@ class Body {
     final num c = Math.cos(sweep.angle);
     final num s = Math.sin(sweep.angle);
     final Transform t = originTransform;
-    final mat2x2 r = t.rotation;
+    final mat2 r = t.rotation;
     final vec2 p = t.position;
 
     r.col0.x = c;

@@ -56,7 +56,7 @@ class ConstantVolumeJoint extends Joint {
     for (int i = 0; i < targetLengths.length; ++i) {
       final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
       vec2 temp = new vec2.copy(bodies[i].worldCenter);
-      temp.selfSub(bodies[next].worldCenter);
+      temp.sub(bodies[next].worldCenter);
       num dist = temp.length;
       targetLengths[i] = dist;
     }
@@ -146,7 +146,7 @@ class ConstantVolumeJoint extends Joint {
       delta.y = toExtrude * (normals[i].y + normals[next].y);
       num norm = delta.length;
       if (norm > Settings.MAX_LINEAR_CORRECTION) {
-        delta.selfScale(Settings.MAX_LINEAR_CORRECTION / norm);
+        delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);
       }
       if (norm > Settings.LINEAR_SLOP) {
         done = false;
@@ -171,7 +171,7 @@ class ConstantVolumeJoint extends Joint {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
       d[i].copyFrom(bodies[next].worldCenter);
-      d[i].selfSub(bodies[prev].worldCenter);
+      d[i].sub(bodies[prev].worldCenter);
     }
 
     if (step.warmStarting) {
@@ -212,7 +212,7 @@ class ConstantVolumeJoint extends Joint {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
       d[i].copyFrom(bodies[next].worldCenter);
-      d[i].selfSub(bodies[prev].worldCenter);
+      d[i].sub(bodies[prev].worldCenter);
       dotMassSum += d[i].length2 / bodies[i].mass;
       crossMassSum += cross(bodies[i].linearVelocity, d[i]);
     }

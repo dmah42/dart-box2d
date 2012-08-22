@@ -66,7 +66,7 @@ class IViewportTransform {
    */
   vec2 get translation => extents - center;
   void set translation(vec2 translation) {
-    center.copyFromVector(extents).selfSub(translation);
+    center.copyFrom(extents).sub(translation);
   }
 
   /**
