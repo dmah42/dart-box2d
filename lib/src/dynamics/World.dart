@@ -543,7 +543,7 @@ class World {
    */
   void clearForces() {
     for (Body body = _bodyList; body != null; body = body.next) {
-      body._force.x = body._force.y = 0; // .setZero();
+      body._force.splat(0);
       body._torque = 0.0;
     }
   }

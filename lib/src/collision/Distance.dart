@@ -133,13 +133,13 @@ class Distance {
       SimplexVertex vertex = vertices[simplex.count];
 
       temp.copyFrom(searchDirection.negate_());
-      transformA.rotation.transformDirect(temp);
+      transformA.rotation.transposed().transformDirect(temp);
       vertex.indexA = proxyA.getSupport(temp);
       Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA],
           vertex.wA);
       // Vec2 wBLocal;
       temp.copyFrom(searchDirection.negate_());
-      transformB.rotation.transformDirect(temp);
+      transformB.rotation.transposed().transformDirect(temp);
       vertex.indexB = proxyB.getSupport(temp);
       Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB],
           vertex.wB);

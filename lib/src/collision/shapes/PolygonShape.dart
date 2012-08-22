@@ -141,7 +141,7 @@ class PolygonShape extends Shape {
     normals[1].xy = new vec2(1, 0); // setCoords(1.0, 0.0);
     normals[2].xy = new vec2(0, 1); // setCoords(0.0, 1.0);
     normals[3].xy = new vec2(-1, 0); // setCoords(-1.0, 0.0);
-    centroid.copyFrom(new vec2.zero()); // setZero();
+    centroid.splat(0);
   }
 
   /**
@@ -151,6 +151,7 @@ class PolygonShape extends Shape {
    */
   void setAsBoxWithCenterAndAngle(num hx, num hy, vec2 center, num angle) {
     setAsBox(hx, hy);
+    centroid.copyFrom(center);
 
     Transform xf = new Transform();
     xf.position.copyFrom(center);
@@ -175,9 +176,7 @@ class PolygonShape extends Shape {
     normals[1].copyFrom(normals[0]).negate_();
   }
 
-  /**
-   * See Shape.testPoint(Transform, vec2).
-   */
+  /** See Shape.testPoint(Transform, vec2). */
   bool testPoint(Transform xf, vec2 p) {
     vec2 pLocal = (new vec2.copy(p)).sub(xf.position);
     xf.rotation.transposed().transformDirect(pLocal);
@@ -208,8 +207,6 @@ class PolygonShape extends Shape {
       Transform.mulToOut(argXf, vertices[i], v);
       min(v, lower, out: lower);
       max(v, upper, out: upper);
-      //vec2.minToOut(lower, v, lower);
-      //vec2.maxToOut(upper, v, upper);
     }
 
     argAabb.lowerBound.x = lower.x - radius;
@@ -229,7 +226,7 @@ class PolygonShape extends Shape {
   void computeCentroidToOut(List<vec2> vs, int count, vec2 out) {
     assert (count >= 3);
 
-    out.x = out.y = 0;
+    out.splat(0);
     num area = 0.0;
 
     if (count == 2) {

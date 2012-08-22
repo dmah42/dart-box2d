@@ -129,8 +129,7 @@ class Simplex {
         break;
       default :
         assert (false);
-        out.x = 0;
-        out.y = 0;
+        out.splat(0);
         return;
     }
   }

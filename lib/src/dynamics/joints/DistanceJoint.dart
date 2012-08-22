@@ -84,7 +84,7 @@ class DistanceJoint extends Joint {
     if (len > Settings.LINEAR_SLOP) {
       u.scale(1.0 / len);
     } else {
-      u.x = u.y = 0;
+      u.splat(0);
     }
 
     num cr1u = cross(r1, u);
@@ -139,18 +139,14 @@ class DistanceJoint extends Joint {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    final r1 = new vec2();
-    final r2 = new vec2();
+    final vec2 r1 = localAnchor1 - b1.localCenter;
+    final vec2 r2 = localAnchor2 - b2.localCenter;
 
-    r1.copyFrom(localAnchor1).sub(b1.localCenter);
-    r2.copyFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 
     final v1 = cross(b1.angularVelocity, r1);
     final v2 = cross(b2.angularVelocity, r2);
-    //crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
-    //crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
     v1.add(b1.linearVelocity);
     v2.add(b2.linearVelocity);
 
@@ -177,17 +173,13 @@ class DistanceJoint extends Joint {
     final b1 = bodyA;
     final b2 = bodyB;
 
-    final r1 = new vec2();
-    final r2 = new vec2();
-    final d = new vec2();
+    final vec2 r1 = localAnchor1 - b1.localCenter;
+    final vec2 r2 = localAnchor2 - b2.localCenter;
 
-    r1.copyFrom(localAnchor1).sub(b1.localCenter);
-    r2.copyFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transformDirect(r1);
     b2.originTransform.rotation.transformDirect(r2);
 
-    d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
-    d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
+    final vec2 d = b2.sweep.center + r2 - (b1.sweep.center + r1);
 
     num len = d.length;
     d.normalize();

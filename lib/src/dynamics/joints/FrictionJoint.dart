@@ -34,10 +34,12 @@ class FrictionJoint extends Joint {
 
   vec2 getLocalAnchorA(vec2 argOut) {
     bodyA.getWorldPointToOut(_localAnchorA, argOut);
+    return argOut;
   }
 
   vec2 getLocalAnchorB(vec2 argOut) {
     bodyB.getWorldPointToOut(_localAnchorB, argOut);
+    return argOut;
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
@@ -62,11 +64,9 @@ class FrictionJoint extends Joint {
 
   void initVelocityConstraints(TimeStep time_step) {
     // Compute the effective mass matrix.
-    vec2 r1 = new vec2();
-    vec2 r2 = new vec2();
+    vec2 r1 = _localAnchorA - bodyA.localCenter;
+    vec2 r2 = _localAnchorB - bodyB.localCenter;
 
-    r1.copyFrom(_localAnchorA).sub(bodyA.localCenter);
-    r2.copyFrom(_localAnchorB).sub(bodyB.localCenter);
     bodyA.originTransform.rotation.transformDirect(r1);
     bodyB.originTransform.rotation.transformDirect(r2);
 
@@ -87,8 +87,7 @@ class FrictionJoint extends Joint {
     K.col1.y = bodyA.invMass + bodyB.invMass +
                bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-    mat2 linearMass = new mat2();
-    linearMass.copyFrom(K);
+    mat2 linearMass = new mat2.copy(K);
     linearMass.invert();
 
     num angularMass = bodyA.invInertia + bodyB.invInertia;
@@ -101,8 +100,7 @@ class FrictionJoint extends Joint {
       _linearImpulse.scale(time_step.dtRatio);
       _angularImpulse *= time_step.dtRatio;
 
-      vec2 P = new vec2();
-      P.copyFrom(_linearImpulse);
+      vec2 P = new vec2.copy(_linearImpulse);
 
       bodyA.linearVelocity.x -= bodyA.invMass * P.x;
       bodyA.linearVelocity.y -= bodyA.invMass * P.y;
@@ -112,7 +110,7 @@ class FrictionJoint extends Joint {
       bodyB.linearVelocity.y += bodyB.invMass * P.y;
       bodyB.angularVelocity += bodyB.invInertia * (cross(r2, P) + _angularImpulse);
     } else {
-      _linearImpulse.x = _linearImpulse.y = 0;
+      _linearImpulse.splat(0);
       _angularImpulse = 0.0;
     }
   }
@@ -157,8 +155,7 @@ class FrictionJoint extends Joint {
       K.col1.y = bodyA.invMass + bodyB.invMass +
                  bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-      mat2 linearMass = new mat2();
-      linearMass.copyFrom(K);
+      mat2 linearMass = new mat2.copy(K);
       linearMass.invert();
 
       vec2 impulse = new vec2.copy(Cdot);

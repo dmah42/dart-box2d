@@ -154,7 +154,7 @@ class Body {
 
     originTransform.position.copyFrom(bd.position);
     originTransform.rotation.setRotation(bd.angle);
-    sweep.localCenter.x = sweep.localCenter.y = 0; // setZero();
+    sweep.localCenter.splat(0);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
     sweep.center.copyFrom(sweep.centerZero);
     sweep.angle = bd.angle;
@@ -525,7 +525,7 @@ class Body {
     invMass = 0.0;
     _inertia = 0.0;
     invInertia = 0.0;
-    sweep.localCenter.x = sweep.localCenter.y = 0.0;  // setZero();
+    sweep.localCenter.splat(0);
 
     // Static and kinematic bodies have zero mass.
     if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
@@ -537,7 +537,7 @@ class Body {
     assert (_type == BodyType.DYNAMIC);
 
     // Accumulate mass over all fixtures.
-    tempCenter.x = tempCenter.y = 0;  // setZero();
+    tempCenter.splat(0);
     MassData massData = _pmd;
     for (Fixture f = fixtureList; f != null; f = f.next) {
       if (f.density == 0.0) {
@@ -722,13 +722,13 @@ class Body {
     resetMassData();
 
     if (_type == BodyType.STATIC) {
-      _linearVelocity.x = _linearVelocity.y = 0;  // setZero();
+      _linearVelocity.splat(0);
       _angularVelocity = 0.0;
     }
 
     awake = true;
 
-    _force.x = _force.y = 0;  // setZero();
+    _force.splat(0);
     _torque = 0.0;
 
     // Since the body type changed, we need to flag contacts for filtering.
@@ -764,9 +764,7 @@ class Body {
     }
   }
 
-  /**
-   * Is this body allowed to sleep?
-   */
+  /** Is this body allowed to sleep? */
   bool get sleepingAllowed => (flags & AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
 
   /**
@@ -782,9 +780,9 @@ class Body {
     } else {
       flags &= ~AWAKE_FLAG;
       sleepTime = 0.0;
-      _linearVelocity.x = _linearVelocity.y = 0;  // setZero();
+      _linearVelocity.splat(0);
       _angularVelocity = 0.0;
-      _force.x = _force.y = 0;  // setZero();
+      _force.splat(0);
       _torque = 0.0;
     }
   }
@@ -879,16 +877,10 @@ class Body {
   }
 
   void synchronizeTransform() {
-    final num c = Math.cos(sweep.angle);
-    final num s = Math.sin(sweep.angle);
     final Transform t = originTransform;
     final mat2 r = t.rotation;
     final vec2 p = t.position;
-
-    r.col0.x = c;
-    r.col1.x = -s;
-    r.col0.y = s;
-    r.col1.y = c;
+    r.setRotation(sweep.angle);
     p.x = (r.col0.x * sweep.localCenter.x + r.col1.x * sweep.localCenter.y) * -1 +
         sweep.center.x;
     p.y = (r.col0.y * sweep.localCenter.x + r.col1.y * sweep.localCenter.y) * -1 +

@@ -161,8 +161,8 @@ class Collision {
       // Find intersection point of edge and plane
       num interp = distance0 / (distance0 - distance1);
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-      vOut[numOut].v.copyFrom(vIn[1].v);
-      vOut[numOut].v.sub(vIn[0].v).scale(interp).add(vIn[0].v);
+      vOut[numOut].v.copyFrom(vIn[1].v).
+          sub(vIn[0].v).scale(interp).add(vIn[0].v);
       final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
       vOut[numOut].id.setFrom(vin.id);
       ++numOut;
@@ -202,8 +202,7 @@ class Collision {
 
     manifold.type = ManifoldType.CIRCLES;
     manifold.localPoint.copyFrom(circle1.position);
-    manifold.localNormal.x = 0;
-    manifold.localNormal.y = 0;
+    manifold.localNormal.splat(0);
     manifold.pointCount = 1;
 
     manifold.points[0].localPoint.copyFrom(circle2.position);
@@ -489,9 +488,6 @@ class Collision {
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
-    // TODO(dominich): Check the transform matches mulMatrixAndVectorToOut.
-    // TODO(dominich): Check transposed transform matches
-    //                 mulTransMatrixAndVectorToOut.
     normal1.copyFrom(normals1[edge1]);
     xf1.rotation.transformDirect(normal1);
     xf2.rotation.transposed().transformDirect(normal1);

@@ -64,6 +64,7 @@ class CircleShape extends Shape {
     argTransform.rotation.transformDirect(p);
     p.add(argTransform.position);
 
+    // TODO(dominich): simplify when there's a setCoords method on vec2
     argBox.lowerBound.x = p.x - radius;
     argBox.lowerBound.y = p.y - radius;
     argBox.upperBound.x = p.x + radius;

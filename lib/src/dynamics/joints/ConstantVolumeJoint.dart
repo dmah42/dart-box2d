@@ -142,8 +142,7 @@ class ConstantVolumeJoint extends Joint {
     bool done = true;
     for (int i = 0; i < bodies.length; ++i) {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      delta.x = toExtrude * (normals[i].x + normals[next].x);
-      delta.y = toExtrude * (normals[i].y + normals[next].y);
+      delta.copyFrom(normals[i]).add(normals[next]).scale(toExtrude);
       num norm = delta.length;
       if (norm > Settings.MAX_LINEAR_CORRECTION) {
         delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);

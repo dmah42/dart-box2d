@@ -144,8 +144,8 @@ class RevoluteJoint extends Joint {
       _motorImpulse *= time_step.dtRatio;
 
       vec2 P = new vec2.copy(impulse.xy);
-      vec2 temp = new vec2.copy(P);
 
+      vec2 temp = new vec2.copy(P);
       temp.scale(m1);
       b1.linearVelocity.sub(temp);
       b1.angularVelocity -= i1 * (cross(r1, P) + _motorImpulse + impulse.z);
@@ -155,7 +155,7 @@ class RevoluteJoint extends Joint {
       b2.angularVelocity += i2 * (cross(r2, P) + _motorImpulse + impulse.z);
 
     } else {
-      impulse.x = impulse.y = 0;
+      impulse.splat(0);
       _motorImpulse = 0.0;
     }
   }
@@ -200,7 +200,7 @@ class RevoluteJoint extends Joint {
       final vec2 Cdot1 = cross(w2, r2);
       Cdot1.add(v2).sub(v1).sub(temp);
       num Cdot2 = w2 - w1;
-      vec3 Cdot = new vec3(Cdot1, Cdot1, Cdot2);
+      vec3 Cdot = new vec3(Cdot1.x, Cdot1.y, Cdot2);
 
       vec3 imp = MathBox.solve33(mass, Cdot.negate_());
 
@@ -213,6 +213,7 @@ class RevoluteJoint extends Joint {
           temp = MathBox.solve22(mass, Cdot1.negate_());
           imp.x = temp.x;
           imp.y = temp.y;
+          imp.z = -impulse.z;
           impulse.x += temp.x;
           impulse.y += temp.y;
           impulse.z = 0.0;

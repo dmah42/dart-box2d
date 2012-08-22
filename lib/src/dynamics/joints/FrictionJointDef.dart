@@ -29,8 +29,8 @@ class FrictionJointDef extends JointDef {
 
   FrictionJointDef()
       : super(),
-        localAnchorA = new vec2(0.0, 0.0),
-        localAnchorB = new vec2(0.0, 0.0),
+        localAnchorA = new vec2.zero(),
+        localAnchorB = new vec2.zero(),
         maxForce = 0.0,
         maxTorque = 0.0 {
     type = JointType.FRICTION;

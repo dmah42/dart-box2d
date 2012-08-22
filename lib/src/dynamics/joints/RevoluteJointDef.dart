@@ -77,8 +77,8 @@ class RevoluteJointDef extends JointDef {
 
   RevoluteJointDef() :
     super(),
-    localAnchorA = new vec2(0.0, 0.0),
-    localAnchorB = new vec2(0.0, 0.0),
+    localAnchorA = new vec2.zero(),
+    localAnchorB = new vec2.zero(),
     referenceAngle = 0.0,
     lowerAngle = 0.0,
     upperAngle = 0.0,

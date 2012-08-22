@@ -28,14 +28,14 @@ class ContactConstraintPoint {
 
   /** Constructs a new ContactConstraintPoint. */
   ContactConstraintPoint()
-    : localPoint = new vec2(),
-    rA = new vec2(),
-    rB = new vec2(),
-    normalImpulse = 0,
-    tangentImpulse = 0,
-    normalMass = 0,
-    tangentMass = 0,
-    velocityBias = 0 {}
+      : localPoint = new vec2(),
+        rA = new vec2(),
+        rB = new vec2(),
+        normalImpulse = 0,
+        tangentImpulse = 0,
+        normalMass = 0,
+        tangentMass = 0,
+        velocityBias = 0 {}
 
   /** Sets this point equal to the given point. */
   void setFrom(ContactConstraintPoint cp) {
