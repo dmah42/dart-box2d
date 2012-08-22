@@ -206,11 +206,8 @@ class PolygonShape extends Shape {
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
-      // TODO(dominich): Remove when min/maxToOut exists.
-      final vec2 _min = min(v, lower);
-      lower.copyFrom(_min);
-      final vec2 _max = max(v, upper);
-      upper.copyFrom(_max);
+      min(v, lower, out: lower);
+      max(v, upper, out: upper);
       //vec2.minToOut(lower, v, lower);
       //vec2.maxToOut(upper, v, upper);
     }

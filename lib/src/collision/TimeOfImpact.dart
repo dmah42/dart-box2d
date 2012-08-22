@@ -326,9 +326,7 @@ class SeparationFunction {
       localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.copyFrom(localPointB2).sub(localPointB1);
-      // TODO(dominich): Remove when crossToOut exists.
-      final vec2 _cross = cross(temp, 1);
-      axis.copyFrom(_cross);
+      cross(temp, 1, out: axis);
       axis.normalize();
 
       normal.copyFrom(axis);
@@ -356,9 +354,7 @@ class SeparationFunction {
       localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
 
       temp.copyFrom(localPointA2).sub(localPointA1);
-      // TODO(dominich): Remove when crossToOut exists.
-      final vec2 _cross = cross(temp, 1);
-      axis.copyFrom(_cross);
+      cross(temp, 1, out: axis);
       axis.normalize();
 
       normal.copyFrom(axis);

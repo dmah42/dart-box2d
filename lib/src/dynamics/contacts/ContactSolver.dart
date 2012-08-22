@@ -240,9 +240,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final vec2 normal = c.normal;
-      // TODO(dominich): crossToOut.
-      final vec2 _cross = cross(normal, 1);
-      tangent.copyFrom(_cross);
+      cross(normal, 1, out: tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];

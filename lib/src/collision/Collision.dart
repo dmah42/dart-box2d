@@ -578,9 +578,7 @@ class Collision {
     localTangent.normalize();
 
     // vec2 localNormal = Cross(dv, 1.0);
-    // TODO(dominich): Remove when crossToOut is live.
-    final vec2 _localNormal = cross(localTangent, 1);
-    localNormal.copyFrom(_localNormal);
+    cross(localTangent, 1, out: localNormal);
 
     // vec2 planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).add(v12).scale(.5);
@@ -590,9 +588,7 @@ class Collision {
     xf1.rotation.transformDirect(tangent);
 
     // vec2 frontNormal = Cross(sideNormal, 1.0);
-    // TODO(dominich): Remove this when there's a crossToOut method
-    final vec2 tempNormal = cross(tangent, 1);
-    normal.copyFrom(tempNormal);
+    cross(tangent, 1, out: normal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);
