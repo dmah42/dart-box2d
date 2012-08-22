@@ -6541,10 +6541,10 @@ $$.Matrix22 = {"":
   this.col2.setCoords$2($.neg(sin), cosin);
  },
  operator$eq$1: function(other) {
-  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Matrix22)) {
-    return $.eqB(this.col1, other.get$col1()) && $.eqB(this.col2, other.get$col2());
-  }
-  return false;
+  if (typeof other === 'object' && other !== null && !!other.is$Matrix22) {
+    var t1 = $.eqB(this.col1, other.col1) && $.eqB(this.col2, other.col2);
+  } else t1 = false;
+  return t1;
  },
  Matrix22$2: function(c1, c2) {
   if (c1 == null) c1 = $.Vector$(0, 0);
@@ -6848,7 +6848,6 @@ $$.Transform = {"":
   this.rotation.setFrom$1(other.get$rotation());
  },
  operator$eq$1: function(other) {
-  if (other == null) return false;
   return $.eqB(this.position, other.get$position()) && $.eqB(this.rotation, other.get$rotation());
  }
 };
@@ -6962,16 +6961,7 @@ $$.Vector = {"":
   }
  },
  operator$eq$1: function(other) {
-  if (other == null) return false;
-  var t1 = this.x;
-  var t2 = other.get$x();
-  if (t1 == null ? t2 == null : t1 === t2) {
-    t1 = this.y;
-    t2 = other.get$y();
-    t2 = t1 == null ? t2 == null : t1 === t2;
-    t1 = t2;
-  } else t1 = false;
-  return t1;
+  return $.eqB(this.x, other.get$x()) && $.eqB(this.y, other.get$y());
  }
 };
 
@@ -7239,10 +7229,10 @@ $$.Vector3 = {"":
   return this;
  },
  operator$eq$1: function(other) {
-  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Vector3)) {
-    return $.eqB(this.x, other.get$x()) && ($.eqB(this.y, other.get$y()) && $.eqB(this.z, other.get$z()));
-  }
-  return false;
+  if (typeof other === 'object' && other !== null && !!other.is$Vector3) {
+    var t1 = $.eqB(this.x, other.x) && ($.eqB(this.y, other.y) && $.eqB(this.z, other.z));
+  } else t1 = false;
+  return t1;
  },
  is$Vector3: true
 };

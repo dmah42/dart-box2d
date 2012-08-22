@@ -1109,7 +1109,7 @@ $$.ExpectException = {"":
 };
 
 $$.Racer = {"":
- ["_lastTime", "_car", "_groundBody", "_controlState", "viewportScale", "worldStepTime", "elapsedUs", "fpsCounter", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
+ ["_lastTime", "_car", "_groundBody", "_controlState", "_stopwatch", "viewportScale", "worldStepTime", "elapsedUs", "fpsCounter", "frameCount", "world", "debugDraw", "viewport", "ctx", "canvas", "bodies"],
  super: "Demo",
  _tireVsGroundArea$3: function(tire, groundArea, began) {
   if (began === true) tire.addGroundArea$1(groundArea);
@@ -1241,12 +1241,13 @@ $$.Demo = {"":
   $.window().setInterval$2(new $.Demo_initializeAnimation_anon0(this), 200);
  },
  step$1: function(timestamp) {
-  var stopwatch = $.StopwatchImplementation$start();
-  var t1 = this.world;
-  t1.step$3(0.016666666666666666, 10, 10);
-  this.elapsedUs = stopwatch.elapsedInUs$0();
+  var t1 = this._stopwatch;
+  t1.reset$0();
+  var t2 = this.world;
+  t2.step$3(0.016666666666666666, 10, 10);
+  this.elapsedUs = t1.elapsedInUs$0();
   this.ctx.clearRect$4(0, 0, 900, 600);
-  t1.drawDebugData$0();
+  t2.drawDebugData$0();
   this.frameCount = $.add(this.frameCount, 1);
   $.window().requestAnimationFrame$1(new $.Demo_step_anon(this));
  },
@@ -7734,17 +7735,18 @@ $$.Color3 = {"":
  ["z=", "y=", "x="],
  super: "Object",
  operator$eq$1: function(other) {
-  if (!((typeof other === 'object' && other !== null) && !!other.is$Color3)) return false;
-  var t1 = this.x;
-  var t2 = other.x;
-  if (t1 == null ? t2 == null : t1 === t2) {
-    t1 = this.y;
-    t2 = other.y;
+  if (typeof other === 'object' && other !== null && !!other.is$Color3) {
+    var t1 = this.x;
+    var t2 = other.x;
     if (t1 == null ? t2 == null : t1 === t2) {
-      t1 = this.z;
-      t2 = other.z;
-      t2 = t1 == null ? t2 == null : t1 === t2;
-      t1 = t2;
+      t1 = this.y;
+      t2 = other.y;
+      if (t1 == null ? t2 == null : t1 === t2) {
+        t1 = this.z;
+        t2 = other.z;
+        t2 = t1 == null ? t2 == null : t1 === t2;
+        t1 = t2;
+      } else t1 = false;
     } else t1 = false;
   } else t1 = false;
   return t1;
@@ -7880,10 +7882,10 @@ $$.Matrix22 = {"":
   this.col2.setCoords$2($.neg(sin), cosin);
  },
  operator$eq$1: function(other) {
-  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Matrix22)) {
-    return $.eqB(this.col1, other.get$col1()) && $.eqB(this.col2, other.get$col2());
-  }
-  return false;
+  if (typeof other === 'object' && other !== null && !!other.is$Matrix22) {
+    var t1 = $.eqB(this.col1, other.col1) && $.eqB(this.col2, other.col2);
+  } else t1 = false;
+  return t1;
  },
  Matrix22$2: function(c1, c2) {
   if (c1 == null) c1 = $.Vector$(0, 0);
@@ -8225,7 +8227,6 @@ $$.Transform = {"":
   this.rotation.setFrom$1(other.get$rotation());
  },
  operator$eq$1: function(other) {
-  if (other == null) return false;
   return $.eqB(this.position, other.get$position()) && $.eqB(this.rotation, other.get$rotation());
  }
 };
@@ -8459,16 +8460,7 @@ $$.Vector = {"":
   }
  },
  operator$eq$1: function(other) {
-  if (other == null) return false;
-  var t1 = this.x;
-  var t2 = other.get$x();
-  if (t1 == null ? t2 == null : t1 === t2) {
-    t1 = this.y;
-    t2 = other.get$y();
-    t2 = t1 == null ? t2 == null : t1 === t2;
-    t1 = t2;
-  } else t1 = false;
-  return t1;
+  return $.eqB(this.x, other.get$x()) && $.eqB(this.y, other.get$y());
  }
 };
 
@@ -8701,10 +8693,10 @@ $$.Vector3 = {"":
   return this;
  },
  operator$eq$1: function(other) {
-  if (!(other == null) && ((typeof other === 'object' && other !== null) && !!other.is$Vector3)) {
-    return $.eqB(this.x, other.get$x()) && ($.eqB(this.y, other.get$y()) && $.eqB(this.z, other.get$z()));
-  }
-  return false;
+  if (typeof other === 'object' && other !== null && !!other.is$Vector3) {
+    var t1 = $.eqB(this.x, other.x) && ($.eqB(this.y, other.y) && $.eqB(this.z, other.z));
+  } else t1 = false;
+  return t1;
  },
  is$Vector3: true
 };
@@ -24656,7 +24648,7 @@ $$.Demo_initializeAnimation_anon = {"":
  ["this_0"],
  super: "Closure",
  $call$0: function() {
-  var t1 = $.S($.toString(this.this_0.get$frameCount()));
+  var t1 = $.toString(this.this_0.get$frameCount());
   this.this_0.get$fpsCounter().set$innerHTML(t1);
   this.this_0.set$frameCount(0);
  }
@@ -24911,6 +24903,10 @@ $.Color3$fromRGB = function(r, g, b) {
   return new $.Color3(b, g, r);
 };
 
+$.sub = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a - b) : $.sub$slow(a, b);
+};
+
 $.eqB = function(a, b) {
   if (a == null) return b == null;
   if (b == null) return false;
@@ -25044,6 +25040,21 @@ $.TimeOfImpact$_construct = function(argPool) {
   t1 = new $.TimeOfImpact(argPool, $.Sweep$(), t8, t7, t6, t5, t4, t3, t2, t1);
   t1.TimeOfImpact$_construct$1(argPool);
   return t1;
+};
+
+$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof endIndex !== 'number') return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if ($.geB(startIndex, a.length)) return -1;
+  if ($.ltB(startIndex, 0)) startIndex = 0;
+  if (typeof startIndex !== 'number') return $.Arrays_indexOf$bailout(2, a, element, startIndex, endIndex);
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i !== (i | 0)) throw $.iae(i);
+    var t1 = a.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    if ($.eqB(a[i], element)) return i;
+  }
+  return -1;
 };
 
 $.IllegalJSRegExpException$ = function(_pattern, _errmsg) {
@@ -25765,6 +25776,11 @@ $.neg = function(a) {
   return a.operator$negate$0();
 };
 
+$.filter = function(receiver, predicate) {
+  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
+  return $.Collections_filter(receiver, [], predicate);
+};
+
 $.Matrix22_mulMatrixAndVectorToOut = function(matrix, vector, out) {
   var tempy = $.add($.mul(matrix.get$col1().get$y(), vector.get$x()), $.mul(matrix.get$col2().get$y(), vector.get$y()));
   out.set$x($.add($.mul(matrix.get$col1().get$x(), vector.get$x()), $.mul(matrix.get$col2().get$x(), vector.get$y())));
@@ -25789,9 +25805,12 @@ $.Collections__emitCollection = function(c, result, visiting) {
   $.removeLast(visiting);
 };
 
-$.filter = function(receiver, predicate) {
-  if ($.isJsArray(receiver) !== true) return receiver.filter$1(predicate);
-  return $.Collections_filter(receiver, [], predicate);
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $.DynamicTreeNode$_construct = function() {
@@ -25800,14 +25819,6 @@ $.DynamicTreeNode$_construct = function() {
 
 $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
-};
-
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
 };
 
 $.ExpectException$ = function(message) {
@@ -25821,6 +25832,14 @@ $.sub$slow = function(a, b) {
 
 $.toStringWrapper = function() {
   return $.toString((this.dartException));
+};
+
+$._Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    f.$call$1(t2) === true && $.add$1(destination, t2);
+  }
+  return destination;
 };
 
 $._PeerConnection00EventsImpl$ = function(_ptr) {
@@ -25837,14 +25856,6 @@ $._ElementList$ = function(list) {
 
 $._WorkerContextEventsImpl$ = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
-};
-
-$._Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true; ) {
-    var t2 = t1.next$0();
-    f.$call$1(t2) === true && $.add$1(destination, t2);
-  }
-  return destination;
 };
 
 $.or = function(a, b) {
@@ -25893,7 +25904,7 @@ $.Racer$ = function() {
   var t1 = $.Vector$(0, 0);
   var t2 = $.ListFactory_List(null);
   $.setRuntimeTypeInfo(t2, ({E: 'Body'}));
-  t2 = new $.Racer(0, null, null, null, 2.5, null, null, null, null, null, null, null, null, null, t2);
+  t2 = new $.Racer(0, null, null, null, $.StopwatchImplementation$start(), 2.5, null, null, null, null, null, null, null, null, null, t2);
   t2.Demo$3('Racer', t1, 2.5);
   return t2;
 };
@@ -26259,12 +26270,12 @@ $._TextTrackCueEventsImpl$ = function(_ptr) {
   return new $._TextTrackCueEventsImpl(_ptr);
 };
 
-$.MatchImplementation$ = function(pattern, str, _start, _end, _groups) {
-  return new $.MatchImplementation(_groups, _end, _start, str, pattern);
-};
-
 $.add = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
+};
+
+$.MatchImplementation$ = function(pattern, str, _start, _end, _groups) {
+  return new $.MatchImplementation(_groups, _end, _start, str, pattern);
 };
 
 $.UnsupportedOperationException$ = function(_message) {
@@ -26395,12 +26406,12 @@ $.main = function() {
   $.Racer_main();
 };
 
-$.Primitives_dateNow = function() {
-  return Date.now();
-};
-
 $._AbstractWorkerEventsImpl$ = function(_ptr) {
   return new $._AbstractWorkerEventsImpl(_ptr);
+};
+
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
@@ -26645,6 +26656,12 @@ $.convertDartClosureToJS = function(closure, arity) {
   return function$;
 };
 
+$._JsSerializer$ = function() {
+  var t1 = new $._JsSerializer(0, $._MessageTraverserVisitedMap$());
+  t1._JsSerializer$0();
+  return t1;
+};
+
 $.TimeOfImpactSolver$ = function() {
   var t1 = $.ListFactory_List(4);
   $.setRuntimeTypeInfo(t1, ({E: 'TimeOfImpactConstraint'}));
@@ -26663,12 +26680,6 @@ $._FixedSizeListIterator$ = function(array) {
 
 $.Pair$ = function() {
   return new $.Pair(null, null);
-};
-
-$._JsSerializer$ = function() {
-  var t1 = new $._JsSerializer(0, $._MessageTraverserVisitedMap$());
-  t1._JsSerializer$0();
-  return t1;
 };
 
 $._FrozenElementList$_wrap = function(_nodeList) {
@@ -27253,10 +27264,6 @@ $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), t6, t5, t4, t3, 0, t2, t1);
 };
 
-$.Clock_frequency = function() {
-  return 1000;
-};
-
 $.hashCode = function(receiver) {
   if (typeof receiver === 'number') return receiver & 0x1FFFFFFF;
   if (!(typeof receiver === 'string')) return receiver.hashCode$0();
@@ -27309,6 +27316,10 @@ $.Math_min = function(a, b) {
   throw $.captureStackTrace($.IllegalArgumentException$(a));
 };
 
+$.Clock_frequency = function() {
+  return 1000;
+};
+
 $._JsVisitedMap$ = function() {
   return new $._JsVisitedMap(null);
 };
@@ -27338,21 +27349,6 @@ $._MessagePortEventsImpl$ = function(_ptr) {
 
 $._document = function() {
   return document;;
-};
-
-$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof endIndex !== 'number') return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if ($.geB(startIndex, a.length)) return -1;
-  if ($.ltB(startIndex, 0)) startIndex = 0;
-  if (typeof startIndex !== 'number') return $.Arrays_indexOf$bailout(2, a, element, startIndex, endIndex);
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i !== (i | 0)) throw $.iae(i);
-    var t1 = a.length;
-    if (i < 0 || i >= t1) throw $.ioore(i);
-    if ($.eqB(a[i], element)) return i;
-  }
-  return -1;
 };
 
 $.removeLast = function(receiver) {
@@ -27537,14 +27533,6 @@ $.HashMapImplementation$ = function() {
   return t1;
 };
 
-$.index = function(a, index) {
-  if (typeof a == "string" || a.constructor === Array) {
-    var key = (index >>> 0);
-    if (key === index && key < (a.length)) return a[key];
-  }
-  return $.index$slow(a, index);
-};
-
 $.substring$1 = function(receiver, startIndex) {
   if (!(typeof receiver === 'string')) return receiver.substring$1(startIndex);
   return $.substring$2(receiver, startIndex, null);
@@ -27591,10 +27579,12 @@ $.PolygonShape$ = function() {
   return t1;
 };
 
-$.sort = function(receiver, compare) {
-  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
+$.index = function(a, index) {
+  if (typeof a == "string" || a.constructor === Array) {
+    var key = (index >>> 0);
+    if (key === index && key < (a.length)) return a[key];
+  }
+  return $.index$slow(a, index);
 };
 
 $.StringBufferImpl$ = function(content$) {
@@ -27639,8 +27629,14 @@ $.Simplex$ = function() {
   return t1;
 };
 
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
+$._IDBVersionChangeRequestEventsImpl$ = function(_ptr) {
+  return new $._IDBVersionChangeRequestEventsImpl(_ptr);
+};
+
+$.sort = function(receiver, compare) {
+  if ($.isJsArray(receiver) !== true) return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.BodyDef$ = function() {
@@ -27650,10 +27646,6 @@ $.BodyDef$ = function() {
 
 $.gtB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a > b) : $.gt$slow(a, b) === true;
-};
-
-$._IDBVersionChangeRequestEventsImpl$ = function(_ptr) {
-  return new $._IDBVersionChangeRequestEventsImpl(_ptr);
 };
 
 $.Expect__fail = function(message) {
@@ -27666,6 +27658,10 @@ $.setRuntimeTypeInfo = function(target, typeInfo) {
 
 $.Vector_dot = function(one, two) {
   return $.add($.mul(one.get$x(), two.get$x()), $.mul(one.get$y(), two.get$y()));
+};
+
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, $.sub($.get$length(a), 1), compare);
 };
 
 $.SimplexVertex$ = function() {
@@ -27757,10 +27753,6 @@ $.shl = function(a, b) {
 
 $.MathNatives_cos = function(value) {
   return Math.cos($.checkNum(value));
-};
-
-$.sub = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a - b) : $.sub$slow(a, b);
 };
 
 $.DualPivotQuicksort__dualPivotQuicksort$bailout = function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13) {

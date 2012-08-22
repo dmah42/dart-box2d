@@ -65,8 +65,13 @@ class Demo {
   // parameters are introduced.
   num viewportScale;
 
+  // For timing the world.step call. It is kept running but reset and polled
+  // every frame to minimize overhead.
+  Stopwatch _stopwatch;
+
   Demo(String name, [Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
-      : bodies = new List<Body>() {
+      : bodies = new List<Body>(),
+        _stopwatch = new Stopwatch.start() {
     query("#title").innerHTML = name;
     bool doSleep = true;
     if (null === gravity) gravity = new Vector(0, GRAVITY);
@@ -75,9 +80,9 @@ class Demo {
 
   /** Advances the world forward by timestep seconds. */
   void step(num timestamp) {
-    final stopwatch = new Stopwatch.start();
+    _stopwatch.reset();
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-    elapsedUs = stopwatch.elapsedInUs();
+    elapsedUs = _stopwatch.elapsedInUs();
 
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -114,7 +119,7 @@ class Demo {
     fpsCounter = query("#fps-counter");
     worldStepTime = query("#world-step-time");
     window.setInterval(() {
-      fpsCounter.innerHTML = "${frameCount.toString()}";
+      fpsCounter.innerHTML = frameCount.toString();
       frameCount = 0;
     }, 1000);
     window.setInterval(() {
