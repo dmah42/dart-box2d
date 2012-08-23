@@ -41,11 +41,11 @@ class BenchmarkRunner {
   /** Buffer results here before dumping out on the page. */
   StringBuffer resultsWriter;
 
-  BenchmarkRunner() :
-      resultsWriter = new StringBuffer(),
-      benchmarks = new List<Benchmark>(),
-      solveLoops = const [10, 30],
-      steps = const [10, 100, 500, 2000];
+  BenchmarkRunner()
+      : resultsWriter = new StringBuffer(),
+        benchmarks = new List<Benchmark>(),
+        solveLoops = const [10, 30],
+        steps = const [10, 100, 500, 2000];
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method

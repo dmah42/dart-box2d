@@ -92,10 +92,10 @@ class Benchmark {
         initialize();
 
         final watch = new Stopwatch.start();
-
         // Step the world forward in a nice loop.
         for (int i = 0; i < stepCount; ++i)
           world.step(TIME_STEP, solveCount, solveCount);
+        watch.stop();
 
         // Record the running time.
         _recordResults(watch.elapsedInMs(), resultsWriter, solveCount,
