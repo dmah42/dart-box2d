@@ -194,54 +194,12 @@ $$.StopwatchImplementation = {"":
   if (this._start == null) this._start = $.Clock_now();
   else {
     if (this._stop == null) return;
-    var t1 = $.Clock_now();
-    if (typeof t1 !== 'number') return this.start$0$bailout(1, t1, 0, 0);
-    var t3 = this._stop;
-    if (typeof t3 !== 'number') return this.start$0$bailout(2, t3, t1, 0);
-    var t5 = this._start;
-    if (typeof t5 !== 'number') return this.start$0$bailout(3, t3, t1, t5);
-    this._start = t1 - (t3 - t5);
+    this._start = $.sub($.Clock_now(), $.sub(this._stop, this._start));
     this._stop = null;
   }
  },
- start$0$bailout: function(state, env0, env1, env2) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      break;
-    case 2:
-      t3 = env0;
-      t1 = env1;
-      break;
-    case 3:
-      t3 = env0;
-      t1 = env1;
-      t5 = env2;
-      break;
-  }
-  switch (state) {
-    case 0:
-    default:
-      if ((state == 0 && this._start == null)) {
-        this._start = $.Clock_now();
-      } else {
-        switch (state) {
-          case 0:
-            if (this._stop == null) return;
-            var t1 = $.Clock_now();
-          case 1:
-            state = 0;
-            var t3 = this._stop;
-          case 2:
-            state = 0;
-            var t5 = this._start;
-          case 3:
-            state = 0;
-            this._start = $.sub(t1, $.sub(t3, t5));
-            this._stop = null;
-        }
-      }
-  }
+ StopwatchImplementation$start$0: function() {
+  this.start$0();
  }
 };
 
@@ -409,8 +367,8 @@ $$.ExpectException = {"":
 $$.BenchmarkRunner = {"":
  ["resultsWriter", "benchmarks", "steps", "solveLoops"],
  super: "Object",
- addBenchmark$1: function(benchmark) {
-  this.benchmarks.push(benchmark);
+ _addBenchmark$1: function(benchmark) {
+  return this.benchmarks.push(benchmark);
  },
  runBenchmarks$0: function() {
   for (var t1 = $.iterator(this.benchmarks), t2 = this.resultsWriter; t1.hasNext$0() === true; ) {
@@ -418,19 +376,17 @@ $$.BenchmarkRunner = {"":
     $.print('Running ' + $.S(t3.get$name()));
     $.clear(t2);
     t3.runBenchmark$1(t2);
-    $.print(t2);
-    $.print('');
-    $.print('------------------------------------------------');
+    $.print($.S(t2) + '------------------------------------------------');
   }
  },
  setupBenchmarks$0: function() {
   var t1 = this.solveLoops;
   var t2 = this.steps;
-  this.addBenchmark$1($.BallDropBench$(t1, t2));
-  this.addBenchmark$1($.BallCageBench$(t1, t2));
-  this.addBenchmark$1($.CircleStressBench$(t1, t2));
-  this.addBenchmark$1($.DominoPlatformBench$(t1, t2));
-  this.addBenchmark$1($.DominoTowerBench$(t1, t2));
+  this._addBenchmark$1($.BallDropBench$(t1, t2));
+  this._addBenchmark$1($.BallCageBench$(t1, t2));
+  this._addBenchmark$1($.CircleStressBench$(t1, t2));
+  this._addBenchmark$1($.DominoPlatformBench$(t1, t2));
+  this._addBenchmark$1($.DominoTowerBench$(t1, t2));
  }
 };
 
@@ -457,8 +413,7 @@ $$.Benchmark = {"":
     for (var t4 = $.iterator(t2); t4.hasNext$0() === true; ) {
       var t5 = t4.next$0();
       this.initialize$0();
-      var watch = $.StopwatchImplementation$();
-      watch.start$0();
+      var watch = $.StopwatchImplementation$start();
       for (var i = 0; i < t3; ++i) {
         this.world.step$3(0.016666666666666666, t5, t5);
       }
@@ -491,8 +446,7 @@ $$.Benchmark = {"":
             for (var t4 = $.iterator(t2); t4.hasNext$0() === true; ) {
               var t5 = t4.next$0();
               this.initialize$0();
-              var watch = $.StopwatchImplementation$();
-              watch.start$0();
+              var watch = $.StopwatchImplementation$start();
               for (var i = 0; $.ltB(i, t3); ++i) {
                 this.world.step$3(0.016666666666666666, t5, t5);
               }
@@ -507,29 +461,19 @@ $$.Benchmark = {"":
   if (typeof time !== 'number') return this._recordResults$4$bailout(1, time, resultsWriter, benchmarkIterations, steps);
   if (typeof steps !== 'number') return this._recordResults$4$bailout(1, time, resultsWriter, benchmarkIterations, steps);
   $.add$1(resultsWriter, this.get$name());
-  $.add$1(resultsWriter, ' (' + $.S(steps) + ' steps, ' + $.S(benchmarkIterations) + ' solve loops)');
-  $.add$1(resultsWriter, ' : ');
-  $.add$1(resultsWriter, time);
-  $.add$1(resultsWriter, 'ms');
+  $.add$1(resultsWriter, ' (' + $.S(steps) + ' steps, ' + $.S(benchmarkIterations) + ' solve loops) : ' + $.S(time) + ' ms');
   $.add$1(resultsWriter, '  (' + $.S(steps / (time / 1000)) + ' steps/second)');
   $.add$1(resultsWriter, '\n');
-  $.add$1(resultsWriter, 'Checksum: ');
-  $.add$1(resultsWriter, this.get$checksum());
-  $.add$1(resultsWriter, '\n');
-  $.add$1(resultsWriter, '\n');
+  $.add$1(resultsWriter, 'Checksum: ' + $.S(this.get$checksum()));
+  $.add$1(resultsWriter, '\n\n');
  },
  _recordResults$4$bailout: function(state, time, resultsWriter, benchmarkIterations, steps) {
   $.add$1(resultsWriter, this.get$name());
-  $.add$1(resultsWriter, ' (' + $.S(steps) + ' steps, ' + $.S(benchmarkIterations) + ' solve loops)');
-  $.add$1(resultsWriter, ' : ');
-  $.add$1(resultsWriter, time);
-  $.add$1(resultsWriter, 'ms');
+  $.add$1(resultsWriter, ' (' + $.S(steps) + ' steps, ' + $.S(benchmarkIterations) + ' solve loops) : ' + $.S(time) + ' ms');
   $.add$1(resultsWriter, '  (' + $.S($.div(steps, $.div(time, 1000))) + ' steps/second)');
   $.add$1(resultsWriter, '\n');
-  $.add$1(resultsWriter, 'Checksum: ');
-  $.add$1(resultsWriter, this.get$checksum());
-  $.add$1(resultsWriter, '\n');
-  $.add$1(resultsWriter, '\n');
+  $.add$1(resultsWriter, 'Checksum: ' + $.S(this.get$checksum()));
+  $.add$1(resultsWriter, '\n\n');
  },
  resetWorld$0: function() {
   var t1 = $.ListFactory_List(null);
@@ -22618,10 +22562,6 @@ $.clear = function(receiver) {
   $.set$length(receiver, 0);
 };
 
-$.StopwatchImplementation$ = function() {
-  return new $.StopwatchImplementation(null, null);
-};
-
 $.Vector$ = function(x, y) {
   return new $.Vector(y, x);
 };
@@ -23832,6 +23772,12 @@ $.Collections_forEach = function(iterable, f) {
   }
 };
 
+$.StopwatchImplementation$start = function() {
+  var t1 = new $.StopwatchImplementation(null, null);
+  t1.StopwatchImplementation$start$0();
+  return t1;
+};
+
 $.leB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a <= b) : $.le$slow(a, b) === true;
 };
@@ -24337,22 +24283,18 @@ $.Primitives_newList = function(length$) {
   return result;
 };
 
-$.BenchmarkRunner_main = function() {
+$.main = function() {
   var runner = $.BenchmarkRunner$();
   runner.setupBenchmarks$0();
   runner.runBenchmarks$0();
 };
 
-$.main = function() {
-  $.BenchmarkRunner_main();
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.lt = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a < b) : $.lt$slow(a, b);
-};
-
-$.Primitives_dateNow = function() {
-  return Date.now();
 };
 
 $.ceil = function(receiver) {
