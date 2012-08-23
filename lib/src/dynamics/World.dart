@@ -611,15 +611,10 @@ class World {
           AxisAlignedBox aabb = f.proxy.box;
 
           List<vec2> vs = new List<vec2>(4);
-          for (int i = 0; i < vs.length; i++) {
-            vs[i] = new vec2();
-          }
-
-          // TODO(dominich): lose vec2 allocs when 'set(num num)' exists.
-          vs[0].xy = new vec2(aabb.lowerBound.x, aabb.lowerBound.y);
-          vs[1].xy = new vec2(aabb.upperBound.x, aabb.lowerBound.y);
-          vs[2].xy = new vec2(aabb.upperBound.x, aabb.upperBound.y);
-          vs[3].xy = new vec2(aabb.lowerBound.x, aabb.upperBound.y);
+          vs[0] = new vec2(aabb.lowerBound.x, aabb.lowerBound.y);
+          vs[1] = new vec2(aabb.upperBound.x, aabb.lowerBound.y);
+          vs[2] = new vec2(aabb.upperBound.x, aabb.upperBound.y);
+          vs[3] = new vec2(aabb.lowerBound.x, aabb.upperBound.y);
 
           if (0 != (drawFlags & DebugDraw.e_lineDrawingBit)) {
             _debugDraw.drawPolygon(vs, 4, color);

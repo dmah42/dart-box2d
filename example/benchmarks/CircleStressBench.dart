@@ -34,7 +34,7 @@ class CircleStressBench extends Benchmark {
 
   /** Creates all bodies. */
   void initialize() {
-    resetWorld();
+    super.initialize();
 
     {
       final bd = new BodyDef();

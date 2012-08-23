@@ -67,8 +67,8 @@ class FrictionJoint extends Joint {
     vec2 r1 = _localAnchorA - bodyA.localCenter;
     vec2 r2 = _localAnchorB - bodyB.localCenter;
 
-    bodyA.originTransform.rotation.transformDirect(r1);
-    bodyB.originTransform.rotation.transformDirect(r2);
+    bodyA.originTransform.rotation.transform(r1);
+    bodyB.originTransform.rotation.transform(r2);
 
     // J = [-I -r1_skew I r2_skew]
     // [ 0 -1 0 1]
@@ -139,8 +139,8 @@ class FrictionJoint extends Joint {
       final vec2 r1 = _localAnchorA - bodyA.localCenter;
       final vec2 r2 = _localAnchorB - bodyB.localCenter;
 
-      bodyA.originTransform.rotation.transformDirect(r1);
-      bodyB.originTransform.rotation.transformDirect(r2);
+      bodyA.originTransform.rotation.transform(r1);
+      bodyB.originTransform.rotation.transform(r2);
 
       vec2 temp = cross(bodyA.angularVelocity, r1);
       vec2 Cdot = cross(bodyB.angularVelocity, r2);
@@ -159,7 +159,7 @@ class FrictionJoint extends Joint {
       linearMass.invert();
 
       vec2 impulse = new vec2.copy(Cdot);
-      linearMass.transformDirect(impulse);
+      linearMass.transform(impulse);
       impulse.negate_();
 
       vec2 oldImpulse = new vec2.copy(_linearImpulse);

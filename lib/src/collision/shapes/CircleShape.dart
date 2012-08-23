@@ -48,7 +48,7 @@ class CircleShape extends Shape {
    */
   bool testPoint(Transform transform, vec2 point) {
     vec2 center = new vec2.copy(position);
-    transform.rotation.transformDirect(center);
+    transform.rotation.transform(center);
     center.add(transform.position);
 
     vec2 d = center.sub(point).negate_();
@@ -61,14 +61,11 @@ class CircleShape extends Shape {
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
     vec2 p = new vec2.copy(position);
-    argTransform.rotation.transformDirect(p);
+    argTransform.rotation.transform(p);
     p.add(argTransform.position);
 
-    // TODO(dominich): simplify when there's a setCoords method on vec2
-    argBox.lowerBound.x = p.x - radius;
-    argBox.lowerBound.y = p.y - radius;
-    argBox.upperBound.x = p.x + radius;
-    argBox.upperBound.y = p.y + radius;
+    argBox.lowerBound.setComponents(p.x - radius, p.y - radius);
+    argBox.upperBound.setComponents(p.x + radius, p.y + radius);
   }
 
   /** Returns a clone of this circle. */

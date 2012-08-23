@@ -374,8 +374,7 @@ class ContactSolver {
         b.y -= temp2.y;
 
         while (true) {
-          x.copyFrom(b);
-          c.normalMass.transformDirect(x);
+          c.normalMass.transformed(b, x);
           x.negate_();
 
           if (x.x >= 0.0 && x.y >= 0.0){

@@ -620,8 +620,7 @@ class Body {
    * given out paramater.
    */
   void getWorldVectorToOut(vec2 localVector, vec2 out) {
-    out.copyFrom(localVector);
-    originTransform.rotation.transformDirect(out);
+    originTransform.rotation.transformed(localVector, out);
   }
 
   /**
@@ -661,8 +660,7 @@ class Body {
    * out parameter.
    */
   void getLocalVectorToOut(vec2 worldVector, vec2 out) {
-    out.copyFrom(worldVector);
-    originTransform.rotation.transposed().transformDirect(out);
+    originTransform.rotation.transposed().transformed(worldVector, out);
   }
 
   /**
@@ -868,7 +866,7 @@ class Body {
     final Transform xf1 = _pxf;
     xf1.rotation.setRotation(sweep.angleZero);
     xf1.position.copyFrom(sweep.localCenter);
-    xf1.rotation.transformDirect(xf1.position);
+    xf1.rotation.transform(xf1.position);
     xf1.position.negate_().add(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;

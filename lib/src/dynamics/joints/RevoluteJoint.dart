@@ -87,8 +87,8 @@ class RevoluteJoint extends Joint {
     // Compute the effective mass matrix.
     final vec2 r1 = localAnchor1 - b1.localCenter;
     final vec2 r2 = localAnchor2 - b2.localCenter;
-    b1.originTransform.rotation.transformDirect(r1);
-    b2.originTransform.rotation.transformDirect(r2);
+    b1.originTransform.rotation.transform(r1);
+    b2.originTransform.rotation.transform(r2);
 
     num m1 = b1.invMass, m2 = b2.invMass;
     num i1 = b1.invInertia, i2 = b2.invInertia;
@@ -192,8 +192,8 @@ class RevoluteJoint extends Joint {
 
       final vec2 r1 = localAnchor1 - b1.localCenter;
       final vec2 r2 = localAnchor2 - b2.localCenter;
-      b1.originTransform.rotation.transformDirect(r1);
-      b2.originTransform.rotation.transformDirect(r2);
+      b1.originTransform.rotation.transform(r1);
+      b2.originTransform.rotation.transform(r2);
 
       // Solve point-to-point constraint
       temp = cross(w1, r1);
@@ -243,8 +243,8 @@ class RevoluteJoint extends Joint {
     } else {
       final vec2 r1 = localAnchor1 - b1.localCenter;
       final vec2 r2 = localAnchor2 - b2.localCenter;
-      b1.originTransform.rotation.transformDirect(r1);
-      b2.originTransform.rotation.transformDirect(r2);
+      b1.originTransform.rotation.transform(r1);
+      b2.originTransform.rotation.transform(r2);
 
       // Solve point-to-point constraint
       temp = cross(w1, r1);
@@ -314,8 +314,8 @@ class RevoluteJoint extends Joint {
 
       final vec2 r1 = localAnchor1 - b1.localCenter;
       final vec2 r2 = localAnchor2 - b2.localCenter;
-      b1.originTransform.rotation.transformDirect(r1);
-      b2.originTransform.rotation.transformDirect(r2);
+      b1.originTransform.rotation.transform(r1);
+      b2.originTransform.rotation.transform(r2);
 
       final vec2 C = b2.sweep.center + r2 - (b1.sweep.center + r1);
       positionError = C.length;

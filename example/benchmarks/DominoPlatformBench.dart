@@ -26,7 +26,7 @@ class DominoPlatformBench extends Benchmark {
   String get name => NAME;
 
   void initialize() {
-    resetWorld();
+    super.initialize();
 
     { // Floor
       FixtureDef fd = new FixtureDef();

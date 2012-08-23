@@ -46,7 +46,9 @@ abstract class Benchmark {
    * Constructs a new Benchmark that will run a loop for the given number of
    * iterations.
    */
-  Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
+  Benchmark(List<int> this.solveLoops, List<int> this._steps)
+      : bodies = new List<Body>() {
+  }
 
   /** Sets up the physics world. */
   void initialize();
@@ -64,31 +66,40 @@ abstract class Benchmark {
     world = new World(new vec2(0, GRAVITY), true, new DefaultWorldPool());
   }
 
+  String get name() => "No Name Provided";
+
   /**
    * Writes the results from the last time runBenchmark was called to the given
    * StringBuffer.
    */
-  void _recordResults(int time, StringBuffer resultsWriter, benchmarkIterations,
-      steps) {
-    resultsWriter.add(name);
-    resultsWriter.add(" ($steps steps, $benchmarkIterations solve loops) : $time ms");
+  void _recordResults(int time, int benchmarkIterations, int steps) {
+    StringBuffer buffer = new StringBuffer();
+    buffer.add("$name ");
+    buffer.add(" ($steps steps, $benchmarkIterations solve loops)");
+    buffer.add(" : ");
+
+    buffer.add(time);
+    buffer.add('ms');
 
     // Calculate and write-out steps/second.
     num stepsPerSecond = (steps / (time / 1000));
-    resultsWriter.add('  ($stepsPerSecond steps/second)');
+    buffer.add('  ($stepsPerSecond steps/second)');
 
     // Write out the checksum. This should be compared manually to other
     // implementations of the Box2D benchmarks.
-    resultsWriter.add('\n');
-    resultsWriter.add("Checksum: $checksum");
-    resultsWriter.add('\n\n');
+    buffer.add('\n');
+    buffer.add("Checksum: ");
+    buffer.add(checksum);
+    buffer.add('\n');
+    print(buffer);
   }
 
   /**
    * Runs the benchmark and records the results. Benchmark is run for all
    * different combinations of solveLoops and steps.
    */
-  void runBenchmark(StringBuffer resultsWriter) {
+  void runBenchmark() {
+    final watch = new Stopwatch.start();
     for (int stepCount in _steps) {
       for (int solveCount in solveLoops) {
         // Initialize the world to start fresh.
@@ -101,7 +112,7 @@ abstract class Benchmark {
         watch.stop();
 
         // Record the running time.
-        _recordResults(watch.elapsedMilliseconds, resultsWriter, solveCount,
+        _recordResults(watch.elapsedMilliseconds, solveCount,
             stepCount);
       }
     }
@@ -116,10 +127,10 @@ abstract class Benchmark {
   num get checksum {
     final positionSum = new vec2();
     final velocitySum = new vec2();
-    for (Body b in bodies) {
+    bodies.forEach((b) {
       positionSum.add(b.position);
       velocitySum.add(b.linearVelocity);
-    }
+    });
 
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;
   }

@@ -489,8 +489,8 @@ class Collision {
 
     // Get the normal of the reference edge in poly2's frame.
     normal1.copyFrom(normals1[edge1]);
-    xf1.rotation.transformDirect(normal1);
-    xf2.rotation.transposed().transformDirect(normal1);
+    xf1.rotation.transform(normal1);
+    xf2.rotation.transposed().transform(normal1);
 
     // Find the incident edge on poly2.
     int index = 0;
@@ -580,8 +580,7 @@ class Collision {
     planePoint.copyFrom(v11).add(v12).scale(.5);
 
     // vec2 sideNormal = Mul(xf1.rotation, v12 - v11);
-    tangent.copyFrom(localTangent);
-    xf1.rotation.transformDirect(tangent);
+    xf1.rotation.transformed(localTangent, tangent);
 
     // vec2 frontNormal = Cross(sideNormal, 1.0);
     cross(tangent, 1, out: normal);

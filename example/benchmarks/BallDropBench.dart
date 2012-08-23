@@ -31,7 +31,7 @@ class BallDropBench extends Benchmark {
 
   /** Runs the test and records the results. */
   void initialize() {
-    resetWorld();
+    super.initialize();
 
     // Create the fixture to attach to the ball body.
     final fd = new FixtureDef();
@@ -49,5 +49,4 @@ class BallDropBench extends Benchmark {
   }
 
   String get name => NAME;
-
 }

@@ -34,7 +34,7 @@ class BallCageBench extends Benchmark {
   String get name => NAME;
 
   void initialize() {
-    resetWorld();
+    super.initialize();
 
     // Define the circle shape.
     final circleShape = new CircleShape();

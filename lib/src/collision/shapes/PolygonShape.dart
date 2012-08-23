@@ -132,15 +132,14 @@ class PolygonShape extends Shape {
    */
   void setAsBox(num hx, num hy) {
     vertexCount = 4;
-    // TODO(dominich): Remove vec2 allocations when there's a 'set' method on vec2.
-    vertices[0].xy = new vec2(-hx, -hy); // setCoords(-hx, -hy);
-    vertices[1].xy = new vec2(hx, -hy); // setCoords(hx, -hy);
-    vertices[2].xy = new vec2(hx, hy); // setCoords(hx, hy);
-    vertices[3].xy = new vec2(-hx, hy); // setCoords(-hx, hy);
-    normals[0].xy = new vec2(0, -1); // setCoords(0.0, -1.0);
-    normals[1].xy = new vec2(1, 0); // setCoords(1.0, 0.0);
-    normals[2].xy = new vec2(0, 1); // setCoords(0.0, 1.0);
-    normals[3].xy = new vec2(-1, 0); // setCoords(-1.0, 0.0);
+    vertices[0].setComponents(-hx, -hy);
+    vertices[1].setComponents(hx, -hy);
+    vertices[2].setComponents(hx, hy);
+    vertices[3].setComponents(-hx, hy);
+    normals[0].setComponents(0.0, -1.0);
+    normals[1].setComponents(1.0, 0.0);
+    normals[2].setComponents(0.0, 1.0);
+    normals[3].setComponents(-1.0, 0.0);
     centroid.splat(0);
   }
 
@@ -160,7 +159,7 @@ class PolygonShape extends Shape {
     // Transform vertices and normals.
     for (int i = 0; i < vertexCount; ++i) {
       Transform.mulToOut(xf, vertices[i], vertices[i]);
-      xf.rotation.transformDirect(normals[i]);
+      xf.rotation.transform(normals[i]);
     }
   }
 
@@ -179,7 +178,7 @@ class PolygonShape extends Shape {
   /** See Shape.testPoint(Transform, vec2). */
   bool testPoint(Transform xf, vec2 p) {
     vec2 pLocal = (new vec2.copy(p)).sub(xf.position);
-    xf.rotation.transposed().transformDirect(pLocal);
+    xf.rotation.transposed().transform(pLocal);
 
     vec2 temp = new vec2();
 

@@ -73,11 +73,10 @@ class DistanceJoint extends Joint {
     // Compute the effective mass matrix.
     r1.copyFrom(localAnchor1).sub(b1.localCenter);
     r2.copyFrom(localAnchor2).sub(b2.localCenter);
-    b1.originTransform.rotation.transformDirect(r1);
-    b2.originTransform.rotation.transformDirect(r2);
+    b1.originTransform.rotation.transform(r1);
+    b2.originTransform.rotation.transform(r2);
 
-    u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
-    u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
+    u.copyFrom(b2.sweep.center).add(r2).sub(b1.sweep.center).sub(r1);
 
     // Handle singularity.
     num len = u.length;
@@ -142,8 +141,8 @@ class DistanceJoint extends Joint {
     final vec2 r1 = localAnchor1 - b1.localCenter;
     final vec2 r2 = localAnchor2 - b2.localCenter;
 
-    b1.originTransform.rotation.transformDirect(r1);
-    b2.originTransform.rotation.transformDirect(r2);
+    b1.originTransform.rotation.transform(r1);
+    b2.originTransform.rotation.transform(r2);
 
     final v1 = cross(b1.angularVelocity, r1);
     final v2 = cross(b2.angularVelocity, r2);
@@ -176,8 +175,8 @@ class DistanceJoint extends Joint {
     final vec2 r1 = localAnchor1 - b1.localCenter;
     final vec2 r2 = localAnchor2 - b2.localCenter;
 
-    b1.originTransform.rotation.transformDirect(r1);
-    b2.originTransform.rotation.transformDirect(r2);
+    b1.originTransform.rotation.transform(r1);
+    b2.originTransform.rotation.transform(r2);
 
     final vec2 d = b2.sweep.center + r2 - (b1.sweep.center + r1);
 

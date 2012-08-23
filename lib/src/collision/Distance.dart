@@ -132,17 +132,13 @@ class Distance {
       // Compute a tentative new simplex vertex using support points.
       SimplexVertex vertex = vertices[simplex.count];
 
-      temp.copyFrom(searchDirection.negate_());
-      transformA.rotation.transposed().transformDirect(temp);
+      transformA.rotation.transposed().transformed(searchDirection.negate_(), temp);
       vertex.indexA = proxyA.getSupport(temp);
-      Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA],
-          vertex.wA);
+      Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA], vertex.wA);
       // Vec2 wBLocal;
-      temp.copyFrom(searchDirection.negate_());
-      transformB.rotation.transposed().transformDirect(temp);
+      transformB.rotation.transposed().transformed(searchDirection.negate_(), temp);
       vertex.indexB = proxyB.getSupport(temp);
-      Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB],
-          vertex.wB);
+      Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB], vertex.wB);
       vertex.w.copyFrom(vertex.wB).sub(vertex.wA);
 
       // Iteration count is equated to the number of support point calls.

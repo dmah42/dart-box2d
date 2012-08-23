@@ -54,7 +54,7 @@ class DominoTowerBench extends Benchmark {
    * Sets up the dominoes.
    */
   void initialize() {
-    resetWorld();
+    super.initialize();
 
     // Create the floor.
     {
