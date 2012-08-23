@@ -28,8 +28,8 @@ class DominoTowerBench extends Benchmark {
   num dominoDensity;
 
   /** Construct a new DominoTower. */
-  DominoTowerBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+  DominoTowerBench(List<int> solveLoops, List<int> steps)
+      : super(solveLoops, steps);
 
   String get name => NAME;
 

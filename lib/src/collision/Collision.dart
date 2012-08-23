@@ -171,25 +171,22 @@ class Collision {
     return numOut;
   }
 
-  /**
-   * Compute the collision manifold between two circles.
-   *
-   */
+  /** Compute the collision manifold between two circles. */
   void collideCircles(Manifold manifold, CircleShape circle1, Transform xfA,
       CircleShape circle2, Transform xfB) {
     manifold.pointCount = 0;
 
     final vec2 v = circle1.position;
-    final num pAx = xfA.position.x + xfA.rotation.col0.x *
-        v.x + xfA.rotation.col1.x * v.y;
     final num pAy = xfA.position.y + xfA.rotation.col0.y *
         v.x + xfA.rotation.col1.y * v.y;
+    final num pAx = xfA.position.x + xfA.rotation.col0.x *
+        v.x + xfA.rotation.col1.x * v.y;
 
     final vec2 v1 = circle2.position;
-    final num pBx = xfB.position.x + xfB.rotation.col0.x * v1.x +
-        xfB.rotation.col1.x * v1.y;
     final num pBy = xfB.position.y + xfB.rotation.col0.y * v1.x +
         xfB.rotation.col1.y * v1.y;
+    final num pBx = xfB.position.x + xfB.rotation.col0.x * v1.x +
+        xfB.rotation.col1.x * v1.y;
 
     final num dx = pBx - pAx;
     final num dy = pBy - pAy;
@@ -573,16 +570,16 @@ class Collision {
     localTangent.copyFrom(v12).sub(v11);
     localTangent.normalize();
 
-    // vec2 localNormal = Cross(dv, 1.0);
+    // Vector localNormal = Cross(dv, 1.0);
     cross(localTangent, 1, out: localNormal);
 
-    // vec2 planePoint = 0.5 * (v11 + v12)
+    // Vector planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).add(v12).scale(.5);
 
-    // vec2 sideNormal = Mul(xf1.rotation, v12 - v11);
+    // Vector sideNormal = Mul(xf1.rotation, v12 - v11);
     xf1.rotation.transformed(localTangent, tangent);
 
-    // vec2 frontNormal = Cross(sideNormal, 1.0);
+    // Vector frontNormal = Cross(sideNormal, 1.0);
     cross(tangent, 1, out: normal);
 
     // v11 = Mul(xf1, v11);

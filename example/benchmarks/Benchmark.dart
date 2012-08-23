@@ -47,8 +47,7 @@ abstract class Benchmark {
    * iterations.
    */
   Benchmark(List<int> this.solveLoops, List<int> this._steps)
-      : bodies = new List<Body>() {
-  }
+      : bodies = new List<Body>();
 
   /** Sets up the physics world. */
   void initialize();
