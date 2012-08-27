@@ -44,9 +44,7 @@ class MathBox {
     num y = det * dot(A.col0, out);
     out = cross(A.col1, b);
     num z = det * dot(A.col0, out);
-    out.x = x;
-    out.y = y;
-    out.z = z;
+    out.setComponents(x, y, z);
     return out;
   }
 

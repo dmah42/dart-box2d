@@ -485,8 +485,7 @@ class Collision {
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
-    normal1.copyFrom(normals1[edge1]);
-    xf1.rotation.transform(normal1);
+    xf1.rotation.transformed(normals1[edge1], normal1);
     xf2.rotation.transposed().transform(normal1);
 
     // Find the incident edge on poly2.

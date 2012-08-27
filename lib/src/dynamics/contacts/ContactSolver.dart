@@ -614,8 +614,7 @@ class PositionSolverManifold {
           normal.copyFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
-          normal.x = 1;
-          normal.y = 0;
+          normal.splat(0);
         }
 
         point.copyFrom(pointA).add(pointB).scale(.5);

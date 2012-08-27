@@ -53,8 +53,7 @@ class IViewportTransform {
    * and using the given scale.
    */
   void setCamera(num x, num y, num s) {
-    center.x = x;
-    center.y = y;
+    center.setComponents(x,y);
     scale = s;
   }
 
@@ -67,16 +66,6 @@ class IViewportTransform {
   vec2 get translation => extents - center;
   void set translation(vec2 translation) {
     center.copyFrom(extents).sub(translation);
-  }
-
-  /**
-   * Sets the transform's center to the given x and y coordinates,
-   * and using the given scale.
-   */
-  void setCamera(num x, num y, num s) {
-    center.x = x;
-    center.y = y;
-    scale = s;
   }
 
   /**

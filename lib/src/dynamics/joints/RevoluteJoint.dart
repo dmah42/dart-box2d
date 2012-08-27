@@ -196,7 +196,7 @@ class RevoluteJoint extends Joint {
       b2.originTransform.rotation.transform(r2);
 
       // Solve point-to-point constraint
-      temp = cross(w1, r1);
+      cross(w1, r1, temp);
       final vec2 Cdot1 = cross(w2, r2);
       Cdot1.add(v2).sub(v1).sub(temp);
       num Cdot2 = w2 - w1;
@@ -247,7 +247,7 @@ class RevoluteJoint extends Joint {
       b2.originTransform.rotation.transform(r2);
 
       // Solve point-to-point constraint
-      temp = cross(w1, r1);
+      cross(w1, r1, temp);
       vec2 Cdot = cross(w2, r2);
       Cdot.add(v2).sub(v1).sub(temp);
       vec2 imp = MathBox.solve22(mass, Cdot.negate_()); // just leave negated
@@ -392,8 +392,7 @@ class RevoluteJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
-    argOut.xy = impulse.xy;
-    argOut.scale(inv_dt);
+    argOut.setComponents(impulse.x, impulse.y).scale(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) {

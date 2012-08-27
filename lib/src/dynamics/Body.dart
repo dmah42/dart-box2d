@@ -510,7 +510,8 @@ class Body {
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
-    _linearVelocity.add(cross(_angularVelocity, temp));
+    cross(_angularVelocity, temp, temp);
+    _linearVelocity.add(temp);
   }
 
   /**

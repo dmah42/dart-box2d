@@ -69,19 +69,14 @@ class WorldManifold {
             manifold.points[0].localPoint.y;
 
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.x = pointB.x - pointA.x;
-          normal.y = pointB.y - pointA.y;
+          normal.copyFrom(pointB).sub(pointA);
           normal.normalize();
         }
 
-        num cAx = normal.x * radiusA + pointA.x;
-        num cAy = normal.y * radiusA + pointA.y;
+        final vec2 cA = normal * radiusA + pointA;
+        final vec2 cB = -normal * radiusB + pointB;
 
-        num cBx = -normal.x * radiusB + pointB.x;
-        num cBy = -normal.y * radiusB + pointB.y;
-
-        points[0].x = (cAx + cBx) *.5;
-        points[0].y = (cAy + cBy) *.5;
+        points[0].copyFrom(cA).add(cB).scale(0.5);
         return;
       case ManifoldType.FACE_A:
         final vec2 planePoint = pool3;

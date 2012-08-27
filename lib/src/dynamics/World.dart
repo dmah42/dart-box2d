@@ -228,6 +228,7 @@ class World {
    * remain in scope.
    */
   void set contactListener(ContactListener listener) {
+    print('Setting contactListener to $listener');
     _contactManager.contactListener = listener;
   }
 

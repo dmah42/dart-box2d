@@ -150,8 +150,7 @@ class ConstantVolumeJoint extends Joint {
       if (norm > Settings.LINEAR_SLOP) {
         done = false;
       }
-      bodies[next].sweep.center.x += delta.x;
-      bodies[next].sweep.center.y += delta.y;
+      bodies[next].sweep.center.add(delta);
       bodies[next].synchronizeTransform();
     }
 

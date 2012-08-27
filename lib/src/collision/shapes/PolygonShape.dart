@@ -118,7 +118,7 @@ class PolygonShape extends Shape {
       edge.copyFrom(vertices[i2]).sub(vertices[i1]);
 
       assert (edge.length2 > Settings.EPSILON * Settings.EPSILON);
-      normals[i] = cross(edge, 1);
+      cross(edge, 1, normals[i]);
       normals[i].normalize();
     }
 
@@ -170,7 +170,7 @@ class PolygonShape extends Shape {
     vertices[1].copyFrom(v2);
     centroid.copyFrom(v1).add(v2).scale(0.5);
     normals[0].copyFrom(v2).sub(v1);
-    normals[0] = cross(normals[0], 1);
+    cross(normals[0], 1, normals[0]);
     normals[0].normalize();
     normals[1].copyFrom(normals[0]).negate_();
   }

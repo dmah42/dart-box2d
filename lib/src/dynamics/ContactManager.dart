@@ -128,6 +128,7 @@ class ContactManager implements PairCallback {
     Body bodyB = fixtureB.body;
 
     if (contactListener != null && c.touching) {
+      print('touching - end contact');
       contactListener.endContact(c);
     }
 

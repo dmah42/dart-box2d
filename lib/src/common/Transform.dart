@@ -82,12 +82,11 @@ class Transform {
   }
 
   static void mulTransToOut(Transform T, vec2 v, vec2 out) {
-    num v1x = v.x - T.position.x;
-    num v1y = v.y - T.position.y;
+    vec2 v1 = v - T.position;
     vec2 b = T.rotation.col0;
     vec2 b1 = T.rotation.col1;
-    num tempy = v1x * b1.x + v1y * b1.y;
-    out.x = v1x * b.x + v1y * b.y;
+    num tempy = v1.x * b1.x + v1.y * b1.y;
+    out.x = v1.x * b.x + v1.y * b.y;
     out.y = tempy;
   }
 }

@@ -45,8 +45,8 @@ class DistanceJointDef extends JointDef {
 
   DistanceJointDef() :
     super(),
-    localAnchorA = new vec2(0, 0),
-    localAnchorB = new vec2(0, 0),
+    localAnchorA = new vec2.zero(),
+    localAnchorB = new vec2.zero(),
     length = 1.0,
     frequencyHz = 0.0,
     dampingRatio = 0.0 {

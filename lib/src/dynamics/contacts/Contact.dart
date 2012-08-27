@@ -99,9 +99,7 @@ abstract class Contact {
         shapeA.radius, bodyB.originTransform, shapeB.radius);
   }
 
-  /**
-   * Is this contact touching
-   */
+  /** Is this contact touching */
   bool get touching => (flags & TOUCHING_FLAG) == TOUCHING_FLAG;
 
   /**
@@ -135,7 +133,7 @@ abstract class Contact {
     // Re-enable this contact.
     flags |= ENABLED_FLAG;
 
-    bool touching = false;
+    bool now_touching = false;
     bool wasTouching = (flags & TOUCHING_FLAG) == TOUCHING_FLAG;
 
     bool sensorA = fixtureA.isSensor;
@@ -150,13 +148,13 @@ abstract class Contact {
     if (sensor) {
       Shape shapeA = fixtureA.shape;
       Shape shapeB = fixtureB.shape;
-      touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
+      now_touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
 
       // Sensors don't generate manifolds.
       manifold.pointCount = 0;
     } else {
       evaluate(manifold, xfA, xfB);
-      touching = manifold.pointCount > 0;
+      now_touching = manifold.pointCount > 0;
 
       // Match old contact ids to new contact ids and copy the
       // stored impulses to warm start the solver.
@@ -177,13 +175,14 @@ abstract class Contact {
         }
       }
 
-      if (touching != wasTouching) {
+      if (now_touching != wasTouching) {
+        print('$wasTouching -> $now_touching');
         bodyA.awake = true;
         bodyB.awake = true;
       }
     }
 
-    if (touching) {
+    if (now_touching) {
       flags |= TOUCHING_FLAG;
     } else {
       flags &= ~TOUCHING_FLAG;
@@ -193,15 +192,17 @@ abstract class Contact {
       return;
     }
 
-    if (wasTouching == false && touching == true) {
+    if (!wasTouching && now_touching) {
+      print('  beginContact');
       listener.beginContact(this);
     }
 
-    if (wasTouching == true && touching == false) {
+    if (wasTouching && !now_touching) {
+      print('  endContact');
       listener.endContact(this);
     }
 
-    if (sensor == false && touching) {
+    if (sensor == false && now_touching) {
       listener.preSolve(this, _oldManifold);
     }
   }
