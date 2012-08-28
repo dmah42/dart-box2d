@@ -48,7 +48,7 @@ class Benchmark {
   /** Sets up the physics world. */
   abstract void initialize();
 
-  String get name() => "No Name Provided";
+  abstract String get name();
 
   /**
    * Resets the world to a fresh state. Call this before running a benchmark

@@ -31,45 +31,54 @@ class BenchmarkRunner {
    * function and determine how many times to solve for velocity and position on
    * each step.
    */
-  List<int> solveLoops;
+  List<int> _solveLoops;
 
   /** The different values for number of steps that one wishes to benchmark. */
-  List<int> steps;
+  List<int> _steps;
 
-  /** The benchmarks to be run. Initialized in runBenchmarks. */
-  List<Benchmark> benchmarks;
+  /** The benchmarks to be run. Initialized in [setupBenchmarks]. */
+  List<Benchmark> _benchmarks;
 
   /** Buffer results here before dumping out on the page. */
-  StringBuffer resultsWriter;
+  StringBuffer _resultsWriter;
 
   BenchmarkRunner()
-      : resultsWriter = new StringBuffer(),
-        benchmarks = new List<Benchmark>(),
-        solveLoops = const [10, 30],
-        steps = const [10, 100, 500, 2000];
+      : _resultsWriter = new StringBuffer(),
+        _benchmarks = new List<Benchmark>(),
+        _solveLoops = const [10, 30],
+        _steps = const [10, 100, 500, 2000];
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method
    * directly to determine which benchmarks are included and the order in which
    * they are run.
    */
-  void setupBenchmarks() {
-    _addBenchmark(new BallDropBench(solveLoops, steps));
-    _addBenchmark(new BallCageBench(solveLoops, steps));
-    _addBenchmark(new CircleStressBench(solveLoops, steps));
-    _addBenchmark(new DominoPlatformBench(solveLoops, steps));
-    _addBenchmark(new DominoTowerBench(solveLoops, steps));
+  void setupBenchmarks(String filter) {
+    final benchmarks = [
+      new BallDropBench(_solveLoops, _steps),
+      new BallCageBench(_solveLoops, _steps),
+      new CircleStressBench(_solveLoops, _steps),
+      new DominoPlatformBench(_solveLoops, _steps),
+      new DominoTowerBench(_solveLoops, _steps),
+    ];
+
+    if (filter == null || filter.isEmpty()) {
+      benchmarks.map(_addBenchmark);
+    } else {
+      List<String> filterList = filter.split(",").map((e) => e.trim());
+      benchmarks.filter((e) => filterList.indexOf(e.name) != -1).map(_addBenchmark);
+    }
   }
 
   /**
-   * Runs and records the results of each benchmark included in setupBenchmarks().
+   * Runs and records the results of each benchmark included in [setupBenchmarks].
    */
   void runBenchmarks() {
-    for (Benchmark benchmark in benchmarks) {
+    for (Benchmark benchmark in _benchmarks) {
       print('Running ${benchmark.name}');
-      resultsWriter.clear();
-      benchmark.runBenchmark(resultsWriter);
-      print("$resultsWriter------------------------------------------------");
+      _resultsWriter.clear();
+      benchmark.runBenchmark(_resultsWriter);
+      print("$_resultsWriter------------------------------------------------");
     }
   }
 
@@ -77,12 +86,20 @@ class BenchmarkRunner {
    * Initializes the given benchmark and adds to the end of the queue of
    * benchmarks to run.
    */
-  void _addBenchmark(Benchmark benchmark) => benchmarks.add(benchmark);
+  void _addBenchmark(Benchmark benchmark) => _benchmarks.add(benchmark);
 }
 
 void main() {
-  // TODO(dominich): Options for which benchmarks to run and step sizes.
+  // TODO(dominich): Options for step sizes.
   final runner = new BenchmarkRunner();
-  runner.setupBenchmarks();
+  var args = (new Options()).arguments.iterator();
+  String filter;
+  while (args.hasNext()) {
+    if (args.next() == "--filter") {
+      filter = args.next();
+      break;
+    }
+  }
+  runner.setupBenchmarks(filter);
   runner.runBenchmarks();
 }
