@@ -27,8 +27,8 @@ class AxisAlignedBox {
    * are specified, constructs the box with both bounds at the origin.
    */
   AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound === null) lowerBound = new Vector();
-    if (upperBound === null) upperBound = new Vector();
+    if (lowerBound == null) lowerBound = new Vector();
+    if (upperBound == null) upperBound = new Vector();
   }
 
   /**

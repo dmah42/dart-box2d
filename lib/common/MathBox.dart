@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//TODO(gregbglw): Pull what is shared from here and in touch/Math.dart into a
-// common util.
 class MathBox {
-  static final num TWO_PI = Math.PI * 2;
+  static final double TWO_PI = Math.PI * 2.0;
 
   MathBox();
 

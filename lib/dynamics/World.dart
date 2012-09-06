@@ -555,7 +555,7 @@ class World {
       return;
     }
 
-    final int drawFlags = _debugDraw.drawFlags;
+    final int drawFlags = _debugDraw.flags;
 
     if ((drawFlags & DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
       Transform xf = new Transform();
@@ -1107,7 +1107,7 @@ class World {
         num radius = circle.radius;
         axis.setFrom(xf.rotation.col1);
 
-        if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
+        if (0 !== (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);
         } else {
           _debugDraw.drawSolidCircle(center, radius, color, axis);
@@ -1130,7 +1130,7 @@ class World {
           Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
         }
 
-        if (0 !== (_debugDraw.drawFlags & DebugDraw.e_lineDrawingBit)) {
+        if (0 !== (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawPolygon(vertices, vertexCount, color);
         } else {
           if (vertexCount > 2) {

@@ -108,10 +108,6 @@ class Distance {
       simplex.getClosestPoint(closestPoint);
       distanceSqr2 = closestPoint.lengthSquared;
 
-      // ensure progress
-//      if (distanceSqr2 >= distanceSqr1) {
-        // break;
-//      }
       distanceSqr1 = distanceSqr2;
 
       // get search direction;

@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Similar to javax.vecmath.Color3 holder.
- */
+/** Similar to javax.vecmath.Color3 holder. */
 class Color3 {
   num x;
   num y;
@@ -37,6 +35,6 @@ class Color3 {
   }
 
   bool operator ==(final other) {
-    return other is Color3 && x === other.x && y === other.y && z === other.z;
+    return other is Color3 && x == other.x && y == other.y && z == other.z;
   }
 }

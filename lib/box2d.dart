@@ -14,6 +14,7 @@
 #library('box2d_html');
 
 #import('dart:html');
+#import('dart:math', prefix: 'Math');
 
 #source('callbacks/CanvasDraw.dart');
 #source('callbacks/PairCallback.dart');

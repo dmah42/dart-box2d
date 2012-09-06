@@ -37,19 +37,15 @@ class DebugDraw {
   /// draw with lines (vs. default filled polygons).
   static final int e_lineDrawingBit = 0x0040;
 
-  int drawFlags;
+  int flags;
   IViewportTransform viewportTransform;
 
   DebugDraw(IViewportTransform viewport)
-      : drawFlags = e_shapeBit,
+      : flags = e_shapeBit,
         viewportTransform = viewport;
 
-  void set flags(int flags) { drawFlags = flags; }
-
-  int get flags() => drawFlags;
-
-  void appendFlags(int flags) { drawFlags |= flags; }
-  void clearFlags(int flags) { drawFlags &= ~flags; }
+  void appendFlags(int value) { flags |= value; }
+  void clearFlags(int value) { flags &= ~value; }
 
   /** Draw a closed polygon provided in CCW order. */
   abstract void drawPolygon(List<Vector> vertices, int vertexCount,

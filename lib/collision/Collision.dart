@@ -328,7 +328,7 @@ class Collision {
       final num ty = cLocaly - fcy;
       final Vector norm = normals[vertIndex1];
       separation = tx * norm.x + ty * norm.y;
-      if(separation > radius)
+      if (separation > radius)
         return;
 
       manifold.pointCount = 1;

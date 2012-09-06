@@ -13,6 +13,8 @@
 // limitations under the License.
 #library('box2d_nohtml');
 
+#import('dart:math', prefix: 'Math');
+
 #source('callbacks/PairCallback.dart');
 #source('callbacks/TreeCallback.dart');
 #source('callbacks/ContactListener.dart');

@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * A 2x2 matrix class.
- */
+/** A 2x2 matrix class. */
 class Matrix22 {
   Vector col1;
   Vector col2;
@@ -23,23 +21,19 @@ class Matrix22 {
    * Constructs a new Matrix. Defaults to both columns being default vectors.
    */
   Matrix22([Vector c1 = null, Vector c2 = null]) {
-    if (c1 === null) c1 = new Vector();
-    if (c2 === null) c2 = new Vector();
+    if (c1 == null) c1 = new Vector();
+    if (c2 == null) c2 = new Vector();
     col1 = c1;
     col2 = c2;
   }
 
-  /**
-   * Constructs a new Matrix22 representing an angle.
-   */
+  /** Constructs a new Matrix22 representing an angle. */
   Matrix22.fromAngle(num angle)
       : col1 = new Vector(), col2 = new Vector() {
     setAngle(angle);
   }
 
-  /**
-   * Create a new Matrix equal to the given Matrix.
-   */
+  /** Create a new Matrix equal to the given Matrix. */
   Matrix22.copy(Matrix22 other)
       : col1 = new Vector.copy(other.col1),
         col2 = new Vector.copy(other.col2);
@@ -52,9 +46,7 @@ class Matrix22 {
     return other is Matrix22 && col1 == other.col1 && col2 == other.col2;
   }
 
-  /**
-   * Set as a matrix representing a rotation.
-   */
+  /** Set as a matrix representing a rotation. */
   void setAngle(num angle) {
     num cosin = Math.cos(angle);
     num sin = Math.sin(angle);
@@ -62,9 +54,7 @@ class Matrix22 {
     col2.setCoords(-sin, cosin);
   }
 
-  /**
-   * Set as the identity matrix.
-   */
+  /** Set as the identity matrix. */
   void setIdentity() {
     col1.setCoords(1, 0);
     col2.setCoords(0, 1);
@@ -88,9 +78,7 @@ class Matrix22 {
     out.y = tempy;
   }
 
-  /**
-   * Sets this matrix to be equal to the given matrix.
-   */
+  /** Sets this matrix to be equal to the given matrix. */
   void setFrom(Matrix22 matrix) {
     col1.setFrom(matrix.col1);
     col2.setFrom(matrix.col2);
@@ -132,9 +120,7 @@ class Matrix22 {
     return this;
   }
 
-  /**
-   * Adds the given matrix to this matrix. Returns this matrix.
-   */
+  /** Adds the given matrix to this matrix. Returns this matrix. */
   Matrix22 addLocal(Matrix22 other) {
     col1.x += other.col1.x;
     col1.y += other.col1.y;

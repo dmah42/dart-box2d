@@ -15,6 +15,7 @@
 #library('racer');
 
 #import('dart:html');
+#import('dart:math', prefix: 'Math');
 #import('../../lib/box2d.dart');
 
 #source('../demo.dart');

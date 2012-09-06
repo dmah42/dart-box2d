@@ -272,7 +272,7 @@ class SeparationFunction {
   SeparationFunction() :
     proxyA = new DistanceProxy(),
     proxyB = new DistanceProxy(),
-    type = Type.POINTS,
+    type = SeparationType.POINTS,
     localPoint = new Vector(),
     axis = new Vector(),
     sweepA = new Sweep(),
@@ -306,7 +306,7 @@ class SeparationFunction {
     sweepB.getTransform(xfb, t1);
 
     if (count == 1) {
-      type = Type.POINTS;
+      type = SeparationType.POINTS;
       localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
@@ -316,7 +316,7 @@ class SeparationFunction {
       return s;
     } else if (cache.indexA[0] == cache.indexA[1]) {
       // Two points on B and one on A.
-      type = Type.FACE_B;
+      type = SeparationType.FACE_B;
 
       localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
@@ -346,7 +346,7 @@ class SeparationFunction {
       return s;
     } else {
       // Two points on A and one or two points on B.
-      type = Type.FACE_A;
+      type = SeparationType.FACE_A;
 
       localPointA1.setFrom(proxyA.vertices[cache.indexA[0]]);
       localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
@@ -382,7 +382,7 @@ class SeparationFunction {
     sweepB.getTransform(xfb, t);
 
     switch (type) {
-      case Type.POINTS:
+      case SeparationType.POINTS:
         Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
         Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
             axisB);
@@ -400,7 +400,7 @@ class SeparationFunction {
         num separation = Vector.dot(pointB.subLocal(pointA), axis);
         return separation;
 
-      case Type.FACE_A:
+      case SeparationType.FACE_A:
         Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
@@ -417,7 +417,7 @@ class SeparationFunction {
         num separation = Vector.dot(pointB.subLocal(pointA), normal);
         return separation;
 
-      case Type.FACE_B:
+      case SeparationType.FACE_B:
         Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
@@ -447,7 +447,7 @@ class SeparationFunction {
     sweepB.getTransform(xfb, t);
 
     switch (type) {
-      case Type.POINTS:
+      case SeparationType.POINTS:
         Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
         Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
             axisB);
@@ -462,7 +462,7 @@ class SeparationFunction {
         num separation = Vector.dot(pointB.subLocal(pointA), axis);
         return separation;
 
-      case Type.FACE_A:
+      case SeparationType.FACE_A:
         Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
@@ -475,7 +475,7 @@ class SeparationFunction {
         num separation = Vector.dot(pointB.subLocal(pointA), normal);
         return separation;
 
-      case Type.FACE_B:
+      case SeparationType.FACE_B:
         Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
@@ -539,7 +539,7 @@ class TimeOfImpactOutput {
     t = 0 { }
 }
 
-class Type {
+class SeparationType {
   static final int POINTS = 0;
   static final int FACE_A = 1;
   static final int FACE_B = 2;
