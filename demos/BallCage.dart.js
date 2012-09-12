@@ -18,15 +18,15 @@ $$.FutureImpl = {"":
  "super": "Object",
  get$value: function() {
   if (this.get$isComplete() !== true)
-    throw $.captureStackTrace($.FutureNotCompleteException$());
+    throw $.$$throw($.FutureNotCompleteException$());
   var t1 = this._exception;
   if (!(t1 == null))
-    throw $.captureStackTrace(t1);
+    throw $.$$throw(t1);
   return this._lib0_value;
 },
  get$stackTrace: function() {
   if (this.get$isComplete() !== true)
-    throw $.captureStackTrace($.FutureNotCompleteException$());
+    throw $.$$throw($.FutureNotCompleteException$());
   return this._stackTrace;
 },
  get$isComplete: function() {
@@ -41,7 +41,7 @@ $$.FutureImpl = {"":
   else if (this.get$isComplete() !== true)
     this._successListeners.push(onSuccess);
   else if (this._exceptionHandled !== true)
-    throw $.captureStackTrace(this._exception);
+    throw $.$$throw(this._exception);
 },
  handleException$1: function(onException) {
   if (this._exceptionHandled === true)
@@ -70,7 +70,7 @@ $$.FutureImpl = {"":
         listener.call$1(this.get$value());
       }
     else if (this._exceptionHandled !== true && $.gtB($.get$length(this._successListeners), 0))
-      throw $.captureStackTrace(this._exception);
+      throw $.$$throw(this._exception);
   } finally {
     for (t1 = $.iterator(this._completionListeners); t1.hasNext$0() === true;) {
       var listener0 = t1.next$0();
@@ -85,15 +85,15 @@ $$.FutureImpl = {"":
 },
  _setValue$1: function(value) {
   if (this._isComplete === true)
-    throw $.captureStackTrace($.FutureAlreadyCompleteException$());
+    throw $.$$throw($.FutureAlreadyCompleteException$());
   this._lib0_value = value;
   this._complete$0();
 },
  _setException$2: function(exception, stackTrace) {
   if (exception == null)
-    throw $.captureStackTrace($.IllegalArgumentException$(null));
+    throw $.$$throw($.IllegalArgumentException$(null));
   if (this._isComplete === true)
-    throw $.captureStackTrace($.FutureAlreadyCompleteException$());
+    throw $.$$throw($.FutureAlreadyCompleteException$());
   this._exception = exception;
   this._stackTrace = stackTrace;
   this._complete$0();
@@ -111,6 +111,9 @@ $$.CompleterImpl = {"":
 },
  completeException$2: function(exception, stackTrace) {
   this._futureImpl._setException$2(exception, stackTrace);
+},
+ completeException$1: function(exception) {
+  return this.completeException$2(exception,null)
 },
  completeException$1: function(exception) {
   return this.completeException$2(exception,null)
@@ -141,7 +144,7 @@ $$.HashMapImplementation = {"":
       return insertionIndex;
     } else if ($.eqB(existingKey, key))
       return hash;
-    else if (insertionIndex < 0 && $.CTC24 === existingKey)
+    else if (insertionIndex < 0 && $.CTC23 === existingKey)
       insertionIndex = hash;
     var numberOfProbes0 = numberOfProbes + 1;
     hash = $.HashMapImplementation__nextProbe(hash, numberOfProbes, $.get$length(this._keys));
@@ -203,7 +206,7 @@ $$.HashMapImplementation = {"":
                 return insertionIndex;
               } else if ($.eqB(existingKey, key))
                 return hash;
-              else if ($.ltB(insertionIndex, 0) && $.CTC24 === existingKey)
+              else if ($.ltB(insertionIndex, 0) && $.CTC23 === existingKey)
                 insertionIndex = hash;
               var numberOfProbes0 = numberOfProbes + 1;
               hash = $.HashMapImplementation__nextProbe(hash, numberOfProbes, $.get$length(this._keys));
@@ -267,7 +270,7 @@ $$.HashMapImplementation = {"":
     if (i < 0 || i >= oldKeys.length)
       throw $.ioore(i);
     var key = oldKeys[i];
-    if (key == null || key === $.CTC24)
+    if (key == null || key === $.CTC23)
       continue;
     if (i < 0 || i >= oldValues.length)
       throw $.ioore(i);
@@ -312,7 +315,7 @@ $$.HashMapImplementation = {"":
       this._values = $.ListImplementation_List(newCapacity, $.getRuntimeTypeInfo(this).V);
       for (var i = 0; $.ltB(i, capacity); ++i) {
         var key = $.index(oldKeys, i);
-        if (key == null || key === $.CTC24)
+        if (key == null || key === $.CTC23)
           continue;
         var value = $.index(oldValues, i);
         var newIndex = this._probeForAdding$1(key);
@@ -352,7 +355,7 @@ $$.HashMapImplementation = {"":
   if (!(t1[index] == null)) {
     if (index < 0 || index >= t1.length)
       throw $.ioore(index);
-    var t2 = t1[index] === $.CTC24;
+    var t2 = t1[index] === $.CTC23;
     t1 = t2;
   } else
     t1 = true;
@@ -421,7 +424,7 @@ $$.HashMapImplementation = {"":
             t1 = this._keys;
           case 2:
             state = 0;
-            var t3 = $.index(t1, index) === $.CTC24;
+            var t3 = $.index(t1, index) === $.CTC23;
             t1 = t3;
         }
       else
@@ -457,7 +460,7 @@ $$.HashMapImplementation = {"":
     this._numberOfEntries = $.sub(this._numberOfEntries, 1);
     var value = $.index(this._values, index);
     $.indexSet(this._values, index, null);
-    $.indexSet(this._keys, index, $.CTC24);
+    $.indexSet(this._keys, index, $.CTC23);
     this._numberOfDeleted = $.add(this._numberOfDeleted, 1);
     return value;
   }
@@ -475,14 +478,14 @@ $$.HashMapImplementation = {"":
     return this.forEach$1$bailout(1, f, length$);
   for (var i = 0; i < length$; ++i) {
     var key = $.index(this._keys, i);
-    if (!(key == null) && !(key === $.CTC24))
+    if (!(key == null) && !(key === $.CTC23))
       f.call$2(key, $.index(this._values, i));
   }
 },
  forEach$1$bailout: function(state, f, length$) {
   for (var i = 0; $.ltB(i, length$); ++i) {
     var key = $.index(this._keys, i);
-    if (!(key == null) && !(key === $.CTC24))
+    if (!(key == null) && !(key === $.CTC23))
       f.call$2(key, $.index(this._values, i));
   }
 },
@@ -509,7 +512,7 @@ $$.HashMapImplementation = {"":
  HashMapImplementation$0: function() {
   this._numberOfEntries = 0;
   this._numberOfDeleted = 0;
-  this._loadLimit = 6;
+  this._loadLimit = $.HashMapImplementation__computeLoadLimit(8);
   this._keys = $.ListImplementation_List(8);
   this._values = $.ListImplementation_List(8, $.getRuntimeTypeInfo(this).V);
 },
@@ -654,13 +657,13 @@ $$._DoubleLinkedQueueEntrySentinel = {"":
  ["_previous", "_next", "_lib0_element"],
  "super": "DoubleLinkedQueueEntry",
  remove$0: function() {
-  throw $.captureStackTrace($.CTC16);
+  throw $.$$throw($.CTC15);
 },
  _asNonSentinelEntry$0: function() {
   return;
 },
  get$element: function() {
-  throw $.captureStackTrace($.CTC16);
+  throw $.$$throw($.CTC15);
 },
  _DoubleLinkedQueueEntrySentinel$0: function() {
   this._link$2(this, this);
@@ -759,7 +762,7 @@ $$._DoubleLinkedQueueIterator = {"":
 },
  next$0: function() {
   if (this.hasNext$0() !== true)
-    throw $.captureStackTrace($.CTC11);
+    throw $.$$throw($.CTC10);
   this._currentEntry = this._currentEntry.get$_next();
   return this._currentEntry.get$element();
 },
@@ -801,57 +804,6 @@ $$.JSSyntaxRegExp = {"":
 },
  is$JSSyntaxRegExp: true,
  is$RegExp: true
-};
-
-$$.StopwatchImplementation = {"":
- ["_start", "_stop"],
- "super": "Object",
- start$0: function() {
-  if (this._start == null)
-    this._start = $.Primitives_dateNow();
-  else {
-    if (this._stop == null)
-      return;
-    var t1 = $.Primitives_dateNow();
-    var t2 = $.sub(this._stop, this._start);
-    if (typeof t2 !== 'number')
-      throw $.iae(t2);
-    this._start = t1 - t2;
-    this._stop = null;
-  }
-},
- reset$0: function() {
-  if (this._start == null)
-    return;
-  this._start = $.Primitives_dateNow();
-  if (!(this._stop == null))
-    this._stop = this._start;
-},
- elapsed$0: function() {
-  var t1 = this._start;
-  if (t1 == null)
-    return 0;
-  var t2 = this._stop;
-  if (t2 == null) {
-    t1 = $.Primitives_dateNow();
-    t2 = this._start;
-    if (typeof t2 !== 'number')
-      throw $.iae(t2);
-    t2 = t1 - t2;
-    t1 = t2;
-  } else
-    t1 = $.sub(t2, t1);
-  return t1;
-},
- elapsedInUs$0: function() {
-  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
-},
- frequency$0: function() {
-  return 1000;
-},
- StopwatchImplementation$start$0: function() {
-  this.start$0();
-}
 };
 
 $$.StringBufferImpl = {"":
@@ -954,7 +906,7 @@ $$._AllMatchesIterator = {"":
  "super": "Object",
  next$0: function() {
   if (this.hasNext$0() !== true)
-    throw $.captureStackTrace($.CTC11);
+    throw $.$$throw($.CTC10);
   var next = this._next;
   this._next = null;
   return next;
@@ -1179,11 +1131,11 @@ $$.FutureAlreadyCompleteException = {"":
 $$.Object = {"":
  [],
  "super": "",
- toString$0: function() {
-  return $.ObjectImplementation_toStringImpl(this);
-},
  operator$eq$1: function(other) {
   return this === other;
+},
+ toString$0: function() {
+  return $.Primitives_objectToString(this);
 }
 };
 
@@ -1201,7 +1153,7 @@ $$.ListIterator = {"":
 },
  next$0: function() {
   if (this.hasNext$0() !== true)
-    throw $.captureStackTrace($.NoMoreElementsException$());
+    throw $.$$throw($.NoMoreElementsException$());
   var value = this.list[this.i];
   var t1 = this.i;
   if (typeof t1 !== 'number')
@@ -1230,7 +1182,8 @@ $$.Closure = {"":
  "super": "Object",
  toString$0: function() {
   return 'Closure';
-}
+},
+ is$Function: true
 };
 
 $$.MetaInfo = {"":
@@ -1246,7 +1199,7 @@ $$.StringMatch = {"":
 },
  group$1: function(group_) {
   if (!$.eqB(group_, 0))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(group_));
+    throw $.$$throw($.IndexOutOfRangeException$(group_));
   return this.pattern;
 }
 };
@@ -1330,7 +1283,7 @@ $$.Demo = {"":
   this.canvas.set$height(600);
   $.add$1($.document().get$body().get$nodes(), this.canvas);
   this.ctx = this.canvas.getContext$1('2d');
-  var extents = $.Vector$(450.0, 300.0);
+  var extents = $.Vector$(450, 300);
   this.viewport = $.CanvasViewportTransform$(extents, extents);
   var t1 = this.viewportScale;
   this.viewport.set$scale(t1);
@@ -1352,11 +1305,6 @@ $$.Demo = {"":
     gravity = $.Vector$(0, -10);
   this.world = $.World$(gravity, true, $.DefaultWorldPool$());
 }
-};
-
-$$._Default = {"":
- [],
- "super": "Object"
 };
 
 $$.FilteredElementList = {"":
@@ -1385,7 +1333,7 @@ $$.FilteredElementList = {"":
   if ($.geB(newLength, len))
     return;
   else if ($.ltB(newLength, 0))
-    throw $.captureStackTrace($.CTC15);
+    throw $.$$throw($.CTC14);
   this.removeRange$2($.sub(newLength, 1), $.sub(len, newLength));
 },
  add$1: function(value) {
@@ -1399,10 +1347,10 @@ $$.FilteredElementList = {"":
   this.add$1(value);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC21);
+  throw $.$$throw($.CTC20);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC19);
+  throw $.$$throw($.CTC18);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,0)
@@ -1503,7 +1451,7 @@ $$._ChildrenElementList = {"":
   this._element.$dom_replaceChild$2(value, $.index(this._childElements, index));
 },
  set$length: function(newLength) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  add$1: function(value) {
   this._element.$dom_appendChild$1(value);
@@ -1520,10 +1468,10 @@ $$._ChildrenElementList = {"":
     t2.$dom_appendChild$1(t1.next$0());
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC21);
+  throw $.$$throw($.CTC20);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC19);
+  throw $.$$throw($.CTC18);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,0)
@@ -1581,28 +1529,28 @@ $$._FrozenElementList = {"":
   return $.index(this._nodeList, index);
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  set$length: function(newLength) {
   $.set$length(this._nodeList, newLength);
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  iterator$0: function() {
   return $._FrozenElementListIterator$(this);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,0)
@@ -1614,10 +1562,10 @@ $$._FrozenElementList = {"":
   return $.indexOf$2(this._nodeList, element, start);
 },
  clear$0: function() {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC14);
+  throw $.$$throw($.CTC13);
 },
  last$0: function() {
   return $.last(this._nodeList);
@@ -1631,7 +1579,7 @@ $$._FrozenElementListIterator = {"":
  "super": "Object",
  next$0: function() {
   if (this.hasNext$0() !== true)
-    throw $.captureStackTrace($.CTC11);
+    throw $.$$throw($.CTC10);
   var t1 = this._list;
   if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
     return this.next$0$bailout(1, t1, 0);
@@ -1658,7 +1606,7 @@ $$._FrozenElementListIterator = {"":
   switch (state) {
     case 0:
       if (this.hasNext$0() !== true)
-        throw $.captureStackTrace($.CTC11);
+        throw $.$$throw($.CTC10);
       var t1 = this._list;
     case 1:
       state = 0;
@@ -1762,13 +1710,13 @@ $$._ChildNodeListLazy = {"":
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot sort immutable List.'));
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -1939,7 +1887,7 @@ $$._VariableSizeListIterator = {"":
 },
  next$0: function() {
   if (this.hasNext$0() !== true)
-    throw $.captureStackTrace($.CTC11);
+    throw $.$$throw($.CTC10);
   var t1 = this._array;
   if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
     return this.next$0$bailout(1, t1, 0);
@@ -1966,7 +1914,7 @@ $$._VariableSizeListIterator = {"":
   switch (state) {
     case 0:
       if (this.hasNext$0() !== true)
-        throw $.captureStackTrace($.CTC11);
+        throw $.$$throw($.CTC10);
       var t1 = this._array;
     case 1:
       state = 0;
@@ -2048,7 +1996,7 @@ $setGlobals(this);
  register$2: function(portId, port) {
   var t1 = this.ports;
   if (t1.containsKey$1(portId) === true)
-    throw $.captureStackTrace($.ExceptionImplementation$('Registry: ports must be registered only once.'));
+    throw $.$$throw($.ExceptionImplementation$('Registry: ports must be registered only once.'));
   $.indexSet(t1, portId, port);
   $.indexSet($._globalState().get$isolates(), this.id, this);
 },
@@ -2086,7 +2034,7 @@ $$._EventLoop = {"":
     if ($._globalState().get$isWorker() === true)
       $._globalState().maybeCloseWorker$0();
     else if (!($._globalState().get$rootContext() == null) && $._globalState().get$isolates().containsKey$1($._globalState().get$rootContext().get$id()) === true && $._globalState().get$fromCommandLine() === true && $.isEmpty($._globalState().get$rootContext().get$ports()) === true)
-      throw $.captureStackTrace($.ExceptionImplementation$('Program exited with open ReceivePorts.'));
+      throw $.$$throw($.ExceptionImplementation$('Program exited with open ReceivePorts.'));
     return false;
   }
   event$.process$0();
@@ -2139,7 +2087,7 @@ $$._BaseSendPort = {"":
  "super": "Object",
  _checkReplyTo$1: function(replyTo) {
   if (!(replyTo == null) && !(typeof replyTo === 'object' && replyTo !== null && !!replyTo.is$_NativeJsSendPort) && !(typeof replyTo === 'object' && replyTo !== null && !!replyTo.is$_WorkerSendPort) && !(typeof replyTo === 'object' && replyTo !== null && !!replyTo.is$_BufferingSendPort))
-    throw $.captureStackTrace($.ExceptionImplementation$('SendPort.send: Illegal replyTo port type'));
+    throw $.$$throw($.ExceptionImplementation$('SendPort.send: Illegal replyTo port type'));
 },
  call$1: function(message) {
   var completer = $.CompleterImpl$();
@@ -2244,7 +2192,7 @@ $$._JsSerializer = {"":
     return this.visitWorkerSendPort$1(x);
   if (typeof x === 'object' && x !== null && !!x.is$_BufferingSendPort)
     return this.visitBufferingSendPort$1(x);
-  throw $.captureStackTrace('Illegal underlying port ' + $.S(x));
+  throw $.$$throw('Illegal underlying port ' + $.S(x));
 },
  visitNativeJsSendPort$1: function(port) {
   return ['sendport', $._globalState().get$currentManagerId(), port._isolateId, port._receivePort.get$_id()];
@@ -2257,7 +2205,7 @@ $$._JsSerializer = {"":
   if (!(t1 == null))
     return this.visitSendPort$1(t1);
   else
-    throw $.captureStackTrace('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
+    throw $.$$throw('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
 },
  _JsSerializer$0: function() {
   this._visited = $._JsVisitedMap$();
@@ -2274,7 +2222,7 @@ $$._JsCopier = {"":
     return this.visitWorkerSendPort$1(x);
   if (typeof x === 'object' && x !== null && !!x.is$_BufferingSendPort)
     return this.visitBufferingSendPort$1(x);
-  throw $.captureStackTrace('Illegal underlying port ' + $.S(this.get$p()));
+  throw $.$$throw('Illegal underlying port ' + $.S(this.get$p()));
 },
  visitNativeJsSendPort$1: function(port) {
   return $._NativeJsSendPort$(port._receivePort, port._isolateId);
@@ -2287,7 +2235,7 @@ $$._JsCopier = {"":
   if (!(t1 == null))
     return this.visitSendPort$1(t1);
   else
-    throw $.captureStackTrace('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
+    throw $.$$throw('internal error: must call _waitForPendingPorts to ensure all ports are resolved at this point.');
 },
  _JsCopier$0: function() {
   this._visited = $._JsVisitedMap$();
@@ -2394,7 +2342,7 @@ $$._MessageTraverser = {"":
   return this.visitObject$1(x);
 },
  visitObject$1: function(x) {
-  throw $.captureStackTrace('Message serialization: Illegal value ' + $.S(x) + ' passed');
+  throw $.$$throw('Message serialization: Illegal value ' + $.S(x) + ' passed');
 }
 };
 
@@ -2613,7 +2561,7 @@ $$._Deserializer = {"":
   }
 },
  deserializeObject$1: function(x) {
-  throw $.captureStackTrace('Unexpected serialized object');
+  throw $.$$throw('Unexpected serialized object');
 }
 };
 
@@ -3089,7 +3037,7 @@ $$.Collision = {"":
     manifold.get$localPoint().setFrom$1(v1);
     $.index(manifold.get$points(), 0).get$localPoint().setFrom$1(circle.get$position());
     $.index(manifold.get$points(), 0).get$id().zero$0();
-  } else if (u2 <= 0.0) {
+  } else if (u2 <= 0) {
     t1 = v2.get$x();
     if (typeof t1 !== 'number')
       throw $.iae(t1);
@@ -3294,7 +3242,7 @@ $$.Collision = {"":
         manifold.get$localPoint().setFrom$1(v1);
         $.index(manifold.get$points(), 0).get$localPoint().setFrom$1(circle.get$position());
         $.index(manifold.get$points(), 0).get$id().zero$0();
-      } else if ($.leB(u2, 0.0)) {
+      } else if ($.leB(u2, 0)) {
         dx = $.sub(cLocalx, v2.get$x());
         dy = $.sub(cLocaly, v2.get$y());
         if ($.gtB($.add($.mul(dx, dx), $.mul(dy, dy)), $.mul(radius, radius)))
@@ -3348,64 +3296,62 @@ $$.Collision = {"":
     throw $.ioore(edge1);
   var v = normals1[edge1];
   var t5 = R.get$col1().get$y();
-  if (typeof t5 !== 'number')
+  if (t5 !== (t5 | 0))
     return this.edgeSeparation$5$bailout(5, xf1, edge1, xf2, t5, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0, 0);
   var t7 = v.get$x();
-  if (typeof t7 !== 'number')
+  if (t7 !== (t7 | 0))
     return this.edgeSeparation$5$bailout(6, xf1, edge1, t7, xf2, t5, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0);
   t7 = t5 * t7;
   t5 = R.get$col2().get$y();
-  if (typeof t5 !== 'number')
+  if (t5 !== (t5 | 0))
     return this.edgeSeparation$5$bailout(7, xf1, edge1, xf2, t7, t5, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0, 0);
   var t10 = v.get$y();
-  if (typeof t10 !== 'number')
+  if (t10 !== (t10 | 0))
     return this.edgeSeparation$5$bailout(8, xf1, edge1, xf2, t7, t5, t10, vertices1, count2, vertices2, R, v, 0, 0, 0, 0, 0, 0);
   var normal1Worldy = t7 + t5 * t10;
   t7 = R.get$col1().get$x();
-  if (typeof t7 !== 'number')
+  if (t7 !== (t7 | 0))
     return this.edgeSeparation$5$bailout(9, xf1, edge1, xf2, vertices1, count2, vertices2, normal1Worldy, R, t7, v, 0, 0, 0, 0, 0, 0, 0);
   var t13 = v.get$x();
-  if (typeof t13 !== 'number')
+  if (t13 !== (t13 | 0))
     return this.edgeSeparation$5$bailout(10, xf1, edge1, t13, xf2, vertices1, count2, vertices2, normal1Worldy, R, t7, v, 0, 0, 0, 0, 0, 0);
   t13 = t7 * t13;
   t7 = R.get$col2().get$x();
-  if (typeof t7 !== 'number')
+  if (t7 !== (t7 | 0))
     return this.edgeSeparation$5$bailout(11, t13, xf1, edge1, t7, xf2, vertices1, count2, vertices2, normal1Worldy, R, v, 0, 0, 0, 0, 0, 0);
   var t16 = v.get$y();
-  if (typeof t16 !== 'number')
+  if (t16 !== (t16 | 0))
     return this.edgeSeparation$5$bailout(12, t13, xf1, edge1, t7, xf2, t16, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
   var normal1Worldx = t13 + t7 * t16;
   var R1 = xf2.get$rotation();
   t13 = R1.get$col1().get$x();
-  if (typeof t13 !== 'number')
+  if (t13 !== (t13 | 0))
     return this.edgeSeparation$5$bailout(13, t13, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
   t13 = normal1Worldx * t13;
   var t19 = R1.get$col1().get$y();
-  if (typeof t19 !== 'number')
+  if (t19 !== (t19 | 0))
     return this.edgeSeparation$5$bailout(14, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, t13, R, t19, normal1Worldy, 0, 0, 0, 0, 0);
   var normal1x = t13 + normal1Worldy * t19;
   t13 = R1.get$col2().get$x();
-  if (typeof t13 !== 'number')
+  if (t13 !== (t13 | 0))
     return this.edgeSeparation$5$bailout(15, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t13, normal1Worldy, 0, 0, 0, 0, 0);
   t13 = normal1Worldx * t13;
   var t22 = R1.get$col2().get$y();
-  if (typeof t22 !== 'number')
+  if (t22 !== (t22 | 0))
     return this.edgeSeparation$5$bailout(16, xf1, edge1, xf2, normal1Worldx, R1, vertices1, count2, vertices2, R, normal1x, t13, t22, normal1Worldy, 0, 0, 0, 0);
   var normal1y = t13 + normal1Worldy * t22;
-  for (var minDot = 99999999999999.0, i = 0, index = 0; i < count2; ++i) {
+  for (var minDot = 99999999999999, i = 0, index = 0; i < count2; ++i) {
     if (i < 0 || i >= vertices2.length)
       throw $.ioore(i);
     var a = vertices2[i];
     var t1 = a.get$x();
-    if (typeof t1 !== 'number')
+    if (t1 !== (t1 | 0))
       return this.edgeSeparation$5$bailout(17, xf1, edge1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y, a, t1);
     t1 *= normal1x;
     var t3 = a.get$y();
-    if (typeof t3 !== 'number')
+    if (t3 !== (t3 | 0))
       return this.edgeSeparation$5$bailout(18, t1, t3, edge1, xf1, xf2, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y);
     var dot = t1 + t3 * normal1y;
-    if (typeof dot !== 'number')
-      return this.edgeSeparation$5$bailout(19, xf1, edge1, xf2, dot, normal1Worldx, minDot, R1, count2, i, vertices2, R, vertices1, index, normal1x, normal1Worldy, normal1y, 0);
     if (dot < minDot) {
       index = i;
       minDot = dot;
@@ -3416,74 +3362,74 @@ $$.Collision = {"":
   var v3 = vertices1[edge1];
   t1 = xf1.get$position().get$y();
   if (typeof t1 !== 'number')
-    return this.edgeSeparation$5$bailout(20, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t1, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(19, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t1, 0, 0, 0, 0, 0, 0, 0);
   t3 = R.get$col1().get$y();
   if (typeof t3 !== 'number')
-    return this.edgeSeparation$5$bailout(21, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t3, t1, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(20, index, xf1, xf2, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, t3, t1, 0, 0, 0, 0, 0, 0);
   t5 = v3.get$x();
   if (typeof t5 !== 'number')
-    return this.edgeSeparation$5$bailout(22, xf1, xf2, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, t1, t3, t5, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(21, xf1, xf2, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, t1, t3, t5, 0, 0, 0, 0, 0);
   t1 += t3 * t5;
   t7 = R.get$col2().get$y();
   if (typeof t7 !== 'number')
-    return this.edgeSeparation$5$bailout(23, index, xf1, t1, xf2, t7, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(22, index, xf1, t1, xf2, t7, normal1Worldx, R1, v3, vertices2, normal1Worldy, R, 0, 0, 0, 0, 0, 0);
   var t9 = v3.get$y();
   if (typeof t9 !== 'number')
-    return this.edgeSeparation$5$bailout(24, xf1, t1, xf2, t7, t9, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(23, xf1, t1, xf2, t7, t9, normal1Worldx, R1, vertices2, R, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
   var v1y = t1 + t7 * t9;
   t1 = xf1.get$position().get$x();
   if (typeof t1 !== 'number')
-    return this.edgeSeparation$5$bailout(25, index, xf2, normal1Worldx, R1, v3, v1y, vertices2, t1, R, normal1Worldy, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(24, index, xf2, normal1Worldx, R1, v3, v1y, vertices2, t1, R, normal1Worldy, 0, 0, 0, 0, 0, 0, 0);
   var t12 = R.get$col1().get$x();
   if (typeof t12 !== 'number')
-    return this.edgeSeparation$5$bailout(26, index, normal1Worldy, xf2, normal1Worldx, R1, v3, v1y, vertices2, t1, R, t12, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(25, index, normal1Worldy, xf2, normal1Worldx, R1, v3, v1y, vertices2, t1, R, t12, 0, 0, 0, 0, 0, 0);
   var t14 = v3.get$x();
   if (typeof t14 !== 'number')
-    return this.edgeSeparation$5$bailout(27, xf2, normal1Worldx, R1, v1y, vertices2, t1, R, t12, t14, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(26, xf2, normal1Worldx, R1, v1y, vertices2, t1, R, t12, t14, index, v3, normal1Worldy, 0, 0, 0, 0, 0);
   t1 += t12 * t14;
   t16 = R.get$col2().get$x();
   if (typeof t16 !== 'number')
-    return this.edgeSeparation$5$bailout(28, index, t1, xf2, t16, normal1Worldx, R1, v1y, normal1Worldy, vertices2, v3, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(27, index, t1, xf2, t16, normal1Worldx, R1, v1y, normal1Worldy, vertices2, v3, 0, 0, 0, 0, 0, 0, 0);
   var t18 = v3.get$y();
   if (typeof t18 !== 'number')
-    return this.edgeSeparation$5$bailout(29, index, t1, xf2, t16, t18, normal1Worldx, R1, v1y, normal1Worldy, vertices2, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(28, index, t1, xf2, t16, t18, normal1Worldx, R1, v1y, normal1Worldy, vertices2, 0, 0, 0, 0, 0, 0, 0);
   var v1x = t1 + t16 * t18;
   if (index < 0 || index >= vertices2.length)
     throw $.ioore(index);
   var v4 = vertices2[index];
   t1 = xf2.get$position().get$y();
   if (typeof t1 !== 'number')
-    return this.edgeSeparation$5$bailout(30, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(29, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   var t21 = R1.get$col1().get$y();
   if (typeof t21 !== 'number')
-    return this.edgeSeparation$5$bailout(31, t21, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(30, t21, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0, 0);
   var t23 = v4.get$x();
   if (typeof t23 !== 'number')
-    return this.edgeSeparation$5$bailout(32, t21, t23, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(31, t21, t23, xf2, normal1Worldx, R1, v1y, v1x, normal1Worldy, v4, t1, 0, 0, 0, 0, 0, 0, 0);
   t1 += t21 * t23;
   var t25 = R1.get$col2().get$y();
   if (typeof t25 !== 'number')
-    return this.edgeSeparation$5$bailout(33, xf2, t1, normal1Worldx, R1, t25, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(32, xf2, t1, normal1Worldx, R1, t25, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0, 0);
   var t27 = v4.get$y();
   if (typeof t27 !== 'number')
-    return this.edgeSeparation$5$bailout(34, xf2, t1, normal1Worldx, R1, t27, t25, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(33, xf2, t1, normal1Worldx, R1, t27, t25, v1y, normal1Worldy, v1x, v4, 0, 0, 0, 0, 0, 0, 0);
   var v2y = t1 + t25 * t27 - v1y;
   var t29 = xf2.get$position().get$x();
   if (typeof t29 !== 'number')
-    return this.edgeSeparation$5$bailout(35, t29, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(34, t29, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   var t31 = R1.get$col1().get$x();
   if (typeof t31 !== 'number')
-    return this.edgeSeparation$5$bailout(36, t29, t31, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(35, t29, t31, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   var t33 = v4.get$x();
   if (typeof t33 !== 'number')
-    return this.edgeSeparation$5$bailout(37, t29, t31, t33, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(36, t29, t31, t33, normal1Worldx, R1, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0);
   t29 += t31 * t33;
   var t35 = R1.get$col2().get$x();
   if (typeof t35 !== 'number')
-    return this.edgeSeparation$5$bailout(38, normal1Worldx, t29, t35, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(37, normal1Worldx, t29, t35, v1x, normal1Worldy, v4, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   var t37 = v4.get$y();
   if (typeof t37 !== 'number')
-    return this.edgeSeparation$5$bailout(39, normal1Worldx, t29, t35, v1x, normal1Worldy, t37, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.edgeSeparation$5$bailout(38, normal1Worldx, t29, t35, v1x, normal1Worldy, t37, v2y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   return (t29 + t35 * t37 - v1x) * normal1Worldx + v2y * normal1Worldy;
 },
  edgeSeparation$5$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14, env15, env16) {
@@ -3716,24 +3662,6 @@ $$.Collision = {"":
       normal1y = env16;
       break;
     case 19:
-      xf1 = env0;
-      edge1 = env1;
-      xf2 = env2;
-      dot = env3;
-      normal1Worldx = env4;
-      minDot = env5;
-      R1 = env6;
-      count2 = env7;
-      i = env8;
-      vertices2 = env9;
-      R = env10;
-      vertices1 = env11;
-      index = env12;
-      normal1x = env13;
-      normal1Worldy = env14;
-      normal1y = env15;
-      break;
-    case 20:
       index = env0;
       xf1 = env1;
       xf2 = env2;
@@ -3745,7 +3673,7 @@ $$.Collision = {"":
       R = env8;
       t1 = env9;
       break;
-    case 21:
+    case 20:
       index = env0;
       xf1 = env1;
       xf2 = env2;
@@ -3758,7 +3686,7 @@ $$.Collision = {"":
       t3 = env9;
       t1 = env10;
       break;
-    case 22:
+    case 21:
       xf1 = env0;
       xf2 = env1;
       normal1Worldx = env2;
@@ -3772,7 +3700,7 @@ $$.Collision = {"":
       t3 = env10;
       t5 = env11;
       break;
-    case 23:
+    case 22:
       index = env0;
       xf1 = env1;
       t1 = env2;
@@ -3785,7 +3713,7 @@ $$.Collision = {"":
       normal1Worldy = env9;
       R = env10;
       break;
-    case 24:
+    case 23:
       xf1 = env0;
       t1 = env1;
       xf2 = env2;
@@ -3799,7 +3727,7 @@ $$.Collision = {"":
       v3 = env10;
       normal1Worldy = env11;
       break;
-    case 25:
+    case 24:
       index = env0;
       xf2 = env1;
       normal1Worldx = env2;
@@ -3811,7 +3739,7 @@ $$.Collision = {"":
       R = env8;
       normal1Worldy = env9;
       break;
-    case 26:
+    case 25:
       index = env0;
       normal1Worldy = env1;
       xf2 = env2;
@@ -3824,7 +3752,7 @@ $$.Collision = {"":
       R = env9;
       t12 = env10;
       break;
-    case 27:
+    case 26:
       xf2 = env0;
       normal1Worldx = env1;
       R1 = env2;
@@ -3838,7 +3766,7 @@ $$.Collision = {"":
       v3 = env10;
       normal1Worldy = env11;
       break;
-    case 28:
+    case 27:
       index = env0;
       t1 = env1;
       xf2 = env2;
@@ -3850,7 +3778,7 @@ $$.Collision = {"":
       vertices2 = env8;
       v3 = env9;
       break;
-    case 29:
+    case 28:
       index = env0;
       t1 = env1;
       xf2 = env2;
@@ -3862,7 +3790,7 @@ $$.Collision = {"":
       normal1Worldy = env8;
       vertices2 = env9;
       break;
-    case 30:
+    case 29:
       xf2 = env0;
       normal1Worldx = env1;
       R1 = env2;
@@ -3872,7 +3800,7 @@ $$.Collision = {"":
       v4 = env6;
       t1 = env7;
       break;
-    case 31:
+    case 30:
       t21 = env0;
       xf2 = env1;
       normal1Worldx = env2;
@@ -3883,7 +3811,7 @@ $$.Collision = {"":
       v4 = env7;
       t1 = env8;
       break;
-    case 32:
+    case 31:
       t21 = env0;
       t23 = env1;
       xf2 = env2;
@@ -3895,7 +3823,7 @@ $$.Collision = {"":
       v4 = env8;
       t1 = env9;
       break;
-    case 33:
+    case 32:
       xf2 = env0;
       t1 = env1;
       normal1Worldx = env2;
@@ -3906,7 +3834,7 @@ $$.Collision = {"":
       v1x = env7;
       v4 = env8;
       break;
-    case 34:
+    case 33:
       xf2 = env0;
       t1 = env1;
       normal1Worldx = env2;
@@ -3918,7 +3846,7 @@ $$.Collision = {"":
       v1x = env8;
       v4 = env9;
       break;
-    case 35:
+    case 34:
       t29 = env0;
       normal1Worldx = env1;
       R1 = env2;
@@ -3927,7 +3855,7 @@ $$.Collision = {"":
       v4 = env5;
       v2y = env6;
       break;
-    case 36:
+    case 35:
       t29 = env0;
       t31 = env1;
       normal1Worldx = env2;
@@ -3937,7 +3865,7 @@ $$.Collision = {"":
       v4 = env6;
       v2y = env7;
       break;
-    case 37:
+    case 36:
       t29 = env0;
       t31 = env1;
       t33 = env2;
@@ -3948,7 +3876,7 @@ $$.Collision = {"":
       v4 = env7;
       v2y = env8;
       break;
-    case 38:
+    case 37:
       normal1Worldx = env0;
       t29 = env1;
       t35 = env2;
@@ -3957,7 +3885,7 @@ $$.Collision = {"":
       v4 = env5;
       v2y = env6;
       break;
-    case 39:
+    case 38:
       normal1Worldx = env0;
       t29 = env1;
       t35 = env2;
@@ -4029,7 +3957,7 @@ $$.Collision = {"":
     case 16:
       state = 0;
       var normal1y = $.add(t13, $.mul(normal1Worldy, t22));
-      var minDot = 99999999999999.0;
+      var minDot = 99999999999999;
       var i = 0;
       var index = 0;
     default:
@@ -4048,8 +3976,6 @@ $$.Collision = {"":
             case 18:
               state = 0;
               var dot = $.add(t1, $.mul(t3, normal1y));
-            case 19:
-              state = 0;
               if ($.ltB(dot, minDot)) {
                 index = i;
                 minDot = dot;
@@ -4058,72 +3984,72 @@ $$.Collision = {"":
           }
       var v3 = $.index(vertices1, edge1);
       t1 = xf1.get$position().get$y();
-    case 20:
+    case 19:
       state = 0;
       t3 = R.get$col1().get$y();
-    case 21:
+    case 20:
       state = 0;
       t5 = v3.get$x();
-    case 22:
+    case 21:
       state = 0;
       t1 = $.add(t1, $.mul(t3, t5));
       t7 = R.get$col2().get$y();
-    case 23:
+    case 22:
       state = 0;
       var t9 = v3.get$y();
-    case 24:
+    case 23:
       state = 0;
       var v1y = $.add(t1, $.mul(t7, t9));
       t1 = xf1.get$position().get$x();
-    case 25:
+    case 24:
       state = 0;
       var t12 = R.get$col1().get$x();
-    case 26:
+    case 25:
       state = 0;
       var t14 = v3.get$x();
-    case 27:
+    case 26:
       state = 0;
       t1 = $.add(t1, $.mul(t12, t14));
       t16 = R.get$col2().get$x();
-    case 28:
+    case 27:
       state = 0;
       var t18 = v3.get$y();
-    case 29:
+    case 28:
       state = 0;
       var v1x = $.add(t1, $.mul(t16, t18));
       var v4 = $.index(vertices2, index);
       t1 = xf2.get$position().get$y();
-    case 30:
+    case 29:
       state = 0;
       var t21 = R1.get$col1().get$y();
-    case 31:
+    case 30:
       state = 0;
       var t23 = v4.get$x();
-    case 32:
+    case 31:
       state = 0;
       t1 = $.add(t1, $.mul(t21, t23));
       var t25 = R1.get$col2().get$y();
-    case 33:
+    case 32:
       state = 0;
       var t27 = v4.get$y();
-    case 34:
+    case 33:
       state = 0;
       var v2y = $.sub($.add(t1, $.mul(t25, t27)), v1y);
       var t29 = xf2.get$position().get$x();
-    case 35:
+    case 34:
       state = 0;
       var t31 = R1.get$col1().get$x();
-    case 36:
+    case 35:
       state = 0;
       var t33 = v4.get$x();
-    case 37:
+    case 36:
       state = 0;
       t29 = $.add(t29, $.mul(t31, t33));
       var t35 = R1.get$col2().get$x();
-    case 38:
+    case 37:
       state = 0;
       var t37 = v4.get$y();
-    case 39:
+    case 38:
       state = 0;
       return $.add($.mul($.sub($.add(t29, $.mul(t35, t37)), v1x), normal1Worldx), $.mul(v2y, normal1Worldy));
   }
@@ -4361,7 +4287,7 @@ $$.Collision = {"":
   var t5 = this.normal1;
   $.Matrix22_mulMatrixAndVectorToOut(t3, t4, t5);
   $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t5, t5);
-  for (var minDot = 99999999999999.0, i = 0, index = 0; i < count2; ++i) {
+  for (var minDot = 99999999999999, i = 0, index = 0; i < count2; ++i) {
     if (i < 0 || i >= normals2.length)
       throw $.ioore(i);
     var t1 = normals2[i];
@@ -4420,7 +4346,7 @@ $$.Collision = {"":
       var t5 = this.normal1;
       $.Matrix22_mulMatrixAndVectorToOut(t3, t4, t5);
       $.Matrix22_mulTransMatrixAndVectorToOut(xf2.get$rotation(), t5, t5);
-      for (var minDot = 99999999999999.0, i = 0, index = 0; $.ltB(i, count2); ++i) {
+      for (var minDot = 99999999999999, i = 0, index = 0; $.ltB(i, count2); ++i) {
         var t1 = $.index(normals2, i);
         var dot = $.add($.mul(t5.get$x(), t1.get$x()), $.mul(t5.get$y(), t1.get$y()));
         if ($.ltB(dot, minDot)) {
@@ -4786,7 +4712,7 @@ $$.Distance = {"":
     } else {
       output.get$pointA().addLocal$1(output.get$pointB()).mulLocal$1(0.5);
       output.get$pointB().setFrom$1(output.get$pointA());
-      output.set$distance(0.0);
+      output.set$distance(0);
     }
   }
 },
@@ -5200,14 +5126,14 @@ $$.Simplex = {"":
     $.Transform_mulToOut(transformA, wALocal, v.get$wA());
     $.Transform_mulToOut(transformB, wBLocal, v.get$wB());
     v.get$w().setFrom$1(v.get$wB()).subLocal$1(v.get$wA());
-    v.set$a(0.0);
+    v.set$a(0);
   }
   if ($.gtB(this.count, 1)) {
     var metric1 = cache.get$metric();
     var metric2 = this.getMetric$0();
     if (typeof metric1 !== 'number')
       throw $.iae(metric1);
-    if ($.ltB(metric2, 0.5 * metric1) || $.ltB(2.0 * metric1, metric2) || $.ltB(metric2, 1.192e-7))
+    if ($.ltB(metric2, 0.5 * metric1) || $.ltB(2 * metric1, metric2) || $.ltB(metric2, 1.192e-7))
       this.count = 0;
   }
   if ($.eqB(this.count, 0)) {
@@ -5323,9 +5249,9 @@ $$.Simplex = {"":
  getMetric$0: function() {
   switch (this.count) {
     case 0:
-      return 0.0;
+      return 0;
     case 1:
-      return 0.0;
+      return 0;
     case 2:
       return $.sqrt($.MathBox_distanceSquared(this.v1.get$w(), this.v2.get$w()));
     case 3:
@@ -5337,7 +5263,7 @@ $$.Simplex = {"":
       t2.setFrom$1(this.v3.get$w()).subLocal$1(t3.get$w());
       return $.sub($.mul(t1.get$x(), t2.get$y()), $.mul(t1.get$y(), t2.get$x()));
     default:
-      return 0.0;
+      return 0;
   }
 },
  solve2$0: function() {
@@ -5349,20 +5275,20 @@ $$.Simplex = {"":
   t3.setFrom$1(w2).subLocal$1(w1);
   var t4 = w1.get$x();
   if (typeof t4 !== 'number')
-    return this.solve2$0$bailout(1, w1, w2, t4, t1, t2, t3, 0);
+    return this.solve2$0$bailout(1, w1, w2, t1, t2, t3, t4, 0);
   var t6 = t3.x;
   if (typeof t6 !== 'number')
-    return this.solve2$0$bailout(2, w1, w2, t4, t1, t2, t3, t6);
+    return this.solve2$0$bailout(2, w1, w2, t1, t2, t3, t4, t6);
   t6 = t4 * t6;
   t4 = w1.get$y();
   if (typeof t4 !== 'number')
-    return this.solve2$0$bailout(3, t3, w2, t1, t2, t6, t4, 0);
+    return this.solve2$0$bailout(3, w2, t1, t2, t3, t6, t4, 0);
   var t9 = t3.y;
   if (typeof t9 !== 'number')
-    return this.solve2$0$bailout(4, t9, t3, w2, t1, t2, t6, t4);
+    return this.solve2$0$bailout(4, t9, w2, t1, t2, t3, t6, t4);
   var d12_2 = -(t6 + t4 * t9);
-  if (d12_2 <= 0.0) {
-    t1.a = 1.0;
+  if (d12_2 <= 0) {
+    t1.a = 1;
     this.count = 1;
     return;
   }
@@ -5371,7 +5297,7 @@ $$.Simplex = {"":
     return this.solve2$0$bailout(5, t4, w2, d12_2, t1, t2, t3, 0);
   t6 = t3.x;
   if (typeof t6 !== 'number')
-    return this.solve2$0$bailout(6, t4, w2, d12_2, t6, t1, t2, t3);
+    return this.solve2$0$bailout(6, t4, t6, w2, d12_2, t1, t2, t3);
   t6 = t4 * t6;
   t4 = w2.get$y();
   if (typeof t4 !== 'number')
@@ -5380,13 +5306,13 @@ $$.Simplex = {"":
   if (typeof t3 !== 'number')
     return this.solve2$0$bailout(8, d12_2, t6, t4, t3, t1, t2, 0);
   var d12_1 = t6 + t4 * t3;
-  if (d12_1 <= 0.0) {
-    t2.a = 1.0;
+  if (d12_1 <= 0) {
+    t2.a = 1;
     this.count = 1;
     t1.setFrom$1(t2);
     return;
   }
-  var inv_d12 = 1.0 / (d12_1 + d12_2);
+  var inv_d12 = 1 / (d12_1 + d12_2);
   t1.a = d12_1 * inv_d12;
   t2.a = d12_2 * inv_d12;
   this.count = 2;
@@ -5396,34 +5322,34 @@ $$.Simplex = {"":
     case 1:
       w1 = env0;
       w2 = env1;
-      t4 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      t4 = env5;
       break;
     case 2:
       w1 = env0;
       w2 = env1;
-      t4 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      t4 = env5;
       t6 = env6;
       break;
     case 3:
-      t3 = env0;
-      w2 = env1;
-      t1 = env2;
-      t2 = env3;
+      w2 = env0;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
       t6 = env4;
       t4 = env5;
       break;
     case 4:
       t9 = env0;
-      t3 = env1;
-      w2 = env2;
-      t1 = env3;
-      t2 = env4;
+      w2 = env1;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
       t6 = env5;
       t4 = env6;
       break;
@@ -5437,9 +5363,9 @@ $$.Simplex = {"":
       break;
     case 6:
       t4 = env0;
-      w2 = env1;
-      d12_2 = env2;
-      t6 = env3;
+      t6 = env1;
+      w2 = env2;
+      d12_2 = env3;
       t1 = env4;
       t2 = env5;
       t3 = env6;
@@ -5483,8 +5409,8 @@ $$.Simplex = {"":
     case 4:
       state = 0;
       var d12_2 = $.neg($.add(t6, $.mul(t4, t9)));
-      if ($.leB(d12_2, 0.0)) {
-        t1.set$a(1.0);
+      if ($.leB(d12_2, 0)) {
+        t1.set$a(1);
         this.count = 1;
         return;
       }
@@ -5502,8 +5428,8 @@ $$.Simplex = {"":
     case 8:
       state = 0;
       var d12_1 = $.add(t6, $.mul(t4, t3));
-      if ($.leB(d12_1, 0.0)) {
-        t2.set$a(1.0);
+      if ($.leB(d12_1, 0)) {
+        t2.set$a(1);
         this.count = 1;
         t1.setFrom$1(t2);
         return;
@@ -5511,7 +5437,7 @@ $$.Simplex = {"":
       t3 = $.add(d12_1, d12_2);
       if (typeof t3 !== 'number')
         throw $.iae(t3);
-      var inv_d12 = 1.0 / t3;
+      var inv_d12 = 1 / t3;
       t1.set$a($.mul(d12_1, inv_d12));
       t2.set$a($.mul(d12_2, inv_d12));
       this.count = 2;
@@ -5528,192 +5454,192 @@ $$.Simplex = {"":
   t4.setFrom$1(w2).subLocal$1(w1);
   var t5 = w1.get$x();
   if (typeof t5 !== 'number')
-    return this.solve3$0$bailout(1, w1, t1, t2, t3, t4, w3, w2, t5, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(1, w1, t1, t2, t3, w3, t4, w2, t5, 0, 0, 0, 0, 0, 0, 0, 0);
   var t7 = t4.x;
   if (typeof t7 !== 'number')
-    return this.solve3$0$bailout(2, w1, t1, t2, t3, t4, w3, w2, t5, t7, 0, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(2, w1, t1, t2, t3, w3, t4, w2, t5, t7, 0, 0, 0, 0, 0, 0, 0);
   t7 = t5 * t7;
   t5 = w1.get$y();
   if (typeof t5 !== 'number')
-    return this.solve3$0$bailout(3, t7, t5, w1, t1, t2, t3, t4, w3, w2, 0, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(3, t7, t5, w1, t1, t2, t3, w3, t4, w2, 0, 0, 0, 0, 0, 0, 0);
   var t10 = t4.y;
   if (typeof t10 !== 'number')
-    return this.solve3$0$bailout(4, t7, t5, t10, w1, t1, t2, t3, t4, w3, w2, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(4, t7, t5, t10, w1, t1, t2, t3, w3, t4, w2, 0, 0, 0, 0, 0, 0);
   var w1e12 = t7 + t5 * t10;
   t7 = w2.get$x();
   if (typeof t7 !== 'number')
-    return this.solve3$0$bailout(5, w1, t1, t2, t3, t4, w1e12, w3, w2, t7, 0, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(5, w1, t1, t2, t3, t4, w3, w1e12, w2, t7, 0, 0, 0, 0, 0, 0, 0);
   var t13 = t4.x;
   if (typeof t13 !== 'number')
-    return this.solve3$0$bailout(6, w1, t1, t2, t3, t4, w1e12, w3, w2, t13, t7, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(6, w1, t1, t2, t3, t4, w3, w1e12, t13, w2, t7, 0, 0, 0, 0, 0, 0);
   t13 = t7 * t13;
   t7 = w2.get$y();
   if (typeof t7 !== 'number')
-    return this.solve3$0$bailout(7, w1, t1, t2, t3, t4, w1e12, w3, w2, t13, t7, 0, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(7, w1, t1, t2, t3, t4, w3, w1e12, w2, t13, t7, 0, 0, 0, 0, 0, 0);
   var t16 = t4.y;
   if (typeof t16 !== 'number')
-    return this.solve3$0$bailout(8, w1, t1, t2, t3, t4, w1e12, w3, w2, t13, t7, t16, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(8, w1, t1, t2, t3, t4, w3, w1e12, w2, t13, t7, t16, 0, 0, 0, 0, 0);
   var w2e12 = t13 + t7 * t16;
   var d12_2 = -w1e12;
   t13 = this.e13;
   t13.setFrom$1(w3).subLocal$1(w1);
   var t18 = w1.get$x();
   if (typeof t18 !== 'number')
-    return this.solve3$0$bailout(9, w2e12, d12_2, w1, t1, t2, t3, t4, t18, w3, w2, t13, 0, 0, 0, 0, 0);
+    return this.solve3$0$bailout(9, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t18, 0, 0, 0, 0, 0);
   var t20 = t13.x;
   if (typeof t20 !== 'number')
-    return this.solve3$0$bailout(10, w2e12, d12_2, w1, t1, t2, t3, t4, t18, w3, w2, t13, t20, 0, 0, 0, 0);
+    return this.solve3$0$bailout(10, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t20, t18, 0, 0, 0, 0);
   t20 = t18 * t20;
   t18 = w1.get$y();
   if (typeof t18 !== 'number')
-    return this.solve3$0$bailout(11, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, t18, t20, 0, 0, 0, 0);
+    return this.solve3$0$bailout(11, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t20, t18, 0, 0, 0, 0);
   var t23 = t13.y;
   if (typeof t23 !== 'number')
-    return this.solve3$0$bailout(12, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, t18, t20, t23, 0, 0, 0);
+    return this.solve3$0$bailout(12, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t20, t18, t23, 0, 0, 0);
   var w1e13 = t20 + t18 * t23;
   t20 = w3.get$x();
   if (typeof t20 !== 'number')
-    return this.solve3$0$bailout(13, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w1e13, t20, 0, 0, 0, 0);
+    return this.solve3$0$bailout(13, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w1e13, t20, 0, 0, 0, 0);
   var t26 = t13.x;
   if (typeof t26 !== 'number')
-    return this.solve3$0$bailout(14, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w1e13, t20, t26, 0, 0, 0);
+    return this.solve3$0$bailout(14, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w1e13, t20, t26, 0, 0, 0);
   t26 = t20 * t26;
   t20 = w3.get$y();
   if (typeof t20 !== 'number')
-    return this.solve3$0$bailout(15, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w1e13, t26, t20, 0, 0, 0);
+    return this.solve3$0$bailout(15, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w1e13, t26, t20, 0, 0, 0);
   var t29 = t13.y;
   if (typeof t29 !== 'number')
-    return this.solve3$0$bailout(16, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w1e13, t26, t20, t29, 0, 0);
+    return this.solve3$0$bailout(16, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w1e13, t26, t20, t29, 0, 0);
   var w3e13 = t26 + t20 * t29;
   var d13_2 = -w1e13;
   t26 = this.e23;
   t26.setFrom$1(w3).subLocal$1(w2);
   var t31 = w2.get$x();
   if (typeof t31 !== 'number')
-    return this.solve3$0$bailout(17, w2e12, d12_2, w1, t1, t2, t3, t4, t31, w3, w2, t13, t26, w3e13, d13_2, 0, 0);
+    return this.solve3$0$bailout(17, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t26, t31, w3e13, d13_2, 0, 0);
   var t33 = t26.x;
   if (typeof t33 !== 'number')
-    return this.solve3$0$bailout(18, w2e12, d12_2, w1, t1, t2, t3, t4, t31, w3, w2, t13, t26, t33, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(18, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t26, t33, t31, w3e13, d13_2, 0);
   t33 = t31 * t33;
   t31 = w2.get$y();
   if (typeof t31 !== 'number')
-    return this.solve3$0$bailout(19, w2e12, d12_2, w1, t1, t2, t3, t4, t33, w3, w2, t13, t31, t26, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(19, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t33, t26, t31, w3e13, d13_2, 0);
   var t36 = t26.y;
   if (typeof t36 !== 'number')
-    return this.solve3$0$bailout(20, w2e12, d12_2, w1, t1, t2, t3, t4, t33, w3, w2, t13, t31, t26, t36, w3e13, d13_2);
+    return this.solve3$0$bailout(20, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, t33, t26, t36, t31, w3e13, d13_2);
   var w2e23 = t33 + t31 * t36;
   t33 = w3.get$x();
   if (typeof t33 !== 'number')
-    return this.solve3$0$bailout(21, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w2e23, t26, t33, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(21, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w2e23, t26, t33, w3e13, d13_2, 0);
   var t39 = t26.x;
   if (typeof t39 !== 'number')
-    return this.solve3$0$bailout(22, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w2e23, t26, t33, t39, w3e13, d13_2);
+    return this.solve3$0$bailout(22, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w2e23, t26, t33, t39, w3e13, d13_2);
   t39 = t33 * t39;
   t33 = w3.get$y();
   if (typeof t33 !== 'number')
-    return this.solve3$0$bailout(23, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w2e23, t26, t39, t33, w3e13, d13_2);
+    return this.solve3$0$bailout(23, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w2e23, t26, t39, t33, w3e13, d13_2);
   t26 = t26.y;
   if (typeof t26 !== 'number')
-    return this.solve3$0$bailout(24, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w2e23, t39, t33, t26, w3e13, d13_2);
+    return this.solve3$0$bailout(24, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w2e23, t39, t33, t26, w3e13, d13_2);
   var w3e23 = t39 + t33 * t26;
   var d23_2 = -w2e23;
   t39 = t4.x;
   if (typeof t39 !== 'number')
-    return this.solve3$0$bailout(25, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w3e23, d23_2, w3e13, t39, d13_2, 0);
+    return this.solve3$0$bailout(25, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w3e23, d23_2, w3e13, t39, d13_2, 0);
   var t44 = t13.y;
   if (typeof t44 !== 'number')
-    return this.solve3$0$bailout(26, w2e12, d12_2, w1, t1, t2, t3, t4, w3, w2, t13, w3e23, d23_2, w3e13, t44, d13_2, t39);
+    return this.solve3$0$bailout(26, w2e12, d12_2, t1, t2, t3, w3, t4, w1, t13, w2, w3e23, d23_2, w3e13, t44, d13_2, t39);
   t44 = t39 * t44;
   t4 = t4.y;
   if (typeof t4 !== 'number')
-    return this.solve3$0$bailout(27, t4, w2e12, d12_2, w1, t1, t2, t3, w3, w2, t13, w3e23, d23_2, w3e13, d13_2, t44, 0);
+    return this.solve3$0$bailout(27, t4, w2e12, d12_2, t1, t2, t3, w3, w2, w1, t13, w3e23, d23_2, w3e13, d13_2, t44, 0);
   t13 = t13.x;
   if (typeof t13 !== 'number')
-    return this.solve3$0$bailout(28, t4, w2e12, t13, d12_2, w1, t1, t2, t3, w3, w2, w3e23, d23_2, w3e13, d13_2, t44, 0);
+    return this.solve3$0$bailout(28, t4, w2e12, t13, d12_2, t1, t2, t3, w3, w2, w1, w3e23, d23_2, w3e13, d13_2, t44, 0);
   var n123 = t44 - t4 * t13;
   t44 = w2.get$x();
   if (typeof t44 !== 'number')
-    return this.solve3$0$bailout(29, w2e12, d12_2, w1, t1, t2, t3, n123, t44, w3, w2, w3e23, d23_2, w3e13, d13_2, 0, 0);
+    return this.solve3$0$bailout(29, w2e12, d12_2, t1, t2, t3, w3, n123, w1, w2, t44, w3e23, d23_2, w3e13, d13_2, 0, 0);
   var t48 = w3.get$y();
   if (typeof t48 !== 'number')
-    return this.solve3$0$bailout(30, w2e12, d12_2, w1, t1, t2, t3, n123, t44, w3, w2, t48, w3e23, d23_2, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(30, w2e12, d12_2, t1, t2, t3, w3, n123, w1, t48, w2, t44, w3e23, d23_2, w3e13, d13_2, 0);
   t48 = t44 * t48;
   t44 = w2.get$y();
   if (typeof t44 !== 'number')
-    return this.solve3$0$bailout(31, w2e12, d12_2, w1, t1, t2, t3, n123, t48, w3, w2, t44, w3e23, d23_2, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(31, w2e12, d12_2, t1, t2, t3, w3, n123, w1, t48, w2, t44, w3e23, d23_2, w3e13, d13_2, 0);
   var t51 = w3.get$x();
   if (typeof t51 !== 'number')
-    return this.solve3$0$bailout(32, w2e12, d12_2, w1, t1, t2, t3, n123, t48, w3, w2, t51, t44, w3e23, d23_2, w3e13, d13_2);
+    return this.solve3$0$bailout(32, w2e12, d12_2, t1, t2, t3, w3, n123, w1, t48, w2, t51, t44, w3e23, d23_2, w3e13, d13_2);
   var d123_1 = n123 * (t48 - t44 * t51);
   var t53 = w3.get$x();
   if (typeof t53 !== 'number')
-    return this.solve3$0$bailout(33, w2e12, d12_2, w1, t1, t2, t3, n123, w3, w2, d123_1, t53, w3e23, d23_2, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(33, w2e12, d12_2, t1, t2, t3, w3, n123, w1, w2, d123_1, t53, w3e23, d23_2, w3e13, d13_2, 0);
   var t55 = w1.get$y();
   if (typeof t55 !== 'number')
-    return this.solve3$0$bailout(34, w2e12, d12_2, w1, t1, t2, t3, n123, w3, w2, d123_1, t53, t55, w3e23, d23_2, w3e13, d13_2);
+    return this.solve3$0$bailout(34, w2e12, d12_2, t1, t2, t3, w3, n123, w1, w2, d123_1, t53, t55, w3e23, d23_2, w3e13, d13_2);
   t55 = t53 * t55;
   t53 = w3.get$y();
   if (typeof t53 !== 'number')
-    return this.solve3$0$bailout(35, w2e12, d12_2, w1, t1, t2, t3, n123, w2, d123_1, t55, t53, w3e23, d23_2, w3e13, d13_2, 0);
+    return this.solve3$0$bailout(35, w2e12, d12_2, t1, t2, t3, n123, w1, w2, d123_1, t55, t53, w3e23, d23_2, w3e13, d13_2, 0);
   var t58 = w1.get$x();
   if (typeof t58 !== 'number')
-    return this.solve3$0$bailout(36, w2e12, d12_2, w1, t1, t2, t3, n123, w2, d123_1, t55, t53, w3e23, t58, d23_2, w3e13, d13_2);
+    return this.solve3$0$bailout(36, w2e12, d12_2, t1, t2, t3, n123, w1, w2, d123_1, t55, t53, w3e23, t58, d23_2, w3e13, d13_2);
   var d123_2 = n123 * (t55 - t53 * t58);
   var t60 = w1.get$x();
   if (typeof t60 !== 'number')
-    return this.solve3$0$bailout(37, w2e12, d12_2, w1, t1, t2, t3, n123, w2, d123_1, w3e23, d23_2, w3e13, d123_2, t60, d13_2, 0);
+    return this.solve3$0$bailout(37, w2e12, d12_2, t1, t2, t3, n123, w1, w2, d123_1, w3e23, d23_2, w3e13, d123_2, t60, d13_2, 0);
   var t62 = w2.get$y();
   if (typeof t62 !== 'number')
-    return this.solve3$0$bailout(38, t62, w2e12, d12_2, w1, t1, t2, t3, n123, w2, d123_1, w3e23, d23_2, w3e13, d123_2, t60, d13_2);
+    return this.solve3$0$bailout(38, t62, w2e12, d12_2, t1, t2, t3, n123, w1, w2, d123_1, w3e23, d23_2, w3e13, d123_2, t60, d13_2);
   t62 = t60 * t62;
   t60 = w1.get$y();
   if (typeof t60 !== 'number')
     return this.solve3$0$bailout(39, w2e12, t62, d12_2, t1, t2, t3, n123, w2, t60, d123_1, w3e23, d23_2, w3e13, d123_2, d13_2, 0);
   var t65 = w2.get$x();
   if (typeof t65 !== 'number')
-    return this.solve3$0$bailout(40, w2e12, t62, d12_2, t65, t1, t2, t3, n123, t60, d123_1, w3e23, d23_2, w3e13, d123_2, d13_2, 0);
+    return this.solve3$0$bailout(40, w2e12, t62, d12_2, t1, t2, t3, n123, t65, t60, d123_1, w3e23, d23_2, w3e13, d123_2, d13_2, 0);
   var d123_3 = n123 * (t62 - t60 * t65);
-  if (d12_2 <= 0.0 && d13_2 <= 0.0) {
-    t1.a = 1.0;
+  if (d12_2 <= 0 && d13_2 <= 0) {
+    t1.a = 1;
     this.count = 1;
     return;
   }
-  if (w2e12 > 0.0 && d12_2 > 0.0 && d123_3 <= 0.0) {
-    var inv_d12 = 1.0 / (w2e12 + d12_2);
+  if (w2e12 > 0 && d12_2 > 0 && d123_3 <= 0) {
+    var inv_d12 = 1 / (w2e12 + d12_2);
     t1.a = w2e12 * inv_d12;
     t2.a = d12_2 * inv_d12;
     this.count = 2;
     return;
   }
-  if (w3e13 > 0.0 && d13_2 > 0.0 && d123_2 <= 0.0) {
-    var inv_d13 = 1.0 / (w3e13 + d13_2);
+  if (w3e13 > 0 && d13_2 > 0 && d123_2 <= 0) {
+    var inv_d13 = 1 / (w3e13 + d13_2);
     t1.a = w3e13 * inv_d13;
     t3.a = d13_2 * inv_d13;
     this.count = 2;
     t2.setFrom$1(t3);
     return;
   }
-  if (w2e12 <= 0.0 && d23_2 <= 0.0) {
-    t2.a = 1.0;
+  if (w2e12 <= 0 && d23_2 <= 0) {
+    t2.a = 1;
     this.count = 1;
     t1.setFrom$1(t2);
     return;
   }
-  if (w3e13 <= 0.0 && w3e23 <= 0.0) {
-    t3.a = 1.0;
+  if (w3e13 <= 0 && w3e23 <= 0) {
+    t3.a = 1;
     this.count = 1;
     t1.setFrom$1(t3);
     return;
   }
-  if (w3e23 > 0.0 && d23_2 > 0.0 && d123_1 <= 0.0) {
-    var inv_d23 = 1.0 / (w3e23 + d23_2);
+  if (w3e23 > 0 && d23_2 > 0 && d123_1 <= 0) {
+    var inv_d23 = 1 / (w3e23 + d23_2);
     t2.a = w3e23 * inv_d23;
     t3.a = d23_2 * inv_d23;
     this.count = 2;
     t1.setFrom$1(t3);
     return;
   }
-  var inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
+  var inv_d123 = 1 / (d123_1 + d123_2 + d123_3);
   t1.a = d123_1 * inv_d123;
   t2.a = d123_2 * inv_d123;
   t3.a = d123_3 * inv_d123;
@@ -5726,8 +5652,8 @@ $$.Simplex = {"":
       t1 = env1;
       t2 = env2;
       t3 = env3;
-      t4 = env4;
-      w3 = env5;
+      w3 = env4;
+      t4 = env5;
       w2 = env6;
       t5 = env7;
       break;
@@ -5736,8 +5662,8 @@ $$.Simplex = {"":
       t1 = env1;
       t2 = env2;
       t3 = env3;
-      t4 = env4;
-      w3 = env5;
+      w3 = env4;
+      t4 = env5;
       w2 = env6;
       t5 = env7;
       t7 = env8;
@@ -5749,8 +5675,8 @@ $$.Simplex = {"":
       t1 = env3;
       t2 = env4;
       t3 = env5;
-      t4 = env6;
-      w3 = env7;
+      w3 = env6;
+      t4 = env7;
       w2 = env8;
       break;
     case 4:
@@ -5761,8 +5687,8 @@ $$.Simplex = {"":
       t1 = env4;
       t2 = env5;
       t3 = env6;
-      t4 = env7;
-      w3 = env8;
+      w3 = env7;
+      t4 = env8;
       w2 = env9;
       break;
     case 5:
@@ -5771,8 +5697,8 @@ $$.Simplex = {"":
       t2 = env2;
       t3 = env3;
       t4 = env4;
-      w1e12 = env5;
-      w3 = env6;
+      w3 = env5;
+      w1e12 = env6;
       w2 = env7;
       t7 = env8;
       break;
@@ -5782,10 +5708,10 @@ $$.Simplex = {"":
       t2 = env2;
       t3 = env3;
       t4 = env4;
-      w1e12 = env5;
-      w3 = env6;
-      w2 = env7;
-      t13 = env8;
+      w3 = env5;
+      w1e12 = env6;
+      t13 = env7;
+      w2 = env8;
       t7 = env9;
       break;
     case 7:
@@ -5794,8 +5720,8 @@ $$.Simplex = {"":
       t2 = env2;
       t3 = env3;
       t4 = env4;
-      w1e12 = env5;
-      w3 = env6;
+      w3 = env5;
+      w1e12 = env6;
       w2 = env7;
       t13 = env8;
       t7 = env9;
@@ -5806,8 +5732,8 @@ $$.Simplex = {"":
       t2 = env2;
       t3 = env3;
       t4 = env4;
-      w1e12 = env5;
-      w3 = env6;
+      w3 = env5;
+      w1e12 = env6;
       w2 = env7;
       t13 = env8;
       t7 = env9;
@@ -5816,84 +5742,84 @@ $$.Simplex = {"":
     case 9:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t18 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
+      t18 = env10;
       break;
     case 10:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t18 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
-      t20 = env11;
+      t20 = env10;
+      t18 = env11;
       break;
     case 11:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
-      t18 = env10;
-      t20 = env11;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
+      t20 = env10;
+      t18 = env11;
       break;
     case 12:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
-      t18 = env10;
-      t20 = env11;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
+      t20 = env10;
+      t18 = env11;
       t23 = env12;
       break;
     case 13:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w1e13 = env10;
       t20 = env11;
       break;
     case 14:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w1e13 = env10;
       t20 = env11;
       t26 = env12;
@@ -5901,14 +5827,14 @@ $$.Simplex = {"":
     case 15:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w1e13 = env10;
       t26 = env11;
       t20 = env12;
@@ -5916,14 +5842,14 @@ $$.Simplex = {"":
     case 16:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w1e13 = env10;
       t26 = env11;
       t20 = env12;
@@ -5932,82 +5858,82 @@ $$.Simplex = {"":
     case 17:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t31 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
-      t26 = env11;
+      t26 = env10;
+      t31 = env11;
       w3e13 = env12;
       d13_2 = env13;
       break;
     case 18:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t31 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
-      t26 = env11;
-      t33 = env12;
+      t26 = env10;
+      t33 = env11;
+      t31 = env12;
       w3e13 = env13;
       d13_2 = env14;
       break;
     case 19:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t33 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
-      t31 = env11;
-      t26 = env12;
+      t33 = env10;
+      t26 = env11;
+      t31 = env12;
       w3e13 = env13;
       d13_2 = env14;
       break;
     case 20:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      t33 = env7;
-      w3 = env8;
+      w1 = env7;
+      t13 = env8;
       w2 = env9;
-      t13 = env10;
-      t31 = env11;
-      t26 = env12;
-      t36 = env13;
+      t33 = env10;
+      t26 = env11;
+      t36 = env12;
+      t31 = env13;
       w3e13 = env14;
       d13_2 = env15;
       break;
     case 21:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w2e23 = env10;
       t26 = env11;
       t33 = env12;
@@ -6017,14 +5943,14 @@ $$.Simplex = {"":
     case 22:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w2e23 = env10;
       t26 = env11;
       t33 = env12;
@@ -6035,14 +5961,14 @@ $$.Simplex = {"":
     case 23:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w2e23 = env10;
       t26 = env11;
       t39 = env12;
@@ -6053,14 +5979,14 @@ $$.Simplex = {"":
     case 24:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w2e23 = env10;
       t39 = env11;
       t33 = env12;
@@ -6071,14 +5997,14 @@ $$.Simplex = {"":
     case 25:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w3e23 = env10;
       d23_2 = env11;
       w3e13 = env12;
@@ -6088,14 +6014,14 @@ $$.Simplex = {"":
     case 26:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       t4 = env6;
-      w3 = env7;
-      w2 = env8;
-      t13 = env9;
+      w1 = env7;
+      t13 = env8;
+      w2 = env9;
       w3e23 = env10;
       d23_2 = env11;
       w3e13 = env12;
@@ -6107,12 +6033,12 @@ $$.Simplex = {"":
       t4 = env0;
       w2e12 = env1;
       d12_2 = env2;
-      w1 = env3;
-      t1 = env4;
-      t2 = env5;
-      t3 = env6;
-      w3 = env7;
-      w2 = env8;
+      t1 = env3;
+      t2 = env4;
+      t3 = env5;
+      w3 = env6;
+      w2 = env7;
+      w1 = env8;
       t13 = env9;
       w3e23 = env10;
       d23_2 = env11;
@@ -6125,12 +6051,12 @@ $$.Simplex = {"":
       w2e12 = env1;
       t13 = env2;
       d12_2 = env3;
-      w1 = env4;
-      t1 = env5;
-      t2 = env6;
-      t3 = env7;
-      w3 = env8;
-      w2 = env9;
+      t1 = env4;
+      t2 = env5;
+      t3 = env6;
+      w3 = env7;
+      w2 = env8;
+      w1 = env9;
       w3e23 = env10;
       d23_2 = env11;
       w3e13 = env12;
@@ -6140,14 +6066,14 @@ $$.Simplex = {"":
     case 29:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      t44 = env7;
-      w3 = env8;
-      w2 = env9;
+      w1 = env7;
+      w2 = env8;
+      t44 = env9;
       w3e23 = env10;
       d23_2 = env11;
       w3e13 = env12;
@@ -6156,15 +6082,15 @@ $$.Simplex = {"":
     case 30:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      t44 = env7;
-      w3 = env8;
+      w1 = env7;
+      t48 = env8;
       w2 = env9;
-      t48 = env10;
+      t44 = env10;
       w3e23 = env11;
       d23_2 = env12;
       w3e13 = env13;
@@ -6173,13 +6099,13 @@ $$.Simplex = {"":
     case 31:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      t48 = env7;
-      w3 = env8;
+      w1 = env7;
+      t48 = env8;
       w2 = env9;
       t44 = env10;
       w3e23 = env11;
@@ -6190,13 +6116,13 @@ $$.Simplex = {"":
     case 32:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      t48 = env7;
-      w3 = env8;
+      w1 = env7;
+      t48 = env8;
       w2 = env9;
       t51 = env10;
       t44 = env11;
@@ -6208,12 +6134,12 @@ $$.Simplex = {"":
     case 33:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      w3 = env7;
+      w1 = env7;
       w2 = env8;
       d123_1 = env9;
       t53 = env10;
@@ -6225,12 +6151,12 @@ $$.Simplex = {"":
     case 34:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      w3 = env5;
       n123 = env6;
-      w3 = env7;
+      w1 = env7;
       w2 = env8;
       d123_1 = env9;
       t53 = env10;
@@ -6243,11 +6169,11 @@ $$.Simplex = {"":
     case 35:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
-      n123 = env6;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      n123 = env5;
+      w1 = env6;
       w2 = env7;
       d123_1 = env8;
       t55 = env9;
@@ -6260,11 +6186,11 @@ $$.Simplex = {"":
     case 36:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
-      n123 = env6;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      n123 = env5;
+      w1 = env6;
       w2 = env7;
       d123_1 = env8;
       t55 = env9;
@@ -6278,11 +6204,11 @@ $$.Simplex = {"":
     case 37:
       w2e12 = env0;
       d12_2 = env1;
-      w1 = env2;
-      t1 = env3;
-      t2 = env4;
-      t3 = env5;
-      n123 = env6;
+      t1 = env2;
+      t2 = env3;
+      t3 = env4;
+      n123 = env5;
+      w1 = env6;
       w2 = env7;
       d123_1 = env8;
       w3e23 = env9;
@@ -6296,11 +6222,11 @@ $$.Simplex = {"":
       t62 = env0;
       w2e12 = env1;
       d12_2 = env2;
-      w1 = env3;
-      t1 = env4;
-      t2 = env5;
-      t3 = env6;
-      n123 = env7;
+      t1 = env3;
+      t2 = env4;
+      t3 = env5;
+      n123 = env6;
+      w1 = env7;
       w2 = env8;
       d123_1 = env9;
       w3e23 = env10;
@@ -6331,11 +6257,11 @@ $$.Simplex = {"":
       w2e12 = env0;
       t62 = env1;
       d12_2 = env2;
-      t65 = env3;
-      t1 = env4;
-      t2 = env5;
-      t3 = env6;
-      n123 = env7;
+      t1 = env3;
+      t2 = env4;
+      t3 = env5;
+      n123 = env6;
+      t65 = env7;
       t60 = env8;
       d123_1 = env9;
       w3e23 = env10;
@@ -6502,49 +6428,49 @@ $$.Simplex = {"":
     case 40:
       state = 0;
       var d123_3 = $.mul(n123, $.sub(t62, $.mul(t60, t65)));
-      if ($.leB(d12_2, 0.0) && $.leB(d13_2, 0.0)) {
-        t1.set$a(1.0);
+      if ($.leB(d12_2, 0) && $.leB(d13_2, 0)) {
+        t1.set$a(1);
         this.count = 1;
         return;
       }
-      if ($.gtB(w2e12, 0.0) && $.gtB(d12_2, 0.0) && $.leB(d123_3, 0.0)) {
+      if ($.gtB(w2e12, 0) && $.gtB(d12_2, 0) && $.leB(d123_3, 0)) {
         t3 = $.add(w2e12, d12_2);
         if (typeof t3 !== 'number')
           throw $.iae(t3);
-        var inv_d12 = 1.0 / t3;
+        var inv_d12 = 1 / t3;
         t1.set$a($.mul(w2e12, inv_d12));
         t2.set$a($.mul(d12_2, inv_d12));
         this.count = 2;
         return;
       }
-      if ($.gtB(w3e13, 0.0) && $.gtB(d13_2, 0.0) && $.leB(d123_2, 0.0)) {
+      if ($.gtB(w3e13, 0) && $.gtB(d13_2, 0) && $.leB(d123_2, 0)) {
         t4 = $.add(w3e13, d13_2);
         if (typeof t4 !== 'number')
           throw $.iae(t4);
-        var inv_d13 = 1.0 / t4;
+        var inv_d13 = 1 / t4;
         t1.set$a($.mul(w3e13, inv_d13));
         t3.set$a($.mul(d13_2, inv_d13));
         this.count = 2;
         t2.setFrom$1(t3);
         return;
       }
-      if ($.leB(w2e12, 0.0) && $.leB(d23_2, 0.0)) {
-        t2.set$a(1.0);
+      if ($.leB(w2e12, 0) && $.leB(d23_2, 0)) {
+        t2.set$a(1);
         this.count = 1;
         t1.setFrom$1(t2);
         return;
       }
-      if ($.leB(w3e13, 0.0) && $.leB(w3e23, 0.0)) {
-        t3.set$a(1.0);
+      if ($.leB(w3e13, 0) && $.leB(w3e23, 0)) {
+        t3.set$a(1);
         this.count = 1;
         t1.setFrom$1(t3);
         return;
       }
-      if ($.gtB(w3e23, 0.0) && $.gtB(d23_2, 0.0) && $.leB(d123_1, 0.0)) {
+      if ($.gtB(w3e23, 0) && $.gtB(d23_2, 0) && $.leB(d123_1, 0)) {
         t4 = $.add(w3e23, d23_2);
         if (typeof t4 !== 'number')
           throw $.iae(t4);
-        var inv_d23 = 1.0 / t4;
+        var inv_d23 = 1 / t4;
         t2.set$a($.mul(w3e23, inv_d23));
         t3.set$a($.mul(d23_2, inv_d23));
         this.count = 2;
@@ -6554,7 +6480,7 @@ $$.Simplex = {"":
       t4 = $.add($.add(d123_1, d123_2), d123_3);
       if (typeof t4 !== 'number')
         throw $.iae(t4);
-      var inv_d123 = 1.0 / t4;
+      var inv_d123 = 1 / t4;
       t1.set$a($.mul(d123_1, inv_d123));
       t2.set$a($.mul(d123_2, inv_d123));
       t3.set$a($.mul(d123_3, inv_d123));
@@ -6692,7 +6618,7 @@ $$.TimeOfImpact = {"":
     t5.get$distance().distance$3(t6, t10, t12);
     var t14 = t6.distance;
     if (typeof t14 !== 'number')
-      return this.timeOfImpact$2$bailout(5, output, t10, t4, t12, target, t1, t7, t2, proxyA, proxyB, t6, t5, t8, iter, tMax, t14, t9, t13, t11, t3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.timeOfImpact$2$bailout(5, output, t10, t12, target, t1, t2, t7, proxyA, proxyB, t6, t5, t8, iter, tMax, t9, t3, t13, t11, t14, t4, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (t14 <= 0) {
       output.set$state(2);
       output.set$t(0);
@@ -6707,7 +6633,7 @@ $$.TimeOfImpact = {"":
     for (var t20 = tMax, pushBackIter = 0; done = false, true;) {
       var s2 = t8.findMinSeparation$2(t9, t20);
       if (typeof s2 !== 'number')
-        return this.timeOfImpact$2$bailout(7, output, t10, t12, target, pushBackIter, t1, t7, t2, t3, proxyA, s2, proxyB, t6, t5, t8, iter, tMax, t9, t13, t11, t4, t20, 0, 0, 0, 0, 0, 0, 0);
+        return this.timeOfImpact$2$bailout(7, output, t10, t12, pushBackIter, target, t1, t2, t7, s2, proxyA, t6, t5, proxyB, t8, iter, tMax, t9, t3, t13, t11, t20, t4, 0, 0, 0, 0, 0, 0, 0);
       if (s2 > t7) {
         output.set$state(4);
         output.set$t(tMax);
@@ -6727,7 +6653,7 @@ $$.TimeOfImpact = {"":
         throw $.ioore(1);
       var s1 = t8.evaluate$3(t15, t9[1], t13);
       if (typeof s1 !== 'number')
-        return this.timeOfImpact$2$bailout(8, output, t10, t12, target, pushBackIter, t1, t7, t2, s1, proxyA, s2, proxyB, t6, t5, t3, t8, iter, tMax, t9, t13, t11, t4, t20, 0, 0, 0, 0, 0, 0);
+        return this.timeOfImpact$2$bailout(8, output, t10, t12, pushBackIter, target, t1, t2, t7, s1, s2, proxyA, t6, t5, proxyB, t8, iter, tMax, t9, t3, t13, t11, t20, t4, 0, 0, 0, 0, 0, 0);
       if (s1 < t11) {
         output.set$state(1);
         output.set$t(t13);
@@ -6750,10 +6676,10 @@ $$.TimeOfImpact = {"":
           throw $.ioore(1);
         var s = t8.evaluate$3(t15, t9[1], t);
         if (typeof s !== 'number')
-          return this.timeOfImpact$2$bailout(9, output, pushBackIter, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, tMax, t3, t11, t4, t10, t12, target, t1, t7, t2, t5, t6, t, t8, iter, t9, t13, s, t20, 0);
+          return this.timeOfImpact$2$bailout(9, output, pushBackIter, rootIterCount, s2, a2, a1, proxyA, s1, proxyB, tMax, t3, t11, t4, t10, t12, target, t1, t2, t7, t5, t6, t, t8, iter, t9, t13, s, t20, 0);
         t14 = $.abs(s - target);
         if (typeof t14 !== 'number')
-          return this.timeOfImpact$2$bailout(10, output, t14, pushBackIter, rootIterCount, s2, a2, proxyA, a1, proxyB, s1, tMax, t3, t11, t4, t10, t12, target, t1, t7, t2, t5, t6, t, t8, iter, t9, t13, s, t20);
+          return this.timeOfImpact$2$bailout(10, output, t14, pushBackIter, rootIterCount, s2, a2, a1, proxyA, s1, proxyB, tMax, t3, t11, t4, t10, t12, target, t1, t2, t7, t5, t6, t, t8, iter, t9, t13, s, t20);
         if (t14 < 0.00125) {
           t20 = t;
           break;
@@ -6766,17 +6692,17 @@ $$.TimeOfImpact = {"":
           s2 = s;
         }
         if (a1 !== (a1 | 0))
-          return this.timeOfImpact$2$bailout(11, output, pushBackIter, rootIterCount, proxyA, proxyB, s2, a2, a1, s1, tMax, t3, t11, t4, t10, t12, target, t1, t7, t2, t5, t6, t8, iter, t9, t13, t20, 0, 0, 0);
+          return this.timeOfImpact$2$bailout(11, output, pushBackIter, rootIterCount, proxyA, proxyB, s2, a2, a1, s1, tMax, t3, t11, t4, t10, t12, target, t1, t2, t7, t5, t6, t8, iter, t9, t13, t20, 0, 0, 0);
         ++rootIterCount;
         t15 = $.TimeOfImpact_toiRootIters;
         if (typeof t15 !== 'number')
-          return this.timeOfImpact$2$bailout(12, output, pushBackIter, proxyA, proxyB, s2, a2, a1, s1, rootIterCount, t15, tMax, t3, t11, t4, t10, t12, target, t1, t7, t2, t5, t6, t8, iter, t9, t13, t20, 0, 0);
+          return this.timeOfImpact$2$bailout(12, output, pushBackIter, proxyA, proxyB, s2, a2, a1, s1, rootIterCount, t15, tMax, t3, t11, t4, t10, t12, target, t1, t2, t7, t5, t6, t8, iter, t9, t13, t20, 0, 0);
         $.TimeOfImpact_toiRootIters = t15 + 1;
         if (rootIterCount === 50)
           break;
       }
       if (t20 !== (t20 | 0))
-        return this.timeOfImpact$2$bailout(13, output, t10, t12, pushBackIter, target, t1, t7, t2, proxyA, proxyB, rootIterCount, t6, t5, t20, t8, iter, tMax, t9, t13, t11, t4, t3, 0, 0, 0, 0, 0, 0, 0);
+        return this.timeOfImpact$2$bailout(13, output, t10, t12, pushBackIter, target, t1, t2, t7, proxyA, rootIterCount, t6, t5, proxyB, t20, t8, iter, tMax, t9, t3, t13, t11, t4, 0, 0, 0, 0, 0, 0, 0);
       $.TimeOfImpact_toiMaxRootIters = $.max($.TimeOfImpact_toiMaxRootIters, rootIterCount);
       ++pushBackIter;
       if (pushBackIter === 8) {
@@ -6787,7 +6713,7 @@ $$.TimeOfImpact = {"":
     ++iter;
     t14 = $.TimeOfImpact_toiIters;
     if (typeof t14 !== 'number')
-      return this.timeOfImpact$2$bailout(14, output, t13, t10, t12, target, t1, t7, iter, t14, t2, proxyA, proxyB, t5, t6, t4, t8, tMax, t9, t3, done, t11, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.timeOfImpact$2$bailout(14, output, t10, t12, target, t1, t2, t7, iter, t14, proxyA, t5, t6, proxyB, t8, t4, tMax, t9, t3, done, t11, t13, 0, 0, 0, 0, 0, 0, 0, 0);
     $.TimeOfImpact_toiIters = t14 + 1;
     if (done)
       break;
@@ -6839,12 +6765,34 @@ $$.TimeOfImpact = {"":
     case 5:
       output = env0;
       t10 = env1;
-      t4 = env2;
-      t12 = env3;
-      target = env4;
-      t1 = env5;
+      t12 = env2;
+      target = env3;
+      t1 = env4;
+      t2 = env5;
       t7 = env6;
-      t2 = env7;
+      proxyA = env7;
+      proxyB = env8;
+      t6 = env9;
+      t5 = env10;
+      t8 = env11;
+      iter = env12;
+      tMax = env13;
+      t9 = env14;
+      t3 = env15;
+      t13 = env16;
+      t11 = env17;
+      t14 = env18;
+      t4 = env19;
+      break;
+    case 6:
+      output = env0;
+      t10 = env1;
+      t12 = env2;
+      target = env3;
+      t1 = env4;
+      t14 = env5;
+      t2 = env6;
+      t7 = env7;
       proxyA = env8;
       proxyB = env9;
       t6 = env10;
@@ -6852,82 +6800,60 @@ $$.TimeOfImpact = {"":
       t8 = env12;
       iter = env13;
       tMax = env14;
-      t14 = env15;
-      t9 = env16;
+      t9 = env15;
+      t3 = env16;
       t13 = env17;
       t11 = env18;
-      t3 = env19;
-      break;
-    case 6:
-      output = env0;
-      t10 = env1;
-      t12 = env2;
-      target = env3;
-      t14 = env4;
-      t1 = env5;
-      t7 = env6;
-      t2 = env7;
-      proxyA = env8;
-      proxyB = env9;
-      t5 = env10;
-      t6 = env11;
-      t8 = env12;
-      iter = env13;
-      tMax = env14;
-      t9 = env15;
-      t13 = env16;
-      t11 = env17;
-      t4 = env18;
-      t3 = env19;
+      t4 = env19;
       break;
     case 7:
       output = env0;
       t10 = env1;
       t12 = env2;
-      target = env3;
-      pushBackIter = env4;
+      pushBackIter = env3;
+      target = env4;
       t1 = env5;
-      t7 = env6;
-      t2 = env7;
-      t3 = env8;
+      t2 = env6;
+      t7 = env7;
+      s2 = env8;
       proxyA = env9;
-      s2 = env10;
-      proxyB = env11;
-      t6 = env12;
-      t5 = env13;
-      t8 = env14;
-      iter = env15;
-      tMax = env16;
-      t9 = env17;
+      t6 = env10;
+      t5 = env11;
+      proxyB = env12;
+      t8 = env13;
+      iter = env14;
+      tMax = env15;
+      t9 = env16;
+      t3 = env17;
       t13 = env18;
       t11 = env19;
-      t4 = env20;
-      t20 = env21;
+      t20 = env20;
+      t4 = env21;
       break;
     case 8:
       output = env0;
       t10 = env1;
       t12 = env2;
-      target = env3;
-      pushBackIter = env4;
+      pushBackIter = env3;
+      target = env4;
       t1 = env5;
-      t7 = env6;
-      t2 = env7;
+      t2 = env6;
+      t7 = env7;
       s1 = env8;
-      proxyA = env9;
-      s2 = env10;
-      proxyB = env11;
-      t6 = env12;
-      t5 = env13;
-      t3 = env14;
-      t8 = env15;
-      iter = env16;
-      tMax = env17;
-      t9 = env18;
+      s2 = env9;
+      proxyA = env10;
+      t6 = env11;
+      t5 = env12;
+      proxyB = env13;
+      t8 = env14;
+      iter = env15;
+      tMax = env16;
+      t9 = env17;
+      t3 = env18;
       t13 = env19;
       t11 = env20;
-      t4 = env21;
-      t20 = env22;
+      t20 = env21;
+      t4 = env22;
       break;
     case 9:
       output = env0;
@@ -6935,10 +6861,10 @@ $$.TimeOfImpact = {"":
       rootIterCount = env2;
       s2 = env3;
       a2 = env4;
-      proxyA = env5;
-      a1 = env6;
-      proxyB = env7;
-      s1 = env8;
+      a1 = env5;
+      proxyA = env6;
+      s1 = env7;
+      proxyB = env8;
       tMax = env9;
       t3 = env10;
       t11 = env11;
@@ -6947,8 +6873,8 @@ $$.TimeOfImpact = {"":
       t12 = env14;
       target = env15;
       t1 = env16;
-      t7 = env17;
-      t2 = env18;
+      t2 = env17;
+      t7 = env18;
       t5 = env19;
       t6 = env20;
       t = env21;
@@ -6966,10 +6892,10 @@ $$.TimeOfImpact = {"":
       rootIterCount = env3;
       s2 = env4;
       a2 = env5;
-      proxyA = env6;
-      a1 = env7;
-      proxyB = env8;
-      s1 = env9;
+      a1 = env6;
+      proxyA = env7;
+      s1 = env8;
+      proxyB = env9;
       tMax = env10;
       t3 = env11;
       t11 = env12;
@@ -6978,8 +6904,8 @@ $$.TimeOfImpact = {"":
       t12 = env15;
       target = env16;
       t1 = env17;
-      t7 = env18;
-      t2 = env19;
+      t2 = env18;
+      t7 = env19;
       t5 = env20;
       t6 = env21;
       t = env22;
@@ -7008,8 +6934,8 @@ $$.TimeOfImpact = {"":
       t12 = env14;
       target = env15;
       t1 = env16;
-      t7 = env17;
-      t2 = env18;
+      t2 = env17;
+      t7 = env18;
       t5 = env19;
       t6 = env20;
       t8 = env21;
@@ -7037,8 +6963,8 @@ $$.TimeOfImpact = {"":
       t12 = env15;
       target = env16;
       t1 = env17;
-      t7 = env18;
-      t2 = env19;
+      t2 = env18;
+      t7 = env19;
       t5 = env20;
       t6 = env21;
       t8 = env22;
@@ -7054,45 +6980,45 @@ $$.TimeOfImpact = {"":
       pushBackIter = env3;
       target = env4;
       t1 = env5;
-      t7 = env6;
-      t2 = env7;
+      t2 = env6;
+      t7 = env7;
       proxyA = env8;
-      proxyB = env9;
-      rootIterCount = env10;
-      t6 = env11;
-      t5 = env12;
+      rootIterCount = env9;
+      t6 = env10;
+      t5 = env11;
+      proxyB = env12;
       t20 = env13;
       t8 = env14;
       iter = env15;
       tMax = env16;
       t9 = env17;
-      t13 = env18;
-      t11 = env19;
-      t4 = env20;
-      t3 = env21;
+      t3 = env18;
+      t13 = env19;
+      t11 = env20;
+      t4 = env21;
       break;
     case 14:
       output = env0;
-      t13 = env1;
-      t10 = env2;
-      t12 = env3;
-      target = env4;
-      t1 = env5;
+      t10 = env1;
+      t12 = env2;
+      target = env3;
+      t1 = env4;
+      t2 = env5;
       t7 = env6;
       iter = env7;
       t14 = env8;
-      t2 = env9;
-      proxyA = env10;
-      proxyB = env11;
-      t5 = env12;
-      t6 = env13;
+      proxyA = env9;
+      t5 = env10;
+      t6 = env11;
+      proxyB = env12;
+      t8 = env13;
       t4 = env14;
-      t8 = env15;
-      tMax = env16;
-      t9 = env17;
-      t3 = env18;
-      done = env19;
-      t11 = env20;
+      tMax = env15;
+      t9 = env16;
+      t3 = env17;
+      done = env18;
+      t11 = env19;
+      t13 = env20;
       break;
   }
   switch (state) {
@@ -7369,7 +7295,7 @@ $$.SeparationFunction = {"":
       t9.setFrom$1(t2);
       t9.subLocal$1(t8);
       var s = $.add($.mul(t9.get$x(), t6.get$x()), $.mul(t9.get$y(), t6.get$y()));
-      if ($.ltB(s, 0.0)) {
+      if ($.ltB(s, 0)) {
         t7.negateLocal$0();
         s = $.neg(s);
       }
@@ -7382,7 +7308,7 @@ $$.SeparationFunction = {"":
       t10.setFrom$1($.index(this.proxyA.get$vertices(), $.index(cache.get$indexA(), 1)));
       t9.setFrom$1(t10);
       t9.subLocal$1(t1);
-      $.Vector_crossVectorAndNumToOut(t9, 1.0, t7);
+      $.Vector_crossVectorAndNumToOut(t9, 1, t7);
       t7.normalize$0();
       $.Matrix22_mulMatrixAndVectorToOut(t3.get$rotation(), t7, t6);
       t5.setFrom$1(t1);
@@ -7395,7 +7321,7 @@ $$.SeparationFunction = {"":
       t9.setFrom$1(t8);
       t9.subLocal$1(t2);
       s = $.add($.mul(t9.get$x(), t6.get$x()), $.mul(t9.get$y(), t6.get$y()));
-      if ($.ltB(s, 0.0)) {
+      if ($.ltB(s, 0)) {
         t7.negateLocal$0();
         s = $.neg(s);
       }
@@ -8407,7 +8333,7 @@ $$.Matrix22 = {"":
     return this.invertLocal$0$bailout(4, a, t1, t3, b, c, d);
   var det = a * d - b * c;
   if (!(det === 0))
-    det = 1.0 / det;
+    det = 1 / det;
   t1.set$x(det * d);
   var t2 = -det;
   t3.set$x(t2 * b);
@@ -8463,7 +8389,7 @@ $$.Matrix22 = {"":
       if (!$.eqB(det, 0)) {
         if (typeof det !== 'number')
           throw $.iae(det);
-        det = 1.0 / det;
+        det = 1 / det;
       }
       t1.set$x($.mul(det, d));
       t3.set$x($.mul($.neg(det), b));
@@ -8624,7 +8550,7 @@ $$.Sweep = {"":
  getTransform$2: function(xf, alpha) {
   if (typeof alpha !== 'number')
     throw $.iae(alpha);
-  var t1 = 1.0 - alpha;
+  var t1 = 1 - alpha;
   var t2 = this.centerZero;
   var t3 = t2.x;
   if (typeof t3 !== 'number')
@@ -8770,7 +8696,7 @@ $$.Sweep = {"":
     case 0:
       if (typeof alpha !== 'number')
         throw $.iae(alpha);
-      var t1 = 1.0 - alpha;
+      var t1 = 1 - alpha;
       var t2 = this.centerZero;
       var t3 = t2.get$x();
       if (typeof t3 !== 'number')
@@ -9025,7 +8951,7 @@ $$.Vector = {"":
     return 0;
   if (typeof len !== 'number')
     throw $.iae(len);
-  var invLength = 1.0 / len;
+  var invLength = 1 / len;
   this.x = $.mul(this.x, invLength);
   this.y = $.mul(this.y, invLength);
   return len;
@@ -9062,7 +8988,7 @@ $$.Body = {"":
   t1 = fixture.density;
   if (typeof t1 !== 'number')
     return this.createFixture$1$bailout(3, t1, fixture, 0);
-  if (t1 > 0.0)
+  if (t1 > 0)
     this.resetMassData$0();
   t1 = this.world;
   var t2 = t1.get$_flags();
@@ -9110,7 +9036,7 @@ $$.Body = {"":
       t1 = fixture.density;
     case 3:
       state = 0;
-      if ($.gtB(t1, 0.0))
+      if ($.gtB(t1, 0))
         this.resetMassData$0();
       t1 = this.world;
       var t2 = t1.get$_flags();
@@ -9211,10 +9137,10 @@ $$.Body = {"":
   }
 },
  resetMassData$0: function() {
-  this.mass = 0.0;
-  this.invMass = 0.0;
-  this._inertia = 0.0;
-  this.invInertia = 0.0;
+  this.mass = 0;
+  this.invMass = 0;
+  this._inertia = 0;
+  this.invInertia = 0;
   var t1 = this.sweep;
   t1.get$localCenter().setZero$0();
   if ($.eqB(this._type, 0) || $.eqB(this._type, 1)) {
@@ -9228,7 +9154,7 @@ $$.Body = {"":
   t2.setZero$0();
   var massData = this._pmd;
   for (var f = this.fixtureList; !(f == null); f = f.get$next()) {
-    if ($.eqB(f.get$density(), 0.0))
+    if ($.eqB(f.get$density(), 0))
       continue;
     f.getMassData$1(massData);
     this.mass = $.add(this.mass, massData.get$mass());
@@ -9237,25 +9163,25 @@ $$.Body = {"":
     t2.addLocal$1(temp);
     this._inertia = $.add(this._inertia, massData.get$inertia());
   }
-  if ($.gtB(this.mass, 0.0)) {
+  if ($.gtB(this.mass, 0)) {
     t3 = this.mass;
     if (typeof t3 !== 'number')
       throw $.iae(t3);
-    this.invMass = 1.0 / t3;
+    this.invMass = 1 / t3;
     t2.mulLocal$1(this.invMass);
   } else {
-    this.mass = 1.0;
-    this.invMass = 1.0;
+    this.mass = 1;
+    this.invMass = 1;
   }
-  if ($.gtB(this._inertia, 0.0) && $.eqB($.and(this.flags, 16), 0)) {
+  if ($.gtB(this._inertia, 0) && $.eqB($.and(this.flags, 16), 0)) {
     this._inertia = $.sub(this._inertia, $.mul(this.mass, $.add($.mul(t2.get$x(), t2.get$x()), $.mul(t2.get$y(), t2.get$y()))));
     t3 = this._inertia;
     if (typeof t3 !== 'number')
       throw $.iae(t3);
-    this.invInertia = 1.0 / t3;
+    this.invInertia = 1 / t3;
   } else {
-    this._inertia = 0.0;
-    this.invInertia = 0.0;
+    this._inertia = 0;
+    this.invInertia = 0;
   }
   t3 = this.oldCenter;
   t3.setFrom$1(t1.get$center());
@@ -9293,11 +9219,11 @@ $$.Body = {"":
   this.resetMassData$0();
   if ($.eqB(this._type, 0)) {
     this._linearVelocity.setZero$0();
-    this._angularVelocity = 0.0;
+    this._angularVelocity = 0;
   }
   this.set$awake(true);
   this._force.setZero$0();
-  this._torque = 0.0;
+  this._torque = 0;
   for (var ce = this.contactList; !(ce == null); ce = ce.get$next())
     ce.get$contact().flagForFiltering$0();
 },
@@ -9308,15 +9234,15 @@ $$.Body = {"":
   if (flag === true) {
     if ($.eqB($.and(this.flags, 2), 0)) {
       this.flags = $.or(this.flags, 2);
-      this.sleepTime = 0.0;
+      this.sleepTime = 0;
     }
   } else {
-    this.flags = $.and(this.flags, -3);
-    this.sleepTime = 0.0;
+    this.flags = $.and(this.flags, 4294967293);
+    this.sleepTime = 0;
     this._linearVelocity.setZero$0();
-    this._angularVelocity = 0.0;
+    this._angularVelocity = 0;
     this._force.setZero$0();
-    this._torque = 0.0;
+    this._torque = 0;
   }
 },
  get$awake: function() {
@@ -9788,7 +9714,7 @@ $$.ContactManager = {"":
         c = c0;
         continue;
       }
-      c.set$flags($.and(c.get$flags(), -9));
+      c.set$flags($.and(c.get$flags(), 4294967287));
     }
     if ($.eqB(t3.testOverlap$2(fixtureA.get$proxy(), fixtureB.get$proxy()), false)) {
       c0 = c.get$next();
@@ -10267,25 +10193,25 @@ $$.Island = {"":
       var t20 = b.get$linearDamping();
       if (typeof t20 !== 'number')
         return this.solve$3$bailout(17, step, gravity, allowSleep, b, t18, t20, i, 0, 0, 0, 0);
-      var a = 1.0 - t18 * t20;
-      t1 = a < 1.0;
-      if (0.0 > (t1 ? a : 1.0))
-        var a1 = 0.0;
+      var a = 1 - t18 * t20;
+      t1 = a < 1;
+      if (0 > (t1 ? a : 1))
+        var a1 = 0;
       else
-        a1 = t1 ? a : 1.0;
+        a1 = t1 ? a : 1;
       b.get$linearVelocity().mulLocal$1(a1);
       t1 = step.get$dt();
       if (typeof t1 !== 'number')
         return this.solve$3$bailout(18, step, gravity, allowSleep, b, t1, i, 0, 0, 0, 0, 0);
       t3 = b.get$angularDamping();
       if (typeof t3 !== 'number')
-        return this.solve$3$bailout(19, step, gravity, allowSleep, b, t1, i, t3, 0, 0, 0, 0);
-      var a2 = 1.0 - t1 * t3;
-      var b1 = a2 < 1.0 ? a2 : 1.0;
+        return this.solve$3$bailout(19, step, gravity, allowSleep, b, t1, t3, i, 0, 0, 0, 0);
+      var a2 = 1 - t1 * t3;
+      var b1 = a2 < 1 ? a2 : 1;
       t1 = b.get$angularVelocity();
       if (typeof t1 !== 'number')
         return this.solve$3$bailout(20, step, gravity, allowSleep, b1, t1, b, i, 0, 0, 0, 0);
-      b.set$angularVelocity(t1 * (0.0 > b1 ? 0.0 : b1));
+      b.set$angularVelocity(t1 * (0 > b1 ? 0 : b1));
     }
     ++i;
   }
@@ -10299,13 +10225,13 @@ $$.Island = {"":
       break;
     t1 = this.contacts;
     if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-      return this.solve$3$bailout(22, step, t1, allowSleep, i1, i2, 0, 0, 0, 0, 0, 0);
+      return this.solve$3$bailout(22, step, allowSleep, i1, i2, t1, 0, 0, 0, 0, 0, 0);
     if (i2 < 0 || i2 >= t1.length)
       throw $.ioore(i2);
     var fixtureA = t1[i2].get$fixtureA();
     t3 = this.contacts;
     if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))
-      return this.solve$3$bailout(23, step, t3, allowSleep, i1, fixtureA, i2, 0, 0, 0, 0, 0);
+      return this.solve$3$bailout(23, step, allowSleep, i1, fixtureA, i2, t3, 0, 0, 0, 0, 0);
     if (i2 < 0 || i2 >= t3.length)
       throw $.ioore(i2);
     var fixtureB = t3[i2].get$fixtureB();
@@ -10325,12 +10251,12 @@ $$.Island = {"":
       ++i1;
       t1 = this.contacts;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-        return this.solve$3$bailout(26, step, allowSleep, i1, t1, i2, 0, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(26, step, i1, t1, allowSleep, i2, 0, 0, 0, 0, 0, 0);
       if (i1 < 0 || i1 >= t1.length)
         throw $.ioore(i1);
       var temp = t1[i1];
       if (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())
-        return this.solve$3$bailout(27, step, allowSleep, i1, temp, t1, i2, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(27, step, i1, t1, allowSleep, temp, i2, 0, 0, 0, 0, 0);
       var t4 = t1.length;
       if (i2 < 0 || i2 >= t4)
         throw $.ioore(i2);
@@ -10340,7 +10266,7 @@ $$.Island = {"":
       t1[i1] = t5;
       t5 = this.contacts;
       if (typeof t5 !== 'object' || t5 === null || (t5.constructor !== Array || !!t5.immutable$list) && !t5.is$JavaScriptIndexingBehavior())
-        return this.solve$3$bailout(28, step, allowSleep, i1, temp, i2, t5, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(28, step, i1, allowSleep, t5, i2, temp, 0, 0, 0, 0, 0);
       if (i2 < 0 || i2 >= t5.length)
         throw $.ioore(i2);
       t5[i2] = temp;
@@ -10354,12 +10280,12 @@ $$.Island = {"":
   while (true) {
     t1 = this.jointCount;
     if (typeof t1 !== 'number')
-      return this.solve$3$bailout(29, step, allowSleep, i, t2, t1, 0, 0, 0, 0, 0, 0);
+      return this.solve$3$bailout(29, step, allowSleep, t2, i, t1, 0, 0, 0, 0, 0, 0);
     if (!(i < t1))
       break;
     t1 = this.joints;
     if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-      return this.solve$3$bailout(30, step, i, allowSleep, t2, t1, 0, 0, 0, 0, 0, 0);
+      return this.solve$3$bailout(30, step, allowSleep, t1, t2, i, 0, 0, 0, 0, 0, 0);
     if (i < 0 || i >= t1.length)
       throw $.ioore(i);
     t1[i].initVelocityConstraints$1(step);
@@ -10369,19 +10295,19 @@ $$.Island = {"":
   while (true) {
     t1 = step.get$velocityIterations();
     if (typeof t1 !== 'number')
-      return this.solve$3$bailout(31, step, i, allowSleep, t1, t2, 0, 0, 0, 0, 0, 0);
+      return this.solve$3$bailout(31, step, allowSleep, t1, t2, i, 0, 0, 0, 0, 0, 0);
     if (!(i < t1))
       break;
     var j = 0;
     while (true) {
       t1 = this.jointCount;
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(32, step, i, t1, allowSleep, j, t2, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(32, step, allowSleep, j, t2, t1, i, 0, 0, 0, 0, 0);
       if (!(j < t1))
         break;
       t1 = this.joints;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-        return this.solve$3$bailout(33, step, i, allowSleep, t1, j, t2, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(33, step, t1, j, t2, allowSleep, i, 0, 0, 0, 0, 0);
       if (j < 0 || j >= t1.length)
         throw $.ioore(j);
       t1[j].solveVelocityConstraints$1(step);
@@ -10397,43 +10323,43 @@ $$.Island = {"":
   while (true) {
     t3 = this.bodyCount;
     if (typeof t3 !== 'number')
-      return this.solve$3$bailout(34, step, allowSleep, t3, t2, i, t1, temp, 0, 0, 0, 0);
+      return this.solve$3$bailout(34, step, allowSleep, t3, t2, t1, i, temp, 0, 0, 0, 0);
     if (!(i < t3))
       break;
     c$0: {
       t3 = this.bodies;
       if (typeof t3 !== 'string' && (typeof t3 !== 'object' || t3 === null || t3.constructor !== Array && !t3.is$JavaScriptIndexingBehavior()))
-        return this.solve$3$bailout(35, step, allowSleep, t3, t2, i, t1, temp, 0, 0, 0, 0);
+        return this.solve$3$bailout(35, step, allowSleep, t3, t2, t1, i, temp, 0, 0, 0, 0);
       if (i < 0 || i >= t3.length)
         throw $.ioore(i);
       b = t3[i];
       t3 = b.get$type();
       if (typeof t3 !== 'number')
-        return this.solve$3$bailout(36, step, allowSleep, b, t3, t2, i, t1, temp, 0, 0, 0);
+        return this.solve$3$bailout(36, step, allowSleep, b, t3, t1, i, t2, temp, 0, 0, 0);
       if (t3 === 0)
         break c$0;
       t1.setFrom$1(b.get$linearVelocity());
       t1.mulLocal$1(step.get$dt());
       t3 = t1.x;
       if (typeof t3 !== 'number')
-        return this.solve$3$bailout(37, step, allowSleep, b, t3, t2, i, t1, temp, 0, 0, 0);
+        return this.solve$3$bailout(37, step, allowSleep, b, t2, t1, t3, i, temp, 0, 0, 0);
       t3 *= t3;
       t5 = t1.y;
       if (typeof t5 !== 'number')
-        return this.solve$3$bailout(39, step, allowSleep, b, t2, i, t1, t3, t5, temp, 0, 0);
-      if (t3 + t5 * t5 > 4.0) {
+        return this.solve$3$bailout(39, step, allowSleep, b, t2, t1, i, t3, t5, temp, 0, 0);
+      if (t3 + t5 * t5 > 4) {
         t3 = $.get$length(t1);
         if (typeof t3 !== 'number')
           throw $.iae(t3);
-        var ratio = 2.0 / t3;
+        var ratio = 2 / t3;
         b.get$linearVelocity().mulLocal$1(ratio);
       }
       t3 = step.get$dt();
       if (typeof t3 !== 'number')
-        return this.solve$3$bailout(41, step, t3, allowSleep, b, t2, i, t1, temp, 0, 0, 0);
+        return this.solve$3$bailout(41, step, allowSleep, b, t2, t1, i, temp, t3, 0, 0, 0);
       t5 = b.get$angularVelocity();
       if (typeof t5 !== 'number')
-        return this.solve$3$bailout(42, step, t3, t5, allowSleep, b, t2, i, t1, temp, 0, 0);
+        return this.solve$3$bailout(42, step, allowSleep, b, t2, t1, i, temp, t3, t5, 0, 0);
       var rotation = t3 * t5;
       if (rotation * rotation > 2.4674011002723395) {
         t3 = $.abs(rotation);
@@ -10442,7 +10368,7 @@ $$.Island = {"":
         ratio = 1.5707963267948966 / t3;
         t3 = b.get$angularVelocity();
         if (typeof t3 !== 'number')
-          return this.solve$3$bailout(43, step, ratio, t3, allowSleep, b, t2, i, t1, temp, 0, 0);
+          return this.solve$3$bailout(43, step, allowSleep, b, t2, t1, i, temp, ratio, t3, 0, 0);
         b.set$angularVelocity(t3 * ratio);
       }
       b.get$sweep().get$centerZero().setFrom$1(b.get$sweep().get$center());
@@ -10454,13 +10380,13 @@ $$.Island = {"":
       t3 = b.get$sweep();
       t4 = t3.get$angle();
       if (typeof t4 !== 'number')
-        return this.solve$3$bailout(44, step, allowSleep, b, t3, t4, i, t1, t2, temp, 0, 0);
+        return this.solve$3$bailout(44, step, allowSleep, b, t3, t4, t1, i, t2, temp, 0, 0);
       var t6 = step.get$dt();
       if (typeof t6 !== 'number')
-        return this.solve$3$bailout(45, step, allowSleep, b, t3, t4, i, t6, t2, t1, temp, 0);
+        return this.solve$3$bailout(45, step, allowSleep, b, t3, t4, t6, i, t1, t2, temp, 0);
       t8 = b.get$angularVelocity();
       if (typeof t8 !== 'number')
-        return this.solve$3$bailout(46, step, allowSleep, b, t3, t4, i, t6, t8, t1, temp, t2);
+        return this.solve$3$bailout(46, step, allowSleep, b, t3, t4, t6, i, t8, t2, t1, temp);
       t3.set$angle(t4 + t6 * t8);
       b.synchronizeTransform$0();
     }
@@ -10479,12 +10405,12 @@ $$.Island = {"":
     while (true) {
       t1 = this.jointCount;
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(48, step, allowSleep, t1, i, jointsOkay, t2, contactsOkay, j, 0, 0, 0);
+        return this.solve$3$bailout(48, step, allowSleep, i, jointsOkay, t2, contactsOkay, j, t1, 0, 0, 0);
       if (!(j < t1))
         break;
       t1 = this.joints;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-        return this.solve$3$bailout(49, step, allowSleep, t1, i, jointsOkay, t2, contactsOkay, j, 0, 0, 0);
+        return this.solve$3$bailout(49, step, t1, allowSleep, i, jointsOkay, t2, contactsOkay, j, 0, 0, 0);
       if (j < 0 || j >= t1.length)
         throw $.ioore(j);
       var jointOkay = t1[j].solvePositionConstraints$1(0.2);
@@ -10497,18 +10423,18 @@ $$.Island = {"":
   }
   this.report$1(t2.constraints);
   if (allowSleep === true) {
-    var minSleepTime = 99999999999999.0;
+    var minSleepTime = 99999999999999;
     i = 0;
     while (true) {
       t1 = this.bodyCount;
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(50, step, i, t1, minSleepTime, 0, 0, 0, 0, 0, 0, 0);
+        return this.solve$3$bailout(50, step, minSleepTime, t1, i, 0, 0, 0, 0, 0, 0, 0);
       if (!(i < t1))
         break;
       c$0: {
         t1 = this.bodies;
         if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-          return this.solve$3$bailout(51, step, i, t1, minSleepTime, 0, 0, 0, 0, 0, 0, 0);
+          return this.solve$3$bailout(51, step, minSleepTime, i, t1, 0, 0, 0, 0, 0, 0, 0);
         if (i < 0 || i >= t1.length)
           throw $.ioore(i);
         b = t1[i];
@@ -10519,10 +10445,10 @@ $$.Island = {"":
           break c$0;
         t1 = b.get$flags();
         if (t1 !== (t1 | 0))
-          return this.solve$3$bailout(53, step, t1, b, minSleepTime, i, 0, 0, 0, 0, 0, 0);
+          return this.solve$3$bailout(53, step, b, minSleepTime, i, t1, 0, 0, 0, 0, 0, 0);
         if ((t1 & 4) === 0) {
-          b.set$sleepTime(0.0);
-          minSleepTime = 0.0;
+          b.set$sleepTime(0);
+          minSleepTime = 0;
         }
         t1 = b.get$flags();
         if (t1 !== (t1 | 0))
@@ -10533,23 +10459,23 @@ $$.Island = {"":
             return this.solve$3$bailout(55, step, b, t1, i, minSleepTime, 0, 0, 0, 0, 0, 0);
           t3 = b.get$angularVelocity();
           if (typeof t3 !== 'number')
-            return this.solve$3$bailout(56, step, b, t1, i, t3, minSleepTime, 0, 0, 0, 0, 0);
+            return this.solve$3$bailout(56, step, b, t1, t3, i, minSleepTime, 0, 0, 0, 0, 0);
           if (!(t1 * t3 > 0.0012184696791468343)) {
             t1 = b.get$linearVelocity();
             t2 = b.get$linearVelocity();
             t3 = t1.get$x();
             if (typeof t3 !== 'number')
-              return this.solve$3$bailout(57, step, t1, t2, t3, b, i, minSleepTime, 0, 0, 0, 0);
+              return this.solve$3$bailout(57, step, t3, b, i, minSleepTime, t1, t2, 0, 0, 0, 0);
             t5 = t2.get$x();
             if (typeof t5 !== 'number')
-              return this.solve$3$bailout(58, step, t1, t2, t3, t5, b, i, minSleepTime, 0, 0, 0);
+              return this.solve$3$bailout(58, step, t3, t5, b, i, minSleepTime, t1, t2, 0, 0, 0);
             t5 = t3 * t5;
             t1 = t1.get$y();
             if (typeof t1 !== 'number')
-              return this.solve$3$bailout(59, step, t2, b, t5, t1, i, minSleepTime, 0, 0, 0, 0);
+              return this.solve$3$bailout(59, step, b, t5, t1, i, minSleepTime, t2, 0, 0, 0, 0);
             t2 = t2.get$y();
             if (typeof t2 !== 'number')
-              return this.solve$3$bailout(60, step, b, t5, t1, i, t2, minSleepTime, 0, 0, 0, 0);
+              return this.solve$3$bailout(60, step, b, t5, t1, i, minSleepTime, t2, 0, 0, 0, 0);
             t8 = t5 + t1 * t2 > 0.0001;
             t1 = t8;
           } else
@@ -10557,8 +10483,8 @@ $$.Island = {"":
         } else
           t1 = true;
         if (t1) {
-          b.set$sleepTime(0.0);
-          minSleepTime = 0.0;
+          b.set$sleepTime(0);
+          minSleepTime = 0;
         } else {
           t1 = b.get$sleepTime();
           if (typeof t1 !== 'number')
@@ -10582,7 +10508,7 @@ $$.Island = {"":
           break;
         t1 = this.bodies;
         if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))
-          return this.solve$3$bailout(64, i, t1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          return this.solve$3$bailout(64, t1, i, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         if (i < 0 || i >= t1.length)
           throw $.ioore(i);
         t1[i].set$awake(false);
@@ -10757,8 +10683,8 @@ $$.Island = {"":
       allowSleep = env2;
       b = env3;
       t1 = env4;
-      i = env5;
-      t3 = env6;
+      t3 = env5;
+      i = env6;
       break;
     case 20:
       step = env0;
@@ -10778,18 +10704,18 @@ $$.Island = {"":
       break;
     case 22:
       step = env0;
-      t1 = env1;
-      allowSleep = env2;
-      i1 = env3;
-      i2 = env4;
+      allowSleep = env1;
+      i1 = env2;
+      i2 = env3;
+      t1 = env4;
       break;
     case 23:
       step = env0;
-      t3 = env1;
-      allowSleep = env2;
-      i1 = env3;
-      fixtureA = env4;
-      i2 = env5;
+      allowSleep = env1;
+      i1 = env2;
+      fixtureA = env3;
+      i2 = env4;
+      t3 = env5;
       break;
     case 24:
       step = env0;
@@ -10808,71 +10734,71 @@ $$.Island = {"":
       break;
     case 26:
       step = env0;
-      allowSleep = env1;
-      i1 = env2;
-      t1 = env3;
+      i1 = env1;
+      t1 = env2;
+      allowSleep = env3;
       i2 = env4;
       break;
     case 27:
       step = env0;
-      allowSleep = env1;
-      i1 = env2;
-      temp = env3;
-      t1 = env4;
+      i1 = env1;
+      t1 = env2;
+      allowSleep = env3;
+      temp = env4;
       i2 = env5;
       break;
     case 28:
       step = env0;
-      allowSleep = env1;
-      i1 = env2;
-      temp = env3;
+      i1 = env1;
+      allowSleep = env2;
+      t1 = env3;
       i2 = env4;
-      t1 = env5;
+      temp = env5;
       break;
     case 29:
       step = env0;
       allowSleep = env1;
-      i = env2;
-      t1 = env3;
+      t1 = env2;
+      i = env3;
       t2 = env4;
       break;
     case 30:
       step = env0;
-      i = env1;
-      allowSleep = env2;
+      allowSleep = env1;
+      t2 = env2;
       t1 = env3;
-      t2 = env4;
+      i = env4;
       break;
     case 31:
       step = env0;
-      i = env1;
-      allowSleep = env2;
-      t2 = env3;
-      t1 = env4;
+      allowSleep = env1;
+      t2 = env2;
+      t1 = env3;
+      i = env4;
       break;
     case 32:
       step = env0;
-      i = env1;
-      t2 = env2;
-      allowSleep = env3;
-      j = env4;
-      t1 = env5;
+      allowSleep = env1;
+      j = env2;
+      t1 = env3;
+      t2 = env4;
+      i = env5;
       break;
     case 33:
       step = env0;
-      i = env1;
-      allowSleep = env2;
-      t2 = env3;
-      j = env4;
-      t1 = env5;
+      t2 = env1;
+      j = env2;
+      t1 = env3;
+      allowSleep = env4;
+      i = env5;
       break;
     case 34:
       step = env0;
       allowSleep = env1;
       t3 = env2;
       t1 = env3;
-      i = env4;
-      t2 = env5;
+      t2 = env4;
+      i = env5;
       temp = env6;
       break;
     case 35:
@@ -10880,8 +10806,8 @@ $$.Island = {"":
       allowSleep = env1;
       t3 = env2;
       t1 = env3;
-      i = env4;
-      t2 = env5;
+      t2 = env4;
+      i = env5;
       temp = env6;
       break;
     case 36:
@@ -10889,30 +10815,30 @@ $$.Island = {"":
       allowSleep = env1;
       b = env2;
       t3 = env3;
-      t1 = env4;
+      t2 = env4;
       i = env5;
-      t2 = env6;
+      t1 = env6;
       temp = env7;
       break;
     case 37:
       step = env0;
       allowSleep = env1;
       b = env2;
-      t3 = env3;
-      t1 = env4;
-      i = env5;
-      t2 = env6;
+      t1 = env3;
+      t2 = env4;
+      t3 = env5;
+      i = env6;
       temp = env7;
       break;
     case 38:
       step = env0;
       allowSleep = env1;
       b = env2;
-      t3 = env3;
-      t5 = env4;
-      i = env5;
-      t2 = env6;
-      t1 = env7;
+      t1 = env3;
+      t2 = env4;
+      t3 = env5;
+      i = env6;
+      t5 = env7;
       temp = env8;
       break;
     case 39:
@@ -10920,8 +10846,8 @@ $$.Island = {"":
       allowSleep = env1;
       b = env2;
       t1 = env3;
-      i = env4;
-      t2 = env5;
+      t2 = env4;
+      i = env5;
       t5 = env6;
       t3 = env7;
       temp = env8;
@@ -10931,44 +10857,44 @@ $$.Island = {"":
       allowSleep = env1;
       b = env2;
       t1 = env3;
-      i = env4;
-      t2 = env5;
+      t2 = env4;
+      i = env5;
       t5 = env6;
-      t8 = env7;
-      temp = env8;
-      t3 = env9;
+      t3 = env7;
+      t8 = env8;
+      temp = env9;
       break;
     case 41:
       step = env0;
-      t3 = env1;
-      allowSleep = env2;
-      b = env3;
-      t1 = env4;
+      allowSleep = env1;
+      b = env2;
+      t1 = env3;
+      t2 = env4;
       i = env5;
-      t2 = env6;
-      temp = env7;
+      temp = env6;
+      t3 = env7;
       break;
     case 42:
       step = env0;
-      t3 = env1;
-      t5 = env2;
-      allowSleep = env3;
-      b = env4;
-      t1 = env5;
-      i = env6;
-      t2 = env7;
-      temp = env8;
+      allowSleep = env1;
+      b = env2;
+      t1 = env3;
+      t2 = env4;
+      i = env5;
+      temp = env6;
+      t3 = env7;
+      t5 = env8;
       break;
     case 43:
       step = env0;
-      ratio = env1;
-      t3 = env2;
-      allowSleep = env3;
-      b = env4;
-      t1 = env5;
-      i = env6;
-      t2 = env7;
-      temp = env8;
+      allowSleep = env1;
+      b = env2;
+      t1 = env3;
+      t2 = env4;
+      i = env5;
+      temp = env6;
+      ratio = env7;
+      t3 = env8;
       break;
     case 44:
       step = env0;
@@ -10976,8 +10902,8 @@ $$.Island = {"":
       b = env2;
       t3 = env3;
       t4 = env4;
-      i = env5;
-      t2 = env6;
+      t2 = env5;
+      i = env6;
       t1 = env7;
       temp = env8;
       break;
@@ -10987,10 +10913,10 @@ $$.Island = {"":
       b = env2;
       t3 = env3;
       t4 = env4;
-      i = env5;
-      t6 = env6;
-      t1 = env7;
-      t2 = env8;
+      t6 = env5;
+      i = env6;
+      t2 = env7;
+      t1 = env8;
       temp = env9;
       break;
     case 46:
@@ -10999,12 +10925,12 @@ $$.Island = {"":
       b = env2;
       t3 = env3;
       t4 = env4;
-      i = env5;
-      t6 = env6;
+      t6 = env5;
+      i = env6;
       t8 = env7;
-      t2 = env8;
-      temp = env9;
-      t1 = env10;
+      t1 = env8;
+      t2 = env9;
+      temp = env10;
       break;
     case 47:
       step = env0;
@@ -11016,17 +10942,17 @@ $$.Island = {"":
     case 48:
       step = env0;
       allowSleep = env1;
-      t2 = env2;
-      i = env3;
-      jointsOkay = env4;
-      t1 = env5;
-      contactsOkay = env6;
-      j = env7;
+      i = env2;
+      jointsOkay = env3;
+      t1 = env4;
+      contactsOkay = env5;
+      j = env6;
+      t2 = env7;
       break;
     case 49:
       step = env0;
-      allowSleep = env1;
-      t2 = env2;
+      t2 = env1;
+      allowSleep = env2;
       i = env3;
       jointsOkay = env4;
       t1 = env5;
@@ -11035,15 +10961,15 @@ $$.Island = {"":
       break;
     case 50:
       step = env0;
-      i = env1;
+      minSleepTime = env1;
       t1 = env2;
-      minSleepTime = env3;
+      i = env3;
       break;
     case 51:
       step = env0;
-      i = env1;
-      t1 = env2;
-      minSleepTime = env3;
+      minSleepTime = env1;
+      i = env2;
+      t1 = env3;
       break;
     case 52:
       step = env0;
@@ -11054,10 +10980,10 @@ $$.Island = {"":
       break;
     case 53:
       step = env0;
-      t1 = env1;
-      b = env2;
-      minSleepTime = env3;
-      i = env4;
+      b = env1;
+      minSleepTime = env2;
+      i = env3;
+      t1 = env4;
       break;
     case 54:
       step = env0;
@@ -11077,37 +11003,37 @@ $$.Island = {"":
       step = env0;
       b = env1;
       t1 = env2;
-      i = env3;
-      t3 = env4;
+      t3 = env3;
+      i = env4;
       minSleepTime = env5;
       break;
     case 57:
       step = env0;
-      t1 = env1;
-      t2 = env2;
-      t3 = env3;
-      b = env4;
-      i = env5;
-      minSleepTime = env6;
+      t3 = env1;
+      b = env2;
+      i = env3;
+      minSleepTime = env4;
+      t1 = env5;
+      t2 = env6;
       break;
     case 58:
       step = env0;
-      t1 = env1;
-      t2 = env2;
-      t3 = env3;
-      t5 = env4;
-      b = env5;
-      i = env6;
-      minSleepTime = env7;
+      t3 = env1;
+      t5 = env2;
+      b = env3;
+      i = env4;
+      minSleepTime = env5;
+      t1 = env6;
+      t2 = env7;
       break;
     case 59:
       step = env0;
-      t2 = env1;
-      b = env2;
-      t5 = env3;
-      t1 = env4;
-      i = env5;
-      minSleepTime = env6;
+      b = env1;
+      t5 = env2;
+      t1 = env3;
+      i = env4;
+      minSleepTime = env5;
+      t2 = env6;
       break;
     case 60:
       step = env0;
@@ -11115,8 +11041,8 @@ $$.Island = {"":
       t5 = env2;
       t1 = env3;
       i = env4;
-      t2 = env5;
-      minSleepTime = env6;
+      minSleepTime = env5;
+      t2 = env6;
       break;
     case 61:
       step = env0;
@@ -11138,8 +11064,8 @@ $$.Island = {"":
       i = env1;
       break;
     case 64:
-      i = env0;
-      t1 = env1;
+      t1 = env0;
+      i = env1;
       break;
   }
   switch (state) {
@@ -11222,12 +11148,12 @@ $$.Island = {"":
                     t20 = $.mul(t18, t20);
                     if (typeof t20 !== 'number')
                       throw $.iae(t20);
-                    var a = 1.0 - t20;
-                    t1 = a < 1.0;
-                    if (0.0 > (t1 ? a : 1.0))
-                      var a1 = 0.0;
+                    var a = 1 - t20;
+                    t1 = a < 1;
+                    if (0 > (t1 ? a : 1))
+                      var a1 = 0;
                     else
-                      a1 = t1 ? a : 1.0;
+                      a1 = t1 ? a : 1;
                     b.get$linearVelocity().mulLocal$1(a1);
                     t1 = step.get$dt();
                   case 18:
@@ -11238,12 +11164,12 @@ $$.Island = {"":
                     t3 = $.mul(t1, t3);
                     if (typeof t3 !== 'number')
                       throw $.iae(t3);
-                    var a2 = 1.0 - t3;
-                    var b1 = a2 < 1.0 ? a2 : 1.0;
+                    var a2 = 1 - t3;
+                    var b1 = a2 < 1 ? a2 : 1;
                     t1 = b.get$angularVelocity();
                   case 20:
                     state = 0;
-                    b.set$angularVelocity($.mul(t1, 0.0 > b1 ? 0.0 : b1));
+                    b.set$angularVelocity($.mul(t1, 0 > b1 ? 0 : b1));
                 }
               }
               ++i;
@@ -11419,11 +11345,11 @@ $$.Island = {"":
                     t8 = t2.get$y();
                   case 40:
                     state = 0;
-                    if ($.gtB($.add(t5, $.mul(t3, t8)), 4.0)) {
+                    if ($.gtB($.add(t5, $.mul(t3, t8)), 4)) {
                       t3 = $.get$length(t2);
                       if (typeof t3 !== 'number')
                         throw $.iae(t3);
-                      var ratio = 2.0 / t3;
+                      var ratio = 2 / t3;
                       b.get$linearVelocity().mulLocal$1(ratio);
                     }
                     t3 = step.get$dt();
@@ -11524,7 +11450,7 @@ $$.Island = {"":
       if (state === 64 || state === 63 || state === 62 || state === 61 || state === 60 || state === 59 || state === 58 || state === 57 || state === 56 || state === 55 || state === 54 || state === 53 || state === 52 || state === 51 || state === 50 || state === 0 && allowSleep === true)
         switch (state) {
           case 0:
-            var minSleepTime = 99999999999999.0;
+            var minSleepTime = 99999999999999;
             i = 0;
           default:
             L8:
@@ -11553,8 +11479,8 @@ $$.Island = {"":
                         case 53:
                           state = 0;
                           if ($.eqB($.and(t1, 4), 0)) {
-                            b.set$sleepTime(0.0);
-                            minSleepTime = 0.0;
+                            b.set$sleepTime(0);
+                            minSleepTime = 0;
                           }
                           t1 = b.get$flags();
                         case 54:
@@ -11599,8 +11525,8 @@ $$.Island = {"":
                         case 61:
                         case 62:
                           if (state === 0 && t1) {
-                            b.set$sleepTime(0.0);
-                            minSleepTime = 0.0;
+                            b.set$sleepTime(0);
+                            minSleepTime = 0;
                           } else
                             switch (state) {
                               case 0:
@@ -11920,34 +11846,34 @@ $$.World = {"":
  step$3: function(dt, velocityIterations, positionIterations) {
   if ($.eqB($.and(this._flags, 1), 1)) {
     this._contactManager.findNewContacts$0();
-    this._flags = $.and(this._flags, -2);
+    this._flags = $.and(this._flags, 4294967294);
   }
   this._flags = $.or(this._flags, 2);
   var t1 = this.timestep;
   t1.set$dt(dt);
   t1.set$velocityIterations(velocityIterations);
   t1.set$positionIterations(positionIterations);
-  if (dt > 0.0)
-    t1.set$inv_dt(1.0 / dt);
+  if (dt > 0)
+    t1.set$inv_dt(1 / dt);
   else
-    t1.set$inv_dt(0.0);
+    t1.set$inv_dt(0);
   t1.set$dtRatio($.mul(this._inverseTimestep, dt));
   t1.set$warmStarting(this._warmStarting);
   this._contactManager.collide$0();
-  if ($.gtB(t1.get$dt(), 0.0))
+  if ($.gtB(t1.get$dt(), 0))
     this.solve$1(t1);
-  if (this._continuousPhysics === true && $.gtB(t1.get$dt(), 0.0))
+  if (this._continuousPhysics === true && $.gtB(t1.get$dt(), 0))
     this.solveTimeOfImpact$0();
-  if ($.gtB(t1.get$dt(), 0.0))
+  if ($.gtB(t1.get$dt(), 0))
     this._inverseTimestep = t1.get$inv_dt();
   if ($.eqB($.and(this._flags, 4), 4))
     this.clearForces$0();
-  this._flags = $.and(this._flags, -3);
+  this._flags = $.and(this._flags, 4294967293);
 },
  clearForces$0: function() {
   for (var body = this._bodyList; !(body == null); body = body.get$next()) {
     body.get$_force().setZero$0();
-    body.set$_torque(0.0);
+    body.set$_torque(0);
   }
 },
  drawDebugData$0: function() {
@@ -12139,9 +12065,9 @@ $$.World = {"":
   var t3 = this._contactManager;
   t1.init$4(t2, t3.get$contactCount(), this._jointCount, t3.get$contactListener());
   for (var b = this._bodyList; !(b == null); b = b.get$next())
-    b.set$flags($.and(b.get$flags(), -2));
+    b.set$flags($.and(b.get$flags(), 4294967294));
   for (var c = t3.get$contactList(); !(c == null); c = c.get$next())
-    c.set$flags($.and(c.get$flags(), -2));
+    c.set$flags($.and(c.get$flags(), 4294967294));
   for (var j = this.get$jointList(); !(j == null); j = j.get$_lib1_next())
     j.set$islandFlag(false);
   var stackSize = this._bodyCount;
@@ -12216,7 +12142,7 @@ $$.World = {"":
     for (var i = 0; $.ltB(i, t1.get$bodyCount()); ++i) {
       b = $.index(t1.get$bodies(), i);
       if ($.eqB(b.get$type(), 0))
-        b.set$flags($.and(b.get$flags(), -2));
+        b.set$flags($.and(b.get$flags(), 4294967294));
     }
   }
   for (b = this._bodyList; !(b == null); b = b.get$next()) {
@@ -12237,7 +12163,7 @@ $$.World = {"":
     if ($.eqB($.and(body.get$flags(), 1), 0) || $.eqB(body.get$type(), 1) || $.eqB(body.get$type(), 0))
       body.set$flags($.or(body.get$flags(), 64));
     else
-      body.set$flags($.and(body.get$flags(), -65));
+      body.set$flags($.and(body.get$flags(), 4294967231));
   for (body = this._bodyList; !(body == null); body = body.get$next()) {
     if ($.eqB($.and(body.get$flags(), 64), 64))
       continue;
@@ -12268,7 +12194,7 @@ $$.World = {"":
   var t8 = t2.sweepB;
   var iter = 0;
   var toiContact = null;
-  var toi = 1.0;
+  var toi = 1;
   var toiOther = null;
   var count = null;
   var found = null;
@@ -12283,7 +12209,7 @@ $$.World = {"":
       if (bullet) {
         var t1 = other.get$flags();
         if (t1 !== (t1 | 0))
-          return this.solveTimeOfImpactGivenBody$1$bailout(3, found, body, bullet, iter, other, t2, type, t3, t4, t1, toiContact, toi, toiOther, ce, count);
+          return this.solveTimeOfImpactGivenBody$1$bailout(3, found, body, bullet, iter, other, type, t2, t3, t4, t1, toiContact, toi, toiOther, ce, count);
         if ((t1 & 64) === 0)
           continue;
         if (!(type === 0)) {
@@ -12333,8 +12259,8 @@ $$.World = {"":
         t1 = false;
       if (t1) {
         toi = t4.t;
-        if (typeof toi !== 'number')
-          return this.solveTimeOfImpactGivenBody$1$bailout(9, body, other, t2, bullet, contact, iter, toi, t3, t4, ce, count, 0, 0, 0, 0);
+        if (toi !== (toi | 0))
+          return this.solveTimeOfImpactGivenBody$1$bailout(9, body, other, t2, bullet, t3, contact, iter, toi, t4, ce, count, 0, 0, 0, 0);
         toiContact = contact;
         toiOther = other;
         found = true;
@@ -12344,7 +12270,7 @@ $$.World = {"":
     ++iter;
   } while (found === true && $.gtB(count, 1) && iter < 50);
   if (toiContact == null) {
-    body.advance$1(1.0);
+    body.advance$1(1);
     return;
   }
   t1 = this.backup;
@@ -12362,7 +12288,7 @@ $$.World = {"":
   }
   t1 = toiContact.get$toiCount();
   if (typeof t1 !== 'number')
-    return this.solveTimeOfImpactGivenBody$1$bailout(11, body, toiContact, t2, t1, toiOther, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return this.solveTimeOfImpactGivenBody$1$bailout(11, body, t2, t1, toiOther, toiContact, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   toiContact.set$toiCount(t1 + 1);
   t1 = this.contacts;
   if (t1.length < 32)
@@ -12375,13 +12301,13 @@ $$.World = {"":
     c$0: {
       type = ce.get$other().get$type();
       if (typeof type !== 'number')
-        return this.solveTimeOfImpactGivenBody$1$bailout(12, body, t2, type, ce, toiContact, count, toiOther, 0, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveTimeOfImpactGivenBody$1$bailout(12, body, type, t2, ce, toiContact, count, toiOther, 0, 0, 0, 0, 0, 0, 0, 0);
       if (type === 2)
         break c$0;
       contact = ce.get$contact();
       t1 = contact.get$enabled();
       if (typeof t1 !== 'boolean')
-        return this.solveTimeOfImpactGivenBody$1$bailout(13, body, count, toiOther, t2, ce, toiContact, contact, t1, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveTimeOfImpactGivenBody$1$bailout(13, body, toiOther, t2, ce, contact, count, t1, toiContact, 0, 0, 0, 0, 0, 0, 0);
       if (!t1)
         break c$0;
       fixtureA = contact.get$fixtureA();
@@ -12392,12 +12318,12 @@ $$.World = {"":
         contact.update$1(t3);
       t1 = contact.get$enabled();
       if (typeof t1 !== 'boolean')
-        return this.solveTimeOfImpactGivenBody$1$bailout(14, body, toiContact, t1, t2, ce, contact, count, toiOther, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveTimeOfImpactGivenBody$1$bailout(14, body, t1, t2, ce, contact, count, toiOther, toiContact, 0, 0, 0, 0, 0, 0, 0);
       if (!t1)
         break c$0;
       t1 = contact.get$touching();
       if (typeof t1 !== 'boolean')
-        return this.solveTimeOfImpactGivenBody$1$bailout(15, body, toiOther, toiContact, t2, ce, t1, contact, count, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveTimeOfImpactGivenBody$1$bailout(15, body, toiContact, t2, ce, contact, count, toiOther, t1, 0, 0, 0, 0, 0, 0, 0);
       if (!t1)
         break c$0;
       t1 = this.contacts;
@@ -12451,8 +12377,8 @@ $$.World = {"":
       bullet = env2;
       iter = env3;
       other = env4;
-      t2 = env5;
-      type = env6;
+      type = env5;
+      t2 = env6;
       t3 = env7;
       t4 = env8;
       t1 = env9;
@@ -12551,10 +12477,10 @@ $$.World = {"":
       other = env1;
       t2 = env2;
       bullet = env3;
-      contact = env4;
-      iter = env5;
-      toi = env6;
-      t3 = env7;
+      t3 = env4;
+      contact = env5;
+      iter = env6;
+      toi = env7;
       t4 = env8;
       ce = env9;
       count = env10;
@@ -12569,15 +12495,15 @@ $$.World = {"":
       break;
     case 11:
       body = env0;
-      toiContact = env1;
-      t2 = env2;
-      t1 = env3;
-      toiOther = env4;
+      t2 = env1;
+      t1 = env2;
+      toiOther = env3;
+      toiContact = env4;
       break;
     case 12:
       body = env0;
-      t2 = env1;
-      type = env2;
+      type = env1;
+      t2 = env2;
       ce = env3;
       toiContact = env4;
       count = env5;
@@ -12585,33 +12511,33 @@ $$.World = {"":
       break;
     case 13:
       body = env0;
-      count = env1;
-      toiOther = env2;
-      t2 = env3;
-      ce = env4;
-      toiContact = env5;
-      contact = env6;
-      t1 = env7;
+      toiOther = env1;
+      t2 = env2;
+      ce = env3;
+      contact = env4;
+      count = env5;
+      t1 = env6;
+      toiContact = env7;
       break;
     case 14:
       body = env0;
-      toiContact = env1;
-      t1 = env2;
-      t2 = env3;
-      ce = env4;
-      contact = env5;
-      count = env6;
-      toiOther = env7;
+      t1 = env1;
+      t2 = env2;
+      ce = env3;
+      contact = env4;
+      count = env5;
+      toiOther = env6;
+      toiContact = env7;
       break;
     case 15:
       body = env0;
-      toiOther = env1;
-      toiContact = env2;
-      t2 = env3;
-      ce = env4;
-      t1 = env5;
-      contact = env6;
-      count = env7;
+      toiContact = env1;
+      t2 = env2;
+      ce = env3;
+      contact = env4;
+      count = env5;
+      toiOther = env6;
+      t1 = env7;
       break;
     case 16:
       t1 = env0;
@@ -12632,7 +12558,7 @@ $$.World = {"":
       var t4 = this.toiOutput;
       var iter = 0;
       var toiContact = null;
-      var toi = 1.0;
+      var toi = 1;
       var toiOther = null;
       var count = null;
       var found = null;
@@ -12745,7 +12671,7 @@ $$.World = {"":
                 break L0;
           }
       if (toiContact == null) {
-        body.advance$1(1.0);
+        body.advance$1(1);
         return;
       }
       t1 = this.backup;
@@ -12901,7 +12827,7 @@ $$.World = {"":
       this._debugDraw.drawSegment$3(p1, p2, color);
       break;
     case 4:
-      throw $.captureStackTrace($.NotImplementedException$(null));
+      throw $.$$throw($.NotImplementedException$(null));
     case 9:
       this._debugDraw.drawSegment$3(x1, x2, color);
       break;
@@ -12994,7 +12920,7 @@ $$.Contact = {"":
     var shapeB = this.fixtureB.get$shape();
     var touching = this.pool.get$collision().testOverlap$4(shapeA, shapeB, xfA, xfB);
     if (typeof touching !== 'boolean')
-      return this.update$1$bailout(3, listener, wasTouching, touching, t1, sensor, 0, 0, 0, 0, 0, 0, 0);
+      return this.update$1$bailout(3, listener, wasTouching, t1, touching, sensor, 0, 0, 0, 0, 0, 0, 0);
     this.manifold.set$pointCount(0);
   } else {
     this.evaluate$3(this.manifold, xfA, xfB);
@@ -13016,8 +12942,8 @@ $$.Contact = {"":
       if (i < 0 || i >= t3.length)
         throw $.ioore(i);
       var mp2 = t3[i];
-      mp2.set$normalImpulse(0.0);
-      mp2.set$tangentImpulse(0.0);
+      mp2.set$normalImpulse(0);
+      mp2.set$tangentImpulse(0);
       var id2 = mp2.get$id();
       var j = 0;
       while (true) {
@@ -13027,7 +12953,7 @@ $$.Contact = {"":
         if (!(j < t3))
           break;
         if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2 === null || t2.constructor !== Array && !t2.is$JavaScriptIndexingBehavior()))
-          return this.update$1$bailout(8, i, listener, bodyA, bodyB, t1, wasTouching, mp2, t2, id2, touching, j, sensor);
+          return this.update$1$bailout(8, i, listener, bodyA, bodyB, t1, wasTouching, t2, mp2, id2, touching, j, sensor);
         if (j < 0 || j >= t2.length)
           throw $.ioore(j);
         var mp1 = t2[j];
@@ -13051,7 +12977,7 @@ $$.Contact = {"":
   if (touching)
     this.flags = (t2 | 2) >>> 0;
   else
-    this.flags = (t2 & -3) >>> 0;
+    this.flags = (t2 & 4294967293) >>> 0;
   if (listener == null)
     return;
   if (!wasTouching && touching)
@@ -13076,8 +13002,8 @@ $$.Contact = {"":
     case 3:
       listener = env0;
       wasTouching = env1;
-      touching = env2;
-      t1 = env3;
+      t1 = env2;
+      touching = env3;
       sensor = env4;
       break;
     case 4:
@@ -13132,8 +13058,8 @@ $$.Contact = {"":
       bodyB = env3;
       t1 = env4;
       wasTouching = env5;
-      mp2 = env6;
-      t2 = env7;
+      t2 = env6;
+      mp2 = env7;
       id2 = env8;
       touching = env9;
       j = env10;
@@ -13202,8 +13128,8 @@ $$.Contact = {"":
                   case 6:
                     state = 0;
                     var mp2 = $.index(t2, i);
-                    mp2.set$normalImpulse(0.0);
-                    mp2.set$tangentImpulse(0.0);
+                    mp2.set$normalImpulse(0);
+                    mp2.set$tangentImpulse(0);
                     var id2 = mp2.get$id();
                     var j = 0;
                   default:
@@ -13241,7 +13167,7 @@ $$.Contact = {"":
       if (t2)
         this.flags = $.or(t3, 2);
       else
-        this.flags = $.and(t3, -3);
+        this.flags = $.and(t3, 4294967293);
       if (listener == null)
         return;
       if ($.eqB(wasTouching, false) && $.eqB(touching, true))
@@ -13436,15 +13362,15 @@ $$.ContactSolver = {"":
     var friction = $.Settings_mixFriction(fixtureA.get$friction(), fixtureB.get$friction());
     var restitution = $.Settings_mixRestitution(fixtureA.get$restitution(), fixtureB.get$restitution());
     if (typeof restitution !== 'number')
-      return this.init$3$bailout(2, contacts, impulseRatio, t1, friction, restitution, i, t2, t3, t4, radiusA, radiusB, bodyA, bodyB, manifold, 0, 0, 0, 0);
+      return this.init$3$bailout(2, t1, contacts, impulseRatio, friction, restitution, t2, i, t3, t4, radiusA, radiusB, bodyA, bodyB, manifold, 0, 0, 0, 0);
     var vA = bodyA.get$linearVelocity();
     var vB = bodyB.get$linearVelocity();
     var wA = bodyA.get$angularVelocity();
     if (typeof wA !== 'number')
-      return this.init$3$bailout(3, contacts, impulseRatio, t1, friction, restitution, vA, vB, wA, t2, i, t3, t4, radiusA, radiusB, bodyA, bodyB, manifold, 0);
+      return this.init$3$bailout(3, t1, contacts, impulseRatio, friction, restitution, vA, vB, wA, t2, i, t3, t4, radiusA, radiusB, bodyA, bodyB, manifold, 0);
     var wB = bodyB.get$angularVelocity();
     if (typeof wB !== 'number')
-      return this.init$3$bailout(4, contacts, impulseRatio, t1, friction, restitution, vA, vB, wA, wB, t2, i, t3, t4, radiusA, radiusB, bodyA, bodyB, manifold);
+      return this.init$3$bailout(4, t1, contacts, impulseRatio, friction, restitution, vA, vB, wA, wB, t2, t3, t4, i, radiusA, radiusB, bodyA, bodyB, manifold);
     t1.initialize$5(manifold, bodyA.get$originTransform(), radiusA, bodyB.get$originTransform(), radiusB);
     var t10 = this.constraints;
     if (i < 0 || i >= t10.length)
@@ -13500,15 +13426,15 @@ $$.ContactSolver = {"":
       var kNormal = $.add($.add($.add(bodyA.get$invMass(), bodyB.get$invMass()), $.mul(bodyA.get$invInertia(), rnA)), $.mul(bodyB.get$invInertia(), rnB));
       if (typeof kNormal !== 'number')
         throw $.iae(kNormal);
-      ccp.set$normalMass(1.0 / kNormal);
+      ccp.set$normalMass(1 / kNormal);
       t12 = cc.get$normal().get$y();
       if (typeof t12 !== 'number')
         throw $.iae(t12);
-      t2.x = 1.0 * t12;
+      t2.x = 1 * t12;
       var t13 = cc.get$normal().get$x();
       if (typeof t13 !== 'number')
         throw $.iae(t13);
-      t2.y = -1.0 * t13;
+      t2.y = -1 * t13;
       var rtA = $.sub($.mul(ccp.get$rA().get$x(), t2.y), $.mul(ccp.get$rA().get$y(), t2.x));
       var rtB = $.sub($.mul(ccp.get$rB().get$x(), t2.y), $.mul(ccp.get$rB().get$y(), t2.x));
       rtA = $.mul(rtA, rtA);
@@ -13516,8 +13442,8 @@ $$.ContactSolver = {"":
       var kTangent = $.add($.add($.add(bodyA.get$invMass(), bodyB.get$invMass()), $.mul(bodyA.get$invInertia(), rtA)), $.mul(bodyB.get$invInertia(), rtB));
       if (typeof kTangent !== 'number')
         throw $.iae(kTangent);
-      ccp.set$tangentMass(1.0 / kTangent);
-      ccp.set$velocityBias(0.0);
+      ccp.set$tangentMass(1 / kTangent);
+      ccp.set$velocityBias(0);
       var t14 = ccp.get$rA().get$y();
       if (typeof t14 !== 'number')
         throw $.iae(t14);
@@ -13592,7 +13518,7 @@ $$.ContactSolver = {"":
       t8 = $.sub($.mul(k11, k22), $.mul(k12, k12));
       if (typeof t8 !== 'number')
         throw $.iae(t8);
-      if ($.ltB(t7, 100.0 * t8)) {
+      if ($.ltB(t7, 100 * t8)) {
         cc.get$K().get$col1().set$x(k11);
         cc.get$K().get$col1().set$y(k12);
         cc.get$K().get$col2().set$x(k12);
@@ -13619,13 +13545,13 @@ $$.ContactSolver = {"":
       var impulseRatio = env2;
       break;
     case 2:
-      contacts = env0;
-      impulseRatio = env1;
-      t1 = env2;
+      t1 = env0;
+      contacts = env1;
+      impulseRatio = env2;
       friction = env3;
       restitution = env4;
-      i = env5;
-      t2 = env6;
+      t2 = env5;
+      i = env6;
       t3 = env7;
       t4 = env8;
       radiusA = env9;
@@ -13635,9 +13561,9 @@ $$.ContactSolver = {"":
       manifold = env13;
       break;
     case 3:
-      contacts = env0;
-      impulseRatio = env1;
-      t1 = env2;
+      t1 = env0;
+      contacts = env1;
+      impulseRatio = env2;
       friction = env3;
       restitution = env4;
       vA = env5;
@@ -13654,9 +13580,9 @@ $$.ContactSolver = {"":
       manifold = env16;
       break;
     case 4:
-      contacts = env0;
-      impulseRatio = env1;
-      t1 = env2;
+      t1 = env0;
+      contacts = env1;
+      impulseRatio = env2;
       friction = env3;
       restitution = env4;
       vA = env5;
@@ -13664,9 +13590,9 @@ $$.ContactSolver = {"":
       wA = env7;
       wB = env8;
       t2 = env9;
-      i = env10;
-      t3 = env11;
-      t4 = env12;
+      t3 = env10;
+      t4 = env11;
+      i = env12;
       radiusA = env13;
       radiusB = env14;
       bodyA = env15;
@@ -13774,15 +13700,15 @@ $$.ContactSolver = {"":
                 var kNormal = $.add($.add($.add(bodyA.get$invMass(), bodyB.get$invMass()), $.mul(bodyA.get$invInertia(), rnA)), $.mul(bodyB.get$invInertia(), rnB));
                 if (typeof kNormal !== 'number')
                   throw $.iae(kNormal);
-                ccp.set$normalMass(1.0 / kNormal);
+                ccp.set$normalMass(1 / kNormal);
                 t5 = cc.get$normal().get$y();
                 if (typeof t5 !== 'number')
                   throw $.iae(t5);
-                t2.set$x(1.0 * t5);
+                t2.set$x(1 * t5);
                 var t6 = cc.get$normal().get$x();
                 if (typeof t6 !== 'number')
                   throw $.iae(t6);
-                t2.set$y(-1.0 * t6);
+                t2.set$y(-1 * t6);
                 var rtA = $.sub($.mul(ccp.get$rA().get$x(), t2.get$y()), $.mul(ccp.get$rA().get$y(), t2.get$x()));
                 var rtB = $.sub($.mul(ccp.get$rB().get$x(), t2.get$y()), $.mul(ccp.get$rB().get$y(), t2.get$x()));
                 rtA = $.mul(rtA, rtA);
@@ -13790,8 +13716,8 @@ $$.ContactSolver = {"":
                 var kTangent = $.add($.add($.add(bodyA.get$invMass(), bodyB.get$invMass()), $.mul(bodyA.get$invInertia(), rtA)), $.mul(bodyB.get$invInertia(), rtB));
                 if (typeof kTangent !== 'number')
                   throw $.iae(kTangent);
-                ccp.set$tangentMass(1.0 / kTangent);
-                ccp.set$velocityBias(0.0);
+                ccp.set$tangentMass(1 / kTangent);
+                ccp.set$velocityBias(0);
                 t3.set$x($.mul($.neg(wA), ccp.get$rA().get$y()));
                 t3.set$y($.mul(wA, ccp.get$rA().get$x()));
                 t4.set$x($.sub($.sub($.add($.mul($.neg(wB), ccp.get$rB().get$y()), vB.get$x()), vA.get$x()), t3.get$x()));
@@ -13827,7 +13753,7 @@ $$.ContactSolver = {"":
                 t6 = $.sub($.mul(k11, k22), $.mul(k12, k12));
                 if (typeof t6 !== 'number')
                   throw $.iae(t6);
-                if ($.ltB(t5, 100.0 * t6)) {
+                if ($.ltB(t5, 100 * t6)) {
                   cc.get$K().get$col1().set$x(k11);
                   cc.get$K().get$col1().set$y(k12);
                   cc.get$K().get$col2().set$x(k12);
@@ -14001,7 +13927,7 @@ $$.ContactSolver = {"":
   while (true) {
     var t11 = this.constraintCount;
     if (typeof t11 !== 'number')
-      return this.solveVelocityConstraints$0$bailout(1, t3, t10, t4, i, t5, t11, t1, t2, t6, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(1, t4, i, t5, t11, t1, t2, t6, t7, t8, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (!(i < t11))
       break;
     t11 = this.constraints;
@@ -14012,45 +13938,45 @@ $$.ContactSolver = {"":
     var bodyB = c.get$bodyB();
     var wA = bodyA.get$angularVelocity();
     if (typeof wA !== 'number')
-      return this.solveVelocityConstraints$0$bailout(2, t3, t10, t4, i, t5, t1, c, bodyA, bodyB, wA, t6, t2, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(2, t4, i, t5, t1, t2, c, bodyA, bodyB, wA, t6, t7, t8, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var wB = bodyB.get$angularVelocity();
     if (typeof wB !== 'number')
-      return this.solveVelocityConstraints$0$bailout(3, t3, t10, t4, i, t5, t1, c, bodyA, bodyB, wA, wB, t6, t2, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(3, t4, i, t5, t1, t2, c, bodyA, bodyB, wA, wB, t7, t8, t6, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var vA = bodyA.get$linearVelocity();
     var vB = bodyB.get$linearVelocity();
     var invMassA = bodyA.get$invMass();
     if (typeof invMassA !== 'number')
-      return this.solveVelocityConstraints$0$bailout(4, t3, t10, t4, i, t2, t5, t1, c, bodyA, bodyB, wA, wB, vA, vB, t6, invMassA, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(4, t4, i, t5, t1, t2, c, bodyA, bodyB, wA, wB, vA, vB, t7, invMassA, t8, t6, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invIA = bodyA.get$invInertia();
     if (typeof invIA !== 'number')
-      return this.solveVelocityConstraints$0$bailout(5, t3, t10, t4, i, t2, t5, t1, c, bodyA, bodyB, wA, wB, vA, vB, t6, invMassA, invIA, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(5, t4, t3, i, t5, t1, t2, c, bodyA, bodyB, wA, wB, vA, vB, t7, invMassA, t8, t6, t9, t10, invIA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invMassB = bodyB.get$invMass();
     if (typeof invMassB !== 'number')
-      return this.solveVelocityConstraints$0$bailout(6, t3, t10, t4, i, t2, t5, t1, c, bodyA, bodyB, wA, wB, vA, vB, t6, invMassA, invIA, invMassB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(6, t4, t3, i, t5, t1, t2, c, bodyA, bodyB, wA, wB, vA, vB, t7, invMassA, invMassB, t8, t6, t9, t10, invIA, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invIB = bodyB.get$invInertia();
     if (typeof invIB !== 'number')
-      return this.solveVelocityConstraints$0$bailout(7, t3, t10, t4, i, t2, t5, t1, c, bodyA, bodyB, wA, wB, vA, vB, t6, invMassA, invIA, invMassB, invIB, t8, t7, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(7, t4, t10, t3, i, t5, t1, t2, c, bodyA, bodyB, wA, wB, vA, vB, t7, invMassA, invMassB, t8, t6, t9, invIB, invIA, 0, 0, 0, 0, 0, 0, 0, 0);
     var t17 = c.get$normal().get$y();
     if (typeof t17 !== 'number')
       throw $.iae(t17);
-    t1.x = 1.0 * t17;
+    t1.x = 1 * t17;
     var t18 = c.get$normal().get$x();
     if (typeof t18 !== 'number')
       throw $.iae(t18);
-    t1.y = -1.0 * t18;
+    t1.y = -1 * t18;
     var friction = c.get$friction();
     if (typeof friction !== 'number')
-      return this.solveVelocityConstraints$0$bailout(8, t3, t4, i, t5, c, bodyA, bodyB, wA, wB, vA, vB, t6, invMassA, invIA, invMassB, invIB, t8, t7, t9, t10, friction, t1, t2, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(8, t4, i, t5, c, bodyA, bodyB, wA, wB, vA, vB, t7, invMassA, invMassB, t8, t6, t9, t10, invIA, invIB, friction, t1, t2, t3, 0, 0, 0, 0, 0, 0, 0);
     var j = 0;
     while (true) {
       t11 = c.get$pointCount();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(9, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, t11, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(9, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, t3, t11, 0, 0, 0, 0, 0);
       if (!(j < t11))
         break;
       t11 = c.get$points();
       if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))
-        return this.solveVelocityConstraints$0$bailout(10, t3, t4, i, t11, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(10, t4, i, t11, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0, 0, 0, 0);
       if (j < 0 || j >= t11.length)
         throw $.ioore(j);
       var ccp = t11[j];
@@ -14058,61 +13984,61 @@ $$.ContactSolver = {"":
       t11 = -wB;
       var t13 = ccp.get$rB().get$y();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(11, t3, t4, i, ccp, a, t11, t5, t13, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(11, t4, i, t5, ccp, a, t11, t13, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t9, t8, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t13 = t11 * t13;
       t11 = vB.get$x();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(12, t3, t4, i, ccp, a, t5, t13, t11, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(12, t4, i, ccp, a, t5, t13, t11, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t9, t8, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t11 = t13 + t11;
       t13 = vA.get$x();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(13, t3, t4, i, ccp, a, t5, c, t11, bodyB, t13, bodyA, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t6, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(13, t4, i, ccp, a, t5, c, t11, bodyB, t13, bodyA, vA, vB, invMassA, invIA, invMassB, invIB, t6, t8, t7, t9, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t13 = t11 - t13;
       t11 = a.get$y();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(14, t3, t4, i, ccp, a, t5, c, bodyA, bodyB, t13, vA, vB, invMassA, invIA, invMassB, invIB, t11, t8, t7, t6, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(14, t4, i, ccp, a, t5, c, t6, bodyB, bodyA, t13, vA, vB, invMassA, invIA, invIB, t11, invMassB, t7, t9, t8, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t2.x = t13 + wA * t11;
       t18 = ccp.get$rB().get$x();
       if (typeof t18 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(15, t3, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t18, t9, t10, friction, t1, wB, j, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(15, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t18, t10, t7, friction, t1, t2, wB, j, wA, t3, 0, 0, 0);
       t18 = wB * t18;
       var t20 = vB.get$y();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(16, t3, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t18, t20, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(16, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t9, t8, t7, t10, t18, t20, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t20 = t18 + t20;
       t18 = vA.get$y();
       if (typeof t18 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(17, t3, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, t20, t18, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(17, t4, i, ccp, a, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t9, t8, t7, t10, t20, t18, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t18 = t20 - t18;
       t20 = a.get$x();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(18, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, t18, t20, friction, t1, wB, j, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(18, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, t18, t20, friction, t1, t2, wB, j, wA, t3, 0, 0, 0);
       t2.y = t18 - wA * t20;
       var t24 = t2.x;
       if (typeof t24 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(19, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t24, t1, wB, j, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(19, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t24, t2, wB, j, wA, t3, 0, 0, 0, 0);
       var t26 = t1.x;
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(20, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t24, t1, t26, wB, j, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(20, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t24, t2, wB, j, t26, wA, t3, 0, 0, 0);
       t26 = t24 * t26;
       t24 = t2.y;
       if (typeof t24 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(21, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t26, t2, t24, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(21, t4, i, ccp, t5, c, t6, bodyB, bodyA, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, t26, t24, wA, t3, 0, 0, 0);
       var t29 = t1.y;
       if (typeof t29 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(22, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t26, t2, t24, t29, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(22, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, t26, t24, t29, wA, t3, 0, 0);
       var vt = t26 + t24 * t29;
       t26 = ccp.get$tangentMass();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(23, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, t9, t10, friction, t1, wB, j, t2, wA, vt, t26, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(23, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, vt, t26, t3, 0, 0, 0);
       var lambda = t26 * -vt;
       t26 = ccp.get$normalImpulse();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(24, lambda, t26, t3, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(24, lambda, t26, t4, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0, 0);
       var maxFriction = friction * t26;
       t26 = ccp.get$tangentImpulse();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(25, lambda, t3, maxFriction, t26, i, t4, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(25, lambda, t4, maxFriction, t26, i, ccp, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       t26 += lambda;
       var newImpulse = $.max(-maxFriction, $.min(t26, maxFriction));
       var t34 = ccp.get$tangentImpulse();
@@ -14121,332 +14047,332 @@ $$.ContactSolver = {"":
       lambda = newImpulse - t34;
       t34 = t1.x;
       if (typeof t34 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(26, t3, t4, i, ccp, t5, newImpulse, lambda, c, bodyA, bodyB, t34, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, friction, t1, wB, j, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(26, t4, i, ccp, t5, newImpulse, lambda, c, bodyA, bodyB, t34, t6, vA, vB, invMassA, invIA, t8, invIB, t9, invMassB, t7, t10, friction, t1, t2, wB, j, wA, t3, 0, 0);
       var Px = t34 * lambda;
       t34 = t1.y;
       if (typeof t34 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(27, t3, t4, i, ccp, t5, newImpulse, lambda, c, bodyA, bodyB, Px, t34, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t6, t9, t10, friction, t1, wB, j, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(27, t4, i, ccp, t5, newImpulse, lambda, c, t6, bodyB, Px, t34, vA, vB, invMassA, invIA, t8, invIB, bodyA, invMassB, t7, t9, t10, friction, t1, t2, wB, j, wA, t3, 0);
       var Py = t34 * lambda;
       t34 = vA.get$x();
       if (typeof t34 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(28, t3, t4, i, ccp, t5, newImpulse, c, bodyA, bodyB, Px, t6, vA, Py, invMassA, invIA, invMassB, invIB, t7, vB, t34, t9, t8, t10, friction, t1, wB, j, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(28, t4, i, ccp, t5, newImpulse, c, bodyA, bodyB, Px, t6, vA, Py, invMassA, invIA, invMassB, t8, invIB, vB, t34, t9, t10, t7, friction, t1, t2, wB, j, wA, t3, 0);
       vA.set$x(t34 - Px * invMassA);
       var t38 = vA.get$y();
       if (typeof t38 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(29, t3, t4, i, ccp, t5, newImpulse, c, bodyA, bodyB, Px, t6, vA, Py, invMassA, invIA, invMassB, invIB, t7, vB, t38, t9, t8, t10, friction, t1, wB, j, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(29, t4, i, ccp, t5, newImpulse, c, bodyA, bodyB, Px, t6, vA, Py, invMassA, invIA, invMassB, t8, invIB, vB, t38, t9, t10, t7, friction, t1, t2, wB, j, wA, t3, 0);
       vA.set$y(t38 - Py * invMassA);
       var t40 = ccp.get$rA().get$x();
       if (typeof t40 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(30, t3, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, t7, invIB, t8, invMassA, t9, t10, t40, friction, t1, wB, j, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(30, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, t8, invIB, t9, invMassB, invMassA, t10, t7, t40, friction, t1, t2, wB, j, wA, t3, 0);
       t40 *= Py;
       var t42 = ccp.get$rA().get$y();
       if (typeof t42 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(31, t3, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, invIB, t7, t8, invMassA, t9, t10, t40, t42, friction, t1, wB, j, t2, wA);
+        return this.solveVelocityConstraints$0$bailout(31, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, t8, invIB, t9, invMassB, invMassA, t10, t7, t40, t42, friction, t1, t2, wB, j, wA, t3);
       wA -= invIA * (t40 - t42 * Px);
       var t44 = vB.get$x();
       if (typeof t44 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(32, t3, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, t7, invIB, t8, invMassA, t9, t10, friction, t1, wA, j, t44, wB, t2, 0);
+        return this.solveVelocityConstraints$0$bailout(32, t4, i, ccp, t5, newImpulse, c, t6, Px, bodyB, bodyA, vA, Py, vB, invMassA, invMassB, invIB, t9, t8, t7, invIA, t10, friction, t1, t2, wA, j, t44, wB, t3, 0);
       vB.set$x(t44 + Px * invMassB);
       var t46 = vB.get$y();
       if (typeof t46 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(33, t3, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, t7, invIB, t8, invMassA, t9, t10, friction, t1, wA, j, t2, wB, t46, 0);
+        return this.solveVelocityConstraints$0$bailout(33, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invMassA, t8, invIB, t9, invMassB, t7, invIA, t10, friction, t1, t2, wA, j, wB, t46, t3, 0);
       vB.set$y(t46 + Py * invMassB);
       var t48 = ccp.get$rB().get$x();
       if (typeof t48 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(34, t3, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, t7, invIB, t8, invMassA, t9, t10, friction, t1, wA, j, t2, wB, t48, 0);
+        return this.solveVelocityConstraints$0$bailout(34, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, Py, vB, invIA, invMassB, invIB, t9, t8, invMassA, t10, t7, friction, t1, t2, wA, j, wB, t3, t48, 0);
       t48 *= Py;
       var t50 = ccp.get$rB().get$y();
       if (typeof t50 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(35, t3, t48, t50, t4, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, t9, t10, friction, t1, wA, j, t2, wB, 0);
+        return this.solveVelocityConstraints$0$bailout(35, t4, t48, t50, i, ccp, t5, newImpulse, c, bodyA, Px, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t9, t8, t7, t10, friction, t1, t2, wA, j, wB, t3, 0);
       wB += invIB * (t48 - t50 * Px);
       ccp.set$tangentImpulse(newImpulse);
       ++j;
     }
     t11 = c.get$pointCount();
     if (typeof t11 !== 'number')
-      return this.solveVelocityConstraints$0$bailout(36, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, t11, vB, invMassA, invMassB, invIB, invIA, t8, t7, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0, 0);
+      return this.solveVelocityConstraints$0$bailout(36, t4, i, t5, c, bodyA, bodyB, t6, t11, vA, t7, invMassA, invMassB, invIB, invIA, vB, t10, t9, t8, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0, 0);
     t11 = t11 === 1;
     t13 = -wB;
     if (t11) {
       t11 = c.get$points();
       if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))
-        return this.solveVelocityConstraints$0$bailout(37, t8, t3, t10, t4, i, t7, t5, t1, wB, bodyA, t2, bodyB, t6, vA, c, vB, invMassA, invIA, invMassB, invIB, wA, t11, t9, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(37, t4, t10, t3, t8, i, t5, t1, t2, wB, bodyA, bodyB, c, t6, vA, vB, invMassA, invIA, wA, invIB, t11, invMassB, t7, t9, 0, 0, 0, 0, 0, 0, 0);
       if (0 >= t11.length)
         throw $.ioore(0);
       ccp = t11[0];
       var a1 = ccp.get$rA();
       t11 = ccp.get$rB().get$y();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(38, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t13, t10, t11, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(38, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, a1, t13, t10, t11, t9, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t11 = t13 * t11;
       t13 = vB.get$x();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(39, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t10, t11, t13, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(39, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, a1, t10, t9, t11, t13, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t13 = t11 + t13;
       t11 = vA.get$x();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(40, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t10, t13, t11, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(40, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, a1, t10, t9, t13, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t11 = t13 - t11;
       t13 = a1.get$y();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(41, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t10, t11, t13, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(41, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, a1, t10, t9, t11, t13, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t2.x = t11 + wA * t13;
       t18 = ccp.get$rB().get$x();
       if (typeof t18 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(42, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, ccp, a1, t9, t10, t1, wB, t2, t18, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(42, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, t9, invMassB, ccp, invIA, a1, t10, t1, t2, wB, t18, wA, t3, 0, 0, 0, 0, 0);
       t18 = wB * t18;
       t20 = vB.get$y();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(43, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t10, t1, wB, t2, t18, t20, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(43, t4, i, t5, c, t6, bodyA, bodyB, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, a1, t10, t9, t1, t2, wB, t18, t20, wA, t3, 0, 0, 0, 0);
       t20 = t18 + t20;
       t18 = vA.get$y();
       if (typeof t18 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(44, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, a1, t9, t10, t1, wB, t2, t20, wA, t18, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(44, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, invMassB, t8, invIB, ccp, invMassA, a1, t10, t9, t1, t2, wB, t20, t18, wA, t3, 0, 0, 0, 0);
       t18 = t20 - t18;
       t20 = a1.get$x();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(45, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, ccp, t9, t10, t1, wB, t2, wA, t18, t20, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(45, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, t9, invMassB, ccp, invIA, t10, t1, t2, wB, wA, t18, t20, t3, 0, 0, 0, 0, 0);
       t2.y = t18 - wA * t20;
       var b = c.get$normal();
       t24 = t2.x;
       if (typeof t24 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(46, t3, t4, b, i, t24, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, ccp, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(46, t4, b, i, t24, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, t9, ccp, t10, invMassB, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
       t26 = b.get$x();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(47, t3, t4, b, i, t24, t26, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(47, t4, b, i, t24, t26, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, t9, t10, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t26 = t24 * t26;
       t24 = t2.y;
       if (typeof t24 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(48, t3, t4, b, i, t26, t24, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(48, t4, b, i, t26, t5, t24, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, t9, t10, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t29 = b.get$y();
       if (typeof t29 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(49, t3, t4, i, t26, t24, t29, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(49, t4, i, t26, t5, t24, t29, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, invMassB, ccp, t9, t10, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       var vn = t26 + t24 * t29;
       t26 = ccp.get$normalMass();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(50, t3, t4, i, t5, vn, t26, bodyA, bodyB, c, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, ccp, t9, t10, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(50, t4, i, t5, vn, t26, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, t8, invIB, invIA, t9, ccp, t10, invMassB, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
       t26 = -t26;
       var t32 = ccp.get$velocityBias();
       if (typeof t32 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(51, t3, t4, i, t5, vn, c, bodyA, t26, bodyB, t6, vA, t32, vB, invMassA, invIA, invMassB, invIB, t8, ccp, t9, t10, t7, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(51, t4, i, t5, vn, c, t6, bodyA, t32, t26, bodyB, vA, t7, invMassA, t8, invIB, invIA, vB, ccp, t9, invMassB, t10, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       lambda = t26 * (vn - t32);
       t26 = ccp.get$normalImpulse();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(52, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, lambda, invMassA, invIA, t7, invIB, invMassB, ccp, t26, t8, t10, t9, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(52, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, t26, invMassB, t8, invIA, lambda, invMassA, t9, ccp, invIB, t10, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
       a = t26 + lambda;
-      newImpulse = a > 0.0 ? a : 0.0;
+      newImpulse = a > 0 ? a : 0;
       t11 = ccp.get$normalImpulse();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(53, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, t11, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(53, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invMassB, invIB, ccp, t7, t9, t10, newImpulse, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
       lambda = newImpulse - t11;
       t11 = c.get$normal().get$x();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(54, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, lambda, t11, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(54, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invMassB, invIB, ccp, t7, t9, t10, newImpulse, lambda, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       Px = t11 * lambda;
       t11 = c.get$normal().get$y();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(55, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, lambda, Px, t11, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(55, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invMassB, invIB, ccp, t7, t9, t10, newImpulse, lambda, Px, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       Py = t11 * lambda;
       t11 = vA.get$x();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(56, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t11, wB, t2, t1, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(56, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invMassB, invIB, ccp, t7, t9, t10, newImpulse, Px, Py, t11, t1, wB, t2, wA, t3, 0, 0, 0, 0);
       vA.set$x(t11 - Px * invMassA);
       var t16 = vA.get$y();
       if (typeof t16 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(57, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t1, wB, t2, t16, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(57, t4, i, t5, bodyA, bodyB, t6, vA, vB, invMassA, invIA, t8, invMassB, invIB, ccp, t7, t9, t10, newImpulse, Px, Py, t1, t2, wB, t16, wA, t3, 0, 0, 0, 0);
       vA.set$y(t16 - Py * invMassA);
       t18 = ccp.get$rA().get$x();
       if (typeof t18 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(58, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t1, wB, t2, wA, t18, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(58, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassB, invIB, ccp, t10, t9, newImpulse, Px, Py, t1, t2, wB, wA, t18, t3, 0, 0, 0, 0, 0);
       t18 *= Py;
       t20 = ccp.get$rA().get$y();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(59, t20, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t1, wB, t2, wA, t18, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(59, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassB, invIB, ccp, t10, t9, newImpulse, Px, Py, t1, t2, wB, wA, t18, t3, t20, 0, 0, 0, 0);
       wA -= invIA * (t18 - t20 * Px);
       var t22 = vB.get$x();
       if (typeof t22 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(60, t3, t4, i, wA, t22, t5, bodyA, bodyB, t6, vA, vB, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(60, t4, i, wA, t22, t5, bodyA, bodyB, t6, vA, vB, t7, t8, invMassB, invIB, t9, ccp, t10, newImpulse, Px, Py, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
       vB.set$x(t22 + Px * invMassB);
       t24 = vB.get$y();
       if (typeof t24 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(61, t3, t4, i, wA, t5, t24, bodyA, bodyB, t6, vA, vB, invMassB, invIB, t7, t8, ccp, t9, t10, newImpulse, Px, Py, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(61, t4, i, wA, t5, t24, bodyA, bodyB, t6, vA, vB, t7, t8, invMassB, invIB, t9, ccp, t10, newImpulse, Px, Py, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
       vB.set$y(t24 + Py * invMassB);
       t26 = ccp.get$rB().get$x();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(62, t3, t10, t4, newImpulse, i, wA, Px, t5, Py, t1, wB, bodyA, bodyB, t2, t6, vA, vB, t26, invIB, t7, t8, ccp, t9, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(62, t4, newImpulse, i, wA, t5, Px, Py, t1, t2, wB, bodyA, bodyB, t26, vA, vB, t6, t7, t8, invIB, t9, ccp, t10, t3, 0, 0, 0, 0, 0, 0, 0);
       t26 *= Py;
       var t28 = ccp.get$rB().get$y();
       if (typeof t28 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(63, t3, t10, t4, newImpulse, i, wA, t7, Px, t5, t1, wB, bodyA, bodyB, t2, t6, vA, vB, t26, invIB, t28, t8, ccp, t9, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(63, t4, t3, newImpulse, i, wA, t5, Px, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t26, t28, t8, invIB, t9, ccp, t7, t10, 0, 0, 0, 0, 0, 0, 0);
       wB += invIB * (t26 - t28 * Px);
       ccp.set$normalImpulse(newImpulse);
     } else {
       t11 = c.get$points();
       if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))
-        return this.solveVelocityConstraints$0$bailout(64, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, t11, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(64, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0, 0);
       if (0 >= t11.length)
         throw $.ioore(0);
       var cp1 = t11[0];
       t11 = c.get$points();
       if (typeof t11 !== 'string' && (typeof t11 !== 'object' || t11 === null || t11.constructor !== Array && !t11.is$JavaScriptIndexingBehavior()))
-        return this.solveVelocityConstraints$0$bailout(65, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, t11, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(65, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, t11, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
       if (1 >= t11.length)
         throw $.ioore(1);
       var cp2 = t11[1];
       a = $.Vector$(cp1.get$normalImpulse(), cp2.get$normalImpulse());
       t11 = cp1.get$rB().get$y();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(66, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, t13, wB, t11, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(66, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t13, t2, t11, wB, wA, t3, 0, 0, 0);
       t11 = t13 * t11;
       t16 = vB.get$x();
       if (typeof t16 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(67, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, t11, t16, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(67, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, t11, t16, wA, t3, 0, 0, 0);
       t16 = t11 + t16;
       t11 = vA.get$x();
       if (typeof t11 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(68, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, t16, t11, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(68, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, t16, t11, wA, t3, 0, 0, 0);
       t11 = t16 - t11;
       t16 = cp1.get$rA().get$y();
       if (typeof t16 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(69, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, t11, t16, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(69, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, t11, wA, t16, t3, 0, 0, 0);
       t3.x = t11 + wA * t16;
       t20 = cp1.get$rB().get$x();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(70, t3, t4, i, t20, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(70, t4, t20, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t20 = wB * t20;
       t22 = vB.get$y();
       if (typeof t22 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(71, t3, t4, i, t20, t22, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(71, t4, i, t20, t22, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t22 = t20 + t22;
       t20 = vA.get$y();
       if (typeof t20 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(72, t3, t4, i, t22, t5, t20, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(72, t4, i, t5, t20, t22, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t20 = t22 - t20;
       t22 = cp1.get$rA().get$x();
       if (typeof t22 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(73, t3, t4, i, t5, t20, t22, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(73, t4, i, t5, t20, t22, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t3.y = t20 - wA * t22;
       t26 = cp2.get$rB().get$y();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(74, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, t13, vB, t26, invIA, invMassA, invIB, invMassB, t7, t9, t8, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(74, t4, i, t5, c, bodyA, bodyB, t13, vA, t26, t6, t7, vB, invMassA, invIA, invMassB, invIB, t10, t8, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t26 = t13 * t26;
       t13 = vB.get$x();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(75, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t13, t8, t7, t9, t10, t26, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(75, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, t26, t13, invMassA, invIA, invMassB, invIB, t10, t8, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t13 = t26 + t13;
       t26 = vA.get$x();
       if (typeof t26 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(76, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t13, t26, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(76, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, t13, t26, invIB, t10, t8, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t26 = t13 - t26;
       t13 = cp2.get$rA().get$y();
       if (typeof t13 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(77, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, t26, t13, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(77, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t26, t13, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t4.x = t26 + wA * t13;
       var t31 = cp2.get$rB().get$x();
       if (typeof t31 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(78, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, t31, a, t1, wB, t2, wA, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(78, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, t31, a, t1, t2, wB, wA, t3, 0, 0, 0, 0);
       t31 = wB * t31;
       var t33 = vB.get$y();
       if (typeof t33 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(79, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, t31, t33, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(79, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, t31, t33, a, t1, t2, wB, wA, t3, 0, 0, 0);
       t33 = t31 + t33;
       t31 = vA.get$y();
       if (typeof t31 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(80, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t33, wB, t31, t1, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(80, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t33, t31, t1, wB, t2, wA, t3, 0, 0, 0);
       t31 = t33 - t31;
       t33 = cp2.get$rA().get$x();
       if (typeof t33 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(81, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t31, t2, t33, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(81, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, t31, wB, t33, wA, t3, 0, 0, 0);
       t4.y = t31 - wA * t33;
       var t37 = t3.x;
       if (typeof t37 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(82, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, t37, 0, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(82, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t37, t3, 0, 0, 0, 0);
       var t39 = c.get$normal().get$x();
       if (typeof t39 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(83, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, t37, t39, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(83, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t37, t39, t3, 0, 0, 0);
       t39 = t37 * t39;
       t37 = t3.y;
       if (typeof t37 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(84, t39, t3, t4, t37, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(84, t4, t37, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, t39, 0, 0, 0);
       t42 = c.get$normal().get$y();
       if (typeof t42 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(85, t39, t3, t4, t37, i, t42, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(85, t4, t37, t42, i, t5, c, t6, bodyB, bodyA, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, t39, 0, 0);
       var vn1 = t39 + t37 * t42;
       t39 = t4.x;
       if (typeof t39 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(86, t3, t4, i, vn1, t5, t39, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(86, t4, i, vn1, t5, t39, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       var t45 = c.get$normal().get$x();
       if (typeof t45 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(87, t3, t4, i, vn1, t5, t39, t45, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(87, t4, i, vn1, t5, t39, t45, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       t45 = t39 * t45;
       t39 = t4.y;
       if (typeof t39 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(88, t3, t4, i, vn1, t5, t45, c, bodyA, bodyB, t39, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(88, t4, i, vn1, t5, t45, t39, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       t48 = c.get$normal().get$y();
       if (typeof t48 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(89, t3, t4, i, vn1, t5, t45, c, bodyA, t48, bodyB, t6, vA, t39, vB, invMassA, invIA, invMassB, invIB, t8, t7, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(89, t4, i, vn1, t5, t45, t39, c, bodyA, bodyB, t48, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, t8, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0);
       var vn2 = t45 + t39 * t48;
       t45 = cp1.get$velocityBias();
       if (typeof t45 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(90, t3, t4, i, vn1, t5, c, bodyA, bodyB, t6, vA, vn2, vB, t45, invIA, invMassA, invIB, invMassB, t7, t9, t8, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(90, t4, i, vn1, t5, c, bodyA, bodyB, vn2, vA, t45, t6, t7, vB, invMassA, invIA, invMassB, invIB, t10, t8, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       t45 = vn1 - t45;
       var t51 = cp2.get$velocityBias();
       if (typeof t51 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(91, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vn2, vB, invMassA, invIA, invMassB, t51, t8, invIB, t9, t10, t7, cp1, t45, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(91, t4, i, t5, c, bodyA, bodyB, vn2, vA, vB, t6, t45, t51, t7, invIA, invMassB, invMassA, t10, t8, invIB, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       b = $.Vector$(t45, vn2 - t51);
       t45 = c.get$K().get$col1().get$x();
       if (typeof t45 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(92, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, t45, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(92, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, invMassB, invMassA, invIB, b, t10, t9, t45, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       var t54 = a.x;
       if (typeof t54 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(93, t3, t4, i, t54, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, t45, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(93, t4, i, t54, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t45, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       t54 = t45 * t54;
       t45 = c.get$K().get$col2().get$x();
       if (typeof t45 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(94, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, t54, cp1, t45, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(94, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, invMassB, invMassA, invIB, b, t10, t9, t8, t54, cp1, t45, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       var t57 = a.y;
       if (typeof t57 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(95, t3, t4, i, t57, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, t54, cp1, t45, cp2, a, t1, wB, t2, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(95, t4, i, t57, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, t54, cp1, t45, cp2, a, t1, t2, wB, wA, t3, 0);
       t5.x = t54 + t45 * t57;
       var t59 = c.get$K().get$col1().get$y();
       if (typeof t59 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(96, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t59, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(96, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, invMassB, invMassA, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t59, wB, t2, wA, t3, 0, 0, 0);
       var t61 = a.x;
       if (typeof t61 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(97, t3, t4, i, t5, t61, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t59, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(97, t4, i, t5, t61, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t59, wB, t2, wA, t3, 0, 0);
       t61 = t59 * t61;
       t59 = c.get$K().get$col2().get$y();
       if (typeof t59 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(98, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, t61, t59, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(98, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, invMassB, invMassA, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, t61, t59, wA, t3, 0, 0);
       var t64 = a.y;
       if (typeof t64 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(99, t3, t4, i, t5, t64, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, t61, t59, wA, 0);
+        return this.solveVelocityConstraints$0$bailout(99, t4, i, t5, t64, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, t61, t59, wA, t3, 0);
       t5.y = t61 + t59 * t64;
       var t66 = b.x;
       if (typeof t66 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(100, t3, t4, i, t5, t66, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(100, t4, i, t5, t66, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       var t68 = t5.x;
       if (typeof t68 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(101, t3, t68, t4, i, t5, t66, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(101, t68, t4, i, t5, t66, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       b.x = t66 - t68;
       var t70 = b.y;
       if (typeof t70 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(102, t3, t4, i, t5, c, bodyA, t70, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(102, t4, i, t5, t70, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
       var t72 = t5.y;
       if (typeof t72 !== 'number')
-        return this.solveVelocityConstraints$0$bailout(103, t3, t4, i, t72, t5, c, t70, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+        return this.solveVelocityConstraints$0$bailout(103, t4, i, t72, t5, t70, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invIA, invMassB, invIB, b, t10, t9, t8, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
       b.y = t70 - t72;
       for (; true;) {
         $.Matrix22_mulMatrixAndVectorToOut(c.get$normalMass(), b, t6);
         t6.mulLocal$1(-1);
         t11 = t6.get$x();
         if (typeof t11 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(104, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t11, t2, wA, 0, 0, 0);
-        if (t11 >= 0.0) {
+          return this.solveVelocityConstraints$0$bailout(104, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invIB, t9, invMassB, t10, invIA, b, cp1, cp2, a, t1, t11, wB, t2, wA, t3, 0, 0, 0);
+        if (t11 >= 0) {
           t11 = t6.get$y();
           if (typeof t11 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(105, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, t11, wA, 0, 0, 0);
-          t11 = t11 >= 0.0;
+            return this.solveVelocityConstraints$0$bailout(105, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invIB, t9, invMassB, b, invIA, t10, cp1, cp2, a, t1, t2, wB, t11, wA, t3, 0, 0, 0);
+          t11 = t11 >= 0;
         } else
           t11 = false;
         if (t11) {
@@ -14461,62 +14387,62 @@ $$.ContactSolver = {"":
           t11 = cp1.get$rA();
           var t12 = t11.get$x();
           if (typeof t12 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(106, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, t11, t12, cp1, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(106, t4, t11, t12, i, cp1, t5, cp2, t1, t2, wB, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, wA, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           var t14 = t8.y;
           if (typeof t14 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(107, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, t11, t12, cp1, t14, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(107, t4, i, t5, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, t10, t11, t12, t14, cp1, cp2, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 = t12 * t14;
           t11 = t11.get$y();
           if (typeof t11 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(108, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, t14, cp2, t11, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(108, t4, i, cp1, t14, t11, cp2, t5, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, wA, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t16 = t8.x;
           if (typeof t16 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(109, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, t14, cp2, t11, t16, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(109, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, t14, t11, cp2, t16, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 -= t11 * t16;
           t18 = cp2.get$rA();
           var t19 = t18.get$x();
           if (typeof t19 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(110, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, t14, wB, t2, t19, t18, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(110, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t14, t18, t19, wB, t2, wA, t3, 0, 0, 0, 0, 0, 0);
           var t21 = t9.y;
           if (typeof t21 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(111, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, t14, wB, t19, t18, t21, t2, wA, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(111, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t14, t18, t19, wB, t21, t2, wA, t3, 0, 0, 0, 0, 0);
           t21 = t19 * t21;
           t18 = t18.get$y();
           if (typeof t18 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(112, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t14, wB, t2, t1, t18, t21, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(112, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t14, t1, t2, wB, t21, t18, wA, t3, 0, 0, 0, 0, 0, 0);
           var t23 = t9.x;
           if (typeof t23 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(113, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t14, wB, t1, t2, t21, t18, t23, wA, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(113, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t14, t1, t2, wB, t21, t18, t23, wA, t3, 0, 0, 0, 0, 0);
           var wA0 = wA - invIA * (t14 + (t21 - t18 * t23));
           var t25 = cp1.get$rB();
           t26 = t25.get$x();
           if (typeof t26 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(114, t3, wA0, t25, t10, i, t26, cp1, t4, cp2, t5, t1, wB, bodyA, bodyB, t2, t6, vA, vB, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(114, t25, t4, t26, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0, 0);
           t28 = t8.y;
           if (typeof t28 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(115, t3, wA0, t25, t4, i, t26, t28, t5, bodyA, bodyB, t6, vA, vB, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(115, t25, t4, t26, t28, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0);
           t28 = t26 * t28;
           t25 = t25.get$y();
           if (typeof t25 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(116, t3, wA0, t4, t10, i, cp1, t28, t25, cp2, t5, t1, wB, bodyA, bodyB, t2, t6, vA, vB, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(116, t4, t3, t28, i, cp1, t5, cp2, t25, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0, 0);
           var t30 = t8.x;
           if (typeof t30 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(117, t3, wA0, t4, i, t28, t25, t30, t5, bodyA, bodyB, t6, vA, vB, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(117, t4, t3, t28, i, cp1, t30, cp2, t5, t25, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0);
           t28 -= t25 * t30;
           t32 = cp2.get$rB();
           t33 = t32.get$x();
           if (typeof t33 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(118, t3, wA0, t4, i, t5, t28, t32, t33, bodyA, bodyB, t6, vA, vB, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(118, t4, t3, i, cp1, t5, cp2, t28, t32, t1, t33, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0);
           var t35 = t9.y;
           if (typeof t35 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(119, t3, wA0, t4, i, t5, t28, t32, t33, bodyA, bodyB, t6, vA, vB, t35, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(119, t4, i, t5, t28, t32, t33, t35, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t3, wA0, 0, 0, 0, 0, 0, 0);
           t35 = t33 * t35;
           t32 = t32.get$y();
           if (typeof t32 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(120, t3, wA0, t4, i, t5, t28, bodyA, bodyB, t35, t6, vA, vB, t32, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(120, t4, t3, i, cp1, t5, cp2, t28, t1, t2, wB, bodyA, bodyB, t35, t6, vA, vB, t32, t7, t8, invIB, t9, t10, wA0, 0, 0, 0, 0, 0, 0, 0);
           t37 = t9.x;
           if (typeof t37 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(121, t3, wA0, t4, i, t5, t28, bodyA, bodyB, t35, t6, vA, vB, t32, t37, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(121, t4, i, t5, t28, t35, bodyA, bodyB, t37, t6, vA, vB, t32, t7, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t3, wA0, 0, 0, 0, 0, 0, 0);
           var wB0 = wB + invIB * (t28 + (t35 - t32 * t37));
           cp1.set$normalImpulse(t6.get$x());
           cp2.set$normalImpulse(t6.get$y());
@@ -14526,28 +14452,28 @@ $$.ContactSolver = {"":
         }
         t11 = cp1.get$normalMass();
         if (typeof t11 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(122, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, t11, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(122, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invMassB, invIA, t9, invIB, t10, b, cp1, t11, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
         t11 = -t11;
         t13 = b.x;
         if (typeof t13 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(123, t3, t13, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, t11, a, t1, wB, t2, wA, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(123, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invMassB, invIA, t9, invIB, t10, b, cp1, t11, cp2, a, t1, t2, wB, wA, t3, t13, 0, 0);
         t6.set$x(t11 * t13);
-        t6.set$y(0.0);
+        t6.set$y(0);
         var t15 = c.get$K().get$col1().get$y();
         if (typeof t15 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(124, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, t15, wA, 0, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(124, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invMassB, invIA, t9, invIB, t10, b, cp1, cp2, a, t1, t2, wB, t15, wA, t3, 0, 0, 0);
         t17 = t6.get$x();
         if (typeof t17 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(125, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, t15, t17, wA, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(125, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invMassB, invIA, t9, invIB, t10, b, cp1, cp2, a, t1, t2, wB, t15, t17, wA, t3, 0, 0);
         t17 = t15 * t17;
         t15 = b.y;
         if (typeof t15 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(126, t3, t15, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, t17, wA, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(126, t15, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, t7, t8, invMassB, invIA, t9, invIB, t10, b, cp1, cp2, a, t1, t2, wB, t17, wA, t3, 0, 0);
         vn2 = t17 + t15;
         t11 = t6.get$x();
         if (typeof t11 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(127, t11, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, t7, invIB, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, wA, vn2, 0, 0);
-        if (t11 >= 0.0 && vn2 >= 0.0) {
+          return this.solveVelocityConstraints$0$bailout(127, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invMassB, t8, invIB, t9, b, t10, invIA, cp1, cp2, a, t1, t2, wB, vn2, wA, t11, t3, 0, 0);
+        if (t11 >= 0 && vn2 >= 0) {
           t7.setFrom$1(t6).subLocal$1(a);
           t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
           t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
@@ -14559,62 +14485,62 @@ $$.ContactSolver = {"":
           t11 = cp1.get$rA();
           t12 = t11.get$x();
           if (typeof t12 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(128, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t11, t1, wB, t12, t2, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(128, t4, i, cp1, t5, cp2, t11, t1, t12, t2, wB, bodyA, bodyB, t6, vA, vB, t7, invIA, wA, t8, invIB, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t14 = t8.y;
           if (typeof t14 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(129, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t11, t1, wB, t12, t2, t14, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(129, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t11, t1, t12, t14, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 = t12 * t14;
           t11 = t11.get$y();
           if (typeof t11 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(130, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t11, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(130, t4, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t14, t6, vA, vB, t11, invIA, wA, t8, invIB, t9, t7, t10, 0, 0, 0, 0, 0, 0, 0);
           t16 = t8.x;
           if (typeof t16 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(131, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t11, t16, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(131, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, t16, t11, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 -= t11 * t16;
           t18 = cp2.get$rA();
           t19 = t18.get$x();
           if (typeof t19 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(132, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t18, wA, t19, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(132, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, t18, wA, t19, t3, 0, 0, 0, 0, 0, 0);
           t21 = t9.y;
           if (typeof t21 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(133, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t18, wA, t19, t21, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(133, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, t18, wA, t19, t21, t3, 0, 0, 0, 0, 0);
           t21 = t19 * t21;
           t18 = t18.get$y();
           if (typeof t18 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(134, t21, t18, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(134, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, wA, t21, t18, t3, 0, 0, 0, 0, 0, 0);
           t23 = t9.x;
           if (typeof t23 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(135, t21, t18, t23, t4, t3, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, wA, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(135, t4, t3, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, wA, t21, t18, t23, 0, 0, 0, 0, 0);
           wA0 = wA - invIA * (t14 + (t21 - t18 * t23));
           t25 = cp1.get$rB();
           t26 = t25.get$x();
           if (typeof t26 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(136, t3, t10, t4, i, cp1, cp2, wA0, t25, t5, t26, t1, wB, bodyA, bodyB, t2, t6, vA, vB, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(136, t4, i, cp1, t5, wA0, cp2, t25, t26, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0);
           t28 = t8.y;
           if (typeof t28 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(137, t3, t4, i, t5, wA0, t25, t26, t28, bodyA, bodyB, t6, vA, vB, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(137, t4, i, cp1, t5, wA0, cp2, t25, t26, t28, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t28 = t26 * t28;
           t25 = t25.get$y();
           if (typeof t25 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(138, t3, t10, t4, i, cp1, cp2, wA0, t5, t1, wB, bodyA, bodyB, t25, t6, vA, vB, t28, t2, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(138, t4, t3, i, cp1, t5, wA0, cp2, t1, t28, t25, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, t2, 0, 0, 0, 0, 0, 0, 0, 0);
           t30 = t8.x;
           if (typeof t30 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(139, t3, t4, i, t5, wA0, bodyA, bodyB, t25, t6, vA, vB, t28, t30, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(139, t4, i, cp1, t5, wA0, cp2, t1, t28, t25, wB, bodyA, bodyB, t30, t6, vA, vB, t7, t2, invIB, t9, t8, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t28 -= t25 * t30;
           t32 = cp2.get$rB();
           t33 = t32.get$x();
           if (typeof t33 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(140, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t28, t32, invIB, t33, t8, t7, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(140, t4, t3, t7, i, cp1, t5, wA0, cp2, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t28, t32, t8, invIB, t9, t33, t10, 0, 0, 0, 0, 0, 0, 0);
           t35 = t9.y;
           if (typeof t35 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(141, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t28, t32, invIB, t33, t35, t7, t9, t8, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(141, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t7, t32, t35, t28, invIB, t9, t33, t10, t8, cp1, cp2, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           t35 = t33 * t35;
           t32 = t32.get$y();
           if (typeof t32 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(142, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t28, invIB, t7, t8, t35, t32, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(142, t4, t3, i, cp1, t5, wA0, cp2, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t28, t7, t8, invIB, t35, t32, t10, t9, 0, 0, 0, 0, 0, 0, 0);
           t37 = t9.x;
           if (typeof t37 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(143, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t28, invIB, t7, t8, t35, t32, t37, t10, t9, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(143, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t28, t7, t8, invIB, t35, t32, t10, t9, t37, cp1, cp2, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           wB0 = wB + invIB * (t28 + (t35 - t32 * t37));
           cp1.set$normalImpulse(t6.get$x());
           cp2.set$normalImpulse(t6.get$y());
@@ -14622,30 +14548,30 @@ $$.ContactSolver = {"":
           wB = wB0;
           break;
         }
-        t6.set$x(0.0);
+        t6.set$x(0);
         t11 = cp2.get$normalMass();
         if (typeof t11 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(144, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, t11, wA, 0, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(144, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, invIB, invMassB, b, t10, t9, cp1, cp2, a, t1, t2, wB, t11, wA, t3, 0, 0, 0);
         t11 = -t11;
         t13 = b.y;
         if (typeof t13 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(145, t3, t4, t13, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, t11, wA, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(145, t4, t13, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, invIB, invMassB, b, t10, t9, cp1, cp2, a, t1, t2, wB, t11, wA, t3, 0, 0);
         t6.set$y(t11 * t13);
         t15 = c.get$K().get$col2().get$x();
         if (typeof t15 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(146, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, wA, t15, 0, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(146, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, invIB, invMassB, b, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t15, t3, 0, 0, 0);
         t17 = t6.get$y();
         if (typeof t17 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(147, t17, t3, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, wA, t15, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(147, t4, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, invIB, invMassB, b, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t15, t17, t3, 0, 0);
         t17 = t15 * t17;
         t15 = b.x;
         if (typeof t15 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(148, t3, t17, t4, i, t15, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(148, t17, t4, t15, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, invIB, invMassB, b, t10, t9, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
         vn1 = t17 + t15;
         t11 = t6.get$y();
         if (typeof t11 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(149, t3, t4, i, vn1, t11, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, b, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0);
-        if (t11 >= 0.0 && vn1 >= 0.0) {
+          return this.solveVelocityConstraints$0$bailout(149, t4, vn1, i, t11, t5, c, bodyA, bodyB, t6, vA, vB, t7, invMassA, invMassB, invIB, t9, t8, t10, invIA, b, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0);
+        if (t11 >= 0 && vn1 >= 0) {
           t7.setFrom$1(t6).subLocal$1(a);
           t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
           t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
@@ -14657,62 +14583,62 @@ $$.ContactSolver = {"":
           t11 = cp1.get$rA();
           t12 = t11.get$x();
           if (typeof t12 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(150, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, t7, invIB, t8, t9, t10, cp1, cp2, t1, wB, t2, t11, wA, t12, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(150, t8, t4, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t6, t11, vB, t12, vA, invIA, wA, invIB, t9, t7, t10, 0, 0, 0, 0, 0, 0, 0);
           t14 = t8.y;
           if (typeof t14 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(151, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t11, wA, t12, t14, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(151, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t11, t12, t14, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 = t12 * t14;
           t11 = t11.get$y();
           if (typeof t11 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(152, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, t11, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(152, t4, t10, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, invIA, wA, invIB, t9, t8, t14, t11, 0, 0, 0, 0, 0, 0, 0);
           t16 = t8.x;
           if (typeof t16 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(153, t16, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, t11, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(153, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t14, t11, t16, t3, 0, 0, 0, 0, 0, 0);
           t14 -= t11 * t16;
           t18 = cp2.get$rA();
           t19 = t18.get$x();
           if (typeof t19 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(154, t3, t4, t14, i, t18, t19, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(154, t4, t14, t18, t19, i, t5, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
           t21 = t9.y;
           if (typeof t21 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(155, t3, t4, t14, i, t18, t19, t21, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(155, t4, t14, t18, t19, i, t21, t5, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
           t21 = t19 * t21;
           t18 = t18.get$y();
           if (typeof t18 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(156, t3, t4, t14, i, t21, t18, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(156, t4, t14, i, t21, t18, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0, 0);
           t23 = t9.x;
           if (typeof t23 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(157, t3, t4, t14, i, t21, t18, t23, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(157, t4, t14, i, t21, t18, t23, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t3, 0, 0, 0, 0, 0);
           wA0 = wA - invIA * (t14 + (t21 - t18 * t23));
           t25 = cp1.get$rB();
           t26 = t25.get$x();
           if (typeof t26 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(158, t3, t10, t4, i, cp1, cp2, t5, t1, wB, bodyA, bodyB, t2, t6, vA, wA0, vB, t26, t25, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(158, t4, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t7, t26, t25, invIB, t9, t8, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0);
           t28 = t8.y;
           if (typeof t28 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(159, t3, t4, i, t5, bodyA, bodyB, t6, vA, wA0, vB, t26, t25, invIB, t7, t28, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(159, t4, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t28, t26, t25, invIB, t9, t8, t7, t10, 0, 0, 0, 0, 0, 0, 0);
           t28 = t26 * t28;
           t25 = t25.get$y();
           if (typeof t25 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(160, t3, t10, t4, i, cp1, t7, cp2, t5, t1, wB, bodyA, bodyB, t2, t6, vA, wA0, vB, invIB, t28, t25, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(160, t4, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t7, t28, t25, invIB, t9, t8, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0);
           t30 = t8.x;
           if (typeof t30 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(161, t3, t4, i, t5, bodyA, bodyB, t6, vA, wA0, vB, t7, invIB, t8, t25, t28, t9, t10, t30, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(161, t4, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t7, t28, t25, invIB, t9, t8, t30, t10, 0, 0, 0, 0, 0, 0, 0);
           t28 -= t25 * t30;
           t32 = cp2.get$rB();
           t33 = t32.get$x();
           if (typeof t33 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(162, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, wA0, invIB, t7, t8, t9, t10, t28, t32, t33, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(162, t32, t4, t33, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t7, t8, invIB, t9, t10, t28, 0, 0, 0, 0, 0, 0, 0);
           t35 = t9.y;
           if (typeof t35 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(163, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, wA0, invIB, t7, t8, t9, t10, t28, t32, t33, t35, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(163, t4, i, t5, bodyA, bodyB, wA0, t6, vA, vB, t7, t8, invIB, t9, t10, t28, t32, t33, t35, cp1, cp2, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           t35 = t33 * t35;
           t32 = t32.get$y();
           if (typeof t32 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(164, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, wA0, invIB, t7, t8, t9, t10, t28, cp1, t35, t32, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(164, t4, t3, t35, i, cp1, t5, cp2, t32, t1, t2, wB, bodyA, bodyB, wA0, t6, vA, vB, t7, t8, invIB, t9, t10, t28, 0, 0, 0, 0, 0, 0, 0);
           t37 = t9.x;
           if (typeof t37 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(165, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, wA0, invIB, t7, t8, t9, t10, t28, cp1, t35, t32, cp2, t37, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(165, t4, i, t5, bodyA, bodyB, wA0, t6, vA, vB, t7, t8, invIB, t9, t10, t28, t35, cp1, t37, cp2, t32, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           wB0 = wB + invIB * (t28 + (t35 - t32 * t37));
           cp1.set$normalImpulse(t6.get$x());
           cp2.set$normalImpulse(t6.get$y());
@@ -14720,15 +14646,15 @@ $$.ContactSolver = {"":
           wB = wB0;
           break;
         }
-        t6.set$x(0.0);
-        t6.set$y(0.0);
+        t6.set$x(0);
+        t6.set$y(0);
         vn1 = b.x;
         if (typeof vn1 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(166, t3, t4, i, vn1, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, b, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
+          return this.solveVelocityConstraints$0$bailout(166, t4, vn1, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, t9, b, invIB, t10, invMassB, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
         vn2 = b.y;
         if (typeof vn2 !== 'number')
-          return this.solveVelocityConstraints$0$bailout(167, t3, t4, i, vn1, vn2, t5, c, bodyA, bodyB, t6, vA, vB, invMassA, invIA, invMassB, invIB, t7, t8, t9, t10, cp1, cp2, a, t1, wB, t2, wA, 0, 0, 0);
-        if (vn1 >= 0.0 && vn2 >= 0.0) {
+          return this.solveVelocityConstraints$0$bailout(167, t4, vn1, vn2, i, t5, c, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invMassA, t9, invMassB, invIB, t10, cp1, cp2, a, t1, t2, wB, wA, t3, 0, 0, 0);
+        if (vn1 >= 0 && vn2 >= 0) {
           t7.setFrom$1(t6).subLocal$1(a);
           t8.setFrom$1(c.get$normal()).mulLocal$1(t7.x);
           t9.setFrom$1(c.get$normal()).mulLocal$1(t7.y);
@@ -14740,62 +14666,62 @@ $$.ContactSolver = {"":
           t11 = cp1.get$rA();
           t12 = t11.get$x();
           if (typeof t12 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(168, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t11, t12, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(168, t4, t3, i, cp1, t5, cp2, t1, t11, wB, t12, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, wA, invIB, t9, t10, t2, 0, 0, 0, 0, 0, 0, 0);
           t14 = t8.y;
           if (typeof t14 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(169, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t11, t12, t14, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(169, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t11, wB, t12, t14, t2, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 = t12 * t14;
           t11 = t11.get$y();
           if (typeof t11 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(170, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t11, wA, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(170, t4, t10, t3, i, cp1, t5, cp2, t1, t2, wB, bodyA, bodyB, t6, t11, vA, vB, invIA, t8, wA, invIB, t9, t7, t14, 0, 0, 0, 0, 0, 0, 0);
           t16 = t8.x;
           if (typeof t16 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(171, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, t14, t11, t16, wA, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(171, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, t14, t11, t16, wA, t3, 0, 0, 0, 0, 0, 0);
           t14 -= t11 * t16;
           t18 = cp2.get$rA();
           t19 = t18.get$x();
           if (typeof t19 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(172, t19, t3, t4, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, t18, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(172, t4, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t14, t18, t19, t3, 0, 0, 0, 0, 0, 0);
           t21 = t9.y;
           if (typeof t21 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(173, t19, t21, t4, t3, i, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, t18, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(173, t4, t3, i, t5, bodyA, bodyB, t6, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t14, t18, t19, t21, 0, 0, 0, 0, 0);
           t21 = t19 * t21;
           t18 = t18.get$y();
           if (typeof t18 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(174, t3, t4, t21, i, t18, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(174, t4, t21, t18, i, t5, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t14, t3, 0, 0, 0, 0, 0, 0);
           t23 = t9.x;
           if (typeof t23 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(175, t3, t4, t21, i, t18, t23, t5, bodyA, bodyB, t6, vA, vB, invIA, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, wA, t14, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(175, t4, t21, t18, t23, i, t5, bodyA, t6, bodyB, vA, vB, t7, invIA, t8, invIB, t9, t10, cp1, cp2, t1, t2, wB, wA, t14, t3, 0, 0, 0, 0, 0);
           wA0 = wA - invIA * (t14 + (t21 - t18 * t23));
           t25 = cp1.get$rB();
           t26 = t25.get$x();
           if (typeof t26 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(176, t3, t10, t4, i, cp1, cp2, t5, t2, wA0, wB, bodyA, bodyB, t25, t6, vA, vB, t26, t1, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(176, t4, t3, t1, i, cp1, t5, cp2, wA0, t25, t26, wB, bodyA, bodyB, t6, vA, vB, t7, t8, invIB, t9, t10, t2, 0, 0, 0, 0, 0, 0, 0, 0);
           t28 = t8.y;
           if (typeof t28 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(177, t3, t4, i, t5, wA0, t25, bodyA, bodyB, t26, t6, vA, vB, t28, invIB, t7, t8, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(177, t4, t3, t1, i, cp1, t5, cp2, wA0, t25, t26, wB, bodyA, bodyB, t28, t6, vA, vB, t7, t8, invIB, t9, t10, t2, 0, 0, 0, 0, 0, 0, 0);
           t28 = t26 * t28;
           t25 = t25.get$y();
           if (typeof t25 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(178, t3, t10, t4, i, cp1, cp2, t5, wA0, wB, bodyA, bodyB, t2, t6, vA, vB, t25, t28, t1, invIB, t7, t8, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(178, t4, i, cp1, t5, cp2, wA0, t1, t2, wB, bodyA, bodyB, t28, t6, vA, vB, t7, t25, invIB, t9, t8, t10, t3, 0, 0, 0, 0, 0, 0, 0, 0);
           t30 = t8.x;
           if (typeof t30 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(179, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t25, t28, invIB, t7, t8, t30, t9, t10, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(179, t4, i, cp1, t5, cp2, wA0, t1, t2, wB, bodyA, bodyB, t28, t6, vA, vB, t30, t7, t25, invIB, t9, t8, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t28 -= t25 * t30;
           t32 = cp2.get$rB();
           t33 = t32.get$x();
           if (typeof t33 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(180, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, invIB, t28, t8, t32, t33, t9, t10, t7, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(180, t4, t8, i, cp1, t5, cp2, wA0, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t28, t32, invIB, t9, t33, t10, t3, 0, 0, 0, 0, 0, 0, 0);
           t35 = t9.y;
           if (typeof t35 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(181, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, invIB, t28, t32, t7, t33, t35, t10, t9, t8, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(181, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t7, t28, t8, t32, invIB, t9, t35, t33, t10, cp1, cp2, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           t35 = t33 * t35;
           t32 = t32.get$y();
           if (typeof t32 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(182, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, invIB, t28, t8, t7, t9, t10, t35, t32, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(182, t32, t4, t3, i, cp1, t5, cp2, wA0, t1, t2, wB, bodyA, bodyB, t6, vA, vB, t7, t28, t8, invIB, t9, t10, t35, 0, 0, 0, 0, 0, 0, 0);
           t37 = t9.x;
           if (typeof t37 !== 'number')
-            return this.solveVelocityConstraints$0$bailout(183, t3, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, invIB, t28, t8, t7, t9, t10, t35, t32, t37, cp1, cp2, t1, wB, t2, 0, 0, 0, 0, 0, 0);
+            return this.solveVelocityConstraints$0$bailout(183, t4, i, t5, wA0, bodyA, bodyB, t6, vA, vB, t7, t28, t8, invIB, t9, t10, t35, t32, t37, cp1, cp2, t1, t2, wB, t3, 0, 0, 0, 0, 0, 0);
           wB0 = wB + invIB * (t28 + (t35 - t32 * t37));
           cp1.set$normalImpulse(t6.get$x());
           cp2.set$normalImpulse(t6.get$y());
@@ -14816,173 +14742,200 @@ $$.ContactSolver = {"":
  solveVelocityConstraints$0$bailout: function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13, env14, env15, env16, env17, env18, env19, env20, env21, env22, env23, env24, env25, env26, env27, env28, env29) {
   switch (state) {
     case 1:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t11 = env5;
-      t1 = env6;
-      t2 = env7;
-      t6 = env8;
-      t7 = env9;
-      t8 = env10;
-      t9 = env11;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t11 = env3;
+      t1 = env4;
+      t2 = env5;
+      t6 = env6;
+      t7 = env7;
+      t8 = env8;
+      t9 = env9;
+      t10 = env10;
+      t3 = env11;
       break;
     case 2:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t1 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      wA = env9;
-      t6 = env10;
-      t2 = env11;
-      t7 = env12;
-      t8 = env13;
-      t9 = env14;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t1 = env3;
+      t2 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      wA = env8;
+      t6 = env9;
+      t7 = env10;
+      t8 = env11;
+      t9 = env12;
+      t10 = env13;
+      t3 = env14;
       break;
     case 3:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t1 = env5;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t1 = env3;
+      t2 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      wA = env8;
+      wB = env9;
+      t7 = env10;
+      t8 = env11;
+      t6 = env12;
+      t9 = env13;
+      t10 = env14;
+      t3 = env15;
+      break;
+    case 4:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t1 = env3;
+      t2 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      wA = env8;
+      wB = env9;
+      vA = env10;
+      vB = env11;
+      t7 = env12;
+      invMassA = env13;
+      t8 = env14;
+      t6 = env15;
+      t9 = env16;
+      t10 = env17;
+      t3 = env18;
+      break;
+    case 5:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      t5 = env3;
+      t1 = env4;
+      t2 = env5;
       c = env6;
       bodyA = env7;
       bodyB = env8;
       wA = env9;
       wB = env10;
-      t6 = env11;
-      t2 = env12;
+      vA = env11;
+      vB = env12;
       t7 = env13;
-      t8 = env14;
-      t9 = env15;
-      break;
-    case 4:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t2 = env4;
-      t5 = env5;
-      t1 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      wA = env10;
-      wB = env11;
-      vA = env12;
-      vB = env13;
-      t6 = env14;
-      invMassA = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      break;
-    case 5:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t2 = env4;
-      t5 = env5;
-      t1 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      wA = env10;
-      wB = env11;
-      vA = env12;
-      vB = env13;
-      t6 = env14;
-      invMassA = env15;
-      invIA = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
+      invMassA = env14;
+      t8 = env15;
+      t6 = env16;
+      t9 = env17;
+      t10 = env18;
+      invIA = env19;
       break;
     case 6:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t2 = env4;
-      t5 = env5;
-      t1 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      wA = env10;
-      wB = env11;
-      vA = env12;
-      vB = env13;
-      t6 = env14;
-      invMassA = env15;
-      invIA = env16;
-      invMassB = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      break;
-    case 7:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      t2 = env4;
-      t5 = env5;
-      t1 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      wA = env10;
-      wB = env11;
-      vA = env12;
-      vB = env13;
-      t6 = env14;
-      invMassA = env15;
-      invIA = env16;
-      invMassB = env17;
-      invIB = env18;
-      t8 = env19;
-      t7 = env20;
-      t9 = env21;
-      break;
-    case 8:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      t3 = env1;
       i = env2;
       t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      wA = env7;
-      wB = env8;
-      vA = env9;
-      vB = env10;
-      t6 = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
+      t1 = env4;
+      t2 = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      wA = env9;
+      wB = env10;
+      vA = env11;
+      vB = env12;
+      t7 = env13;
+      invMassA = env14;
+      invMassB = env15;
       t8 = env16;
-      t7 = env17;
+      t6 = env17;
       t9 = env18;
       t10 = env19;
-      friction = env20;
-      t1 = env21;
-      t2 = env22;
+      invIA = env20;
+      break;
+    case 7:
+      t4 = env0;
+      t10 = env1;
+      t3 = env2;
+      i = env3;
+      t5 = env4;
+      t1 = env5;
+      t2 = env6;
+      c = env7;
+      bodyA = env8;
+      bodyB = env9;
+      wA = env10;
+      wB = env11;
+      vA = env12;
+      vB = env13;
+      t7 = env14;
+      invMassA = env15;
+      invMassB = env16;
+      t8 = env17;
+      t6 = env18;
+      t9 = env19;
+      invIB = env20;
+      invIA = env21;
+      break;
+    case 8:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      wA = env6;
+      wB = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      invMassA = env11;
+      invMassB = env12;
+      t8 = env13;
+      t6 = env14;
+      t9 = env15;
+      t10 = env16;
+      invIA = env17;
+      invIB = env18;
+      friction = env19;
+      t1 = env20;
+      t2 = env21;
+      t3 = env22;
       break;
     case 9:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      invMassB = env14;
+      t7 = env15;
+      t10 = env16;
+      friction = env17;
+      t1 = env18;
+      t2 = env19;
+      wB = env20;
+      j = env21;
+      wA = env22;
+      t3 = env23;
+      t11 = env24;
+      break;
+    case 10:
+      t4 = env0;
+      i = env1;
+      t11 = env2;
       t5 = env3;
       c = env4;
       bodyA = env5;
@@ -14992,261 +14945,174 @@ $$.ContactSolver = {"":
       vB = env9;
       invMassA = env10;
       invIA = env11;
-      invMassB = env12;
+      t8 = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
       t10 = env17;
       friction = env18;
       t1 = env19;
-      wB = env20;
-      j = env21;
-      t2 = env22;
-      wA = env23;
-      t11 = env24;
-      break;
-    case 10:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t11 = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
-      t1 = env20;
+      t2 = env20;
       wB = env21;
       j = env22;
-      t2 = env23;
-      wA = env24;
+      wA = env23;
+      t3 = env24;
       break;
     case 11:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
       ccp = env3;
       a = env4;
       t11 = env5;
-      t5 = env6;
-      t13 = env7;
-      c = env8;
-      bodyA = env9;
-      bodyB = env10;
-      t6 = env11;
-      vA = env12;
-      vB = env13;
-      invMassA = env14;
-      invIA = env15;
-      invMassB = env16;
-      invIB = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 12:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
       t13 = env6;
-      t11 = env7;
-      c = env8;
-      bodyA = env9;
-      bodyB = env10;
-      t6 = env11;
-      vA = env12;
-      vB = env13;
-      invMassA = env14;
-      invIA = env15;
-      invMassB = env16;
-      invIB = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 13:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
-      c = env6;
-      t11 = env7;
-      bodyB = env8;
-      t13 = env9;
-      bodyA = env10;
+      c = env7;
+      bodyA = env8;
+      bodyB = env9;
+      t6 = env10;
       vA = env11;
       vB = env12;
       invMassA = env13;
       invIA = env14;
       invMassB = env15;
       invIB = env16;
-      t7 = env17;
+      t9 = env17;
       t8 = env18;
-      t6 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
+      t7 = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
       j = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 12:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
+      t5 = env4;
+      t13 = env5;
+      t11 = env6;
+      c = env7;
+      bodyA = env8;
+      bodyB = env9;
+      t6 = env10;
+      vA = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
+      invIB = env16;
+      t9 = env17;
+      t8 = env18;
+      t7 = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 13:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
+      t5 = env4;
+      c = env5;
+      t11 = env6;
+      bodyB = env7;
+      t13 = env8;
+      bodyA = env9;
+      vA = env10;
+      vB = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t6 = env16;
+      t8 = env17;
+      t7 = env18;
+      t9 = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
       break;
     case 14:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
+      t5 = env4;
+      c = env5;
+      t6 = env6;
+      bodyB = env7;
+      bodyA = env8;
       t13 = env9;
       vA = env10;
       vB = env11;
       invMassA = env12;
       invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t11 = env16;
-      t8 = env17;
-      t7 = env18;
-      t6 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 15:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t18 = env18;
-      t9 = env19;
+      invIB = env14;
+      t11 = env15;
+      invMassB = env16;
+      t7 = env17;
+      t9 = env18;
+      t8 = env19;
       t10 = env20;
       friction = env21;
       t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 15:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
+      t5 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      t8 = env13;
+      invIB = env14;
+      t9 = env15;
+      invMassB = env16;
+      t18 = env17;
+      t10 = env18;
+      t7 = env19;
+      friction = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
       j = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 16:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      t18 = env19;
-      t20 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 17:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      a = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      t10 = env19;
-      t20 = env20;
-      t18 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 18:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
       t5 = env4;
       c = env5;
       bodyA = env6;
@@ -15258,169 +15124,258 @@ $$.ContactSolver = {"":
       invIA = env12;
       invMassB = env13;
       invIB = env14;
-      t7 = env15;
+      t9 = env15;
       t8 = env16;
-      t9 = env17;
+      t7 = env17;
       t10 = env18;
       t18 = env19;
       t20 = env20;
       friction = env21;
       t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 17:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      a = env3;
+      t5 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      t9 = env15;
+      t8 = env16;
+      t7 = env17;
+      t10 = env18;
+      t20 = env19;
+      t18 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 18:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      t18 = env18;
+      t20 = env19;
+      friction = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
       j = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 19:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      friction = env18;
+      t1 = env19;
       t24 = env20;
-      t1 = env21;
+      t2 = env21;
       wB = env22;
       j = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 20:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      friction = env18;
+      t1 = env19;
       t24 = env20;
-      t1 = env21;
-      t26 = env22;
-      wB = env23;
-      j = env24;
-      t2 = env25;
-      wA = env26;
+      t2 = env21;
+      wB = env22;
+      j = env23;
+      t26 = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 21:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
-      t1 = env20;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      t6 = env5;
+      bodyB = env6;
+      bodyA = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      friction = env18;
+      t1 = env19;
+      t2 = env20;
       wB = env21;
       j = env22;
       t26 = env23;
-      t2 = env24;
-      t24 = env25;
-      wA = env26;
+      t24 = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 22:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
-      t1 = env20;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      friction = env18;
+      t1 = env19;
+      t2 = env20;
       wB = env21;
       j = env22;
       t26 = env23;
-      t2 = env24;
-      t24 = env25;
-      t29 = env26;
-      wA = env27;
+      t24 = env24;
+      t29 = env25;
+      wA = env26;
+      t3 = env27;
       break;
     case 23:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      t7 = env14;
-      invIB = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      friction = env19;
-      t1 = env20;
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      invMassB = env15;
+      t7 = env16;
+      t10 = env17;
+      friction = env18;
+      t1 = env19;
+      t2 = env20;
       wB = env21;
       j = env22;
-      t2 = env23;
-      wA = env24;
-      vt = env25;
-      t26 = env26;
+      wA = env23;
+      vt = env24;
+      t26 = env25;
+      t3 = env26;
       break;
     case 24:
       lambda = env0;
       t26 = env1;
-      t3 = env2;
-      t4 = env3;
+      t4 = env2;
+      i = env3;
+      ccp = env4;
+      t5 = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      vB = env11;
+      invMassA = env12;
+      invIA = env13;
+      t8 = env14;
+      invIB = env15;
+      t9 = env16;
+      invMassB = env17;
+      t7 = env18;
+      t10 = env19;
+      friction = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      j = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 25:
+      lambda = env0;
+      t4 = env1;
+      maxFriction = env2;
+      t26 = env3;
       i = env4;
       ccp = env5;
       t5 = env6;
@@ -15432,30 +15387,310 @@ $$.ContactSolver = {"":
       vB = env12;
       invMassA = env13;
       invIA = env14;
-      invMassB = env15;
+      t8 = env15;
       invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
+      t9 = env17;
+      invMassB = env18;
+      t7 = env19;
       t10 = env20;
       friction = env21;
       t1 = env22;
-      wB = env23;
-      j = env24;
-      t2 = env25;
+      t2 = env23;
+      wB = env24;
+      j = env25;
       wA = env26;
+      t3 = env27;
       break;
-    case 25:
-      lambda = env0;
-      t3 = env1;
-      maxFriction = env2;
-      t26 = env3;
-      i = env4;
-      t4 = env5;
-      ccp = env6;
-      t5 = env7;
-      c = env8;
+    case 26:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      lambda = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      t34 = env9;
+      t6 = env10;
+      vA = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      t8 = env15;
+      invIB = env16;
+      t9 = env17;
+      invMassB = env18;
+      t7 = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      j = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 27:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      lambda = env5;
+      c = env6;
+      t6 = env7;
+      bodyB = env8;
+      Px = env9;
+      t34 = env10;
+      vA = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      t8 = env15;
+      invIB = env16;
+      bodyA = env17;
+      invMassB = env18;
+      t7 = env19;
+      t9 = env20;
+      t10 = env21;
+      friction = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      j = env26;
+      wA = env27;
+      t3 = env28;
+      break;
+    case 28:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      Px = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      t8 = env15;
+      invIB = env16;
+      vB = env17;
+      t34 = env18;
+      t9 = env19;
+      t10 = env20;
+      t7 = env21;
+      friction = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      j = env26;
+      wA = env27;
+      t3 = env28;
+      break;
+    case 29:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      Px = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      t8 = env15;
+      invIB = env16;
+      vB = env17;
+      t38 = env18;
+      t9 = env19;
+      t10 = env20;
+      t7 = env21;
+      friction = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      j = env26;
+      wA = env27;
+      t3 = env28;
+      break;
+    case 30:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      Px = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      vB = env12;
+      invIA = env13;
+      t8 = env14;
+      invIB = env15;
+      t9 = env16;
+      invMassB = env17;
+      invMassA = env18;
+      t10 = env19;
+      t7 = env20;
+      t40 = env21;
+      friction = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      j = env26;
+      wA = env27;
+      t3 = env28;
+      break;
+    case 31:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      Px = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      vB = env12;
+      invIA = env13;
+      t8 = env14;
+      invIB = env15;
+      t9 = env16;
+      invMassB = env17;
+      invMassA = env18;
+      t10 = env19;
+      t7 = env20;
+      t40 = env21;
+      t42 = env22;
+      friction = env23;
+      t1 = env24;
+      t2 = env25;
+      wB = env26;
+      j = env27;
+      wA = env28;
+      t3 = env29;
+      break;
+    case 32:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      t6 = env6;
+      Px = env7;
+      bodyB = env8;
       bodyA = env9;
+      vA = env10;
+      Py = env11;
+      vB = env12;
+      invMassA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t9 = env16;
+      t8 = env17;
+      t7 = env18;
+      invIA = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wA = env24;
+      j = env25;
+      t44 = env26;
+      wB = env27;
+      t3 = env28;
+      break;
+    case 33:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      Px = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      vB = env12;
+      invMassA = env13;
+      t8 = env14;
+      invIB = env15;
+      t9 = env16;
+      invMassB = env17;
+      t7 = env18;
+      invIA = env19;
+      t10 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wA = env24;
+      j = env25;
+      wB = env26;
+      t46 = env27;
+      t3 = env28;
+      break;
+    case 34:
+      t4 = env0;
+      i = env1;
+      ccp = env2;
+      t5 = env3;
+      newImpulse = env4;
+      c = env5;
+      bodyA = env6;
+      Px = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      Py = env11;
+      vB = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t9 = env16;
+      t8 = env17;
+      invMassA = env18;
+      t10 = env19;
+      t7 = env20;
+      friction = env21;
+      t1 = env22;
+      t2 = env23;
+      wA = env24;
+      j = env25;
+      wB = env26;
+      t3 = env27;
+      t48 = env28;
+      break;
+    case 35:
+      t4 = env0;
+      t48 = env1;
+      t50 = env2;
+      i = env3;
+      ccp = env4;
+      t5 = env5;
+      newImpulse = env6;
+      c = env7;
+      bodyA = env8;
+      Px = env9;
       bodyB = env10;
       t6 = env11;
       vA = env12;
@@ -15464,605 +15699,323 @@ $$.ContactSolver = {"":
       invIA = env15;
       invMassB = env16;
       invIB = env17;
-      t7 = env18;
+      t9 = env18;
       t8 = env19;
-      t9 = env20;
+      t7 = env20;
       t10 = env21;
       friction = env22;
       t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 26:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      lambda = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t34 = env10;
-      t6 = env11;
-      vA = env12;
-      vB = env13;
-      invMassA = env14;
-      invIA = env15;
-      invMassB = env16;
-      invIB = env17;
-      t7 = env18;
-      t8 = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wB = env24;
-      j = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 27:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      lambda = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      Px = env10;
-      t34 = env11;
-      vA = env12;
-      vB = env13;
-      invMassA = env14;
-      invIA = env15;
-      invMassB = env16;
-      invIB = env17;
-      t7 = env18;
-      t8 = env19;
-      t6 = env20;
-      t9 = env21;
-      t10 = env22;
-      friction = env23;
-      t1 = env24;
-      wB = env25;
+      t2 = env24;
+      wA = env25;
       j = env26;
-      t2 = env27;
-      wA = env28;
-      break;
-    case 28:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      Px = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      vB = env18;
-      t34 = env19;
-      t9 = env20;
-      t8 = env21;
-      t10 = env22;
-      friction = env23;
-      t1 = env24;
-      wB = env25;
-      j = env26;
-      t2 = env27;
-      wA = env28;
-      break;
-    case 29:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      Px = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      vB = env18;
-      t38 = env19;
-      t9 = env20;
-      t8 = env21;
-      t10 = env22;
-      friction = env23;
-      t1 = env24;
-      wB = env25;
-      j = env26;
-      t2 = env27;
-      wA = env28;
-      break;
-    case 30:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      Px = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      vB = env13;
-      invIA = env14;
-      invMassB = env15;
-      t7 = env16;
-      invIB = env17;
-      t8 = env18;
-      invMassA = env19;
-      t9 = env20;
-      t10 = env21;
-      t40 = env22;
-      friction = env23;
-      t1 = env24;
-      wB = env25;
-      j = env26;
-      t2 = env27;
-      wA = env28;
-      break;
-    case 31:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      Px = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      vB = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      invMassA = env19;
-      t9 = env20;
-      t10 = env21;
-      t40 = env22;
-      t42 = env23;
-      friction = env24;
-      t1 = env25;
-      wB = env26;
-      j = env27;
-      t2 = env28;
-      wA = env29;
-      break;
-    case 32:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      Px = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      vB = env13;
-      invIA = env14;
-      invMassB = env15;
-      t7 = env16;
-      invIB = env17;
-      t8 = env18;
-      invMassA = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wA = env24;
-      j = env25;
-      t44 = env26;
       wB = env27;
-      t2 = env28;
+      t3 = env28;
       break;
-    case 33:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      Px = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      vB = env13;
-      invIA = env14;
-      invMassB = env15;
-      t7 = env16;
-      invIB = env17;
-      t8 = env18;
-      invMassA = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wA = env24;
-      j = env25;
-      t2 = env26;
-      wB = env27;
-      t46 = env28;
+    case 36:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      t11 = env7;
+      vA = env8;
+      t7 = env9;
+      invMassA = env10;
+      invMassB = env11;
+      invIB = env12;
+      invIA = env13;
+      vB = env14;
+      t10 = env15;
+      t9 = env16;
+      t8 = env17;
+      t1 = env18;
+      t2 = env19;
+      wB = env20;
+      wA = env21;
+      t3 = env22;
       break;
-    case 34:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      ccp = env3;
-      t5 = env4;
-      newImpulse = env5;
-      c = env6;
-      bodyA = env7;
-      Px = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      Py = env12;
-      vB = env13;
-      invIA = env14;
-      invMassB = env15;
-      t7 = env16;
-      invIB = env17;
-      t8 = env18;
-      invMassA = env19;
-      t9 = env20;
-      t10 = env21;
-      friction = env22;
-      t1 = env23;
-      wA = env24;
-      j = env25;
-      t2 = env26;
-      wB = env27;
-      t48 = env28;
-      break;
-    case 35:
-      t3 = env0;
-      t48 = env1;
-      t50 = env2;
-      t4 = env3;
+    case 37:
+      t4 = env0;
+      t10 = env1;
+      t3 = env2;
+      t8 = env3;
       i = env4;
-      ccp = env5;
-      t5 = env6;
-      newImpulse = env7;
-      c = env8;
+      t5 = env5;
+      t1 = env6;
+      t2 = env7;
+      wB = env8;
       bodyA = env9;
-      Px = env10;
-      bodyB = env11;
+      bodyB = env10;
+      c = env11;
       t6 = env12;
       vA = env13;
       vB = env14;
       invMassA = env15;
       invIA = env16;
-      invMassB = env17;
-      t7 = env18;
-      invIB = env19;
-      t8 = env20;
-      t9 = env21;
-      t10 = env22;
-      friction = env23;
-      t1 = env24;
-      wA = env25;
-      j = env26;
-      t2 = env27;
-      wB = env28;
-      break;
-    case 36:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      t11 = env9;
-      vB = env10;
-      invMassA = env11;
-      invMassB = env12;
-      invIB = env13;
-      invIA = env14;
-      t8 = env15;
-      t7 = env16;
-      t9 = env17;
-      t10 = env18;
-      t1 = env19;
-      wB = env20;
-      t2 = env21;
-      wA = env22;
-      break;
-    case 37:
-      t8 = env0;
-      t3 = env1;
-      t10 = env2;
-      t4 = env3;
-      i = env4;
-      t7 = env5;
-      t5 = env6;
-      t1 = env7;
-      wB = env8;
-      bodyA = env9;
-      t2 = env10;
-      bodyB = env11;
-      t6 = env12;
-      vA = env13;
-      c = env14;
-      vB = env15;
-      invMassA = env16;
-      invIA = env17;
-      invMassB = env18;
-      invIB = env19;
-      wA = env20;
-      t11 = env21;
+      wA = env17;
+      invIB = env18;
+      t11 = env19;
+      invMassB = env20;
+      t7 = env21;
       t9 = env22;
       break;
     case 38:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
-      t9 = env18;
-      t11 = env19;
-      t10 = env20;
-      t13 = env21;
-      t1 = env22;
+      t8 = env11;
+      invIB = env12;
+      invIA = env13;
+      invMassB = env14;
+      ccp = env15;
+      a1 = env16;
+      t11 = env17;
+      t10 = env18;
+      t13 = env19;
+      t9 = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 39:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
+      t8 = env11;
+      invIB = env12;
+      invIA = env13;
+      invMassB = env14;
+      ccp = env15;
+      a1 = env16;
+      t10 = env17;
       t9 = env18;
-      t10 = env19;
-      t13 = env20;
-      t11 = env21;
-      t1 = env22;
+      t13 = env19;
+      t11 = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 40:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
+      t8 = env11;
+      invIB = env12;
+      invIA = env13;
+      invMassB = env14;
+      ccp = env15;
+      a1 = env16;
+      t10 = env17;
       t9 = env18;
-      t10 = env19;
-      t11 = env20;
-      t13 = env21;
-      t1 = env22;
+      t11 = env19;
+      t13 = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 41:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
+      t8 = env11;
+      invIB = env12;
+      invIA = env13;
+      invMassB = env14;
+      ccp = env15;
+      a1 = env16;
+      t10 = env17;
       t9 = env18;
-      t10 = env19;
-      t13 = env20;
-      t11 = env21;
-      t1 = env22;
+      t13 = env19;
+      t11 = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 42:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      t7 = env13;
-      invIB = env14;
-      t8 = env15;
-      ccp = env16;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      invMassB = env14;
+      ccp = env15;
+      invIA = env16;
       a1 = env17;
-      t9 = env18;
-      t10 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      t18 = env23;
-      wA = env24;
-      break;
-    case 43:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
-      t9 = env18;
-      t10 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      t18 = env23;
-      t20 = env24;
-      wA = env25;
-      break;
-    case 44:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      a1 = env17;
-      t9 = env18;
-      t10 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      t20 = env23;
-      wA = env24;
-      t18 = env25;
-      break;
-    case 45:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      t7 = env13;
-      invIB = env14;
-      t8 = env15;
-      ccp = env16;
-      t9 = env17;
       t10 = env18;
       t1 = env19;
-      wB = env20;
-      t2 = env21;
-      wA = env22;
+      t2 = env20;
+      wB = env21;
+      t18 = env22;
+      wA = env23;
+      t3 = env24;
+      break;
+    case 43:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      t6 = env4;
+      bodyA = env5;
+      bodyB = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      t8 = env11;
+      invIB = env12;
+      invIA = env13;
+      invMassB = env14;
+      ccp = env15;
+      a1 = env16;
+      t10 = env17;
+      t9 = env18;
+      t1 = env19;
+      t2 = env20;
+      wB = env21;
+      t18 = env22;
+      t20 = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 44:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      invMassB = env11;
+      t8 = env12;
+      invIB = env13;
+      ccp = env14;
+      invMassA = env15;
+      a1 = env16;
+      t10 = env17;
+      t9 = env18;
+      t1 = env19;
+      t2 = env20;
+      wB = env21;
+      t20 = env22;
       t18 = env23;
-      t20 = env24;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 45:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      invMassB = env14;
+      ccp = env15;
+      invIA = env16;
+      t10 = env17;
+      t1 = env18;
+      t2 = env19;
+      wB = env20;
+      wA = env21;
+      t18 = env22;
+      t20 = env23;
+      t3 = env24;
       break;
     case 46:
-      t3 = env0;
-      t4 = env1;
-      b = env2;
-      i = env3;
-      t24 = env4;
+      t4 = env0;
+      b = env1;
+      i = env2;
+      t24 = env3;
+      t5 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invMassA = env12;
+      t8 = env13;
+      invIB = env14;
+      invIA = env15;
+      t9 = env16;
+      ccp = env17;
+      t10 = env18;
+      invMassB = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      wA = env23;
+      t3 = env24;
+      break;
+    case 47:
+      t4 = env0;
+      b = env1;
+      i = env2;
+      t24 = env3;
+      t26 = env4;
       t5 = env5;
       c = env6;
       bodyA = env7;
@@ -16070,623 +16023,625 @@ $$.ContactSolver = {"":
       t6 = env9;
       vA = env10;
       vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      t7 = env15;
-      invIB = env16;
-      t8 = env17;
+      t7 = env12;
+      invMassA = env13;
+      t8 = env14;
+      invIB = env15;
+      invIA = env16;
+      invMassB = env17;
       ccp = env18;
       t9 = env19;
       t10 = env20;
       t1 = env21;
-      wB = env22;
-      t2 = env23;
-      wA = env24;
-      break;
-    case 47:
-      t3 = env0;
-      t4 = env1;
-      b = env2;
-      i = env3;
-      t24 = env4;
-      t26 = env5;
-      t5 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      ccp = env19;
-      t9 = env20;
-      t10 = env21;
-      t1 = env22;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
       break;
     case 48:
-      t3 = env0;
-      t4 = env1;
-      b = env2;
-      i = env3;
-      t26 = env4;
-      t24 = env5;
-      t5 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      ccp = env19;
-      t9 = env20;
-      t10 = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      wA = env25;
-      break;
-    case 49:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      b = env1;
       i = env2;
       t26 = env3;
-      t24 = env4;
-      t29 = env5;
-      t5 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      ccp = env19;
-      t9 = env20;
-      t10 = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      wA = env25;
-      break;
-    case 50:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      vn = env4;
-      t26 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      c = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      t7 = env15;
-      invIB = env16;
-      t8 = env17;
-      ccp = env18;
-      t9 = env19;
-      t10 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      wA = env24;
-      break;
-    case 51:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      vn = env4;
-      c = env5;
-      bodyA = env6;
-      t26 = env7;
+      t5 = env4;
+      t24 = env5;
+      c = env6;
+      bodyA = env7;
       bodyB = env8;
       t6 = env9;
       vA = env10;
-      t32 = env11;
-      vB = env12;
+      vB = env11;
+      t7 = env12;
       invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t8 = env17;
+      t8 = env14;
+      invIB = env15;
+      invIA = env16;
+      invMassB = env17;
       ccp = env18;
       t9 = env19;
       t10 = env20;
-      t7 = env21;
-      t1 = env22;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 49:
+      t4 = env0;
+      i = env1;
+      t26 = env2;
+      t5 = env3;
+      t24 = env4;
+      t29 = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      vB = env11;
+      t7 = env12;
+      invMassA = env13;
+      t8 = env14;
+      invIB = env15;
+      invIA = env16;
+      invMassB = env17;
+      ccp = env18;
+      t9 = env19;
+      t10 = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 50:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      vn = env3;
+      t26 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invMassA = env12;
+      t8 = env13;
+      invIB = env14;
+      invIA = env15;
+      t9 = env16;
+      ccp = env17;
+      t10 = env18;
+      invMassB = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      wA = env23;
+      t3 = env24;
+      break;
+    case 51:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      vn = env3;
+      c = env4;
+      t6 = env5;
+      bodyA = env6;
+      t32 = env7;
+      t26 = env8;
+      bodyB = env9;
+      vA = env10;
+      t7 = env11;
+      invMassA = env12;
+      t8 = env13;
+      invIB = env14;
+      invIA = env15;
+      vB = env16;
+      ccp = env17;
+      t9 = env18;
+      invMassB = env19;
+      t10 = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t3 = env25;
       break;
     case 52:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      lambda = env10;
-      invMassA = env11;
-      invIA = env12;
-      t7 = env13;
-      invIB = env14;
-      invMassB = env15;
-      ccp = env16;
-      t26 = env17;
-      t8 = env18;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t26 = env10;
+      invMassB = env11;
+      t8 = env12;
+      invIA = env13;
+      lambda = env14;
+      invMassA = env15;
+      t9 = env16;
+      ccp = env17;
+      invIB = env18;
       t10 = env19;
-      t9 = env20;
-      t1 = env21;
+      t1 = env20;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
-      wA = env24;
+      wA = env23;
+      t3 = env24;
       break;
     case 53:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      t8 = env11;
       invMassB = env12;
       invIB = env13;
+      ccp = env14;
+      t7 = env15;
+      t9 = env16;
+      t10 = env17;
+      newImpulse = env18;
+      t11 = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      wA = env23;
+      t3 = env24;
+      break;
+    case 54:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      invIA = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIB = env13;
+      ccp = env14;
+      t7 = env15;
+      t9 = env16;
+      t10 = env17;
+      newImpulse = env18;
+      lambda = env19;
+      t11 = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 55:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      invMassA = env8;
+      invIA = env9;
+      t8 = env10;
+      invMassB = env11;
+      invIB = env12;
+      ccp = env13;
       t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      t9 = env17;
-      t10 = env18;
-      newImpulse = env19;
+      t9 = env15;
+      t10 = env16;
+      newImpulse = env17;
+      lambda = env18;
+      Px = env19;
+      t11 = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 56:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      invMassA = env8;
+      invIA = env9;
+      t8 = env10;
+      invMassB = env11;
+      invIB = env12;
+      ccp = env13;
+      t7 = env14;
+      t9 = env15;
+      t10 = env16;
+      newImpulse = env17;
+      Px = env18;
+      Py = env19;
       t11 = env20;
       t1 = env21;
       wB = env22;
       t2 = env23;
       wA = env24;
-      break;
-    case 54:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      ccp = env16;
-      t9 = env17;
-      t10 = env18;
-      newImpulse = env19;
-      lambda = env20;
-      t11 = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      wA = env25;
-      break;
-    case 55:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
-      ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      lambda = env19;
-      Px = env20;
-      t11 = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      wA = env25;
-      break;
-    case 56:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
-      invMassB = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
-      ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      Px = env19;
-      Py = env20;
-      t11 = env21;
-      wB = env22;
-      t2 = env23;
-      t1 = env24;
-      wA = env25;
+      t3 = env25;
       break;
     case 57:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invMassA = env9;
-      invIA = env10;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      invMassA = env8;
+      invIA = env9;
+      t8 = env10;
       invMassB = env11;
       invIB = env12;
-      t7 = env13;
-      t8 = env14;
-      ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      Px = env19;
-      Py = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      t16 = env24;
-      wA = env25;
-      break;
-    case 58:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invMassB = env10;
-      invIB = env11;
-      t7 = env12;
-      t8 = env13;
-      ccp = env14;
+      ccp = env13;
+      t7 = env14;
       t9 = env15;
       t10 = env16;
       newImpulse = env17;
       Px = env18;
       Py = env19;
       t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t16 = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 58:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invMassB = env11;
+      invIB = env12;
+      ccp = env13;
+      t10 = env14;
+      t9 = env15;
+      newImpulse = env16;
+      Px = env17;
+      Py = env18;
+      t1 = env19;
+      t2 = env20;
       wB = env21;
-      t2 = env22;
-      wA = env23;
-      t18 = env24;
+      wA = env22;
+      t18 = env23;
+      t3 = env24;
       break;
     case 59:
-      t20 = env0;
-      t3 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIA = env10;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
       invMassB = env11;
       invIB = env12;
-      t7 = env13;
-      t8 = env14;
-      ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      Px = env19;
-      Py = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      wA = env24;
-      t18 = env25;
+      ccp = env13;
+      t10 = env14;
+      t9 = env15;
+      newImpulse = env16;
+      Px = env17;
+      Py = env18;
+      t1 = env19;
+      t2 = env20;
+      wB = env21;
+      wA = env22;
+      t18 = env23;
+      t3 = env24;
+      t20 = env25;
       break;
     case 60:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      wA = env3;
-      t22 = env4;
-      t5 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassB = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
+      t4 = env0;
+      i = env1;
+      wA = env2;
+      t22 = env3;
+      t5 = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIB = env13;
+      t9 = env14;
       ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      Px = env19;
-      Py = env20;
-      t1 = env21;
+      t10 = env16;
+      newImpulse = env17;
+      Px = env18;
+      Py = env19;
+      t1 = env20;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
+      t3 = env23;
       break;
     case 61:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      i = env1;
+      wA = env2;
+      t5 = env3;
+      t24 = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIB = env13;
+      t9 = env14;
+      ccp = env15;
+      t10 = env16;
+      newImpulse = env17;
+      Px = env18;
+      Py = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t3 = env23;
+      break;
+    case 62:
+      t4 = env0;
+      newImpulse = env1;
       i = env2;
       wA = env3;
       t5 = env4;
-      t24 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassB = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
-      ccp = env15;
-      t9 = env16;
-      t10 = env17;
-      newImpulse = env18;
-      Px = env19;
-      Py = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 62:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      newImpulse = env3;
-      i = env4;
-      wA = env5;
-      Px = env6;
-      t5 = env7;
-      Py = env8;
-      t1 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t2 = env13;
-      t6 = env14;
-      vA = env15;
-      vB = env16;
-      t26 = env17;
+      Px = env5;
+      Py = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t26 = env12;
+      vA = env13;
+      vB = env14;
+      t6 = env15;
+      t7 = env16;
+      t8 = env17;
       invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      ccp = env21;
-      t9 = env22;
+      t9 = env19;
+      ccp = env20;
+      t10 = env21;
+      t3 = env22;
       break;
     case 63:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      newImpulse = env3;
-      i = env4;
-      wA = env5;
-      t7 = env6;
-      Px = env7;
-      t5 = env8;
-      t1 = env9;
-      wB = env10;
-      bodyA = env11;
-      bodyB = env12;
-      t2 = env13;
-      t6 = env14;
-      vA = env15;
-      vB = env16;
-      t26 = env17;
+      t4 = env0;
+      t3 = env1;
+      newImpulse = env2;
+      i = env3;
+      wA = env4;
+      t5 = env5;
+      Px = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t26 = env15;
+      t28 = env16;
+      t8 = env17;
       invIB = env18;
-      t28 = env19;
-      t8 = env20;
-      ccp = env21;
-      t9 = env22;
+      t9 = env19;
+      ccp = env20;
+      t7 = env21;
+      t10 = env22;
       break;
     case 64:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      t11 = env18;
-      t1 = env19;
+      t11 = env17;
+      t1 = env18;
+      t2 = env19;
       wB = env20;
-      t2 = env21;
-      wA = env22;
+      wA = env21;
+      t3 = env22;
       break;
     case 65:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      t11 = env19;
-      t1 = env20;
+      cp1 = env17;
+      t11 = env18;
+      t1 = env19;
+      t2 = env20;
       wB = env21;
-      t2 = env22;
-      wA = env23;
+      wA = env22;
+      t3 = env23;
       break;
     case 66:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t1 = env21;
-      t11 = env22;
-      wB = env23;
-      t14 = env24;
-      t2 = env25;
-      wA = env26;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t11 = env21;
+      t2 = env22;
+      t14 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 67:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t1 = env21;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
-      t14 = env24;
-      t11 = env25;
-      wA = env26;
+      t14 = env23;
+      t11 = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 68:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t1 = env21;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
-      t11 = env24;
-      t14 = env25;
-      wA = env26;
+      t11 = env23;
+      t14 = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 69:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t8 = env14;
+      t10 = env15;
+      t9 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t14 = env23;
+      wA = env24;
+      t11 = env25;
+      t3 = env26;
+      break;
+    case 70:
+      t4 = env0;
+      t19 = env1;
       i = env2;
       t5 = env3;
       c = env4;
@@ -16695,29 +16650,28 @@ $$.ContactSolver = {"":
       t6 = env7;
       vA = env8;
       vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
       t8 = env15;
-      t9 = env16;
-      t10 = env17;
+      t10 = env16;
+      t9 = env17;
       cp1 = env18;
       cp2 = env19;
       a = env20;
       t1 = env21;
-      wB = env22;
-      t2 = env23;
+      t2 = env22;
+      wB = env23;
       wA = env24;
-      t14 = env25;
-      t11 = env26;
+      t3 = env25;
       break;
-    case 70:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t19 = env3;
+    case 71:
+      t4 = env0;
+      i = env1;
+      t19 = env2;
+      t21 = env3;
       t5 = env4;
       c = env5;
       bodyA = env6;
@@ -16725,371 +16679,372 @@ $$.ContactSolver = {"":
       t6 = env8;
       vA = env9;
       vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
+      t7 = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
       t8 = env16;
-      t9 = env17;
-      t10 = env18;
+      t10 = env17;
+      t9 = env18;
       cp1 = env19;
       cp2 = env20;
       a = env21;
       t1 = env22;
-      wB = env23;
-      t2 = env24;
-      wA = env25;
-      break;
-    case 71:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t19 = env3;
-      t21 = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 72:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t21 = env3;
-      t5 = env4;
-      t19 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t19 = env3;
+      t21 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
       invMassA = env12;
       invIA = env13;
       invMassB = env14;
       invIB = env15;
-      t7 = env16;
-      t8 = env17;
+      t8 = env16;
+      t10 = env17;
       t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 73:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      t19 = env4;
-      t21 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t19 = env3;
+      t21 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t8 = env16;
+      t10 = env17;
+      t9 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 74:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t25 = env6;
+      vA = env7;
+      t26 = env8;
       t6 = env9;
-      vA = env10;
+      t7 = env10;
       vB = env11;
       invMassA = env12;
       invIA = env13;
       invMassB = env14;
       invIB = env15;
-      t7 = env16;
+      t10 = env16;
       t8 = env17;
       t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 74:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      t25 = env9;
-      vB = env10;
-      t26 = env11;
-      invIA = env12;
-      invMassA = env13;
-      invIB = env14;
-      invMassB = env15;
-      t7 = env16;
-      t9 = env17;
-      t8 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 75:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t25 = env14;
-      t8 = env15;
-      t7 = env16;
-      t9 = env17;
-      t10 = env18;
-      t26 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t26 = env10;
+      t25 = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t10 = env16;
+      t8 = env17;
+      t9 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 76:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t25 = env16;
-      t26 = env17;
+      t25 = env13;
+      t26 = env14;
+      invIB = env15;
+      t10 = env16;
+      t8 = env17;
       t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 77:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      t26 = env18;
-      t25 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      t8 = env14;
+      t10 = env15;
+      t26 = env16;
+      t25 = env17;
+      t9 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
+      wA = env25;
+      t3 = env26;
       break;
     case 78:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t31 = env20;
+      cp1 = env17;
+      cp2 = env18;
+      t31 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t3 = env25;
+      break;
+    case 79:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t8 = env14;
+      t10 = env15;
+      t9 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      t31 = env19;
+      t33 = env20;
       a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 80:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t8 = env14;
+      t10 = env15;
+      t9 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t33 = env20;
+      t31 = env21;
       t1 = env22;
       wB = env23;
       t2 = env24;
       wA = env25;
-      break;
-    case 79:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t31 = env20;
-      t33 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 80:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t33 = env21;
-      wB = env22;
-      t31 = env23;
-      t1 = env24;
-      t2 = env25;
-      wA = env26;
+      t3 = env26;
       break;
     case 81:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t1 = env21;
-      wB = env22;
-      t31 = env23;
-      t2 = env24;
-      t33 = env25;
-      wA = env26;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
+      t31 = env22;
+      wB = env23;
+      t33 = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 82:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
       invMassA = env10;
       invIA = env11;
       invMassB = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t8 = env14;
+      t10 = env15;
       t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      a = env20;
-      t1 = env21;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
-      wA = env24;
-      t37 = env25;
+      wA = env23;
+      t37 = env24;
+      t3 = env25;
       break;
     case 83:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      invIA = env11;
+      invMassB = env12;
+      invIB = env13;
+      t8 = env14;
+      t10 = env15;
+      t9 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      a = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      wA = env23;
+      t37 = env24;
+      t39 = env25;
+      t3 = env26;
+      break;
+    case 84:
+      t4 = env0;
+      t37 = env1;
       i = env2;
       t5 = env3;
       c = env4;
@@ -17098,89 +17053,119 @@ $$.ContactSolver = {"":
       t6 = env7;
       vA = env8;
       vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
       t8 = env15;
-      t9 = env16;
-      t10 = env17;
+      t10 = env16;
+      t9 = env17;
       cp1 = env18;
       cp2 = env19;
       a = env20;
       t1 = env21;
-      wB = env22;
-      t2 = env23;
+      t2 = env22;
+      wB = env23;
       wA = env24;
-      t37 = env25;
+      t3 = env25;
       t39 = env26;
       break;
-    case 84:
-      t39 = env0;
-      t3 = env1;
-      t4 = env2;
-      t37 = env3;
-      i = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
+    case 85:
+      t4 = env0;
+      t37 = env1;
+      t42 = env2;
+      i = env3;
+      t5 = env4;
+      c = env5;
+      t6 = env6;
+      bodyB = env7;
+      bodyA = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
       invMassA = env12;
       invIA = env13;
       invMassB = env14;
       invIB = env15;
-      t7 = env16;
-      t8 = env17;
+      t8 = env16;
+      t10 = env17;
       t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 85:
-      t39 = env0;
-      t3 = env1;
-      t4 = env2;
-      t37 = env3;
-      i = env4;
-      t42 = env5;
-      t5 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env25;
+      t3 = env26;
+      t39 = env27;
       break;
     case 86:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
+      t4 = env0;
+      i = env1;
+      vn1 = env2;
+      t5 = env3;
+      t39 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invMassA = env12;
+      invIA = env13;
+      invMassB = env14;
+      invIB = env15;
+      t8 = env16;
+      t10 = env17;
+      t9 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 87:
+      t4 = env0;
+      i = env1;
+      vn1 = env2;
+      t5 = env3;
+      t39 = env4;
+      t45 = env5;
+      c = env6;
+      bodyA = env7;
+      bodyB = env8;
+      t6 = env9;
+      vA = env10;
+      vB = env11;
+      t7 = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
+      invIB = env16;
+      t8 = env17;
+      t10 = env18;
+      t9 = env19;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 88:
+      t4 = env0;
+      i = env1;
+      vn1 = env2;
+      t5 = env3;
+      t45 = env4;
       t39 = env5;
       c = env6;
       bodyA = env7;
@@ -17188,236 +17173,147 @@ $$.ContactSolver = {"":
       t6 = env9;
       vA = env10;
       vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
+      t7 = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
+      invIB = env16;
       t8 = env17;
-      t9 = env18;
-      t10 = env19;
+      t10 = env18;
+      t9 = env19;
       cp1 = env20;
       cp2 = env21;
       a = env22;
       t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 87:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
-      t39 = env5;
-      t45 = env6;
-      c = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
+      t2 = env24;
       wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
       break;
-    case 88:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
-      t45 = env5;
+    case 89:
+      t4 = env0;
+      i = env1;
+      vn1 = env2;
+      t5 = env3;
+      t45 = env4;
+      t39 = env5;
       c = env6;
       bodyA = env7;
       bodyB = env8;
-      t39 = env9;
+      t48 = env9;
       t6 = env10;
       vA = env11;
       vB = env12;
-      invMassA = env13;
-      invIA = env14;
-      invMassB = env15;
-      invIB = env16;
-      t7 = env17;
-      t8 = env18;
-      t9 = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 89:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
-      t45 = env5;
-      c = env6;
-      bodyA = env7;
-      t48 = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      t39 = env12;
-      vB = env13;
+      t7 = env13;
       invMassA = env14;
       invIA = env15;
       invMassB = env16;
       invIB = env17;
       t8 = env18;
-      t7 = env19;
+      t10 = env19;
       t9 = env20;
-      t10 = env21;
-      cp1 = env22;
-      cp2 = env23;
-      a = env24;
-      t1 = env25;
-      wB = env26;
-      t2 = env27;
-      wA = env28;
-      break;
-    case 90:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vn2 = env10;
-      vB = env11;
-      t45 = env12;
-      invIA = env13;
-      invMassA = env14;
-      invIB = env15;
-      invMassB = env16;
-      t7 = env17;
-      t9 = env18;
-      t8 = env19;
-      t10 = env20;
       cp1 = env21;
       cp2 = env22;
       a = env23;
       t1 = env24;
-      wB = env25;
-      t2 = env26;
+      t2 = env25;
+      wB = env26;
       wA = env27;
+      t3 = env28;
       break;
-    case 91:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
+    case 90:
+      t4 = env0;
+      i = env1;
+      vn1 = env2;
       t5 = env3;
       c = env4;
       bodyA = env5;
       bodyB = env6;
-      t6 = env7;
+      vn2 = env7;
       vA = env8;
-      vn2 = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      t51 = env14;
-      t8 = env15;
+      t45 = env9;
+      t6 = env10;
+      t7 = env11;
+      vB = env12;
+      invMassA = env13;
+      invIA = env14;
+      invMassB = env15;
       invIB = env16;
-      t9 = env17;
-      t10 = env18;
-      t7 = env19;
-      cp1 = env20;
-      t45 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 92:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      b = env16;
-      t9 = env17;
-      t10 = env18;
-      t45 = env19;
+      t10 = env17;
+      t8 = env18;
+      t9 = env19;
       cp1 = env20;
       cp2 = env21;
       a = env22;
       t1 = env23;
-      wB = env24;
-      t2 = env25;
+      t2 = env24;
+      wB = env25;
       wA = env26;
+      t3 = env27;
+      break;
+    case 91:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      vn2 = env6;
+      vA = env7;
+      vB = env8;
+      t6 = env9;
+      t45 = env10;
+      t51 = env11;
+      t7 = env12;
+      invIA = env13;
+      invMassB = env14;
+      invMassA = env15;
+      t10 = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 92:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      invMassB = env11;
+      invMassA = env12;
+      invIB = env13;
+      b = env14;
+      t10 = env15;
+      t9 = env16;
+      t45 = env17;
+      t8 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
       break;
     case 93:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t54 = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      t45 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 94:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
+      t4 = env0;
+      i = env1;
+      t54 = env2;
       t5 = env3;
       c = env4;
       bodyA = env5;
@@ -17425,178 +17321,237 @@ $$.ContactSolver = {"":
       t6 = env7;
       vA = env8;
       vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      b = env16;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t10 = env16;
       t9 = env17;
-      t10 = env18;
+      t45 = env18;
+      t8 = env19;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 94:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      invMassB = env11;
+      invMassA = env12;
+      invIB = env13;
+      b = env14;
+      t10 = env15;
+      t9 = env16;
+      t8 = env17;
+      t54 = env18;
+      cp1 = env19;
+      t45 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
+      wB = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 95:
+      t4 = env0;
+      i = env1;
+      t57 = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      t8 = env18;
       t54 = env19;
       cp1 = env20;
       t45 = env21;
       cp2 = env22;
       a = env23;
       t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 95:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t57 = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      t54 = env20;
-      cp1 = env21;
-      t45 = env22;
-      cp2 = env23;
-      a = env24;
-      t1 = env25;
+      t2 = env25;
       wB = env26;
-      t2 = env27;
-      wA = env28;
+      wA = env27;
+      t3 = env28;
       break;
     case 96:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      invMassB = env11;
+      invMassA = env12;
+      invIB = env13;
+      b = env14;
+      t10 = env15;
+      t9 = env16;
+      t8 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t59 = env22;
+      wB = env23;
+      t2 = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 97:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t61 = env3;
       c = env4;
       bodyA = env5;
       bodyB = env6;
       t6 = env7;
       vA = env8;
       vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      b = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
-      wB = env23;
-      t59 = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 97:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      t61 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
+      t7 = env10;
       invMassA = env11;
       invIA = env12;
       invMassB = env13;
       invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      t8 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t59 = env23;
       wB = env24;
-      t59 = env25;
-      t2 = env26;
-      wA = env27;
+      t2 = env25;
+      wA = env26;
+      t3 = env27;
       break;
     case 98:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      invMassB = env11;
+      invMassA = env12;
+      invIB = env13;
+      b = env14;
+      t10 = env15;
+      t9 = env16;
+      t8 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      t61 = env24;
+      t59 = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 99:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t64 = env3;
       c = env4;
       bodyA = env5;
       bodyB = env6;
       t6 = env7;
       vA = env8;
       vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      b = env16;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t10 = env16;
       t9 = env17;
-      t10 = env18;
+      t8 = env18;
       cp1 = env19;
       cp2 = env20;
       a = env21;
       t1 = env22;
-      wB = env23;
-      t2 = env24;
+      t2 = env23;
+      wB = env24;
       t61 = env25;
       t59 = env26;
       wA = env27;
+      t3 = env28;
       break;
-    case 99:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      t64 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
+    case 100:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t66 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
       invMassA = env11;
       invIA = env12;
       invMassB = env13;
       invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      t8 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
       wB = env24;
-      t2 = env25;
-      t61 = env26;
-      t59 = env27;
-      wA = env28;
+      wA = env25;
+      t3 = env26;
       break;
-    case 100:
-      t3 = env0;
+    case 101:
+      t68 = env0;
       t4 = env1;
       i = env2;
       t5 = env3;
@@ -17607,1256 +17562,1257 @@ $$.ContactSolver = {"":
       t6 = env8;
       vA = env9;
       vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 101:
-      t3 = env0;
-      t68 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t66 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
+      t7 = env11;
       invMassA = env12;
       invIA = env13;
       invMassB = env14;
       invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      b = env18;
-      t9 = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
+      b = env16;
+      t10 = env17;
+      t9 = env18;
+      t8 = env19;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
       wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
       break;
     case 102:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t70 = env3;
       c = env4;
       bodyA = env5;
-      t70 = env6;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      invMassA = env11;
+      invIA = env12;
+      invMassB = env13;
+      invIB = env14;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      t8 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 103:
+      t4 = env0;
+      i = env1;
+      t72 = env2;
+      t5 = env3;
+      t70 = env4;
+      c = env5;
+      bodyA = env6;
       bodyB = env7;
       t6 = env8;
       vA = env9;
       vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 103:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t72 = env3;
-      t5 = env4;
-      c = env5;
-      t70 = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
+      t7 = env11;
       invMassA = env12;
       invIA = env13;
       invMassB = env14;
       invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      b = env18;
-      t9 = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
+      b = env16;
+      t10 = env17;
+      t9 = env18;
+      t8 = env19;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
       wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
       break;
     case 104:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
-      wB = env23;
-      t11 = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 105:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      b = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      t11 = env25;
-      wA = env26;
-      break;
-    case 106:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
       bodyA = env4;
       bodyB = env5;
       t6 = env6;
       vA = env7;
       vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invIB = env12;
       t9 = env13;
-      t10 = env14;
-      t11 = env15;
-      t12 = env16;
+      invMassB = env14;
+      t10 = env15;
+      invIA = env16;
+      b = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t11 = env22;
+      wB = env23;
+      t2 = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 105:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      invMassB = env14;
+      b = env15;
+      invIA = env16;
+      t10 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      t11 = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 106:
+      t4 = env0;
+      t11 = env1;
+      t12 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      t6 = env11;
+      bodyB = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      invIA = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      wA = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 107:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      t6 = env4;
+      bodyB = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      t11 = env14;
+      t12 = env15;
+      t14 = env16;
       cp1 = env17;
       cp2 = env18;
       t1 = env19;
-      wB = env20;
-      t2 = env21;
-      wA = env22;
-      break;
-    case 107:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      t11 = env15;
-      t12 = env16;
-      cp1 = env17;
-      t14 = env18;
-      cp2 = env19;
-      t1 = env20;
+      t2 = env20;
       wB = env21;
-      t2 = env22;
-      wA = env23;
+      wA = env22;
+      t3 = env23;
       break;
     case 108:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t14 = env3;
+      t11 = env4;
+      cp2 = env5;
+      t5 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      invIA = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      wA = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 109:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
       invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      t14 = env16;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      t14 = env15;
+      t11 = env16;
       cp2 = env17;
-      t11 = env18;
+      t16 = env18;
       t1 = env19;
+      t2 = env20;
+      wB = env21;
+      wA = env22;
+      t3 = env23;
+      break;
+    case 110:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t14 = env17;
+      t18 = env18;
+      t19 = env19;
       wB = env20;
       t2 = env21;
       wA = env22;
-      break;
-    case 109:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      t14 = env16;
-      cp2 = env17;
-      t11 = env18;
-      t16 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      wA = env23;
-      break;
-    case 110:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      t14 = env18;
-      wB = env19;
-      t2 = env20;
-      t19 = env21;
-      t18 = env22;
-      wA = env23;
+      t3 = env23;
       break;
     case 111:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
       invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      t14 = env18;
-      wB = env19;
-      t19 = env20;
-      t18 = env21;
-      t21 = env22;
-      t2 = env23;
-      wA = env24;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t14 = env17;
+      t18 = env18;
+      t19 = env19;
+      wB = env20;
+      t21 = env21;
+      t2 = env22;
+      wA = env23;
+      t3 = env24;
       break;
     case 112:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
       invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t14 = env17;
-      wB = env18;
-      t2 = env19;
-      t1 = env20;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t14 = env16;
+      t1 = env17;
+      t2 = env18;
+      wB = env19;
+      t21 = env20;
       t18 = env21;
-      t21 = env22;
-      wA = env23;
+      wA = env22;
+      t3 = env23;
       break;
     case 113:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
       invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t14 = env17;
-      wB = env18;
-      t1 = env19;
-      t2 = env20;
-      t21 = env21;
-      t18 = env22;
-      t23 = env23;
-      wA = env24;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t14 = env16;
+      t1 = env17;
+      t2 = env18;
+      wB = env19;
+      t21 = env20;
+      t18 = env21;
+      t23 = env22;
+      wA = env23;
+      t3 = env24;
       break;
     case 114:
-      t3 = env0;
-      wA0 = env1;
-      t25 = env2;
-      t10 = env3;
-      i = env4;
-      t26 = env5;
-      cp1 = env6;
-      t4 = env7;
-      cp2 = env8;
-      t5 = env9;
-      t1 = env10;
-      wB = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t2 = env14;
-      t6 = env15;
-      vA = env16;
-      vB = env17;
-      invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 115:
-      t3 = env0;
-      wA0 = env1;
-      t25 = env2;
-      t4 = env3;
-      i = env4;
-      t26 = env5;
-      t28 = env6;
-      t5 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 116:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
-      t10 = env3;
+      t25 = env0;
+      t4 = env1;
+      t26 = env2;
+      t3 = env3;
       i = env4;
       cp1 = env5;
-      t28 = env6;
-      t25 = env7;
+      t5 = env6;
+      cp2 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      t10 = env20;
+      wA0 = env21;
+      break;
+    case 115:
+      t25 = env0;
+      t4 = env1;
+      t26 = env2;
+      t28 = env3;
+      t3 = env4;
+      i = env5;
+      cp1 = env6;
+      t5 = env7;
       cp2 = env8;
-      t5 = env9;
-      t1 = env10;
+      t1 = env9;
+      t2 = env10;
       wB = env11;
       bodyA = env12;
       bodyB = env13;
-      t2 = env14;
-      t6 = env15;
-      vA = env16;
-      vB = env17;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      wA0 = env22;
+      break;
+    case 116:
+      t4 = env0;
+      t3 = env1;
+      t28 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t25 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t8 = env17;
       invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
+      t9 = env19;
+      t10 = env20;
+      wA0 = env21;
       break;
     case 117:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
+      t4 = env0;
+      t3 = env1;
+      t28 = env2;
       i = env3;
-      t28 = env4;
-      t25 = env5;
-      t30 = env6;
+      cp1 = env4;
+      t30 = env5;
+      cp2 = env6;
       t5 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
+      t25 = env8;
+      t1 = env9;
+      t2 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      wA0 = env22;
       break;
     case 118:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
-      i = env3;
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
       t5 = env4;
-      t28 = env5;
-      t32 = env6;
-      t33 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
+      cp2 = env5;
+      t28 = env6;
+      t32 = env7;
+      t1 = env8;
+      t33 = env9;
+      t2 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      wA0 = env22;
       break;
     case 119:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t28 = env5;
-      t32 = env6;
-      t33 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      t35 = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 120:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t28 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t35 = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t28 = env3;
+      t32 = env4;
+      t33 = env5;
+      t35 = env6;
+      bodyA = env7;
+      bodyB = env8;
       t6 = env9;
       vA = env10;
       vB = env11;
-      t32 = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 121:
-      t3 = env0;
-      wA0 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      t28 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t35 = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      t32 = env12;
-      t37 = env13;
+      t7 = env12;
+      t8 = env13;
       invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 122:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      t11 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 123:
-      t3 = env0;
-      t13 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      b = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      t11 = env22;
-      a = env23;
-      t1 = env24;
-      wB = env25;
-      t2 = env26;
-      wA = env27;
-      break;
-    case 124:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      t15 = env25;
-      wA = env26;
-      break;
-    case 125:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
-      wB = env23;
-      t2 = env24;
-      t15 = env25;
-      t17 = env26;
-      wA = env27;
-      break;
-    case 126:
-      t3 = env0;
-      t15 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      b = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      t17 = env26;
-      wA = env27;
-      break;
-    case 127:
-      t11 = env0;
-      t3 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      t7 = env14;
-      invIB = env15;
-      t8 = env16;
-      t9 = env17;
-      b = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      vn2 = env27;
-      break;
-    case 128:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t11 = env17;
-      t1 = env18;
-      wB = env19;
-      t12 = env20;
-      t2 = env21;
-      wA = env22;
-      break;
-    case 129:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t11 = env17;
-      t1 = env18;
-      wB = env19;
-      t12 = env20;
-      t2 = env21;
-      t14 = env22;
-      wA = env23;
-      break;
-    case 130:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t14 = env20;
-      t11 = env21;
-      wA = env22;
-      break;
-    case 131:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t14 = env20;
-      t11 = env21;
-      t16 = env22;
-      wA = env23;
-      break;
-    case 132:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t14 = env20;
-      t18 = env21;
-      wA = env22;
-      t19 = env23;
-      break;
-    case 133:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t14 = env20;
-      t18 = env21;
-      wA = env22;
-      t19 = env23;
-      t21 = env24;
-      break;
-    case 134:
-      t21 = env0;
-      t18 = env1;
-      t3 = env2;
-      t4 = env3;
-      i = env4;
-      t5 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invIA = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
       t9 = env15;
       t10 = env16;
       cp1 = env17;
       cp2 = env18;
       t1 = env19;
-      wB = env20;
-      t2 = env21;
-      t14 = env22;
-      wA = env23;
-      break;
-    case 135:
-      t21 = env0;
-      t18 = env1;
-      t23 = env2;
-      t4 = env3;
-      t3 = env4;
-      i = env5;
-      t5 = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invIA = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
+      t2 = env20;
       wB = env21;
-      t2 = env22;
-      t14 = env23;
-      wA = env24;
+      t3 = env22;
+      wA0 = env23;
       break;
-    case 136:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
-      cp2 = env5;
-      wA0 = env6;
-      t25 = env7;
-      t5 = env8;
-      t26 = env9;
-      t1 = env10;
-      wB = env11;
-      bodyA = env12;
-      bodyB = env13;
-      t2 = env14;
-      t6 = env15;
-      vA = env16;
-      vB = env17;
-      invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 137:
-      t3 = env0;
-      t4 = env1;
+    case 120:
+      t4 = env0;
+      t3 = env1;
       i = env2;
-      t5 = env3;
-      wA0 = env4;
-      t25 = env5;
-      t26 = env6;
-      t28 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 138:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
+      cp1 = env3;
+      t5 = env4;
       cp2 = env5;
-      wA0 = env6;
-      t5 = env7;
-      t1 = env8;
+      t28 = env6;
+      t1 = env7;
+      t2 = env8;
       wB = env9;
       bodyA = env10;
       bodyB = env11;
-      t25 = env12;
+      t35 = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t32 = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      wA0 = env22;
+      break;
+    case 121:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      t28 = env3;
+      t35 = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t37 = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t32 = env11;
+      t7 = env12;
+      t8 = env13;
+      invIB = env14;
+      t9 = env15;
+      t10 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      t1 = env19;
+      t2 = env20;
+      wB = env21;
+      t3 = env22;
+      wA0 = env23;
+      break;
+    case 122:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIA = env13;
+      t9 = env14;
+      invIB = env15;
+      t10 = env16;
+      b = env17;
+      cp1 = env18;
+      t11 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 123:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIA = env13;
+      t9 = env14;
+      invIB = env15;
+      t10 = env16;
+      b = env17;
+      cp1 = env18;
+      t11 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      t13 = env27;
+      break;
+    case 124:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIA = env13;
+      t9 = env14;
+      invIB = env15;
+      t10 = env16;
+      b = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      t15 = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 125:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      invMassA = env9;
+      t7 = env10;
+      t8 = env11;
+      invMassB = env12;
+      invIA = env13;
+      t9 = env14;
+      invIB = env15;
+      t10 = env16;
+      b = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      t15 = env24;
+      t17 = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 126:
+      t15 = env0;
+      t4 = env1;
+      i = env2;
+      t5 = env3;
+      c = env4;
+      bodyA = env5;
+      bodyB = env6;
+      t6 = env7;
+      vA = env8;
+      vB = env9;
+      invMassA = env10;
+      t7 = env11;
+      t8 = env12;
+      invMassB = env13;
+      invIA = env14;
+      t9 = env15;
+      invIB = env16;
+      t10 = env17;
+      b = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      t17 = env25;
+      wA = env26;
+      t3 = env27;
+      break;
+    case 127:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invMassA = env10;
+      invMassB = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      b = env15;
+      t10 = env16;
+      invIA = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      vn2 = env24;
+      wA = env25;
+      t11 = env26;
+      t3 = env27;
+      break;
+    case 128:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      cp2 = env4;
+      t11 = env5;
+      t1 = env6;
+      t12 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      invIA = env16;
+      wA = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 129:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t11 = env16;
+      t1 = env17;
+      t12 = env18;
+      t14 = env19;
+      t2 = env20;
+      wB = env21;
+      wA = env22;
+      t3 = env23;
+      break;
+    case 130:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      cp2 = env5;
+      t1 = env6;
+      t2 = env7;
+      wB = env8;
+      bodyA = env9;
+      bodyB = env10;
+      t14 = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t11 = env15;
+      invIA = env16;
+      wA = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t7 = env21;
+      t10 = env22;
+      break;
+    case 131:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      t14 = env19;
+      t16 = env20;
+      t11 = env21;
+      wA = env22;
+      t3 = env23;
+      break;
+    case 132:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      t14 = env19;
+      t18 = env20;
+      wA = env21;
+      t19 = env22;
+      t3 = env23;
+      break;
+    case 133:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      t14 = env19;
+      t18 = env20;
+      wA = env21;
+      t19 = env22;
+      t21 = env23;
+      t3 = env24;
+      break;
+    case 134:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      t14 = env19;
+      wA = env20;
+      t21 = env21;
+      t18 = env22;
+      t3 = env23;
+      break;
+    case 135:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      t5 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      t10 = env14;
+      cp1 = env15;
+      cp2 = env16;
+      t1 = env17;
+      t2 = env18;
+      wB = env19;
+      t14 = env20;
+      wA = env21;
+      t21 = env22;
+      t18 = env23;
+      t23 = env24;
+      break;
+    case 136:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      wA0 = env4;
+      cp2 = env5;
+      t25 = env6;
+      t26 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      t10 = env20;
+      t3 = env21;
+      break;
+    case 137:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      wA0 = env4;
+      cp2 = env5;
+      t25 = env6;
+      t26 = env7;
+      t28 = env8;
+      t1 = env9;
+      t2 = env10;
+      wB = env11;
+      bodyA = env12;
+      bodyB = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 138:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      wA0 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t28 = env8;
+      t25 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      t10 = env20;
+      t2 = env21;
+      break;
+    case 139:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      wA0 = env4;
+      cp2 = env5;
+      t1 = env6;
+      t28 = env7;
+      t25 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t30 = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t2 = env17;
+      invIB = env18;
+      t9 = env19;
+      t8 = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 140:
+      t4 = env0;
+      t3 = env1;
+      t7 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      wA0 = env6;
+      cp2 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
       t6 = env13;
       vA = env14;
       vB = env15;
       t28 = env16;
-      t2 = env17;
-      invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 139:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t25 = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      t28 = env11;
-      t30 = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 140:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      t28 = env10;
-      t32 = env11;
-      invIB = env12;
-      t33 = env13;
-      t8 = env14;
-      t7 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
+      t32 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t33 = env21;
+      t10 = env22;
       break;
     case 141:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      t28 = env10;
-      t32 = env11;
-      invIB = env12;
-      t33 = env13;
-      t35 = env14;
-      t7 = env15;
-      t9 = env16;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      wA0 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t32 = env10;
+      t35 = env11;
+      t28 = env12;
+      invIB = env13;
+      t9 = env14;
+      t33 = env15;
+      t10 = env16;
       t8 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 142:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      t28 = env10;
-      invIB = env11;
-      t7 = env12;
-      t8 = env13;
-      t35 = env14;
-      t32 = env15;
-      t9 = env16;
-      t10 = env17;
       cp1 = env18;
       cp2 = env19;
       t1 = env20;
-      wB = env21;
-      t2 = env22;
+      t2 = env21;
+      wB = env22;
+      t3 = env23;
+      break;
+    case 142:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      wA0 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t28 = env15;
+      t7 = env16;
+      t8 = env17;
+      invIB = env18;
+      t35 = env19;
+      t32 = env20;
+      t10 = env21;
+      t9 = env22;
       break;
     case 143:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      wA0 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t28 = env9;
+      t7 = env10;
+      t8 = env11;
+      invIB = env12;
+      t35 = env13;
+      t32 = env14;
+      t10 = env15;
+      t9 = env16;
+      t37 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t3 = env23;
+      break;
+    case 144:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      t8 = env11;
+      invMassA = env12;
+      invIB = env13;
+      invMassB = env14;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      t11 = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 145:
+      t4 = env0;
+      t13 = env1;
       i = env2;
       t5 = env3;
-      wA0 = env4;
+      c = env4;
       bodyA = env5;
       bodyB = env6;
       t6 = env7;
       vA = env8;
       vB = env9;
-      t28 = env10;
-      invIB = env11;
-      t7 = env12;
-      t8 = env13;
-      t35 = env14;
-      t32 = env15;
-      t37 = env16;
+      t7 = env10;
+      invIA = env11;
+      t8 = env12;
+      invMassA = env13;
+      invIB = env14;
+      invMassB = env15;
+      b = env16;
       t10 = env17;
       t9 = env18;
       cp1 = env19;
       cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 144:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
       a = env21;
       t1 = env22;
-      wB = env23;
-      t2 = env24;
+      t2 = env23;
+      wB = env24;
       t11 = env25;
       wA = env26;
-      break;
-    case 145:
-      t3 = env0;
-      t4 = env1;
-      t13 = env2;
-      i = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      b = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      t11 = env26;
-      wA = env27;
+      t3 = env27;
       break;
     case 146:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      c = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invMassA = env10;
-      invIA = env11;
-      invMassB = env12;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      t8 = env11;
+      invMassA = env12;
       invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      b = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      a = env21;
-      t1 = env22;
+      invMassB = env14;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
       wB = env23;
-      t2 = env24;
-      wA = env25;
-      t15 = env26;
+      wA = env24;
+      t15 = env25;
+      t3 = env26;
       break;
     case 147:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      c = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      t8 = env11;
+      invMassA = env12;
+      invIB = env13;
+      invMassB = env14;
+      b = env15;
+      t10 = env16;
+      t9 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      a = env20;
+      t1 = env21;
+      t2 = env22;
+      wB = env23;
+      wA = env24;
+      t15 = env25;
+      t17 = env26;
+      t3 = env27;
+      break;
+    case 148:
       t17 = env0;
-      t3 = env1;
-      t4 = env2;
+      t4 = env1;
+      t15 = env2;
       i = env3;
       t5 = env4;
       c = env5;
@@ -18865,710 +18821,214 @@ $$.ContactSolver = {"":
       t6 = env8;
       vA = env9;
       vB = env10;
-      invMassA = env11;
+      t7 = env11;
       invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      b = env18;
-      t10 = env19;
+      t8 = env13;
+      invMassA = env14;
+      invIB = env15;
+      invMassB = env16;
+      b = env17;
+      t10 = env18;
+      t9 = env19;
       cp1 = env20;
       cp2 = env21;
       a = env22;
       t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      t15 = env27;
-      break;
-    case 148:
-      t3 = env0;
-      t17 = env1;
-      t4 = env2;
-      i = env3;
-      t15 = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      b = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
+      t2 = env24;
       wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
       break;
     case 149:
-      t3 = env0;
-      t4 = env1;
+      t4 = env0;
+      vn1 = env1;
       i = env2;
-      vn1 = env3;
-      t11 = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
+      t11 = env3;
+      t5 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
       invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
+      invMassB = env13;
+      invIB = env14;
+      t9 = env15;
+      t8 = env16;
+      t10 = env17;
+      invIA = env18;
       b = env19;
-      t10 = env20;
-      cp1 = env21;
-      cp2 = env22;
-      a = env23;
-      t1 = env24;
+      cp1 = env20;
+      cp2 = env21;
+      a = env22;
+      t1 = env23;
+      t2 = env24;
       wB = env25;
-      t2 = env26;
-      wA = env27;
+      wA = env26;
+      t3 = env27;
       break;
     case 150:
-      t3 = env0;
+      t8 = env0;
       t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      t7 = env10;
-      invIB = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t11 = env20;
-      wA = env21;
-      t12 = env22;
+      t3 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      t11 = env13;
+      vB = env14;
+      t12 = env15;
+      vA = env16;
+      invIA = env17;
+      wA = env18;
+      invIB = env19;
+      t9 = env20;
+      t7 = env21;
+      t10 = env22;
       break;
     case 151:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
       invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
       wB = env18;
-      t2 = env19;
-      t11 = env20;
-      wA = env21;
-      t12 = env22;
-      t14 = env23;
+      t11 = env19;
+      t12 = env20;
+      t14 = env21;
+      wA = env22;
+      t3 = env23;
       break;
     case 152:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      wA = env20;
+      t4 = env0;
+      t10 = env1;
+      t3 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      invIA = env16;
+      wA = env17;
+      invIB = env18;
+      t9 = env19;
+      t8 = env20;
       t14 = env21;
       t11 = env22;
       break;
     case 153:
-      t16 = env0;
-      t3 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIA = env10;
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
       invIB = env11;
-      t7 = env12;
-      t8 = env13;
-      t9 = env14;
-      t10 = env15;
-      cp1 = env16;
-      cp2 = env17;
-      t1 = env18;
-      wB = env19;
-      t2 = env20;
-      wA = env21;
-      t14 = env22;
-      t11 = env23;
-      break;
-    case 154:
-      t3 = env0;
-      t4 = env1;
-      t14 = env2;
-      i = env3;
-      t18 = env4;
-      t19 = env5;
-      t5 = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invIA = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      wA = env23;
-      break;
-    case 155:
-      t3 = env0;
-      t4 = env1;
-      t14 = env2;
-      i = env3;
-      t18 = env4;
-      t19 = env5;
-      t21 = env6;
-      t5 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIA = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      wA = env24;
-      break;
-    case 156:
-      t3 = env0;
-      t4 = env1;
-      t14 = env2;
-      i = env3;
-      t21 = env4;
-      t18 = env5;
-      t5 = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invIA = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      wA = env23;
-      break;
-    case 157:
-      t3 = env0;
-      t4 = env1;
-      t14 = env2;
-      i = env3;
-      t21 = env4;
-      t18 = env5;
-      t23 = env6;
-      t5 = env7;
-      bodyA = env8;
-      bodyB = env9;
-      t6 = env10;
-      vA = env11;
-      vB = env12;
-      invIA = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      t9 = env17;
-      t10 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      wA = env24;
-      break;
-    case 158:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
-      cp2 = env5;
-      t5 = env6;
-      t1 = env7;
-      wB = env8;
-      bodyA = env9;
-      bodyB = env10;
-      t2 = env11;
-      t6 = env12;
-      vA = env13;
-      wA0 = env14;
-      vB = env15;
-      t26 = env16;
-      t25 = env17;
-      invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 159:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      wA0 = env8;
-      vB = env9;
-      t26 = env10;
-      t25 = env11;
-      invIB = env12;
-      t7 = env13;
-      t28 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 160:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
-      t7 = env5;
-      cp2 = env6;
-      t5 = env7;
-      t1 = env8;
-      wB = env9;
-      bodyA = env10;
-      bodyB = env11;
-      t2 = env12;
-      t6 = env13;
-      vA = env14;
-      wA0 = env15;
-      vB = env16;
-      invIB = env17;
-      t28 = env18;
-      t25 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 161:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      wA0 = env8;
-      vB = env9;
-      t7 = env10;
-      invIB = env11;
-      t8 = env12;
-      t25 = env13;
-      t28 = env14;
-      t9 = env15;
-      t10 = env16;
-      t30 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 162:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      wA0 = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      t28 = env15;
-      t32 = env16;
-      t33 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 163:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      wA0 = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      t28 = env15;
-      t32 = env16;
-      t33 = env17;
-      t35 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 164:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      wA0 = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      t28 = env15;
-      cp1 = env16;
-      t35 = env17;
-      t32 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 165:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      wA0 = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      t28 = env15;
-      cp1 = env16;
-      t35 = env17;
-      t32 = env18;
-      cp2 = env19;
-      t37 = env20;
-      t1 = env21;
-      wB = env22;
-      t2 = env23;
-      break;
-    case 166:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      t5 = env4;
-      c = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
-      vA = env9;
-      vB = env10;
-      invMassA = env11;
-      invIA = env12;
-      invMassB = env13;
-      invIB = env14;
-      t7 = env15;
-      t8 = env16;
-      b = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 167:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      vn1 = env3;
-      vn2 = env4;
-      t5 = env5;
-      c = env6;
-      bodyA = env7;
-      bodyB = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      invMassA = env12;
-      invIA = env13;
-      invMassB = env14;
-      invIB = env15;
-      t7 = env16;
-      t8 = env17;
-      t9 = env18;
-      t10 = env19;
-      cp1 = env20;
-      cp2 = env21;
-      a = env22;
-      t1 = env23;
-      wB = env24;
-      t2 = env25;
-      wA = env26;
-      break;
-    case 168:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
       wB = env18;
-      t2 = env19;
-      t11 = env20;
-      t12 = env21;
-      wA = env22;
-      break;
-    case 169:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t11 = env20;
-      t12 = env21;
-      t14 = env22;
-      wA = env23;
-      break;
-    case 170:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
-      t14 = env20;
-      t11 = env21;
-      wA = env22;
-      break;
-    case 171:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      bodyA = env4;
-      bodyB = env5;
-      t6 = env6;
-      vA = env7;
-      vB = env8;
-      invIA = env9;
-      invIB = env10;
-      t7 = env11;
-      t8 = env12;
-      t9 = env13;
-      t10 = env14;
-      cp1 = env15;
-      cp2 = env16;
-      t1 = env17;
-      wB = env18;
-      t2 = env19;
+      wA = env19;
       t14 = env20;
       t11 = env21;
       t16 = env22;
-      wA = env23;
+      t3 = env23;
       break;
-    case 172:
-      t19 = env0;
-      t3 = env1;
-      t4 = env2;
-      i = env3;
-      t5 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIA = env10;
-      invIB = env11;
-      t7 = env12;
-      t8 = env13;
-      t9 = env14;
-      t10 = env15;
-      cp1 = env16;
-      cp2 = env17;
-      t1 = env18;
-      wB = env19;
-      t2 = env20;
-      wA = env21;
-      t14 = env22;
-      t18 = env23;
-      break;
-    case 173:
-      t19 = env0;
-      t21 = env1;
-      t4 = env2;
-      t3 = env3;
+    case 154:
+      t4 = env0;
+      t14 = env1;
+      t18 = env2;
+      t19 = env3;
       i = env4;
       t5 = env5;
       bodyA = env6;
-      bodyB = env7;
-      t6 = env8;
+      t6 = env7;
+      bodyB = env8;
       vA = env9;
       vB = env10;
-      invIA = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
+      t7 = env11;
+      invIA = env12;
+      t8 = env13;
+      invIB = env14;
       t9 = env15;
       t10 = env16;
       cp1 = env17;
       cp2 = env18;
       t1 = env19;
-      wB = env20;
-      t2 = env21;
+      t2 = env20;
+      wB = env21;
       wA = env22;
-      t14 = env23;
-      t18 = env24;
+      t3 = env23;
       break;
-    case 174:
-      t3 = env0;
-      t4 = env1;
-      t21 = env2;
-      i = env3;
+    case 155:
+      t4 = env0;
+      t14 = env1;
+      t18 = env2;
+      t19 = env3;
+      i = env4;
+      t21 = env5;
+      t5 = env6;
+      bodyA = env7;
+      t6 = env8;
+      bodyB = env9;
+      vA = env10;
+      vB = env11;
+      t7 = env12;
+      invIA = env13;
+      t8 = env14;
+      invIB = env15;
+      t9 = env16;
+      t10 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      wA = env23;
+      t3 = env24;
+      break;
+    case 156:
+      t4 = env0;
+      t14 = env1;
+      i = env2;
+      t21 = env3;
       t18 = env4;
       t5 = env5;
       bodyA = env6;
@@ -19576,25 +19036,25 @@ $$.ContactSolver = {"":
       t6 = env8;
       vA = env9;
       vB = env10;
-      invIA = env11;
-      invIB = env12;
-      t7 = env13;
-      t8 = env14;
+      t7 = env11;
+      invIA = env12;
+      t8 = env13;
+      invIB = env14;
       t9 = env15;
       t10 = env16;
       cp1 = env17;
       cp2 = env18;
       t1 = env19;
-      wB = env20;
-      t2 = env21;
+      t2 = env20;
+      wB = env21;
       wA = env22;
-      t14 = env23;
+      t3 = env23;
       break;
-    case 175:
-      t3 = env0;
-      t4 = env1;
-      t21 = env2;
-      i = env3;
+    case 157:
+      t4 = env0;
+      t14 = env1;
+      i = env2;
+      t21 = env3;
       t18 = env4;
       t23 = env5;
       t5 = env6;
@@ -19603,219 +19063,685 @@ $$.ContactSolver = {"":
       t6 = env9;
       vA = env10;
       vB = env11;
-      invIA = env12;
-      invIB = env13;
-      t7 = env14;
-      t8 = env15;
+      t7 = env12;
+      invIA = env13;
+      t8 = env14;
+      invIB = env15;
       t9 = env16;
       t10 = env17;
       cp1 = env18;
       cp2 = env19;
       t1 = env20;
-      wB = env21;
-      t2 = env22;
+      t2 = env21;
+      wB = env22;
       wA = env23;
-      t14 = env24;
+      t3 = env24;
       break;
-    case 176:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
-      cp2 = env5;
-      t5 = env6;
-      t2 = env7;
-      wA0 = env8;
-      wB = env9;
-      bodyA = env10;
-      bodyB = env11;
-      t25 = env12;
-      t6 = env13;
-      vA = env14;
-      vB = env15;
-      t26 = env16;
-      t1 = env17;
-      invIB = env18;
-      t7 = env19;
-      t8 = env20;
-      t9 = env21;
-      break;
-    case 177:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
+    case 158:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
       t5 = env3;
-      wA0 = env4;
-      t25 = env5;
-      bodyA = env6;
-      bodyB = env7;
-      t26 = env8;
-      t6 = env9;
-      vA = env10;
-      vB = env11;
-      t28 = env12;
-      invIB = env13;
+      cp2 = env4;
+      t1 = env5;
+      t2 = env6;
+      wB = env7;
+      bodyA = env8;
+      bodyB = env9;
+      wA0 = env10;
+      t6 = env11;
+      vA = env12;
+      vB = env13;
       t7 = env14;
-      t8 = env15;
-      t9 = env16;
-      t10 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
+      t26 = env15;
+      t25 = env16;
+      invIB = env17;
+      t9 = env18;
+      t8 = env19;
+      t10 = env20;
+      t3 = env21;
       break;
-    case 178:
-      t3 = env0;
-      t10 = env1;
-      t4 = env2;
-      i = env3;
-      cp1 = env4;
+    case 159:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
       cp2 = env5;
-      t5 = env6;
-      wA0 = env7;
+      t1 = env6;
+      t2 = env7;
       wB = env8;
       bodyA = env9;
       bodyB = env10;
-      t2 = env11;
+      wA0 = env11;
       t6 = env12;
       vA = env13;
       vB = env14;
-      t25 = env15;
-      t28 = env16;
-      t1 = env17;
+      t28 = env15;
+      t26 = env16;
+      t25 = env17;
       invIB = env18;
-      t7 = env19;
+      t9 = env19;
       t8 = env20;
-      t9 = env21;
+      t7 = env21;
+      t10 = env22;
       break;
-    case 179:
-      t3 = env0;
+    case 160:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      cp2 = env4;
+      t1 = env5;
+      t2 = env6;
+      wB = env7;
+      bodyA = env8;
+      bodyB = env9;
+      wA0 = env10;
+      t6 = env11;
+      vA = env12;
+      vB = env13;
+      t7 = env14;
+      t28 = env15;
+      t25 = env16;
+      invIB = env17;
+      t9 = env18;
+      t8 = env19;
+      t10 = env20;
+      t3 = env21;
+      break;
+    case 161:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      cp2 = env5;
+      t1 = env6;
+      t2 = env7;
+      wB = env8;
+      bodyA = env9;
+      bodyB = env10;
+      wA0 = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      t28 = env16;
+      t25 = env17;
+      invIB = env18;
+      t9 = env19;
+      t8 = env20;
+      t30 = env21;
+      t10 = env22;
+      break;
+    case 162:
+      t32 = env0;
       t4 = env1;
+      t33 = env2;
+      t3 = env3;
+      i = env4;
+      cp1 = env5;
+      t5 = env6;
+      cp2 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      wA0 = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t28 = env22;
+      break;
+    case 163:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      wA0 = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      t28 = env14;
+      t32 = env15;
+      t33 = env16;
+      t35 = env17;
+      cp1 = env18;
+      cp2 = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t3 = env23;
+      break;
+    case 164:
+      t4 = env0;
+      t3 = env1;
+      t35 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t32 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      wA0 = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t28 = env22;
+      break;
+    case 165:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      wA0 = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      t28 = env14;
+      t35 = env15;
+      cp1 = env16;
+      t37 = env17;
+      cp2 = env18;
+      t32 = env19;
+      t1 = env20;
+      t2 = env21;
+      wB = env22;
+      t3 = env23;
+      break;
+    case 166:
+      t4 = env0;
+      vn1 = env1;
       i = env2;
       t5 = env3;
-      wA0 = env4;
+      c = env4;
       bodyA = env5;
       bodyB = env6;
       t6 = env7;
       vA = env8;
       vB = env9;
-      t25 = env10;
-      t28 = env11;
+      t7 = env10;
+      invIA = env11;
+      t8 = env12;
+      invMassA = env13;
+      t9 = env14;
+      b = env15;
+      invIB = env16;
+      t10 = env17;
+      invMassB = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 167:
+      t4 = env0;
+      vn1 = env1;
+      vn2 = env2;
+      i = env3;
+      t5 = env4;
+      c = env5;
+      bodyA = env6;
+      bodyB = env7;
+      t6 = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invIA = env12;
+      t8 = env13;
+      invMassA = env14;
+      t9 = env15;
+      invMassB = env16;
+      invIB = env17;
+      t10 = env18;
+      cp1 = env19;
+      cp2 = env20;
+      a = env21;
+      t1 = env22;
+      t2 = env23;
+      wB = env24;
+      wA = env25;
+      t3 = env26;
+      break;
+    case 168:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      cp2 = env5;
+      t1 = env6;
+      t11 = env7;
+      wB = env8;
+      t12 = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      invIA = env16;
+      t8 = env17;
+      wA = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t2 = env22;
+      break;
+    case 169:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t11 = env17;
+      wB = env18;
+      t12 = env19;
+      t14 = env20;
+      t2 = env21;
+      wA = env22;
+      t3 = env23;
+      break;
+    case 170:
+      t4 = env0;
+      t10 = env1;
+      t3 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      t11 = env13;
+      vA = env14;
+      vB = env15;
+      invIA = env16;
+      t8 = env17;
+      wA = env18;
+      invIB = env19;
+      t9 = env20;
+      t7 = env21;
+      t14 = env22;
+      break;
+    case 171:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      t14 = env19;
+      t11 = env20;
+      t16 = env21;
+      wA = env22;
+      t3 = env23;
+      break;
+    case 172:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      bodyA = env3;
+      bodyB = env4;
+      t6 = env5;
+      vA = env6;
+      vB = env7;
+      t7 = env8;
+      invIA = env9;
+      t8 = env10;
+      invIB = env11;
+      t9 = env12;
+      t10 = env13;
+      cp1 = env14;
+      cp2 = env15;
+      t1 = env16;
+      t2 = env17;
+      wB = env18;
+      wA = env19;
+      t14 = env20;
+      t18 = env21;
+      t19 = env22;
+      t3 = env23;
+      break;
+    case 173:
+      t4 = env0;
+      t3 = env1;
+      i = env2;
+      t5 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      invIA = env10;
+      t8 = env11;
       invIB = env12;
-      t7 = env13;
-      t8 = env14;
+      t9 = env13;
+      t10 = env14;
+      cp1 = env15;
+      cp2 = env16;
+      t1 = env17;
+      t2 = env18;
+      wB = env19;
+      wA = env20;
+      t14 = env21;
+      t18 = env22;
+      t19 = env23;
+      t21 = env24;
+      break;
+    case 174:
+      t4 = env0;
+      t21 = env1;
+      t18 = env2;
+      i = env3;
+      t5 = env4;
+      bodyA = env5;
+      t6 = env6;
+      bodyB = env7;
+      vA = env8;
+      vB = env9;
+      t7 = env10;
+      invIA = env11;
+      t8 = env12;
+      invIB = env13;
+      t9 = env14;
+      t10 = env15;
+      cp1 = env16;
+      cp2 = env17;
+      t1 = env18;
+      t2 = env19;
+      wB = env20;
+      wA = env21;
+      t14 = env22;
+      t3 = env23;
+      break;
+    case 175:
+      t4 = env0;
+      t21 = env1;
+      t18 = env2;
+      t23 = env3;
+      i = env4;
+      t5 = env5;
+      bodyA = env6;
+      t6 = env7;
+      bodyB = env8;
+      vA = env9;
+      vB = env10;
+      t7 = env11;
+      invIA = env12;
+      t8 = env13;
+      invIB = env14;
+      t9 = env15;
+      t10 = env16;
+      cp1 = env17;
+      cp2 = env18;
+      t1 = env19;
+      t2 = env20;
+      wB = env21;
+      wA = env22;
+      t14 = env23;
+      t3 = env24;
+      break;
+    case 176:
+      t4 = env0;
+      t3 = env1;
+      t1 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      wA0 = env7;
+      t25 = env8;
+      t26 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t8 = env17;
+      invIB = env18;
+      t9 = env19;
+      t10 = env20;
+      t2 = env21;
+      break;
+    case 177:
+      t4 = env0;
+      t3 = env1;
+      t1 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      wA0 = env7;
+      t25 = env8;
+      t26 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t28 = env13;
+      t6 = env14;
+      vA = env15;
+      vB = env16;
+      t7 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t2 = env22;
+      break;
+    case 178:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      cp2 = env4;
+      wA0 = env5;
+      t1 = env6;
+      t2 = env7;
+      wB = env8;
+      bodyA = env9;
+      bodyB = env10;
+      t28 = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      t25 = env16;
+      invIB = env17;
+      t9 = env18;
+      t8 = env19;
+      t10 = env20;
+      t3 = env21;
+      break;
+    case 179:
+      t4 = env0;
+      i = env1;
+      cp1 = env2;
+      t5 = env3;
+      cp2 = env4;
+      wA0 = env5;
+      t1 = env6;
+      t2 = env7;
+      wB = env8;
+      bodyA = env9;
+      bodyB = env10;
+      t28 = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
       t30 = env15;
-      t9 = env16;
+      t7 = env16;
+      t25 = env17;
+      invIB = env18;
+      t9 = env19;
+      t8 = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 180:
+      t4 = env0;
+      t8 = env1;
+      i = env2;
+      cp1 = env3;
+      t5 = env4;
+      cp2 = env5;
+      wA0 = env6;
+      t1 = env7;
+      t2 = env8;
+      wB = env9;
+      bodyA = env10;
+      bodyB = env11;
+      t6 = env12;
+      vA = env13;
+      vB = env14;
+      t7 = env15;
+      t28 = env16;
+      t32 = env17;
+      invIB = env18;
+      t9 = env19;
+      t33 = env20;
+      t10 = env21;
+      t3 = env22;
+      break;
+    case 181:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      wA0 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t28 = env10;
+      t8 = env11;
+      t32 = env12;
+      invIB = env13;
+      t9 = env14;
+      t35 = env15;
+      t33 = env16;
       t10 = env17;
       cp1 = env18;
       cp2 = env19;
       t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 180:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIB = env10;
-      t28 = env11;
-      t8 = env12;
-      t32 = env13;
-      t33 = env14;
-      t9 = env15;
-      t10 = env16;
-      t7 = env17;
-      cp1 = env18;
-      cp2 = env19;
-      t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 181:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIB = env10;
-      t28 = env11;
-      t32 = env12;
-      t7 = env13;
-      t33 = env14;
-      t35 = env15;
-      t10 = env16;
-      t9 = env17;
-      t8 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
+      t3 = env23;
       break;
     case 182:
-      t3 = env0;
+      t32 = env0;
       t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIB = env10;
-      t28 = env11;
-      t8 = env12;
-      t7 = env13;
-      t9 = env14;
-      t10 = env15;
-      t35 = env16;
-      t32 = env17;
+      t3 = env2;
+      i = env3;
+      cp1 = env4;
+      t5 = env5;
+      cp2 = env6;
+      wA0 = env7;
+      t1 = env8;
+      t2 = env9;
+      wB = env10;
+      bodyA = env11;
+      bodyB = env12;
+      t6 = env13;
+      vA = env14;
+      vB = env15;
+      t7 = env16;
+      t28 = env17;
+      t8 = env18;
+      invIB = env19;
+      t9 = env20;
+      t10 = env21;
+      t35 = env22;
+      break;
+    case 183:
+      t4 = env0;
+      i = env1;
+      t5 = env2;
+      wA0 = env3;
+      bodyA = env4;
+      bodyB = env5;
+      t6 = env6;
+      vA = env7;
+      vB = env8;
+      t7 = env9;
+      t28 = env10;
+      t8 = env11;
+      invIB = env12;
+      t9 = env13;
+      t10 = env14;
+      t35 = env15;
+      t32 = env16;
+      t37 = env17;
       cp1 = env18;
       cp2 = env19;
       t1 = env20;
-      wB = env21;
-      t2 = env22;
-      break;
-    case 183:
-      t3 = env0;
-      t4 = env1;
-      i = env2;
-      t5 = env3;
-      wA0 = env4;
-      bodyA = env5;
-      bodyB = env6;
-      t6 = env7;
-      vA = env8;
-      vB = env9;
-      invIB = env10;
-      t28 = env11;
-      t8 = env12;
-      t7 = env13;
-      t9 = env14;
-      t10 = env15;
-      t35 = env16;
-      t32 = env17;
-      t37 = env18;
-      cp1 = env19;
-      cp2 = env20;
-      t1 = env21;
+      t2 = env21;
       wB = env22;
-      t2 = env23;
+      t3 = env23;
       break;
   }
   switch (state) {
@@ -19870,11 +19796,11 @@ $$.ContactSolver = {"":
               var t17 = c.get$normal().get$y();
               if (typeof t17 !== 'number')
                 throw $.iae(t17);
-              t1.set$x(1.0 * t17);
+              t1.set$x(1 * t17);
               var t18 = c.get$normal().get$x();
               if (typeof t18 !== 'number')
                 throw $.iae(t18);
-              t1.set$y(-1.0 * t18);
+              t1.set$y(-1 * t18);
               var friction = c.get$friction();
             case 8:
               state = 0;
@@ -20219,7 +20145,7 @@ $$.ContactSolver = {"":
                   case 52:
                     state = 0;
                     a = $.add(t26, lambda);
-                    newImpulse = $.gtB(a, 0.0) ? a : 0.0;
+                    newImpulse = $.gtB(a, 0) ? a : 0;
                     t11 = ccp.get$normalImpulse();
                   case 53:
                     state = 0;
@@ -20435,13 +20361,13 @@ $$.ContactSolver = {"":
                           case 104:
                             state = 0;
                           case 105:
-                            if (state === 105 || state === 0 && $.geB(t11, 0.0))
+                            if (state === 105 || state === 0 && $.geB(t11, 0))
                               switch (state) {
                                 case 0:
                                   t11 = t6.get$y();
                                 case 105:
                                   state = 0;
-                                  t11 = $.geB(t11, 0.0);
+                                  t11 = $.geB(t11, 0);
                               }
                             else
                               t11 = false;
@@ -20531,7 +20457,7 @@ $$.ContactSolver = {"":
                           case 123:
                             state = 0;
                             t6.set$x($.mul(t11, t13));
-                            t6.set$y(0.0);
+                            t6.set$y(0);
                             var t15 = c.get$K().get$col1().get$y();
                           case 124:
                             state = 0;
@@ -20562,7 +20488,7 @@ $$.ContactSolver = {"":
                           case 141:
                           case 142:
                           case 143:
-                            if (state === 143 || state === 142 || state === 141 || state === 140 || state === 139 || state === 138 || state === 137 || state === 136 || state === 135 || state === 134 || state === 133 || state === 132 || state === 131 || state === 130 || state === 129 || state === 128 || state === 0 && $.geB(t11, 0.0) && $.geB(vn2, 0.0))
+                            if (state === 143 || state === 142 || state === 141 || state === 140 || state === 139 || state === 138 || state === 137 || state === 136 || state === 135 || state === 134 || state === 133 || state === 132 || state === 131 || state === 130 || state === 129 || state === 128 || state === 0 && $.geB(t11, 0) && $.geB(vn2, 0))
                               switch (state) {
                                 case 0:
                                   t7.setFrom$1(t6).subLocal$1(a);
@@ -20639,7 +20565,7 @@ $$.ContactSolver = {"":
                                   wB = wB0;
                                   break L2;
                               }
-                            t6.set$x(0.0);
+                            t6.set$x(0);
                             t11 = cp2.get$normalMass();
                           case 144:
                             state = 0;
@@ -20678,7 +20604,7 @@ $$.ContactSolver = {"":
                           case 163:
                           case 164:
                           case 165:
-                            if (state === 165 || state === 164 || state === 163 || state === 162 || state === 161 || state === 160 || state === 159 || state === 158 || state === 157 || state === 156 || state === 155 || state === 154 || state === 153 || state === 152 || state === 151 || state === 150 || state === 0 && $.geB(t11, 0.0) && $.geB(vn1, 0.0))
+                            if (state === 165 || state === 164 || state === 163 || state === 162 || state === 161 || state === 160 || state === 159 || state === 158 || state === 157 || state === 156 || state === 155 || state === 154 || state === 153 || state === 152 || state === 151 || state === 150 || state === 0 && $.geB(t11, 0) && $.geB(vn1, 0))
                               switch (state) {
                                 case 0:
                                   t7.setFrom$1(t6).subLocal$1(a);
@@ -20755,8 +20681,8 @@ $$.ContactSolver = {"":
                                   wB = wB0;
                                   break L2;
                               }
-                            t6.set$x(0.0);
-                            t6.set$y(0.0);
+                            t6.set$x(0);
+                            t6.set$y(0);
                             vn1 = b.x;
                           case 166:
                             state = 0;
@@ -20779,7 +20705,7 @@ $$.ContactSolver = {"":
                           case 181:
                           case 182:
                           case 183:
-                            if (state === 183 || state === 182 || state === 181 || state === 180 || state === 179 || state === 178 || state === 177 || state === 176 || state === 175 || state === 174 || state === 173 || state === 172 || state === 171 || state === 170 || state === 169 || state === 168 || state === 0 && $.geB(vn1, 0.0) && $.geB(vn2, 0.0))
+                            if (state === 183 || state === 182 || state === 181 || state === 180 || state === 179 || state === 178 || state === 177 || state === 176 || state === 175 || state === 174 || state === 173 || state === 172 || state === 171 || state === 170 || state === 169 || state === 168 || state === 0 && $.geB(vn1, 0) && $.geB(vn2, 0))
                               switch (state) {
                                 case 0:
                                   t7.setFrom$1(t6).subLocal$1(a);
@@ -20891,11 +20817,11 @@ $$.ContactSolver = {"":
   var normal = psm.normal;
   var point = psm.point;
   var i = 0;
-  var minSeparation = 0.0;
+  var minSeparation = 0;
   while (true) {
     var t5 = this.constraintCount;
     if (typeof t5 !== 'number')
-      return this.solvePositionConstraints$1$bailout(1, baumgarte, t5, psm, i, t2, minSeparation, t1, t3, t4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(1, baumgarte, t5, psm, t1, t2, minSeparation, i, t3, t4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     if (!(i < t5))
       break;
     t5 = this.constraints;
@@ -20906,98 +20832,98 @@ $$.ContactSolver = {"":
     var bodyB = c.get$bodyB();
     t5 = bodyA.get$mass();
     if (typeof t5 !== 'number')
-      return this.solvePositionConstraints$1$bailout(2, baumgarte, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, t5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(2, baumgarte, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, t5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var t7 = bodyA.get$invMass();
     if (typeof t7 !== 'number')
-      return this.solvePositionConstraints$1$bailout(3, baumgarte, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, t5, t7, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(3, baumgarte, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, t5, t7, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var invMassA = t5 * t7;
     t7 = bodyA.get$mass();
     if (typeof t7 !== 'number')
-      return this.solvePositionConstraints$1$bailout(4, baumgarte, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, t7, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(4, baumgarte, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, t7, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     var t9 = bodyA.get$invInertia();
     if (typeof t9 !== 'number')
-      return this.solvePositionConstraints$1$bailout(5, baumgarte, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, t7, t9, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(5, baumgarte, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, t7, t9, 0, 0, 0, 0, 0, 0, 0, 0);
     var invIA = t7 * t9;
     t9 = bodyB.get$mass();
     if (typeof t9 !== 'number')
-      return this.solvePositionConstraints$1$bailout(6, baumgarte, t9, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(6, baumgarte, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, invIA, t9, 0, 0, 0, 0, 0, 0, 0, 0);
     var t11 = bodyB.get$invMass();
     if (typeof t11 !== 'number')
-      return this.solvePositionConstraints$1$bailout(7, baumgarte, t9, t11, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(7, baumgarte, t11, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, invIA, t9, 0, 0, 0, 0, 0, 0, 0);
     var invMassB = t9 * t11;
     t11 = bodyB.get$mass();
     if (typeof t11 !== 'number')
-      return this.solvePositionConstraints$1$bailout(8, baumgarte, invMassB, t11, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(8, baumgarte, invMassB, t11, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0, 0);
     var t13 = bodyB.get$invInertia();
     if (typeof t13 !== 'number')
-      return this.solvePositionConstraints$1$bailout(9, baumgarte, invMassB, t11, t13, psm, i, t2, minSeparation, t1, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0);
+      return this.solvePositionConstraints$1$bailout(9, baumgarte, invMassB, t11, t13, psm, t1, t2, minSeparation, i, t3, t4, c, bodyA, bodyB, invMassA, invIA, 0, 0, 0, 0, 0, 0);
     var invIB = t11 * t13;
     t5 = invMassA + invMassB;
     var j = 0;
     while (true) {
       var t6 = c.get$pointCount();
       if (typeof t6 !== 'number')
-        return this.solvePositionConstraints$1$bailout(10, baumgarte, invMassB, psm, i, invIB, t2, t1, j, t3, t4, minSeparation, c, bodyA, bodyB, t6, invMassA, invIA, 0, 0, 0, 0, 0);
+        return this.solvePositionConstraints$1$bailout(10, baumgarte, invMassB, psm, i, t1, t2, invIB, j, t3, t4, minSeparation, c, bodyA, bodyB, t6, invMassA, invIA, 0, 0, 0, 0, 0);
       if (!(j < t6))
         break;
       psm.initialize$2(c, j);
       var separation = psm.separation;
       if (typeof separation !== 'number')
-        return this.solvePositionConstraints$1$bailout(11, baumgarte, separation, invIA, invMassB, point, invIB, t2, psm, t1, j, t3, t4, minSeparation, i, c, bodyA, bodyB, invMassA, normal, 0, 0, 0);
+        return this.solvePositionConstraints$1$bailout(11, baumgarte, separation, invMassB, normal, psm, t1, t2, invIB, j, t3, t4, minSeparation, i, c, bodyA, bodyB, invMassA, invIA, point, 0, 0, 0);
       t1.setFrom$1(point).subLocal$1(bodyA.get$sweep().get$center());
       t2.setFrom$1(point).subLocal$1(bodyB.get$sweep().get$center());
       minSeparation = $.min(minSeparation, separation);
-      var C = $.max(-0.2, $.min(baumgarte * (separation + 0.005), 0.0));
+      var C = $.max(-0.2, $.min(baumgarte * (separation + 0.005), 0));
       t7 = t1.x;
       if (typeof t7 !== 'number')
-        return this.solvePositionConstraints$1$bailout(12, normal, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, t7, invIA, 0, 0, 0);
+        return this.solvePositionConstraints$1$bailout(12, baumgarte, invMassB, psm, invIB, t1, t2, i, j, t3, minSeparation, t4, c, bodyA, bodyB, invMassA, C, t7, invIA, normal, 0, 0, 0);
       t9 = normal.get$y();
       if (typeof t9 !== 'number')
-        return this.solvePositionConstraints$1$bailout(13, normal, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, t7, t9, invIA, 0, 0);
+        return this.solvePositionConstraints$1$bailout(13, baumgarte, invMassB, psm, invIB, t1, t2, i, j, t3, minSeparation, t4, c, bodyA, bodyB, invMassA, C, t7, t9, invIA, normal, 0, 0);
       t9 = t7 * t9;
       t7 = t1.y;
       if (typeof t7 !== 'number')
-        return this.solvePositionConstraints$1$bailout(14, t9, t7, invIA, invMassB, baumgarte, invIB, t2, psm, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, normal, 0, 0);
+        return this.solvePositionConstraints$1$bailout(14, t7, normal, invMassB, baumgarte, psm, t1, t2, invIB, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, invIA, t9, 0, 0);
       var t12 = normal.get$x();
       if (typeof t12 !== 'number')
-        return this.solvePositionConstraints$1$bailout(15, t9, t7, t12, invMassB, invIA, baumgarte, invIB, t2, psm, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, normal, 0);
+        return this.solvePositionConstraints$1$bailout(15, t7, t12, invMassB, baumgarte, normal, psm, t1, t2, invIB, j, t3, minSeparation, t4, i, c, bodyA, bodyB, invMassA, C, invIA, t9, 0);
       var rnA = t9 - t7 * t12;
       t9 = t2.x;
       if (typeof t9 !== 'number')
-        return this.solvePositionConstraints$1$bailout(16, invIA, baumgarte, invMassB, rnA, invIB, t2, t9, t1, j, t3, minSeparation, t4, psm, i, c, bodyA, bodyB, invMassA, C, normal, 0, 0);
+        return this.solvePositionConstraints$1$bailout(16, baumgarte, invMassB, rnA, t1, t9, t2, invIB, j, t3, minSeparation, t4, psm, i, c, bodyA, bodyB, invMassA, C, invIA, normal, 0, 0);
       var t15 = normal.get$y();
       if (typeof t15 !== 'number')
-        return this.solvePositionConstraints$1$bailout(17, normal, baumgarte, invMassB, rnA, invIB, t2, t9, t1, j, t3, minSeparation, t4, t15, psm, i, c, bodyA, bodyB, invMassA, C, invIA, 0);
+        return this.solvePositionConstraints$1$bailout(17, baumgarte, invMassB, rnA, t1, t9, t2, invIB, j, t3, minSeparation, t4, t15, psm, i, c, bodyA, bodyB, invMassA, C, invIA, normal, 0);
       t15 = t9 * t15;
       t9 = t2.y;
       if (typeof t9 !== 'number')
-        return this.solvePositionConstraints$1$bailout(18, normal, baumgarte, invMassB, rnA, invIB, t2, psm, t1, j, t9, t3, minSeparation, t4, t15, i, c, bodyA, bodyB, invMassA, C, invIA, 0);
+        return this.solvePositionConstraints$1$bailout(18, baumgarte, invMassB, rnA, invIB, t1, t2, i, t15, j, t3, minSeparation, t9, t4, psm, bodyA, bodyB, c, invMassA, C, invIA, normal, 0);
       var t18 = normal.get$x();
       if (typeof t18 !== 'number')
-        return this.solvePositionConstraints$1$bailout(19, normal, baumgarte, invMassB, rnA, invIB, t2, psm, t1, j, t9, t3, minSeparation, t4, t15, t18, i, c, bodyA, bodyB, invMassA, C, invIA);
+        return this.solvePositionConstraints$1$bailout(19, baumgarte, invMassB, rnA, invIB, t1, t2, i, j, t3, minSeparation, t4, t9, t18, t15, psm, bodyA, bodyB, c, invMassA, C, invIA, normal);
       var rnB = t15 - t9 * t18;
       var K = t5 + invIA * rnA * rnA + invIB * rnB * rnB;
-      var impulse = K > 0.0 ? -C / K : 0.0;
+      var impulse = K > 0 ? -C / K : 0;
       t3.setFrom$1(normal).mulLocal$1(impulse);
       t4.setFrom$1(t3).mulLocal$1(invMassA);
       bodyA.get$sweep().get$center().subLocal$1(t4);
       t6 = bodyA.get$sweep();
       t7 = t6.get$angle();
       if (typeof t7 !== 'number')
-        return this.solvePositionConstraints$1$bailout(20, baumgarte, invMassB, psm, t1, t2, invIB, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, invMassA, invIA, 0, 0, 0, 0);
+        return this.solvePositionConstraints$1$bailout(20, baumgarte, invMassB, psm, t1, invIB, t2, i, j, t3, minSeparation, t4, c, bodyA, bodyB, t7, t6, invMassA, invIA, 0, 0, 0, 0);
       t9 = t1.x;
       if (typeof t9 !== 'number')
-        return this.solvePositionConstraints$1$bailout(21, baumgarte, invMassB, psm, t1, t2, invIB, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, t9, invMassA, invIA, 0, 0, 0);
+        return this.solvePositionConstraints$1$bailout(21, baumgarte, invMassB, psm, t1, invIB, t2, i, j, t3, minSeparation, t4, c, bodyA, bodyB, t7, t6, t9, invMassA, invIA, 0, 0, 0);
       t11 = t3.y;
       if (typeof t11 !== 'number')
-        return this.solvePositionConstraints$1$bailout(22, baumgarte, invMassB, psm, t1, t2, invIB, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, t9, t11, invMassA, invIA, 0, 0);
+        return this.solvePositionConstraints$1$bailout(22, baumgarte, invMassB, psm, t1, invIB, t2, i, j, t3, minSeparation, t4, c, bodyA, bodyB, t7, t6, t9, t11, invMassA, invIA, 0, 0);
       t11 = t9 * t11;
       t9 = t1.y;
       if (typeof t9 !== 'number')
-        return this.solvePositionConstraints$1$bailout(23, invIA, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, invMassA, t11, t9, 0, 0);
+        return this.solvePositionConstraints$1$bailout(23, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, t6, t7, bodyB, invMassA, t11, invIA, t9, 0, 0);
       var t14 = t3.x;
       if (typeof t14 !== 'number')
-        return this.solvePositionConstraints$1$bailout(24, t14, baumgarte, invIA, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, invMassA, t11, t9, 0);
+        return this.solvePositionConstraints$1$bailout(24, baumgarte, t9, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, c, bodyA, bodyB, t7, t6, invMassA, t11, invIA, t14, 0);
       t6.set$angle(t7 - invIA * (t11 - t9 * t14));
       bodyA.synchronizeTransform$0();
       t4.setFrom$1(t3).mulLocal$1(invMassB);
@@ -21015,10 +20941,10 @@ $$.ContactSolver = {"":
       t20 = t18 * t20;
       t18 = t2.y;
       if (typeof t18 !== 'number')
-        return this.solvePositionConstraints$1$bailout(28, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, t6, t16, c, bodyA, bodyB, t20, t18, invMassA, invIA, 0, 0);
+        return this.solvePositionConstraints$1$bailout(28, baumgarte, invMassB, psm, invIB, t1, t2, i, j, t3, minSeparation, t4, t6, t16, c, bodyA, bodyB, t20, t18, invMassA, invIA, 0, 0);
       var t23 = t3.x;
       if (typeof t23 !== 'number')
-        return this.solvePositionConstraints$1$bailout(29, baumgarte, invMassB, psm, invIB, t2, t1, j, t3, minSeparation, t4, i, t6, t16, c, bodyA, bodyB, t20, t18, t23, invMassA, invIA, 0);
+        return this.solvePositionConstraints$1$bailout(29, baumgarte, invMassB, psm, invIB, t1, t2, i, j, t3, minSeparation, t4, t6, t16, c, bodyA, bodyB, t20, t18, t23, invMassA, invIA, 0);
       t6.set$angle(t16 + invIB * (t20 - t18 * t23));
       bodyB.synchronizeTransform$0();
       ++j;
@@ -21033,20 +20959,20 @@ $$.ContactSolver = {"":
       var baumgarte = env0;
       t5 = env1;
       psm = env2;
-      i = env3;
+      t1 = env3;
       t2 = env4;
       minSeparation = env5;
-      t1 = env6;
+      i = env6;
       t3 = env7;
       t4 = env8;
       break;
     case 2:
       baumgarte = env0;
       psm = env1;
-      i = env2;
+      t1 = env2;
       t2 = env3;
       minSeparation = env4;
-      t1 = env5;
+      i = env5;
       t3 = env6;
       t4 = env7;
       c = env8;
@@ -21057,10 +20983,10 @@ $$.ContactSolver = {"":
     case 3:
       baumgarte = env0;
       psm = env1;
-      i = env2;
+      t1 = env2;
       t2 = env3;
       minSeparation = env4;
-      t1 = env5;
+      i = env5;
       t3 = env6;
       t4 = env7;
       c = env8;
@@ -21072,10 +20998,10 @@ $$.ContactSolver = {"":
     case 4:
       baumgarte = env0;
       psm = env1;
-      i = env2;
+      t1 = env2;
       t2 = env3;
       minSeparation = env4;
-      t1 = env5;
+      i = env5;
       t3 = env6;
       t4 = env7;
       c = env8;
@@ -21087,10 +21013,10 @@ $$.ContactSolver = {"":
     case 5:
       baumgarte = env0;
       psm = env1;
-      i = env2;
+      t1 = env2;
       t2 = env3;
       minSeparation = env4;
-      t1 = env5;
+      i = env5;
       t3 = env6;
       t4 = env7;
       c = env8;
@@ -21102,12 +21028,28 @@ $$.ContactSolver = {"":
       break;
     case 6:
       baumgarte = env0;
-      t9 = env1;
+      psm = env1;
+      t1 = env2;
+      t2 = env3;
+      minSeparation = env4;
+      i = env5;
+      t3 = env6;
+      t4 = env7;
+      c = env8;
+      bodyA = env9;
+      bodyB = env10;
+      invMassA = env11;
+      invIA = env12;
+      t9 = env13;
+      break;
+    case 7:
+      baumgarte = env0;
+      t11 = env1;
       psm = env2;
-      i = env3;
+      t1 = env3;
       t2 = env4;
       minSeparation = env5;
-      t1 = env6;
+      i = env6;
       t3 = env7;
       t4 = env8;
       c = env9;
@@ -21115,33 +21057,17 @@ $$.ContactSolver = {"":
       bodyB = env11;
       invMassA = env12;
       invIA = env13;
-      break;
-    case 7:
-      baumgarte = env0;
-      t9 = env1;
-      t11 = env2;
-      psm = env3;
-      i = env4;
-      t2 = env5;
-      minSeparation = env6;
-      t1 = env7;
-      t3 = env8;
-      t4 = env9;
-      c = env10;
-      bodyA = env11;
-      bodyB = env12;
-      invMassA = env13;
-      invIA = env14;
+      t9 = env14;
       break;
     case 8:
       baumgarte = env0;
       invMassB = env1;
       t11 = env2;
       psm = env3;
-      i = env4;
+      t1 = env4;
       t2 = env5;
       minSeparation = env6;
-      t1 = env7;
+      i = env7;
       t3 = env8;
       t4 = env9;
       c = env10;
@@ -21156,10 +21082,10 @@ $$.ContactSolver = {"":
       t11 = env2;
       t13 = env3;
       psm = env4;
-      i = env5;
+      t1 = env5;
       t2 = env6;
       minSeparation = env7;
-      t1 = env8;
+      i = env8;
       t3 = env9;
       t4 = env10;
       c = env11;
@@ -21173,9 +21099,9 @@ $$.ContactSolver = {"":
       invMassB = env1;
       psm = env2;
       i = env3;
-      invIB = env4;
+      t1 = env4;
       t2 = env5;
-      t1 = env6;
+      invIB = env6;
       j = env7;
       t3 = env8;
       t4 = env9;
@@ -21190,77 +21116,99 @@ $$.ContactSolver = {"":
     case 11:
       baumgarte = env0;
       separation = env1;
-      invIA = env2;
-      invMassB = env3;
-      point = env4;
-      invIB = env5;
+      invMassB = env2;
+      normal = env3;
+      psm = env4;
+      t1 = env5;
       t2 = env6;
-      psm = env7;
-      t1 = env8;
-      j = env9;
-      t3 = env10;
-      t4 = env11;
-      minSeparation = env12;
-      i = env13;
-      c = env14;
-      bodyA = env15;
-      bodyB = env16;
-      invMassA = env17;
-      normal = env18;
+      invIB = env7;
+      j = env8;
+      t3 = env9;
+      t4 = env10;
+      minSeparation = env11;
+      i = env12;
+      c = env13;
+      bodyA = env14;
+      bodyB = env15;
+      invMassA = env16;
+      invIA = env17;
+      point = env18;
       break;
     case 12:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      psm = env3;
-      invIB = env4;
+      baumgarte = env0;
+      invMassB = env1;
+      psm = env2;
+      invIB = env3;
+      t1 = env4;
       t2 = env5;
-      t1 = env6;
+      i = env6;
       j = env7;
       t3 = env8;
       minSeparation = env9;
       t4 = env10;
-      i = env11;
-      c = env12;
-      bodyA = env13;
-      bodyB = env14;
-      invMassA = env15;
-      C = env16;
-      t7 = env17;
-      invIA = env18;
+      c = env11;
+      bodyA = env12;
+      bodyB = env13;
+      invMassA = env14;
+      C = env15;
+      t7 = env16;
+      invIA = env17;
+      normal = env18;
       break;
     case 13:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      psm = env3;
-      invIB = env4;
+      baumgarte = env0;
+      invMassB = env1;
+      psm = env2;
+      invIB = env3;
+      t1 = env4;
       t2 = env5;
-      t1 = env6;
+      i = env6;
       j = env7;
       t3 = env8;
       minSeparation = env9;
       t4 = env10;
-      i = env11;
-      c = env12;
-      bodyA = env13;
-      bodyB = env14;
-      invMassA = env15;
-      C = env16;
-      t7 = env17;
-      t9 = env18;
-      invIA = env19;
+      c = env11;
+      bodyA = env12;
+      bodyB = env13;
+      invMassA = env14;
+      C = env15;
+      t7 = env16;
+      t9 = env17;
+      invIA = env18;
+      normal = env19;
       break;
     case 14:
-      t9 = env0;
-      t7 = env1;
-      invIA = env2;
-      invMassB = env3;
-      baumgarte = env4;
-      invIB = env5;
+      t7 = env0;
+      normal = env1;
+      invMassB = env2;
+      baumgarte = env3;
+      psm = env4;
+      t1 = env5;
       t2 = env6;
-      psm = env7;
-      t1 = env8;
+      invIB = env7;
+      j = env8;
+      t3 = env9;
+      minSeparation = env10;
+      t4 = env11;
+      i = env12;
+      c = env13;
+      bodyA = env14;
+      bodyB = env15;
+      invMassA = env16;
+      C = env17;
+      invIA = env18;
+      t9 = env19;
+      break;
+    case 15:
+      t7 = env0;
+      t12 = env1;
+      invMassB = env2;
+      baumgarte = env3;
+      normal = env4;
+      psm = env5;
+      t1 = env6;
+      t2 = env7;
+      invIB = env8;
       j = env9;
       t3 = env10;
       minSeparation = env11;
@@ -21271,44 +21219,44 @@ $$.ContactSolver = {"":
       bodyB = env16;
       invMassA = env17;
       C = env18;
-      normal = env19;
-      break;
-    case 15:
-      t9 = env0;
-      t7 = env1;
-      t12 = env2;
-      invMassB = env3;
-      invIA = env4;
-      baumgarte = env5;
-      invIB = env6;
-      t2 = env7;
-      psm = env8;
-      t1 = env9;
-      j = env10;
-      t3 = env11;
-      minSeparation = env12;
-      t4 = env13;
-      i = env14;
-      c = env15;
-      bodyA = env16;
-      bodyB = env17;
-      invMassA = env18;
-      C = env19;
-      normal = env20;
+      invIA = env19;
+      t9 = env20;
       break;
     case 16:
-      invIA = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      rnA = env3;
-      invIB = env4;
+      baumgarte = env0;
+      invMassB = env1;
+      rnA = env2;
+      t1 = env3;
+      t9 = env4;
       t2 = env5;
-      t9 = env6;
-      t1 = env7;
-      j = env8;
-      t3 = env9;
-      minSeparation = env10;
-      t4 = env11;
+      invIB = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
+      psm = env11;
+      i = env12;
+      c = env13;
+      bodyA = env14;
+      bodyB = env15;
+      invMassA = env16;
+      C = env17;
+      invIA = env18;
+      normal = env19;
+      break;
+    case 17:
+      baumgarte = env0;
+      invMassB = env1;
+      rnA = env2;
+      t1 = env3;
+      t9 = env4;
+      t2 = env5;
+      invIB = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
+      t15 = env11;
       psm = env12;
       i = env13;
       c = env14;
@@ -21316,90 +21264,68 @@ $$.ContactSolver = {"":
       bodyB = env16;
       invMassA = env17;
       C = env18;
-      normal = env19;
+      invIA = env19;
+      normal = env20;
       break;
-    case 17:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      rnA = env3;
-      invIB = env4;
+    case 18:
+      baumgarte = env0;
+      invMassB = env1;
+      rnA = env2;
+      invIB = env3;
+      t1 = env4;
       t2 = env5;
-      t9 = env6;
-      t1 = env7;
+      i = env6;
+      t15 = env7;
       j = env8;
       t3 = env9;
       minSeparation = env10;
-      t4 = env11;
-      t15 = env12;
-      psm = env13;
-      i = env14;
-      c = env15;
-      bodyA = env16;
-      bodyB = env17;
-      invMassA = env18;
-      C = env19;
-      invIA = env20;
-      break;
-    case 18:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      rnA = env3;
-      invIB = env4;
-      t2 = env5;
-      psm = env6;
-      t1 = env7;
-      j = env8;
-      t9 = env9;
-      t3 = env10;
-      minSeparation = env11;
+      t9 = env11;
       t4 = env12;
-      t15 = env13;
-      i = env14;
-      c = env15;
-      bodyA = env16;
-      bodyB = env17;
-      invMassA = env18;
-      C = env19;
-      invIA = env20;
+      psm = env13;
+      bodyA = env14;
+      bodyB = env15;
+      c = env16;
+      invMassA = env17;
+      C = env18;
+      invIA = env19;
+      normal = env20;
       break;
     case 19:
-      normal = env0;
-      baumgarte = env1;
-      invMassB = env2;
-      rnA = env3;
-      invIB = env4;
+      baumgarte = env0;
+      invMassB = env1;
+      rnA = env2;
+      invIB = env3;
+      t1 = env4;
       t2 = env5;
-      psm = env6;
-      t1 = env7;
-      j = env8;
-      t9 = env9;
-      t3 = env10;
-      minSeparation = env11;
-      t4 = env12;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
+      t9 = env11;
+      t18 = env12;
       t15 = env13;
-      t18 = env14;
-      i = env15;
-      c = env16;
-      bodyA = env17;
-      bodyB = env18;
-      invMassA = env19;
-      C = env20;
-      invIA = env21;
+      psm = env14;
+      bodyA = env15;
+      bodyB = env16;
+      c = env17;
+      invMassA = env18;
+      C = env19;
+      invIA = env20;
+      normal = env21;
       break;
     case 20:
       baumgarte = env0;
       invMassB = env1;
       psm = env2;
       t1 = env3;
-      t2 = env4;
-      invIB = env5;
-      j = env6;
-      t3 = env7;
-      minSeparation = env8;
-      t4 = env9;
-      i = env10;
+      invIB = env4;
+      t2 = env5;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
       c = env11;
       bodyA = env12;
       bodyB = env13;
@@ -21413,13 +21339,13 @@ $$.ContactSolver = {"":
       invMassB = env1;
       psm = env2;
       t1 = env3;
-      t2 = env4;
-      invIB = env5;
-      j = env6;
-      t3 = env7;
-      minSeparation = env8;
-      t4 = env9;
-      i = env10;
+      invIB = env4;
+      t2 = env5;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
       c = env11;
       bodyA = env12;
       bodyB = env13;
@@ -21434,13 +21360,13 @@ $$.ContactSolver = {"":
       invMassB = env1;
       psm = env2;
       t1 = env3;
-      t2 = env4;
-      invIB = env5;
-      j = env6;
-      t3 = env7;
-      minSeparation = env8;
-      t4 = env9;
-      i = env10;
+      invIB = env4;
+      t2 = env5;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
       c = env11;
       bodyA = env12;
       bodyB = env13;
@@ -21452,8 +21378,30 @@ $$.ContactSolver = {"":
       invIA = env19;
       break;
     case 23:
-      invIA = env0;
-      baumgarte = env1;
+      baumgarte = env0;
+      invMassB = env1;
+      psm = env2;
+      invIB = env3;
+      t2 = env4;
+      t1 = env5;
+      j = env6;
+      t3 = env7;
+      minSeparation = env8;
+      t4 = env9;
+      i = env10;
+      c = env11;
+      bodyA = env12;
+      t5 = env13;
+      t6 = env14;
+      bodyB = env15;
+      invMassA = env16;
+      t10 = env17;
+      invIA = env18;
+      t8 = env19;
+      break;
+    case 24:
+      baumgarte = env0;
+      t8 = env1;
       invMassB = env2;
       psm = env3;
       invIB = env4;
@@ -21471,30 +21419,8 @@ $$.ContactSolver = {"":
       t5 = env16;
       invMassA = env17;
       t10 = env18;
-      t8 = env19;
-      break;
-    case 24:
-      t13 = env0;
-      baumgarte = env1;
-      invIA = env2;
-      invMassB = env3;
-      psm = env4;
-      invIB = env5;
-      t2 = env6;
-      t1 = env7;
-      j = env8;
-      t3 = env9;
-      minSeparation = env10;
-      t4 = env11;
-      i = env12;
-      c = env13;
-      bodyA = env14;
-      bodyB = env15;
-      t6 = env16;
-      t5 = env17;
-      invMassA = env18;
-      t10 = env19;
-      t8 = env20;
+      invIA = env19;
+      t13 = env20;
       break;
     case 25:
       baumgarte = env0;
@@ -21564,13 +21490,13 @@ $$.ContactSolver = {"":
       invMassB = env1;
       psm = env2;
       invIB = env3;
-      t2 = env4;
-      t1 = env5;
-      j = env6;
-      t3 = env7;
-      minSeparation = env8;
-      t4 = env9;
-      i = env10;
+      t1 = env4;
+      t2 = env5;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
       t5 = env11;
       t15 = env12;
       c = env13;
@@ -21586,13 +21512,13 @@ $$.ContactSolver = {"":
       invMassB = env1;
       psm = env2;
       invIB = env3;
-      t2 = env4;
-      t1 = env5;
-      j = env6;
-      t3 = env7;
-      minSeparation = env8;
-      t4 = env9;
-      i = env10;
+      t1 = env4;
+      t2 = env5;
+      i = env6;
+      j = env7;
+      t3 = env8;
+      minSeparation = env9;
+      t4 = env10;
       t5 = env11;
       t15 = env12;
       c = env13;
@@ -21613,7 +21539,7 @@ $$.ContactSolver = {"":
       var t3 = this.P;
       var t4 = this.temp1;
       var i = 0;
-      var minSeparation = 0.0;
+      var minSeparation = 0;
     default:
       L0:
         while (true)
@@ -21681,7 +21607,7 @@ $$.ContactSolver = {"":
                       var t6 = $.add(separation, 0.005);
                       if (typeof t6 !== 'number')
                         throw $.iae(t6);
-                      var C = $.max(-0.2, $.min(baumgarte * t6, 0.0));
+                      var C = $.max(-0.2, $.min(baumgarte * t6, 0));
                       t7 = t1.get$x();
                     case 12:
                       state = 0;
@@ -21711,13 +21637,13 @@ $$.ContactSolver = {"":
                       state = 0;
                       var rnB = $.sub(t15, $.mul(t9, t18));
                       var K = $.add($.add($.add(invMassA, invMassB), $.mul($.mul(invIA, rnA), rnA)), $.mul($.mul(invIB, rnB), rnB));
-                      if ($.gtB(K, 0.0)) {
+                      if ($.gtB(K, 0)) {
                         t5 = -C;
                         if (typeof K !== 'number')
                           throw $.iae(K);
                         var impulse = t5 / K;
                       } else
-                        impulse = 0.0;
+                        impulse = 0;
                       t3.setFrom$1(normal).mulLocal$1(impulse);
                       t4.setFrom$1(t3).mulLocal$1(invMassA);
                       bodyA.get$sweep().get$center().subLocal$1(t4);
@@ -21799,7 +21725,7 @@ $$.PositionSolverManifold = {"":
         t2.setFrom$1(t4).subLocal$1(t3);
         t2.normalize$0();
       } else
-        t2.setCoords$2(1.0, 0.0);
+        t2.setCoords$2(1, 0);
       this.point.setFrom$1(t3).addLocal$1(t4).mulLocal$1(0.5);
       t1 = this.temp;
       t1.setFrom$1(t4).subLocal$1(t3);
@@ -21975,21 +21901,21 @@ $$.TimeOfImpactSolver = {"":
     var massA = bodyA.get$mass();
     var massB = bodyB.get$mass();
     if ($.eqB(bodyA, this.toiBody))
-      massB = 0.0;
+      massB = 0;
     else
-      massA = 0.0;
+      massA = 0;
     var invMassA = $.mul(massA, bodyA.get$invMass());
     if (typeof invMassA !== 'number')
-      return this.solve$1$bailout(1, baumgarte, massA, massB, invMassA, i, minSeparation, c, bodyA, bodyB, t1, t2, t3, t4, t5, 0);
+      return this.solve$1$bailout(1, baumgarte, massA, massB, invMassA, i, minSeparation, t1, c, bodyB, bodyA, t2, t3, t4, t5, 0);
     var invIA = $.mul(massA, bodyA.get$invInertia());
     if (typeof invIA !== 'number')
-      return this.solve$1$bailout(2, baumgarte, massB, invMassA, i, minSeparation, invIA, c, bodyA, t1, bodyB, t2, t3, t4, t5, 0);
+      return this.solve$1$bailout(2, baumgarte, massB, invMassA, i, invIA, minSeparation, t1, c, bodyA, bodyB, t2, t3, t4, t5, 0);
     var invMassB = $.mul(massB, bodyB.get$invMass());
     if (typeof invMassB !== 'number')
-      return this.solve$1$bailout(3, baumgarte, massB, invMassA, i, minSeparation, invIA, invMassB, c, bodyA, bodyB, t1, t2, t3, t4, t5);
+      return this.solve$1$bailout(3, baumgarte, massB, invMassA, i, invIA, minSeparation, invMassB, t1, c, bodyB, bodyA, t2, t3, t4, t5);
     var invIB = $.mul(massB, bodyB.get$invInertia());
     if (typeof invIB !== 'number')
-      return this.solve$1$bailout(4, baumgarte, invMassA, i, minSeparation, invIA, invMassB, invIB, c, bodyA, t1, bodyB, t2, t3, t4, t5);
+      return this.solve$1$bailout(4, baumgarte, invMassA, i, invIA, minSeparation, invMassB, invIB, t1, c, bodyB, bodyA, t2, t3, t4, t5);
     for (var t6 = invMassA + invMassB, j = 0; $.ltB(j, c.get$pointCount()); ++j) {
       t1.initialize$2(c, j);
       var separation = t1.separation;
@@ -21999,7 +21925,7 @@ $$.TimeOfImpactSolver = {"":
       var t7 = $.add(separation, 0.005);
       if (typeof t7 !== 'number')
         throw $.iae(t7);
-      var C = $.max(-0.2, $.min(baumgarte * t7, 0.0));
+      var C = $.max(-0.2, $.min(baumgarte * t7, 0));
       var rnA = $.sub($.mul(t2.x, normal.get$y()), $.mul(t2.y, normal.get$x()));
       var rnB = $.sub($.mul(t3.x, normal.get$y()), $.mul(t3.y, normal.get$x()));
       if (typeof rnA !== 'number')
@@ -22008,7 +21934,7 @@ $$.TimeOfImpactSolver = {"":
       if (typeof rnB !== 'number')
         throw $.iae(rnB);
       var K = t8 + invIB * rnB * rnB;
-      var impulse = K > 0.0 ? -C / K : 0.0;
+      var impulse = K > 0 ? -C / K : 0;
       t4.setFrom$1(normal).mulLocal$1(impulse);
       t5.setFrom$1(t4).mulLocal$1(invMassA);
       bodyA.get$sweep().get$center().subLocal$1(t5);
@@ -22041,10 +21967,10 @@ $$.TimeOfImpactSolver = {"":
       invMassA = env3;
       i = env4;
       minSeparation = env5;
-      c = env6;
-      bodyA = env7;
+      t1 = env6;
+      c = env7;
       bodyB = env8;
-      t1 = env9;
+      bodyA = env9;
       t2 = env10;
       t3 = env11;
       t4 = env12;
@@ -22055,11 +21981,11 @@ $$.TimeOfImpactSolver = {"":
       massB = env1;
       invMassA = env2;
       i = env3;
-      minSeparation = env4;
-      invIA = env5;
-      c = env6;
-      bodyA = env7;
-      t1 = env8;
+      invIA = env4;
+      minSeparation = env5;
+      t1 = env6;
+      c = env7;
+      bodyA = env8;
       bodyB = env9;
       t2 = env10;
       t3 = env11;
@@ -22071,13 +21997,13 @@ $$.TimeOfImpactSolver = {"":
       massB = env1;
       invMassA = env2;
       i = env3;
-      minSeparation = env4;
-      invIA = env5;
+      invIA = env4;
+      minSeparation = env5;
       invMassB = env6;
-      c = env7;
-      bodyA = env8;
+      t1 = env7;
+      c = env8;
       bodyB = env9;
-      t1 = env10;
+      bodyA = env10;
       t2 = env11;
       t3 = env12;
       t4 = env13;
@@ -22087,14 +22013,14 @@ $$.TimeOfImpactSolver = {"":
       baumgarte = env0;
       invMassA = env1;
       i = env2;
-      minSeparation = env3;
-      invIA = env4;
+      invIA = env3;
+      minSeparation = env4;
       invMassB = env5;
       invIB = env6;
-      c = env7;
-      bodyA = env8;
-      t1 = env9;
-      bodyB = env10;
+      t1 = env7;
+      c = env8;
+      bodyB = env9;
+      bodyA = env10;
       t2 = env11;
       t3 = env12;
       t4 = env13;
@@ -22126,9 +22052,9 @@ $$.TimeOfImpactSolver = {"":
               var massA = bodyA.get$mass();
               var massB = bodyB.get$mass();
               if ($.eqB(bodyA, this.toiBody))
-                massB = 0.0;
+                massB = 0;
               else
-                massA = 0.0;
+                massA = 0;
               var invMassA = $.mul(massA, bodyA.get$invMass());
             case 1:
               state = 0;
@@ -22152,17 +22078,17 @@ $$.TimeOfImpactSolver = {"":
                 t6 = $.add(separation, 0.005);
                 if (typeof t6 !== 'number')
                   throw $.iae(t6);
-                var C = $.max(-0.2, $.min(baumgarte * t6, 0.0));
+                var C = $.max(-0.2, $.min(baumgarte * t6, 0));
                 var rnA = $.sub($.mul(t2.get$x(), normal.get$y()), $.mul(t2.get$y(), normal.get$x()));
                 var rnB = $.sub($.mul(t3.get$x(), normal.get$y()), $.mul(t3.get$y(), normal.get$x()));
                 var K = $.add($.add($.add(invMassA, invMassB), $.mul($.mul(invIA, rnA), rnA)), $.mul($.mul(invIB, rnB), rnB));
-                if ($.gtB(K, 0.0)) {
+                if ($.gtB(K, 0)) {
                   t6 = -C;
                   if (typeof K !== 'number')
                     throw $.iae(K);
                   var impulse = t6 / K;
                 } else
-                  impulse = 0.0;
+                  impulse = 0;
                 t4.setFrom$1(normal).mulLocal$1(impulse);
                 t5.setFrom$1(t4).mulLocal$1(invMassA);
                 bodyA.get$sweep().get$center().subLocal$1(t5);
@@ -22382,26 +22308,17 @@ $$._convertDartToNative_PrepareForStructuredClone_findSlot = {"":
  ["copies_3", "values_2"],
  "super": "Closure",
  call$1: function(value) {
-  var length$ = $.get$length(this.values_2);
-  if (typeof length$ !== 'number')
-    return this.call$1$bailout(1, value, length$);
+  var t1 = this.values_2;
+  var length$ = t1.length;
   for (var i = 0; i < length$; ++i) {
-    var t1 = $.index(this.values_2, i);
-    if (t1 == null ? value == null : t1 === value)
+    if (i < 0 || i >= t1.length)
+      throw $.ioore(i);
+    var t2 = t1[i];
+    if (t2 == null ? value == null : t2 === value)
       return i;
   }
-  $.add$1(this.values_2, value);
-  $.add$1(this.copies_3, null);
-  return length$;
-},
- call$1$bailout: function(state, value, length$) {
-  for (var i = 0; $.ltB(i, length$); ++i) {
-    var t1 = $.index(this.values_2, i);
-    if (t1 == null ? value == null : t1 === value)
-      return i;
-  }
-  $.add$1(this.values_2, value);
-  $.add$1(this.copies_3, null);
+  t1.push(value);
+  this.copies_3.push(null);
   return length$;
 }
 };
@@ -22410,7 +22327,12 @@ $$._convertDartToNative_PrepareForStructuredClone_readSlot = {"":
  ["copies_4"],
  "super": "Closure",
  call$1: function(i) {
-  return $.index(this.copies_4, i);
+  var t1 = this.copies_4;
+  if (i !== (i | 0))
+    throw $.iae(i);
+  if (i < 0 || i >= t1.length)
+    throw $.ioore(i);
+  return t1[i];
 }
 };
 
@@ -22418,7 +22340,12 @@ $$._convertDartToNative_PrepareForStructuredClone_writeSlot = {"":
  ["copies_5"],
  "super": "Closure",
  call$2: function(i, x) {
-  $.indexSet(this.copies_5, i, x);
+  var t1 = this.copies_5;
+  if (i !== (i | 0))
+    throw $.iae(i);
+  if (i < 0 || i >= t1.length)
+    throw $.ioore(i);
+  t1[i] = x;
 }
 };
 
@@ -22443,33 +22370,33 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
   if (typeof e === 'string')
     return e;
   if (typeof e === 'object' && e !== null && !!e.is$Date)
-    throw $.captureStackTrace($.CTC3);
+    throw $.$$throw($.CTC2);
   if (typeof e === 'object' && e !== null && !!e.is$RegExp)
-    throw $.captureStackTrace($.CTC4);
+    throw $.$$throw($.CTC3);
   if (typeof e === 'object' && e !== null && e.is$_FileImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$File())
-    throw $.captureStackTrace($.CTC5);
+    throw $.$$throw($.CTC4);
   if (typeof e === 'object' && e !== null && e.is$_BlobImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$Blob())
-    throw $.captureStackTrace($.CTC6);
+    throw $.$$throw($.CTC5);
   if (typeof e === 'object' && e !== null && e.is$_FileListImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$FileList())
-    throw $.captureStackTrace($.CTC7);
+    throw $.$$throw($.CTC6);
   if (typeof e === 'object' && e !== null && e.is$_ImageDataImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$ImageData())
-    throw $.captureStackTrace($.CTC7);
+    throw $.$$throw($.CTC6);
   if (typeof e === 'object' && e !== null && e.is$_ArrayBufferImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$ArrayBuffer())
-    throw $.captureStackTrace($.CTC8);
+    throw $.$$throw($.CTC7);
   if (typeof e === 'object' && e !== null && e.is$_ArrayBufferViewImpl())
     return e;
   if (typeof e === 'object' && e !== null && e.is$ArrayBufferView())
-    throw $.captureStackTrace($.CTC9);
+    throw $.$$throw($.CTC8);
   if (typeof e === 'object' && e !== null && e.is$Map()) {
     var slot = this.findSlot_8.call$1(e);
     t1.copy_1 = this.readSlot_7.call$1(slot);
@@ -22483,10 +22410,11 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
   }
   if (typeof e === 'object' && e !== null && (e.constructor === Array || e.is$List())) {
     if (typeof e !== 'object' || e === null || (e.constructor !== Array || !!e.immutable$list) && !e.is$JavaScriptIndexingBehavior())
-      return this.call$1$bailout(1, e, 0, 0, 0, 0, 0);
+      return this.call$1$bailout(1, e, 0, 0, 0, 0, 0, 0);
     var length$ = e.length;
     slot = this.findSlot_8.call$1(e);
-    var copy = this.readSlot_7.call$1(slot);
+    t2 = this.readSlot_7;
+    var copy = t2.call$1(slot);
     if (!(copy == null)) {
       if (true === copy) {
         copy = new Array(length$);
@@ -22494,21 +22422,23 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
       }
       return copy;
     }
-    if (e instanceof Array && !!!(e.immutable$list)) {
-      this.writeSlot_6.call$2(slot, true);
+    t1 = e instanceof Array && !!!(e.immutable$list);
+    var t3 = this.writeSlot_6;
+    if (t1) {
+      t3.call$2(slot, true);
       for (var i = 0; i < length$; ++i) {
         if (i < 0 || i >= e.length)
           throw $.ioore(i);
         var element = e[i];
         var elementCopy = this.call$1(element);
         if (!(elementCopy == null ? element == null : elementCopy === element)) {
-          copy = this.readSlot_7.call$1(slot);
+          copy = t2.call$1(slot);
           if (true === copy) {
             copy = new Array(length$);
-            this.writeSlot_6.call$2(slot, copy);
+            t3.call$2(slot, copy);
           }
           if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-            return this.call$1$bailout(2, copy, elementCopy, e, length$, i, slot);
+            return this.call$1$bailout(2, copy, elementCopy, t3, e, length$, i, slot);
           for (var j = 0; j < i; ++j) {
             if (j < 0 || j >= e.length)
               throw $.ioore(j);
@@ -22525,16 +22455,16 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
         }
       }
       if (copy == null) {
-        this.writeSlot_6.call$2(slot, e);
+        t3.call$2(slot, e);
         copy = e;
       }
     } else {
       copy = new Array(length$);
-      this.writeSlot_6.call$2(slot, copy);
+      t3.call$2(slot, copy);
       i = 0;
     }
     if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-      return this.call$1$bailout(3, i, copy, e, length$, 0, 0);
+      return this.call$1$bailout(3, i, copy, e, length$, 0, 0, 0);
     for (; i < length$; ++i) {
       if (i < 0 || i >= e.length)
         throw $.ioore(i);
@@ -22545,9 +22475,9 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
     }
     return copy;
   }
-  throw $.captureStackTrace($.CTC10);
+  throw $.$$throw($.CTC9);
 },
- call$1$bailout: function(state, env0, env1, env2, env3, env4, env5) {
+ call$1$bailout: function(state, env0, env1, env2, env3, env4, env5, env6) {
   switch (state) {
     case 1:
       var e = env0;
@@ -22555,10 +22485,11 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
     case 2:
       copy = env0;
       elementCopy = env1;
-      e = env2;
-      length$ = env3;
-      i = env4;
-      slot = env5;
+      t3 = env2;
+      e = env3;
+      length$ = env4;
+      i = env5;
+      slot = env6;
       break;
     case 3:
       i = env0;
@@ -22579,33 +22510,33 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
       if (typeof e === 'string')
         return e;
       if (typeof e === 'object' && e !== null && !!e.is$Date)
-        throw $.captureStackTrace($.CTC3);
+        throw $.$$throw($.CTC2);
       if (typeof e === 'object' && e !== null && !!e.is$RegExp)
-        throw $.captureStackTrace($.CTC4);
+        throw $.$$throw($.CTC3);
       if (typeof e === 'object' && e !== null && e.is$_FileImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$File())
-        throw $.captureStackTrace($.CTC5);
+        throw $.$$throw($.CTC4);
       if (typeof e === 'object' && e !== null && e.is$_BlobImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$Blob())
-        throw $.captureStackTrace($.CTC6);
+        throw $.$$throw($.CTC5);
       if (typeof e === 'object' && e !== null && e.is$_FileListImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$FileList())
-        throw $.captureStackTrace($.CTC7);
+        throw $.$$throw($.CTC6);
       if (typeof e === 'object' && e !== null && e.is$_ImageDataImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$ImageData())
-        throw $.captureStackTrace($.CTC7);
+        throw $.$$throw($.CTC6);
       if (typeof e === 'object' && e !== null && e.is$_ArrayBufferImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$ArrayBuffer())
-        throw $.captureStackTrace($.CTC8);
+        throw $.$$throw($.CTC7);
       if (typeof e === 'object' && e !== null && e.is$_ArrayBufferViewImpl())
         return e;
       if (typeof e === 'object' && e !== null && e.is$ArrayBufferView())
-        throw $.captureStackTrace($.CTC9);
+        throw $.$$throw($.CTC8);
       if (typeof e === 'object' && e !== null && e.is$Map()) {
         var slot = this.findSlot_8.call$1(e);
         t1.copy_1 = this.readSlot_7.call$1(slot);
@@ -22625,7 +22556,8 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
             state = 0;
             var length$ = $.get$length(e);
             slot = this.findSlot_8.call$1(e);
-            var copy = this.readSlot_7.call$1(slot);
+            t2 = this.readSlot_7;
+            var copy = t2.call$1(slot);
             if (!(copy == null)) {
               if (true === copy) {
                 copy = new Array(length$);
@@ -22633,11 +22565,13 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
               }
               return copy;
             }
+            t1 = e instanceof Array && !!!(e.immutable$list);
+            var t3 = this.writeSlot_6;
           case 2:
-            if (state === 2 || state === 0 && e instanceof Array && !!!(e.immutable$list))
+            if (state === 2 || state === 0 && t1)
               switch (state) {
                 case 0:
-                  this.writeSlot_6.call$2(slot, true);
+                  t3.call$2(slot, true);
                   var i = 0;
                 case 2:
                   L0:
@@ -22652,10 +22586,10 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
                           if (state === 2 || state === 0 && !(elementCopy == null ? element == null : elementCopy === element))
                             switch (state) {
                               case 0:
-                                copy = this.readSlot_7.call$1(slot);
+                                copy = t2.call$1(slot);
                                 if (true === copy) {
                                   copy = new Array(length$);
-                                  this.writeSlot_6.call$2(slot, copy);
+                                  t3.call$2(slot, copy);
                                 }
                               case 2:
                                 state = 0;
@@ -22668,13 +22602,13 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
                           ++i;
                       }
                   if (copy == null) {
-                    this.writeSlot_6.call$2(slot, e);
+                    t3.call$2(slot, e);
                     copy = e;
                   }
               }
             else {
               copy = new Array(length$);
-              this.writeSlot_6.call$2(slot, copy);
+              t3.call$2(slot, copy);
               i = 0;
             }
           case 3:
@@ -22683,7 +22617,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"":
               $.indexSet(copy, i, this.call$1($.index(e, i)));
             return copy;
         }
-      throw $.captureStackTrace($.CTC10);
+      throw $.$$throw($.CTC9);
   }
 }
 };
@@ -22700,12 +22634,15 @@ $$.Maps__emitMap_anon = {"":
  ["result_3", "box_0", "visiting_2"],
  "super": "Closure",
  call$2: function(k, v) {
-  if (this.box_0.first_1 !== true)
+  var t1 = this.box_0;
+  if (t1.first_1 !== true)
     $.add$1(this.result_3, ', ');
-  this.box_0.first_1 = false;
-  $.Collections__emitObject(k, this.result_3, this.visiting_2);
-  $.add$1(this.result_3, ': ');
-  $.Collections__emitObject(v, this.result_3, this.visiting_2);
+  t1.first_1 = false;
+  t1 = this.result_3;
+  var t2 = this.visiting_2;
+  $.Collections__emitObject(k, t1, t2);
+  $.add$1(t1, ': ');
+  $.Collections__emitObject(v, t1, t2);
 }
 };
 
@@ -22721,9 +22658,10 @@ $$.Demo_initializeAnimation_anon = {"":
  ["this_0"],
  "super": "Closure",
  call$0: function() {
-  var t1 = $.toString(this.this_0.get$frameCount());
-  this.this_0.get$fpsCounter().set$innerHTML(t1);
-  this.this_0.set$frameCount(0);
+  var t1 = this.this_0;
+  var t2 = $.toString(t1.get$frameCount());
+  t1.get$fpsCounter().set$innerHTML(t2);
+  t1.set$frameCount(0);
 }
 };
 
@@ -22731,8 +22669,9 @@ $$.Demo_initializeAnimation_anon0 = {"":
  ["this_1"],
  "super": "Closure",
  call$0: function() {
-  var t1 = $.S($.div(this.this_1.get$elapsedUs(), 1000)) + ' ms';
-  this.this_1.get$worldStepTime().set$innerHTML(t1);
+  var t1 = this.this_1;
+  var t2 = $.S($.div(t1.get$elapsedUs(), 1000)) + ' ms';
+  t1.get$worldStepTime().set$innerHTML(t2);
 }
 };
 
@@ -22749,7 +22688,7 @@ $$._ChildrenElementList_filter_anon = {"":
  "super": "Closure",
  call$1: function(element) {
   if (this.f_1.call$1(element) === true)
-    $.add$1(this.output_0, element);
+    this.output_0.push(element);
 }
 };
 
@@ -22765,8 +22704,8 @@ $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  "super": "Closure",
  call$1: function(element) {
-  var counter = $.add(this.box_0.counter_1, 1);
-  this.box_0.counter_1 = counter;
+  var t1 = this.box_0;
+  t1.counter_1 = $.add(t1.counter_1, 1);
 }
 };
 
@@ -22835,26 +22774,17 @@ $$._convertNativeToDart_AcceptStructuredClone_findSlot = {"":
  ["copies_1", "values_0"],
  "super": "Closure",
  call$1: function(value) {
-  var length$ = $.get$length(this.values_0);
-  if (typeof length$ !== 'number')
-    return this.call$1$bailout(1, value, length$);
+  var t1 = this.values_0;
+  var length$ = t1.length;
   for (var i = 0; i < length$; ++i) {
-    var t1 = $.index(this.values_0, i);
-    if (t1 == null ? value == null : t1 === value)
+    if (i < 0 || i >= t1.length)
+      throw $.ioore(i);
+    var t2 = t1[i];
+    if (t2 == null ? value == null : t2 === value)
       return i;
   }
-  $.add$1(this.values_0, value);
-  $.add$1(this.copies_1, null);
-  return length$;
-},
- call$1$bailout: function(state, value, length$) {
-  for (var i = 0; $.ltB(i, length$); ++i) {
-    var t1 = $.index(this.values_0, i);
-    if (t1 == null ? value == null : t1 === value)
-      return i;
-  }
-  $.add$1(this.values_0, value);
-  $.add$1(this.copies_1, null);
+  t1.push(value);
+  this.copies_1.push(null);
   return length$;
 }
 };
@@ -22863,7 +22793,12 @@ $$._convertNativeToDart_AcceptStructuredClone_readSlot = {"":
  ["copies_2"],
  "super": "Closure",
  call$1: function(i) {
-  return $.index(this.copies_2, i);
+  var t1 = this.copies_2;
+  if (i !== (i | 0))
+    throw $.iae(i);
+  if (i < 0 || i >= t1.length)
+    throw $.ioore(i);
+  return t1[i];
 }
 };
 
@@ -22871,7 +22806,12 @@ $$._convertNativeToDart_AcceptStructuredClone_writeSlot = {"":
  ["copies_3"],
  "super": "Closure",
  call$2: function(i, x) {
-  $.indexSet(this.copies_3, i, x);
+  var t1 = this.copies_3;
+  if (i !== (i | 0))
+    throw $.iae(i);
+  if (i < 0 || i >= t1.length)
+    throw $.ioore(i);
+  t1[i] = x;
 }
 };
 
@@ -22882,9 +22822,9 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"":
   if (typeof e !== 'object' || e === null || (e.constructor !== Array || !!e.immutable$list) && !e.is$JavaScriptIndexingBehavior())
     return this.call$1$bailout(1, e, 0, 0);
   if (e instanceof Date)
-    throw $.captureStackTrace($.CTC3);
+    throw $.$$throw($.CTC2);
   if (e instanceof RegExp)
-    throw $.captureStackTrace($.CTC4);
+    throw $.$$throw($.CTC3);
   if ($._isJavaScriptSimpleObject(e)) {
     var slot = this.findSlot_6.call$1(e);
     var copy = this.readSlot_5.call$1(slot);
@@ -22948,9 +22888,9 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"":
       if (typeof e === 'string')
         return e;
       if (e instanceof Date)
-        throw $.captureStackTrace($.CTC3);
+        throw $.$$throw($.CTC2);
       if (e instanceof RegExp)
-        throw $.captureStackTrace($.CTC4);
+        throw $.$$throw($.CTC3);
     case 2:
       if (state === 2 || state === 0 && $._isJavaScriptSimpleObject(e))
         switch (state) {
@@ -23011,12 +22951,14 @@ $$._WorkerSendPort_send_anon = {"":
  ["message_2", "this_1", "replyTo_0"],
  "super": "Closure",
  call$0: function() {
-  this.this_1._checkReplyTo$1(this.replyTo_0);
-  var workerMessage = $._serializeMessage($.makeLiteralMap(['command', 'message', 'port', this.this_1, 'msg', this.message_2, 'replyTo', this.replyTo_0]));
+  var t1 = this.this_1;
+  var t2 = this.replyTo_0;
+  t1._checkReplyTo$1(t2);
+  var workerMessage = $._serializeMessage($.makeLiteralMap(['command', 'message', 'port', t1, 'msg', this.message_2, 'replyTo', t2]));
   if ($._globalState().get$isWorker() === true)
     $._globalState().get$mainManager().postMessage$1(workerMessage);
   else
-    $.index($._globalState().get$managers(), this.this_1.get$_workerId()).postMessage$1(workerMessage);
+    $.index($._globalState().get$managers(), t1.get$_workerId()).postMessage$1(workerMessage);
 }
 };
 
@@ -23032,11 +22974,16 @@ $$.Futures_wait_anon = {"":
  ["result_5", "pos_4", "completer_3", "box_0", "values_2"],
  "super": "Closure",
  call$1: function(value) {
-  $.indexSet(this.values_2, this.pos_4, value);
-  var remaining = $.sub(this.box_0.remaining_1, 1);
-  this.box_0.remaining_1 = remaining;
+  var t1 = this.values_2;
+  var t2 = this.pos_4;
+  if (t2 < 0 || t2 >= t1.length)
+    throw $.ioore(t2);
+  t1[t2] = value;
+  t2 = this.box_0;
+  var remaining = $.sub(t2.remaining_1, 1);
+  t2.remaining_1 = remaining;
   if ($.eqB(remaining, 0) && this.result_5.get$isComplete() !== true)
-    this.completer_3.complete$1(this.values_2);
+    this.completer_3.complete$1(t1);
 }
 };
 
@@ -23070,7 +23017,7 @@ $$._StorageImpl_getValues_anon = {"":
  ["values_0"],
  "super": "Closure",
  call$2: function(k, v) {
-  return $.add$1(this.values_0, v);
+  return this.values_0.push(v);
 }
 };
 
@@ -23079,10 +23026,14 @@ $$.HashMapImplementation_getValues__ = {"":
  "super": "Closure",
  call$2: function(key, value) {
   var t1 = this.list_2;
-  var t2 = this.box_0.i_1;
-  var i = $.add(t2, 1);
-  this.box_0.i_1 = i;
-  $.indexSet(t1, t2, value);
+  var t2 = this.box_0;
+  var t3 = t2.i_1;
+  t2.i_1 = $.add(t3, 1);
+  if (t3 !== (t3 | 0))
+    throw $.iae(t3);
+  if (t3 < 0 || t3 >= t1.length)
+    throw $.ioore(t3);
+  t1[t3] = value;
 }
 };
 
@@ -23091,10 +23042,15 @@ $$.LinkedHashMapImplementation_getValues__ = {"":
  "super": "Closure",
  call$1: function(entry) {
   var t1 = this.list_2;
-  var t2 = this.box_0.index_1;
-  var index = $.add(t2, 1);
-  this.box_0.index_1 = index;
-  $.indexSet(t1, t2, entry.get$value());
+  var t2 = this.box_0;
+  var t3 = t2.index_1;
+  t2.index_1 = $.add(t3, 1);
+  t2 = entry.get$value();
+  if (t3 !== (t3 | 0))
+    throw $.iae(t3);
+  if (t3 < 0 || t3 >= t1.length)
+    throw $.ioore(t3);
+  t1[t3] = t2;
 }
 };
 
@@ -23103,20 +23059,23 @@ $$._NativeJsSendPort_send_anon = {"":
  "super": "Closure",
  call$0: function() {
   var t1 = {};
-  this.this_4._checkReplyTo$1(this.replyTo_3);
-  var isolate = $.index($._globalState().get$isolates(), this.this_4.get$_isolateId());
+  var t2 = this.this_4;
+  var t3 = this.replyTo_3;
+  t2._checkReplyTo$1(t3);
+  var isolate = $.index($._globalState().get$isolates(), t2.get$_isolateId());
   if (isolate == null)
     return;
-  if (this.this_4.get$_receivePort().get$_callback() == null)
+  if (t2.get$_receivePort().get$_callback() == null)
     return;
-  var shouldSerialize = !($._globalState().get$currentContext() == null) && !$.eqB($._globalState().get$currentContext().get$id(), this.this_4.get$_isolateId());
-  t1.msg_1 = this.message_5;
-  t1.reply_2 = this.replyTo_3;
+  var shouldSerialize = !($._globalState().get$currentContext() == null) && !$.eqB($._globalState().get$currentContext().get$id(), t2.get$_isolateId());
+  var msg = this.message_5;
+  t1.msg_1 = msg;
+  t1.reply_2 = t3;
   if (shouldSerialize) {
     t1.msg_1 = $._serializeMessage(t1.msg_1);
     t1.reply_2 = $._serializeMessage(t1.reply_2);
   }
-  $._globalState().get$topEventLoop().enqueue$3(isolate, new $._NativeJsSendPort_send_anon0(this.this_4, t1, shouldSerialize), 'receive ' + $.S(this.message_5));
+  $._globalState().get$topEventLoop().enqueue$3(isolate, new $._NativeJsSendPort_send_anon0(t2, t1, shouldSerialize), 'receive ' + $.S(msg));
 }
 };
 
@@ -23124,15 +23083,15 @@ $$._NativeJsSendPort_send_anon0 = {"":
  ["this_7", "box_0", "shouldSerialize_6"],
  "super": "Closure",
  call$0: function() {
-  if (!(this.this_7.get$_receivePort().get$_callback() == null)) {
+  var t1 = this.this_7;
+  if (!(t1.get$_receivePort().get$_callback() == null)) {
     if (this.shouldSerialize_6 === true) {
-      var msg = $._deserializeMessage(this.box_0.msg_1);
-      this.box_0.msg_1 = msg;
-      var reply = $._deserializeMessage(this.box_0.reply_2);
-      this.box_0.reply_2 = reply;
+      var t2 = this.box_0;
+      t2.msg_1 = $._deserializeMessage(t2.msg_1);
+      t2.reply_2 = $._deserializeMessage(t2.reply_2);
     }
-    var t1 = this.this_7.get$_receivePort();
-    var t2 = this.box_0;
+    t1 = t1.get$_receivePort();
+    t2 = this.box_0;
     t1._callback$2(t2.msg_1, t2.reply_2);
   }
 }
@@ -23142,7 +23101,7 @@ $$._StorageImpl_getKeys_anon = {"":
  ["keys_0"],
  "super": "Closure",
  call$2: function(k, v) {
-  return $.add$1(this.keys_0, k);
+  return this.keys_0.push(k);
 }
 };
 
@@ -23151,10 +23110,14 @@ $$.HashMapImplementation_getKeys__ = {"":
  "super": "Closure",
  call$2: function(key, value) {
   var t1 = this.list_2;
-  var t2 = this.box_0.i_10;
-  var i = $.add(t2, 1);
-  this.box_0.i_10 = i;
-  $.indexSet(t1, t2, key);
+  var t2 = this.box_0;
+  var t3 = t2.i_10;
+  t2.i_10 = $.add(t3, 1);
+  if (t3 !== (t3 | 0))
+    throw $.iae(t3);
+  if (t3 < 0 || t3 >= t1.length)
+    throw $.ioore(t3);
+  t1[t3] = key;
 }
 };
 
@@ -23163,10 +23126,15 @@ $$.LinkedHashMapImplementation_getKeys__ = {"":
  "super": "Closure",
  call$1: function(entry) {
   var t1 = this.list_2;
-  var t2 = this.box_0.index_10;
-  var index = $.add(t2, 1);
-  this.box_0.index_10 = index;
-  $.indexSet(t1, t2, entry.get$key());
+  var t2 = this.box_0;
+  var t3 = t2.index_10;
+  t2.index_10 = $.add(t3, 1);
+  t2 = entry.get$key();
+  if (t3 !== (t3 | 0))
+    throw $.iae(t3);
+  if (t3 < 0 || t3 >= t1.length)
+    throw $.ioore(t3);
+  t1[t3] = t2;
 }
 };
 
@@ -23174,7 +23142,9 @@ $$._Copier_visitMap_anon = {"":
  ["this_2", "box_0"],
  "super": "Closure",
  call$2: function(key, val) {
-  $.indexSet(this.box_0.copy_10, this.this_2._dispatch$1(key), this.this_2._dispatch$1(val));
+  var t1 = this.box_0.copy_10;
+  var t2 = this.this_2;
+  $.indexSet(t1, t2._dispatch$1(key), t2._dispatch$1(val));
 }
 };
 
@@ -23209,7 +23179,8 @@ $$.Closure = {"":
  "super": "Object",
  toString$0: function() {
   return 'Closure';
-}
+},
+ is$Function: true
 };
 
 $$.BoundClosure = {'':
@@ -23237,7 +23208,7 @@ $$.BoundClosure3 = {'':
  'super': 'Closure',
 call$1: function(p0) { return this.self[this.target](p0); },
  call$0: function() {
-  return this.call$1(Isolate.$isolateProperties.CTC2)
+  return this.call$1($)
 }
 };
 $$.BoundClosure4 = {'':
@@ -23245,7 +23216,7 @@ $$.BoundClosure4 = {'':
  'super': 'Closure',
 call$1: function(p0) { return this.self[this.target](p0); },
  call$0: function() {
-  return this.call$1(Isolate.$isolateProperties.CTC2)
+  return this.call$1($)
 }
 };
 $.mul$slow = function(a, b) {
@@ -23378,10 +23349,10 @@ $.isJsArray = function(value) {
 
 $.indexSet$slow = function(a, index, value) {
   if ($.isJsArray(a)) {
-    if (!(typeof index === 'number' && index === (index | 0)))
-      throw $.captureStackTrace($.IllegalArgumentException$(index));
+    if (!(typeof index === 'number' && Math.floor(index) === index))
+      throw $.$$throw($.IllegalArgumentException$(index));
     if (index < 0 || $.geB(index, $.get$length(a)))
-      throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+      throw $.$$throw($.IndexOutOfRangeException$(index));
     $.checkMutable(a, 'indexed set');
     a[index] = value;
     return;
@@ -23556,7 +23527,7 @@ $.max = function(a, b) {
         return b;
       if (typeof b === 'number') {
         if (typeof a === 'number')
-          if (a === 0.0)
+          if (a === 0)
             return a + b;
         if ($.isNaN(b) === true)
           return b;
@@ -23566,45 +23537,25 @@ $.max = function(a, b) {
         return b;
       return a;
     }
-    throw $.captureStackTrace($.IllegalArgumentException$(b));
+    throw $.$$throw($.IllegalArgumentException$(b));
   }
-  throw $.captureStackTrace($.IllegalArgumentException$(a));
-};
-
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b))
-    return $.truncate(a / b);
-  return a.operator$tdiv$1(b);
+  throw $.$$throw($.IllegalArgumentException$(a));
 };
 
 $.JSSyntaxRegExp$ = function(pattern, multiLine, ignoreCase) {
   return new $.JSSyntaxRegExp(ignoreCase, multiLine, pattern);
 };
 
-$.typeNameInChrome = function(obj) {
-  var name$ = obj.constructor.name;
-  if (name$ === 'Window')
-    return 'DOMWindow';
-  if (name$ === 'CanvasPixelArray')
-    return 'Uint8ClampedArray';
-  if (name$ === 'WebKitMutationObserver')
-    return 'MutationObserver';
-  if (name$ === 'FormData')
-    return 'DOMFormData';
-  return name$;
-};
-
-$._deserializeMessage = function(message) {
-  if ($._globalState().get$needSerialization() === true)
-    return $._JsDeserializer$().deserialize$1(message);
-  else
-    return message;
-};
-
 $.clear = function(receiver) {
   if (!$.isJsArray(receiver))
     return receiver.clear$0();
   $.set$length(receiver, 0);
+};
+
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b))
+    return $.truncate(a / b);
+  return a.operator$tdiv$1(b);
 };
 
 $.AxisAlignedBox_testOverlap = function(a, b) {
@@ -23648,6 +23599,26 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
   return !t1;
 };
 
+$.typeNameInChrome = function(obj) {
+  var name$ = obj.constructor.name;
+  if (name$ === 'Window')
+    return 'DOMWindow';
+  if (name$ === 'CanvasPixelArray')
+    return 'Uint8ClampedArray';
+  if (name$ === 'WebKitMutationObserver')
+    return 'MutationObserver';
+  if (name$ === 'FormData')
+    return 'DOMFormData';
+  return name$;
+};
+
+$._deserializeMessage = function(message) {
+  if ($._globalState().get$needSerialization() === true)
+    return $._JsDeserializer$().deserialize$1(message);
+  else
+    return message;
+};
+
 $.sqrt = function(value) {
   return Math.sqrt($.checkNum(value));
 };
@@ -23655,7 +23626,7 @@ $.sqrt = function(value) {
 $.shr = function(a, b) {
   if ($.checkNumbers(a, b)) {
     if (b < 0)
-      throw $.captureStackTrace($.IllegalArgumentException$(b));
+      throw $.$$throw($.IllegalArgumentException$(b));
     if (a > 0) {
       if (b > 31)
         return 0;
@@ -23666,10 +23637,6 @@ $.shr = function(a, b) {
     return (a >> b) >>> 0;
   }
   return a.operator$shr$1(b);
-};
-
-$.ObjectImplementation_toStringImpl = function(object) {
-  return $.Primitives_objectToString(object);
 };
 
 $.DualPivotQuicksort__dualPivotQuicksort = function(a, left, right, compare) {
@@ -24086,11 +24053,11 @@ $.substring$2 = function(receiver, startIndex, endIndex) {
     endIndex = length$;
   $.checkNum(endIndex);
   if (startIndex < 0)
-    throw $.captureStackTrace($.IndexOutOfRangeException$(startIndex));
+    throw $.$$throw($.IndexOutOfRangeException$(startIndex));
   if ($.gtB(startIndex, endIndex))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(startIndex));
+    throw $.$$throw($.IndexOutOfRangeException$(startIndex));
   if ($.gtB(endIndex, length$))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(endIndex));
+    throw $.$$throw($.IndexOutOfRangeException$(endIndex));
   return $.substringUnchecked(receiver, startIndex, endIndex);
 };
 
@@ -24109,6 +24076,10 @@ $.DistanceInput$ = function() {
   return new $.DistanceInput($.DistanceProxy$(), $.DistanceProxy$(), $.Transform$(), $.Transform$(), false);
 };
 
+$._Device_isIE = function() {
+  return $._Device_isOpera() !== true && $.contains$2($._Device_userAgent(), 'MSIE', 0) === true;
+};
+
 $.ExceptionImplementation$ = function(msg) {
   return new $.ExceptionImplementation(msg);
 };
@@ -24125,7 +24096,7 @@ $.invokeClosure = function(closure, isolate, numberOfArguments, arg1, arg2) {
   else if ($.eqB(numberOfArguments, 2))
     return $._callInIsolate(isolate, new $.invokeClosure_anon1(closure, arg1, arg2));
   else
-    throw $.captureStackTrace($.ExceptionImplementation$('Unsupported number of arguments for wrapped closure'));
+    throw $.$$throw($.ExceptionImplementation$('Unsupported number of arguments for wrapped closure'));
 };
 
 $.stringJoinUnchecked = function(array, separator) {
@@ -24219,6 +24190,10 @@ $._browserPrefix = function() {
   if ($._cachedBrowserPrefix == null)
     if ($._Device_isFirefox() === true)
       $._cachedBrowserPrefix = '-moz-';
+    else if ($._Device_isIE() === true)
+      $._cachedBrowserPrefix = '-ms-';
+    else if ($._Device_isOpera() === true)
+      $._cachedBrowserPrefix = '-o-';
     else
       $._cachedBrowserPrefix = '-webkit-';
   return $._cachedBrowserPrefix;
@@ -24240,14 +24215,14 @@ $.neg = function(a) {
   return a.negate$0();
 };
 
+$._MessageTraverser_isPrimitive = function(x) {
+  return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
+};
+
 $.Matrix22_mulMatrixAndVectorToOut = function(matrix, vector, out) {
   var tempy = $.add($.mul(matrix.get$col1().get$y(), vector.get$x()), $.mul(matrix.get$col2().get$y(), vector.get$y()));
   out.set$x($.add($.mul(matrix.get$col1().get$x(), vector.get$x()), $.mul(matrix.get$col2().get$x(), vector.get$y())));
   out.set$y(tempy);
-};
-
-$._Deserializer_isPrimitive = function(x) {
-  return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
 };
 
 $.Collections__emitCollection = function(c, result, visiting) {
@@ -24267,7 +24242,7 @@ $.Collections__emitCollection = function(c, result, visiting) {
 
 $._convertNativeToDart_IDBKey = function(nativeKey) {
   if (new $._convertNativeToDart_IDBKey_containsDate().call$1(nativeKey) === true)
-    throw $.captureStackTrace($.CTC22);
+    throw $.$$throw($.CTC21);
   return nativeKey;
 };
 
@@ -24277,14 +24252,14 @@ $.DynamicTreeNode$_construct = function() {
 
 $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list))
-    throw $.captureStackTrace($.UnsupportedOperationException$(reason));
+    throw $.$$throw($.UnsupportedOperationException$(reason));
 };
 
 $.ExpectException$ = function(message) {
   return new $.ExpectException(message);
 };
 
-$._MessageTraverser_isPrimitive = function(x) {
+$._Deserializer_isPrimitive = function(x) {
   return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
 };
 
@@ -24321,6 +24296,17 @@ $.DoubleLinkedQueueEntry$ = function(e, E) {
   return t1;
 };
 
+$.$$throw = function(ex) {
+  if (ex == null)
+    ex = $.CTC;
+  var jsError = new Error();
+  jsError.name = ex;
+  jsError.description = ex;
+  jsError.dartException = ex;
+  jsError.toString = $.toStringWrapper.call$0;
+  throw jsError;
+};
+
 $.DefaultWorldPool$ = function() {
   var t1 = new $.DefaultWorldPool(null, null, null);
   t1.DefaultWorldPool$0();
@@ -24342,6 +24328,10 @@ $.regExpTest = function(regExp, str) {
   return $.regExpGetNative(regExp).test(str);
 };
 
+$._convertNativeToDart_IDBAny = function(object) {
+  return $._convertNativeToDart_AcceptStructuredClone(object);
+};
+
 $.typeNameInOpera = function(obj) {
   var name$ = $.constructorNameFallback(obj);
   if (name$ === 'Window')
@@ -24357,7 +24347,7 @@ $.CanvasViewportTransform$ = function(extents, center) {
 
 $.checkGrowable = function(list, reason) {
   if (!!(list.fixed$length))
-    throw $.captureStackTrace($.UnsupportedOperationException$(reason));
+    throw $.$$throw($.UnsupportedOperationException$(reason));
 };
 
 $.TimeStep$ = function() {
@@ -24377,7 +24367,7 @@ $.Futures_wait = function(futures) {
   if (typeof futures !== 'string' && (typeof futures !== 'object' || futures === null || futures.constructor !== Array && !futures.is$JavaScriptIndexingBehavior()))
     return $.Futures_wait$bailout(1, futures, t1);
   if ($.isEmpty(futures) === true)
-    return $.FutureImpl_FutureImpl$immediate($.CTC, 'List');
+    return $.FutureImpl_FutureImpl$immediate($.CTC0, 'List');
   var completer = $.CompleterImpl$('List');
   var result = completer.get$future();
   t1.remaining_1 = futures.length;
@@ -24426,6 +24416,10 @@ $.stringContainsUnchecked = function(receiver, other, startIndex) {
     return other.hasMatch$1($.substring$1(receiver, startIndex));
   else
     return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? a + b : $.add$slow(a, b);
 };
 
 $.Settings_mixRestitution = function(restitution1, restitution2) {
@@ -24477,10 +24471,6 @@ $.Primitives_objectTypeName = function(object) {
   return $.charCodeAt(name$, 0) === 36 ? $.substring$1(name$, 1) : name$;
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? a + b : $.add$slow(a, b);
-};
-
 $.regExpAttachGlobalNative = function(regExp) {
   regExp._re = $.regExpMakeNative(regExp, true);
 };
@@ -24519,7 +24509,7 @@ $.regExpMakeNative = function(regExp, global) {
   } catch (exception) {
     var t1 = $.unwrapException(exception);
     var e = t1;
-    throw $.captureStackTrace($.IllegalJSRegExpException$(pattern, String(e)));
+    throw $.$$throw($.IllegalJSRegExpException$(pattern, String(e)));
   }
 
 };
@@ -24592,20 +24582,20 @@ $.Collision_clipSegmentToLine = function(vOut, vIn, norm, offset) {
   var distance0 = $.sub($.add($.mul(norm.get$x(), t1.get$x()), $.mul(norm.get$y(), t1.get$y())), offset);
   var t2 = $.index(vIn, 1).get$v();
   var distance1 = $.sub($.add($.mul(norm.get$x(), t2.get$x()), $.mul(norm.get$y(), t2.get$y())), offset);
-  if ($.leB(distance0, 0.0)) {
+  if ($.leB(distance0, 0)) {
     $.index(vOut, 0).setFrom$1($.index(vIn, 0));
     var numOut = 1;
   } else
     numOut = 0;
-  if ($.leB(distance1, 0.0)) {
+  if ($.leB(distance1, 0)) {
     var numOut0 = numOut + 1;
     $.index(vOut, numOut).setFrom$1($.index(vIn, 1));
     numOut = numOut0;
   }
-  if ($.ltB($.mul(distance0, distance1), 0.0)) {
+  if ($.ltB($.mul(distance0, distance1), 0)) {
     var interp = $.div(distance0, $.sub(distance0, distance1));
     $.index(vOut, numOut).get$v().setFrom$1($.index(vIn, 1).get$v()).subLocal$1($.index(vIn, 0).get$v()).mulLocal$1(interp).addLocal$1($.index(vIn, 0).get$v());
-    var vin = $.gtB(distance0, 0.0) ? $.index(vIn, 0) : $.index(vIn, 1);
+    var vin = $.gtB(distance0, 0) ? $.index(vIn, 0) : $.index(vIn, 1);
     $.index(vOut, numOut).get$id().setFrom$1(vin.get$id());
     ++numOut;
   }
@@ -24630,19 +24620,15 @@ $.setRange$4 = function(receiver, start, length$, from, startFrom) {
   $.checkNull(length$);
   $.checkNull(from);
   $.checkNull(startFrom);
-  if (!(typeof start === 'number' && start === (start | 0)))
-    throw $.captureStackTrace($.IllegalArgumentException$(start));
-  if (!(typeof length$ === 'number' && length$ === (length$ | 0)))
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
-  if (!(typeof startFrom === 'number' && startFrom === (startFrom | 0)))
-    throw $.captureStackTrace($.IllegalArgumentException$(startFrom));
+  if (!(typeof length$ === 'number' && Math.floor(length$) === length$))
+    throw $.$$throw($.IllegalArgumentException$(length$));
   if (length$ < 0)
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
+    throw $.$$throw($.IllegalArgumentException$(length$));
   if (start < 0)
-    throw $.captureStackTrace($.IndexOutOfRangeException$(start));
+    throw $.$$throw($.IndexOutOfRangeException$(start));
   var t1 = start + length$;
   if ($.gtB(t1, $.get$length(receiver)))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(t1));
+    throw $.$$throw($.IndexOutOfRangeException$(t1));
   $.Arrays_copy(from, startFrom, receiver, start, length$);
 };
 
@@ -24670,7 +24656,7 @@ $.compareTo = function(a, b) {
       return -1;
   else if (typeof a === 'string') {
     if (!(typeof b === 'string'))
-      throw $.captureStackTrace($.IllegalArgumentException$(b));
+      throw $.$$throw($.IllegalArgumentException$(b));
     if (a == b)
       var t1 = 0;
     else
@@ -24696,13 +24682,13 @@ $.Filter$ = function() {
 
 $.indexOf$2 = function(receiver, element, start) {
   if ($.isJsArray(receiver)) {
-    if (!(typeof start === 'number' && start === (start | 0)))
-      throw $.captureStackTrace($.IllegalArgumentException$(start));
+    if (!(typeof start === 'number' && Math.floor(start) === start))
+      throw $.$$throw($.IllegalArgumentException$(start));
     return $.Arrays_indexOf(receiver, element, start, receiver.length);
   } else if (typeof receiver === 'string') {
     $.checkNull(element);
-    if (!(typeof start === 'number' && start === (start | 0)))
-      throw $.captureStackTrace($.IllegalArgumentException$(start));
+    if (!(typeof start === 'number' && Math.floor(start) === start))
+      throw $.$$throw($.IllegalArgumentException$(start));
     if (start < 0)
       return -1;
     return receiver.indexOf(element, start);
@@ -24772,8 +24758,8 @@ $.ListImplementation_List$from = function(other, E) {
 $.Primitives_newList = function(length$) {
   if (length$ == null)
     return new Array();
-  if (!(typeof length$ === 'number' && length$ === (length$ | 0)) || length$ < 0)
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
+  if (!(typeof length$ === 'number' && Math.floor(length$) === length$) || length$ < 0)
+    throw $.$$throw($.IllegalArgumentException$(length$));
   var result = new Array(length$);
   result.fixed$length = true;
   return result;
@@ -24790,12 +24776,12 @@ $.main = function() {
   $.BallCage_main();
 };
 
-$.Primitives_dateNow = function() {
-  return Date.now();
-};
-
 $._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
   return new $._WorkerSendPort(_workerId, _receivePortId, isolateId);
+};
+
+$.HashMapImplementation__computeLoadLimit = function(capacity) {
+  return $.tdiv(capacity * 3, 4);
 };
 
 $._convertDartToNative_SerializedScriptValue = function(value) {
@@ -24822,7 +24808,7 @@ $.FutureImpl$ = function(T) {
 };
 
 $.iae = function(argument) {
-  throw $.captureStackTrace($.IllegalArgumentException$(argument));
+  throw $.$$throw($.IllegalArgumentException$(argument));
 };
 
 $.Expect_equals = function(expected, actual, reason) {
@@ -24966,7 +24952,7 @@ $.ListIterator$ = function(list, T) {
 $.checkNum = function(value) {
   if (!(typeof value === 'number')) {
     $.checkNull(value);
-    throw $.captureStackTrace($.IllegalArgumentException$(value));
+    throw $.$$throw($.IllegalArgumentException$(value));
   }
   return value;
 };
@@ -25037,7 +25023,7 @@ $._Device_userAgent = function() {
 };
 
 $.BallCage$ = function() {
-  var t1 = new $.BallCage($.ListImplementation_List(null, 'Body'), null, null, null, null, null, null, null, null, null, 10, $.StopwatchImplementation$start());
+  var t1 = new $.BallCage($.ListImplementation_List(null, 'Body'), null, null, null, null, null, null, null, null, null, 10, $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []));
   t1.Demo$3('Ball cage', null, 10);
   return t1;
 };
@@ -25060,27 +25046,27 @@ $.getRange = function(receiver, start, length$) {
     return [];
   $.checkNull(start);
   $.checkNull(length$);
-  if (!(typeof start === 'number' && start === (start | 0)))
-    throw $.captureStackTrace($.IllegalArgumentException$(start));
-  if (!(typeof length$ === 'number' && length$ === (length$ | 0)))
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
+  if (!(typeof start === 'number' && Math.floor(start) === start))
+    throw $.$$throw($.IllegalArgumentException$(start));
+  if (!(typeof length$ === 'number' && Math.floor(length$) === length$))
+    throw $.$$throw($.IllegalArgumentException$(length$));
   var t1 = length$ < 0;
   if (t1)
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
+    throw $.$$throw($.IllegalArgumentException$(length$));
   if (start < 0)
-    throw $.captureStackTrace($.IndexOutOfRangeException$(start));
+    throw $.$$throw($.IndexOutOfRangeException$(start));
   var end = start + length$;
   if ($.gtB(end, $.get$length(receiver)))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(length$));
+    throw $.$$throw($.IndexOutOfRangeException$(length$));
   if (t1)
-    throw $.captureStackTrace($.IllegalArgumentException$(length$));
+    throw $.$$throw($.IllegalArgumentException$(length$));
   return receiver.slice(start, end);
 };
 
 $.S = function(value) {
   var res = $.toString(value);
   if (!(typeof res === 'string'))
-    throw $.captureStackTrace($.IllegalArgumentException$(value));
+    throw $.$$throw($.IllegalArgumentException$(value));
   return res;
 };
 
@@ -25097,14 +25083,14 @@ $._Lists_getRange = function(a, start, length$, accumulator) {
   if (typeof start !== 'number')
     return $._Lists_getRange$bailout(1, a, start, length$, accumulator);
   if ($.ltB(length$, 0))
-    throw $.captureStackTrace($.IllegalArgumentException$('length'));
+    throw $.$$throw($.IllegalArgumentException$('length'));
   if (start < 0)
-    throw $.captureStackTrace($.IndexOutOfRangeException$(start));
+    throw $.$$throw($.IndexOutOfRangeException$(start));
   if (typeof length$ !== 'number')
     throw $.iae(length$);
   var end = start + length$;
   if (end > a.length)
-    throw $.captureStackTrace($.IndexOutOfRangeException$(end));
+    throw $.$$throw($.IndexOutOfRangeException$(end));
   for (var i = start; i < end; ++i) {
     if (i !== (i | 0))
       throw $.iae(i);
@@ -25139,9 +25125,13 @@ $.regExpGetNative = function(regExp) {
   return r == null ? regExp._re = $.regExpMakeNative(regExp, false) : r;
 };
 
+$.throwNoSuchMethod = function(obj, name$, arguments$) {
+  throw $.$$throw($.NoSuchMethodException$(obj, name$, arguments$, null));
+};
+
 $.checkNull = function(object) {
   if (object == null)
-    throw $.captureStackTrace($.NullPointerException$(null, $.CTC));
+    throw $.$$throw($.NullPointerException$(null, $.CTC0));
   return object;
 };
 
@@ -25234,7 +25224,7 @@ $.checkNumbers = function(a, b) {
       return true;
     else {
       $.checkNull(b);
-      throw $.captureStackTrace($.IllegalArgumentException$(b));
+      throw $.$$throw($.IllegalArgumentException$(b));
     }
   return false;
 };
@@ -25265,14 +25255,14 @@ $.Vector_crossNumAndVectorToOut = function(s, a, out) {
 
 $.index$slow = function(a, index) {
   if (typeof a === 'string' || $.isJsArray(a)) {
-    if (!(typeof index === 'number' && index === (index | 0))) {
+    if (!(typeof index === 'number' && Math.floor(index) === index)) {
       if (!(typeof index === 'number'))
-        throw $.captureStackTrace($.IllegalArgumentException$(index));
+        throw $.$$throw($.IllegalArgumentException$(index));
       if (!($.truncate(index) === index))
-        throw $.captureStackTrace($.IllegalArgumentException$(index));
+        throw $.$$throw($.IllegalArgumentException$(index));
     }
     if ($.ltB(index, 0) || $.geB(index, $.get$length(a)))
-      throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+      throw $.$$throw($.IndexOutOfRangeException$(index));
     return a[index];
   }
   return a.operator$index$1(index);
@@ -25343,7 +25333,7 @@ $.StringImplementation__toJsStringArray = function(strings) {
       var string = strings[i];
       $.checkNull(string);
       if (!(typeof string === 'string'))
-        throw $.captureStackTrace($.IllegalArgumentException$(string));
+        throw $.$$throw($.IllegalArgumentException$(string));
     }
     var array = strings;
   } else {
@@ -25354,7 +25344,7 @@ $.StringImplementation__toJsStringArray = function(strings) {
       string = strings[i];
       $.checkNull(string);
       if (!(typeof string === 'string'))
-        throw $.captureStackTrace($.IllegalArgumentException$(string));
+        throw $.$$throw($.IllegalArgumentException$(string));
       if (i < 0 || i >= array.length)
         throw $.ioore(i);
       array[i] = string;
@@ -25397,9 +25387,9 @@ $.getTraceFromException = function(exception) {
 $.charCodeAt = function(receiver, index) {
   if (typeof receiver === 'string') {
     if (index < 0)
-      throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+      throw $.$$throw($.IndexOutOfRangeException$(index));
     if (index >= receiver.length)
-      throw $.captureStackTrace($.IndexOutOfRangeException$(index));
+      throw $.$$throw($.IndexOutOfRangeException$(index));
     return receiver.charCodeAt(index);
   } else
     return receiver.charCodeAt$1(index);
@@ -25433,7 +25423,7 @@ $.removeLast = function(receiver) {
   if ($.isJsArray(receiver)) {
     $.checkGrowable(receiver, 'removeLast');
     if ($.get$length(receiver) === 0)
-      throw $.captureStackTrace($.IndexOutOfRangeException$(-1));
+      throw $.$$throw($.IndexOutOfRangeException$(-1));
     return receiver.pop();
   }
   return receiver.removeLast$0();
@@ -25457,7 +25447,7 @@ $.dynamicFunction = function(name$) {
   if (!(f == null) && !!f.methods)
     return f.methods;
   var methods = {};
-  var dartMethod = Object.getPrototypeOf($.CTC23)[name$];
+  var dartMethod = Object.getPrototypeOf($.CTC22)[name$];
   if (!(dartMethod == null))
     $.propertySet(methods, 'Object', dartMethod);
   var bind = function() {return $.dynamicBind.call$4(this, name$, methods, Array.prototype.slice.call(arguments));};
@@ -25469,7 +25459,7 @@ $.dynamicFunction = function(name$) {
 $.checkString = function(value) {
   if (!(typeof value === 'string')) {
     $.checkNull(value);
-    throw $.captureStackTrace($.IllegalArgumentException$(value));
+    throw $.$$throw($.IllegalArgumentException$(value));
   }
   return value;
 };
@@ -25504,10 +25494,10 @@ $.Primitives_objectToString = function(object) {
 $.set$length = function(receiver, newLength) {
   if ($.isJsArray(receiver)) {
     $.checkNull(newLength);
-    if (!(typeof newLength === 'number' && newLength === (newLength | 0)))
-      throw $.captureStackTrace($.IllegalArgumentException$(newLength));
+    if (!(typeof newLength === 'number' && Math.floor(newLength) === newLength))
+      throw $.$$throw($.IllegalArgumentException$(newLength));
     if (newLength < 0)
-      throw $.captureStackTrace($.IndexOutOfRangeException$(newLength));
+      throw $.$$throw($.IndexOutOfRangeException$(newLength));
     $.checkGrowable(receiver, 'set length');
     receiver.length = newLength;
   } else
@@ -25516,13 +25506,7 @@ $.set$length = function(receiver, newLength) {
 };
 
 $.ioore = function(index) {
-  throw $.captureStackTrace($.IndexOutOfRangeException$(index));
-};
-
-$.StopwatchImplementation$start = function() {
-  var t1 = new $.StopwatchImplementation(null, null);
-  t1.StopwatchImplementation$start$0();
-  return t1;
+  throw $.$$throw($.IndexOutOfRangeException$(index));
 };
 
 $.typeNameInFirefox = function(obj) {
@@ -25552,22 +25536,6 @@ $.gt$slow = function(a, b) {
 
 $.PositionSolverManifold$ = function() {
   return new $.PositionSolverManifold($.Vector$(0, 0), $.Vector$(0, 0), 0, $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0));
-};
-
-$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
-    return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (startIndex >= a.length)
-    return -1;
-  if (startIndex < 0)
-    startIndex = 0;
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i < 0 || i >= a.length)
-      throw $.ioore(i);
-    if ($.eqB(a[i], element))
-      return i;
-  }
-  return -1;
 };
 
 $.DistanceProxy$ = function() {
@@ -25629,7 +25597,7 @@ $.min = function(a, b) {
         return a;
       if (typeof b === 'number') {
         if (typeof a === 'number')
-          if (a === 0.0)
+          if (a === 0)
             return (a + b) * a * b;
         if (a === 0 && $.isNegative(b) === true || $.isNaN(b) === true)
           return b;
@@ -25637,25 +25605,19 @@ $.min = function(a, b) {
       }
       return a;
     }
-    throw $.captureStackTrace($.IllegalArgumentException$(b));
+    throw $.$$throw($.IllegalArgumentException$(b));
   }
-  throw $.captureStackTrace($.IllegalArgumentException$(a));
+  throw $.$$throw($.IllegalArgumentException$(a));
 };
 
-$._Lists_indexOf = function(a, element, startIndex, endIndex) {
+$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
-    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof startIndex !== 'number')
-    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof endIndex !== 'number')
-    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+    return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
   if (startIndex >= a.length)
     return -1;
   if (startIndex < 0)
     startIndex = 0;
   for (var i = startIndex; i < endIndex; ++i) {
-    if (i !== (i | 0))
-      throw $.iae(i);
     if (i < 0 || i >= a.length)
       throw $.ioore(i);
     if ($.eqB(a[i], element))
@@ -25704,6 +25666,28 @@ $.dynamicBind = function(obj, name$, methods, arguments$) {
 
 $._document = function() {
 return document;
+};
+
+$._Lists_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
+    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof startIndex !== 'number')
+    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof endIndex !== 'number')
+    return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (startIndex >= a.length)
+    return -1;
+  if (startIndex < 0)
+    startIndex = 0;
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i !== (i | 0))
+      throw $.iae(i);
+    if (i < 0 || i >= a.length)
+      throw $.ioore(i);
+    if ($.eqB(a[i], element))
+      return i;
+  }
+  return -1;
 };
 
 $.getFunctionForTypeNameOf = function() {
@@ -25767,17 +25751,6 @@ $.ListImplementation_List = function(length$, E) {
 
 $.query = function(selector) {
   return $._document().query$1(selector);
-};
-
-$.captureStackTrace = function(ex) {
-  if (ex == null)
-    ex = $.CTC0;
-  var jsError = new Error();
-  jsError.name = ex;
-  jsError.description = ex;
-  jsError.dartException = ex;
-  jsError.toString = $.toStringWrapper.call$0;
-  return jsError;
 };
 
 $.index = function(a, index) {
@@ -25889,7 +25862,7 @@ $.gtB = function(a, b) {
 };
 
 $.Expect__fail = function(message) {
-  throw $.captureStackTrace($.ExpectException$(message));
+  throw $.$$throw($.ExpectException$(message));
 };
 
 $.setRuntimeTypeInfo = function(target, typeInfo) {
@@ -25904,7 +25877,7 @@ $.SimplexVertex$ = function() {
 $.shl = function(a, b) {
   if ($.checkNumbers(a, b)) {
     if (b < 0)
-      throw $.captureStackTrace($.IllegalArgumentException$(b));
+      throw $.$$throw($.IllegalArgumentException$(b));
     if (b > 31)
       return 0;
     return (a << b) >>> 0;
@@ -25944,7 +25917,7 @@ $.unwrapException = function(ex) {
       if (typeof name$ === 'string' && $.startsWith(name$, 'call$') === true)
         return $.ObjectNotClosureException$();
       else
-        return $.NullPointerException$(null, $.CTC);
+        return $.NullPointerException$(null, $.CTC0);
     else if ($.eqB(type, 'undefined_method'))
       if (typeof name$ === 'string' && $.startsWith(name$, 'call$') === true)
         return $.ObjectNotClosureException$();
@@ -25954,7 +25927,7 @@ $.unwrapException = function(ex) {
     var ieFacilityNumber = ex.number>>16 & 0x1FFF;
     if (typeof message === 'string')
       if ($.endsWith(message, 'is null') === true || $.endsWith(message, 'is undefined') === true || $.endsWith(message, 'is null or undefined') === true)
-        return $.NullPointerException$(null, $.CTC);
+        return $.NullPointerException$(null, $.CTC0);
       else {
         if ($.contains$1(message, ' is not a function') !== true)
           var t1 = ieErrorCode === 438 && ieFacilityNumber === 10;
@@ -25988,6 +25961,10 @@ $.getTypeNameOf = function(obj) {
 
 $.cos = function(value) {
   return Math.cos($.checkNum(value));
+};
+
+$._Device_isOpera = function() {
+  return $.contains$2($._Device_userAgent(), 'Opera', 0);
 };
 
 $.setRange$3 = function(receiver, start, length$, from) {
@@ -26359,7 +26336,7 @@ $.AxisAlignedBox_testOverlap$bailout = function(state, env0, env1, env2, env3) {
 
 $.Futures_wait$bailout = function(state, futures, t1) {
   if ($.isEmpty(futures) === true)
-    return $.FutureImpl_FutureImpl$immediate($.CTC, 'List');
+    return $.FutureImpl_FutureImpl$immediate($.CTC0, 'List');
   var completer = $.CompleterImpl$('List');
   var result = completer.get$future();
   t1.remaining_1 = $.get$length(futures);
@@ -26398,12 +26375,12 @@ $.DualPivotQuicksort_insertionSort_$bailout = function(state, a, left, right, co
 
 $._Lists_getRange$bailout = function(state, a, start, length$, accumulator) {
   if ($.ltB(length$, 0))
-    throw $.captureStackTrace($.IllegalArgumentException$('length'));
+    throw $.$$throw($.IllegalArgumentException$('length'));
   if ($.ltB(start, 0))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(start));
+    throw $.$$throw($.IndexOutOfRangeException$(start));
   var end = $.add(start, length$);
   if ($.gtB(end, $.get$length(a)))
-    throw $.captureStackTrace($.IndexOutOfRangeException$(end));
+    throw $.$$throw($.IndexOutOfRangeException$(end));
   for (var i = start; $.ltB(i, end); i = $.add(i, 1))
     accumulator.push($.index(a, i));
   return accumulator;
@@ -26417,7 +26394,7 @@ $.StringImplementation__toJsStringArray$bailout = function(state, strings) {
       var string = $.index(strings, i);
       $.checkNull(string);
       if (!(typeof string === 'string'))
-        throw $.captureStackTrace($.IllegalArgumentException$(string));
+        throw $.$$throw($.IllegalArgumentException$(string));
     }
     var array = strings;
   } else {
@@ -26426,7 +26403,7 @@ $.StringImplementation__toJsStringArray$bailout = function(state, strings) {
       string = $.index(strings, i);
       $.checkNull(string);
       if (!(typeof string === 'string'))
-        throw $.captureStackTrace($.IllegalArgumentException$(string));
+        throw $.$$throw($.IllegalArgumentException$(string));
       if (i < 0 || i >= array.length)
         throw $.ioore(i);
       array[i] = string;
@@ -26462,43 +26439,149 @@ Isolate.makeConstantList = function(list) {
   list.fixed$length = true;
   return list;
 };
-$.CTC = Isolate.makeConstantList([]);
-$.CTC11 = new Isolate.$isolateProperties.NoMoreElementsException();
+$.CTC0 = Isolate.makeConstantList([]);
+$.CTC10 = new Isolate.$isolateProperties.NoMoreElementsException();
+$.CTC24 = 'Cannot add to immutable List.';
 $.CTC1 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot add to immutable List.');
-$.CTC14 = new Isolate.$isolateProperties.UnsupportedOperationException('');
-$.CTC16 = new Isolate.$isolateProperties.EmptyQueueException();
-$.CTC19 = new Isolate.$isolateProperties.NotImplementedException(null);
-$.CTC6 = new Isolate.$isolateProperties.NotImplementedException('structured clone of Blob');
-$.CTC24 = new Isolate.$isolateProperties._DeletedKeySentinel();
-$.CTC20 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot sort immutable List.');
-$.CTC15 = new Isolate.$isolateProperties.IllegalArgumentException('Invalid list length');
-$.CTC8 = new Isolate.$isolateProperties.NotImplementedException('structured clone of ArrayBuffer');
-$.CTC3 = new Isolate.$isolateProperties.NotImplementedException('structured clone of Date');
-$.CTC13 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
-$.CTC12 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot removeLast on immutable List.');
-$.CTC5 = new Isolate.$isolateProperties.NotImplementedException('structured clone of File');
-$.CTC22 = new Isolate.$isolateProperties.NotImplementedException('IDBKey containing Date');
-$.CTC4 = new Isolate.$isolateProperties.NotImplementedException('structured clone of RegExp');
-$.CTC23 = new Isolate.$isolateProperties.Object();
-$.CTC17 = new Isolate.$isolateProperties.ExceptionImplementation('Incorrect number or type of arguments');
-$.CTC18 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot setRange on immutable List.');
-$.CTC7 = new Isolate.$isolateProperties.NotImplementedException('structured clone of FileList');
-$.CTC10 = new Isolate.$isolateProperties.NotImplementedException('structured clone of other type');
-$.CTC21 = new Isolate.$isolateProperties.UnsupportedOperationException('TODO(jacobr): should we impl?');
-$.CTC9 = new Isolate.$isolateProperties.NotImplementedException('structured clone of ArrayBufferView');
-$.CTC2 = new Isolate.$isolateProperties._Default();
-$.CTC0 = new Isolate.$isolateProperties.NullPointerException(null, Isolate.$isolateProperties.CTC);
+$.CTC25 = '';
+$.CTC13 = new Isolate.$isolateProperties.UnsupportedOperationException('');
+$.CTC15 = new Isolate.$isolateProperties.EmptyQueueException();
+$.CTC26 = null;
+$.CTC18 = new Isolate.$isolateProperties.NotImplementedException(null);
+$.CTC27 = 'structured clone of Blob';
+$.CTC5 = new Isolate.$isolateProperties.NotImplementedException('structured clone of Blob');
+$.CTC23 = new Isolate.$isolateProperties._DeletedKeySentinel();
+$.CTC28 = 'Cannot sort immutable List.';
+$.CTC19 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot sort immutable List.');
+$.CTC29 = 'Invalid list length';
+$.CTC14 = new Isolate.$isolateProperties.IllegalArgumentException('Invalid list length');
+$.CTC30 = false;
+$.CTC31 = '^#[_a-zA-Z]\\w*$';
+$.CTC12 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
+$.CTC32 = 'structured clone of ArrayBuffer';
+$.CTC7 = new Isolate.$isolateProperties.NotImplementedException('structured clone of ArrayBuffer');
+$.CTC33 = 'structured clone of Date';
+$.CTC2 = new Isolate.$isolateProperties.NotImplementedException('structured clone of Date');
+$.CTC22 = new Isolate.$isolateProperties.Object();
+$.CTC34 = 'Cannot removeLast on immutable List.';
+$.CTC11 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot removeLast on immutable List.');
+$.CTC35 = 'structured clone of File';
+$.CTC4 = new Isolate.$isolateProperties.NotImplementedException('structured clone of File');
+$.CTC36 = 'IDBKey containing Date';
+$.CTC21 = new Isolate.$isolateProperties.NotImplementedException('IDBKey containing Date');
+$.CTC37 = 'structured clone of RegExp';
+$.CTC3 = new Isolate.$isolateProperties.NotImplementedException('structured clone of RegExp');
+$.CTC38 = 'Incorrect number or type of arguments';
+$.CTC16 = new Isolate.$isolateProperties.ExceptionImplementation('Incorrect number or type of arguments');
+$.CTC39 = 'Cannot setRange on immutable List.';
+$.CTC17 = new Isolate.$isolateProperties.UnsupportedOperationException('Cannot setRange on immutable List.');
+$.CTC40 = 'TODO(jacobr): should we impl?';
+$.CTC20 = new Isolate.$isolateProperties.UnsupportedOperationException('TODO(jacobr): should we impl?');
+$.CTC41 = 'structured clone of FileList';
+$.CTC6 = new Isolate.$isolateProperties.NotImplementedException('structured clone of FileList');
+$.CTC42 = 'structured clone of other type';
+$.CTC9 = new Isolate.$isolateProperties.NotImplementedException('structured clone of other type');
+$.CTC43 = 'structured clone of ArrayBufferView';
+$.CTC8 = new Isolate.$isolateProperties.NotImplementedException('structured clone of ArrayBufferView');
+$.CTC = new Isolate.$isolateProperties.NullPointerException(null, Isolate.$isolateProperties.CTC0);
+$.BodyType_DYNAMIC = 2;
+$.DynamicTree_MAX_STACK_SIZE = 64;
+$.DebugDraw_e_lineDrawingBit = 64;
+$.JointType_DISTANCE = 3;
+$.JointType_MOUSE = 5;
+$.ContactSolver_INITIAL_NUM_CONSTRAINTS = 256;
+$.HashMapImplementation__INITIAL_CAPACITY = 8;
 $.TimeOfImpact_toiCalls = null;
+$.ShapeType_CIRCLE = 0;
+$.TimeOfImpactOutputState_UNKNOWN = 0;
+$.DebugDraw_e_centerOfMassBit = 16;
+$.SeparationType_POINTS = 0;
+$.Settings_BOUNDING_BOX_MULTIPLIER = 2;
 $.PI = 3.141592653589793;
+$.TimeOfImpactOutputState_TOUCHING = 3;
+$.Demo_VELOCITY_ITERATIONS = 10;
+$.Contact_FILTER_FLAG = 8;
+$.CanvasViewportTransform_DEFAULT_DRAWING_SCALE = 20;
+$.BallCage_ACTIVE_BALL_RADIUS = 1;
+$.Settings_MAX_ROTATION = 1.5707963267948966;
+$.Contact_BULLET_HIT_FLAG = 16;
+$.ShapeType_POLYGON = 1;
+$.Settings_BOUNDING_BOX_EXTENSION = 0.1;
+$.TimeOfImpactOutputState_FAILED = 1;
+$.JointType_CONSTANT_VOLUME = 10;
+$.Settings_MAX_TRANSLATION_SQUARED = 4;
+$.Demo_CANVAS_HEIGHT = 600;
+$.ContactSolver_K_MAX_CONDITION_NUMBER = 100;
+$.Settings_LINEAR_SLEEP_TOLERANCE = 0.01;
+$.Settings_CONTACT_STACK_INIT_SIZE = 10;
+$.TimeOfImpactOutputState_OVERLAPPED = 2;
+$.Settings_MAX_MANIFOLD_POINTS = 2;
+$.Body_AWAKE_FLAG = 2;
 $.TimeOfImpact_toiRootIters = null;
+$.TimeOfImpactOutputState_SEPARATED = 4;
 $.Primitives_DOLLAR_CHAR_VALUE = 36;
+$.DynamicTree__DEFAULT_NODE_ADDITION = 6;
+$.BallCage_WALL_BALL_RADIUS = 2;
+$.Body_ACTIVE_FLAG = 32;
+$.Settings_TIME_TO_SLEEP = 0.5;
+$.Demo__VIEWPORT_SCALE = 10;
+$.BroadPhase_PAIR_CAPACITY = 16;
+$.HashMapImplementation__DELETED_KEY = Isolate.$isolateProperties.CTC23;
+$.Settings_MAX_ROTATION_SQUARED = 2.4674011002723395;
+$.DebugDraw_e_jointBit = 2;
+$.DebugDraw_e_aabbBit = 4;
+$.DebugDraw_e_pairBit = 8;
 $.TimeOfImpact_toiMaxIters = null;
+$.JointType_FRICTION = 9;
+$.Settings_CONTACT_BAUMGARTE = 0.2;
+$.Settings_MAX_TRANSLATION = 2;
+$.MathBox_TWO_PI = 6.283185307179586;
+$.Settings_BIG_NUMBER = 99999999999999;
 $._getTypeNameOf = null;
+$.DualPivotQuicksort__INSERTION_SORT_THRESHOLD = 32;
+$.Demo_GRAVITY = -10;
+$.Demo_CANVAS_WIDTH = 900;
+$.Settings_MAX_INTEGER = 2147483647;
+$.Demo_TIME_STEP = 0.016666666666666666;
 $._cachedBrowserPrefix = null;
+$.Contact_ENABLED_FLAG = 4;
+$.Settings_TREE_REBALANCE_STEPS = 4;
 $._TimerFactory__factory = null;
+$.DebugDraw_e_shapeBit = 1;
+$.Body_TO_I_FLAG = 64;
 $.TimeOfImpact_toiMaxRootIters = null;
+$.ManifoldType_FACE_B = 2;
+$.SeparationType_FACE_B = 2;
+$.World_NEW_FIXTURE = 1;
+$.Settings_SMALL_NUMBER = 1e-12;
+$.TimeOfImpact_MAX_ITERATIONS = 1000;
+$.World_LOCKED = 2;
+$.Settings_MAX_LINEAR_CORRECTION = 0.2;
+$.BallCage_START_X = -20;
+$.Body_BULLET_FLAG = 8;
+$.BodyType_STATIC = 0;
 $._ReceivePortImpl__nextFreeId = 1;
+$.Demo_POSITION_ITERATIONS = 10;
+$.Body_AUTO_SLEEP_FLAG = 4;
+$.BallCage_START_Y = -20;
+$.Settings_VELOCITY_THRESHOLD = 1;
+$.Body_FIXED_ROTATION_FLAG = 16;
+$.JointType_PULLEY = 4;
+$.Settings_ANGULAR_SLEEP_TOLERANCE = 0.03490658503988659;
+$.BodyType_KINEMATIC = 1;
+$.ManifoldType_CIRCLES = 0;
+$.ManifoldType_FACE_A = 1;
+$.SeparationType_FACE_A = 1;
+$.Settings_LINEAR_SLOP = 0.005;
+$.Settings_EPSILON = 1.192e-7;
+$.ShapeType_TYPE_COUNT = 2;
+$.Settings_MAX_TIME_OF_IMPACT_CONTACTS = 32;
 $.TimeOfImpact_toiIters = null;
+$.World_CLEAR_FORCES = 4;
+$.Body_ISLAND_FLAG = 1;
+$.Contact_ISLAND_FLAG = 1;
+$.Contact_TOUCHING_FLAG = 2;
+$.Settings_MAX_POLYGON_VERTICES = 8;
 var $ = null;
 Isolate.$finishClasses($$);
 $$ = {};
@@ -26538,19 +26621,19 @@ $.$defineNativeClass = function(cls, fields, methods) {
  is$_FileImpl: function() { return false; },
  is$Element: function() { return false; },
  is$_ImageDataImpl: function() { return false; },
- is$_BlobImpl: function() { return false; },
- is$_ArrayBufferViewImpl: function() { return false; },
  is$_FileListImpl: function() { return false; },
- is$Collection: function() { return false; },
+ is$_ArrayBufferViewImpl: function() { return false; },
  is$ArrayBuffer: function() { return false; },
+ is$_BlobImpl: function() { return false; },
+ is$Collection: function() { return false; },
  toString$0: function() { return $.toStringForNativeObject(this); },
  is$IDBKeyRange: function() { return false; },
  is$ImageData: function() { return false; },
  is$ArrayBufferView: function() { return false; },
  is$JavaScriptIndexingBehavior: function() { return false; },
  is$List: function() { return false; },
- is$Map: function() { return false; },
  is$_ArrayBufferImpl: function() { return false; },
+ is$Map: function() { return false; },
  is$File: function() { return false; },
  is$Blob: function() { return false; }
 });
@@ -26775,19 +26858,19 @@ $.$defineNativeClass('DOMStringList', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'String');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -26800,7 +26883,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -26809,10 +26892,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -26895,7 +26978,7 @@ $.$defineNativeClass('HTMLDocument', ["body?"], {
   return this.querySelector(selectors);
 },
  query$1: function(selectors) {
-  if ($.CTC13.hasMatch$1(selectors) === true)
+  if ($.CTC12.hasMatch$1(selectors) === true)
     return this.$dom_getElementById$1($.substring$1(selectors, 1));
   return this.$dom_querySelector$1(selectors);
 },
@@ -27055,19 +27138,19 @@ $.$defineNativeClass('FileList', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'File');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27080,7 +27163,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27089,10 +27172,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27124,13 +27207,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'num');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27143,7 +27226,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27152,10 +27235,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27180,13 +27263,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'num');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27199,7 +27282,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27208,10 +27291,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27262,19 +27345,19 @@ $.$defineNativeClass('HTMLCollection', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'Node');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27287,7 +27370,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27296,10 +27379,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27370,7 +27453,7 @@ return this.key;
 
 $.$defineNativeClass('IDBCursorWithValue', [], {
  get$value: function() {
-  return $._convertNativeToDart_AcceptStructuredClone(this.get$_lib_value());
+  return $._convertNativeToDart_IDBAny(this.get$_lib_value());
 },
  get$_lib_value: function() {
 return this.value;
@@ -27391,13 +27474,17 @@ $.$defineNativeClass('IDBDatabaseException', [], {
 
 $.$defineNativeClass('IDBIndex', [], {
  count$1: function(key_OR_range) {
-  if ($.eqB($.CTC2, key_OR_range))
+  var t1 = $ === key_OR_range;
+  if (t1)
+    key_OR_range = null;
+  var t2 = !t1;
+  if (t1)
     return this._count_1$0();
   if (typeof key_OR_range === 'object' && key_OR_range !== null && key_OR_range.is$IDBKeyRange() || key_OR_range == null)
     return this._count_2$1(key_OR_range);
-  if (!$.eqB($.CTC2, key_OR_range))
+  if (t2)
     return this._count_3$1(key_OR_range);
-  throw $.captureStackTrace($.CTC17);
+  throw $.$$throw($.CTC16);
 },
  get$count: function() { return new $.BoundClosure3(this, 'count$1'); },
  _count_1$0: function() {
@@ -27417,12 +27504,15 @@ $.$defineNativeClass('IDBKeyRange', [], {
 
 $.$defineNativeClass('IDBObjectStore', [], {
  add$2: function(value, key) {
-  if (!$.eqB($.CTC2, key))
+  var t1 = $ === key;
+  if (t1)
+    key = null;
+  if (!t1)
     return this._add_1$2($._convertDartToNative_SerializedScriptValue(value), key);
   return this._add_2$1($._convertDartToNative_SerializedScriptValue(value));
 },
  add$1: function(value) {
-  return this.add$2(value,Isolate.$isolateProperties.CTC2)
+  return this.add$2(value,$)
 },
  _add_1$2: function(value, key) {
   return this.add(value,key);
@@ -27434,13 +27524,17 @@ $.$defineNativeClass('IDBObjectStore', [], {
   return this.clear();
 },
  count$1: function(key_OR_range) {
-  if ($.eqB($.CTC2, key_OR_range))
+  var t1 = $ === key_OR_range;
+  if (t1)
+    key_OR_range = null;
+  var t2 = !t1;
+  if (t1)
     return this._count_1$0();
   if (typeof key_OR_range === 'object' && key_OR_range !== null && key_OR_range.is$IDBKeyRange() || key_OR_range == null)
     return this._count_2$1(key_OR_range);
-  if (!$.eqB($.CTC2, key_OR_range))
+  if (t2)
     return this._count_3$1(key_OR_range);
-  throw $.captureStackTrace($.CTC17);
+  throw $.$$throw($.CTC16);
 },
  get$count: function() { return new $.BoundClosure4(this, 'count$1'); },
  _count_1$0: function() {
@@ -27485,13 +27579,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27504,7 +27598,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27513,10 +27607,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27541,13 +27635,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27560,7 +27654,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27569,10 +27663,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27597,13 +27691,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27616,7 +27710,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27625,10 +27719,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27688,19 +27782,19 @@ $.$defineNativeClass('MediaList', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'String');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27713,7 +27807,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27722,10 +27816,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27795,19 +27889,19 @@ $.$defineNativeClass('NamedNodeMap', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'Node');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -27820,7 +27914,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27829,10 +27923,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -27938,7 +28032,7 @@ $.$defineNativeClass('NodeList', ["length?"], {
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot sort immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot sort immutable List.'));
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -27951,7 +28045,7 @@ $.$defineNativeClass('NodeList', ["length?"], {
 },
  first$0: function() { return this.get$first().call$0(); },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot setRange on immutable List.'));
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -28029,6 +28123,15 @@ $.$defineNativeClass('HTMLProgressElement', ["position?", "value="], {
 
 $.$defineNativeClass('HTMLQuoteElement', [], {
  is$Element: function() { return true; }
+});
+
+$.$defineNativeClass('RTCPeerConnection', [], {
+ close$0: function() {
+  return this.close();
+}
+});
+
+$.$defineNativeClass('RTCSessionDescription', ["type="], {
 });
 
 $.$defineNativeClass('RadioNodeList', ["value="], {
@@ -28665,19 +28768,19 @@ $.$defineNativeClass('StyleSheetList', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'StyleSheet');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -28690,7 +28793,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -28699,10 +28802,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -28764,19 +28867,19 @@ $.$defineNativeClass('TouchList', ["length?"], {
 return this[index];
 },
  operator$indexSet$2: function(index, value) {
-  throw $.captureStackTrace($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
+  throw $.$$throw($.UnsupportedOperationException$('Cannot assign element of immutable List.'));
 },
  iterator$0: function() {
   return $._FixedSizeListIterator$(this, 'Touch');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -28789,7 +28892,7 @@ return this[index];
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -28798,10 +28901,10 @@ return this[index];
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -28837,13 +28940,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -28856,7 +28959,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -28865,10 +28968,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -28893,13 +28996,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -28912,7 +29015,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -28921,10 +29024,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -28949,13 +29052,13 @@ this[index] = value
   return $._FixedSizeListIterator$(this, 'int');
 },
  add$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addLast$1: function(value) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  addAll$1: function(collection) {
-  throw $.captureStackTrace($.CTC1);
+  throw $.$$throw($.CTC1);
 },
  forEach$1: function(f) {
   return $._Collections_forEach(this, f);
@@ -28968,7 +29071,7 @@ this[index] = value
   return $.eq($.get$length(this), 0);
 },
  sort$1: function(compare) {
-  throw $.captureStackTrace($.CTC20);
+  throw $.$$throw($.CTC19);
 },
  indexOf$2: function(element, start) {
   return $._Lists_indexOf(this, element, start, $.get$length(this));
@@ -28977,10 +29080,10 @@ this[index] = value
   return this.operator$index$1($.sub($.get$length(this), 1));
 },
  removeLast$0: function() {
-  throw $.captureStackTrace($.CTC12);
+  throw $.$$throw($.CTC11);
 },
  setRange$4: function(start, rangeLength, from, startFrom) {
-  throw $.captureStackTrace($.CTC18);
+  throw $.$$throw($.CTC17);
 },
  setRange$3: function(start,rangeLength,from) {
   return this.setRange$4(start,rangeLength,from,null)
@@ -29124,8 +29227,8 @@ $.$defineNativeClass('DOMWindow', [], {
 }
 });
 
-// 314 dynamic classes.
-// 373 classes
+// 316 dynamic classes.
+// 376 classes
 // 31 !leaf
 (function(){
   var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
@@ -29166,7 +29269,7 @@ $.$defineNativeClass('DOMWindow', [], {
     ['Entry', 'Entry|FileEntry|DirectoryEntry|FileEntry|DirectoryEntry'],
     ['EntrySync', 'EntrySync|FileEntrySync|DirectoryEntrySync|FileEntrySync|DirectoryEntrySync'],
     ['MouseEvent', v8/*class(_MouseEventImpl)*/],
-    ['Event', [v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,'Event|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|IDBUpgradeNeededEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|IDBUpgradeNeededEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
+    ['Event', [v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,v8/*class(_MouseEventImpl)*/,'Event|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|RTCIceCandidateEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|IDBUpgradeNeededEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|RTCIceCandidateEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|IDBUpgradeNeededEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
     ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLOptionsCollection'],
     ['IDBCursor', 'IDBCursor|IDBCursorWithValue|IDBCursorWithValue'],
     ['Node', [v9/*class(_ElementImpl)*/,v10/*class(_DocumentFragmentImpl)*/,v11/*class(_DocumentImpl)*/,v12/*class(_CharacterDataImpl)*/,v9/*class(_ElementImpl)*/,v10/*class(_DocumentFragmentImpl)*/,v11/*class(_DocumentImpl)*/,v12/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|')],
@@ -29303,3 +29406,5 @@ Isolate.$finishIsolateConstructor = function(oldIsolate) {
   return newIsolate;
 };
 }
+
+//@ sourceMappingURL=BallCage.dart.js.map
