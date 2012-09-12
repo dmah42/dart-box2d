@@ -937,6 +937,54 @@ $$.JSSyntaxRegExp = {"":
  is$RegExp: true
 };
 
+$$.StopwatchImplementation = {"":
+ ["_start", "_stop"],
+ "super": "Object",
+ start$0: function() {
+  if (this._start == null)
+    this._start = $.Primitives_dateNow();
+  else {
+    if (this._stop == null)
+      return;
+    var t1 = $.Primitives_dateNow();
+    var t2 = $.sub(this._stop, this._start);
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    this._start = t1 - t2;
+    this._stop = null;
+  }
+},
+ reset$0: function() {
+  if (this._start == null)
+    return;
+  this._start = $.Primitives_dateNow();
+  if (!(this._stop == null))
+    this._stop = this._start;
+},
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null)
+    return 0;
+  var t2 = this._stop;
+  if (t2 == null) {
+    t1 = $.Primitives_dateNow();
+    t2 = this._start;
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    t2 = t1 - t2;
+    t1 = t2;
+  } else
+    t1 = $.sub(t2, t1);
+  return t1;
+},
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+},
+ frequency$0: function() {
+  return 1000;
+}
+};
+
 $$.StringBufferImpl = {"":
  ["_buffer", "_length"],
  "super": "Object",
@@ -31482,6 +31530,10 @@ $.checkNum = function(value) {
   return value;
 };
 
+$.StopwatchImplementation$ = function() {
+  return new $.StopwatchImplementation(null, null);
+};
+
 $.Velocity$ = function() {
   var t1 = new $.Velocity(null, null);
   t1.Velocity$0();
@@ -31580,10 +31632,6 @@ $._Lists_getRange = function(a, start, length$, accumulator) {
 $.regExpGetNative = function(regExp) {
   var r = regExp._re;
   return r == null ? regExp._re = $.regExpMakeNative(regExp, false) : r;
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.$$throw($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $._fillStatics = function(context) {
@@ -32767,9 +32815,12 @@ $.HashSetImplementation$ = function(E) {
 
 $.Racer$ = function() {
   var t1 = $.Vector$(0, 0);
-  var t2 = new $.Racer(null, null, null, 0, $.ListImplementation_List(null, 'Body'), null, null, null, null, null, null, null, null, null, 2.5, $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []));
-  t2.Demo$3('Racer', t1, 2.5);
-  return t2;
+  var t2 = $.ListImplementation_List(null, 'Body');
+  var t3 = $.StopwatchImplementation$();
+  t3.start$0();
+  t3 = new $.Racer(null, null, null, 0, t2, null, null, null, null, null, null, null, null, null, 2.5, t3);
+  t3.Demo$3('Racer', t1, 2.5);
+  return t3;
 };
 
 $._IDBRequestEventsImpl$ = function(_ptr) {
@@ -33036,6 +33087,10 @@ $._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
 
 $._AbstractWorkerEventsImpl$ = function(_ptr) {
   return new $._AbstractWorkerEventsImpl(_ptr);
+};
+
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {

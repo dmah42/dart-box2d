@@ -91,7 +91,7 @@ class Benchmark {
         // Initialize the world to start fresh.
         initialize();
 
-        final watch = new Stopwatch.start();
+        final watch = new Stopwatch()..start();
         // Step the world forward in a nice loop.
         for (int i = 0; i < stepCount; ++i)
           world.step(TIME_STEP, solveCount, solveCount);

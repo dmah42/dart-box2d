@@ -806,6 +806,54 @@ $$.JSSyntaxRegExp = {"":
  is$RegExp: true
 };
 
+$$.StopwatchImplementation = {"":
+ ["_start", "_stop"],
+ "super": "Object",
+ start$0: function() {
+  if (this._start == null)
+    this._start = $.Primitives_dateNow();
+  else {
+    if (this._stop == null)
+      return;
+    var t1 = $.Primitives_dateNow();
+    var t2 = $.sub(this._stop, this._start);
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    this._start = t1 - t2;
+    this._stop = null;
+  }
+},
+ reset$0: function() {
+  if (this._start == null)
+    return;
+  this._start = $.Primitives_dateNow();
+  if (!(this._stop == null))
+    this._stop = this._start;
+},
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null)
+    return 0;
+  var t2 = this._stop;
+  if (t2 == null) {
+    t1 = $.Primitives_dateNow();
+    t2 = this._start;
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    t2 = t1 - t2;
+    t1 = t2;
+  } else
+    t1 = $.sub(t2, t1);
+  return t1;
+},
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+},
+ frequency$0: function() {
+  return 1000;
+}
+};
+
 $$.StringBufferImpl = {"":
  ["_buffer", "_length"],
  "super": "Object",
@@ -29639,6 +29687,12 @@ $.startRootIsolate = function(entry) {
   $._globalState().get$topEventLoop().run$0();
 };
 
+$.setRange$3 = function(receiver, start, length$, from) {
+  if ($.isJsArray(receiver))
+    return $.setRange$4(receiver, start, length$, from, 0);
+  return receiver.setRange$3(start, length$, from);
+};
+
 $._window = function() {
   return typeof window != "undefined" ? window : null;
 };
@@ -29936,6 +29990,12 @@ $.max = function(a, b) {
   throw $.$$throw($.IllegalArgumentException$(a));
 };
 
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b))
+    return $.truncate(a / b);
+  return a.operator$tdiv$1(b);
+};
+
 $.JSSyntaxRegExp$ = function(pattern, multiLine, ignoreCase) {
   return new $.JSSyntaxRegExp(ignoreCase, multiLine, pattern);
 };
@@ -29950,10 +30010,33 @@ $.clear = function(receiver) {
   $.set$length(receiver, 0);
 };
 
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b))
-    return $.truncate(a / b);
-  return a.operator$tdiv$1(b);
+$.typeNameInChrome = function(obj) {
+  var name$ = obj.constructor.name;
+  if (name$ === 'Window')
+    return 'DOMWindow';
+  if (name$ === 'CanvasPixelArray')
+    return 'Uint8ClampedArray';
+  if (name$ === 'WebKitMutationObserver')
+    return 'MutationObserver';
+  if (name$ === 'FormData')
+    return 'DOMFormData';
+  return name$;
+};
+
+$._deserializeMessage = function(message) {
+  if ($._globalState().get$needSerialization() === true)
+    return $._JsDeserializer$().deserialize$1(message);
+  else
+    return message;
+};
+
+$.FrictionJointTest$ = function() {
+  var t1 = $.ListImplementation_List(null, 'Body');
+  var t2 = $.StopwatchImplementation$();
+  t2.start$0();
+  t2 = new $.FrictionJointTest(null, null, t1, null, null, null, null, null, null, null, null, null, 10, t2);
+  t2.Demo$3('FrictionJoint test', null, 10);
+  return t2;
 };
 
 $.AxisAlignedBox_testOverlap = function(a, b) {
@@ -29995,32 +30078,6 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
   } else
     t1 = true;
   return !t1;
-};
-
-$.typeNameInChrome = function(obj) {
-  var name$ = obj.constructor.name;
-  if (name$ === 'Window')
-    return 'DOMWindow';
-  if (name$ === 'CanvasPixelArray')
-    return 'Uint8ClampedArray';
-  if (name$ === 'WebKitMutationObserver')
-    return 'MutationObserver';
-  if (name$ === 'FormData')
-    return 'DOMFormData';
-  return name$;
-};
-
-$._deserializeMessage = function(message) {
-  if ($._globalState().get$needSerialization() === true)
-    return $._JsDeserializer$().deserialize$1(message);
-  else
-    return message;
-};
-
-$.FrictionJointTest$ = function() {
-  var t1 = new $.FrictionJointTest(null, null, $.ListImplementation_List(null, 'Body'), null, null, null, null, null, null, null, null, null, 10, $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []));
-  t1.Demo$3('FrictionJoint test', null, 10);
-  return t1;
 };
 
 $.sqrt = function(value) {
@@ -31244,12 +31301,16 @@ $.main = function() {
   $.FrictionJointTest_main();
 };
 
-$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
-  return new $._WorkerSendPort(_workerId, _receivePortId, isolateId);
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
   return $.tdiv(capacity * 3, 4);
+};
+
+$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
+  return new $._WorkerSendPort(_workerId, _receivePortId, isolateId);
 };
 
 $._convertDartToNative_SerializedScriptValue = function(value) {
@@ -31423,6 +31484,10 @@ $.checkNum = function(value) {
     throw $.$$throw($.IllegalArgumentException$(value));
   }
   return value;
+};
+
+$.StopwatchImplementation$ = function() {
+  return new $.StopwatchImplementation(null, null);
 };
 
 $.Velocity$ = function() {
@@ -31611,10 +31676,6 @@ $._dynamicMetadata0 = function() {
 $.regExpGetNative = function(regExp) {
   var r = regExp._re;
   return r == null ? regExp._re = $.regExpMakeNative(regExp, false) : r;
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.$$throw($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $.checkNull = function(object) {
@@ -32093,21 +32154,6 @@ $.DistanceProxy$ = function() {
   return t1;
 };
 
-$.toString = function(value) {
-  if (typeof value == "object" && value !== null)
-    if ($.isJsArray(value))
-      return $.Collections_collectionToString(value);
-    else
-      return value.toString$0();
-  if (value === 0 && (1 / value) < 0)
-    return '-0.0';
-  if (value == null)
-    return 'null';
-  if (typeof value == "function")
-    return 'Closure';
-  return String(value);
-};
-
 $.hashCode = function(receiver) {
   if (typeof receiver === 'number')
     return receiver & 0x1FFFFFFF;
@@ -32127,6 +32173,21 @@ $.hashCode = function(receiver) {
 
 $._JsVisitedMap$ = function() {
   return new $._JsVisitedMap(null);
+};
+
+$.toString = function(value) {
+  if (typeof value == "object" && value !== null)
+    if ($.isJsArray(value))
+      return $.Collections_collectionToString(value);
+    else
+      return value.toString$0();
+  if (value === 0 && (1 / value) < 0)
+    return '-0.0';
+  if (value == null)
+    return 'null';
+  if (typeof value == "function")
+    return 'Closure';
+  return String(value);
 };
 
 $.makeLiteralMap = function(keyValuePairs) {
@@ -32498,12 +32559,6 @@ $._Device_isOpera = function() {
 
 $.sub = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? a - b : $.sub$slow(a, b);
-};
-
-$.setRange$3 = function(receiver, start, length$, from) {
-  if ($.isJsArray(receiver))
-    return $.setRange$4(receiver, start, length$, from, 0);
-  return receiver.setRange$3(start, length$, from);
 };
 
 $.DualPivotQuicksort__dualPivotQuicksort$bailout = function(state, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13) {

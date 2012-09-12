@@ -4,12 +4,12 @@ init();
 var $$ = {};
 var $ = Isolate.$isolateProperties;
 $$.RuntimeOptions = {"":
- ["_lib0_arguments"],
+ ["_arguments"],
  "super": "Object",
  get$arguments: function() {
-  if (this._lib0_arguments == null)
-    this._lib0_arguments = $.getRange($.RuntimeOptions__nativeArguments, 0, $.get$length($.RuntimeOptions__nativeArguments));
-  return this._lib0_arguments;
+  if (this._arguments == null)
+    this._arguments = $.getRange($.RuntimeOptions__nativeArguments, 0, $.get$length($.RuntimeOptions__nativeArguments));
+  return this._arguments;
 }
 };
 
@@ -158,6 +158,121 @@ $$._DoubleLinkedQueueIterator = {"":
 }
 };
 
+$$.StopwatchImplementation = {"":
+ ["_start", "_stop"],
+ "super": "Object",
+ start$0: function() {
+  if (this._start == null)
+    this._start = $.Primitives_dateNow();
+  else {
+    if (this._stop == null)
+      return;
+    var t1 = $.Primitives_dateNow();
+    var t2 = this._stop;
+    if (typeof t2 !== 'number')
+      return this.start$0$bailout(1, t2, t1, 0);
+    var t4 = this._start;
+    if (typeof t4 !== 'number')
+      return this.start$0$bailout(2, t2, t1, t4);
+    this._start = t1 - (t2 - t4);
+    this._stop = null;
+  }
+},
+ start$0$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      t2 = env0;
+      t1 = env1;
+      break;
+    case 2:
+      t2 = env0;
+      t1 = env1;
+      t4 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+    default:
+      if (state === 0 && this._start == null)
+        this._start = $.Primitives_dateNow();
+      else
+        switch (state) {
+          case 0:
+            if (this._stop == null)
+              return;
+            var t1 = $.Primitives_dateNow();
+            var t2 = this._stop;
+          case 1:
+            state = 0;
+            var t4 = this._start;
+          case 2:
+            state = 0;
+            t4 = $.sub(t2, t4);
+            if (typeof t4 !== 'number')
+              throw $.iae(t4);
+            this._start = t1 - t4;
+            this._stop = null;
+        }
+  }
+},
+ stop$0: function() {
+  if (this._start == null || !(this._stop == null))
+    return;
+  this._stop = $.Primitives_dateNow();
+},
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null)
+    return 0;
+  var t2 = this._stop;
+  if (t2 == null) {
+    t1 = $.Primitives_dateNow();
+    t2 = this._start;
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    t2 = t1 - t2;
+    t1 = t2;
+  } else
+    t1 = $.sub(t2, t1);
+  return t1;
+},
+ elapsedInMs$0: function() {
+  var t1 = this.elapsed$0();
+  if (typeof t1 !== 'number')
+    return this.elapsedInMs$0$bailout(1, t1, 0);
+  t1 *= 1000;
+  var t3 = this.frequency$0();
+  if (typeof t3 !== 'number')
+    return this.elapsedInMs$0$bailout(2, t1, t3);
+  return $.tdiv(t1, t3);
+},
+ elapsedInMs$0$bailout: function(state, env0, env1) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      break;
+    case 2:
+      t1 = env0;
+      t3 = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = this.elapsed$0();
+    case 1:
+      state = 0;
+      t1 = $.mul(t1, 1000);
+      var t3 = this.frequency$0();
+    case 2:
+      state = 0;
+      return $.tdiv(t1, t3);
+  }
+},
+ frequency$0: function() {
+  return 1000;
+}
+};
+
 $$.StringBufferImpl = {"":
  ["_buffer", "_length"],
  "super": "Object",
@@ -234,82 +349,6 @@ $$.IndexOutOfRangeException = {"":
  "super": "Object",
  toString$0: function() {
   return 'IndexOutOfRangeException: ' + $.S(this._value);
-}
-};
-
-$$.NoSuchMethodException = {"":
- ["_receiver", "_functionName", "_arguments", "_existingArgumentNames"],
- "super": "Object",
- toString$0: function() {
-  var sb = $.StringBufferImpl$('');
-  var t1 = this._arguments;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior))
-    return this.toString$0$bailout(1, t1, sb);
-  var i = 0;
-  for (; i < t1.length; ++i) {
-    if (i > 0)
-      sb.add$1(', ');
-    if (i < 0 || i >= t1.length)
-      throw $.ioore(i);
-    sb.add$1(t1[i]);
-  }
-  t1 = this._existingArgumentNames;
-  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior))
-    return this.toString$0$bailout(2, sb, t1);
-  var actualParameters = sb.toString$0();
-  sb = $.StringBufferImpl$('');
-  for (i = 0; i < t1.length; ++i) {
-    if (i > 0)
-      sb.add$1(', ');
-    if (i < 0 || i >= t1.length)
-      throw $.ioore(i);
-    sb.add$1(t1[i]);
-  }
-  var formalParameters = sb.toString$0();
-  t1 = this._functionName;
-  return 'NoSuchMethodException: incorrect number of arguments passed to method named \'' + $.S(t1) + '\'\nReceiver: ' + $.S(this._receiver) + '\n' + 'Tried calling: ' + $.S(t1) + '(' + $.S(actualParameters) + ')\n' + 'Found: ' + $.S(t1) + '(' + $.S(formalParameters) + ')';
-},
- toString$0$bailout: function(state, env0, env1) {
-  switch (state) {
-    case 1:
-      t1 = env0;
-      sb = env1;
-      break;
-    case 2:
-      sb = env0;
-      t1 = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var sb = $.StringBufferImpl$('');
-      var t1 = this._arguments;
-    case 1:
-      state = 0;
-      var i = 0;
-      for (; $.ltB(i, $.get$length(t1)); ++i) {
-        if (i > 0)
-          sb.add$1(', ');
-        sb.add$1($.index(t1, i));
-      }
-      t1 = this._existingArgumentNames;
-    case 2:
-      state = 0;
-      if (t1 == null)
-        return 'NoSuchMethodException : method not found: \'' + $.S(this._functionName) + '\'\n' + 'Receiver: ' + $.S(this._receiver) + '\n' + 'Arguments: [' + $.S(sb) + ']';
-      else {
-        var actualParameters = sb.toString$0();
-        sb = $.StringBufferImpl$('');
-        for (i = 0; $.ltB(i, $.get$length(t1)); ++i) {
-          if (i > 0)
-            sb.add$1(', ');
-          sb.add$1($.index(t1, i));
-        }
-        var formalParameters = sb.toString$0();
-        t1 = this._functionName;
-        return 'NoSuchMethodException: incorrect number of arguments passed to method named \'' + $.S(t1) + '\'\nReceiver: ' + $.S(this._receiver) + '\n' + 'Tried calling: ' + $.S(t1) + '(' + $.S(actualParameters) + ')\n' + 'Found: ' + $.S(t1) + '(' + $.S(formalParameters) + ')';
-      }
-  }
 }
 };
 
@@ -427,7 +466,7 @@ $$.Closure = {"":
 };
 
 $$.StringMatch = {"":
- ["_start", "str", "pattern"],
+ ["_lib0_start", "str", "pattern"],
  "super": "Object",
  operator$index$1: function(g) {
   return this.group$1(g);
@@ -498,11 +537,12 @@ $$.Benchmark = {"":
   for (var t1 = $.iterator(this._steps), t2 = this.solveLoops; t1.hasNext$0() === true;) {
     var t3 = t1.next$0();
     if (typeof t3 !== 'number')
-      return this.runBenchmark$1$bailout(1, resultsWriter, t3, t1, t2);
+      return this.runBenchmark$1$bailout(1, resultsWriter, t3, t2, t1);
     for (var t4 = $.iterator(t2); t4.hasNext$0() === true;) {
       var t5 = t4.next$0();
       this.initialize$0();
-      var watch = $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []);
+      var watch = $.StopwatchImplementation$();
+      watch.start$0();
       for (var i = 0; i < t3; ++i)
         this.world.step$3(0.016666666666666666, t5, t5);
       watch.stop$0();
@@ -515,8 +555,8 @@ $$.Benchmark = {"":
     case 1:
       var resultsWriter = env0;
       t3 = env1;
-      t1 = env2;
-      t2 = env3;
+      t2 = env2;
+      t1 = env3;
       break;
   }
   switch (state) {
@@ -536,7 +576,8 @@ $$.Benchmark = {"":
               for (var t4 = $.iterator(t2); t4.hasNext$0() === true;) {
                 var t5 = t4.next$0();
                 this.initialize$0();
-                var watch = $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []);
+                var watch = $.StopwatchImplementation$();
+                watch.start$0();
                 for (var i = 0; $.ltB(i, t3); ++i)
                   this.world.step$3(0.016666666666666666, t5, t5);
                 watch.stop$0();
@@ -27228,6 +27269,10 @@ $.clear = function(receiver) {
   $.set$length(receiver, 0);
 };
 
+$.StopwatchImplementation$ = function() {
+  return new $.StopwatchImplementation(null, null);
+};
+
 $.Vector$ = function(x, y) {
   return new $.Vector(x, y);
 };
@@ -27342,6 +27387,12 @@ $.max = function(a, b) {
   throw $.$$throw($.IllegalArgumentException$(a));
 };
 
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b))
+    return $.truncate(a / b);
+  return a.operator$tdiv$1(b);
+};
+
 $.Primitives_printString = function(string) {
   if (typeof dartPrint == "function") {
     dartPrint(string);
@@ -27355,12 +27406,6 @@ $.Primitives_printString = function(string) {
     write(string);
     write("\n");
   }
-};
-
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b))
-    return $.truncate(a / b);
-  return a.operator$tdiv$1(b);
 };
 
 $.TimeOfImpactSolver$ = function() {
@@ -27473,10 +27518,6 @@ $.shr = function(a, b) {
 $.BenchmarkRunner$ = function() {
   var t1 = $.StringBufferImpl$('');
   return new $.BenchmarkRunner($.CTC3, $.CTC4, $.ListImplementation_List(null, 'Benchmark'), t1);
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.$$throw($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $.checkNull = function(object) {
@@ -28137,10 +28178,6 @@ $.Vector3$ = function(x, y, z) {
   return new $.Vector3(x, y, z);
 };
 
-$.ContactEdge$ = function() {
-  return new $.ContactEdge(null, null, null, null);
-};
-
 $.or = function(a, b) {
   if ($.checkNumbers(a, b))
     return (a | b) >>> 0;
@@ -28163,16 +28200,35 @@ $.$$throw = function(ex) {
   throw jsError;
 };
 
+$.isEmpty = function(receiver) {
+  if (typeof receiver === 'string' || $.isJsArray(receiver))
+    return receiver.length === 0;
+  return receiver.isEmpty$0();
+};
+
+$.toString = function(value) {
+  if (typeof value == "object" && value !== null)
+    if ($.isJsArray(value))
+      return $.Collections_collectionToString(value);
+    else
+      return value.toString$0();
+  if (value === 0 && (1 / value) < 0)
+    return '-0.0';
+  if (value == null)
+    return 'null';
+  if (typeof value == "function")
+    return 'Closure';
+  return String(value);
+};
+
 $.DefaultWorldPool$ = function() {
   var t1 = new $.DefaultWorldPool(null, null, null);
   t1.DefaultWorldPool$0();
   return t1;
 };
 
-$.isEmpty = function(receiver) {
-  if (typeof receiver === 'string' || $.isJsArray(receiver))
-    return receiver.length === 0;
-  return receiver.isEmpty$0();
+$.ContactEdge$ = function() {
+  return new $.ContactEdge(null, null, null, null);
 };
 
 $.CircleContact$ = function(argPool) {
@@ -28243,21 +28299,6 @@ $.Transform_mulTransToOut = function(T, v, out) {
   var tempy = $.add($.mul(v1x, b1.get$x()), $.mul(v1y, b1.get$y()));
   out.set$x($.add($.mul(v1x, b.get$x()), $.mul(v1y, b.get$y())));
   out.set$y(tempy);
-};
-
-$.toString = function(value) {
-  if (typeof value == "object" && value !== null)
-    if ($.isJsArray(value))
-      return $.Collections_collectionToString(value);
-    else
-      return value.toString$0();
-  if (value === 0 && (1 / value) < 0)
-    return '-0.0';
-  if (value == null)
-    return 'null';
-  if (typeof value == "function")
-    return 'Closure';
-  return String(value);
 };
 
 $.BallDropBench$ = function(solveLoops, steps) {
@@ -28925,10 +28966,6 @@ $.Primitives_newList = function(length$) {
   return result;
 };
 
-$.NoSuchMethodException$ = function(_receiver, _functionName, _arguments, existingArgumentNames) {
-  return new $.NoSuchMethodException(_receiver, _functionName, _arguments, existingArgumentNames);
-};
-
 $.main = function() {
   var runner = $.BenchmarkRunner$();
   var args = $.iterator($.RuntimeOptions$().get$arguments());
@@ -28939,6 +28976,10 @@ $.main = function() {
     }
   runner.setupBenchmarks$1(filter);
   runner.runBenchmarks$0();
+};
+
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.lt = function(a, b) {

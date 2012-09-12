@@ -806,6 +806,54 @@ $$.JSSyntaxRegExp = {"":
  is$RegExp: true
 };
 
+$$.StopwatchImplementation = {"":
+ ["_start", "_stop"],
+ "super": "Object",
+ start$0: function() {
+  if (this._start == null)
+    this._start = $.Primitives_dateNow();
+  else {
+    if (this._stop == null)
+      return;
+    var t1 = $.Primitives_dateNow();
+    var t2 = $.sub(this._stop, this._start);
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    this._start = t1 - t2;
+    this._stop = null;
+  }
+},
+ reset$0: function() {
+  if (this._start == null)
+    return;
+  this._start = $.Primitives_dateNow();
+  if (!(this._stop == null))
+    this._stop = this._start;
+},
+ elapsed$0: function() {
+  var t1 = this._start;
+  if (t1 == null)
+    return 0;
+  var t2 = this._stop;
+  if (t2 == null) {
+    t1 = $.Primitives_dateNow();
+    t2 = this._start;
+    if (typeof t2 !== 'number')
+      throw $.iae(t2);
+    t2 = t1 - t2;
+    t1 = t2;
+  } else
+    t1 = $.sub(t2, t1);
+  return t1;
+},
+ elapsedInUs$0: function() {
+  return $.tdiv($.mul(this.elapsed$0(), 1000000), this.frequency$0());
+},
+ frequency$0: function() {
+  return 1000;
+}
+};
+
 $$.StringBufferImpl = {"":
  ["_buffer", "_length"],
  "super": "Object",
@@ -29914,9 +29962,12 @@ $.typeNameInIE = function(obj) {
 };
 
 $.CircleStress$ = function() {
-  var t1 = new $.CircleStress(null, $.ListImplementation_List(null, 'Body'), null, null, null, null, null, null, null, null, null, 10, $.throwNoSuchMethod('', 'constructorClosure: () => String from Function \'slowToString\':.', []));
-  t1.Demo$3('Circle stress', null, 10);
-  return t1;
+  var t1 = $.ListImplementation_List(null, 'Body');
+  var t2 = $.StopwatchImplementation$();
+  t2.start$0();
+  t2 = new $.CircleStress(null, t1, null, null, null, null, null, null, null, null, null, 10, t2);
+  t2.Demo$3('Circle stress', null, 10);
+  return t2;
 };
 
 $.constructorNameFallback = function(obj) {
@@ -29982,6 +30033,12 @@ $.max = function(a, b) {
   throw $.$$throw($.IllegalArgumentException$(a));
 };
 
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b))
+    return $.truncate(a / b);
+  return a.operator$tdiv$1(b);
+};
+
 $.JSSyntaxRegExp$ = function(pattern, multiLine, ignoreCase) {
   return new $.JSSyntaxRegExp(ignoreCase, multiLine, pattern);
 };
@@ -29996,10 +30053,24 @@ $.clear = function(receiver) {
   $.set$length(receiver, 0);
 };
 
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b))
-    return $.truncate(a / b);
-  return a.operator$tdiv$1(b);
+$.typeNameInChrome = function(obj) {
+  var name$ = obj.constructor.name;
+  if (name$ === 'Window')
+    return 'DOMWindow';
+  if (name$ === 'CanvasPixelArray')
+    return 'Uint8ClampedArray';
+  if (name$ === 'WebKitMutationObserver')
+    return 'MutationObserver';
+  if (name$ === 'FormData')
+    return 'DOMFormData';
+  return name$;
+};
+
+$._deserializeMessage = function(message) {
+  if ($._globalState().get$needSerialization() === true)
+    return $._JsDeserializer$().deserialize$1(message);
+  else
+    return message;
 };
 
 $.AxisAlignedBox_testOverlap = function(a, b) {
@@ -30041,26 +30112,6 @@ $.AxisAlignedBox_testOverlap = function(a, b) {
   } else
     t1 = true;
   return !t1;
-};
-
-$.typeNameInChrome = function(obj) {
-  var name$ = obj.constructor.name;
-  if (name$ === 'Window')
-    return 'DOMWindow';
-  if (name$ === 'CanvasPixelArray')
-    return 'Uint8ClampedArray';
-  if (name$ === 'WebKitMutationObserver')
-    return 'MutationObserver';
-  if (name$ === 'FormData')
-    return 'DOMFormData';
-  return name$;
-};
-
-$._deserializeMessage = function(message) {
-  if ($._globalState().get$needSerialization() === true)
-    return $._JsDeserializer$().deserialize$1(message);
-  else
-    return message;
 };
 
 $.sqrt = function(value) {
@@ -31299,12 +31350,16 @@ $.main = function() {
   $.CircleStress_main();
 };
 
-$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
-  return new $._WorkerSendPort(_workerId, _receivePortId, isolateId);
+$.Primitives_dateNow = function() {
+  return Date.now();
 };
 
 $.HashMapImplementation__computeLoadLimit = function(capacity) {
   return $.tdiv(capacity * 3, 4);
+};
+
+$._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
+  return new $._WorkerSendPort(_workerId, _receivePortId, isolateId);
 };
 
 $._convertDartToNative_SerializedScriptValue = function(value) {
@@ -31478,6 +31533,10 @@ $.checkNum = function(value) {
     throw $.$$throw($.IllegalArgumentException$(value));
   }
   return value;
+};
+
+$.StopwatchImplementation$ = function() {
+  return new $.StopwatchImplementation(null, null);
 };
 
 $.Velocity$ = function() {
@@ -31666,10 +31725,6 @@ $._dynamicMetadata0 = function() {
 $.regExpGetNative = function(regExp) {
   var r = regExp._re;
   return r == null ? regExp._re = $.regExpMakeNative(regExp, false) : r;
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.$$throw($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $.checkNull = function(object) {
@@ -32073,6 +32128,22 @@ $.ioore = function(index) {
   throw $.$$throw($.IndexOutOfRangeException$(index));
 };
 
+$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
+    return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (startIndex >= a.length)
+    return -1;
+  if (startIndex < 0)
+    startIndex = 0;
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i < 0 || i >= a.length)
+      throw $.ioore(i);
+    if ($.eqB(a[i], element))
+      return i;
+  }
+  return -1;
+};
+
 $.typeNameInFirefox = function(obj) {
   var name$ = $.constructorNameFallback(obj);
   if (name$ === 'Window')
@@ -32090,22 +32161,6 @@ $.typeNameInFirefox = function(obj) {
   if (name$ === 'FormData')
     return 'DOMFormData';
   return name$;
-};
-
-$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
-    return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (startIndex >= a.length)
-    return -1;
-  if (startIndex < 0)
-    startIndex = 0;
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i < 0 || i >= a.length)
-      throw $.ioore(i);
-    if ($.eqB(a[i], element))
-      return i;
-  }
-  return -1;
 };
 
 $.gt$slow = function(a, b) {
