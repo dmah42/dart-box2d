@@ -16,7 +16,7 @@
  * Demonstration of dominoes being knocked over.
  */
 class DominoPlatformBench extends Benchmark {
-  static final String NAME = "Domino Platforms";
+  static const String NAME = "Domino Platforms";
 
   DominoPlatformBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }

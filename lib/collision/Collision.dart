@@ -18,7 +18,7 @@
  * for pooling speed, retrieve a collision object from the [SingletonPool].
  */
 class Collision {
-  static final int NULL_FEATURE = Settings.MAX_INTEGER;
+  static const int NULL_FEATURE = Settings.MAX_INTEGER;
 
   final DefaultWorldPool _pool;
 

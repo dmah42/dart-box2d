@@ -17,19 +17,19 @@
 #import('../lib/box2d.dart');
 
 class Bench2d {
-  static final int CANVAS_WIDTH = 900;
-  static final int CANVAS_HEIGHT = 600;
+  static const int CANVAS_WIDTH = 900;
+  static const int CANVAS_HEIGHT = 600;
 
-  static final int FRAMES = 256;
-  static final int PYRAMID_SIZE = 20; // 40;
+  static const int FRAMES = 256;
+  static const int PYRAMID_SIZE = 20; // 40;
 
-  static final num _VIEWPORT_SCALE = 10;
+  static const num _VIEWPORT_SCALE = 10;
 
-  static final num GRAVITY = -10;
+  static const num GRAVITY = -10;
 
-  static final num TIME_STEP = 1/60;
-  static final int VELOCITY_ITERATIONS = 10;
-  static final int POSITION_ITERATIONS = 10;
+  static const num TIME_STEP = 1/60;
+  static const int VELOCITY_ITERATIONS = 10;
+  static const int POSITION_ITERATIONS = 10;
 
   CanvasElement canvas;
   CanvasRenderingContext2D ctx;

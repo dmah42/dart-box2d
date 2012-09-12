@@ -16,7 +16,7 @@
  * An enum class for the different kinds of Manifolds.
  */
 class ManifoldType {
-  static final int CIRCLES = 0;
-  static final int FACE_A = 1;
-  static final int FACE_B = 2;
+  static const int CIRCLES = 0;
+  static const int FACE_A = 1;
+  static const int FACE_B = 2;
 }

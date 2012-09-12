@@ -17,7 +17,7 @@
  * to true.
  */
 class CanvasViewportTransform implements IViewportTransform {
-  static final int DEFAULT_DRAWING_SCALE = 20;
+  static const int DEFAULT_DRAWING_SCALE = 20;
 
   /**
    * Whether the y axis should be flipped such that y is greater as you get

@@ -20,10 +20,10 @@ class Benchmark {
   List<Body> bodies;
 
   /** The gravity vector's y value. */
-  static final num GRAVITY = -10;
+  static const num GRAVITY = -10;
 
   /** The timestep and iteration values. */
-  static final num TIME_STEP = 1/60;
+  static const num TIME_STEP = 1/60;
 
   /** The physics world. */
   World world;

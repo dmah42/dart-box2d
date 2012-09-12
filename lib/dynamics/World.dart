@@ -20,12 +20,12 @@
  * Author: Daniel Murphy
  */
 class World {
-  static final int WORLD_POOL_SIZE = 100;
-  static final int WORLD_POOL_CONTAINER_SIZE = 10;
+  static const int WORLD_POOL_SIZE = 100;
+  static const int WORLD_POOL_CONTAINER_SIZE = 10;
 
-  static final int NEW_FIXTURE = 0x0001;
-  static final int LOCKED = 0x0002;
-  static final int CLEAR_FORCES = 0x0004;
+  static const int NEW_FIXTURE = 0x0001;
+  static const int LOCKED = 0x0002;
+  static const int CLEAR_FORCES = 0x0004;
 
   int _flags;
 

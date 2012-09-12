@@ -19,10 +19,10 @@
 #source('demo.dart');
 
 class DominoTower extends Demo {
-  static final num DOMINO_WIDTH = .2;
-  static final num DOMINO_FRICTION = 0.1;
-  static final num DOMINO_HEIGHT = 1;
-  static final num BASE_COUNT = 25;
+  static const num DOMINO_WIDTH = .2;
+  static const num DOMINO_FRICTION = 0.1;
+  static const num DOMINO_HEIGHT = 1;
+  static const num BASE_COUNT = 25;
 
   /**
    * The density of the dominos under construction. Varies for different parts

@@ -17,11 +17,11 @@
  * very interesting to look at anyway. Just used for benchmarking.
  */
 class BallDropBench extends Benchmark {
-  static final String NAME = "Ball Drop";
+  static const String NAME = "Ball Drop";
 
   /** The starting position of the ball. */
-  static final num X_START = 0;
-  static final num Y_START = 0;
+  static const num X_START = 0;
+  static const num Y_START = 0;
 
   BallDropBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }

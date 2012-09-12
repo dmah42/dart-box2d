@@ -14,8 +14,8 @@
 
 /** An enum class for determining the state of contact points. */
 class PointState {
-  static final int NULL_STATE = 0;
-  static final int ADD_STATE = 1;
-  static final int PERSIST_STATE = 2;
-  static final int REMOVE_STATE = 3;
+  static const int NULL_STATE = 0;
+  static const int ADD_STATE = 1;
+  static const int PERSIST_STATE = 2;
+  static const int REMOVE_STATE = 3;
 }

@@ -20,19 +20,19 @@ class Demo {
   List<Body> bodies;
 
   /** The default canvas width and height. */
-  static final int CANVAS_WIDTH = 900;
-  static final int CANVAS_HEIGHT = 600;
+  static const int CANVAS_WIDTH = 900;
+  static const int CANVAS_HEIGHT = 600;
 
   /** Scale of the viewport. */
-  static final num _VIEWPORT_SCALE = 10;
+  static const num _VIEWPORT_SCALE = 10;
 
   /** The gravity vector's y value. */
-  static final num GRAVITY = -10;
+  static const num GRAVITY = -10;
 
   /** The timestep and iteration numbers. */
-  static final num TIME_STEP = 1/60;
-  static final int VELOCITY_ITERATIONS = 10;
-  static final int POSITION_ITERATIONS = 10;
+  static const num TIME_STEP = 1/60;
+  static const int VELOCITY_ITERATIONS = 10;
+  static const int POSITION_ITERATIONS = 10;
 
   /** The drawing canvas. */
   CanvasElement canvas;

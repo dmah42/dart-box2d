@@ -13,8 +13,7 @@
   </fail>
 
   <property name="dart.sdk.dir" value="${env.DART_SDK}" />
-  <property name="dartdoc.dart"
-    value="${dart.sdk.dir}/lib/dartdoc/dartdoc.dart" />
+  <property name="dartdoc.dart" value="${dart.sdk.dir}/bin/dartdoc" />
   <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dart_analyzer" />
   <property name="dart_analyzer.args" value="--enable_type_checks" />
 

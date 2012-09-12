@@ -17,7 +17,7 @@
  * constructed usually, just retrieve from the SingletonPool.getTimeOfImpact().
  */
 class TimeOfImpact {
-  static final int MAX_ITERATIONS = 1000;
+  static const int MAX_ITERATIONS = 1000;
 
   static int toiCalls;
   static int toiIters;
@@ -520,11 +520,11 @@ class TimeOfImpactInput {
 
 /** Enum for TimeOfImpact output. */
 class TimeOfImpactOutputState {
-  static final int UNKNOWN = 0;
-  static final int FAILED = 1;
-  static final int OVERLAPPED = 2;
-  static final int TOUCHING = 3;
-  static final int SEPARATED = 4;
+  static const int UNKNOWN = 0;
+  static const int FAILED = 1;
+  static const int OVERLAPPED = 2;
+  static const int TOUCHING = 3;
+  static const int SEPARATED = 4;
 }
 
 /**
@@ -540,7 +540,7 @@ class TimeOfImpactOutput {
 }
 
 class SeparationType {
-  static final int POINTS = 0;
-  static final int FACE_A = 1;
-  static final int FACE_B = 2;
+  static const int POINTS = 0;
+  static const int FACE_A = 1;
+  static const int FACE_B = 2;
 }

@@ -17,11 +17,11 @@
  */
 class Contact {
   /** Used when crawling contact graph when forming islands. */
-  static final int ISLAND_FLAG = 0x0001;
-  static final int TOUCHING_FLAG = 0x0002;
-  static final int ENABLED_FLAG = 0x0004;
-  static final int FILTER_FLAG = 0x0008;
-  static final int BULLET_HIT_FLAG = 0x0010;
+  static const int ISLAND_FLAG = 0x0001;
+  static const int TOUCHING_FLAG = 0x0002;
+  static const int ENABLED_FLAG = 0x0004;
+  static const int FILTER_FLAG = 0x0008;
+  static const int BULLET_HIT_FLAG = 0x0010;
 
   /** The flags for this Contact. */
   int flags;

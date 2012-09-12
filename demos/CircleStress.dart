@@ -23,13 +23,13 @@ class CircleStress extends Demo {
   RevoluteJoint _joint;
 
   /** Scale of the viewport for this Demo. */
-  static final num _MY_VIEWPORT_SCALE = 4;
+  static const num _MY_VIEWPORT_SCALE = 4;
 
   /** The number of columns of balls in the pen. */
-  static final int COLUMNS = 8;
+  static const int COLUMNS = 8;
 
   /** This number of balls will be created on each layer. */
-  static final int LOAD_SIZE = 20;
+  static const int LOAD_SIZE = 20;
 
   /** Construct a new Circle Stress Demo. */
   CircleStress() : super("Circle stress") { }

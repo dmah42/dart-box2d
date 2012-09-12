@@ -21,10 +21,10 @@
  * triggering a tree update.
  */
 class DynamicTree {
-  static final int MAX_STACK_SIZE = 64;
+  static const int MAX_STACK_SIZE = 64;
 
   /** The number of nodes to add to the node stack if its empty. */
-  static final int _DEFAULT_NODE_ADDITION = 6;
+  static const int _DEFAULT_NODE_ADDITION = 6;
 
   DynamicTreeNode _root;
   /** Current number of active nodes */

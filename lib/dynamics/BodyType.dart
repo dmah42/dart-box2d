@@ -26,7 +26,7 @@
 class BodyType {
   BodyType();
 
-  static final int STATIC = 0;
-  static final int KINEMATIC = 1;
-  static final int DYNAMIC = 2;
+  static const int STATIC = 0;
+  static const int KINEMATIC = 1;
+  static const int DYNAMIC = 2;
 }

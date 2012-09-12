@@ -13,17 +13,17 @@
 // limitations under the License.
 
 class BallCageBench extends Benchmark {
-  static final String NAME = "Ball Cage";
+  static const String NAME = "Ball Cage";
 
   /** Starting position of ball cage in the world. */
-  static final num START_X = -20;
-  static final num START_Y = -20;
+  static const num START_X = -20;
+  static const num START_Y = -20;
 
   /** The radius of the balls forming the arena. */
-  static final num WALL_BALL_RADIUS = 2;
+  static const num WALL_BALL_RADIUS = 2;
 
   /** Radius of the active ball. */
-  static final num ACTIVE_BALL_RADIUS = 1;
+  static const num ACTIVE_BALL_RADIUS = 1;
 
   /** Constructs a new BallCage. */
   BallCageBench(List<int> solveLoops, List<int> steps) :

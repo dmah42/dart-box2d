@@ -23,19 +23,19 @@ class DebugDraw {
   // neat stuff described below.
 
   /// draw shapes
-  static final int e_shapeBit = 0x0001;
+  static const int e_shapeBit = 0x0001;
   /// draw joint connections
-  static final int e_jointBit = 0x0002;
+  static const int e_jointBit = 0x0002;
   /// draw core (TimeOfImpact) shapes
-  static final int e_aabbBit = 0x0004;
+  static const int e_aabbBit = 0x0004;
   /// draw axis aligned boxes
-  static final int e_pairBit = 0x0008;
+  static const int e_pairBit = 0x0008;
   /// draw center of mass 
-  static final int e_centerOfMassBit = 0x0010;
+  static const int e_centerOfMassBit = 0x0010;
   /// draw dynamic tree.
-  static final int e_dynamicTreeBit = 0x0020;
+  static const int e_dynamicTreeBit = 0x0020;
   /// draw with lines (vs. default filled polygons).
-  static final int e_lineDrawingBit = 0x0040;
+  static const int e_lineDrawingBit = 0x0040;
 
   int flags;
   IViewportTransform viewportTransform;

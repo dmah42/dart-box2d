@@ -13,16 +13,16 @@
 // limitations under the License.
 
 class CircleStressBench extends Benchmark {
-  static final String NAME = "Circle Stress";
+  static const String NAME = "Circle Stress";
 
   /** The joint used to churn the balls around. */
   RevoluteJoint _joint;
 
   /** The number of columns of balls in the pen. */
-  static final int COLUMNS = 8;
+  static const int COLUMNS = 8;
 
   /** This number of balls will be created on each layer. */
-  static final int LOAD_SIZE = 20;
+  static const int LOAD_SIZE = 20;
 
   /** Construct a new Circle Stress Demo. */
   CircleStressBench(List<int> solveLoops, List<int> steps) :

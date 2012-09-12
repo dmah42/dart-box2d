@@ -17,13 +17,13 @@
  */
 class Body {
   /** Flags for different states the body can take on. */
-  static final int ISLAND_FLAG = 0x0001;
-  static final int AWAKE_FLAG = 0x0002;
-  static final int AUTO_SLEEP_FLAG = 0x0004;
-  static final int BULLET_FLAG = 0x0008;
-  static final int FIXED_ROTATION_FLAG = 0x0010;
-  static final int ACTIVE_FLAG = 0x0020;
-  static final int TO_I_FLAG = 0x0040;
+  static const int ISLAND_FLAG = 0x0001;
+  static const int AWAKE_FLAG = 0x0002;
+  static const int AUTO_SLEEP_FLAG = 0x0004;
+  static const int BULLET_FLAG = 0x0008;
+  static const int FIXED_ROTATION_FLAG = 0x0010;
+  static const int ACTIVE_FLAG = 0x0020;
+  static const int TO_I_FLAG = 0x0040;
 
   World world;
 

@@ -14,8 +14,8 @@
 
 /** Enum class for the different states of joint limits. */
 class LimitState {
-  static final int INACTIVE = 0;
-  static final int AT_LOWER = 1;
-  static final int AT_UPPER = 2;
-  static final int EQUAL = 3;
+  static const int INACTIVE = 0;
+  static const int AT_LOWER = 1;
+  static const int AT_UPPER = 2;
+  static const int EQUAL = 3;
 }

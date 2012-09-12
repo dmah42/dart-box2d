@@ -17,15 +17,15 @@
  * distance, constant volume, and revolute.
  */
 class JointType {
-  static final int UNKNOWN = 0;
-  static final int REVOLUTE = 1;
-  static final int PRISMATIC = 2;
-  static final int DISTANCE = 3;
-  static final int PULLEY = 4;
-  static final int MOUSE = 5;
-  static final int GEAR = 6;
-  static final int LINE = 7;
-  static final int WELD = 8;
-  static final int FRICTION = 9;
-  static final int CONSTANT_VOLUME = 10;
+  static const int UNKNOWN = 0;
+  static const int REVOLUTE = 1;
+  static const int PRISMATIC = 2;
+  static const int DISTANCE = 3;
+  static const int PULLEY = 4;
+  static const int MOUSE = 5;
+  static const int GEAR = 6;
+  static const int LINE = 7;
+  static const int WELD = 8;
+  static const int FRICTION = 9;
+  static const int CONSTANT_VOLUME = 10;
 }

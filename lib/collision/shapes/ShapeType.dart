@@ -18,9 +18,9 @@
  */
 class ShapeType {
   // Circle and Polygon.
-  static final int TYPE_COUNT = 2;
+  static const int TYPE_COUNT = 2;
 
-  static final int UNKNOWN = -1;
-  static final int CIRCLE = 0;
-  static final int POLYGON = 1;
+  static const int UNKNOWN = -1;
+  static const int CIRCLE = 0;
+  static const int POLYGON = 1;
 }

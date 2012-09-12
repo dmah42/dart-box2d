@@ -25,8 +25,8 @@
  * subsequent overlap.
  */
 class BroadPhase implements TreeCallback {
-  static final int NULL_PROXY = -1;
-  static final int PAIR_CAPACITY = 16;
+  static const int NULL_PROXY = -1;
+  static const int PAIR_CAPACITY = 16;
 
   final DynamicTree _tree;
 

@@ -17,12 +17,12 @@ class ContactSolver {
    * For each solver, this is the initial number of constraints
    * in the array, which expands as needed.
    */
-  static final int INITIAL_NUM_CONSTRAINTS = 256;
+  static const int INITIAL_NUM_CONSTRAINTS = 256;
 
   /**
    * Ensure a reasonable condition number. For the block solver
    */
-  static final num K_MAX_CONDITION_NUMBER = 100.0;
+  static const num K_MAX_CONDITION_NUMBER = 100.0;
 
   List<ContactConstraint> constraints;
   int constraintCount;
