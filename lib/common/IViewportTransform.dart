@@ -16,72 +16,87 @@
  * This is the viewport transform used from drawing.
  * Use yFlip if you are drawing from the top-left corner.
  */
-interface IViewportTransform {
-  /**
-   * return if the transform flips the y axis.
-   */
-  bool get yFlip();
+class IViewportTransform {
+  IViewportTransform(Vector e, Vector c, num s) :
+    extents = new Vector.copy(e),
+    center = new Vector.copy(c),
+    scale = s;
 
   /**
-   * yFlip: if we flip the y axis when transforming.
+   * if we flip the y axis when transforming.
    */
-  void set yFlip(bool yFlip);
+  bool yFlip;
 
   /**
    * This is the half-width and half-height.
    * This should be the actual half-width and 
    * half-height, not anything transformed or scaled.
-   * Not a copy.
    */
-  Vector get extents();
+  Vector extents;
 
   /**
    * Returns the scaling factor used in converting from world sizes to rendering
    * sizes.
    */
-  num get scale();
-
-  /**
-   * Sets the scaling factor used in converting from world sizes to rendering
-   * sizes.
-   */
-  void set scale(num value);
+  num scale;
   
   /**
-   * This sets the half-width and half-height.
-   * This should be the actual half-width and 
-   * half-height, not anything transformed or scaled.
+   * center of the viewport.
    */
-  void set extents(Vector argExtents);
-
-  /**
-   * center of the viewport.  Not a copy.
-   */
-  Vector get center();
-
-  /**
-   * sets the center of the viewport.
-   */
-  void set center(Vector argPos);
+  Vector center;
 
   /**
    * Sets the transform's center to the given x and y coordinates,
    * and using the given scale.
    */
-  void setCamera(num x, num y, num scale);
+  void setCamera(num x, num y, num s) {
+    center.setCoords(x, y);
+    scale = s;
+  }
+  /**
+   * The current translation is the difference in canvas units between the
+   * actual center of the canvas and the currently specified center. For
+   * example, if the actual canvas center is (5, 5) but the current center is
+   * (6, 6), the translation is (1, 1).
+   */
+  Vector get translation() {
+    Vector result = new Vector.copy(extents);
+    result.subLocal(center);
+    return result;
+  }
+
+  void set translation(Vector translation) {
+    center.setFrom(extents);
+    center.subLocal(translation);
+  }
+
 
   /**
-   * takes the world coordinate (argWorld) puts the corresponding
+   * Takes the world coordinate (argWorld) puts the corresponding
    * screen coordinate in argScreen.  It should be safe to give the
    * same object as both parameters.
    */
-  void getWorldToScreen(Vector argWorld, Vector argScreen);
+  void getWorldToScreen(Vector argWorld, Vector argScreen) {
+    // Correct for canvas considering the upper-left corner, rather than the
+    // center, to be the origin.
+    num gridCorrectedX = (argWorld.x * scale) + extents.x;
+    num gridCorrectedY = extents.y - (argWorld.y * scale);
 
+    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+        -translation.y);
+  }
 
   /**
-   * takes the screen coordinates (argScreen) and puts the
+   * Takes the screen coordinates (argScreen) and puts the
    * corresponding world coordinates in argWorld. It should be safe
    * to give the same object as both parameters.
    */
-  void getScreenToWorld(Vector argScreen, Vector argWorld);
+  void getScreenToWorld(Vector argScreen, Vector argWorld) {
+    num translationCorrectedX = argScreen.x - translation.x;
+    num translationCorrectedY = argScreen.y + translation.y;
+
+    num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+    num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+  }
 }

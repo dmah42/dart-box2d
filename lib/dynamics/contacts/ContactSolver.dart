@@ -652,6 +652,7 @@ class PositionSolverManifold {
 
         // Ensure normal points from A to B
         normal.negateLocal();
+        break;
     }
   }
 }

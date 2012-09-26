@@ -16,41 +16,16 @@
  * Transform for drawing using a canvas context. Y-flip is permenantly set
  * to true.
  */
-class CanvasViewportTransform implements IViewportTransform {
+class CanvasViewportTransform extends IViewportTransform {
   static const int DEFAULT_DRAWING_SCALE = 20;
-
-  /**
-   * Whether the y axis should be flipped such that y is greater as you get
-   * lower on the screen.
-   */
-  bool get yFlip() => true;
-
-  // Does nothing.
-  void set yFlip(bool yFlip) { }
-
-  /**
-   * This is the half-width and half-height.
-   * This should be the actual half-width and 
-   * half-height, not anything transformed or scaled.
-   * Not a copy.
-   */
-  Vector extents;
-
-  /**
-   * Center of the viewport.  Not a copy.
-   */
-  Vector center;
-
-  /** Zoom on the world.  */
-  num scale;
 
   /**
    * Constructs a new viewport transform with the default scale.
    */
-  CanvasViewportTransform(Vector extents, Vector center) :
-    extents = new Vector.copy(extents),
-    center = new Vector.copy(center),
-    scale = DEFAULT_DRAWING_SCALE;
+  CanvasViewportTransform(Vector _extents, Vector _center) :
+    super(_extents, _center, DEFAULT_DRAWING_SCALE) {
+    yFlip = true;
+  }
 
   /**
    * Sets the rendering context such that all drawing commands given in terms
@@ -71,58 +46,4 @@ class CanvasViewportTransform implements IViewportTransform {
     ctx.scale(scale, -scale);
   }
 
-  /**
-   * The current translation is the difference in canvas units between the
-   * actual center of the canvas and the currently specified center. For
-   * example, if the actual canvas center is (5, 5) but the current center is
-   * (6, 6), the translation is (1, 1).
-   */
-  Vector get translation() {
-    Vector result = new Vector.copy(extents);
-    result.subLocal(center);
-    return result;
-  }
-
-  void set translation(Vector translation) {
-    center.setFrom(extents);
-    center.subLocal(translation);
-  }
-
-  /**
-   * Sets the transform's center to the given x and y coordinates,
-   * and using the given scale.
-   */
-  void setCamera(num x, num y, num s) {
-    center.setCoords(x, y);
-    scale = s;
-  }
-
-  /**
-   * Takes the world coordinate (argWorld) puts the corresponding
-   * screen coordinate in argScreen.  It should be safe to give the
-   * same object as both parameters.
-   */
-  void getWorldToScreen(Vector argWorld, Vector argScreen) {
-    // Correct for canvas considering the upper-left corner, rather than the
-    // center, to be the origin.
-    num gridCorrectedX = (argWorld.x * scale) + extents.x;
-    num gridCorrectedY = extents.y - (argWorld.y * scale);
-
-    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
-        -translation.y);
-  }
-
-  /**
-   * Takes the screen coordinates (argScreen) and puts the
-   * corresponding world coordinates in argWorld. It should be safe
-   * to give the same object as both parameters.
-   */
-  void getScreenToWorld(Vector argScreen, Vector argWorld) {
-    num translationCorrectedX = argScreen.x - translation.x;
-    num translationCorrectedY = argScreen.y + translation.y;
-
-    num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
-    num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
-  }
 }

@@ -118,13 +118,12 @@ class Simplex {
         if (sgn > 0) {
           // Origin is left of e12.
           Vector.crossNumAndVectorToOut(1, e12, out);
-          return;
         }
         else {
           // Origin is right of e12.
           Vector.crossVectorAndNumToOut(e12, 1, out);
-          return;
         }
+        break;
       default :
         assert (false);
         out.setZero();

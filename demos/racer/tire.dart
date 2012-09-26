@@ -15,9 +15,7 @@
 class Tire {
   Tire(World world, this._maxForwardSpeed, this._maxBackwardSpeed,
       this._maxDriveForce, this._maxLateralImpulse)
-      : _groundAreas = new Set<GroundArea>(),
-        _worldLeft = new Vector(1.0, 0.0),
-        _worldUp = new Vector(0.0, 1.0) {
+      : _groundAreas = new Set<GroundArea>() {
     BodyDef def = new BodyDef();
     def.type = BodyType.DYNAMIC;
     _body = world.createBody(def);
@@ -128,6 +126,6 @@ class Tire {
   final Set<GroundArea> _groundAreas;
 
   // Cached Vectors to reduce unnecessary object creation.
-  final Vector _worldLeft = null;
-  final Vector _worldUp = null;
+  final Vector _worldLeft = new Vector(1.0, 0.0);
+  final Vector _worldUp = new Vector(0.0, 1.0);
 }
