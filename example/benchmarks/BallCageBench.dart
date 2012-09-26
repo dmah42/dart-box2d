@@ -15,8 +15,6 @@
 part of BenchmarkRunner;
 
 class BallCageBench extends Benchmark {
-  static const String NAME = "Ball Cage";
-
   /** Starting position of ball cage in the world. */
   static const num START_X = -20;
   static const num START_Y = -20;
@@ -34,7 +32,7 @@ class BallCageBench extends Benchmark {
   String get name => NAME;
 
   void initialize() {
-    super.initialize();
+    resetWorld();
 
     // Define the circle shape.
     final circleShape = new CircleShape();

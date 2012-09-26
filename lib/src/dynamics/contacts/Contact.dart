@@ -176,7 +176,6 @@ abstract class Contact {
       }
 
       if (now_touching != wasTouching) {
-        print('$wasTouching -> $now_touching');
         bodyA.awake = true;
         bodyB.awake = true;
       }
@@ -193,12 +192,10 @@ abstract class Contact {
     }
 
     if (!wasTouching && now_touching) {
-      print('  beginContact');
       listener.beginContact(this);
     }
 
     if (wasTouching && !now_touching) {
-      print('  endContact');
       listener.endContact(this);
     }
 

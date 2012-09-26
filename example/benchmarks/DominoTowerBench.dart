@@ -19,7 +19,6 @@ class DominoTowerBench extends Benchmark {
   static const num DOMINO_FRICTION = 0.1;
   static const num DOMINO_HEIGHT = 1;
   static const num BASE_COUNT = 25;
-  static const String NAME = "Domino Tower";
 
   /**
    * The density of the dominos under construction. Varies for different parts
@@ -54,7 +53,7 @@ class DominoTowerBench extends Benchmark {
    * Sets up the dominoes.
    */
   void initialize() {
-    super.initialize();
+    resetWorld();
 
     // Create the floor.
     {

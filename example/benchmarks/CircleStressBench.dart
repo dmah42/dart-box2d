@@ -15,8 +15,6 @@
 part of BenchmarkRunner;
 
 class CircleStressBench extends Benchmark {
-  static const String NAME = "Circle Stress";
-
   /** The joint used to churn the balls around. */
   RevoluteJoint _joint;
 
@@ -34,7 +32,7 @@ class CircleStressBench extends Benchmark {
 
   /** Creates all bodies. */
   void initialize() {
-    super.initialize();
+    resetWorld();
 
     {
       final bd = new BodyDef();

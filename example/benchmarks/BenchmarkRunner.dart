@@ -80,8 +80,7 @@ class BenchmarkRunner {
   void runBenchmarks() {
     for (Benchmark benchmark in _benchmarks) {
       print('Running ${benchmark.name}');
-      _resultsWriter.clear();
-      benchmark.runBenchmark(_resultsWriter);
+      benchmark.runBenchmark();
       print("$_resultsWriter------------------------------------------------");
     }
   }

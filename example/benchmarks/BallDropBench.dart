@@ -20,8 +20,6 @@
 part of BenchmarkRunner;
 
 class BallDropBench extends Benchmark {
-  static const String NAME = "Ball Drop";
-
   /** The starting position of the ball. */
   static const num X_START = 0;
   static const num Y_START = 0;
@@ -31,7 +29,7 @@ class BallDropBench extends Benchmark {
 
   /** Runs the test and records the results. */
   void initialize() {
-    super.initialize();
+    resetWorld();
 
     // Create the fixture to attach to the ball body.
     final fd = new FixtureDef();

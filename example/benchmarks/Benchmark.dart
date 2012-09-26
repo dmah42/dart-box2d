@@ -96,7 +96,6 @@ abstract class Benchmark {
    * different combinations of solveLoops and steps.
    */
   void runBenchmark() {
-    final watch = new Stopwatch.start();
     for (int stepCount in _steps) {
       for (int solveCount in solveLoops) {
         // Initialize the world to start fresh.
