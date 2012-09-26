@@ -868,7 +868,7 @@ class Body {
     xf1.rotation.setRotation(sweep.angleZero);
     xf1.position.copyFrom(sweep.localCenter);
     xf1.rotation.transform(xf1.position);
-    xf1.position.negate_().add(sweep.centerZero);
+    xf1.position.negate().add(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;
     for (Fixture f = fixtureList; f != null; f = f.next)

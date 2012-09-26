@@ -158,7 +158,7 @@ class FrictionJoint extends Joint {
 
       vec2 impulse = new vec2.copy(Cdot);
       linearMass.transform(impulse);
-      impulse.negate_();
+      impulse.negate();
 
       vec2 oldImpulse = new vec2.copy(_linearImpulse);
       _linearImpulse.add(impulse);

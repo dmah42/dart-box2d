@@ -202,7 +202,7 @@ class RevoluteJoint extends Joint {
       num Cdot2 = w2 - w1;
       vec3 Cdot = new vec3(Cdot1.x, Cdot1.y, Cdot2);
 
-      vec3 imp = MathBox.solve33(mass, Cdot.negate_());
+      vec3 imp = MathBox.solve33(mass, Cdot.negate());
 
       if (limitState == LimitState.EQUAL) {
         impulse.add(imp);
@@ -210,7 +210,7 @@ class RevoluteJoint extends Joint {
       else if (limitState == LimitState.AT_LOWER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse < 0.0) {
-          temp = MathBox.solve22(mass, Cdot1.negate_());
+          temp = MathBox.solve22(mass, Cdot1.negate());
           imp.x = temp.x;
           imp.y = temp.y;
           imp.z = -impulse.z;
@@ -221,7 +221,7 @@ class RevoluteJoint extends Joint {
       } else if (limitState == LimitState.AT_UPPER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse > 0.0) {
-          temp = MathBox.solve22(mass, Cdot1.negate_());
+          temp = MathBox.solve22(mass, Cdot1.negate());
           imp.x = temp.x;
           imp.y = temp.y;
           imp.z = -impulse.z;
@@ -250,7 +250,7 @@ class RevoluteJoint extends Joint {
       cross(w1, r1, temp);
       vec2 Cdot = cross(w2, r2);
       Cdot.add(v2).sub(v1).sub(temp);
-      vec2 imp = MathBox.solve22(mass, Cdot.negate_()); // just leave negated
+      vec2 imp = MathBox.solve22(mass, Cdot.negate()); // just leave negated
 
       impulse.x += imp.x;
       impulse.y += imp.y;
@@ -333,7 +333,7 @@ class RevoluteJoint extends Joint {
         if (m > 0.0) {
           m = 1.0 / m;
         }
-        imp.copyFrom(C).negate_().scale(m);
+        imp.copyFrom(C).negate().scale(m);
         final num k_beta = 0.5;
         // using u as temp variable
         u.copyFrom(imp).scale(k_beta * invMass1);
@@ -364,7 +364,7 @@ class RevoluteJoint extends Joint {
       K3.col1.y = invI2 * r2.x * r2.x;
 
       K1.add(K2).add(K3);
-      imp = MathBox.solve22(K1, C.negate_()); // just leave c negated
+      imp = MathBox.solve22(K1, C.negate()); // just leave c negated
 
       // using C as temp variable
       C.copyFrom(imp).scale(b1.invMass);

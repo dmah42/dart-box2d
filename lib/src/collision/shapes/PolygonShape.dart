@@ -172,7 +172,7 @@ class PolygonShape extends Shape {
     normals[0].copyFrom(v2).sub(v1);
     cross(normals[0], 1, normals[0]);
     normals[0].normalize();
-    normals[1].copyFrom(normals[0]).negate_();
+    normals[1].copyFrom(normals[0]).negate();
   }
 
   /** See Shape.testPoint(Transform, vec2). */

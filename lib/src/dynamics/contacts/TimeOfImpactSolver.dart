@@ -226,7 +226,7 @@ class TimeOfImpactSolverManifold {
         point.copyFrom(clipPoint);
 
         // Ensure normal points from A to B
-        normal.negate_();
+        normal.negate();
         break;
     }
   }

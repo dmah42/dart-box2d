@@ -375,7 +375,7 @@ class ContactSolver {
 
         while (true) {
           c.normalMass.transformed(b, x);
-          x.negate_();
+          x.negate();
 
           if (x.x >= 0.0 && x.y >= 0.0){
             // Resubstitute for the incremental impulse
@@ -643,7 +643,7 @@ class PositionSolverManifold {
         point.copyFrom(clipPoint);
 
         // Ensure normal points from A to B
-        normal.negate_();
+        normal.negate();
         break;
     }
   }

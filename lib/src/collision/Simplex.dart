@@ -110,12 +110,12 @@ class Simplex {
   void getSearchDirection(vec2 out) {
     switch (count) {
       case 1 :
-        out.copyFrom(v1.w).negate_();
+        out.copyFrom(v1.w).negate();
         return;
       case 2 :
         e12.copyFrom(v2.w).sub(v1.w);
         // use out for a temp variable real quick
-        out.copyFrom(v1.w).negate_();
+        out.copyFrom(v1.w).negate();
         num sgn = cross(e12, out);
 
         if (sgn > 0) {

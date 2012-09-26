@@ -51,7 +51,7 @@ class CircleShape extends Shape {
     transform.rotation.transform(center);
     center.add(transform.position);
 
-    vec2 d = center.sub(point).negate_();
+    vec2 d = center.sub(point).negate();
     return dot(d, d) <= radius * radius;
   }
 

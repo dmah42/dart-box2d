@@ -20,9 +20,9 @@
 part of box2d;
 
 class IViewportTransform {
-  IViewportTransform(Vector e, Vector c, num s) :
-    extents = new Vector.copy(e),
-    center = new Vector.copy(c),
+  IViewportTransform(vec2 e, vec2 c, num s) :
+    extents = new vec2.copy(e),
+    center = new vec2.copy(c),
     scale = s;
 
   /**

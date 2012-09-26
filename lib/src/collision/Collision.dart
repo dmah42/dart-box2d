@@ -601,9 +601,9 @@ class Collision {
     // Clip to box side 1
     // np = ClipSegmentToLine(clipPoints1, incidentEdge, -sideNormal,
     // sideOffset1);
-    tangent.negate_();
+    tangent.negate();
     np = clipSegmentToLine(clipPoints1, incidentEdge, tangent, sideOffset1);
-    tangent.negate_();
+    tangent.negate();
 
     if (np < 2)
       return;
