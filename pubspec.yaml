@@ -7,3 +7,4 @@ dependencies:
   args: 0.2.10+1
   vector_math:
     git: git://github.com/johnmccutchan/DartVectorMath.git
+
