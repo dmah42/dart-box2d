@@ -65,8 +65,6 @@ abstract class Benchmark {
     world = new World(new vec2(0, GRAVITY), true, new DefaultWorldPool());
   }
 
-  String get name() => "No Name Provided";
-
   /**
    * Writes the results from the last time runBenchmark was called to the given
    * StringBuffer.
