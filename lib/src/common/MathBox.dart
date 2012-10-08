@@ -32,26 +32,30 @@ class MathBox {
     return res;
   }
 
-  // Solve Ax = b without calculating the inverse of A.
-  static vec3 solve33(mat3 A, vec3 b) {
-    vec3 out = cross(A.col1, A.col2);
-    num det = dot(A.col0, out);
+  /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
+   *  [matrix] must be a 3x3 matrix and [b] must be a vec3. */
+  static vec3 solve33(mat3 matrix, vec3 b) {
+    vec3 out = cross(matrix.col1, matrix.col2);
+    num det = dot(matrix.col0, out);
     if (det != 0.0) det = 1.0 / det;
 
-    out = cross(A.col1, A.col2);
+    out = cross(matrix.col1, matrix.col2);
     num x = det * dot(b, out);
-    out = cross(b, A.col2);
-    num y = det * dot(A.col0, out);
-    out = cross(A.col1, b);
-    num z = det * dot(A.col0, out);
+    out = cross(b, matrix.col2);
+    num y = det * dot(matrix.col0, out);
+    out = cross(matrix.col1, b);
+    num z = det * dot(matrix.col0, out);
     out.setComponents(x, y, z);
     return out;
   }
 
-  // Solve Ax = b without calculating the inverse of A.
-  static vec2 solve22(Dynamic A, vec2 b) {
-    assert(A is mat2 || A is mat3);
-    num a11 = A.col0.x, a12 = A.col1.x, a21 = A.col0.y, a22 = A.col1.y;
+  /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
+   *  [matrix] must be a 2x2 or 3x3 matrix, and in the latter case the top-left
+   *  2x2 elements will be used. [b] must be a vec2. */
+  static vec2 solve22(Dynamic matrix, vec2 b) {
+    assert(matrix is mat2 || matrix is mat3);
+    num a11 = matrix.col0.x, a12 = matrix.col1.x,
+        a21 = matrix.col0.y, a22 = matrix.col1.y;
     num det = a11 * a22 - a12 * a21;
     if (det != 0.0) det = 1.0 / det;
     final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);

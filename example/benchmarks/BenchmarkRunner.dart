@@ -18,6 +18,7 @@ import 'dart:math';
 
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
+import 'package:vector_math/vector_math_console.dart';
 
 part 'Benchmark.dart';
 part 'BallCageBench.dart';

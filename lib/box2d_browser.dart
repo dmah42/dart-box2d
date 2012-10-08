@@ -14,7 +14,7 @@
 library box2d_browser;
 
 import 'package:box2d/box2d.dart';
-import 'dart:html';
+import 'package:dartvectormath/vector_math_html.dart';
 
 export 'package:box2d/box2d.dart';
 

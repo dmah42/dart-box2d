@@ -20,7 +20,7 @@ part of BenchmarkRunner;
 
 abstract class Benchmark {
   /** All of the bodies in a simulation. */
-  List<Body> bodies;
+  List<Body> bodies = new List<Body>();
 
   /** The gravity vector's y value. */
   static const num GRAVITY = -10;
@@ -46,8 +46,7 @@ abstract class Benchmark {
    * Constructs a new Benchmark that will run a loop for the given number of
    * iterations.
    */
-  Benchmark(List<int> this.solveLoops, List<int> this._steps)
-      : bodies = new List<Body>();
+  Benchmark(List<int> this.solveLoops, List<int> this._steps);
 
   /** Sets up the physics world. */
   void initialize();
