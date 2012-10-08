@@ -15,6 +15,7 @@
 library Bench2d;
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
+import 'package:dartvectormath/vector_math_html.dart';
 
 class Bench2d {
   static const int CANVAS_WIDTH = 900;
@@ -33,7 +34,7 @@ class Bench2d {
 
   CanvasElement canvas;
   CanvasRenderingContext2D ctx;
-  IViewportTransform viewport;
+  ViewportTransform viewport;
   DebugDraw debugDraw;
 
   World world;

@@ -46,7 +46,7 @@ abstract class Demo {
   CanvasRenderingContext2D ctx;
 
   /** The transform abstraction layer between the world and drawing canvas. */
-  IViewportTransform viewport;
+  ViewportTransform viewport;
 
   /** The debug drawing tool. */
   DebugDraw debugDraw;

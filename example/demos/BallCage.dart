@@ -14,6 +14,7 @@
 library BallCage;
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
+import 'package:dartvectormath/vector_math_html.dart';
 
 import 'demo.dart';
 

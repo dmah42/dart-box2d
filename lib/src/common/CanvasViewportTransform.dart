@@ -19,7 +19,7 @@
 
 part of box2d_browser;
 
-class CanvasViewportTransform extends IViewportTransform {
+class CanvasViewportTransform extends ViewportTransform {
   static const int DEFAULT_DRAWING_SCALE = 20;
 
   /**
