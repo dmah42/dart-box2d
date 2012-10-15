@@ -70,8 +70,8 @@ class Demo {
   Stopwatch _stopwatch;
 
   Demo(String name, [Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
-      : bodies = new List<Body>(),
-        _stopwatch = new Stopwatch()..start() {
+      : bodies = new List<Body>() {
+    _stopwatch = new Stopwatch()..start();
     query("#title").innerHTML = name;
     bool doSleep = true;
     if (null === gravity) gravity = new Vector(0, GRAVITY);
