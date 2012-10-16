@@ -31,7 +31,7 @@
   <property name="threadCount" value="1" />
 
   <path id="demos">
-    <fileset dir="demos">
+    <fileset dir="example/demos">
       <include name="*.dart" />
       <exclude name="demo.dart" />
       <include name="racer/racer.dart" />
@@ -106,7 +106,7 @@
   </target>
 
   <target name="analyze-benchmarks">
-    <dart_analyze file="benchmarks/BenchmarkRunner.dart" />
+    <dart_analyze file="example/benchmarks/BenchmarkRunner.dart" />
   </target>
 
   <target name="generate-doc" description="Generate DartDoc for library.">
@@ -128,7 +128,7 @@
   </target>
 
   <target name="generate-JS-benchmarks">
-    <dart2js file="benchmarks/BenchmarkRunner.dart"
+    <dart2js file="example/benchmarks/BenchmarkRunner.dart"
       withChecks="${withChecks}" />
   </target>
 

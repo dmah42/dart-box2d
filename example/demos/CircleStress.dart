@@ -15,7 +15,7 @@
 #library('CircleStress');
 #import('dart:html');
 #import('dart:math', prefix: 'Math');
-#import('package:dartbox2d/box2d.dart');
+#import('package:box2d/box2d.dart');
 #source('demo.dart');
 
 class CircleStress extends Demo {

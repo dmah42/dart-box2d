@@ -13,7 +13,7 @@
 // limitations under the License.
 #library('BallCage');
 #import('dart:html');
-#import('package:dartbox2d/box2d.dart');
+#import('package:box2d/box2d.dart');
 #source('demo.dart');
 
 class CollisionListener implements ContactListener {
