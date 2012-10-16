@@ -1,1 +1,6 @@
 out
+demos/packages
+demos/racer/packages
+packages/
+pubspec.lock
+
