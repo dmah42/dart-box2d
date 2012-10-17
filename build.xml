@@ -48,17 +48,6 @@
     </sequential>
   </macrodef>
 
-  <macrodef name="dartdoc">
-    <attribute name="file" />
-    <attribute name="outDir" />
-    <sequential>
-      <echo>Documenting "@{file}" into "@{outDir}"</echo>
-      <exec executable="${dart.sdk.dir}/bin/dart" failonerror="true">
-        <arg line="${dartdoc.dart} --out=@{outDir} @{file}" />
-      </exec>
-    </sequential>
-  </macrodef>
-
   <macrodef name="dart2js">
     <attribute name="file" />
     <attribute name="withChecks" default="false" />
@@ -84,7 +73,7 @@
 
   <!-- MAIN -->
   <target name="default"
-    depends="analyze, generate-JS, generate-doc"
+    depends="analyze, generate-JS, generate-docs"
     description="Analyze, generate JS and library's DartDoc." />
 
   <target name="analyze"
@@ -109,9 +98,11 @@
     <dart_analyze file="example/benchmarks/BenchmarkRunner.dart" />
   </target>
 
-  <target name="generate-doc" description="Generate DartDoc for library.">
-    <dartdoc file="lib/box2d_nohtml.dart" outDir="doc" />
-    <dartdoc file="lib/box2d.dart" outDir="doc" />
+  <target name="generate-docs" description="Generate DartDoc for library.">
+    <echo>Generating documentation</echo>
+    <exec executable="${dartdoc.dart}" failonerror="true">
+      <arg line="--omit-generation-time lib/box2d.dart lib/box2d_nohtml.dart" />
+    </exec>
   </target>
 
   <target name="generate-JS"

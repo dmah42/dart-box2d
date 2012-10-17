@@ -1,0 +1,666 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>BroadPhase class / box2d_html Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d_html" data-type="BroadPhase">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d_html.html">box2d_html</a> &rsaquo; <a href="../box2d_html/BroadPhase.html">BroadPhase</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>BroadPhase</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>The broad-phase is used for computing pairs and performing volume queries
+and ray casts.</p>
+<p>Uses the Sweep and Prune algorithm in: Collision Detection in Interactive
+3D environments by Geno Van Den Bergen. Also some ideas, such integral
+values comes from Bullet (http://bulletphysics.com).</p>
+<p>This broad-phase does not persist pairs. Instead, this reports potentially
+new pairs. It is up to the client to consume the new pairs and to track
+subsequent overlap.</p>
+<pre class="source">
+class BroadPhase implements TreeCallback {
+  static const int NULL_PROXY = -1;
+  static const int PAIR_CAPACITY = 16;
+
+  final DynamicTree _tree;
+
+  int proxyCount;
+
+  List&lt;DynamicTreeNode&gt; moveBuffer;
+
+  List&lt;Pair&gt; _pairBuffer;
+
+  int _pairCapacity;
+
+  int _pairCount;
+
+  DynamicTreeNode queryProxy;
+
+  /**
+   * Constructs a new BroadPhase.
+   */
+  BroadPhase() :
+    proxyCount = 0,
+    _pairCapacity = PAIR_CAPACITY,
+    _pairCount = 0,
+    _tree = new DynamicTree(),
+    queryProxy = null {
+    moveBuffer = new List&lt;DynamicTreeNode&gt;();
+    // Put a bunch of pairs into the pair buffer.
+    // TODO(dominich): Do a benchmark to see how preallocating the pairs
+    // performs against allocating them as we go.
+    _pairBuffer = new List&lt;Pair&gt;(_pairCapacity);
+    for (int i = 0; i &lt; _pairCapacity; ++i)
+      _pairBuffer[i] = new Pair();
+  }
+
+  /**
+   * Creates a proxy with an initial bounding box. Pairs are not reported until
+   * updatePairs is called.
+   */
+  DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
+    DynamicTreeNode node = _tree.createProxy(box, userData);
+    ++proxyCount;
+    _bufferMove(node);
+    return node;
+  }
+
+  /**
+   * Destroys a proxy. It is up to the client to remove any pairs.
+   */
+  void destroyProxy(DynamicTreeNode proxy) {
+    _unbufferMove(proxy);
+    --proxyCount;
+    _tree.destroyProxy(proxy);
+  }
+
+  /**
+   * Call MoveProxy as many times as you like, then when you are done
+   * call UpdatePairs to constize the proxy pairs (for your time step).
+   */
+  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+    if (_tree.moveProxy(proxy, box, displacement))
+      _bufferMove(proxy);
+  }
+
+  /**
+   * Returns true if the bounding boxes of the given proxies overlap.
+   */
+  bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
+    final AxisAlignedBox a = proxyA.box;
+    final AxisAlignedBox b = proxyB.box;
+    return AxisAlignedBox.testOverlap(a, b);
+  }
+
+  /**
+   * Add pairs according to whether we need to keep track of
+   * their relationship. Pairs are added by calling the addPair method on the
+   * given callback.
+   */
+  void updatePairs(PairCallback callback) {
+    // Reset pair buffer
+    _pairCount = 0;
+
+    // Perform tree queries for all moving proxies.
+    for (int i = 0; i &lt; moveBuffer.length; ++i) {
+      queryProxy = moveBuffer[i];
+      if (queryProxy == null)
+        continue;
+
+      // We have to query the tree with the fat AABB so that
+      // we don't fail to create a pair that may touch later.
+
+      // Query tree, create pairs and add them pair buffer.
+      _tree.query(this, queryProxy.box);
+    }
+
+    // Reset move buffer
+    moveBuffer = new List&lt;DynamicTreeNode&gt;();
+
+    // We only want to sort the first _pairCount items of _pairBuffer,
+    // so copy these to a temporary buffer where we do the sorting, then
+    // copy back.
+    List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
+    pairBuffer.sort((a, b) =&gt; a.compareTo(b));
+    _pairBuffer.setRange(0, _pairCount, pairBuffer);
+
+    // Send the pairs back to the client.
+    int i = 0;
+    while (i &lt; _pairCount) {
+      Pair primaryPair = _pairBuffer[i];
+      assert(primaryPair != null);
+      assert(primaryPair.proxyA != null);
+      assert(primaryPair.proxyB != null);
+
+      var userDataA = primaryPair.proxyA.userData;
+      var userDataB = primaryPair.proxyB.userData;
+
+      // Call the callback and increment i.
+      callback.addPair(userDataA, userDataB);
+      ++i;
+
+      // Skip any duplicate pairs.
+      while (i &lt; _pairCount) {
+        Pair pair = _pairBuffer[i];
+        if (pair.proxyA !== primaryPair.proxyA ||
+            pair.proxyB !== primaryPair.proxyB) {
+          break;
+        }
+        ++i;
+      }
+    }
+
+    // Try to keep the tree balanced.
+    _tree.rebalance(Settings.TREE_REBALANCE_STEPS);
+  }
+
+  /**
+   * The callback function to use for this tree. Is called from
+   * DynamicTree.query when we are gathering pairs.
+   */
+  bool treeCallback(DynamicTreeNode proxy) {
+    // A proxy cannot form a pair with itself.
+    if (proxy == queryProxy)
+      return true;
+
+    // Grow the pair buffer as needed.
+    // TODO(dominich): Can this be left up to the underlying SDK?
+    if (_pairCount == _pairCapacity) {
+      List&lt;Pair&gt; oldBuffer = _pairBuffer;
+      _pairCapacity *= 2;
+      _pairBuffer = new List&lt;Pair&gt;(_pairCapacity);
+
+      // Copy over the pairs and fill in any remaining spots in the array.
+      for (int i = 0; i &lt; oldBuffer.length; ++i)
+        _pairBuffer[i] = oldBuffer[i];
+
+      for (int i = oldBuffer.length; i &lt; _pairCapacity; ++i)
+        _pairBuffer[i] = new Pair();
+    }
+
+    // Store a new pair into the pair buffer, having proxyA be the lesser of
+    // proxy and queryProxy.
+    if (proxy.key &lt; queryProxy.key) {
+      _pairBuffer[_pairCount].proxyA = proxy;
+      _pairBuffer[_pairCount].proxyB = queryProxy;
+    } else {
+      _pairBuffer[_pairCount].proxyA = queryProxy;
+      _pairBuffer[_pairCount].proxyB = proxy;
+    }
+
+    // Increase the pair count and return true.
+    ++_pairCount;
+    return true;
+  }
+
+  /**
+   * Query an axis aligned box for overlapping proxies. The callback funciton is
+   * called for each proxy that overlaps the supplied box.
+   */
+  void query(TreeCallback callback, AxisAlignedBox box) {
+    _tree.query(callback, box);
+  }
+
+  /**
+   * Returns the height of embedded tree.
+   */
+  int computeHeight() =&gt; _tree.computeHeightFromRoot();
+
+  void _bufferMove(DynamicTreeNode node) { moveBuffer.add(node); }
+
+  void _unbufferMove(DynamicTreeNode proxy) {
+    int index = moveBuffer.indexOf(proxy);
+    if (index !== -1)
+      moveBuffer.removeRange(index, 1);
+  }
+}
+</pre>
+</div>
+<h3>Implements</h3>
+<p>
+<span class="type-box"><span class="icon-interface"></span><a href="../box2d_html/TreeCallback.html">TreeCallback</a></span></p>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="BroadPhase">
+<button class="show-code">Code</button>
+new <strong>BroadPhase</strong>() <a class="anchor-link" href="#BroadPhase"
+              title="Permalink to BroadPhase.BroadPhase">#</a></h4>
+<div class="doc">
+<p>Constructs a new BroadPhase.</p>
+<pre class="source">
+BroadPhase() :
+  proxyCount = 0,
+  _pairCapacity = PAIR_CAPACITY,
+  _pairCount = 0,
+  _tree = new DynamicTree(),
+  queryProxy = null {
+  moveBuffer = new List&lt;DynamicTreeNode&gt;();
+  // Put a bunch of pairs into the pair buffer.
+  // TODO(dominich): Do a benchmark to see how preallocating the pairs
+  // performs against allocating them as we go.
+  _pairBuffer = new List&lt;Pair&gt;(_pairCapacity);
+  for (int i = 0; i &lt; _pairCapacity; ++i)
+    _pairBuffer[i] = new Pair();
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Static Properties</h3>
+<div class="field"><h4 id="NULL_PROXY">
+<button class="show-code">Code</button>
+const int         <strong>NULL_PROXY</strong> <a class="anchor-link"
+            href="#NULL_PROXY"
+            title="Permalink to BroadPhase.NULL_PROXY">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int NULL_PROXY = -1;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="PAIR_CAPACITY">
+<button class="show-code">Code</button>
+const int         <strong>PAIR_CAPACITY</strong> <a class="anchor-link"
+            href="#PAIR_CAPACITY"
+            title="Permalink to BroadPhase.PAIR_CAPACITY">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int PAIR_CAPACITY = 16;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="moveBuffer">
+<button class="show-code">Code</button>
+List&lt;<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a>&gt;         <strong>moveBuffer</strong> <a class="anchor-link"
+            href="#moveBuffer"
+            title="Permalink to BroadPhase.moveBuffer">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+List&lt;DynamicTreeNode&gt; moveBuffer;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="proxyCount">
+<button class="show-code">Code</button>
+int         <strong>proxyCount</strong> <a class="anchor-link"
+            href="#proxyCount"
+            title="Permalink to BroadPhase.proxyCount">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int proxyCount;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="queryProxy">
+<button class="show-code">Code</button>
+<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a>         <strong>queryProxy</strong> <a class="anchor-link"
+            href="#queryProxy"
+            title="Permalink to BroadPhase.queryProxy">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+DynamicTreeNode queryProxy;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to BroadPhase.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to BroadPhase.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="BroadPhase">
+<button class="show-code">Code</button>
+new <strong>BroadPhase</strong>() <a class="anchor-link" href="#BroadPhase"
+              title="Permalink to BroadPhase.BroadPhase">#</a></h4>
+<div class="doc">
+<p>Constructs a new BroadPhase.</p>
+<pre class="source">
+BroadPhase() :
+  proxyCount = 0,
+  _pairCapacity = PAIR_CAPACITY,
+  _pairCount = 0,
+  _tree = new DynamicTree(),
+  queryProxy = null {
+  moveBuffer = new List&lt;DynamicTreeNode&gt;();
+  // Put a bunch of pairs into the pair buffer.
+  // TODO(dominich): Do a benchmark to see how preallocating the pairs
+  // performs against allocating them as we go.
+  _pairBuffer = new List&lt;Pair&gt;(_pairCapacity);
+  for (int i = 0; i &lt; _pairCapacity; ++i)
+    _pairBuffer[i] = new Pair();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeHeight">
+<button class="show-code">Code</button>
+int <strong>computeHeight</strong>() <a class="anchor-link" href="#computeHeight"
+              title="Permalink to BroadPhase.computeHeight">#</a></h4>
+<div class="doc">
+<p>Returns the height of embedded tree.</p>
+<pre class="source">
+int computeHeight() =&gt; _tree.computeHeightFromRoot();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="createProxy">
+<button class="show-code">Code</button>
+<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d_html/AxisAlignedBox.html">AxisAlignedBox</a> box, userData) <a class="anchor-link" href="#createProxy"
+              title="Permalink to BroadPhase.createProxy">#</a></h4>
+<div class="doc">
+<p>Creates a proxy with an initial bounding box. Pairs are not reported until
+updatePairs is called.</p>
+<pre class="source">
+DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
+  DynamicTreeNode node = _tree.createProxy(box, userData);
+  ++proxyCount;
+  _bufferMove(node);
+  return node;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="destroyProxy">
+<button class="show-code">Code</button>
+void <strong>destroyProxy</strong>(<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> proxy) <a class="anchor-link" href="#destroyProxy"
+              title="Permalink to BroadPhase.destroyProxy">#</a></h4>
+<div class="doc">
+<p>Destroys a proxy. It is up to the client to remove any pairs.</p>
+<pre class="source">
+void destroyProxy(DynamicTreeNode proxy) {
+  _unbufferMove(proxy);
+  --proxyCount;
+  _tree.destroyProxy(proxy);
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to BroadPhase.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="moveProxy">
+<button class="show-code">Code</button>
+void <strong>moveProxy</strong>(<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d_html/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../box2d_html/Vector.html">Vector</a> displacement) <a class="anchor-link" href="#moveProxy"
+              title="Permalink to BroadPhase.moveProxy">#</a></h4>
+<div class="doc">
+<p>Call MoveProxy as many times as you like, then when you are done
+call UpdatePairs to constize the proxy pairs (for your time step).</p>
+<pre class="source">
+void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+  if (_tree.moveProxy(proxy, box, displacement))
+    _bufferMove(proxy);
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to BroadPhase.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to BroadPhase.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="query">
+<button class="show-code">Code</button>
+void <strong>query</strong>(<a href="../box2d_html/TreeCallback.html">TreeCallback</a> callback, <a href="../box2d_html/AxisAlignedBox.html">AxisAlignedBox</a> box) <a class="anchor-link" href="#query"
+              title="Permalink to BroadPhase.query">#</a></h4>
+<div class="doc">
+<p>Query an axis aligned box for overlapping proxies. The callback funciton is
+called for each proxy that overlaps the supplied box.</p>
+<pre class="source">
+void query(TreeCallback callback, AxisAlignedBox box) {
+  _tree.query(callback, box);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="testOverlap">
+<button class="show-code">Code</button>
+bool <strong>testOverlap</strong>(<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> proxyA, <a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> proxyB) <a class="anchor-link" href="#testOverlap"
+              title="Permalink to BroadPhase.testOverlap">#</a></h4>
+<div class="doc">
+<p>Returns true if the bounding boxes of the given proxies overlap.</p>
+<pre class="source">
+bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
+  final AxisAlignedBox a = proxyA.box;
+  final AxisAlignedBox b = proxyB.box;
+  return AxisAlignedBox.testOverlap(a, b);
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to BroadPhase.toString">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Returns a string representation of this object.</p>
+<pre class="source">
+external String toString();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="treeCallback">
+<button class="show-code">Code</button>
+bool <strong>treeCallback</strong>(<a href="../box2d_html/DynamicTreeNode.html">DynamicTreeNode</a> proxy) <a class="anchor-link" href="#treeCallback"
+              title="Permalink to BroadPhase.treeCallback">#</a></h4>
+<div class="doc">
+<p>The callback function to use for this tree. Is called from
+DynamicTree.query when we are gathering pairs.</p>
+<pre class="source">
+bool treeCallback(DynamicTreeNode proxy) {
+  // A proxy cannot form a pair with itself.
+  if (proxy == queryProxy)
+    return true;
+
+  // Grow the pair buffer as needed.
+  // TODO(dominich): Can this be left up to the underlying SDK?
+  if (_pairCount == _pairCapacity) {
+    List&lt;Pair&gt; oldBuffer = _pairBuffer;
+    _pairCapacity *= 2;
+    _pairBuffer = new List&lt;Pair&gt;(_pairCapacity);
+
+    // Copy over the pairs and fill in any remaining spots in the array.
+    for (int i = 0; i &lt; oldBuffer.length; ++i)
+      _pairBuffer[i] = oldBuffer[i];
+
+    for (int i = oldBuffer.length; i &lt; _pairCapacity; ++i)
+      _pairBuffer[i] = new Pair();
+  }
+
+  // Store a new pair into the pair buffer, having proxyA be the lesser of
+  // proxy and queryProxy.
+  if (proxy.key &lt; queryProxy.key) {
+    _pairBuffer[_pairCount].proxyA = proxy;
+    _pairBuffer[_pairCount].proxyB = queryProxy;
+  } else {
+    _pairBuffer[_pairCount].proxyA = queryProxy;
+    _pairBuffer[_pairCount].proxyB = proxy;
+  }
+
+  // Increase the pair count and return true.
+  ++_pairCount;
+  return true;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="updatePairs">
+<button class="show-code">Code</button>
+void <strong>updatePairs</strong>(<a href="../box2d_html/PairCallback.html">PairCallback</a> callback) <a class="anchor-link" href="#updatePairs"
+              title="Permalink to BroadPhase.updatePairs">#</a></h4>
+<div class="doc">
+<p>Add pairs according to whether we need to keep track of
+their relationship. Pairs are added by calling the addPair method on the
+given callback.</p>
+<pre class="source">
+void updatePairs(PairCallback callback) {
+  // Reset pair buffer
+  _pairCount = 0;
+
+  // Perform tree queries for all moving proxies.
+  for (int i = 0; i &lt; moveBuffer.length; ++i) {
+    queryProxy = moveBuffer[i];
+    if (queryProxy == null)
+      continue;
+
+    // We have to query the tree with the fat AABB so that
+    // we don't fail to create a pair that may touch later.
+
+    // Query tree, create pairs and add them pair buffer.
+    _tree.query(this, queryProxy.box);
+  }
+
+  // Reset move buffer
+  moveBuffer = new List&lt;DynamicTreeNode&gt;();
+
+  // We only want to sort the first _pairCount items of _pairBuffer,
+  // so copy these to a temporary buffer where we do the sorting, then
+  // copy back.
+  List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
+  pairBuffer.sort((a, b) =&gt; a.compareTo(b));
+  _pairBuffer.setRange(0, _pairCount, pairBuffer);
+
+  // Send the pairs back to the client.
+  int i = 0;
+  while (i &lt; _pairCount) {
+    Pair primaryPair = _pairBuffer[i];
+    assert(primaryPair != null);
+    assert(primaryPair.proxyA != null);
+    assert(primaryPair.proxyB != null);
+
+    var userDataA = primaryPair.proxyA.userData;
+    var userDataB = primaryPair.proxyB.userData;
+
+    // Call the callback and increment i.
+    callback.addPair(userDataA, userDataB);
+    ++i;
+
+    // Skip any duplicate pairs.
+    while (i &lt; _pairCount) {
+      Pair pair = _pairBuffer[i];
+      if (pair.proxyA !== primaryPair.proxyA ||
+          pair.proxyB !== primaryPair.proxyB) {
+        break;
+      }
+      ++i;
+    }
+  }
+
+  // Try to keep the tree balanced.
+  _tree.rebalance(Settings.TREE_REBALANCE_STEPS);
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

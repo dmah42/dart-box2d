@@ -1,0 +1,507 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>WorldManifold class / box2d_nohtml Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d_nohtml" data-type="WorldManifold">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d_nohtml.html">box2d_nohtml</a> &rsaquo; <a href="../box2d_nohtml/WorldManifold.html">WorldManifold</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>WorldManifold</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>Used to compute the current state of a contact manifold.</p>
+<pre class="source">
+class WorldManifold {
+  /**
+   * World vector pointing from A to B
+   */
+  final Vector normal;
+
+  /**
+   * World contact points (points of intersection)
+   */
+  final List&lt;Vector&gt; points;
+
+  /**
+   * Temporary Vectors that are constructed on construction. Used to prevent
+   * object construction while stepping.
+   */
+  final Vector pool3;
+  final Vector pool4;
+
+  /**
+   * Constructs a new WorldManifold.
+   */
+  WorldManifold() :
+    normal = new Vector(),
+    pool3 = new Vector(),
+    pool4 = new Vector(),
+    points = new List&lt;Vector&gt;(Settings.MAX_MANIFOLD_POINTS) {
+    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+      points[i] = new Vector();
+  }
+
+  void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
+      num radiusB) {
+    switch (manifold.type) {
+      case ManifoldType.CIRCLES:
+        final Vector pointA = pool3;
+        final Vector pointB = pool4;
+
+        normal.x = 1;
+        normal.y = 0;
+        pointA.x = xfA.position.x + xfA.rotation.col1.x *
+            manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
+        pointA.y = xfA.position.y + xfA.rotation.col1.y *
+            manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+        pointB.x = xfB.position.x + xfB.rotation.col1.x *
+            manifold.points[0].localPoint.x + xfB.rotation.col2.x *
+            manifold.points[0].localPoint.y;
+        pointB.y = xfB.position.y + xfB.rotation.col1.y *
+            manifold.points[0].localPoint.x + xfB.rotation.col2.y *
+            manifold.points[0].localPoint.y;
+
+        if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON *
+            Settings.EPSILON) {
+          normal.x = pointB.x - pointA.x;
+          normal.y = pointB.y - pointA.y;
+          normal.normalize();
+        }
+
+        num cAx = normal.x * radiusA + pointA.x;
+        num cAy = normal.y * radiusA + pointA.y;
+
+        num cBx = -normal.x * radiusB + pointB.x;
+        num cBy = -normal.y * radiusB + pointB.y;
+
+        points[0].x = (cAx + cBx) *.5;
+        points[0].y = (cAy + cBy) *.5;
+        return;
+      case ManifoldType.FACE_A:
+        final Vector planePoint = pool3;
+
+        normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
+            xfA.rotation.col2.x * manifold.localNormal.y;
+        normal.y = xfA.rotation.col1.y * manifold.localNormal.x +
+            xfA.rotation.col2.y * manifold.localNormal.y;
+        planePoint.x = xfA.position.x + xfA.rotation.col1.x *
+            manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
+        planePoint.y = xfA.position.y + xfA.rotation.col1.y *
+            manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+
+        final Vector clipPoint = pool4;
+
+        for (int i = 0; i &lt; manifold.pointCount; ++i) {
+          clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
+              manifold.points[i].localPoint.x + xfB.rotation.col2.x *
+              manifold.points[i].localPoint.y;
+          clipPoint.y = xfB.position.y + xfB.rotation.col1.y *
+              manifold.points[i].localPoint.x + xfB.rotation.col2.y *
+              manifold.points[i].localPoint.y;
+
+          num scalar = radiusA - ((clipPoint.x - planePoint.x) *
+              normal.x + (clipPoint.y - planePoint.y) * normal.y);
+
+          num cAx = normal.x * scalar + clipPoint.x;
+          num cAy = normal.y * scalar + clipPoint.y;
+
+          num cBx = - normal.x * radiusB + clipPoint.x;
+          num cBy = - normal.y * radiusB + clipPoint.y;
+
+          points[i].x = (cAx + cBx)*.5;
+          points[i].y = (cAy + cBy)*.5;
+        }
+
+        return;
+      case ManifoldType.FACE_B :
+        final Vector planePoint = pool3;
+
+        final Matrix22 R = xfB.rotation;
+        normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
+            manifold.localNormal.y;
+        normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
+            manifold.localNormal.y;
+        final Vector v = manifold.localPoint;
+        planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
+            xfB.rotation.col2.x * v.y;
+        planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
+            xfB.rotation.col2.y * v.y;
+
+        final Vector clipPoint = pool4;
+
+        for (int i = 0; i &lt; manifold.pointCount; ++i) {
+
+          clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
+              manifold.points[i].localPoint.x + xfA.rotation.col2.x *
+              manifold.points[i].localPoint.y;
+          clipPoint.y = xfA.position.y + xfA.rotation.col1.y *
+              manifold.points[i].localPoint.x + xfA.rotation.col2.y *
+              manifold.points[i].localPoint.y;
+
+          num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
+              (clipPoint.y - planePoint.y) * normal.y);
+
+          num cBx =  normal.x * scalar + clipPoint.x;
+          num cBy =  normal.y * scalar + clipPoint.y;
+
+          num cAx = - normal.x * radiusA + clipPoint.x;
+          num cAy = - normal.y * radiusA + clipPoint.y;
+
+          points[i].x = (cAx + cBx) *.5;
+          points[i].y = (cAy + cBy) *.5;
+        }
+        // Ensure normal points from A to B.
+        normal.x = -normal.x;
+        normal.y = -normal.y;
+        break;
+     }
+  }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="WorldManifold">
+<button class="show-code">Code</button>
+new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold"
+              title="Permalink to WorldManifold.WorldManifold">#</a></h4>
+<div class="doc">
+<p>Constructs a new WorldManifold.</p>
+<pre class="source">
+WorldManifold() :
+  normal = new Vector(),
+  pool3 = new Vector(),
+  pool4 = new Vector(),
+  points = new List&lt;Vector&gt;(Settings.MAX_MANIFOLD_POINTS) {
+  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+    points[i] = new Vector();
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="normal">
+<button class="show-code">Code</button>
+final <a href="../box2d_nohtml/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
+            href="#normal"
+            title="Permalink to WorldManifold.normal">#</a>
+        </h4>
+        <div class="doc">
+<p>World vector pointing from A to B</p>
+<pre class="source">
+final Vector normal;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="points">
+<button class="show-code">Code</button>
+final List&lt;<a href="../box2d_nohtml/Vector.html">Vector</a>&gt;         <strong>points</strong> <a class="anchor-link"
+            href="#points"
+            title="Permalink to WorldManifold.points">#</a>
+        </h4>
+        <div class="doc">
+<p>World contact points (points of intersection)</p>
+<pre class="source">
+final List&lt;Vector&gt; points;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pool3">
+<button class="show-code">Code</button>
+final <a href="../box2d_nohtml/Vector.html">Vector</a>         <strong>pool3</strong> <a class="anchor-link"
+            href="#pool3"
+            title="Permalink to WorldManifold.pool3">#</a>
+        </h4>
+        <div class="doc">
+<p>Temporary Vectors that are constructed on construction. Used to prevent
+object construction while stepping.</p>
+<pre class="source">
+final Vector pool3;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pool4">
+<button class="show-code">Code</button>
+final <a href="../box2d_nohtml/Vector.html">Vector</a>         <strong>pool4</strong> <a class="anchor-link"
+            href="#pool4"
+            title="Permalink to WorldManifold.pool4">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+final Vector pool4;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to WorldManifold.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to WorldManifold.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to WorldManifold.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="initialize">
+<button class="show-code">Code</button>
+void <strong>initialize</strong>(<a href="../box2d_nohtml/Manifold.html">Manifold</a> manifold, <a href="../box2d_nohtml/Transform.html">Transform</a> xfA, num radiusA, <a href="../box2d_nohtml/Transform.html">Transform</a> xfB, num radiusB) <a class="anchor-link" href="#initialize"
+              title="Permalink to WorldManifold.initialize">#</a></h4>
+<div class="doc">
+<pre class="source">
+void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
+    num radiusB) {
+  switch (manifold.type) {
+    case ManifoldType.CIRCLES:
+      final Vector pointA = pool3;
+      final Vector pointB = pool4;
+
+      normal.x = 1;
+      normal.y = 0;
+      pointA.x = xfA.position.x + xfA.rotation.col1.x *
+          manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
+      pointA.y = xfA.position.y + xfA.rotation.col1.y *
+          manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+      pointB.x = xfB.position.x + xfB.rotation.col1.x *
+          manifold.points[0].localPoint.x + xfB.rotation.col2.x *
+          manifold.points[0].localPoint.y;
+      pointB.y = xfB.position.y + xfB.rotation.col1.y *
+          manifold.points[0].localPoint.x + xfB.rotation.col2.y *
+          manifold.points[0].localPoint.y;
+
+      if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON *
+          Settings.EPSILON) {
+        normal.x = pointB.x - pointA.x;
+        normal.y = pointB.y - pointA.y;
+        normal.normalize();
+      }
+
+      num cAx = normal.x * radiusA + pointA.x;
+      num cAy = normal.y * radiusA + pointA.y;
+
+      num cBx = -normal.x * radiusB + pointB.x;
+      num cBy = -normal.y * radiusB + pointB.y;
+
+      points[0].x = (cAx + cBx) *.5;
+      points[0].y = (cAy + cBy) *.5;
+      return;
+    case ManifoldType.FACE_A:
+      final Vector planePoint = pool3;
+
+      normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
+          xfA.rotation.col2.x * manifold.localNormal.y;
+      normal.y = xfA.rotation.col1.y * manifold.localNormal.x +
+          xfA.rotation.col2.y * manifold.localNormal.y;
+      planePoint.x = xfA.position.x + xfA.rotation.col1.x *
+          manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
+      planePoint.y = xfA.position.y + xfA.rotation.col1.y *
+          manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+
+      final Vector clipPoint = pool4;
+
+      for (int i = 0; i &lt; manifold.pointCount; ++i) {
+        clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
+            manifold.points[i].localPoint.x + xfB.rotation.col2.x *
+            manifold.points[i].localPoint.y;
+        clipPoint.y = xfB.position.y + xfB.rotation.col1.y *
+            manifold.points[i].localPoint.x + xfB.rotation.col2.y *
+            manifold.points[i].localPoint.y;
+
+        num scalar = radiusA - ((clipPoint.x - planePoint.x) *
+            normal.x + (clipPoint.y - planePoint.y) * normal.y);
+
+        num cAx = normal.x * scalar + clipPoint.x;
+        num cAy = normal.y * scalar + clipPoint.y;
+
+        num cBx = - normal.x * radiusB + clipPoint.x;
+        num cBy = - normal.y * radiusB + clipPoint.y;
+
+        points[i].x = (cAx + cBx)*.5;
+        points[i].y = (cAy + cBy)*.5;
+      }
+
+      return;
+    case ManifoldType.FACE_B :
+      final Vector planePoint = pool3;
+
+      final Matrix22 R = xfB.rotation;
+      normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
+          manifold.localNormal.y;
+      normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
+          manifold.localNormal.y;
+      final Vector v = manifold.localPoint;
+      planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
+          xfB.rotation.col2.x * v.y;
+      planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
+          xfB.rotation.col2.y * v.y;
+
+      final Vector clipPoint = pool4;
+
+      for (int i = 0; i &lt; manifold.pointCount; ++i) {
+
+        clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
+            manifold.points[i].localPoint.x + xfA.rotation.col2.x *
+            manifold.points[i].localPoint.y;
+        clipPoint.y = xfA.position.y + xfA.rotation.col1.y *
+            manifold.points[i].localPoint.x + xfA.rotation.col2.y *
+            manifold.points[i].localPoint.y;
+
+        num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
+            (clipPoint.y - planePoint.y) * normal.y);
+
+        num cBx =  normal.x * scalar + clipPoint.x;
+        num cBy =  normal.y * scalar + clipPoint.y;
+
+        num cAx = - normal.x * radiusA + clipPoint.x;
+        num cAy = - normal.y * radiusA + clipPoint.y;
+
+        points[i].x = (cAx + cBx) *.5;
+        points[i].y = (cAy + cBy) *.5;
+      }
+      // Ensure normal points from A to B.
+      normal.x = -normal.x;
+      normal.y = -normal.y;
+      break;
+   }
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to WorldManifold.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to WorldManifold.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to WorldManifold.toString">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Returns a string representation of this object.</p>
+<pre class="source">
+external String toString();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="WorldManifold">
+<button class="show-code">Code</button>
+new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold"
+              title="Permalink to WorldManifold.WorldManifold">#</a></h4>
+<div class="doc">
+<p>Constructs a new WorldManifold.</p>
+<pre class="source">
+WorldManifold() :
+  normal = new Vector(),
+  pool3 = new Vector(),
+  pool4 = new Vector(),
+  points = new List&lt;Vector&gt;(Settings.MAX_MANIFOLD_POINTS) {
+  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+    points[i] = new Vector();
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
