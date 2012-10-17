@@ -15,7 +15,7 @@
 /**
  * An abstract class for any Demo of the Box2D library.
  */
-class Demo {
+abstract class Demo {
   /** All of the bodies in a simulation. */
   List<Body> bodies;
 

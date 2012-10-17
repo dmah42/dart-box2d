@@ -18,7 +18,7 @@
  * Not intended to replace your own custom rendering
  * routines! Draws shapes by default.
  */
-class DebugDraw {
+abstract class DebugDraw {
   // TODO(gregbglw): Draw joints once have them implemented. Also draw other
   // neat stuff described below.
 

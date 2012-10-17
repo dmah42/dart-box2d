@@ -15,7 +15,7 @@
 /**
  * This class defines contact between two shapes.
  */
-class Contact {
+abstract class Contact {
   /** Used when crawling contact graph when forming islands. */
   static const int ISLAND_FLAG = 0x0001;
   static const int TOUCHING_FLAG = 0x0002;

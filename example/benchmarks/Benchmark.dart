@@ -15,7 +15,7 @@
 /**
  * A Benchmark wraps up a Demo in order to run that Demo as a benchmark.
  */
-class Benchmark {
+abstract class Benchmark {
   /** All of the bodies in a simulation. */
   List<Body> bodies;
 

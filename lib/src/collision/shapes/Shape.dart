@@ -17,7 +17,7 @@
  * like. Shapes used for simulation in World are created automatically when
  * a Fixture is created.  Shapes may encapsulate a one or more child shapes.
  */
-class Shape {
+abstract class Shape {
   /** The type of shape. Either circle or polygon. */
   int type;
 
