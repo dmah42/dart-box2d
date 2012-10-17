@@ -1,0 +1,396 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>AxisAlignedBox class / box2d_console Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d_console" data-type="AxisAlignedBox">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d_console.html">box2d_console</a> &rsaquo; <a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>AxisAlignedBox</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>An axis-aligned bounding box.</p>
+<pre class="source">
+class AxisAlignedBox {
+  /** Bottom left vertex of bounding box. */
+  Vector lowerBound;
+
+  /** Top right vertex of bounding box. */
+  Vector upperBound;
+
+  /**
+   * Constructs a new box with the given lower and upper bounds. If no bounds
+   * are specified, constructs the box with both bounds at the origin.
+   */
+  AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
+    if (lowerBound == null) lowerBound = new Vector();
+    if (upperBound == null) upperBound = new Vector();
+  }
+
+  /**
+   * Sets this box to be a combination of the two given boxes.
+   * The combination is determined by picking and choosing the lowest x and y
+   * values from the lowerBounds to form a new lower bound and picking and
+   * choosing the largest x and y values from the upperBounds to form a new
+   * upperBound.
+   */
+  void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
+    lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+    lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+    upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+    upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+  }
+
+  /**
+   * Sets the bounds to the given values.
+   */
+  AxisAlignedBox setBounds(Vector lower, Vector upper) {
+    lowerBound.setFrom(lower);
+    upperBound.setFrom(upper);
+    return this;
+  }
+
+  /**
+   * Returns true if the given box overlaps with this box.
+   */
+  static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
+    !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
+      (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
+
+  /**
+   * Returns true if the lower bound is strictly less than the upper bound and
+   * both bounds are themselves valid (Vector.isValid() returns true).
+   */
+  bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
+                    lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
+
+  /**
+   * Returns the center of this box.
+   */
+  Vector get center() {
+    Vector c = new Vector.copy(lowerBound);
+    c.addLocal(upperBound);
+    c.mulLocal(.5);
+    return c;
+  }
+
+  /**
+   * Returns true if this box contains the given box.
+   */
+  bool contains(AxisAlignedBox aabb) =&gt;
+      lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
+      upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
+
+  /**
+   * Sets this box to be a copy of the given box.
+   */
+  void setFrom(AxisAlignedBox other) {
+    lowerBound.setFrom(other.lowerBound);
+    upperBound.setFrom(other.upperBound);
+  }
+
+  String toString() =&gt; "$lowerBound, $upperBound";
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="AxisAlignedBox">
+<button class="show-code">Code</button>
+new <strong>AxisAlignedBox</strong>([<a href="../box2d_console/Vector.html">Vector</a> lowerBound = null, <a href="../box2d_console/Vector.html">Vector</a> upperBound = null]) <a class="anchor-link" href="#AxisAlignedBox"
+              title="Permalink to AxisAlignedBox.AxisAlignedBox">#</a></h4>
+<div class="doc">
+<p>Constructs a new box with the given lower and upper bounds. If no bounds
+are specified, constructs the box with both bounds at the origin.</p>
+<pre class="source">
+AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
+  if (lowerBound == null) lowerBound = new Vector();
+  if (upperBound == null) upperBound = new Vector();
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="testOverlap">
+<button class="show-code">Code</button>
+bool <strong>testOverlap</strong>(<a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> a, <a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> b) <a class="anchor-link" href="#testOverlap"
+              title="Permalink to AxisAlignedBox.testOverlap">#</a></h4>
+<div class="doc">
+<p>Returns true if the given box overlaps with this box.</p>
+<pre class="source">
+static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
+  !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
+    (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="center">
+<button class="show-code">Code</button>
+final <a href="../box2d_console/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+            href="#center"
+            title="Permalink to AxisAlignedBox.center">#</a>
+        </h4>
+        <div class="doc">
+<p>Returns the center of this box.</p>
+<pre class="source">
+Vector get center() {
+  Vector c = new Vector.copy(lowerBound);
+  c.addLocal(upperBound);
+  c.mulLocal(.5);
+  return c;
+}
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="lowerBound">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector.html">Vector</a>         <strong>lowerBound</strong> <a class="anchor-link"
+            href="#lowerBound"
+            title="Permalink to AxisAlignedBox.lowerBound">#</a>
+        </h4>
+        <div class="doc">
+<p>Bottom left vertex of bounding box.</p>
+<pre class="source">
+Vector lowerBound;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to AxisAlignedBox.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="upperBound">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector.html">Vector</a>         <strong>upperBound</strong> <a class="anchor-link"
+            href="#upperBound"
+            title="Permalink to AxisAlignedBox.upperBound">#</a>
+        </h4>
+        <div class="doc">
+<p>Top right vertex of bounding box.</p>
+<pre class="source">
+Vector upperBound;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to AxisAlignedBox.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="AxisAlignedBox">
+<button class="show-code">Code</button>
+new <strong>AxisAlignedBox</strong>([<a href="../box2d_console/Vector.html">Vector</a> lowerBound = null, <a href="../box2d_console/Vector.html">Vector</a> upperBound = null]) <a class="anchor-link" href="#AxisAlignedBox"
+              title="Permalink to AxisAlignedBox.AxisAlignedBox">#</a></h4>
+<div class="doc">
+<p>Constructs a new box with the given lower and upper bounds. If no bounds
+are specified, constructs the box with both bounds at the origin.</p>
+<pre class="source">
+AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
+  if (lowerBound == null) lowerBound = new Vector();
+  if (upperBound == null) upperBound = new Vector();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="contains">
+<button class="show-code">Code</button>
+bool <strong>contains</strong>(<a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> aabb) <a class="anchor-link" href="#contains"
+              title="Permalink to AxisAlignedBox.contains">#</a></h4>
+<div class="doc">
+<p>Returns true if this box contains the given box.</p>
+<pre class="source">
+bool contains(AxisAlignedBox aabb) =&gt;
+    lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
+    upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to AxisAlignedBox.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="isValid">
+<button class="show-code">Code</button>
+bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
+              title="Permalink to AxisAlignedBox.isValid">#</a></h4>
+<div class="doc">
+<p>Returns true if the lower bound is strictly less than the upper bound and
+both bounds are themselves valid (Vector.isValid() returns true).</p>
+<pre class="source">
+bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
+                  lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to AxisAlignedBox.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to AxisAlignedBox.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setBounds">
+<button class="show-code">Code</button>
+<a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> <strong>setBounds</strong>(<a href="../box2d_console/Vector.html">Vector</a> lower, <a href="../box2d_console/Vector.html">Vector</a> upper) <a class="anchor-link" href="#setBounds"
+              title="Permalink to AxisAlignedBox.setBounds">#</a></h4>
+<div class="doc">
+<p>Sets the bounds to the given values.</p>
+<pre class="source">
+AxisAlignedBox setBounds(Vector lower, Vector upper) {
+  lowerBound.setFrom(lower);
+  upperBound.setFrom(upper);
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(<a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> other) <a class="anchor-link" href="#setFrom"
+              title="Permalink to AxisAlignedBox.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this box to be a copy of the given box.</p>
+<pre class="source">
+void setFrom(AxisAlignedBox other) {
+  lowerBound.setFrom(other.lowerBound);
+  upperBound.setFrom(other.upperBound);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFromCombination">
+<button class="show-code">Code</button>
+void <strong>setFromCombination</strong>(<a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> boxOne, <a href="../box2d_console/AxisAlignedBox.html">AxisAlignedBox</a> boxTwo) <a class="anchor-link" href="#setFromCombination"
+              title="Permalink to AxisAlignedBox.setFromCombination">#</a></h4>
+<div class="doc">
+<p>Sets this box to be a combination of the two given boxes.
+The combination is determined by picking and choosing the lowest x and y
+values from the lowerBounds to form a new lower bound and picking and
+choosing the largest x and y values from the upperBounds to form a new
+upperBound.</p>
+<pre class="source">
+void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
+  lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+  lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+  upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+  upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to AxisAlignedBox.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+String toString() =&gt; "$lowerBound, $upperBound";
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

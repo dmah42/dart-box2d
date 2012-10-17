@@ -2372,9 +2372,8 @@ $$.CanvasDraw = {"":
   this.drawCircle$3(xf.position, 0.1, color);
 },
  set$_color: function(color) {
-  var t1 = new $.CanvasDraw__color_scale();
-  this.ctx.setStrokeColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.9);
-  this.ctx.setFillColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.8);
+  this.ctx.setStrokeColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
+  this.ctx.setFillColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
 },
  CanvasDraw$2: function(viewport, ctx) {
 }
@@ -9020,15 +9019,10 @@ $$.CanvasViewportTransform = {"":
 $$.Color3 = {"":
  ["x=", "y=", "z?"],
  "super": "Object",
- setFromRGB$3: function(r, g, b) {
-  this.x = r;
-  this.y = g;
-  this.z = b;
-},
- setFrom$1: function(argColor) {
-  this.x = argColor.get$x();
-  this.y = argColor.get$y();
-  this.z = argColor.get$z();
+ setFromRGBF$3: function(r, g, b) {
+  this.x = $.toInt($.floor(r * 255));
+  this.y = $.toInt($.floor(g * 255));
+  this.z = $.toInt($.floor(b * 255));
 },
  operator$eq$1: function(other) {
   if (typeof other === 'object' && other !== null && !!other.is$Color3)
@@ -12808,19 +12802,19 @@ $$.World = {"":
       xf.setFrom$1(b.get$originTransform());
       for (var f = b.get$fixtureList(); !(f == null); f = f.get$next())
         if ($.eqB(b.get$active(), false)) {
-          color.setFromRGB$3(0.5, 0.5, 0.3);
+          color.setFromRGBF$3(0.5, 0.5, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 0)) {
-          color.setFromRGB$3(0.5, 0.9, 0.3);
+          color.setFromRGBF$3(0.5, 0.9, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 1)) {
-          color.setFromRGB$3(0.5, 0.5, 0.9);
+          color.setFromRGBF$3(0.5, 0.5, 0.9);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$awake(), false)) {
-          color.setFromRGB$3(0.9, 0.9, 0.9);
+          color.setFromRGBF$3(0.9, 0.9, 0.9);
           this.drawShape$3(f, xf, color);
         } else {
-          color.setFromRGB$3(0.9, 0.7, 0.7);
+          color.setFromRGBF$3(0.9, 0.7, 0.7);
           this.drawShape$3(f, xf, color);
         }
     }
@@ -12829,7 +12823,7 @@ $$.World = {"":
     for (var j = this._jointList; !(j == null); j = j.get$_next())
       this.drawJoint$1(j);
   if ((drawFlags & 8) === 8) {
-    color = $.Color3$fromRGB(0.3, 0.9, 0.9);
+    color = $.Color3$fromRGBF(0.3, 0.9, 0.9);
     for (var c = this._contactManager.get$contactList(), t1 = this.cA, t2 = this.cB; !(c == null); c = c.get$next()) {
       var fixtureA = c.get$fixtureA();
       var fixtureB = c.get$fixtureB();
@@ -12839,7 +12833,7 @@ $$.World = {"":
     }
   }
   if ((drawFlags & 4) === 4) {
-    color = $.Color3$fromRGB(0.9, 0.3, 0.9);
+    color = $.Color3$fromRGBF(0.9, 0.3, 0.9);
     for (b = this._bodyList, t1 = 0 !== (drawFlags & 64); !(b == null); b = b.get$next()) {
       if (b.get$active() !== true)
         continue;
@@ -12878,19 +12872,19 @@ $$.World = {"":
       xf.setFrom$1(b.get$originTransform());
       for (var f = b.get$fixtureList(); !(f == null); f = f.get$next())
         if ($.eqB(b.get$active(), false)) {
-          color.setFromRGB$3(0.5, 0.5, 0.3);
+          color.setFromRGBF$3(0.5, 0.5, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 0)) {
-          color.setFromRGB$3(0.5, 0.9, 0.3);
+          color.setFromRGBF$3(0.5, 0.9, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 1)) {
-          color.setFromRGB$3(0.5, 0.5, 0.9);
+          color.setFromRGBF$3(0.5, 0.5, 0.9);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$awake(), false)) {
-          color.setFromRGB$3(0.9, 0.9, 0.9);
+          color.setFromRGBF$3(0.9, 0.9, 0.9);
           this.drawShape$3(f, xf, color);
         } else {
-          color.setFromRGB$3(0.9, 0.7, 0.7);
+          color.setFromRGBF$3(0.9, 0.7, 0.7);
           this.drawShape$3(f, xf, color);
         }
     }
@@ -12899,7 +12893,7 @@ $$.World = {"":
     for (var j = this._jointList; !(j == null); j = j.get$_next())
       this.drawJoint$1(j);
   if ($.eqB($.and(drawFlags, 8), 8)) {
-    color = $.Color3$fromRGB(0.3, 0.9, 0.9);
+    color = $.Color3$fromRGBF(0.3, 0.9, 0.9);
     for (var c = this._contactManager.get$contactList(), t1 = this.cA, t2 = this.cB; !(c == null); c = c.get$next()) {
       var fixtureA = c.get$fixtureA();
       var fixtureB = c.get$fixtureB();
@@ -12909,7 +12903,7 @@ $$.World = {"":
     }
   }
   if ($.eqB($.and(drawFlags, 4), 4)) {
-    color = $.Color3$fromRGB(0.9, 0.3, 0.9);
+    color = $.Color3$fromRGBF(0.9, 0.3, 0.9);
     for (b = this._bodyList; !(b == null); b = b.get$next()) {
       if (b.get$active() !== true)
         continue;
@@ -13743,7 +13737,7 @@ $$.World = {"":
   var p2 = $.Vector$(0, 0);
   joint.getAnchorA$1(p1);
   joint.getAnchorB$1(p2);
-  var color = $.Color3$fromRGB(0.5, 0.3, 0.3);
+  var color = $.Color3$fromRGBF(0.5, 0.3, 0.3);
   switch (joint.get$type()) {
     case 3:
       this._debugDraw.drawSegment$3(p1, p2, color);
@@ -29677,14 +29671,6 @@ $$._FilteredElementList_removeRange_anon = {"":
 }
 };
 
-$$.CanvasDraw__color_scale = {"":
- [],
- "super": "Closure",
- call$1: function(val) {
-  return $.toInt($.floor($.mul(val, 256)));
-}
-};
-
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  "super": "Closure",
@@ -31139,6 +31125,13 @@ $.DoubleLinkedQueue$ = function() {
   return t1;
 };
 
+$.filter = function(receiver, predicate) {
+  if (!$.isJsArray(receiver))
+    return receiver.filter$1(predicate);
+  else
+    return $.Collections_filter(receiver, [], predicate);
+};
+
 $.StringBufferImpl$ = function(content$) {
   var t1 = new $.StringBufferImpl(null, null);
   t1.StringBufferImpl$1(content$);
@@ -31183,11 +31176,13 @@ $.regExpTest = function(regExp, str) {
   return $.regExpGetNative(regExp).test(str);
 };
 
-$.filter = function(receiver, predicate) {
-  if (!$.isJsArray(receiver))
-    return receiver.filter$1(predicate);
-  else
-    return $.Collections_filter(receiver, [], predicate);
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
+    var t2 = t1.next$0();
+    if (f.call$1(t2) === true)
+      destination.push(t2);
+  }
+  return destination;
 };
 
 $.makeLiteralMap = function(keyValuePairs) {
@@ -31213,15 +31208,6 @@ $.Vector3$ = function(x, y, z) {
   return new $.Vector3(x, y, z);
 };
 
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
-    var t2 = t1.next$0();
-    if (f.call$1(t2) === true)
-      destination.push(t2);
-  }
-  return destination;
-};
-
 $._FilteredElementList$ = function(node) {
   return new $._FilteredElementList(node, node.get$nodes());
 };
@@ -31240,10 +31226,6 @@ $.gt$slow = function(a, b) {
   return a.operator$gt$1(b);
 };
 
-$.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
-};
-
 $.typeNameInChrome = function(obj) {
   var name$ = obj.constructor.name;
   if (name$ === 'Window')
@@ -31253,6 +31235,10 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'WebKitMutationObserver')
     return 'MutationObserver';
   return name$;
+};
+
+$.BodyDef$ = function() {
+  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.Collections__emitCollection = function(c, result, visiting) {
@@ -31950,12 +31936,6 @@ $.clear = function(receiver) {
   $.set$length(receiver, 0);
 };
 
-$.last = function(receiver) {
-  if (!$.isJsArray(receiver))
-    return receiver.last$0();
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
-};
-
 $.Primitives_objectTypeName = function(object) {
   var name$ = $.constructorNameFallback(object);
   if ($.eqB(name$, 'Object')) {
@@ -32031,6 +32011,12 @@ $.RevoluteJoint$ = function(def) {
   t7 = new $.RevoluteJoint($.Vector$(0, 0), $.Vector$(0, 0), $.Vector3$(0, 0, 0), 0, $.Matrix33$(), null, null, null, null, null, null, null, null, null, t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
   t7.RevoluteJoint$1(def);
   return t7;
+};
+
+$.last = function(receiver) {
+  if (!$.isJsArray(receiver))
+    return receiver.last$0();
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $._Collections_forEach = function(iterable, f) {
@@ -32304,15 +32290,15 @@ $.Matrix22$ = function(c1, c2) {
   return t1;
 };
 
+$._JsDeserializer$ = function() {
+  return new $._JsDeserializer(null);
+};
+
 $.addLast = function(receiver, value) {
   if (!$.isJsArray(receiver))
     return receiver.addLast$1(value);
   $.checkGrowable(receiver, 'addLast');
   receiver.push(value);
-};
-
-$._JsDeserializer$ = function() {
-  return new $._JsDeserializer(null);
 };
 
 $.abs = function(receiver) {
@@ -32440,6 +32426,10 @@ return window;
 
 $._globalState0 = function(val) {
   $globalState = val;
+};
+
+$.Color3$fromRGBF = function(r, g, b) {
+  return new $.Color3($.toInt($.floor(r * 255)), $.toInt($.floor(g * 255)), $.toInt($.floor(b * 255)));
 };
 
 $.iterator = function(receiver) {

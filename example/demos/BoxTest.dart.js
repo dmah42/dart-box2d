@@ -2298,9 +2298,8 @@ $$.CanvasDraw = {"":
   this.drawCircle$3(xf.position, 0.1, color);
 },
  set$_color: function(color) {
-  var t1 = new $.CanvasDraw__color_scale();
-  this.ctx.setStrokeColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.9);
-  this.ctx.setFillColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.8);
+  this.ctx.setStrokeColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
+  this.ctx.setFillColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
 },
  CanvasDraw$2: function(viewport, ctx) {
 }
@@ -9002,15 +9001,10 @@ $$.CanvasViewportTransform = {"":
 $$.Color3 = {"":
  ["x=", "y=", "z?"],
  "super": "Object",
- setFromRGB$3: function(r, g, b) {
-  this.x = r;
-  this.y = g;
-  this.z = b;
-},
- setFrom$1: function(argColor) {
-  this.x = argColor.get$x();
-  this.y = argColor.get$y();
-  this.z = argColor.get$z();
+ setFromRGBF$3: function(r, g, b) {
+  this.x = $.toInt($.floor(r * 255));
+  this.y = $.toInt($.floor(g * 255));
+  this.z = $.toInt($.floor(b * 255));
 },
  operator$eq$1: function(other) {
   if (typeof other === 'object' && other !== null && !!other.is$Color3)
@@ -12453,19 +12447,19 @@ $$.World = {"":
       xf.setFrom$1(b.get$originTransform());
       for (var f = b.get$fixtureList(); !(f == null); f = f.get$next())
         if ($.eqB(b.get$active(), false)) {
-          color.setFromRGB$3(0.5, 0.5, 0.3);
+          color.setFromRGBF$3(0.5, 0.5, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 0)) {
-          color.setFromRGB$3(0.5, 0.9, 0.3);
+          color.setFromRGBF$3(0.5, 0.9, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 1)) {
-          color.setFromRGB$3(0.5, 0.5, 0.9);
+          color.setFromRGBF$3(0.5, 0.5, 0.9);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$awake(), false)) {
-          color.setFromRGB$3(0.9, 0.9, 0.9);
+          color.setFromRGBF$3(0.9, 0.9, 0.9);
           this.drawShape$3(f, xf, color);
         } else {
-          color.setFromRGB$3(0.9, 0.7, 0.7);
+          color.setFromRGBF$3(0.9, 0.7, 0.7);
           this.drawShape$3(f, xf, color);
         }
     }
@@ -12474,7 +12468,7 @@ $$.World = {"":
     for (var j = this._jointList; !(j == null); j = j.get$_next())
       this.drawJoint$1(j);
   if ((drawFlags & 8) === 8) {
-    color = $.Color3$fromRGB(0.3, 0.9, 0.9);
+    color = $.Color3$fromRGBF(0.3, 0.9, 0.9);
     for (var c = this._contactManager.get$contactList(), t1 = this.cA, t2 = this.cB; !(c == null); c = c.get$next()) {
       var fixtureA = c.get$fixtureA();
       var fixtureB = c.get$fixtureB();
@@ -12484,7 +12478,7 @@ $$.World = {"":
     }
   }
   if ((drawFlags & 4) === 4) {
-    color = $.Color3$fromRGB(0.9, 0.3, 0.9);
+    color = $.Color3$fromRGBF(0.9, 0.3, 0.9);
     for (b = this._bodyList, t1 = 0 !== (drawFlags & 64); !(b == null); b = b.get$next()) {
       if (b.get$active() !== true)
         continue;
@@ -12523,19 +12517,19 @@ $$.World = {"":
       xf.setFrom$1(b.get$originTransform());
       for (var f = b.get$fixtureList(); !(f == null); f = f.get$next())
         if ($.eqB(b.get$active(), false)) {
-          color.setFromRGB$3(0.5, 0.5, 0.3);
+          color.setFromRGBF$3(0.5, 0.5, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 0)) {
-          color.setFromRGB$3(0.5, 0.9, 0.3);
+          color.setFromRGBF$3(0.5, 0.9, 0.3);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$type(), 1)) {
-          color.setFromRGB$3(0.5, 0.5, 0.9);
+          color.setFromRGBF$3(0.5, 0.5, 0.9);
           this.drawShape$3(f, xf, color);
         } else if ($.eqB(b.get$awake(), false)) {
-          color.setFromRGB$3(0.9, 0.9, 0.9);
+          color.setFromRGBF$3(0.9, 0.9, 0.9);
           this.drawShape$3(f, xf, color);
         } else {
-          color.setFromRGB$3(0.9, 0.7, 0.7);
+          color.setFromRGBF$3(0.9, 0.7, 0.7);
           this.drawShape$3(f, xf, color);
         }
     }
@@ -12544,7 +12538,7 @@ $$.World = {"":
     for (var j = this._jointList; !(j == null); j = j.get$_next())
       this.drawJoint$1(j);
   if ($.eqB($.and(drawFlags, 8), 8)) {
-    color = $.Color3$fromRGB(0.3, 0.9, 0.9);
+    color = $.Color3$fromRGBF(0.3, 0.9, 0.9);
     for (var c = this._contactManager.get$contactList(), t1 = this.cA, t2 = this.cB; !(c == null); c = c.get$next()) {
       var fixtureA = c.get$fixtureA();
       var fixtureB = c.get$fixtureB();
@@ -12554,7 +12548,7 @@ $$.World = {"":
     }
   }
   if ($.eqB($.and(drawFlags, 4), 4)) {
-    color = $.Color3$fromRGB(0.9, 0.3, 0.9);
+    color = $.Color3$fromRGBF(0.9, 0.3, 0.9);
     for (b = this._bodyList; !(b == null); b = b.get$next()) {
       if (b.get$active() !== true)
         continue;
@@ -13388,7 +13382,7 @@ $$.World = {"":
   var p2 = $.Vector$(0, 0);
   joint.getAnchorA$1(p1);
   joint.getAnchorB$1(p2);
-  var color = $.Color3$fromRGB(0.5, 0.3, 0.3);
+  var color = $.Color3$fromRGBF(0.5, 0.3, 0.3);
   switch (joint.get$type()) {
     case 3:
       this._debugDraw.drawSegment$3(p1, p2, color);
@@ -23977,14 +23971,6 @@ $$._FilteredElementList_removeRange_anon = {"":
 }
 };
 
-$$.CanvasDraw__color_scale = {"":
- [],
- "super": "Closure",
- call$1: function(val) {
-  return $.toInt($.floor($.mul(val, 256)));
-}
-};
-
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  "super": "Closure",
@@ -25492,10 +25478,6 @@ $.gt$slow = function(a, b) {
   return a.operator$gt$1(b);
 };
 
-$.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
-};
-
 $.typeNameInChrome = function(obj) {
   var name$ = obj.constructor.name;
   if (name$ === 'Window')
@@ -25505,6 +25487,10 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'WebKitMutationObserver')
     return 'MutationObserver';
   return name$;
+};
+
+$.BodyDef$ = function() {
+  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.Collections__emitCollection = function(c, result, visiting) {
@@ -25957,6 +25943,12 @@ $.le$slow = function(a, b) {
   if ($.checkNumbers(a, b))
     return a <= b;
   return a.operator$le$1(b);
+};
+
+$.last = function(receiver) {
+  if (!$.isJsArray(receiver))
+    return receiver.last$0();
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $.typeNameInOpera = function(obj) {
@@ -26636,6 +26628,10 @@ $._globalState0 = function(val) {
   $globalState = val;
 };
 
+$.Color3$fromRGBF = function(r, g, b) {
+  return new $.Color3($.toInt($.floor(r * 255)), $.toInt($.floor(g * 255)), $.toInt($.floor(b * 255)));
+};
+
 $.HashMapImplementation$ = function() {
   var t1 = new $.HashMapImplementation(null, null, null, null, null);
   t1.HashMapImplementation$0();
@@ -27023,12 +27019,6 @@ $.contains = function(userAgent, name$) {
 
 $.ContactFilter$ = function() {
   return new $.ContactFilter();
-};
-
-$.last = function(receiver) {
-  if (!$.isJsArray(receiver))
-    return receiver.last$0();
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $._Lists_indexOf = function(a, element, startIndex, endIndex) {

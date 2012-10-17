@@ -14,7 +14,7 @@
 
 #library('Bench2d');
 #import('dart:html');
-#import('package:box2d/box2d.dart');
+#import('package:box2d/box2d_browser.dart');
 
 class Bench2d {
   static const int CANVAS_WIDTH = 900;

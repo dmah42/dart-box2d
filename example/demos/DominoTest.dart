@@ -14,7 +14,7 @@
 
 #library('DominoTest');
 #import('dart:html');
-#import('package:box2d/box2d.dart');
+#import('package:box2d/box2d_browser.dart');
 #source('demo.dart');
 
 /** Demonstration of dominoes being knocked over. */

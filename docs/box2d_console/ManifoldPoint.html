@@ -1,0 +1,325 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>ManifoldPoint class / box2d_console Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d_console" data-type="ManifoldPoint">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d_console.html">box2d_console</a> &rsaquo; <a href="../box2d_console/ManifoldPoint.html">ManifoldPoint</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>ManifoldPoint</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>A manifold point is a contact point belonging to a contact manifold. It holds
+the details of the geometry and dynamics of the contact points.</p>
+<pre class="source">
+class ManifoldPoint {
+  /**
+   * Usage depends on manifold type. For circles, is the local center of
+   * circleB. For faceA, is the local center of CircleB or the clip point of
+   * polygonB. For faceB, is the clip point of polygonA.
+   */
+  final Vector localPoint;
+
+  /** The non-penetration impulse. */
+  num normalImpulse;
+
+  /** The friction impulse. */
+  num tangentImpulse;
+
+  /** Unique identifier for a contact point between two shapes. */
+  final ContactID id;
+
+  /**
+   * Constructs a new ManifoldPoint.
+   */
+  ManifoldPoint() :
+    localPoint = new Vector(),
+    tangentImpulse = 0,
+    normalImpulse = 0,
+    id = new ContactID() { }
+
+  /**
+   * Constructs a new ManifoldPoint that is a copy of the given point.
+   */
+  ManifoldPoint.copy(ManifoldPoint other) :
+    localPoint = new Vector.copy(other.localPoint),
+    normalImpulse = other.normalImpulse,
+    tangentImpulse = other.tangentImpulse,
+    id = new ContactID.copy(other.id) { }
+
+  /**
+   * Sets this ManifoldPoint to be equal to the given point.
+   */
+  void setFrom(ManifoldPoint other) {
+    localPoint.setFrom(other.localPoint);
+    normalImpulse = other.normalImpulse;
+    tangentImpulse = other.tangentImpulse;
+    id.setFrom(other.id);
+  }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="ManifoldPoint">
+<button class="show-code">Code</button>
+new <strong>ManifoldPoint</strong>() <a class="anchor-link" href="#ManifoldPoint"
+              title="Permalink to ManifoldPoint.ManifoldPoint">#</a></h4>
+<div class="doc">
+<p>Constructs a new ManifoldPoint.</p>
+<pre class="source">
+ManifoldPoint() :
+  localPoint = new Vector(),
+  tangentImpulse = 0,
+  normalImpulse = 0,
+  id = new ContactID() { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="ManifoldPoint.copy">
+<button class="show-code">Code</button>
+new <strong>ManifoldPoint.copy</strong>(<a href="../box2d_console/ManifoldPoint.html">ManifoldPoint</a> other) <a class="anchor-link" href="#ManifoldPoint.copy"
+              title="Permalink to ManifoldPoint.ManifoldPoint.copy">#</a></h4>
+<div class="doc">
+<p>Constructs a new ManifoldPoint that is a copy of the given point.</p>
+<pre class="source">
+ManifoldPoint.copy(ManifoldPoint other) :
+  localPoint = new Vector.copy(other.localPoint),
+  normalImpulse = other.normalImpulse,
+  tangentImpulse = other.tangentImpulse,
+  id = new ContactID.copy(other.id) { }
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="id">
+<button class="show-code">Code</button>
+final <a href="../box2d_console/ContactID.html">ContactID</a>         <strong>id</strong> <a class="anchor-link"
+            href="#id"
+            title="Permalink to ManifoldPoint.id">#</a>
+        </h4>
+        <div class="doc">
+<p>Unique identifier for a contact point between two shapes.</p>
+<pre class="source">
+final ContactID id;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPoint">
+<button class="show-code">Code</button>
+final <a href="../box2d_console/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+            href="#localPoint"
+            title="Permalink to ManifoldPoint.localPoint">#</a>
+        </h4>
+        <div class="doc">
+<p>Usage depends on manifold type. For circles, is the local center of
+circleB. For faceA, is the local center of CircleB or the clip point of
+polygonB. For faceB, is the clip point of polygonA.</p>
+<pre class="source">
+final Vector localPoint;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="normalImpulse">
+<button class="show-code">Code</button>
+num         <strong>normalImpulse</strong> <a class="anchor-link"
+            href="#normalImpulse"
+            title="Permalink to ManifoldPoint.normalImpulse">#</a>
+        </h4>
+        <div class="doc">
+<p>The non-penetration impulse.</p>
+<pre class="source">
+num normalImpulse;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to ManifoldPoint.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="tangentImpulse">
+<button class="show-code">Code</button>
+num         <strong>tangentImpulse</strong> <a class="anchor-link"
+            href="#tangentImpulse"
+            title="Permalink to ManifoldPoint.tangentImpulse">#</a>
+        </h4>
+        <div class="doc">
+<p>The friction impulse.</p>
+<pre class="source">
+num tangentImpulse;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to ManifoldPoint.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to ManifoldPoint.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="ManifoldPoint">
+<button class="show-code">Code</button>
+new <strong>ManifoldPoint</strong>() <a class="anchor-link" href="#ManifoldPoint"
+              title="Permalink to ManifoldPoint.ManifoldPoint">#</a></h4>
+<div class="doc">
+<p>Constructs a new ManifoldPoint.</p>
+<pre class="source">
+ManifoldPoint() :
+  localPoint = new Vector(),
+  tangentImpulse = 0,
+  normalImpulse = 0,
+  id = new ContactID() { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="ManifoldPoint.copy">
+<button class="show-code">Code</button>
+new <strong>ManifoldPoint.copy</strong>(<a href="../box2d_console/ManifoldPoint.html">ManifoldPoint</a> other) <a class="anchor-link" href="#ManifoldPoint.copy"
+              title="Permalink to ManifoldPoint.ManifoldPoint.copy">#</a></h4>
+<div class="doc">
+<p>Constructs a new ManifoldPoint that is a copy of the given point.</p>
+<pre class="source">
+ManifoldPoint.copy(ManifoldPoint other) :
+  localPoint = new Vector.copy(other.localPoint),
+  normalImpulse = other.normalImpulse,
+  tangentImpulse = other.tangentImpulse,
+  id = new ContactID.copy(other.id) { }
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to ManifoldPoint.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to ManifoldPoint.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(<a href="../box2d_console/ManifoldPoint.html">ManifoldPoint</a> other) <a class="anchor-link" href="#setFrom"
+              title="Permalink to ManifoldPoint.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this ManifoldPoint to be equal to the given point.</p>
+<pre class="source">
+void setFrom(ManifoldPoint other) {
+  localPoint.setFrom(other.localPoint);
+  normalImpulse = other.normalImpulse;
+  tangentImpulse = other.tangentImpulse;
+  id.setFrom(other.id);
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to ManifoldPoint.toString">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Returns a string representation of this object.</p>
+<pre class="source">
+external String toString();
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

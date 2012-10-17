@@ -81,8 +81,8 @@
     description="Run dart_analyzer over library and all demos." />
 
   <target name="analyze-lib">
-    <dart_analyze file="lib/box2d_nohtml.dart" />
-    <dart_analyze file="lib/box2d.dart" />
+    <dart_analyze file="lib/box2d_console.dart" />
+    <dart_analyze file="lib/box2d_browser.dart" />
   </target>
 
   <target name="analyze-demos">
@@ -101,7 +101,7 @@
   <target name="generate-docs" description="Generate DartDoc for library.">
     <echo>Generating documentation</echo>
     <exec executable="${dartdoc.dart}" failonerror="true">
-      <arg line="--omit-generation-time lib/box2d.dart lib/box2d_nohtml.dart" />
+      <arg line="--omit-generation-time lib/box2d_console.dart lib/box2d_browser.dart" />
     </exec>
   </target>
 

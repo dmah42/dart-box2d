@@ -1,0 +1,515 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Vector3 class / box2d_console Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d_console" data-type="Vector3">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d_console.html">box2d_console</a> &rsaquo; <a href="../box2d_console/Vector3.html">Vector3</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Vector3</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>A three dimensional vector.</p>
+<pre class="source">
+class Vector3 {
+  // Each vector is defined as the vector originating from (0,0) to the point
+  // defined by these values.
+  num x;
+  num y;
+  num z;
+
+  Vector3([this.x = 0, this.y = 0, this.z = 0]);
+
+  Vector3.copy(Vector3 argCopy) {
+    x = argCopy.x;
+    y = argCopy.y;
+    z = argCopy.z;
+  }
+
+  bool operator ==(other) {
+    return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+  }
+
+  /** Sets this vector equal to the given vector. */
+  Vector3 setFrom(Vector3 argVec) {
+    x = argVec.x;
+    y = argVec.y;
+    z = argVec.z;
+    return this;
+  }
+
+  /** Sets the vectors coordinate values to those given. */
+  Vector3 setCoords(num argX, num argY, num argZ) {
+    x = argX;
+    y = argY;
+    z = argZ;
+    return this;
+  }
+
+  Vector3 addLocal(Vector3 argVec) {
+    x += argVec.x;
+    y += argVec.y;
+    z += argVec.z;
+    return this;
+  }
+
+  Vector3 add(Vector3 argVec) =&gt;
+      new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+
+  Vector3 subLocal(Vector3 argVec) {
+    x -= argVec.x;
+    y -= argVec.y;
+    z -= argVec.z;
+    return this;
+  }
+
+  Vector3 sub(Vector3 argVec) =&gt;
+      new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+
+  Vector3 mulLocal(num argScalar) {
+    x *= argScalar;
+    y *= argScalar;
+    z *= argScalar;
+    return this;
+  }
+
+  Vector3 mul(num argScalar) =&gt;
+      new Vector3(x * argScalar, y * argScalar, z * argScalar);
+
+  Vector3 negateLocal() {
+    x = -x;
+    y = -y;
+    z = -z;
+    return this;
+  }
+
+  void setZero() {
+    x = 0;
+    y = 0;
+    z = 0;
+  }
+
+  String toString() =&gt; "($x, $y, $z)";
+
+  static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+
+  static Vector3 cross(Vector3 a, Vector3 b) =&gt;
+      new Vector3(a.y * b.z - a.z * b.y,
+                  a.z * b.x - a.x * b.z,
+                  a.x * b.y - a.y * b.x);
+
+  static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
+    final num tempy = a.z * b.x - a.x * b.z;
+    final num tempz = a.x * b.y - a.y * b.x;
+    out.x = a.y * b.z - a.z * b.y;
+    out.y = tempy;
+    out.z = tempz;
+  }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Vector3">
+<button class="show-code">Code</button>
+new <strong>Vector3</strong>([num x = 0, num y = 0, num z = 0]) <a class="anchor-link" href="#Vector3"
+              title="Permalink to Vector3.Vector3">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3([this.x = 0, this.y = 0, this.z = 0]);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Vector3.copy">
+<button class="show-code">Code</button>
+new <strong>Vector3.copy</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argCopy) <a class="anchor-link" href="#Vector3.copy"
+              title="Permalink to Vector3.Vector3.copy">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3.copy(Vector3 argCopy) {
+  x = argCopy.x;
+  y = argCopy.y;
+  z = argCopy.z;
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="dot">
+<button class="show-code">Code</button>
+num <strong>dot</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> a, <a href="../box2d_console/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#dot"
+              title="Permalink to Vector3.dot">#</a></h4>
+<div class="doc">
+<pre class="source">
+static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="cross">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>cross</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> a, <a href="../box2d_console/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#cross"
+              title="Permalink to Vector3.cross">#</a></h4>
+<div class="doc">
+<pre class="source">
+static Vector3 cross(Vector3 a, Vector3 b) =&gt;
+    new Vector3(a.y * b.z - a.z * b.y,
+                a.z * b.x - a.x * b.z,
+                a.x * b.y - a.y * b.x);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="crossToOut">
+<button class="show-code">Code</button>
+void <strong>crossToOut</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> a, <a href="../box2d_console/Vector3.html">Vector3</a> b, <a href="../box2d_console/Vector3.html">Vector3</a> out) <a class="anchor-link" href="#crossToOut"
+              title="Permalink to Vector3.crossToOut">#</a></h4>
+<div class="doc">
+<pre class="source">
+static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
+  final num tempy = a.z * b.x - a.x * b.z;
+  final num tempz = a.x * b.y - a.y * b.x;
+  out.x = a.y * b.z - a.z * b.y;
+  out.y = tempy;
+  out.z = tempz;
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to Vector3.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="x">
+<button class="show-code">Code</button>
+num         <strong>x</strong> <a class="anchor-link"
+            href="#x"
+            title="Permalink to Vector3.x">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+num x;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="y">
+<button class="show-code">Code</button>
+num         <strong>y</strong> <a class="anchor-link"
+            href="#y"
+            title="Permalink to Vector3.y">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+num y;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="z">
+<button class="show-code">Code</button>
+num         <strong>z</strong> <a class="anchor-link"
+            href="#z"
+            title="Permalink to Vector3.z">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+num z;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to Vector3.operator ==">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+bool operator ==(other) {
+  return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="add">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>add</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#add"
+              title="Permalink to Vector3.add">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 add(Vector3 argVec) =&gt;
+    new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="addLocal">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>addLocal</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#addLocal"
+              title="Permalink to Vector3.addLocal">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 addLocal(Vector3 argVec) {
+  x += argVec.x;
+  y += argVec.y;
+  z += argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to Vector3.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mul">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>mul</strong>(num argScalar) <a class="anchor-link" href="#mul"
+              title="Permalink to Vector3.mul">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 mul(num argScalar) =&gt;
+    new Vector3(x * argScalar, y * argScalar, z * argScalar);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mulLocal">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>mulLocal</strong>(num argScalar) <a class="anchor-link" href="#mulLocal"
+              title="Permalink to Vector3.mulLocal">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 mulLocal(num argScalar) {
+  x *= argScalar;
+  y *= argScalar;
+  z *= argScalar;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="negateLocal">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>negateLocal</strong>() <a class="anchor-link" href="#negateLocal"
+              title="Permalink to Vector3.negateLocal">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 negateLocal() {
+  x = -x;
+  y = -y;
+  z = -z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to Vector3.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to Vector3.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setCoords">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>setCoords</strong>(num argX, num argY, num argZ) <a class="anchor-link" href="#setCoords"
+              title="Permalink to Vector3.setCoords">#</a></h4>
+<div class="doc">
+<p>Sets the vectors coordinate values to those given.</p>
+<pre class="source">
+Vector3 setCoords(num argX, num argY, num argZ) {
+  x = argX;
+  y = argY;
+  z = argZ;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>setFrom</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#setFrom"
+              title="Permalink to Vector3.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this vector equal to the given vector.</p>
+<pre class="source">
+Vector3 setFrom(Vector3 argVec) {
+  x = argVec.x;
+  y = argVec.y;
+  z = argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setZero">
+<button class="show-code">Code</button>
+void <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
+              title="Permalink to Vector3.setZero">#</a></h4>
+<div class="doc">
+<pre class="source">
+void setZero() {
+  x = 0;
+  y = 0;
+  z = 0;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="sub">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>sub</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#sub"
+              title="Permalink to Vector3.sub">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 sub(Vector3 argVec) =&gt;
+    new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="subLocal">
+<button class="show-code">Code</button>
+<a href="../box2d_console/Vector3.html">Vector3</a> <strong>subLocal</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argVec) <a class="anchor-link" href="#subLocal"
+              title="Permalink to Vector3.subLocal">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3 subLocal(Vector3 argVec) {
+  x -= argVec.x;
+  y -= argVec.y;
+  z -= argVec.z;
+  return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to Vector3.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+String toString() =&gt; "($x, $y, $z)";
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Vector3">
+<button class="show-code">Code</button>
+new <strong>Vector3</strong>([num x = 0, num y = 0, num z = 0]) <a class="anchor-link" href="#Vector3"
+              title="Permalink to Vector3.Vector3">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3([this.x = 0, this.y = 0, this.z = 0]);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Vector3.copy">
+<button class="show-code">Code</button>
+new <strong>Vector3.copy</strong>(<a href="../box2d_console/Vector3.html">Vector3</a> argCopy) <a class="anchor-link" href="#Vector3.copy"
+              title="Permalink to Vector3.Vector3.copy">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector3.copy(Vector3 argCopy) {
+  x = argCopy.x;
+  y = argCopy.y;
+  z = argCopy.z;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

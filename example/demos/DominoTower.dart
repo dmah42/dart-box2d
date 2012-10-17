@@ -15,7 +15,7 @@
 #library('DominoTower');
 #import('dart:html');
 #import('dart:math', prefix: 'Math');
-#import('package:box2d/box2d.dart');
+#import('package:box2d/box2d_browser.dart');
 #source('demo.dart');
 
 class DominoTower extends Demo {
