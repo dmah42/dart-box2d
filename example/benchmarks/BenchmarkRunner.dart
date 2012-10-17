@@ -14,7 +14,7 @@
 
 #library('BenchmarkRunner');
 #import('dart:math', prefix: 'Math');
-#import('package:box2d/box2d_console.dart');
+#import('package:box2d/box2d.dart');
 #source('Benchmark.dart');
 #source('BallCageBench.dart');
 #source('BallDropBench.dart');
