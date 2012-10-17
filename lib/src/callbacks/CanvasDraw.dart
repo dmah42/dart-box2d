@@ -128,10 +128,7 @@ class CanvasDraw extends DebugDraw {
 
   /** Sets the rendering context stroke and fill color to [color]. */
   void set _color(Color3 color) {
-    scale(val) => (val * 256).floor().toInt();
-    ctx.setStrokeColorRgb(scale(color.x), scale(color.y),
-                          scale(color.z), 0.9);
-    ctx.setFillColorRgb(scale(color.x), scale(color.y),
-                        scale(color.z), 0.8);
+    ctx.setStrokeColorRgb(color.x, color.y, color.z, 0.9);
+    ctx.setFillColorRgb(color.x, color.y, color.z, 0.8);
   }
 }

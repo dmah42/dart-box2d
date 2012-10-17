@@ -14,24 +14,33 @@
 
 /** Similar to javax.vecmath.Color3 holder. */
 class Color3 {
-  num x;
-  num y;
-  num z;
+  int x;
+  int y;
+  int z;
 
   Color3() : x = 0, y = 0, z = 0;
+  Color3.fromRGB(int r, int g, int b) : x = r, y = g, z = b;
+  Color3.fromRGBF(double r, double g, double b)
+      : x = (r * 255).floor().toInt(),
+        y = (g * 255).floor().toInt(),
+        z = (b * 255).floor().toInt();
+  Color3.fromColor3(Color3 color)
+      : x = color.x, y = color.y, z = color.z;
 
-  Color3.fromRGB(num r, num g, num b) : x = r, y = g, z = b;
-
-  void setFromRGB(num r, num g, num b) {
-    x = r;
-    y = g;
-    z = b;
+  void setFromRGB(int r, int g, int b) {
+    x = r; y = g; z = b;
   }
 
-  void setFrom(Color3 argColor) {
-    x = argColor.x;
-    y = argColor.y;
-    z = argColor.z;
+  void setFromRGBF(double r, double g, double b) {
+    x = (r * 255).floor().toInt();
+    y = (g * 255).floor().toInt();
+    z = (b * 255).floor().toInt();
+  }
+
+  void setFromColor3(Color3 color) {
+    x = color.x;
+    y = color.y;
+    z = color.z;
   }
 
   bool operator ==(final other) {

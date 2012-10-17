@@ -564,19 +564,19 @@ class World {
         xf.setFrom(b.originTransform);
         for (Fixture f = b.fixtureList; f != null; f = f.next) {
           if (b.active == false) {
-            color.setFromRGB(0.5, 0.5, 0.3);
+            color.setFromRGBF(0.5, 0.5, 0.3);
             drawShape(f, xf, color);
           } else if (b.type == BodyType.STATIC) {
-            color.setFromRGB(0.5, 0.9, 0.3);
+            color.setFromRGBF(0.5, 0.9, 0.3);
             drawShape(f, xf, color);
           } else if (b.type == BodyType.KINEMATIC) {
-            color.setFromRGB(0.5, 0.5, 0.9);
+            color.setFromRGBF(0.5, 0.5, 0.9);
             drawShape(f, xf, color);
           } else if (b.awake == false) {
-            color.setFromRGB(0.9, 0.9, 0.9);
+            color.setFromRGBF(0.9, 0.9, 0.9);
             drawShape(f, xf, color);
           } else {
-            color.setFromRGB(0.9, 0.7, 0.7);
+            color.setFromRGBF(0.9, 0.7, 0.7);
             drawShape(f, xf, color);
           }
         }
@@ -589,7 +589,7 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
-      Color3 color = new Color3.fromRGB(0.3, 0.9, 0.9);
+      Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
       for (Contact c = _contactManager.contactList; c != null; c = c.next) {
         Fixture fixtureA = c.fixtureA;
         Fixture fixtureB = c.fixtureB;
@@ -602,7 +602,7 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
-      Color3 color = new Color3.fromRGB(0.9, 0.3, 0.9);
+      Color3 color = new Color3.fromRGBF(0.9, 0.3, 0.9);
 
       for (Body b = _bodyList; b != null; b = b.next) {
         if (!b.active) {
@@ -1158,7 +1158,7 @@ class World {
     joint.getAnchorB(p2);
 
     // Set the drawing color.
-    Color3 color = new Color3.fromRGB(0.5, 0.3, 0.3);
+    Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
 
     switch (joint.type) {
       case JointType.DISTANCE :
