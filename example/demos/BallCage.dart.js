@@ -831,6 +831,15 @@ $$.StackOverflowException = {"":
  is$Exception: true
 };
 
+$$.FormatException = {"":
+ ["message"],
+ "super": "Object",
+ toString$0: function() {
+  return 'FormatException: ' + this.message;
+},
+ is$Exception: true
+};
+
 $$.NullPointerException = {"":
  ["functionName", "arguments"],
  "super": "Object",
@@ -2312,8 +2321,9 @@ $$.CanvasDraw = {"":
   this.drawCircle$3(xf.position, 0.1, color);
 },
  set$_color: function(color) {
-  this.ctx.setStrokeColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
-  this.ctx.setFillColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
+  var t1 = new $.CanvasDraw__color_scale();
+  this.ctx.setStrokeColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.9);
+  this.ctx.setFillColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.8);
 },
  CanvasDraw$2: function(viewport, ctx) {
 }
@@ -23440,6 +23450,14 @@ $$._FilteredElementList_removeRange_anon = {"":
 }
 };
 
+$$.CanvasDraw__color_scale = {"":
+ [],
+ "super": "Closure",
+ call$1: function(val) {
+  return $.toInt($.floor($.mul(val, 256)));
+}
+};
+
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  "super": "Closure",
@@ -24942,6 +24960,10 @@ $.gt$slow = function(a, b) {
   return a.operator$gt$1(b);
 };
 
+$.BodyDef$ = function() {
+  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
+};
+
 $.typeNameInChrome = function(obj) {
   var name$ = obj.constructor.name;
   if (name$ === 'Window')
@@ -24951,10 +24973,6 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'WebKitMutationObserver')
     return 'MutationObserver';
   return name$;
-};
-
-$.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.Collections__emitCollection = function(c, result, visiting) {
@@ -25801,6 +25819,12 @@ $.getFunctionForTypeNameOf = function() {
     return $.constructorNameFallback;
 };
 
+$.last = function(receiver) {
+  if (!$.isJsArray(receiver))
+    return receiver.last$0();
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
+};
+
 $.indexSet$slow = function(a, index, value) {
   if ($.isJsArray(a)) {
     if (!(typeof index === 'number' && Math.floor(index) === index))
@@ -25826,12 +25850,6 @@ $.Primitives_objectHashCode = function(object) {
 
 $.gt = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? a > b : $.gt$slow(a, b);
-};
-
-$.last = function(receiver) {
-  if (!$.isJsArray(receiver))
-    return receiver.last$0();
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $._IsolateContext$ = function() {
@@ -25915,6 +25933,17 @@ $.isNaN = function(receiver) {
     return isNaN(receiver);
   else
     return receiver.isNaN$0();
+};
+
+$.toInt = function(receiver) {
+  if (!(typeof receiver === 'number'))
+    return receiver.toInt$0();
+  if ($.isNaN(receiver) === true)
+    throw $.$$throw($.FormatException$('NaN'));
+  if ($.isInfinite(receiver) === true)
+    throw $.$$throw($.FormatException$('Infinity'));
+  var truncated = $.truncate(receiver);
+  return truncated == -0.0 ? 0 : truncated;
 };
 
 $.DefaultWorldPool$ = function() {
@@ -26107,6 +26136,10 @@ $.Completer_Completer = function() {
   return $.CompleterImpl$();
 };
 
+$.isInfinite = function(receiver) {
+  return receiver == Infinity || receiver == -Infinity;
+};
+
 $.CompleterImpl$ = function() {
   return new $.CompleterImpl($.FutureImpl$());
 };
@@ -26209,6 +26242,10 @@ $.constructorNameFallback = function(object) {
   }
   var string = Object.prototype.toString.call(object);
   return string.substring(8, string.length - 1);
+};
+
+$.FormatException$ = function(message) {
+  return new $.FormatException(message);
 };
 
 $._Collections_filter = function(source, destination, f) {
@@ -26446,6 +26483,10 @@ $.contains = function(userAgent, name$) {
   return userAgent.indexOf(name$) !== -1;
 };
 
+$.ContactFilter$ = function() {
+  return new $.ContactFilter();
+};
+
 $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
     return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
@@ -26466,10 +26507,6 @@ $._Lists_indexOf = function(a, element, startIndex, endIndex) {
       return i;
   }
   return -1;
-};
-
-$.ContactFilter$ = function() {
-  return new $.ContactFilter();
 };
 
 $.Island$ = function() {

@@ -836,6 +836,15 @@ $$.StackOverflowException = {"":
  is$Exception: true
 };
 
+$$.FormatException = {"":
+ ["message"],
+ "super": "Object",
+ toString$0: function() {
+  return 'FormatException: ' + this.message;
+},
+ is$Exception: true
+};
+
 $$.NullPointerException = {"":
  ["functionName", "arguments"],
  "super": "Object",
@@ -2363,8 +2372,9 @@ $$.CanvasDraw = {"":
   this.drawCircle$3(xf.position, 0.1, color);
 },
  set$_color: function(color) {
-  this.ctx.setStrokeColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.9);
-  this.ctx.setFillColorRgb$4(color.get$x(), color.get$y(), color.get$z(), 0.8);
+  var t1 = new $.CanvasDraw__color_scale();
+  this.ctx.setStrokeColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.9);
+  this.ctx.setFillColorRgb$4(t1.call$1(color.get$x()), t1.call$1(color.get$y()), t1.call$1(color.get$z()), 0.8);
 },
  CanvasDraw$2: function(viewport, ctx) {
 }
@@ -29667,6 +29677,14 @@ $$._FilteredElementList_removeRange_anon = {"":
 }
 };
 
+$$.CanvasDraw__color_scale = {"":
+ [],
+ "super": "Closure",
+ call$1: function(val) {
+  return $.toInt($.floor($.mul(val, 256)));
+}
+};
+
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  "super": "Closure",
@@ -31121,13 +31139,6 @@ $.DoubleLinkedQueue$ = function() {
   return t1;
 };
 
-$.filter = function(receiver, predicate) {
-  if (!$.isJsArray(receiver))
-    return receiver.filter$1(predicate);
-  else
-    return $.Collections_filter(receiver, [], predicate);
-};
-
 $.StringBufferImpl$ = function(content$) {
   var t1 = new $.StringBufferImpl(null, null);
   t1.StringBufferImpl$1(content$);
@@ -31172,13 +31183,11 @@ $.regExpTest = function(regExp, str) {
   return $.regExpGetNative(regExp).test(str);
 };
 
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
-    var t2 = t1.next$0();
-    if (f.call$1(t2) === true)
-      destination.push(t2);
-  }
-  return destination;
+$.filter = function(receiver, predicate) {
+  if (!$.isJsArray(receiver))
+    return receiver.filter$1(predicate);
+  else
+    return $.Collections_filter(receiver, [], predicate);
 };
 
 $.makeLiteralMap = function(keyValuePairs) {
@@ -31204,6 +31213,15 @@ $.Vector3$ = function(x, y, z) {
   return new $.Vector3(x, y, z);
 };
 
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
+    var t2 = t1.next$0();
+    if (f.call$1(t2) === true)
+      destination.push(t2);
+  }
+  return destination;
+};
+
 $._FilteredElementList$ = function(node) {
   return new $._FilteredElementList(node, node.get$nodes());
 };
@@ -31222,6 +31240,10 @@ $.gt$slow = function(a, b) {
   return a.operator$gt$1(b);
 };
 
+$.BodyDef$ = function() {
+  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
+};
+
 $.typeNameInChrome = function(obj) {
   var name$ = obj.constructor.name;
   if (name$ === 'Window')
@@ -31231,10 +31253,6 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'WebKitMutationObserver')
     return 'MutationObserver';
   return name$;
-};
-
-$.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.Vector$(0, 0), $.Vector$(0, 0), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.Collections__emitCollection = function(c, result, visiting) {
@@ -32259,6 +32277,17 @@ $.isNaN = function(receiver) {
     return receiver.isNaN$0();
 };
 
+$.toInt = function(receiver) {
+  if (!(typeof receiver === 'number'))
+    return receiver.toInt$0();
+  if ($.isNaN(receiver) === true)
+    throw $.$$throw($.FormatException$('NaN'));
+  if ($.isInfinite(receiver) === true)
+    throw $.$$throw($.FormatException$('Infinity'));
+  var truncated = $.truncate(receiver);
+  return truncated == -0.0 ? 0 : truncated;
+};
+
 $.DefaultWorldPool$ = function() {
   var t1 = new $.DefaultWorldPool(null, null, null);
   t1.DefaultWorldPool$0();
@@ -32468,6 +32497,10 @@ $.Completer_Completer = function() {
   return $.CompleterImpl$();
 };
 
+$.isInfinite = function(receiver) {
+  return receiver == Infinity || receiver == -Infinity;
+};
+
 $.CompleterImpl$ = function() {
   return new $.CompleterImpl($.FutureImpl$());
 };
@@ -32570,6 +32603,10 @@ $.constructorNameFallback = function(object) {
   }
   var string = Object.prototype.toString.call(object);
   return string.substring(8, string.length - 1);
+};
+
+$.FormatException$ = function(message) {
+  return new $.FormatException(message);
 };
 
 $._Collections_filter = function(source, destination, f) {
@@ -32730,24 +32767,6 @@ $.Arrays_indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$.Simplex$ = function() {
-  var t1 = $.SimplexVertex$();
-  var t2 = $.SimplexVertex$();
-  var t3 = $.SimplexVertex$();
-  var t4 = $.ListImplementation_List(3);
-  var t5 = $.Vector$(0, 0);
-  var t6 = $.Vector$(0, 0);
-  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.Vector$(0, 0), t6, $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0));
-  t6.Simplex$0();
-  return t6;
-};
-
-$.FixtureDef$ = function() {
-  var t1 = new $.FixtureDef(null, null, 0.2, 0, 0, false, $.Filter$());
-  t1.FixtureDef$0();
-  return t1;
-};
-
 $._Lists_indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object' || a === null || a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))
     return $._Lists_indexOf$bailout(1, a, element, startIndex, endIndex);
@@ -32768,6 +32787,24 @@ $._Lists_indexOf = function(a, element, startIndex, endIndex) {
       return i;
   }
   return -1;
+};
+
+$.Simplex$ = function() {
+  var t1 = $.SimplexVertex$();
+  var t2 = $.SimplexVertex$();
+  var t3 = $.SimplexVertex$();
+  var t4 = $.ListImplementation_List(3);
+  var t5 = $.Vector$(0, 0);
+  var t6 = $.Vector$(0, 0);
+  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.Vector$(0, 0), t6, $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0));
+  t6.Simplex$0();
+  return t6;
+};
+
+$.FixtureDef$ = function() {
+  var t1 = new $.FixtureDef(null, null, 0.2, 0, 0, false, $.Filter$());
+  t1.FixtureDef$0();
+  return t1;
 };
 
 $.PolygonShape$ = function() {
