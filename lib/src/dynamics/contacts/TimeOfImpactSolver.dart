@@ -53,7 +53,7 @@ class TimeOfImpactSolver {
 
     if(count >= constraints.length){
       List<TimeOfImpactConstraint> old = constraints;
-      int newLen = Math.max(count, old.length*2);
+      int newLen = math.max(count, old.length*2);
       constraints = new List<TimeOfImpactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
       for(int i=old.length; i<constraints.length; i++){
@@ -130,7 +130,7 @@ class TimeOfImpactSolver {
         rB.copyFrom(point).sub(bodyB.sweep.center);
 
         // Track max constraint error.
-        minSeparation = Math.min(minSeparation, separation);
+        minSeparation = math.min(minSeparation, separation);
 
         // Prevent large corrections and allow slop.
         num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
@@ -198,7 +198,7 @@ class TimeOfImpactSolverManifold {
           normal.copyFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
-          normal.splat(0);
+          normal.splat(0.0);
         }
 
         point.copyFrom(pointA).add(pointB).scale(.5);

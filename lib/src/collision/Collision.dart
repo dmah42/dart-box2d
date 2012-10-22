@@ -199,7 +199,7 @@ class Collision {
 
     manifold.type = ManifoldType.CIRCLES;
     manifold.localPoint.copyFrom(circle1.position);
-    manifold.localNormal.splat(0);
+    manifold.localNormal.splat(0.0);
     manifold.pointCount = 1;
 
     manifold.points[0].localPoint.copyFrom(circle2.position);

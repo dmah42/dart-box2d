@@ -55,8 +55,8 @@ class WorldManifold {
         final vec2 pointA = pool3;
         final vec2 pointB = pool4;
 
-        normal.x = 1;
-        normal.y = 0;
+        normal.x = 1.0;
+        normal.y = 0.0;
         pointA.x = xfA.position.x + xfA.rotation.col0.x *
             manifold.localPoint.x + xfA.rotation.col1.x * manifold.localPoint.y;
         pointA.y = xfA.position.y + xfA.rotation.col0.y *

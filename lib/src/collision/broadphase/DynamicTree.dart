@@ -374,7 +374,7 @@ class DynamicTree {
 
     int heightOne = _computeHeight(node.childOne);
     int heightTwo = _computeHeight(node.childTwo);
-    return 1 + Math.max(heightOne, heightTwo);
+    return 1 + math.max(heightOne, heightTwo);
   }
 
 

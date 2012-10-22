@@ -140,7 +140,7 @@ class PolygonShape extends Shape {
     normals[1].setComponents(1.0, 0.0);
     normals[2].setComponents(0.0, 1.0);
     normals[3].setComponents(-1.0, 0.0);
-    centroid.splat(0);
+    centroid.splat(0.0);
   }
 
   /**
@@ -225,7 +225,7 @@ class PolygonShape extends Shape {
   void computeCentroidToOut(List<vec2> vs, int count, vec2 out) {
     assert (count >= 3);
 
-    out.splat(0);
+    out.splat(0.0);
     num area = 0.0;
 
     if (count == 2) {

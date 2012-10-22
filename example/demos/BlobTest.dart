@@ -17,7 +17,7 @@ import 'dart:html';
 import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 import 'package:dartvectormath/vector_math_html.dart';
-import 'demo.dart';
+part 'demo.dart';
 
 class BlobTest extends Demo {
   /** Constructs a new BlobTest. */
@@ -38,7 +38,7 @@ class BlobTest extends Demo {
       sd.setAsBox(50.0, 0.4);
 
       BodyDef bd = new BodyDef();
-      bd.position.splat(0);
+      bd.position.splat(0.0);
       assert(world != null);
       ground = world.createBody(bd);
       bodies.add(ground);
@@ -59,11 +59,11 @@ class BlobTest extends Demo {
     int nBodies = 20;
     num bodyRadius = 0.5;
     for (int i = 0; i < nBodies; ++i) {
-      num angle = MathBox.translateAndScale(i, 0, nBodies, 0, Math.PI * 2);
+      num angle = MathBox.translateAndScale(i, 0, nBodies, 0, math.PI * 2);
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true;
-      bd.position.setComponents(cx + rx * Math.sin(angle),
-                                cy + ry * Math.cos(angle));
+      bd.position.setComponents(cx + rx * math.sin(angle),
+                                cy + ry * math.cos(angle));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);
       bodies.add(body);

@@ -154,7 +154,7 @@ class Body {
 
     originTransform.position.copyFrom(bd.position);
     originTransform.rotation.setRotation(bd.angle);
-    sweep.localCenter.splat(0);
+    sweep.localCenter.splat(0.0);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
     sweep.center.copyFrom(sweep.centerZero);
     sweep.angle = bd.angle;
@@ -526,7 +526,7 @@ class Body {
     invMass = 0.0;
     _inertia = 0.0;
     invInertia = 0.0;
-    sweep.localCenter.splat(0);
+    sweep.localCenter.splat(0.0);
 
     // Static and kinematic bodies have zero mass.
     if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
@@ -538,7 +538,7 @@ class Body {
     assert (_type == BodyType.DYNAMIC);
 
     // Accumulate mass over all fixtures.
-    tempCenter.splat(0);
+    tempCenter.splat(0.0);
     MassData massData = _pmd;
     for (Fixture f = fixtureList; f != null; f = f.next) {
       if (f.density == 0.0) {
@@ -721,13 +721,13 @@ class Body {
     resetMassData();
 
     if (_type == BodyType.STATIC) {
-      _linearVelocity.splat(0);
+      _linearVelocity.splat(0.0);
       _angularVelocity = 0.0;
     }
 
     awake = true;
 
-    _force.splat(0);
+    _force.splat(0.0);
     _torque = 0.0;
 
     // Since the body type changed, we need to flag contacts for filtering.
@@ -779,9 +779,9 @@ class Body {
     } else {
       flags &= ~AWAKE_FLAG;
       sleepTime = 0.0;
-      _linearVelocity.splat(0);
+      _linearVelocity.splat(0.0);
       _angularVelocity = 0.0;
-      _force.splat(0);
+      _force.splat(0.0);
       _torque = 0.0;
     }
   }

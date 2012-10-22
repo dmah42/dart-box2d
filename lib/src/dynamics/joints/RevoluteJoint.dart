@@ -155,7 +155,7 @@ class RevoluteJoint extends Joint {
       b2.angularVelocity += i2 * (cross(r2, P) + _motorImpulse + impulse.z);
 
     } else {
-      impulse.splat(0);
+      impulse.splat(0.0);
       _motorImpulse = 0.0;
     }
   }

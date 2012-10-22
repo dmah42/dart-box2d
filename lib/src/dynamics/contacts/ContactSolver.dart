@@ -78,7 +78,7 @@ class ContactSolver {
     // dynamic array
     if(constraints.length < contactCount){
       List<ContactConstraint> old = constraints;
-      int newLen = Math.max(old.length * 2, constraintCount);
+      int newLen = math.max(old.length * 2, constraintCount);
       constraints = new List<ContactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
 
@@ -545,7 +545,7 @@ class ContactSolver {
         rB.copyFrom(point).sub(bodyB.sweep.center);
 
         // Track max constraint error.
-        minSeparation = Math.min(minSeparation, separation);
+        minSeparation = math.min(minSeparation, separation);
 
         // Prevent large corrections and allow slop.
         num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
@@ -614,7 +614,7 @@ class PositionSolverManifold {
           normal.copyFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
-          normal.splat(0);
+          normal.splat(0.0);
         }
 
         point.copyFrom(pointA).add(pointB).scale(.5);

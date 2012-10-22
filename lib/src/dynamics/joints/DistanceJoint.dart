@@ -83,7 +83,7 @@ class DistanceJoint extends Joint {
     if (len > Settings.LINEAR_SLOP) {
       u.scale(1.0 / len);
     } else {
-      u.splat(0);
+      u.splat(0.0);
     }
 
     num cr1u = cross(r1, u);

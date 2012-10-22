@@ -248,7 +248,7 @@ class Island {
         }
         else{
           b.sleepTime += time_step.dt;
-          minSleepTime = Math.min(minSleepTime, b.sleepTime);
+          minSleepTime = math.min(minSleepTime, b.sleepTime);
         }
       }
 

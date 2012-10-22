@@ -126,7 +126,7 @@ class ConstantVolumeJoint extends Joint {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
       num dx = bodies[next].worldCenter.x - bodies[i].worldCenter.x;
       num dy = bodies[next].worldCenter.y - bodies[i].worldCenter.y;
-      num dist = Math.sqrt(dx * dx + dy * dy);
+      num dist = math.sqrt(dx * dx + dy * dy);
       if (dist < Settings.EPSILON) {
         dist = 1.0;
       }

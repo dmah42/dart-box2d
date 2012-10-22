@@ -40,10 +40,10 @@ class AxisAlignedBox {
    * upperBound.
    */
   void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
-    lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
-    lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
-    upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
-    upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+    lowerBound.x = math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+    lowerBound.y = math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+    upperBound.x = math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+    upperBound.y = math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
   }
 
   /** Sets the bounds to the given values. */

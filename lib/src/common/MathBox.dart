@@ -15,7 +15,7 @@
 part of box2d;
 
 class MathBox {
-  static const double TWO_PI = Math.PI * 2.0;
+  static const double TWO_PI = math.PI * 2.0;
 
   MathBox();
 

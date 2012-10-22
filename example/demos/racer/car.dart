@@ -42,7 +42,7 @@ class Car {
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0.0;
     jointDef.upperAngle = 0.0;
-    jointDef.localAnchorB.splat(0);
+    jointDef.localAnchorB.splat(0.0);
 
     _blTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _backTireMaxDriveForce, _backTireMaxLateralImpulse);
@@ -109,8 +109,8 @@ class Car {
   final double _backTireMaxLateralImpulse = 8.5;
   final double _frontTireMaxLateralImpulse = 7.5;
 
-  final double _lockAngle = (Math.PI / 180) * 35;
-  final double _turnSpeedPerSec = (Math.PI / 180) * 160;
+  final double _lockAngle = (math.PI / 180) * 35;
+  final double _turnSpeedPerSec = (math.PI / 180) * 160;
 
   Body _body;
   Tire _blTire, _brTire, _flTire, _frTire;

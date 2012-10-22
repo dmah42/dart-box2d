@@ -14,8 +14,7 @@
 
 library BenchmarkRunner;
 
-import 'dart:math';
-
+import 'dart:math' as math;
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
 import 'package:vector_math/vector_math_console.dart';

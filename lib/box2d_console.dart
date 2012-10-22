@@ -1,20 +1,22 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-library box2d;
+
+library box2d_console;
 
 import 'dart:collection';
 import 'dart:math' as Math;
+import 'package:vector_math/vector_math_console.dart';
 
 part 'src/callbacks/PairCallback.dart';
 part 'src/callbacks/TreeCallback.dart';
@@ -51,15 +53,11 @@ part 'src/collision/shapes/PolygonShape.dart';
 part 'src/collision/shapes/Shape.dart';
 part 'src/collision/shapes/ShapeType.dart';
 part 'src/common/Color3.dart';
-part 'src/common/IViewportTransform.dart';
 part 'src/common/MathBox.dart';
-part 'src/common/Matrix22.dart';
-part 'src/common/Matrix33.dart';
 part 'src/common/Settings.dart';
 part 'src/common/Sweep.dart';
 part 'src/common/Transform.dart';
-part 'src/common/Vector.dart';
-part 'src/common/Vector3.dart';
+part 'src/common/ViewportTransform.dart';
 part 'src/dynamics/Body.dart';
 part 'src/dynamics/BodyDef.dart';
 part 'src/dynamics/BodyType.dart';

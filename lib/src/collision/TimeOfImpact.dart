@@ -91,7 +91,7 @@ class TimeOfImpact {
     num tMax = input.tMax;
 
     num totalRadius = proxyA.radius + proxyB.radius;
-    num target = Math.max(Settings.LINEAR_SLOP, totalRadius
+    num target = math.max(Settings.LINEAR_SLOP, totalRadius
         - 3.0 * Settings.LINEAR_SLOP);
     num tolerance = 0.25 * Settings.LINEAR_SLOP;
 
@@ -220,7 +220,7 @@ class TimeOfImpact {
           }
         }
 
-        toiMaxRootIters = Math.max(toiMaxRootIters, rootIterCount);
+        toiMaxRootIters = math.max(toiMaxRootIters, rootIterCount);
 
         ++pushBackIter;
 
@@ -243,7 +243,7 @@ class TimeOfImpact {
       }
     }
 
-    toiMaxIters = Math.max(toiMaxIters, iter);
+    toiMaxIters = math.max(toiMaxIters, iter);
   }
 }
 

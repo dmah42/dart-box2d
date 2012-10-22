@@ -108,7 +108,7 @@ class FrictionJoint extends Joint {
       bodyB.linearVelocity.y += bodyB.invMass * P.y;
       bodyB.angularVelocity += bodyB.invInertia * (cross(r2, P) + _angularImpulse);
     } else {
-      _linearImpulse.splat(0);
+      _linearImpulse.splat(0.0);
       _angularImpulse = 0.0;
     }
   }

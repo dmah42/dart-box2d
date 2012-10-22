@@ -129,7 +129,7 @@ class Simplex {
         break;
       default :
         assert (false);
-        out.splat(0);
+        out.splat(0.0);
         return;
     }
   }
@@ -142,7 +142,7 @@ class Simplex {
     switch (count) {
       case 0 :
         assert (false);
-        out.splat(0);
+        out.splat(0.0);
         return;
       case 1 :
         out.copyFrom(v1.w);
@@ -153,11 +153,11 @@ class Simplex {
         out.copyFrom(case2);
         return;
       case 3 :
-        out.splat(0);
+        out.splat(0.0);
         return;
       default :
         assert (false);
-        out.splat(0);
+        out.splat(0.0);
         return;
     }
   }

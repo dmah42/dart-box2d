@@ -18,7 +18,7 @@ import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 import 'package:dartvectormath/vector_math_html.dart';
 
-import 'demo.dart';
+part 'demo.dart';
 
 class FrictionJointTest extends Demo {
   FrictionJointTest() : super("FrictionJoint test");
@@ -66,7 +66,7 @@ class FrictionJointTest extends Demo {
 
   void _createBoxShapeAndFixture() {
     final PolygonShape boxShape = new PolygonShape();
-    boxShape.setAsBoxWithCenterAndAngle(3.0, 1.5, new vec2(0, 0), Math.PI / 2);
+    boxShape.setAsBoxWithCenterAndAngle(3.0, 1.5, new vec2(0, 0), math.PI / 2);
 
     // Define fixture (links body and shape)
     _boxFixture = new FixtureDef();

@@ -163,7 +163,7 @@ class Distance {
       ++simplex.count;
     }
 
-    maxIters = Math.max(maxIters, iter);
+    maxIters = math.max(maxIters, iter);
 
     // Prepare output.
     simplex.getWitnessPoints(output.pointA, output.pointB);

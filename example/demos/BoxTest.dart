@@ -17,7 +17,7 @@ import 'dart:html';
 import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 import 'package:dartvectormath/vector_math_html.dart';
-import 'demo.dart';
+part 'demo.dart';
 
 class BoxTest extends Demo {
   /** Constructs a new BoxTest. */
@@ -63,7 +63,7 @@ class BoxTest extends Demo {
   void _createBox() {
     // Create shape
     final PolygonShape shape = new PolygonShape();
-    shape.setAsBoxWithCenterAndAngle(3.0, 1.5, new vec2(0, 0), Math.PI / 2);
+    shape.setAsBoxWithCenterAndAngle(3.0, 1.5, new vec2(0, 0), math.PI / 2);
 
     // Define fixture (links body and shape)
     final FixtureDef activeFixtureDef = new FixtureDef();

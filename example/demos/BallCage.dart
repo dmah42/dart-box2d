@@ -16,7 +16,7 @@ import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
 import 'package:dartvectormath/vector_math_html.dart';
 
-import 'demo.dart';
+part 'demo.dart';
 
 class BallCage extends Demo {
   /** Starting position of ball cage in the world. */
