@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#library('BenchmarkRunner');
-#import('dart:math', prefix: 'Math');
-#import('package:box2d/box2d.dart');
-#source('Benchmark.dart');
-#source('BallCageBench.dart');
-#source('BallDropBench.dart');
-#source('CircleStressBench.dart');
-#source('DominoPlatformBench.dart');
-#source('DominoTowerBench.dart');
+library BenchmarkRunner;
+import 'package:box2d/box2d.dart';
+import 'dart:math';
+part 'Benchmark.dart';
+part 'BallCageBench.dart';
+part 'BallDropBench.dart';
+part 'CircleStressBench.dart';
+part 'DominoPlatformBench.dart';
+part 'DominoTowerBench.dart';
 
 /** Runs the Dart Box2D benchmarks. Outputs results to console. */
 class BenchmarkRunner {

@@ -77,10 +77,10 @@
     description="Analyze, generate JS and library's DartDoc." />
 
   <target name="analyze"
-    depends="analyze-lib, analyze-demos, analyze-benchmarks"
+    depends="analyze-libs, analyze-demos, analyze-benchmarks"
     description="Run dart_analyzer over library and all demos." />
 
-  <target name="analyze-lib">
+  <target name="analyze-libs">
     <dart_analyze file="lib/box2d.dart" />
     <dart_analyze file="lib/box2d_browser.dart" />
   </target>
@@ -101,7 +101,7 @@
   <target name="generate-docs" description="Generate DartDoc for library.">
     <echo>Generating documentation</echo>
     <exec executable="${dartdoc.dart}" failonerror="true">
-      <arg line="--omit-generation-time lib/box2d.dart lib/box2d_browser.dart" />
+      <arg line="--omit-generation-time --pkg ./packages/ lib/box2d.dart lib/box2d_browser.dart" />
     </exec>
   </target>
 

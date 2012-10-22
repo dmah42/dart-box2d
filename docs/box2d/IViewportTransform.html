@@ -1,0 +1,397 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>IViewportTransform class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="IViewportTransform">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/IViewportTransform.html">IViewportTransform</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>IViewportTransform</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>This is the viewport transform used from drawing.
+Use yFlip if you are drawing from the top-left corner.</p>
+<pre class="source">
+class IViewportTransform {
+  IViewportTransform(Vector e, Vector c, num s) :
+    extents = new Vector.copy(e),
+    center = new Vector.copy(c),
+    scale = s;
+
+  /**
+   * if we flip the y axis when transforming.
+   */
+  bool yFlip;
+
+  /**
+   * This is the half-width and half-height.
+   * This should be the actual half-width and 
+   * half-height, not anything transformed or scaled.
+   */
+  Vector extents;
+
+  /**
+   * Returns the scaling factor used in converting from world sizes to rendering
+   * sizes.
+   */
+  num scale;
+  
+  /**
+   * center of the viewport.
+   */
+  Vector center;
+
+  /**
+   * Sets the transform's center to the given x and y coordinates,
+   * and using the given scale.
+   */
+  void setCamera(num x, num y, num s) {
+    center.setCoords(x, y);
+    scale = s;
+  }
+  /**
+   * The current translation is the difference in canvas units between the
+   * actual center of the canvas and the currently specified center. For
+   * example, if the actual canvas center is (5, 5) but the current center is
+   * (6, 6), the translation is (1, 1).
+   */
+  Vector get translation() {
+    Vector result = new Vector.copy(extents);
+    result.subLocal(center);
+    return result;
+  }
+
+  void set translation(Vector translation) {
+    center.setFrom(extents);
+    center.subLocal(translation);
+  }
+
+
+  /**
+   * Takes the world coordinate (argWorld) puts the corresponding
+   * screen coordinate in argScreen.  It should be safe to give the
+   * same object as both parameters.
+   */
+  void getWorldToScreen(Vector argWorld, Vector argScreen) {
+    // Correct for canvas considering the upper-left corner, rather than the
+    // center, to be the origin.
+    num gridCorrectedX = (argWorld.x * scale) + extents.x;
+    num gridCorrectedY = extents.y - (argWorld.y * scale);
+
+    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+        -translation.y);
+  }
+
+  /**
+   * Takes the screen coordinates (argScreen) and puts the
+   * corresponding world coordinates in argWorld. It should be safe
+   * to give the same object as both parameters.
+   */
+  void getScreenToWorld(Vector argScreen, Vector argWorld) {
+    num translationCorrectedX = argScreen.x - translation.x;
+    num translationCorrectedY = argScreen.y + translation.y;
+
+    num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+    num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+  }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="IViewportTransform">
+<button class="show-code">Code</button>
+new <strong>IViewportTransform</strong>(<a href="../box2d/Vector.html">Vector</a> e, <a href="../box2d/Vector.html">Vector</a> c, num s) <a class="anchor-link" href="#IViewportTransform"
+              title="Permalink to IViewportTransform.IViewportTransform">#</a></h4>
+<div class="doc">
+<pre class="source">
+IViewportTransform(Vector e, Vector c, num s) :
+  extents = new Vector.copy(e),
+  center = new Vector.copy(c),
+  scale = s;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="center">
+<button class="show-code">Code</button>
+<a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+            href="#center"
+            title="Permalink to IViewportTransform.center">#</a>
+        </h4>
+        <div class="doc">
+<p>center of the viewport.</p>
+<pre class="source">
+Vector center;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="extents">
+<button class="show-code">Code</button>
+<a href="../box2d/Vector.html">Vector</a>         <strong>extents</strong> <a class="anchor-link"
+            href="#extents"
+            title="Permalink to IViewportTransform.extents">#</a>
+        </h4>
+        <div class="doc">
+<p>This is the half-width and half-height.
+This should be the actual half-width and
+half-height, not anything transformed or scaled.</p>
+<pre class="source">
+Vector extents;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to IViewportTransform.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="scale">
+<button class="show-code">Code</button>
+num         <strong>scale</strong> <a class="anchor-link"
+            href="#scale"
+            title="Permalink to IViewportTransform.scale">#</a>
+        </h4>
+        <div class="doc">
+<p>Returns the scaling factor used in converting from world sizes to rendering
+sizes.</p>
+<pre class="source">
+num scale;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="translation">
+<button class="show-code">Code</button>
+<a href="../box2d/Vector.html">Vector</a>         <strong>translation</strong> <a class="anchor-link"
+            href="#translation"
+            title="Permalink to IViewportTransform.translation">#</a>
+        </h4>
+        <div class="doc">
+<p>The current translation is the difference in canvas units between the
+actual center of the canvas and the currently specified center. For
+example, if the actual canvas center is (5, 5) but the current center is
+(6, 6), the translation is (1, 1).</p>
+<pre class="source">
+Vector get translation() {
+  Vector result = new Vector.copy(extents);
+  result.subLocal(center);
+  return result;
+}
+</pre>
+<pre class="source">
+void set translation(Vector translation) {
+  center.setFrom(extents);
+  center.subLocal(translation);
+}
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="yFlip">
+<button class="show-code">Code</button>
+bool         <strong>yFlip</strong> <a class="anchor-link"
+            href="#yFlip"
+            title="Permalink to IViewportTransform.yFlip">#</a>
+        </h4>
+        <div class="doc">
+<p>if we flip the y axis when transforming.</p>
+<pre class="source">
+bool yFlip;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to IViewportTransform.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="getScreenToWorld">
+<button class="show-code">Code</button>
+void <strong>getScreenToWorld</strong>(<a href="../box2d/Vector.html">Vector</a> argScreen, <a href="../box2d/Vector.html">Vector</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
+              title="Permalink to IViewportTransform.getScreenToWorld">#</a></h4>
+<div class="doc">
+<p>Takes the screen coordinates (argScreen) and puts the
+corresponding world coordinates in argWorld. It should be safe
+to give the same object as both parameters.</p>
+<pre class="source">
+void getScreenToWorld(Vector argScreen, Vector argWorld) {
+  num translationCorrectedX = argScreen.x - translation.x;
+  num translationCorrectedY = argScreen.y + translation.y;
+
+  num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+  num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+  argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getWorldToScreen">
+<button class="show-code">Code</button>
+void <strong>getWorldToScreen</strong>(<a href="../box2d/Vector.html">Vector</a> argWorld, <a href="../box2d/Vector.html">Vector</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
+              title="Permalink to IViewportTransform.getWorldToScreen">#</a></h4>
+<div class="doc">
+<p>Takes the world coordinate (argWorld) puts the corresponding
+screen coordinate in argScreen.  It should be safe to give the
+same object as both parameters.</p>
+<pre class="source">
+void getWorldToScreen(Vector argWorld, Vector argScreen) {
+  // Correct for canvas considering the upper-left corner, rather than the
+  // center, to be the origin.
+  num gridCorrectedX = (argWorld.x * scale) + extents.x;
+  num gridCorrectedY = extents.y - (argWorld.y * scale);
+
+  argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+      -translation.y);
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to IViewportTransform.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="IViewportTransform">
+<button class="show-code">Code</button>
+new <strong>IViewportTransform</strong>(<a href="../box2d/Vector.html">Vector</a> e, <a href="../box2d/Vector.html">Vector</a> c, num s) <a class="anchor-link" href="#IViewportTransform"
+              title="Permalink to IViewportTransform.IViewportTransform">#</a></h4>
+<div class="doc">
+<pre class="source">
+IViewportTransform(Vector e, Vector c, num s) :
+  extents = new Vector.copy(e),
+  center = new Vector.copy(c),
+  scale = s;
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to IViewportTransform.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to IViewportTransform.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setCamera">
+<button class="show-code">Code</button>
+void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href="#setCamera"
+              title="Permalink to IViewportTransform.setCamera">#</a></h4>
+<div class="doc">
+<p>Sets the transform's center to the given x and y coordinates,
+and using the given scale.</p>
+<pre class="source">
+void setCamera(num x, num y, num s) {
+  center.setCoords(x, y);
+  scale = s;
+}
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to IViewportTransform.toString">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Returns a string representation of this object.</p>
+<pre class="source">
+external String toString();
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

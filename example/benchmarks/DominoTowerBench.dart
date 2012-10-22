@@ -44,7 +44,7 @@ class DominoTowerBench extends Benchmark {
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
     bd.position = new Vector(x, y);
-    bd.angle = horizontal ? (Math.PI / 2.0) : 0;
+    bd.angle = horizontal ? (PI / 2.0) : 0;
     Body myBody = world_.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);

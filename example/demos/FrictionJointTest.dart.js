@@ -2329,6 +2329,14 @@ $$.CanvasDraw = {"":
 }
 };
 
+$$.CanvasViewportTransform = {"":
+ ["yFlip", "extents", "scale", "center"],
+ "super": "IViewportTransform",
+ CanvasViewportTransform$2: function(_extents, _center) {
+  this.yFlip = true;
+}
+};
+
 $$.ContactFilter = {"":
  [],
  "super": "Object",
@@ -9015,14 +9023,6 @@ $$.PolygonShape = {"":
 $$.Shape = {"":
  ["type=", "radius="],
  "super": "Object"
-};
-
-$$.CanvasViewportTransform = {"":
- ["yFlip", "extents", "scale", "center"],
- "super": "IViewportTransform",
- CanvasViewportTransform$2: function(_extents, _center) {
-  this.yFlip = true;
-}
 };
 
 $$.Color3 = {"":

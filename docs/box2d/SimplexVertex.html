@@ -1,0 +1,298 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>SimplexVertex class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="SimplexVertex">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/SimplexVertex.html">SimplexVertex</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>SimplexVertex</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class SimplexVertex {
+  final Vector wA; // support point in shapeA
+  final Vector wB; // support point in shapeB
+  final Vector w; // wB - wA
+  num a; // barycentric coordinate for closest point
+  int indexA; // wA index
+  int indexB; // wB index
+
+  SimplexVertex() :
+    wA = new Vector(),
+    wB = new Vector(),
+    w = new Vector(),
+    a = 0,
+    indexA = 0,
+    indexB = 0 { }
+
+  void setFrom(SimplexVertex sv) {
+    wA.setFrom(sv.wA);
+    wB.setFrom(sv.wB);
+    w.setFrom(sv.w);
+    a = sv.a;
+    indexA = sv.indexA;
+    indexB = sv.indexB;
+  }
+
+  String toString() =&gt; "wA: $wA, wB: $wB, w: $w";
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="SimplexVertex">
+<button class="show-code">Code</button>
+new <strong>SimplexVertex</strong>() <a class="anchor-link" href="#SimplexVertex"
+              title="Permalink to SimplexVertex.SimplexVertex">#</a></h4>
+<div class="doc">
+<pre class="source">
+SimplexVertex() :
+  wA = new Vector(),
+  wB = new Vector(),
+  w = new Vector(),
+  a = 0,
+  indexA = 0,
+  indexB = 0 { }
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="a">
+<button class="show-code">Code</button>
+num         <strong>a</strong> <a class="anchor-link"
+            href="#a"
+            title="Permalink to SimplexVertex.a">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+num a;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="indexA">
+<button class="show-code">Code</button>
+int         <strong>indexA</strong> <a class="anchor-link"
+            href="#indexA"
+            title="Permalink to SimplexVertex.indexA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int indexA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="indexB">
+<button class="show-code">Code</button>
+int         <strong>indexB</strong> <a class="anchor-link"
+            href="#indexB"
+            title="Permalink to SimplexVertex.indexB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int indexB;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="runtimeType">
+<button class="show-code">Code</button>
+final Type         <strong>runtimeType</strong> <a class="anchor-link"
+            href="#runtimeType"
+            title="Permalink to SimplexVertex.runtimeType">#</a>
+        </h4>
+        <div class="inherited-from">inherited from Object </div><div class="doc">
+<p>A representation of the runtime type of the object.</p>
+<pre class="source">
+external Type get runtimeType;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="w">
+<button class="show-code">Code</button>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>w</strong> <a class="anchor-link"
+            href="#w"
+            title="Permalink to SimplexVertex.w">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+final Vector w;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="wA">
+<button class="show-code">Code</button>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>wA</strong> <a class="anchor-link"
+            href="#wA"
+            title="Permalink to SimplexVertex.wA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+final Vector wA;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="wB">
+<button class="show-code">Code</button>
+final <a href="../box2d/Vector.html">Vector</a>         <strong>wB</strong> <a class="anchor-link"
+            href="#wB"
+            title="Permalink to SimplexVertex.wB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+final Vector wB;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Operators</h3>
+<div class="method inherited"><h4 id="==">
+<button class="show-code">Code</button>
+bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
+              title="Permalink to SimplexVertex.operator ==">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>The equality operator.</p>
+<p>The default behavior for all <code>Object</code>s is to return true if and
+only if <code>this</code> and 
+<span class="param">other</span> are the same object.</p>
+<p>If a subclass overrides the equality operator it should override
+the <code>hashCode</code> method as well to maintain consistency.</p>
+<pre class="source">
+bool operator ==(other) =&gt; identical(this, other);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method inherited"><h4 id="hashCode">
+<button class="show-code">Code</button>
+int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
+              title="Permalink to SimplexVertex.hashCode">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <code>hashCode</code> it should override the
+equality operator as well to maintain consistency.</p>
+<pre class="source">
+external int hashCode();
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="noSuchMethod">
+<button class="show-code">Code</button>
+<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
+              title="Permalink to SimplexVertex.noSuchMethod">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
+on an object. The name of the method and the arguments of the
+invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
+returns a value, that value becomes the result of the original
+invocation.</p>
+<p>The default behavior of <code>noSuchMethod</code> is to throw a
+<code>noSuchMethodError</code>.</p>
+<pre class="source">
+external Dynamic noSuchMethod(String name, List args);
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="Object">
+<button class="show-code">Code</button>
+const <strong>Object</strong>() <a class="anchor-link" href="#Object"
+              title="Permalink to SimplexVertex.Object">#</a></h4>
+<div class="inherited-from">inherited from Object </div><div class="doc">
+<p>Creates a new <code>Object</code> instance.</p>
+<p><code>Object</code> instances have no meaningful state, and are only useful
+through their identity. An <code>Object</code> instance is equal to itself
+only.</p>
+<pre class="source">
+const Object();
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(<a href="../box2d/SimplexVertex.html">SimplexVertex</a> sv) <a class="anchor-link" href="#setFrom"
+              title="Permalink to SimplexVertex.setFrom">#</a></h4>
+<div class="doc">
+<pre class="source">
+void setFrom(SimplexVertex sv) {
+  wA.setFrom(sv.wA);
+  wB.setFrom(sv.wB);
+  w.setFrom(sv.w);
+  a = sv.a;
+  indexA = sv.indexA;
+  indexB = sv.indexB;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="SimplexVertex">
+<button class="show-code">Code</button>
+new <strong>SimplexVertex</strong>() <a class="anchor-link" href="#SimplexVertex"
+              title="Permalink to SimplexVertex.SimplexVertex">#</a></h4>
+<div class="doc">
+<pre class="source">
+SimplexVertex() :
+  wA = new Vector(),
+  wB = new Vector(),
+  w = new Vector(),
+  a = 0,
+  indexA = 0,
+  indexB = 0 { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to SimplexVertex.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+String toString() =&gt; "wA: $wA, wB: $wB, w: $w";
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
