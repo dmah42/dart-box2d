@@ -342,24 +342,24 @@ class Body {
   /**
    * Get the world body origin position. Do not modify.
    */
-  Vector get position() { return originTransform.position; }
+  Vector get position =&gt; originTransform.position;
 
   /**
    * Get the angle in radians.
    */
-  num get angle() { return sweep.angle; }
+  num get angle =&gt; sweep.angle;
 
   /**
    * Get the world position of the center of mass. Do not modify.
    */
-  Vector get worldCenter() { return sweep.center; }
+  Vector get worldCenter =&gt; sweep.center; 
 
   /**
    * Get the local position of the center of mass. Do not modify.
    */
-  Vector get localCenter() { return sweep.localCenter; }
+  Vector get localCenter =&gt; sweep.localCenter; 
 
-  Vector get linearVelocity() { return _linearVelocity; }
+  Vector get linearVelocity =&gt; _linearVelocity; 
 
   void set linearVelocity(Vector v) {
     if (_type == BodyType.STATIC) {
@@ -373,7 +373,7 @@ class Body {
     _linearVelocity.setFrom(v);
   }
 
-  num get angularVelocity() { return _angularVelocity; }
+  num get angularVelocity =&gt; _angularVelocity; 
 
   void set angularVelocity(num w) {
     if (_type != BodyType.STATIC) {
@@ -473,7 +473,7 @@ class Body {
    *
    * returns the rotational inertia, usually in kg-m^2.
    */
-  num get inertia() {
+  num get inertia {
     return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
         sweep.localCenter.y * sweep.localCenter.y);
   }
@@ -736,7 +736,7 @@ class Body {
   /**
    * The type of this body. Either dynamic, static, or kinematic.
    */
-  int get type() { return _type; }
+  int get type =&gt; _type; 
 
   /**
    * The type of this body. This may alter the mass and velocity.
@@ -767,7 +767,7 @@ class Body {
   }
 
   /** Is this body treated like a bullet for continuous collision detection? */
-  bool get bullet() { return (flags &amp; BULLET_FLAG) == BULLET_FLAG; }
+  bool get bullet =&gt; (flags &amp; BULLET_FLAG) == BULLET_FLAG; 
 
   /**
    * Should this body be treated like a bullet for continuous collision
@@ -796,7 +796,7 @@ class Body {
   /**
    * Is this body allowed to sleep?
    */
-  bool get sleepingAllowed() { return (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; }
+  bool get sleepingAllowed =&gt; (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
 
   /**
    * The sleep state of the body. A sleeping body has very
@@ -818,7 +818,7 @@ class Body {
     }
   }
 
-  bool get awake() { return (flags &amp; AWAKE_FLAG) == AWAKE_FLAG; }
+  bool get awake =&gt; (flags &amp; AWAKE_FLAG) == AWAKE_FLAG; 
 
   /**
    * Set the active state of the body. An inactive body is not
@@ -873,7 +873,7 @@ class Body {
   /**
    * Get the active state of the body.
    */
-  bool get active() { return (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG; }
+  bool get active =&gt; (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG; 
 
   /**
    * Set this body to have fixed rotation. This causes the mass
@@ -891,7 +891,7 @@ class Body {
   /**
    * Does this body have fixed rotation?
    */
-  bool get fixedRotation() {
+  bool get fixedRotation {
     return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
   }
 
@@ -1127,7 +1127,7 @@ bool <strong>get active</strong> <a class="anchor-link" href="#active"
 <div class="doc">
 <p>Get the active state of the body.</p>
 <pre class="source">
-bool get active() { return (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG; }
+bool get active =&gt; (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG;
 </pre>
 </div>
 </div>
@@ -1196,7 +1196,7 @@ final num         <strong>angle</strong> <a class="anchor-link"
         <div class="doc">
 <p>Get the angle in radians.</p>
 <pre class="source">
-num get angle() { return sweep.angle; }
+num get angle =&gt; sweep.angle;
 </pre>
 </div>
 </div>
@@ -1220,7 +1220,7 @@ num         <strong>angularVelocity</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get angularVelocity() { return _angularVelocity; }
+num get angularVelocity =&gt; _angularVelocity;
 </pre>
 <pre class="source">
 void set angularVelocity(num w) {
@@ -1247,7 +1247,7 @@ bool         <strong>awake</strong> <a class="anchor-link"
 <p>The sleep state of the body. A sleeping body has very
 low CPU cost.</p>
 <pre class="source">
-bool get awake() { return (flags &amp; AWAKE_FLAG) == AWAKE_FLAG; }
+bool get awake =&gt; (flags &amp; AWAKE_FLAG) == AWAKE_FLAG;
 </pre>
 <pre class="source">
 void set awake(bool flag) {
@@ -1275,7 +1275,7 @@ bool <strong>get bullet</strong> <a class="anchor-link" href="#bullet"
 <div class="doc">
 <p>Is this body treated like a bullet for continuous collision detection?</p>
 <pre class="source">
-bool get bullet() { return (flags &amp; BULLET_FLAG) == BULLET_FLAG; }
+bool get bullet =&gt; (flags &amp; BULLET_FLAG) == BULLET_FLAG;
 </pre>
 </div>
 </div>
@@ -1315,7 +1315,7 @@ bool <strong>get fixedRotation</strong> <a class="anchor-link" href="#fixedRotat
 <div class="doc">
 <p>Does this body have fixed rotation?</p>
 <pre class="source">
-bool get fixedRotation() {
+bool get fixedRotation {
   return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
 }
 </pre>
@@ -1386,7 +1386,7 @@ final num         <strong>inertia</strong> <a class="anchor-link"
 <p>Get the central rotational inertia of the body.</p>
 <p>returns the rotational inertia, usually in kg-m^2.</p>
 <pre class="source">
-num get inertia() {
+num get inertia {
   return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
       sweep.localCenter.y * sweep.localCenter.y);
 }
@@ -1463,7 +1463,7 @@ num linearDamping;
         </h4>
         <div class="doc">
 <pre class="source">
-Vector get linearVelocity() { return _linearVelocity; }
+Vector get linearVelocity =&gt; _linearVelocity;
 </pre>
 <pre class="source">
 void set linearVelocity(Vector v) {
@@ -1489,7 +1489,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenter</str
         <div class="doc">
 <p>Get the local position of the center of mass. Do not modify.</p>
 <pre class="source">
-Vector get localCenter() { return sweep.localCenter; }
+Vector get localCenter =&gt; sweep.localCenter;
 </pre>
 </div>
 </div>
@@ -1607,7 +1607,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>position</strong
         <div class="doc">
 <p>Get the world body origin position. Do not modify.</p>
 <pre class="source">
-Vector get position() { return originTransform.position; }
+Vector get position =&gt; originTransform.position;
 </pre>
 </div>
 </div>
@@ -1643,7 +1643,7 @@ bool <strong>get sleepingAllowed</strong> <a class="anchor-link" href="#sleeping
 <div class="doc">
 <p>Is this body allowed to sleep?</p>
 <pre class="source">
-bool get sleepingAllowed() { return (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; }
+bool get sleepingAllowed =&gt; (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG;
 </pre>
 </div>
 </div>
@@ -1710,7 +1710,7 @@ int <strong>get type</strong> <a class="anchor-link" href="#type"
 <div class="doc">
 <p>The type of this body. Either dynamic, static, or kinematic.</p>
 <pre class="source">
-int get type() { return _type; }
+int get type =&gt; _type;
 </pre>
 </div>
 </div>
@@ -1782,7 +1782,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>worldCenter</str
         <div class="doc">
 <p>Get the world position of the center of mass. Do not modify.</p>
 <pre class="source">
-Vector get worldCenter() { return sweep.center; }
+Vector get worldCenter =&gt; sweep.center;
 </pre>
 </div>
 </div>

@@ -323,24 +323,24 @@ class Body {
   /**
    * Get the world body origin position. Do not modify.
    */
-  Vector get position() { return originTransform.position; }
+  Vector get position => originTransform.position;
 
   /**
    * Get the angle in radians.
    */
-  num get angle() { return sweep.angle; }
+  num get angle => sweep.angle;
 
   /**
    * Get the world position of the center of mass. Do not modify.
    */
-  Vector get worldCenter() { return sweep.center; }
+  Vector get worldCenter => sweep.center; 
 
   /**
    * Get the local position of the center of mass. Do not modify.
    */
-  Vector get localCenter() { return sweep.localCenter; }
+  Vector get localCenter => sweep.localCenter; 
 
-  Vector get linearVelocity() { return _linearVelocity; }
+  Vector get linearVelocity => _linearVelocity; 
 
   void set linearVelocity(Vector v) {
     if (_type == BodyType.STATIC) {
@@ -354,7 +354,7 @@ class Body {
     _linearVelocity.setFrom(v);
   }
 
-  num get angularVelocity() { return _angularVelocity; }
+  num get angularVelocity => _angularVelocity; 
 
   void set angularVelocity(num w) {
     if (_type != BodyType.STATIC) {
@@ -454,7 +454,7 @@ class Body {
    *
    * returns the rotational inertia, usually in kg-m^2.
    */
-  num get inertia() {
+  num get inertia {
     return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
         sweep.localCenter.y * sweep.localCenter.y);
   }
@@ -717,7 +717,7 @@ class Body {
   /**
    * The type of this body. Either dynamic, static, or kinematic.
    */
-  int get type() { return _type; }
+  int get type => _type; 
 
   /**
    * The type of this body. This may alter the mass and velocity.
@@ -748,7 +748,7 @@ class Body {
   }
 
   /** Is this body treated like a bullet for continuous collision detection? */
-  bool get bullet() { return (flags & BULLET_FLAG) == BULLET_FLAG; }
+  bool get bullet => (flags & BULLET_FLAG) == BULLET_FLAG; 
 
   /**
    * Should this body be treated like a bullet for continuous collision
@@ -777,7 +777,7 @@ class Body {
   /**
    * Is this body allowed to sleep?
    */
-  bool get sleepingAllowed() { return (flags & AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; }
+  bool get sleepingAllowed => (flags & AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
 
   /**
    * The sleep state of the body. A sleeping body has very
@@ -799,7 +799,7 @@ class Body {
     }
   }
 
-  bool get awake() { return (flags & AWAKE_FLAG) == AWAKE_FLAG; }
+  bool get awake => (flags & AWAKE_FLAG) == AWAKE_FLAG; 
 
   /**
    * Set the active state of the body. An inactive body is not
@@ -854,7 +854,7 @@ class Body {
   /**
    * Get the active state of the body.
    */
-  bool get active() { return (flags & ACTIVE_FLAG) == ACTIVE_FLAG; }
+  bool get active => (flags & ACTIVE_FLAG) == ACTIVE_FLAG; 
 
   /**
    * Set this body to have fixed rotation. This causes the mass
@@ -872,7 +872,7 @@ class Body {
   /**
    * Does this body have fixed rotation?
    */
-  bool get fixedRotation() {
+  bool get fixedRotation {
     return (flags & FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
   }
 

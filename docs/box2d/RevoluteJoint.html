@@ -235,8 +235,7 @@ class RevoluteJoint extends Joint {
 
       if (limitState == LimitState.EQUAL) {
         impulse.addLocal(imp);
-      }
-      else if (limitState == LimitState.AT_LOWER) {
+      } else if (limitState == LimitState.AT_LOWER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse &lt; 0.0) {
           mass.solve22ToOut(Cdot1.negateLocal(), temp);
@@ -247,8 +246,7 @@ class RevoluteJoint extends Joint {
           impulse.y += temp.y;
           impulse.z = 0.0;
         }
-      }
-      else if (limitState == LimitState.AT_UPPER) {
+      } else if (limitState == LimitState.AT_UPPER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse &gt; 0.0) {
           mass.solve22ToOut(Cdot1.negateLocal(), temp);
@@ -321,8 +319,7 @@ class RevoluteJoint extends Joint {
             -Settings.MAX_ANGULAR_CORRECTION, Settings.MAX_ANGULAR_CORRECTION);
         limitImpulse = -motorMass * C;
         angularError = C.abs();
-      }
-      else if (limitState == LimitState.AT_LOWER) {
+      } else if (limitState == LimitState.AT_LOWER) {
         num C = angle - lowerAngle;
         angularError = -C;
 
@@ -330,8 +327,7 @@ class RevoluteJoint extends Joint {
         C = MathBox.clamp(C + Settings.ANGULAR_SLOP,
             -Settings.MAX_ANGULAR_CORRECTION, 0.0);
         limitImpulse = -motorMass * C;
-      }
-      else if (limitState == LimitState.AT_UPPER) {
+      } else if (limitState == LimitState.AT_UPPER) {
         num C = angle - upperAngle;
         angularError = C;
 
@@ -444,21 +440,19 @@ class RevoluteJoint extends Joint {
     return inv_dt * impulse.z;
   }
 
-  num get jointAngle() {
+  num get jointAngle {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
     return b2.sweep.angle - b1.sweep.angle - referenceAngle;
   }
 
-  num get jointSpeed() {
+  num get jointSpeed {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
     return b2.angularVelocity - b1.angularVelocity;
   }
 
-  bool get motorEnabled() {
-    return _enableMotor;
-  }
+  bool get motorEnabled =&gt; _enableMotor;
 
   void set motorEnabled(bool flag) {
     bodyA.awake = true;
@@ -466,9 +460,7 @@ class RevoluteJoint extends Joint {
     _enableMotor = flag;
   }
 
-  num get motorTorque() {
-    return _motorImpulse;
-  }
+  num get motorTorque =&gt; _motorImpulse;
 
   void set motorSpeed(num speed) {
     bodyA.awake = true;
@@ -476,13 +468,9 @@ class RevoluteJoint extends Joint {
     _motorSpeed = speed;
   }
 
-  num get motorSpeed() {
-    return _motorSpeed;
-  }
+  num get motorSpeed =&gt; _motorSpeed;
 
-  num get maxMotorTorque() {
-    return _maxMotorTorque;
-  }
+  num get maxMotorTorque =&gt; _maxMotorTorque;
 
   void set maxMotorTorque(num torque) {
     bodyA.awake = true;
@@ -490,9 +478,7 @@ class RevoluteJoint extends Joint {
     _maxMotorTorque = torque;
   }
 
-  bool get limitEnabled() {
-    return _enableLimit;
-  }
+  bool get limitEnabled =&gt; _enableLimit;
 
   void set limitEnabled(bool flag) {
     bodyA.awake = true;
@@ -556,9 +542,7 @@ final bool         <strong>active</strong> <a class="anchor-link"
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <p>Short-cut function to determine if either body is inactive.</p>
 <pre class="source">
-bool get active() {
-  return bodyA.active &amp;&amp; bodyB.active;
-}
+bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </pre>
 </div>
 </div>
@@ -702,7 +686,7 @@ final num         <strong>jointAngle</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get jointAngle() {
+num get jointAngle {
   final Body b1 = bodyA;
   final Body b2 = bodyB;
   return b2.sweep.angle - b1.sweep.angle - referenceAngle;
@@ -718,7 +702,7 @@ final num         <strong>jointSpeed</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get jointSpeed() {
+num get jointSpeed {
   final Body b1 = bodyA;
   final Body b2 = bodyB;
   return b2.angularVelocity - b1.angularVelocity;
@@ -734,9 +718,7 @@ bool         <strong>limitEnabled</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-bool get limitEnabled() {
-  return _enableLimit;
-}
+bool get limitEnabled =&gt; _enableLimit;
 </pre>
 <pre class="source">
 void set limitEnabled(bool flag) {
@@ -840,9 +822,7 @@ num         <strong>maxMotorTorque</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get maxMotorTorque() {
-  return _maxMotorTorque;
-}
+num get maxMotorTorque =&gt; _maxMotorTorque;
 </pre>
 <pre class="source">
 void set maxMotorTorque(num torque) {
@@ -861,9 +841,7 @@ bool         <strong>motorEnabled</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-bool get motorEnabled() {
-  return _enableMotor;
-}
+bool get motorEnabled =&gt; _enableMotor;
 </pre>
 <pre class="source">
 void set motorEnabled(bool flag) {
@@ -894,9 +872,7 @@ num         <strong>motorSpeed</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get motorSpeed() {
-  return _motorSpeed;
-}
+num get motorSpeed =&gt; _motorSpeed;
 </pre>
 <pre class="source">
 void set motorSpeed(num speed) {
@@ -915,9 +891,7 @@ final num         <strong>motorTorque</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get motorTorque() {
-  return _motorImpulse;
-}
+num get motorTorque =&gt; _motorImpulse;
 </pre>
 </div>
 </div>
@@ -1009,7 +983,7 @@ bool operator ==(other) =&gt; identical(this, other);
 void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
               title="Permalink to RevoluteJoint.destructor">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Override to handle destruction of joint</p>
+<p>Override to handle destruction of joint.</p>
 <pre class="source">
 void destructor() { }
 </pre>
@@ -1359,8 +1333,7 @@ bool solvePositionConstraints(num baumgarte) {
           -Settings.MAX_ANGULAR_CORRECTION, Settings.MAX_ANGULAR_CORRECTION);
       limitImpulse = -motorMass * C;
       angularError = C.abs();
-    }
-    else if (limitState == LimitState.AT_LOWER) {
+    } else if (limitState == LimitState.AT_LOWER) {
       num C = angle - lowerAngle;
       angularError = -C;
 
@@ -1368,8 +1341,7 @@ bool solvePositionConstraints(num baumgarte) {
       C = MathBox.clamp(C + Settings.ANGULAR_SLOP,
           -Settings.MAX_ANGULAR_CORRECTION, 0.0);
       limitImpulse = -motorMass * C;
-    }
-    else if (limitState == LimitState.AT_UPPER) {
+    } else if (limitState == LimitState.AT_UPPER) {
       num C = angle - upperAngle;
       angularError = C;
 
@@ -1527,8 +1499,7 @@ void solveVelocityConstraints(final TimeStep step) {
 
     if (limitState == LimitState.EQUAL) {
       impulse.addLocal(imp);
-    }
-    else if (limitState == LimitState.AT_LOWER) {
+    } else if (limitState == LimitState.AT_LOWER) {
       num newImpulse = impulse.z + imp.z;
       if (newImpulse &lt; 0.0) {
         mass.solve22ToOut(Cdot1.negateLocal(), temp);
@@ -1539,8 +1510,7 @@ void solveVelocityConstraints(final TimeStep step) {
         impulse.y += temp.y;
         impulse.z = 0.0;
       }
-    }
-    else if (limitState == LimitState.AT_UPPER) {
+    } else if (limitState == LimitState.AT_UPPER) {
       num newImpulse = impulse.z + imp.z;
       if (newImpulse &gt; 0.0) {
         mass.solve22ToOut(Cdot1.negateLocal(), temp);

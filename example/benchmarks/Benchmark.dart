@@ -48,7 +48,7 @@ abstract class Benchmark {
   /** Sets up the physics world. */
   abstract void initialize();
 
-  abstract String get name();
+  abstract String get name;
 
   /**
    * Resets the world to a fresh state. Call this before running a benchmark
@@ -110,7 +110,7 @@ abstract class Benchmark {
    * each body in the physics world. Used to ensure that the simulation is
    * producing the same output across different box2D implementations.
    */
-  num get checksum() {
+  num get checksum {
     final positionSum = new Vector();
     final velocitySum = new Vector();
     for (Body b in bodies) {
@@ -120,6 +120,4 @@ abstract class Benchmark {
 
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;
   }
-
-  int get bodyCount() => bodies.length;
 }

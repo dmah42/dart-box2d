@@ -216,8 +216,7 @@ class RevoluteJoint extends Joint {
 
       if (limitState == LimitState.EQUAL) {
         impulse.addLocal(imp);
-      }
-      else if (limitState == LimitState.AT_LOWER) {
+      } else if (limitState == LimitState.AT_LOWER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse < 0.0) {
           mass.solve22ToOut(Cdot1.negateLocal(), temp);
@@ -228,8 +227,7 @@ class RevoluteJoint extends Joint {
           impulse.y += temp.y;
           impulse.z = 0.0;
         }
-      }
-      else if (limitState == LimitState.AT_UPPER) {
+      } else if (limitState == LimitState.AT_UPPER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse > 0.0) {
           mass.solve22ToOut(Cdot1.negateLocal(), temp);
@@ -302,8 +300,7 @@ class RevoluteJoint extends Joint {
             -Settings.MAX_ANGULAR_CORRECTION, Settings.MAX_ANGULAR_CORRECTION);
         limitImpulse = -motorMass * C;
         angularError = C.abs();
-      }
-      else if (limitState == LimitState.AT_LOWER) {
+      } else if (limitState == LimitState.AT_LOWER) {
         num C = angle - lowerAngle;
         angularError = -C;
 
@@ -311,8 +308,7 @@ class RevoluteJoint extends Joint {
         C = MathBox.clamp(C + Settings.ANGULAR_SLOP,
             -Settings.MAX_ANGULAR_CORRECTION, 0.0);
         limitImpulse = -motorMass * C;
-      }
-      else if (limitState == LimitState.AT_UPPER) {
+      } else if (limitState == LimitState.AT_UPPER) {
         num C = angle - upperAngle;
         angularError = C;
 
@@ -425,21 +421,19 @@ class RevoluteJoint extends Joint {
     return inv_dt * impulse.z;
   }
 
-  num get jointAngle() {
+  num get jointAngle {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
     return b2.sweep.angle - b1.sweep.angle - referenceAngle;
   }
 
-  num get jointSpeed() {
+  num get jointSpeed {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
     return b2.angularVelocity - b1.angularVelocity;
   }
 
-  bool get motorEnabled() {
-    return _enableMotor;
-  }
+  bool get motorEnabled => _enableMotor;
 
   void set motorEnabled(bool flag) {
     bodyA.awake = true;
@@ -447,9 +441,7 @@ class RevoluteJoint extends Joint {
     _enableMotor = flag;
   }
 
-  num get motorTorque() {
-    return _motorImpulse;
-  }
+  num get motorTorque => _motorImpulse;
 
   void set motorSpeed(num speed) {
     bodyA.awake = true;
@@ -457,13 +449,9 @@ class RevoluteJoint extends Joint {
     _motorSpeed = speed;
   }
 
-  num get motorSpeed() {
-    return _motorSpeed;
-  }
+  num get motorSpeed => _motorSpeed;
 
-  num get maxMotorTorque() {
-    return _maxMotorTorque;
-  }
+  num get maxMotorTorque => _maxMotorTorque;
 
   void set maxMotorTorque(num torque) {
     bodyA.awake = true;
@@ -471,9 +459,7 @@ class RevoluteJoint extends Joint {
     _maxMotorTorque = torque;
   }
 
-  bool get limitEnabled() {
-    return _enableLimit;
-  }
+  bool get limitEnabled => _enableLimit;
 
   void set limitEnabled(bool flag) {
     bodyA.awake = true;

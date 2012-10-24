@@ -95,44 +95,28 @@ class Joint {
     joint.destructor();
   }
 
-  /**
-   * Get the anchor point on bodyA in world coordinates.
-   */
+  /** Get the anchor point on bodyA in world coordinates. */
   void getAnchorA(Vector argOut) { }
 
-  /**
-   * Get the anchor point on bodyB in world coordinates.
-   */
+  /** Get the anchor point on bodyB in world coordinates. */
   void getAnchorB(Vector argOut) { }
 
-  /**
-   * Get the reaction force on body2 at the joint anchor in Newtons.
-   */
+  /** Get the reaction force on body2 at the joint anchor in Newtons. */
   void getReactionForce(num inv_dt, Vector argOut) { }
 
-  /**
-   * Get the reaction torque on body2 in N*m.
-   */
+  /** Get the reaction torque on body2 in N*m. */
   num getReactionTorque(num inv_dt) { }
 
-  /**
-   * Short-cut function to determine if either body is inactive.
-   */
-  bool get active() {
-    return bodyA.active && bodyB.active;
-  }
+  /** Short-cut function to determine if either body is inactive. */
+  bool get active => bodyA.active && bodyB.active;
 
   void initVelocityConstraints(TimeStep step) { }
 
   void solveVelocityConstraints(TimeStep step) { }
 
-  /**
-   * This returns true if the position errors are within tolerance.
-   */
+  /** This returns true if the position errors are within tolerance. */
   bool solvePositionConstraints(num baumgarte) { }
 
-  /**
-   * Override to handle destruction of joint
-   */
+  /** Override to handle destruction of joint. */
   void destructor() { }
 }

@@ -127,7 +127,7 @@ class Vector {
     return this;
   }
 
-  num get length() =&gt; Math.sqrt(this.lengthSquared);
+  num get length =&gt; Math.sqrt(this.lengthSquared);
 
   /**
    * Take the minimum of each coordinate from the two given vectors and store
@@ -150,7 +150,7 @@ class Vector {
   /**
    * Returns the length of this vector, squared.
    */
-  num get lengthSquared() =&gt; x * x + y * y;
+  num get lengthSquared =&gt; x * x + y * y;
 
   /**
    * Set the x and y coordinates of this vector to absolute values.
@@ -336,7 +336,7 @@ final num         <strong>length</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get length() =&gt; Math.sqrt(this.lengthSquared);
+num get length =&gt; Math.sqrt(this.lengthSquared);
 </pre>
 </div>
 </div>
@@ -349,7 +349,7 @@ final num         <strong>lengthSquared</strong> <a class="anchor-link"
         <div class="doc">
 <p>Returns the length of this vector, squared.</p>
 <pre class="source">
-num get lengthSquared() =&gt; x * x + y * y;
+num get lengthSquared =&gt; x * x + y * y;
 </pre>
 </div>
 </div>

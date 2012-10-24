@@ -70,14 +70,14 @@ class FrictionJoint extends Joint {
     _maxForce = force;
   }
 
-  num get maxForce() =&gt; _maxForce;
+  num get maxForce =&gt; _maxForce;
 
   void set maxTorque(num torque) {
     assert(torque &gt;= 0.0);
     _maxTorque = torque;
   }
 
-  num get maxTorque() =&gt; _maxTorque;
+  num get maxTorque =&gt; _maxTorque;
 
   void initVelocityConstraints(TimeStep step) {
     // Compute the effective mass matrix.
@@ -249,9 +249,7 @@ final bool         <strong>active</strong> <a class="anchor-link"
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <p>Short-cut function to determine if either body is inactive.</p>
 <pre class="source">
-bool get active() {
-  return bodyA.active &amp;&amp; bodyB.active;
-}
+bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </pre>
 </div>
 </div>
@@ -407,7 +405,7 @@ num         <strong>maxForce</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get maxForce() =&gt; _maxForce;
+num get maxForce =&gt; _maxForce;
 </pre>
 <pre class="source">
 void set maxForce(num force) {
@@ -425,7 +423,7 @@ num         <strong>maxTorque</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get maxTorque() =&gt; _maxTorque;
+num get maxTorque =&gt; _maxTorque;
 </pre>
 <pre class="source">
 void set maxTorque(num torque) {
@@ -499,7 +497,7 @@ bool operator ==(other) =&gt; identical(this, other);
 void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
               title="Permalink to FrictionJoint.destructor">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Override to handle destruction of joint</p>
+<p>Override to handle destruction of joint.</p>
 <pre class="source">
 void destructor() { }
 </pre>

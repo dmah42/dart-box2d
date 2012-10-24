@@ -107,7 +107,7 @@ class Vector {
     return this;
   }
 
-  num get length() => Math.sqrt(this.lengthSquared);
+  num get length => Math.sqrt(this.lengthSquared);
 
   /**
    * Take the minimum of each coordinate from the two given vectors and store
@@ -130,7 +130,7 @@ class Vector {
   /**
    * Returns the length of this vector, squared.
    */
-  num get lengthSquared() => x * x + y * y;
+  num get lengthSquared => x * x + y * y;
 
   /**
    * Set the x and y coordinates of this vector to absolute values.

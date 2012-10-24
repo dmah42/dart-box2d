@@ -104,7 +104,7 @@ class ConstantVolumeJoint extends Joint {
     }
   }
 
-  num get area() {
+  num get area {
     num result = 0.0;
     result += bodies[bodies.length - 1].worldCenter.x * bodies[0].worldCenter.y
         - bodies[0].worldCenter.x * bodies[bodies.length - 1].worldCenter.y;
@@ -116,9 +116,7 @@ class ConstantVolumeJoint extends Joint {
     return result;
   }
 
-  /**
-   * Apply the position correction to the particles.
-   */
+  /** Apply the position correction to the particles. */
   bool constrainEdges(TimeStep argStep) {
     num perimeter = 0.0;
     for (int i = 0; i < bodies.length; ++i) {

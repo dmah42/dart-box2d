@@ -64,18 +64,14 @@ class AxisAlignedBox {
     upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
   }
 
-  /**
-   * Sets the bounds to the given values.
-   */
+  /** Sets the bounds to the given values. */
   AxisAlignedBox setBounds(Vector lower, Vector upper) {
     lowerBound.setFrom(lower);
     upperBound.setFrom(upper);
     return this;
   }
 
-  /**
-   * Returns true if the given box overlaps with this box.
-   */
+  /** Returns true if the given box overlaps with this box. */
   static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
     !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
       (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
@@ -87,26 +83,20 @@ class AxisAlignedBox {
   bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
                     lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
 
-  /**
-   * Returns the center of this box.
-   */
-  Vector get center() {
+  /** Returns the center of this box. */
+  Vector get center {
     Vector c = new Vector.copy(lowerBound);
     c.addLocal(upperBound);
     c.mulLocal(.5);
     return c;
   }
 
-  /**
-   * Returns true if this box contains the given box.
-   */
+  /** Returns true if this box contains the given box. */
   bool contains(AxisAlignedBox aabb) =&gt;
       lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
       upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
 
-  /**
-   * Sets this box to be a copy of the given box.
-   */
+  /** Sets this box to be a copy of the given box. */
   void setFrom(AxisAlignedBox other) {
     lowerBound.setFrom(other.lowerBound);
     upperBound.setFrom(other.upperBound);
@@ -161,7 +151,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> 
         <div class="doc">
 <p>Returns the center of this box.</p>
 <pre class="source">
-Vector get center() {
+Vector get center {
   Vector c = new Vector.copy(lowerBound);
   c.addLocal(upperBound);
   c.mulLocal(.5);

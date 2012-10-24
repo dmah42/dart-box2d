@@ -124,7 +124,7 @@ class ConstantVolumeJoint extends Joint {
     }
   }
 
-  num get area() {
+  num get area {
     num result = 0.0;
     result += bodies[bodies.length - 1].worldCenter.x * bodies[0].worldCenter.y
         - bodies[0].worldCenter.x * bodies[bodies.length - 1].worldCenter.y;
@@ -136,9 +136,7 @@ class ConstantVolumeJoint extends Joint {
     return result;
   }
 
-  /**
-   * Apply the position correction to the particles.
-   */
+  /** Apply the position correction to the particles. */
   bool constrainEdges(TimeStep argStep) {
     num perimeter = 0.0;
     for (int i = 0; i &lt; bodies.length; ++i) {
@@ -344,9 +342,7 @@ final bool         <strong>active</strong> <a class="anchor-link"
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <p>Short-cut function to determine if either body is inactive.</p>
 <pre class="source">
-bool get active() {
-  return bodyA.active &amp;&amp; bodyB.active;
-}
+bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </pre>
 </div>
 </div>
@@ -358,7 +354,7 @@ final num         <strong>area</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num get area() {
+num get area {
   num result = 0.0;
   result += bodies[bodies.length - 1].worldCenter.x * bodies[0].worldCenter.y
       - bodies[0].worldCenter.x * bodies[bodies.length - 1].worldCenter.y;
@@ -791,7 +787,7 @@ void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
               title="Permalink to ConstantVolumeJoint.destructor">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Override to handle destruction of joint</p>
+<p>Override to handle destruction of joint.</p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void destructor() {

@@ -49,14 +49,14 @@ class FrictionJoint extends Joint {
     _maxForce = force;
   }
 
-  num get maxForce() => _maxForce;
+  num get maxForce => _maxForce;
 
   void set maxTorque(num torque) {
     assert(torque >= 0.0);
     _maxTorque = torque;
   }
 
-  num get maxTorque() => _maxTorque;
+  num get maxTorque => _maxTorque;
 
   void initVelocityConstraints(TimeStep step) {
     // Compute the effective mass matrix.

@@ -228,9 +228,7 @@ class World {
     _contactManager.contactListener = listener;
   }
 
-  ContactListener get contactListener() {
-    return _contactManager.contactListener;
-  }
+  ContactListener get contactListener => _contactManager.contactListener;
 
   /**
    * Register a routine for debug drawing. The debug draw functions are called
@@ -666,30 +664,22 @@ class World {
    * return the head of the world contact list.
    * warning contacts are
    */
-  Contact get contactList() {
-    return _contactManager.contactList;
-  }
+  Contact get contactList => _contactManager.contactList;
 
   /**
    * Get the number of broad-phase proxies.
    */
-  int get proxyCount() {
-    return _contactManager.broadPhase.proxyCount;
-  }
+  int get proxyCount => _contactManager.broadPhase.proxyCount;
 
   /**
    * Get the number of contacts (each may have 0 or more contact points).
    */
-  int get contactCount() {
-    return _contactManager.contactCount;
-  }
+  int get contactCount => _contactManager.contactCount;
 
   /**
    * Is the world locked (in the middle of a time step).
    */
-  bool get locked() {
-    return (_flags & LOCKED) == LOCKED;
-  }
+  bool get locked => (_flags & LOCKED) == LOCKED;
 
   /**
    * Set flag to control automatic clearing of forces after each time step.
@@ -702,21 +692,15 @@ class World {
     }
   }
 
-  Joint get jointList() {
-    return _jointList;
-  }
+  Joint get jointList => _jointList;
 
-  int get jointCount() {
-    return _jointCount;
-  }
+  int get jointCount => _jointCount;
 
   /**
    * Get the flag that controls automatic clearing of forces after each time
    * step.
    */
-  bool get autoClearForces() {
-    return (_flags & CLEAR_FORCES) == CLEAR_FORCES;
-  }
+  bool get autoClearForces => (_flags & CLEAR_FORCES) == CLEAR_FORCES;
 
   void solve(TimeStep timeStep) {
     // Size the  for the worst case.

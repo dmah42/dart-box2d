@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * An axis-aligned bounding box.
- */
+/** An axis-aligned bounding box. */
 class AxisAlignedBox {
   /** Bottom left vertex of bounding box. */
   Vector lowerBound;
@@ -45,18 +43,14 @@ class AxisAlignedBox {
     upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
   }
 
-  /**
-   * Sets the bounds to the given values.
-   */
+  /** Sets the bounds to the given values. */
   AxisAlignedBox setBounds(Vector lower, Vector upper) {
     lowerBound.setFrom(lower);
     upperBound.setFrom(upper);
     return this;
   }
 
-  /**
-   * Returns true if the given box overlaps with this box.
-   */
+  /** Returns true if the given box overlaps with this box. */
   static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =>
     !((b.lowerBound.x > a.upperBound.x || b.lowerBound.y > a.upperBound.y) ||
       (a.lowerBound.x > b.upperBound.x || a.lowerBound.y > b.upperBound.y));
@@ -68,26 +62,20 @@ class AxisAlignedBox {
   bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
-  /**
-   * Returns the center of this box.
-   */
-  Vector get center() {
+  /** Returns the center of this box. */
+  Vector get center {
     Vector c = new Vector.copy(lowerBound);
     c.addLocal(upperBound);
     c.mulLocal(.5);
     return c;
   }
 
-  /**
-   * Returns true if this box contains the given box.
-   */
+  /** Returns true if this box contains the given box. */
   bool contains(AxisAlignedBox aabb) =>
       lowerBound.x > aabb.lowerBound.x && lowerBound.y > aabb.lowerBound.y &&
       upperBound.y < aabb.upperBound.y && upperBound.x < aabb.upperBound.x;
 
-  /**
-   * Sets this box to be a copy of the given box.
-   */
+  /** Sets this box to be a copy of the given box. */
   void setFrom(AxisAlignedBox other) {
     lowerBound.setFrom(other.lowerBound);
     upperBound.setFrom(other.upperBound);

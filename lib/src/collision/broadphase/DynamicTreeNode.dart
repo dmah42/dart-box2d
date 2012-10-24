@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * This is a node for the DynamicTree.
- */
+/** This is a node for the DynamicTree. */
 class DynamicTreeNode {
   AxisAlignedBox box;
 
@@ -26,26 +24,22 @@ class DynamicTreeNode {
 
   DynamicTreeNode childTwo;
 
-  /**
-   * Can contain whatever is useful to the user.
-   */
+  /** Can contain whatever is useful to the user. */
   var userData;
 
   /** Used for sorting. */
   int key;
 
   /** Should never be constructed outside the engine. */
-  DynamicTreeNode._construct() :
-    box = new AxisAlignedBox(),
-    parent = null,
-    next = null,
-    childOne = null,
-    childTwo = null { }
+  DynamicTreeNode._construct()
+    : box = new AxisAlignedBox(),
+      parent = null,
+      next = null,
+      childOne = null,
+      childTwo = null;
 
-  /**
-   * Returns true if this node is a leaf.
-   */
-  bool get isLeaf() => childOne == null;
+  /** Returns true if this node is a leaf. */
+  bool get isLeaf => childOne == null;
 
   String toString() => box.toString();
 }

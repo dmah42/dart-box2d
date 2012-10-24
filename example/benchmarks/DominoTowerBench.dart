@@ -29,9 +29,7 @@ class DominoTowerBench extends Benchmark {
   DominoTowerBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name() {
-    return NAME;
-  }
+  String get name => NAME;
 
   void makeDomino(num x, num y, bool horizontal, World world_) {
     PolygonShape sd = new PolygonShape();

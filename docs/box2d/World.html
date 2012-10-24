@@ -246,9 +246,7 @@ class World {
     _contactManager.contactListener = listener;
   }
 
-  ContactListener get contactListener() {
-    return _contactManager.contactListener;
-  }
+  ContactListener get contactListener =&gt; _contactManager.contactListener;
 
   /**
    * Register a routine for debug drawing. The debug draw functions are called
@@ -684,30 +682,22 @@ class World {
    * return the head of the world contact list.
    * warning contacts are
    */
-  Contact get contactList() {
-    return _contactManager.contactList;
-  }
+  Contact get contactList =&gt; _contactManager.contactList;
 
   /**
    * Get the number of broad-phase proxies.
    */
-  int get proxyCount() {
-    return _contactManager.broadPhase.proxyCount;
-  }
+  int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
 
   /**
    * Get the number of contacts (each may have 0 or more contact points).
    */
-  int get contactCount() {
-    return _contactManager.contactCount;
-  }
+  int get contactCount =&gt; _contactManager.contactCount;
 
   /**
    * Is the world locked (in the middle of a time step).
    */
-  bool get locked() {
-    return (_flags &amp; LOCKED) == LOCKED;
-  }
+  bool get locked =&gt; (_flags &amp; LOCKED) == LOCKED;
 
   /**
    * Set flag to control automatic clearing of forces after each time step.
@@ -720,21 +710,15 @@ class World {
     }
   }
 
-  Joint get jointList() {
-    return _jointList;
-  }
+  Joint get jointList =&gt; _jointList;
 
-  int get jointCount() {
-    return _jointCount;
-  }
+  int get jointCount =&gt; _jointCount;
 
   /**
    * Get the flag that controls automatic clearing of forces after each time
    * step.
    */
-  bool get autoClearForces() {
-    return (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
-  }
+  bool get autoClearForces =&gt; (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
 
   void solve(TimeStep timeStep) {
     // Size the  for the worst case.
@@ -1349,9 +1333,7 @@ bool <strong>get autoClearForces</strong> <a class="anchor-link" href="#autoClea
 <p>Get the flag that controls automatic clearing of forces after each time
 step.</p>
 <pre class="source">
-bool get autoClearForces() {
-  return (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
-}
+bool get autoClearForces =&gt; (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
 </pre>
 </div>
 </div>
@@ -1442,9 +1424,7 @@ final int         <strong>contactCount</strong> <a class="anchor-link"
         <div class="doc">
 <p>Get the number of contacts (each may have 0 or more contact points).</p>
 <pre class="source">
-int get contactCount() {
-  return _contactManager.contactCount;
-}
+int get contactCount =&gt; _contactManager.contactCount;
 </pre>
 </div>
 </div>
@@ -1476,9 +1456,7 @@ end of the list.</p>
 <p>return the head of the world contact list.
 warning contacts are</p>
 <pre class="source">
-Contact get contactList() {
-  return _contactManager.contactList;
-}
+Contact get contactList =&gt; _contactManager.contactList;
 </pre>
 </div>
 </div>
@@ -1492,9 +1470,7 @@ Contact get contactList() {
 <p>Register a contact event listener. The listener is owned by you and must
 remain in scope.</p>
 <pre class="source">
-ContactListener get contactListener() {
-  return _contactManager.contactListener;
-}
+ContactListener get contactListener =&gt; _contactManager.contactListener;
 </pre>
 <pre class="source">
 void set contactListener(ContactListener listener) {
@@ -1550,9 +1526,7 @@ final int         <strong>jointCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int get jointCount() {
-  return _jointCount;
-}
+int get jointCount =&gt; _jointCount;
 </pre>
 </div>
 </div>
@@ -1564,9 +1538,7 @@ final <a href="../box2d/Joint.html">Joint</a>         <strong>jointList</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-Joint get jointList() {
-  return _jointList;
-}
+Joint get jointList =&gt; _jointList;
 </pre>
 </div>
 </div>
@@ -1579,9 +1551,7 @@ final bool         <strong>locked</strong> <a class="anchor-link"
         <div class="doc">
 <p>Is the world locked (in the middle of a time step).</p>
 <pre class="source">
-bool get locked() {
-  return (_flags &amp; LOCKED) == LOCKED;
-}
+bool get locked =&gt; (_flags &amp; LOCKED) == LOCKED;
 </pre>
 </div>
 </div>
@@ -1594,9 +1564,7 @@ final int         <strong>proxyCount</strong> <a class="anchor-link"
         <div class="doc">
 <p>Get the number of broad-phase proxies.</p>
 <pre class="source">
-int get proxyCount() {
-  return _contactManager.broadPhase.proxyCount;
-}
+int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
 </pre>
 </div>
 </div>

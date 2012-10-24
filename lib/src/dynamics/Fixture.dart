@@ -42,9 +42,7 @@ class Fixture {
   final AxisAlignedBox _poolOne;
   final AxisAlignedBox _poolTwo;
 
-  /**
-   * Constructs a new Fixture with default values.
-   */
+  /** Constructs a new Fixture with default values. */
   Fixture()
       : box = new AxisAlignedBox(),
         body = null,
@@ -55,9 +53,7 @@ class Fixture {
         _poolOne = new AxisAlignedBox(),
         _poolTwo = new AxisAlignedBox();
 
-  /**
-   * Sets this fixture according to the given body and definition.
-   */
+  /** Sets this fixture according to the given body and definition. */
   void create(Body b, FixtureDef def) {
     userData = def.userData;
     friction = def.friction;
@@ -96,9 +92,7 @@ class Fixture {
     proxy = broadPhase.createProxy(box, this);
   }
 
-  /**
-   * Destroys this Fixture's proxy.
-   */
+  /** Destroys this Fixture's proxy. */
   void destroyProxy(BroadPhase broadPhase) {
     // If proxy is already destroyed, do nothing.
     if (proxy == null) {
@@ -144,10 +138,6 @@ class Fixture {
     shape.computeMass(massData, density);
   }
 
-  /**
-   * Get the type of the child shape.
-   */
-  int get type() {
-    return shape.type;
-  }
+  /** Get the type of the child shape. */
+  int get type => shape.type;
 }

@@ -59,7 +59,7 @@ class IViewportTransform {
    * example, if the actual canvas center is (5, 5) but the current center is
    * (6, 6), the translation is (1, 1).
    */
-  Vector get translation() {
+  Vector get translation {
     Vector result = new Vector.copy(extents);
     result.subLocal(center);
     return result;

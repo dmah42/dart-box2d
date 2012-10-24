@@ -105,13 +105,13 @@ class Tire {
     }
   }
 
-  Vector get _lateralVelocity() {
+  Vector get _lateralVelocity {
     final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
     return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
                                                   _body.linearVelocity));
   }
 
-  Vector get _forwardVelocity() {
+  Vector get _forwardVelocity {
     final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
     return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
                                                     _body.linearVelocity));

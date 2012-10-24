@@ -103,9 +103,7 @@ bool         <strong>enabled</strong> <a class="anchor-link"
 contact listener. The contact is only disabled for the current time step
 (or sub-step in continuous collisions).</p>
 <pre class="source">
-bool get enabled () {
-  return (flags &amp; ENABLED_FLAG) == ENABLED_FLAG;
-}
+bool get enabled =&gt; (flags &amp; ENABLED_FLAG) == ENABLED_FLAG;
 </pre>
 <pre class="source">
 void set enabled(bool flag) {
@@ -238,9 +236,7 @@ final bool         <strong>touching</strong> <a class="anchor-link"
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <p>Is this contact touching</p>
 <pre class="source">
-bool get touching() {
-  return (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
-}
+bool get touching =&gt; (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 </pre>
 </div>
 </div>

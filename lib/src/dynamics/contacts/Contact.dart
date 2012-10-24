@@ -99,9 +99,7 @@ abstract class Contact {
   /**
    * Is this contact touching
    */
-  bool get touching() {
-    return (flags & TOUCHING_FLAG) == TOUCHING_FLAG;
-  }
+  bool get touching => (flags & TOUCHING_FLAG) == TOUCHING_FLAG;
 
   /**
    * Enable/disable this contact. This can be used inside the pre-solve
@@ -116,9 +114,7 @@ abstract class Contact {
     }
   }
 
-  bool get enabled () {
-    return (flags & ENABLED_FLAG) == ENABLED_FLAG;
-  }
+  bool get enabled => (flags & ENABLED_FLAG) == ENABLED_FLAG;
 
   /** Abstract method. */
   abstract void evaluate(Manifold argManifold, Transform xfA, Transform xfB);
