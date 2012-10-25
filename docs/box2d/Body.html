@@ -944,93 +944,6 @@ class Body {
 </pre>
 </div>
 <div>
-<h3>Constructors</h3>
-<div class="method"><h4 id="Body">
-<button class="show-code">Code</button>
-new <strong>Body</strong>(<a href="../box2d/BodyDef.html">BodyDef</a> bd, <a href="../box2d/World.html">World</a> world) <a class="anchor-link" href="#Body"
-              title="Permalink to Body.Body">#</a></h4>
-<div class="doc">
-<pre class="source">
-Body(BodyDef bd, this.world)
-    : flags = 0,
-      // Set the origin transform.
-      originTransform = new Transform(),
-
-      // Set the sweep.
-      sweep = new Sweep(),
-
-      jointList = null,
-      contactList = null,
-      prev = null,
-      next = null,
-
-      // Set the linear and angular velocities.
-      _linearVelocity = new Vector.copy(bd.linearVelocity),
-      _angularVelocity = 0,
-
-      // Set the linear and angular damping.
-      linearDamping = bd.linearDamping,
-      angularDamping = bd.angularDamping,
-
-      // Set force and torque.
-      _force = new Vector(),
-      _torque = 0,
-
-      _inertia = 0,
-      invInertia = 0,
-
-      userData = bd.userData,
-
-      fixtureList = null,
-      fixtureCount = 0,
-
-      // Initialize pool objects.
-      _fixDef = new FixtureDef(),
-      _pmd = new MassData(),
-      _pxf = new Transform(),
-      oldCenter = new Vector(),
-      tempCenter = new Vector(),
-
-      sleepTime = 0,
-
-      _type = bd.type {
-  if (bd.bullet) {
-    flags |= BULLET_FLAG;
-  }
-  if (bd.fixedRotation) {
-    flags |= FIXED_ROTATION_FLAG;
-  }
-  if (bd.allowSleep) {
-    flags |= AUTO_SLEEP_FLAG;
-  }
-  if (bd.awake) {
-    flags |= AWAKE_FLAG;
-  }
-  if (bd.active) {
-    flags |= ACTIVE_FLAG;
-  }
-
-  originTransform.position.setFrom(bd.position);
-  originTransform.rotation.setAngle(bd.angle);
-  sweep.localCenter.setZero();
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
-  sweep.angle = bd.angle;
-  sweep.angleZero = bd.angle;
-
-  if (_type == BodyType.DYNAMIC) {
-    mass = 1;
-    invMass = 1;
-  } else {
-    mass = 0;
-    invMass = 0;
-  }
-}
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Static Properties</h3>
 <div class="field"><h4 id="ACTIVE_FLAG">
 <button class="show-code">Code</button>
@@ -1114,6 +1027,93 @@ const int         <strong>TO_I_FLAG</strong> <a class="anchor-link"
         <div class="doc">
 <pre class="source">
 static const int TO_I_FLAG = 0x0040;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Body">
+<button class="show-code">Code</button>
+new <strong>Body</strong>(<a href="../box2d/BodyDef.html">BodyDef</a> bd, <a href="../box2d/World.html">World</a> world) <a class="anchor-link" href="#Body"
+              title="Permalink to Body.Body">#</a></h4>
+<div class="doc">
+<pre class="source">
+Body(BodyDef bd, this.world)
+    : flags = 0,
+      // Set the origin transform.
+      originTransform = new Transform(),
+
+      // Set the sweep.
+      sweep = new Sweep(),
+
+      jointList = null,
+      contactList = null,
+      prev = null,
+      next = null,
+
+      // Set the linear and angular velocities.
+      _linearVelocity = new Vector.copy(bd.linearVelocity),
+      _angularVelocity = 0,
+
+      // Set the linear and angular damping.
+      linearDamping = bd.linearDamping,
+      angularDamping = bd.angularDamping,
+
+      // Set force and torque.
+      _force = new Vector(),
+      _torque = 0,
+
+      _inertia = 0,
+      invInertia = 0,
+
+      userData = bd.userData,
+
+      fixtureList = null,
+      fixtureCount = 0,
+
+      // Initialize pool objects.
+      _fixDef = new FixtureDef(),
+      _pmd = new MassData(),
+      _pxf = new Transform(),
+      oldCenter = new Vector(),
+      tempCenter = new Vector(),
+
+      sleepTime = 0,
+
+      _type = bd.type {
+  if (bd.bullet) {
+    flags |= BULLET_FLAG;
+  }
+  if (bd.fixedRotation) {
+    flags |= FIXED_ROTATION_FLAG;
+  }
+  if (bd.allowSleep) {
+    flags |= AUTO_SLEEP_FLAG;
+  }
+  if (bd.awake) {
+    flags |= AWAKE_FLAG;
+  }
+  if (bd.active) {
+    flags |= ACTIVE_FLAG;
+  }
+
+  originTransform.position.setFrom(bd.position);
+  originTransform.rotation.setAngle(bd.angle);
+  sweep.localCenter.setZero();
+  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+  sweep.center.setFrom(sweep.centerZero);
+  sweep.angle = bd.angle;
+  sweep.angleZero = bd.angle;
+
+  if (_type == BodyType.DYNAMIC) {
+    mass = 1;
+    invMass = 1;
+  } else {
+    mass = 0;
+    invMass = 0;
+  }
+}
 </pre>
 </div>
 </div>
@@ -1623,19 +1623,6 @@ Body prev;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to Body.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="sleepingAllowed">
 <button class="show-code">Code</button>
 bool <strong>get sleepingAllowed</strong> <a class="anchor-link" href="#sleepingAllowed"
@@ -1788,25 +1775,6 @@ Vector get worldCenter =&gt; sweep.center;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to Body.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
 <div class="method"><h4 id="advance">
 <button class="show-code">Code</button>
@@ -1920,90 +1888,6 @@ void applyTorque(num torque) {
   awake = true;
 
   _torque += torque;
-}
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Body">
-<button class="show-code">Code</button>
-new <strong>Body</strong>(<a href="../box2d/BodyDef.html">BodyDef</a> bd, <a href="../box2d/World.html">World</a> world) <a class="anchor-link" href="#Body"
-              title="Permalink to Body.Body">#</a></h4>
-<div class="doc">
-<pre class="source">
-Body(BodyDef bd, this.world)
-    : flags = 0,
-      // Set the origin transform.
-      originTransform = new Transform(),
-
-      // Set the sweep.
-      sweep = new Sweep(),
-
-      jointList = null,
-      contactList = null,
-      prev = null,
-      next = null,
-
-      // Set the linear and angular velocities.
-      _linearVelocity = new Vector.copy(bd.linearVelocity),
-      _angularVelocity = 0,
-
-      // Set the linear and angular damping.
-      linearDamping = bd.linearDamping,
-      angularDamping = bd.angularDamping,
-
-      // Set force and torque.
-      _force = new Vector(),
-      _torque = 0,
-
-      _inertia = 0,
-      invInertia = 0,
-
-      userData = bd.userData,
-
-      fixtureList = null,
-      fixtureCount = 0,
-
-      // Initialize pool objects.
-      _fixDef = new FixtureDef(),
-      _pmd = new MassData(),
-      _pxf = new Transform(),
-      oldCenter = new Vector(),
-      tempCenter = new Vector(),
-
-      sleepTime = 0,
-
-      _type = bd.type {
-  if (bd.bullet) {
-    flags |= BULLET_FLAG;
-  }
-  if (bd.fixedRotation) {
-    flags |= FIXED_ROTATION_FLAG;
-  }
-  if (bd.allowSleep) {
-    flags |= AUTO_SLEEP_FLAG;
-  }
-  if (bd.awake) {
-    flags |= AWAKE_FLAG;
-  }
-  if (bd.active) {
-    flags |= ACTIVE_FLAG;
-  }
-
-  originTransform.position.setFrom(bd.position);
-  originTransform.rotation.setAngle(bd.angle);
-  sweep.localCenter.setZero();
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
-  sweep.angle = bd.angle;
-  sweep.angleZero = bd.angle;
-
-  if (_type == BodyType.DYNAMIC) {
-    mass = 1;
-    invMass = 1;
-  } else {
-    mass = 0;
-    invMass = 0;
-  }
 }
 </pre>
 </div>
@@ -2361,55 +2245,6 @@ void getWorldVectorToOut(Vector localVector, Vector out) {
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to Body.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to Body.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to Body.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="resetMassData">
 <button class="show-code">Code</button>
 void <strong>resetMassData</strong>() <a class="anchor-link" href="#resetMassData"
@@ -2579,17 +2414,6 @@ void synchronizeTransform() {
   p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
       sweep.center.y;
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to Body.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

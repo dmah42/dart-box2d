@@ -164,19 +164,6 @@ num radius;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to CircleShape.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field inherited"><h4 id="type">
 <button class="show-code">Code</button>
 int         <strong>type</strong> <a class="anchor-link"
@@ -192,54 +179,7 @@ int type;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to CircleShape.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method"><h4 id="CircleShape">
-<button class="show-code">Code</button>
-new <strong>CircleShape</strong>() <a class="anchor-link" href="#CircleShape"
-              title="Permalink to CircleShape.CircleShape">#</a></h4>
-<div class="doc">
-<p>A constructor for internal use only. Instead use Body.createShape with a
-CircleDef.</p>
-<pre class="source">
-CircleShape() :
-  super(ShapeType.CIRCLE, 0),
-  position = new Vector() {
-}
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="CircleShape.copy">
-<button class="show-code">Code</button>
-new <strong>CircleShape.copy</strong>(<a href="../box2d/CircleShape.html">CircleShape</a> other) <a class="anchor-link" href="#CircleShape.copy"
-              title="Permalink to CircleShape.CircleShape.copy">#</a></h4>
-<div class="doc">
-<p>Constructs a new CircleShape equal to the given CircleShape.</p>
-<pre class="source">
-CircleShape.copy(CircleShape other) :
-  super(other.type, other.radius),
-  position = new Vector.copy(other.position) { }
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="clone">
 <button class="show-code">Code</button>
 <a href="../box2d/Shape.html">Shape</a> <strong>clone</strong>() <a class="anchor-link" href="#clone"
@@ -289,68 +229,6 @@ void computeMass(MassData massData, num density) {
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to CircleShape.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to CircleShape.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to CircleShape.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Shape">
-<button class="show-code">Code</button>
-new <strong>Shape</strong>([int type = ShapeType.UNKNOWN, num radius = 0]) <a class="anchor-link" href="#Shape"
-              title="Permalink to CircleShape.Shape">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
-<p>Constructs a new shape of unknown type.</p>
-<pre class="source">
-Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
-  type = type,
-  radius = radius { }
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="testPoint">
 <button class="show-code">Code</button>
 bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector.html">Vector</a> point) <a class="anchor-link" href="#testPoint"
@@ -368,17 +246,6 @@ bool testPoint(Transform transform, Vector point) {
   Vector d = center.subLocal(point).negateLocal();
   return Vector.dot(d, d) &lt;= radius * radius;
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to CircleShape.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

@@ -1197,6 +1197,69 @@ class World {
 </pre>
 </div>
 <div>
+<h3>Static Properties</h3>
+<div class="field"><h4 id="CLEAR_FORCES">
+<button class="show-code">Code</button>
+const int         <strong>CLEAR_FORCES</strong> <a class="anchor-link"
+            href="#CLEAR_FORCES"
+            title="Permalink to World.CLEAR_FORCES">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int CLEAR_FORCES = 0x0004;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="LOCKED">
+<button class="show-code">Code</button>
+const int         <strong>LOCKED</strong> <a class="anchor-link"
+            href="#LOCKED"
+            title="Permalink to World.LOCKED">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int LOCKED = 0x0002;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="NEW_FIXTURE">
+<button class="show-code">Code</button>
+const int         <strong>NEW_FIXTURE</strong> <a class="anchor-link"
+            href="#NEW_FIXTURE"
+            title="Permalink to World.NEW_FIXTURE">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int NEW_FIXTURE = 0x0001;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="WORLD_POOL_CONTAINER_SIZE">
+<button class="show-code">Code</button>
+const int         <strong>WORLD_POOL_CONTAINER_SIZE</strong> <a class="anchor-link"
+            href="#WORLD_POOL_CONTAINER_SIZE"
+            title="Permalink to World.WORLD_POOL_CONTAINER_SIZE">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int WORLD_POOL_CONTAINER_SIZE = 10;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="WORLD_POOL_SIZE">
+<button class="show-code">Code</button>
+const int         <strong>WORLD_POOL_SIZE</strong> <a class="anchor-link"
+            href="#WORLD_POOL_SIZE"
+            title="Permalink to World.WORLD_POOL_SIZE">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+static const int WORLD_POOL_SIZE = 100;
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="World">
 <button class="show-code">Code</button>
@@ -1256,69 +1319,6 @@ World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
   }
   _initializeRegisters();
 }
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Static Properties</h3>
-<div class="field"><h4 id="CLEAR_FORCES">
-<button class="show-code">Code</button>
-const int         <strong>CLEAR_FORCES</strong> <a class="anchor-link"
-            href="#CLEAR_FORCES"
-            title="Permalink to World.CLEAR_FORCES">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-static const int CLEAR_FORCES = 0x0004;
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="LOCKED">
-<button class="show-code">Code</button>
-const int         <strong>LOCKED</strong> <a class="anchor-link"
-            href="#LOCKED"
-            title="Permalink to World.LOCKED">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-static const int LOCKED = 0x0002;
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="NEW_FIXTURE">
-<button class="show-code">Code</button>
-const int         <strong>NEW_FIXTURE</strong> <a class="anchor-link"
-            href="#NEW_FIXTURE"
-            title="Permalink to World.NEW_FIXTURE">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-static const int NEW_FIXTURE = 0x0001;
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="WORLD_POOL_CONTAINER_SIZE">
-<button class="show-code">Code</button>
-const int         <strong>WORLD_POOL_CONTAINER_SIZE</strong> <a class="anchor-link"
-            href="#WORLD_POOL_CONTAINER_SIZE"
-            title="Permalink to World.WORLD_POOL_CONTAINER_SIZE">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-static const int WORLD_POOL_CONTAINER_SIZE = 10;
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="WORLD_POOL_SIZE">
-<button class="show-code">Code</button>
-const int         <strong>WORLD_POOL_SIZE</strong> <a class="anchor-link"
-            href="#WORLD_POOL_SIZE"
-            title="Permalink to World.WORLD_POOL_SIZE">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-static const int WORLD_POOL_SIZE = 100;
 </pre>
 </div>
 </div>
@@ -1568,19 +1568,6 @@ int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to World.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="stack">
 <button class="show-code">Code</button>
 List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>stack</strong> <a class="anchor-link"
@@ -1650,25 +1637,6 @@ final <a href="../box2d/WorldQueryWrapper.html">WorldQueryWrapper</a>         <s
         <div class="doc">
 <pre class="source">
 final WorldQueryWrapper wqwrapper;
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to World.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
 </pre>
 </div>
 </div>
@@ -2158,55 +2126,6 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
       break;
   }
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to World.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to World.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to World.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
@@ -2748,78 +2667,6 @@ void step(num dt, int velocityIterations, int positionIterations) {
   }
 
   _flags &amp;= ~LOCKED;
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to World.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="World">
-<button class="show-code">Code</button>
-new <strong>World</strong>(<a href="../box2d/Vector.html">Vector</a> gravity, bool doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
-              title="Permalink to World.World">#</a></h4>
-<div class="doc">
-<p>Constructs a world object.</p>
-<p>gravity
-  the world gravity vector.
-doSleep
-  improve performance by not simulating inactive bodies.</p>
-<pre class="source">
-World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
-  _pool = argPool,
-  _jointDestructionListener = null,
-  _fixtureDestructionListener = null,
-  _debugDraw = null,
-
-  _bodyList = null,
-  _jointList = null,
-
-  _bodyCount = 0,
-  _jointCount = 0,
-
-  _warmStarting = true,
-  _continuousPhysics = true,
-
-  _allowSleep = doSleep,
-  _gravity = gravity,
-
-  _flags = CLEAR_FORCES,
-
-  _inverseTimestep = 0,
-
-  _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
-
-  // Initialize Pool Objects.
-  center = new Vector(),
-  axis = new Vector(),
-  timestep = new TimeStep(),
-  cA = new Vector(),
-  cB = new Vector(),
-  wqwrapper = new WorldQueryWrapper(),
-  toiInput = new TimeOfImpactInput(),
-  toiOutput = new TimeOfImpactOutput(),
-  backup = new Sweep(),
-  toiSolver = new TimeOfImpactSolver(),
-  contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
-  island = new Island(),
-  stack = new List&lt;Body&gt;(10) {
-
-  _contactManager = new ContactManager(this);
-
-  // Initialize settings.
-  for (int i = 0; i &lt; _contactStacks.length; i++) {
-    _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
-  }
-  _initializeRegisters();
 }
 </pre>
 </div>

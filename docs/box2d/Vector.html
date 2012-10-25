@@ -214,30 +214,6 @@ class Vector {
 </pre>
 </div>
 <div>
-<h3>Constructors</h3>
-<div class="method"><h4 id="Vector">
-<button class="show-code">Code</button>
-new <strong>Vector</strong>([num x = 0, num y = 0]) <a class="anchor-link" href="#Vector"
-              title="Permalink to Vector.Vector">#</a></h4>
-<div class="doc">
-<pre class="source">
-Vector([this.x = 0, this.y = 0]);
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Vector.copy">
-<button class="show-code">Code</button>
-new <strong>Vector.copy</strong>(<a href="../box2d/Vector.html">Vector</a> other) <a class="anchor-link" href="#Vector.copy"
-              title="Permalink to Vector.Vector.copy">#</a></h4>
-<div class="doc">
-<p>Constructs a new vector with the same coordinates as the given vector.</p>
-<pre class="source">
-Vector.copy(Vector other) : x = other.x, y = other.y;
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Static Methods</h3>
 <div class="method"><h4 id="crossVectors">
 <button class="show-code">Code</button>
@@ -327,6 +303,30 @@ static void maxToOut(Vector a, Vector b, Vector out) {
 </div>
 </div>
 <div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Vector">
+<button class="show-code">Code</button>
+new <strong>Vector</strong>([num x = 0, num y = 0]) <a class="anchor-link" href="#Vector"
+              title="Permalink to Vector.Vector">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector([this.x = 0, this.y = 0]);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Vector.copy">
+<button class="show-code">Code</button>
+new <strong>Vector.copy</strong>(<a href="../box2d/Vector.html">Vector</a> other) <a class="anchor-link" href="#Vector.copy"
+              title="Permalink to Vector.Vector.copy">#</a></h4>
+<div class="doc">
+<p>Constructs a new vector with the same coordinates as the given vector.</p>
+<pre class="source">
+Vector.copy(Vector other) : x = other.x, y = other.y;
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Properties</h3>
 <div class="field"><h4 id="length">
 <button class="show-code">Code</button>
@@ -350,19 +350,6 @@ final num         <strong>lengthSquared</strong> <a class="anchor-link"
 <p>Returns the length of this vector, squared.</p>
 <pre class="source">
 num get lengthSquared =&gt; x * x + y * y;
-</pre>
-</div>
-</div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to Vector.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
 </pre>
 </div>
 </div>
@@ -453,24 +440,6 @@ num distanceBetween(Vector v) {
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to Vector.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="isValid">
 <button class="show-code">Code</button>
 bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
@@ -531,37 +500,6 @@ num normalize() {
   y *= invLength;
   return len;
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to Vector.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to Vector.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
@@ -647,27 +585,6 @@ String <strong>toString</strong>() <a class="anchor-link" href="#toString"
 <p>Returns a String representation of the given vector.</p>
 <pre class="source">
 String toString() =&gt; "($x, $y)";
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Vector">
-<button class="show-code">Code</button>
-new <strong>Vector</strong>([num x = 0, num y = 0]) <a class="anchor-link" href="#Vector"
-              title="Permalink to Vector.Vector">#</a></h4>
-<div class="doc">
-<pre class="source">
-Vector([this.x = 0, this.y = 0]);
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Vector.copy">
-<button class="show-code">Code</button>
-new <strong>Vector.copy</strong>(<a href="../box2d/Vector.html">Vector</a> other) <a class="anchor-link" href="#Vector.copy"
-              title="Permalink to Vector.Vector.copy">#</a></h4>
-<div class="doc">
-<p>Constructs a new vector with the same coordinates as the given vector.</p>
-<pre class="source">
-Vector.copy(Vector other) : x = other.x, y = other.y;
 </pre>
 </div>
 </div>

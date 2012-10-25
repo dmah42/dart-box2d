@@ -112,19 +112,6 @@ final Features features;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to ContactID.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 </div>
 <div>
 <h3>Operators</h3>
@@ -142,47 +129,6 @@ bool operator ==(other) =&gt; other.features == features;
 </div>
 <div>
 <h3>Methods</h3>
-<div class="method"><h4 id="ContactID">
-<button class="show-code">Code</button>
-new <strong>ContactID</strong>() <a class="anchor-link" href="#ContactID"
-              title="Permalink to ContactID.ContactID">#</a></h4>
-<div class="doc">
-<p>Constructs a new ContactID.</p>
-<pre class="source">
-ContactID() : features = new Features();
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="ContactID.copy">
-<button class="show-code">Code</button>
-new <strong>ContactID.copy</strong>(<a href="../box2d/ContactID.html">ContactID</a> other) <a class="anchor-link" href="#ContactID.copy"
-              title="Permalink to ContactID.ContactID.copy">#</a></h4>
-<div class="doc">
-<p>Constructs a ContactID that is a copy of the given ContactID.</p>
-<pre class="source">
-ContactID.copy(ContactID other) :
-  features = new Features.copy(other.features);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to ContactID.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="isEqual">
 <button class="show-code">Code</button>
 bool <strong>isEqual</strong>(<a href="../box2d/ContactID.html">ContactID</a> other) <a class="anchor-link" href="#isEqual"
@@ -194,37 +140,6 @@ bool isEqual(ContactID other) =&gt; other.features == features;
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to ContactID.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to ContactID.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="setFrom">
 <button class="show-code">Code</button>
 void <strong>setFrom</strong>(<a href="../box2d/ContactID.html">ContactID</a> other) <a class="anchor-link" href="#setFrom"
@@ -233,17 +148,6 @@ void <strong>setFrom</strong>(<a href="../box2d/ContactID.html">ContactID</a> ot
 <p>Sets this contactID to be equal to the given ContactID.</p>
 <pre class="source">
 void setFrom(ContactID other) { features.setFrom(other.features); }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to ContactID.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

@@ -146,6 +146,21 @@ class Joint {
 <p>
 <span class="type-box"><span class="icon-class"></span><a href="../box2d/ConstantVolumeJoint.html">ConstantVolumeJoint</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/DistanceJoint.html">DistanceJoint</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/FrictionJoint.html">FrictionJoint</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/RevoluteJoint.html">RevoluteJoint</a></span></p>
 <div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="destroy">
+<button class="show-code">Code</button>
+void <strong>destroy</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a class="anchor-link" href="#destroy"
+              title="Permalink to Joint.destroy">#</a></h4>
+<div class="doc">
+<pre class="source">
+static void destroy(Joint joint) {
+  joint.destructor();
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="Joint">
 <button class="show-code">Code</button>
@@ -206,21 +221,6 @@ factory Joint.create(World argWorld, JointDef def) {
       return new ConstantVolumeJoint(argWorld, def);
   }
   return null;
-}
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Static Methods</h3>
-<div class="method"><h4 id="destroy">
-<button class="show-code">Code</button>
-void <strong>destroy</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a class="anchor-link" href="#destroy"
-              title="Permalink to Joint.destroy">#</a></h4>
-<div class="doc">
-<pre class="source">
-static void destroy(Joint joint) {
-  joint.destructor();
 }
 </pre>
 </div>
@@ -385,19 +385,6 @@ final Vector localCenterB;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to Joint.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="type">
 <button class="show-code">Code</button>
 int         <strong>type</strong> <a class="anchor-link"
@@ -419,25 +406,6 @@ Object         <strong>userData</strong> <a class="anchor-link"
         <div class="doc">
 <pre class="source">
 Object userData;
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to Joint.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
 </pre>
 </div>
 </div>
@@ -499,24 +467,6 @@ num getReactionTorque(num inv_dt) { }
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to Joint.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="initVelocityConstraints">
 <button class="show-code">Code</button>
 void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#initVelocityConstraints"
@@ -524,100 +474,6 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 <div class="doc">
 <pre class="source">
 void initVelocityConstraints(TimeStep step) { }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Joint">
-<button class="show-code">Code</button>
-new <strong>Joint</strong>(<a href="../box2d/JointDef.html">JointDef</a> def) <a class="anchor-link" href="#Joint"
-              title="Permalink to Joint.Joint">#</a></h4>
-<div class="doc">
-<pre class="source">
-Joint(JointDef def) :
-  type = def.type,
-  _prev = null,
-  _next = null,
-  bodyA = def.bodyA,
-  bodyB = def.bodyB,
-  collideConnected = def.collideConnected,
-  islandFlag = false,
-  userData = def.userData,
-
-  localCenterA = new Vector(),
-  localCenterB = new Vector(),
-  edgeA = new JointEdge(),
-  edgeB = new JointEdge() { }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Joint.create">
-<button class="show-code">Code</button>
-factory <strong>Joint.create</strong>(<a href="../box2d/World.html">World</a> argWorld, <a href="../box2d/JointDef.html">JointDef</a> def) <a class="anchor-link" href="#Joint.create"
-              title="Permalink to Joint.Joint.create">#</a></h4>
-<div class="doc">
-<pre class="source">
-factory Joint.create(World argWorld, JointDef def) {
-  switch(def.type){
-    case JointType.MOUSE:
-      throw new NotImplementedException();
-      //  return new MouseJoint(def);
-    case JointType.DISTANCE:
-      return new DistanceJoint(def);
-    case JointType.PRISMATIC:
-      throw new NotImplementedException();
-      //  return new PrismaticJoint(def);
-    case JointType.REVOLUTE:
-      return new RevoluteJoint(def);
-    case JointType.WELD:
-      throw new NotImplementedException();
-      //return new WeldJoint(def);
-    case JointType.FRICTION:
-      return new FrictionJoint(def);
-    case JointType.LINE:
-      throw new NotImplementedException();
-      //return new LineJoint(def);
-    case JointType.GEAR:
-      throw new NotImplementedException();
-      //return new GearJoint(def);
-    case JointType.PULLEY:
-      throw new NotImplementedException();
-      //return new PulleyJoint(def);
-    case JointType.CONSTANT_VOLUME:
-      return new ConstantVolumeJoint(argWorld, def);
-  }
-  return null;
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to Joint.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to Joint.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
@@ -639,17 +495,6 @@ void <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">
 <div class="doc">
 <pre class="source">
 void solveVelocityConstraints(TimeStep step) { }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to Joint.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

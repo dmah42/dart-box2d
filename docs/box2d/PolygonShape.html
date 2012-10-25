@@ -506,19 +506,6 @@ num radius;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to PolygonShape.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field inherited"><h4 id="type">
 <button class="show-code">Code</button>
 int         <strong>type</strong> <a class="anchor-link"
@@ -555,25 +542,6 @@ final List&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>vert
 vertices.length to get the number of active vertices.</p>
 <pre class="source">
 final List&lt;Vector&gt; vertices;
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to PolygonShape.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
 </pre>
 </div>
 </div>
@@ -853,99 +821,6 @@ Vector getVertex(int index) =&gt; vertices[index];
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to PolygonShape.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to PolygonShape.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to PolygonShape.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="PolygonShape">
-<button class="show-code">Code</button>
-new <strong>PolygonShape</strong>() <a class="anchor-link" href="#PolygonShape"
-              title="Permalink to PolygonShape.PolygonShape">#</a></h4>
-<div class="doc">
-<p>Constructs a new PolygonShape.</p>
-<pre class="source">
-PolygonShape() :
-    super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
-    vertexCount = 0,
-    vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-    normals = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-    centroid = new Vector() {
-  for (int i = 0; i &lt; vertices.length; ++i)
-    vertices[i] = new Vector();
-  for (int i = 0; i &lt; normals.length; ++i)
-    normals[i] = new Vector();
-}
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="PolygonShape.copy">
-<button class="show-code">Code</button>
-new <strong>PolygonShape.copy</strong>(<a href="../box2d/PolygonShape.html">PolygonShape</a> other) <a class="anchor-link" href="#PolygonShape.copy"
-              title="Permalink to PolygonShape.PolygonShape.copy">#</a></h4>
-<div class="doc">
-<p>Constructs a new PolygonShape equal to the given shape.</p>
-<pre class="source">
-PolygonShape.copy(PolygonShape other) :
-    super(ShapeType.POLYGON, other.radius),
-    vertexCount = other.vertexCount,
-    vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-    normals = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-    centroid = new Vector.copy(other.centroid) {
-  // Copy the vertices and normals from the other polygon shape.
-  for (int i = 0; i &lt; other.vertices.length; ++i)
-    vertices[i] = new Vector.copy(other.vertices[i]);
-
-  for (int i = 0; i &lt; other.normals.length; ++i)
-    normals[i] = new Vector.copy(other.normals[i]);
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="setAsBox">
 <button class="show-code">Code</button>
 void <strong>setAsBox</strong>(num hx, num hy) <a class="anchor-link" href="#setAsBox"
@@ -1062,19 +937,6 @@ void setFrom(List&lt;Vector&gt; otherVertices, int count) {
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="Shape">
-<button class="show-code">Code</button>
-new <strong>Shape</strong>([int type = ShapeType.UNKNOWN, num radius = 0]) <a class="anchor-link" href="#Shape"
-              title="Permalink to PolygonShape.Shape">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
-<p>Constructs a new shape of unknown type.</p>
-<pre class="source">
-Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
-  type = type,
-  radius = radius { }
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="testPoint">
 <button class="show-code">Code</button>
 bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../box2d/Vector.html">Vector</a> p) <a class="anchor-link" href="#testPoint"
@@ -1098,17 +960,6 @@ bool testPoint(Transform xf, Vector p) {
 
   return true;
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to PolygonShape.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

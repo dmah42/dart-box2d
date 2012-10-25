@@ -293,19 +293,6 @@ num referenceAngle;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to RevoluteJointDef.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field inherited"><h4 id="type">
 <button class="show-code">Code</button>
 int         <strong>type</strong> <a class="anchor-link"
@@ -347,44 +334,7 @@ Object userData;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to RevoluteJointDef.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to RevoluteJointDef.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
 void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector.html">Vector</a> anchor) <a class="anchor-link" href="#initialize"
@@ -400,85 +350,6 @@ void initialize(Body b1, Body b2, Vector anchor) {
   bodyB.getLocalPointToOut(anchor, localAnchorB);
   referenceAngle = bodyA.angle - bodyB.angle;
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="JointDef">
-<button class="show-code">Code</button>
-new <strong>JointDef</strong>() <a class="anchor-link" href="#JointDef"
-              title="Permalink to RevoluteJointDef.JointDef">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
-<pre class="source">
-JointDef() :
-  type = JointType.UNKNOWN,
-  userData = null,
-  bodyA = null,
-  bodyB = null,
-  collideConnected = false { }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to RevoluteJointDef.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to RevoluteJointDef.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="RevoluteJointDef">
-<button class="show-code">Code</button>
-new <strong>RevoluteJointDef</strong>() <a class="anchor-link" href="#RevoluteJointDef"
-              title="Permalink to RevoluteJointDef.RevoluteJointDef">#</a></h4>
-<div class="doc">
-<pre class="source">
-RevoluteJointDef() :
-  super(),
-  localAnchorA = new Vector(0.0, 0.0),
-  localAnchorB = new Vector(0.0, 0.0),
-  referenceAngle = 0.0,
-  lowerAngle = 0.0,
-  upperAngle = 0.0,
-  maxMotorTorque = 0.0,
-  motorSpeed = 0.0,
-  enableLimit = false,
-  enableMotor = false {
-  type = JointType.REVOLUTE;
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to RevoluteJointDef.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

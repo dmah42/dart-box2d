@@ -281,19 +281,6 @@ num restitution;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to ContactConstraint.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="type">
 <button class="show-code">Code</button>
 int         <strong>type</strong> <a class="anchor-link"
@@ -308,97 +295,7 @@ int type;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to ContactConstraint.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method"><h4 id="ContactConstraint">
-<button class="show-code">Code</button>
-new <strong>ContactConstraint</strong>() <a class="anchor-link" href="#ContactConstraint"
-              title="Permalink to ContactConstraint.ContactConstraint">#</a></h4>
-<div class="doc">
-<pre class="source">
-ContactConstraint() :
-  points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-  pointCount = 0,
-  manifold = null,
-  localNormal = new Vector(),
-  localPoint = new Vector(),
-  normal = new Vector(),
-  normalMass = new Matrix22(),
-  K = new Matrix22() {
-  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-      points[i] = new ContactConstraintPoint();
-  }
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to ContactConstraint.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to ContactConstraint.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to ContactConstraint.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="setFrom">
 <button class="show-code">Code</button>
 void <strong>setFrom</strong>(<a href="../box2d/ContactConstraint.html">ContactConstraint</a> cp) <a class="anchor-link" href="#setFrom"

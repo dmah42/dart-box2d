@@ -572,19 +572,6 @@ List&lt;Vector&gt; normals;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to ConstantVolumeJoint.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="step">
 <button class="show-code">Code</button>
 <a href="../box2d/TimeStep.html">TimeStep</a>         <strong>step</strong> <a class="anchor-link"
@@ -647,92 +634,7 @@ Object userData;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to ConstantVolumeJoint.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method"><h4 id="ConstantVolumeJoint">
-<button class="show-code">Code</button>
-new <strong>ConstantVolumeJoint</strong>(<a href="../box2d/World.html">World</a> _world, <a href="../box2d/ConstantVolumeJointDef.html">ConstantVolumeJointDef</a> def) <a class="anchor-link" href="#ConstantVolumeJoint"
-              title="Permalink to ConstantVolumeJoint.ConstantVolumeJoint">#</a></h4>
-<div class="doc">
-<pre class="source">
-ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
-  super(def),
-  _impulse = 0 {
-  if (def.bodies.length &lt;= 2) {
-    throw new IllegalArgumentException(
-        "You cannot create a constant volume joint with less than three "
-        "bodies.");
-  }
-
-  // Create a fixed size array with a capacity equal to the number of elements
-  // in the growable array in the definition.
-  bodies = new List.from(def.bodies);
-
-  targetLengths = new List&lt;num&gt;(bodies.length);
-  for (int i = 0; i &lt; targetLengths.length; ++i) {
-    final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-    Vector temp = new Vector.copy(bodies[i].worldCenter);
-    temp.subLocal(bodies[next].worldCenter);
-    num dist = temp.length;
-    targetLengths[i] = dist;
-  }
-  targetVolume = area;
-
-  if (def.joints != null &amp;&amp; def.joints.length != def.bodies.length) {
-    throw new IllegalArgumentException(
-        "Incorrect joint definition.  Joints have to correspond to "
-        "the bodies");
-  }
-
-  if (def.joints == null) {
-    final djd = new DistanceJointDef();
-    distanceJoints = new List&lt;DistanceJoint&gt;(bodies.length);
-    for (int i = 0; i &lt; targetLengths.length; ++i) {
-      final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-      djd.frequencyHz = def.frequencyHz;
-      djd.dampingRatio = def.dampingRatio;
-      djd.initialize(bodies[i], bodies[next], bodies[i].worldCenter,
-          bodies[next].worldCenter);
-      distanceJoints[i] = _world.createJoint(djd);
-    }
-  } else {
-    distanceJoints = new List&lt;DistanceJoint&gt;(def.joints.length);
-    distanceJoints.setRange(0, def.joints.length, def.joints);
-  }
-
-  frequencyHz = def.frequencyHz;
-  dampingRatio = def.dampingRatio;
-
-  normals = new List&lt;Vector&gt;(bodies.length);
-  for (int i = 0; i &lt; normals.length; ++i) {
-    normals[i] = new Vector();
-  }
-
-  this.bodyA = bodies[0];
-  this.bodyB = bodies[1];
-  this.collideConnected = false;
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="constrainEdges">
 <button class="show-code">Code</button>
 bool <strong>constrainEdges</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> argStep) <a class="anchor-link" href="#constrainEdges"
@@ -858,24 +760,6 @@ num getReactionTorque(num inv_dt) {
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to ConstantVolumeJoint.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="inflate">
 <button class="show-code">Code</button>
 void <strong>inflate</strong>(num factor) <a class="anchor-link" href="#inflate"
@@ -921,100 +805,6 @@ void initVelocityConstraints(TimeStep argStep) {
     _impulse = 0.0;
   }
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Joint">
-<button class="show-code">Code</button>
-new <strong>Joint</strong>(<a href="../box2d/JointDef.html">JointDef</a> def) <a class="anchor-link" href="#Joint"
-              title="Permalink to ConstantVolumeJoint.Joint">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<pre class="source">
-Joint(JointDef def) :
-  type = def.type,
-  _prev = null,
-  _next = null,
-  bodyA = def.bodyA,
-  bodyB = def.bodyB,
-  collideConnected = def.collideConnected,
-  islandFlag = false,
-  userData = def.userData,
-
-  localCenterA = new Vector(),
-  localCenterB = new Vector(),
-  edgeA = new JointEdge(),
-  edgeB = new JointEdge() { }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Joint.create">
-<button class="show-code">Code</button>
-factory <strong>Joint.create</strong>(<a href="../box2d/World.html">World</a> argWorld, <a href="../box2d/JointDef.html">JointDef</a> def) <a class="anchor-link" href="#Joint.create"
-              title="Permalink to ConstantVolumeJoint.Joint.create">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<pre class="source">
-factory Joint.create(World argWorld, JointDef def) {
-  switch(def.type){
-    case JointType.MOUSE:
-      throw new NotImplementedException();
-      //  return new MouseJoint(def);
-    case JointType.DISTANCE:
-      return new DistanceJoint(def);
-    case JointType.PRISMATIC:
-      throw new NotImplementedException();
-      //  return new PrismaticJoint(def);
-    case JointType.REVOLUTE:
-      return new RevoluteJoint(def);
-    case JointType.WELD:
-      throw new NotImplementedException();
-      //return new WeldJoint(def);
-    case JointType.FRICTION:
-      return new FrictionJoint(def);
-    case JointType.LINE:
-      throw new NotImplementedException();
-      //return new LineJoint(def);
-    case JointType.GEAR:
-      throw new NotImplementedException();
-      //return new GearJoint(def);
-    case JointType.PULLEY:
-      throw new NotImplementedException();
-      //return new PulleyJoint(def);
-    case JointType.CONSTANT_VOLUME:
-      return new ConstantVolumeJoint(argWorld, def);
-  }
-  return null;
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to ConstantVolumeJoint.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to ConstantVolumeJoint.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
@@ -1064,17 +854,6 @@ void solveVelocityConstraints(TimeStep argStep) {
     bodies[i].linearVelocity.y += bodies[i].invMass * -d[i].x * .5 * lambda;
   }
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to ConstantVolumeJoint.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

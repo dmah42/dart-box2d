@@ -609,6 +609,36 @@ class ContactSolver {
 </pre>
 </div>
 <div>
+<h3>Static Properties</h3>
+<div class="field"><h4 id="INITIAL_NUM_CONSTRAINTS">
+<button class="show-code">Code</button>
+const int         <strong>INITIAL_NUM_CONSTRAINTS</strong> <a class="anchor-link"
+            href="#INITIAL_NUM_CONSTRAINTS"
+            title="Permalink to ContactSolver.INITIAL_NUM_CONSTRAINTS">#</a>
+        </h4>
+        <div class="doc">
+<p>For each solver, this is the initial number of constraints
+in the array, which expands as needed.</p>
+<pre class="source">
+static const int INITIAL_NUM_CONSTRAINTS = 256;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="K_MAX_CONDITION_NUMBER">
+<button class="show-code">Code</button>
+const num         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
+            href="#K_MAX_CONDITION_NUMBER"
+            title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
+        </h4>
+        <div class="doc">
+<p>Ensure a reasonable condition number. For the block solver</p>
+<pre class="source">
+static const num K_MAX_CONDITION_NUMBER = 100.0;
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="ContactSolver">
 <button class="show-code">Code</button>
@@ -640,36 +670,6 @@ ContactSolver() :
     constraints[i] = new ContactConstraint();
   }
 }
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Static Properties</h3>
-<div class="field"><h4 id="INITIAL_NUM_CONSTRAINTS">
-<button class="show-code">Code</button>
-const int         <strong>INITIAL_NUM_CONSTRAINTS</strong> <a class="anchor-link"
-            href="#INITIAL_NUM_CONSTRAINTS"
-            title="Permalink to ContactSolver.INITIAL_NUM_CONSTRAINTS">#</a>
-        </h4>
-        <div class="doc">
-<p>For each solver, this is the initial number of constraints
-in the array, which expands as needed.</p>
-<pre class="source">
-static const int INITIAL_NUM_CONSTRAINTS = 256;
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="K_MAX_CONDITION_NUMBER">
-<button class="show-code">Code</button>
-const num         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
-            href="#K_MAX_CONDITION_NUMBER"
-            title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
-        </h4>
-        <div class="doc">
-<p>Ensure a reasonable condition number. For the block solver</p>
-<pre class="source">
-static const num K_MAX_CONDITION_NUMBER = 100.0;
 </pre>
 </div>
 </div>
@@ -820,19 +820,6 @@ final Vector rB;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to ContactSolver.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="tangent">
 <button class="show-code">Code</button>
 final <a href="../box2d/Vector.html">Vector</a>         <strong>tangent</strong> <a class="anchor-link"
@@ -896,77 +883,7 @@ final Vector x;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to ContactSolver.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method"><h4 id="ContactSolver">
-<button class="show-code">Code</button>
-new <strong>ContactSolver</strong>() <a class="anchor-link" href="#ContactSolver"
-              title="Permalink to ContactSolver.ContactSolver">#</a></h4>
-<div class="doc">
-<p>Constructs a new ContactSolver.</p>
-<pre class="source">
-ContactSolver() :
-  constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
-
-  // Setup pool variables.
-  worldManifold = new WorldManifold(),
-  tangent = new Vector(),
-  temp1 = new Vector(),
-  temp2 = new Vector(),
-  P = new Vector(),
-  dv = new Vector(),
-  dv1 = new Vector(),
-  dv2 = new Vector(),
-  x = new Vector(),
-  d = new Vector(),
-  P1 = new Vector(),
-  P2 = new Vector(),
-  psolver = new PositionSolverManifold(),
-  rA = new Vector(),
-  rB = new Vector() {
-  for(int i=0; i &lt; constraints.length; i++) {
-    constraints[i] = new ContactConstraint();
-  }
-}
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to ContactSolver.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="init">
 <button class="show-code">Code</button>
 void <strong>init</strong>(List&lt;<a href="../box2d/Contact.html">Contact</a>&gt; contacts, int contactCount, num impulseRatio) <a class="anchor-link" href="#init"
@@ -1128,37 +1045,6 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
     }
   }
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to ContactSolver.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to ContactSolver.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
@@ -1507,17 +1393,6 @@ void storeImpulses(){
     }
   }
 }
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="toString">
-<button class="show-code">Code</button>
-String <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to ContactSolver.toString">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Returns a string representation of this object.</p>
-<pre class="source">
-external String toString();
 </pre>
 </div>
 </div>

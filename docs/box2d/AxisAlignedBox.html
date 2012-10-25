@@ -107,6 +107,22 @@ class AxisAlignedBox {
 </pre>
 </div>
 <div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="testOverlap">
+<button class="show-code">Code</button>
+bool <strong>testOverlap</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> a, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> b) <a class="anchor-link" href="#testOverlap"
+              title="Permalink to AxisAlignedBox.testOverlap">#</a></h4>
+<div class="doc">
+<p>Returns true if the given box overlaps with this box.</p>
+<pre class="source">
+static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
+  !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
+    (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="AxisAlignedBox">
 <button class="show-code">Code</button>
@@ -120,22 +136,6 @@ AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
   if (lowerBound == null) lowerBound = new Vector();
   if (upperBound == null) upperBound = new Vector();
 }
-</pre>
-</div>
-</div>
-</div>
-<div>
-<h3>Static Methods</h3>
-<div class="method"><h4 id="testOverlap">
-<button class="show-code">Code</button>
-bool <strong>testOverlap</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> a, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> b) <a class="anchor-link" href="#testOverlap"
-              title="Permalink to AxisAlignedBox.testOverlap">#</a></h4>
-<div class="doc">
-<p>Returns true if the given box overlaps with this box.</p>
-<pre class="source">
-static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
-  !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
-    (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
 </pre>
 </div>
 </div>
@@ -173,19 +173,6 @@ Vector lowerBound;
 </pre>
 </div>
 </div>
-<div class="field inherited"><h4 id="runtimeType">
-<button class="show-code">Code</button>
-final Type         <strong>runtimeType</strong> <a class="anchor-link"
-            href="#runtimeType"
-            title="Permalink to AxisAlignedBox.runtimeType">#</a>
-        </h4>
-        <div class="inherited-from">inherited from Object </div><div class="doc">
-<p>A representation of the runtime type of the object.</p>
-<pre class="source">
-external Type get runtimeType;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="upperBound">
 <button class="show-code">Code</button>
 <a href="../box2d/Vector.html">Vector</a>         <strong>upperBound</strong> <a class="anchor-link"
@@ -201,41 +188,7 @@ Vector upperBound;
 </div>
 </div>
 <div>
-<h3>Operators</h3>
-<div class="method inherited"><h4 id="==">
-<button class="show-code">Code</button>
-bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to AxisAlignedBox.operator ==">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
-only if <code>this</code> and 
-<span class="param">other</span> are the same object.</p>
-<p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
-<pre class="source">
-bool operator ==(other) =&gt; identical(this, other);
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Methods</h3>
-<div class="method"><h4 id="AxisAlignedBox">
-<button class="show-code">Code</button>
-new <strong>AxisAlignedBox</strong>([<a href="../box2d/Vector.html">Vector</a> lowerBound = null, <a href="../box2d/Vector.html">Vector</a> upperBound = null]) <a class="anchor-link" href="#AxisAlignedBox"
-              title="Permalink to AxisAlignedBox.AxisAlignedBox">#</a></h4>
-<div class="doc">
-<p>Constructs a new box with the given lower and upper bounds. If no bounds
-are specified, constructs the box with both bounds at the origin.</p>
-<pre class="source">
-AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-  if (lowerBound == null) lowerBound = new Vector();
-  if (upperBound == null) upperBound = new Vector();
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="contains">
 <button class="show-code">Code</button>
 bool <strong>contains</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> aabb) <a class="anchor-link" href="#contains"
@@ -249,24 +202,6 @@ bool contains(AxisAlignedBox aabb) =&gt;
 </pre>
 </div>
 </div>
-<div class="method inherited"><h4 id="hashCode">
-<button class="show-code">Code</button>
-int <strong>hashCode</strong>() <a class="anchor-link" href="#hashCode"
-              title="Permalink to AxisAlignedBox.hashCode">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
-<pre class="source">
-external int hashCode();
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="isValid">
 <button class="show-code">Code</button>
 bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
@@ -277,37 +212,6 @@ both bounds are themselves valid (Vector.isValid() returns true).</p>
 <pre class="source">
 bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
                   lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="noSuchMethod">
-<button class="show-code">Code</button>
-<strong>noSuchMethod</strong>(String name, List args) <a class="anchor-link" href="#noSuchMethod"
-              title="Permalink to AxisAlignedBox.noSuchMethod">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p><code>noSuchMethod</code> is invoked when users invoke a non-existant method
-on an object. The name of the method and the arguments of the
-invocation are passed to <code>noSuchMethod</code>. If <code>noSuchMethod</code>
-returns a value, that value becomes the result of the original
-invocation.</p>
-<p>The default behavior of <code>noSuchMethod</code> is to throw a
-<code>noSuchMethodError</code>.</p>
-<pre class="source">
-external Dynamic noSuchMethod(String name, List args);
-</pre>
-</div>
-</div>
-<div class="method inherited"><h4 id="Object">
-<button class="show-code">Code</button>
-const <strong>Object</strong>() <a class="anchor-link" href="#Object"
-              title="Permalink to AxisAlignedBox.Object">#</a></h4>
-<div class="inherited-from">inherited from Object </div><div class="doc">
-<p>Creates a new <code>Object</code> instance.</p>
-<p><code>Object</code> instances have no meaningful state, and are only useful
-through their identity. An <code>Object</code> instance is equal to itself
-only.</p>
-<pre class="source">
-const Object();
 </pre>
 </div>
 </div>
