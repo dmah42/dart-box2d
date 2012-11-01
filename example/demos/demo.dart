@@ -82,7 +82,7 @@ abstract class Demo {
   void step(num timestamp) {
     _stopwatch.reset();
     world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
-    elapsedUs = _stopwatch.elapsedInUs();
+    elapsedUs = _stopwatch.elapsedMicroseconds;
 
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);

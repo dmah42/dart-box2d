@@ -95,7 +95,7 @@ class Tire {
   }
 
   void _updateTraction() {
-    if (_groundAreas.isEmpty()) {
+    if (_groundAreas.isEmpty) {
       _currentTraction = 1.0;
     } else {
       _currentTraction = 0.0;

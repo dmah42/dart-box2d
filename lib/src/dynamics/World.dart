@@ -168,7 +168,7 @@ class World {
     if (creator != null) {
 
       // Ensure that the creator isn't depleted of contact stacks.
-      if (creator.isEmpty()) {
+      if (creator.isEmpty) {
         creator = _getFreshContactStack(type1, type2);
       }
 

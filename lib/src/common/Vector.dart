@@ -186,7 +186,7 @@ class Vector {
 
   /** Returns if the values of coordinates within the MAX_INTEGER. */
   bool isValid() =>
-      !x.isInfinite() && !x.isNaN() && !y.isInfinite() && !y.isNaN();
+      !x.isInfinite && !x.isNaN && !y.isInfinite && !y.isNaN;
 
   /** Returns a String representation of the given vector. */
   String toString() => "($x, $y)";

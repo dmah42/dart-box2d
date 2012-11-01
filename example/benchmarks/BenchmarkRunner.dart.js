@@ -11,8 +11,7 @@ init();
 
 var $$ = {};
 var $ = Isolate.$isolateProperties;
-$$.RuntimeOptions = {"":
- ["_arguments"],
+$$.RuntimeOptions = {"": ["_arguments"],
  "super": "Object",
  get$arguments: function() {
   if (this._arguments == null) {
@@ -23,8 +22,7 @@ $$.RuntimeOptions = {"":
 }
 };
 
-$$.DoubleLinkedQueueEntry = {"":
- ["_previous!", "_next=", "_element?"],
+$$.DoubleLinkedQueueEntry = {"": ["_previous!", "_next=", "_element?"],
  "super": "Object",
  _link$2: function(p, n) {
   this._next = n;
@@ -55,8 +53,7 @@ $$.DoubleLinkedQueueEntry = {"":
 }
 };
 
-$$._DoubleLinkedQueueEntrySentinel = {"":
- ["_previous", "_next", "_element"],
+$$._DoubleLinkedQueueEntrySentinel = {"": ["_previous", "_next", "_element"],
  "super": "DoubleLinkedQueueEntry",
  remove$0: function() {
   throw $.$$throw($.CTC2);
@@ -69,8 +66,7 @@ $$._DoubleLinkedQueueEntrySentinel = {"":
 }
 };
 
-$$.DoubleLinkedQueue = {"":
- ["_sentinel"],
+$$.DoubleLinkedQueue = {"": ["_sentinel"],
  "super": "Object",
  addLast$1: function(value) {
   this._sentinel.prepend$1(value);
@@ -145,8 +141,7 @@ $$.DoubleLinkedQueue = {"":
  is$Collection: true
 };
 
-$$._DoubleLinkedQueueIterator = {"":
- ["_sentinel", "_currentEntry"],
+$$._DoubleLinkedQueueIterator = {"": ["_sentinel", "_currentEntry"],
  "super": "Object",
  hasNext$0: function() {
   return !(this._currentEntry.get$_next() === this._sentinel);
@@ -163,8 +158,7 @@ $$._DoubleLinkedQueueIterator = {"":
 }
 };
 
-$$.StopwatchImplementation = {"":
- ["_start", "_stop"],
+$$.StopwatchImplementation = {"": ["_start", "_stop"],
  "super": "Object",
  start$0: function() {
   if (this._start == null)
@@ -278,8 +272,7 @@ $$.StopwatchImplementation = {"":
 }
 };
 
-$$.StringBufferImpl = {"":
- ["_buffer", "_length"],
+$$.StringBufferImpl = {"": ["_buffer", "_length"],
  "super": "Object",
  get$length: function() {
   return this._length;
@@ -316,8 +309,7 @@ $$.StringBufferImpl = {"":
 }
 };
 
-$$.ArgumentError = {"":
- ["message"],
+$$.ArgumentError = {"": ["message"],
  "super": "Object",
  toString$0: function() {
   var t1 = this.message;
@@ -327,21 +319,18 @@ $$.ArgumentError = {"":
 }
 };
 
-$$.IllegalArgumentException = {"":
- ["message"],
+$$.IllegalArgumentException = {"": ["message"],
  "super": "ArgumentError"
 };
 
-$$.IndexOutOfRangeException = {"":
- ["_value"],
+$$.IndexOutOfRangeException = {"": ["_value"],
  "super": "Object",
  toString$0: function() {
   return 'IndexOutOfRangeException: ' + $.S(this._value);
 }
 };
 
-$$.NullPointerException = {"":
- ["functionName", "arguments?"],
+$$.NullPointerException = {"": ["functionName", "arguments?"],
  "super": "Object",
  toString$0: function() {
   var t1 = this.functionName;
@@ -355,32 +344,28 @@ $$.NullPointerException = {"":
 }
 };
 
-$$.NoMoreElementsException = {"":
- [],
+$$.NoMoreElementsException = {"": [],
  "super": "Object",
  toString$0: function() {
   return 'NoMoreElementsException';
 }
 };
 
-$$.EmptyQueueException = {"":
- [],
+$$.EmptyQueueException = {"": [],
  "super": "Object",
  toString$0: function() {
   return 'EmptyQueueException';
 }
 };
 
-$$.UnsupportedOperationException = {"":
- ["_message"],
+$$.UnsupportedOperationException = {"": ["_message"],
  "super": "Object",
  toString$0: function() {
   return 'UnsupportedOperationException: ' + this._message;
 }
 };
 
-$$.NotImplementedException = {"":
- ["_message"],
+$$.NotImplementedException = {"": ["_message"],
  "super": "Object",
  toString$0: function() {
   var t1 = this._message;
@@ -388,16 +373,14 @@ $$.NotImplementedException = {"":
 }
 };
 
-$$.ExpectException = {"":
- ["message"],
+$$.ExpectException = {"": ["message"],
  "super": "Object",
  toString$0: function() {
   return this.message;
 }
 };
 
-$$.Object = {"":
- [],
+$$.Object = {"": [],
  "super": "",
  operator$eq$1: function(other) {
   return this === other;
@@ -407,8 +390,7 @@ $$.Object = {"":
 }
 };
 
-$$.ListIterator = {"":
- ["i", "list"],
+$$.ListIterator = {"": ["i", "list"],
  "super": "Object",
  hasNext$0: function() {
   return this.i < this.list.length;
@@ -423,16 +405,14 @@ $$.ListIterator = {"":
  get$next: function() { return new $.BoundClosure0(this, 'next$0'); }
 };
 
-$$.Closure = {"":
- [],
+$$.Closure = {"": [],
  "super": "Object",
  toString$0: function() {
   return 'Closure';
 }
 };
 
-$$.StringMatch = {"":
- ["_lib0_start", "str", "pattern"],
+$$.StringMatch = {"": ["_lib0_start", "str", "pattern"],
  "super": "Object",
  start$0: function() {
   return this._lib0_start;
@@ -447,8 +427,7 @@ $$.StringMatch = {"":
 }
 };
 
-$$.BenchmarkRunner = {"":
- ["_solveLoops", "_steps", "_benchmarks", "_resultsWriter"],
+$$.BenchmarkRunner = {"": ["_solveLoops", "_steps", "_benchmarks", "_resultsWriter"],
  "super": "Object",
  setupBenchmarks$1: function(filter) {
   var t1 = this._solveLoops;
@@ -475,8 +454,7 @@ $$.BenchmarkRunner = {"":
  get$_addBenchmark: function() { return new $.BoundClosure(this, '_addBenchmark$1'); }
 };
 
-$$.Benchmark = {"":
- ["bodies?"],
+$$.Benchmark = {"": ["bodies?"],
  "super": "Object",
  resetWorld$0: function() {
   this.bodies = $.ListImplementation_List(null);
@@ -567,8 +545,7 @@ $$.Benchmark = {"":
 }
 };
 
-$$.BallCageBench = {"":
- ["bodies", "world", "solveLoops", "_steps"],
+$$.BallCageBench = {"": ["bodies", "world", "solveLoops", "_steps"],
  "super": "Benchmark",
  get$name: function() {
   return 'Ball Cage';
@@ -719,8 +696,7 @@ $$.BallCageBench = {"":
 }
 };
 
-$$.BallDropBench = {"":
- ["bodies", "world", "solveLoops", "_steps"],
+$$.BallDropBench = {"": ["bodies", "world", "solveLoops", "_steps"],
  "super": "Benchmark",
  initialize$0: function() {
   this.resetWorld$0();
@@ -740,8 +716,7 @@ $$.BallDropBench = {"":
 }
 };
 
-$$.CircleStressBench = {"":
- ["_joint", "bodies", "world", "solveLoops", "_steps"],
+$$.CircleStressBench = {"": ["_joint", "bodies", "world", "solveLoops", "_steps"],
  "super": "Benchmark",
  get$name: function() {
   return 'Circle Stress';
@@ -987,8 +962,7 @@ $$.CircleStressBench = {"":
 }
 };
 
-$$.DominoPlatformBench = {"":
- ["bodies", "world", "solveLoops", "_steps"],
+$$.DominoPlatformBench = {"": ["bodies", "world", "solveLoops", "_steps"],
  "super": "Benchmark",
  get$name: function() {
   return 'Domino Platforms';
@@ -1162,8 +1136,7 @@ $$.DominoPlatformBench = {"":
 }
 };
 
-$$.DominoTowerBench = {"":
- ["dominoDensity", "bodies", "world", "solveLoops", "_steps"],
+$$.DominoTowerBench = {"": ["dominoDensity", "bodies", "world", "solveLoops", "_steps"],
  "super": "Benchmark",
  get$name: function() {
   return 'Domino Tower';
@@ -1380,8 +1353,7 @@ $$.DominoTowerBench = {"":
 }
 };
 
-$$.ContactFilter = {"":
- [],
+$$.ContactFilter = {"": [],
  "super": "Object",
  shouldCollide$2: function(fixtureA, fixtureB) {
   var filterA = fixtureA.get$filter();
@@ -1486,13 +1458,11 @@ $$.ContactFilter = {"":
 }
 };
 
-$$.ContactImpulse = {"":
- ["normalImpulses", "tangentImpulses"],
+$$.ContactImpulse = {"": ["normalImpulses", "tangentImpulses"],
  "super": "Object"
 };
 
-$$.AxisAlignedBox = {"":
- ["lowerBound?", "upperBound?"],
+$$.AxisAlignedBox = {"": ["lowerBound?", "upperBound?"],
  "super": "Object",
  setFromCombination$2: function(boxOne, boxTwo) {
   var t1 = $.min(boxOne.get$lowerBound().get$x(), boxTwo.get$lowerBound().get$x());
@@ -1511,136 +1481,7 @@ $$.AxisAlignedBox = {"":
   return c;
 },
  contains$1: function(aabb) {
-  var t1 = this.lowerBound;
-  var t2 = t1.get$x();
-  if (typeof t2 !== 'number')
-    return this.contains$1$bailout(1, aabb, t2, 0);
-  var t4 = aabb.get$lowerBound();
-  var t5 = t4.get$x();
-  if (typeof t5 !== 'number')
-    return this.contains$1$bailout(2, aabb, t2, t5);
-  if (t2 > t5) {
-    t1 = t1.get$y();
-    if (typeof t1 !== 'number')
-      return this.contains$1$bailout(3, aabb, t1, 0);
-    t4 = t4.get$y();
-    if (typeof t4 !== 'number')
-      return this.contains$1$bailout(4, aabb, t4, t1);
-    if (t1 > t4) {
-      t1 = this.upperBound;
-      t2 = t1.get$y();
-      if (typeof t2 !== 'number')
-        return this.contains$1$bailout(5, aabb, t2, 0);
-      t4 = aabb.get$upperBound();
-      t5 = t4.get$y();
-      if (typeof t5 !== 'number')
-        return this.contains$1$bailout(6, aabb, t2, t5);
-      if (t2 < t5) {
-        t1 = t1.get$x();
-        if (typeof t1 !== 'number')
-          return this.contains$1$bailout(7, aabb, t1, 0);
-        t4 = t4.get$x();
-        if (typeof t4 !== 'number')
-          return this.contains$1$bailout(8, t1, t4, 0);
-        t4 = t1 < t4;
-        t1 = t4;
-      } else
-        t1 = false;
-    } else
-      t1 = false;
-  } else
-    t1 = false;
-  return t1;
-},
- contains$1$bailout: function(state0, env0, env1, env2) {
-  switch (state0) {
-    case 1:
-      var aabb = env0;
-      t1 = env1;
-      break;
-    case 2:
-      aabb = env0;
-      t1 = env1;
-      t3 = env2;
-      break;
-    case 3:
-      aabb = env0;
-      t1 = env1;
-      break;
-    case 4:
-      aabb = env0;
-      t3 = env1;
-      t1 = env2;
-      break;
-    case 5:
-      aabb = env0;
-      t1 = env1;
-      break;
-    case 6:
-      aabb = env0;
-      t1 = env1;
-      t3 = env2;
-      break;
-    case 7:
-      aabb = env0;
-      t1 = env1;
-      break;
-    case 8:
-      t1 = env0;
-      t3 = env1;
-      break;
-  }
-  switch (state0) {
-    case 0:
-      var t1 = this.lowerBound.get$x();
-    case 1:
-      state0 = 0;
-      var t3 = aabb.get$lowerBound().get$x();
-    case 2:
-      state0 = 0;
-    default:
-      if (state0 === 8 || state0 === 7 || state0 === 6 || state0 === 5 || state0 === 4 || state0 === 3 || state0 === 0 && $.gtB(t1, t3))
-        switch (state0) {
-          case 0:
-            t1 = this.lowerBound.get$y();
-          case 3:
-            state0 = 0;
-            t3 = aabb.get$lowerBound().get$y();
-          case 4:
-            state0 = 0;
-          default:
-            if (state0 === 8 || state0 === 7 || state0 === 6 || state0 === 5 || state0 === 0 && $.gtB(t1, t3))
-              switch (state0) {
-                case 0:
-                  t1 = this.upperBound.get$y();
-                case 5:
-                  state0 = 0;
-                  t3 = aabb.get$upperBound().get$y();
-                case 6:
-                  state0 = 0;
-                default:
-                  if (state0 === 8 || state0 === 7 || state0 === 0 && $.ltB(t1, t3))
-                    switch (state0) {
-                      case 0:
-                        t1 = this.upperBound.get$x();
-                      case 7:
-                        state0 = 0;
-                        t3 = aabb.get$upperBound().get$x();
-                      case 8:
-                        state0 = 0;
-                        t3 = $.ltB(t1, t3);
-                        t1 = t3;
-                    }
-                  else
-                    t1 = false;
-              }
-            else
-              t1 = false;
-        }
-      else
-        t1 = false;
-      return t1;
-  }
+  return $.gtB(this.lowerBound.get$x(), aabb.get$lowerBound().get$x()) && $.gtB(this.lowerBound.get$y(), aabb.get$lowerBound().get$y()) && $.ltB(this.upperBound.get$y(), aabb.get$upperBound().get$y()) && $.ltB(this.upperBound.get$x(), aabb.get$upperBound().get$x());
 },
  setFrom$1: function(other) {
   this.lowerBound.setFrom$1(other.get$lowerBound());
@@ -1657,8 +1498,7 @@ $$.AxisAlignedBox = {"":
 }
 };
 
-$$.Collision = {"":
- ["_pool", "cache", "input", "output", "results1", "results2", "incidentEdge?", "localTangent", "localNormal?", "planePoint", "tangent", "normal?", "normal1", "v11", "v12", "clipPoints1", "clipPoints2"],
+$$.Collision = {"": ["_pool", "cache", "input", "output", "results1", "results2", "incidentEdge?", "localTangent", "localNormal?", "planePoint", "tangent", "normal?", "normal1", "v11", "v12", "clipPoints1", "clipPoints2"],
  "super": "Object",
  testOverlap$4: function(shapeA, shapeB, transformA, transformB) {
   var t1 = this.input;
@@ -3397,8 +3237,7 @@ $$.Collision = {"":
 }
 };
 
-$$.ClipVertex = {"":
- ["v?", "id?"],
+$$.ClipVertex = {"": ["v?", "id?"],
  "super": "Object",
  setFrom$1: function(cv) {
   this.v.setFrom$1(cv.get$v());
@@ -3406,13 +3245,11 @@ $$.ClipVertex = {"":
 }
 };
 
-$$.EdgeResults = {"":
- ["separation", "edgeIndex"],
+$$.EdgeResults = {"": ["separation", "edgeIndex"],
  "super": "Object"
 };
 
-$$.ContactID = {"":
- ["features?"],
+$$.ContactID = {"": ["features?"],
  "super": "Object",
  operator$eq$1: function(other) {
   return $.eq(other.get$features(), this.features);
@@ -3428,8 +3265,7 @@ $$.ContactID = {"":
 }
 };
 
-$$.Distance = {"":
- ["calls", "iters", "maxIters", "simplex", "saveA", "saveB", "closestPoint", "searchDirection", "temp", "normal?"],
+$$.Distance = {"": ["calls", "iters", "maxIters", "simplex", "saveA", "saveB", "closestPoint", "searchDirection", "temp", "normal?"],
  "super": "Object",
  distance$3: function(output, cache, input) {
   this.calls = this.calls + 1;
@@ -3539,19 +3375,16 @@ $$.Distance = {"":
 }
 };
 
-$$.DistanceInput = {"":
- ["proxyA=", "proxyB=", "transformA", "transformB", "useRadii"],
+$$.DistanceInput = {"": ["proxyA=", "proxyB=", "transformA", "transformB", "useRadii"],
  "super": "Object"
 };
 
-$$.DistanceOutput = {"":
- ["pointA", "pointB", "distance", "iterations"],
+$$.DistanceOutput = {"": ["pointA", "pointB", "distance", "iterations"],
  "super": "Object",
  distance$3: function(arg0, arg1, arg2) { return this.distance.call$3(arg0, arg1, arg2); }
 };
 
-$$.DistanceProxy = {"":
- ["vertices?", "count?", "radius="],
+$$.DistanceProxy = {"": ["vertices?", "count?", "radius="],
  "super": "Object",
  setFromShape$1: function(shape) {
   var t1 = shape.get$type();
@@ -3877,8 +3710,7 @@ $$.DistanceProxy = {"":
 }
 };
 
-$$.Features = {"":
- ["referenceEdge=", "incidentEdge=", "incidentVertex=", "flip="],
+$$.Features = {"": ["referenceEdge=", "incidentEdge=", "incidentVertex=", "flip="],
  "super": "Object",
  setFrom$1: function(f) {
   this.referenceEdge = f.get$referenceEdge();
@@ -3900,8 +3732,7 @@ $$.Features = {"":
 }
 };
 
-$$.Manifold = {"":
- ["points?", "localNormal?", "localPoint?", "type=", "pointCount="],
+$$.Manifold = {"": ["points?", "localNormal?", "localPoint?", "type=", "pointCount="],
  "super": "Object",
  setFrom$1: function(other) {
   var t1 = this.points;
@@ -3987,8 +3818,7 @@ $$.Manifold = {"":
 }
 };
 
-$$.ManifoldPoint = {"":
- ["localPoint?", "normalImpulse=", "tangentImpulse=", "id?"],
+$$.ManifoldPoint = {"": ["localPoint?", "normalImpulse=", "tangentImpulse=", "id?"],
  "super": "Object",
  setFrom$1: function(other) {
   this.localPoint.setFrom$1(other.get$localPoint());
@@ -3998,8 +3828,7 @@ $$.ManifoldPoint = {"":
 }
 };
 
-$$.Simplex = {"":
- ["v1", "v2", "v3", "vertices?", "count?", "e13", "e23", "e12", "case2", "case22", "case3", "case33"],
+$$.Simplex = {"": ["v1", "v2", "v3", "vertices?", "count?", "e13", "e23", "e12", "case2", "case22", "case3", "case33"],
  "super": "Object",
  readCache$5: function(cache, proxyA, transformA, proxyB, transformB) {
   this.count = cache.count;
@@ -5467,8 +5296,7 @@ $$.Simplex = {"":
 }
 };
 
-$$.SimplexCache = {"":
- ["metric?", "count?", "indexA?", "indexB?"],
+$$.SimplexCache = {"": ["metric?", "count?", "indexA?", "indexB?"],
  "super": "Object",
  setFrom$1: function(sc) {
   var t1 = this.indexA;
@@ -5524,8 +5352,7 @@ $$.SimplexCache = {"":
 }
 };
 
-$$.SimplexVertex = {"":
- ["wA?", "wB?", "w?", "a=", "indexA=", "indexB="],
+$$.SimplexVertex = {"": ["wA?", "wB?", "w?", "a=", "indexA=", "indexB="],
  "super": "Object",
  setFrom$1: function(sv) {
   this.wA.setFrom$1(sv.get$wA());
@@ -5540,8 +5367,7 @@ $$.SimplexVertex = {"":
 }
 };
 
-$$.TimeOfImpact = {"":
- ["cache", "distanceInput", "xfA", "xfB", "distanceOutput", "fcn", "indexes", "sweepA", "sweepB", "pool"],
+$$.TimeOfImpact = {"": ["cache", "distanceInput", "xfA", "xfB", "distanceOutput", "fcn", "indexes", "sweepA", "sweepB", "pool"],
  "super": "Object",
  timeOfImpact$2: function(output, input) {
   var t1 = $.TimeOfImpact_toiCalls;
@@ -6116,8 +5942,7 @@ $$.TimeOfImpact = {"":
 }
 };
 
-$$.SeparationFunction = {"":
- ["proxyA=", "proxyB=", "type=", "localPoint?", "axis", "sweepA", "sweepB", "localPointA", "localPointB", "pointA", "pointB", "localPointA1", "localPointA2", "normal?", "localPointB1", "localPointB2", "axisA", "axisB", "temp", "xfa", "xfb"],
+$$.SeparationFunction = {"": ["proxyA=", "proxyB=", "type=", "localPoint?", "axis", "sweepA", "sweepB", "localPointA", "localPointB", "pointA", "pointB", "localPointA1", "localPointA2", "normal?", "localPointB1", "localPointB2", "axisA", "axisB", "temp", "xfa", "xfb"],
  "super": "Object",
  initialize$6: function(cache, argProxyA, argSweepA, argProxyB, argSweepB, t1) {
   this.proxyA = argProxyA;
@@ -6842,18 +6667,15 @@ $$.SeparationFunction = {"":
 }
 };
 
-$$.TimeOfImpactInput = {"":
- ["proxyA?", "proxyB?", "sweepA", "sweepB", "tMax"],
+$$.TimeOfImpactInput = {"": ["proxyA?", "proxyB?", "sweepA", "sweepB", "tMax"],
  "super": "Object"
 };
 
-$$.TimeOfImpactOutput = {"":
- ["state", "t"],
+$$.TimeOfImpactOutput = {"": ["state", "t"],
  "super": "Object"
 };
 
-$$.WorldManifold = {"":
- ["normal?", "points?", "pool3", "pool4"],
+$$.WorldManifold = {"": ["normal?", "points?", "pool3", "pool4"],
  "super": "Object",
  initialize$5: function(manifold, xfA, radiusA, xfB, radiusB) {
   switch (manifold.get$type()) {
@@ -6950,8 +6772,7 @@ $$.WorldManifold = {"":
 }
 };
 
-$$.BroadPhase = {"":
- ["_tree", "proxyCount", "moveBuffer", "_pairBuffer", "_pairCapacity", "_pairCount", "queryProxy"],
+$$.BroadPhase = {"": ["_tree", "proxyCount", "moveBuffer", "_pairBuffer", "_pairCapacity", "_pairCount", "queryProxy"],
  "super": "Object",
  createProxy$2: function(box, userData) {
   var node = this._tree.createProxy$2(box, userData);
@@ -6977,7 +6798,7 @@ $$.BroadPhase = {"":
   }
   this.moveBuffer = $.ListImplementation_List(null);
   var pairBuffer = $.ListImplementation_List$from($.getRange(this._pairBuffer, 0, this._pairCount));
-  $.sort(pairBuffer, new $.BroadPhase_updatePairs_anon());
+  $.sort$1(pairBuffer, new $.BroadPhase_updatePairs_anon());
   $.setRange$3(this._pairBuffer, 0, this._pairCount, pairBuffer);
   for (i = 0; i < this._pairCount;) {
     t2 = this._pairBuffer;
@@ -7070,8 +6891,7 @@ $$.BroadPhase = {"":
 }
 };
 
-$$.DynamicTree = {"":
- ["_root", "_nodeCount", "_lastLeaf", "_insertionCount", "_path", "_nodeStack", "_drawVectors", "_nodeCounter", "_tempVector", "_tempBox", "center?", "deltaOne", "deltaTwo"],
+$$.DynamicTree = {"": ["_root", "_nodeCount", "_lastLeaf", "_insertionCount", "_path", "_nodeStack", "_drawVectors", "_nodeCounter", "_tempVector", "_tempBox", "center?", "deltaOne", "deltaTwo"],
  "super": "Object",
  createProxy$2: function(box, userData) {
   var proxy = this._allocateNode$0();
@@ -7465,8 +7285,7 @@ $$.DynamicTree = {"":
 }
 };
 
-$$.DynamicTreeNode = {"":
- ["box?", "parent=", "next=", "childOne=", "childTwo=", "userData=", "key="],
+$$.DynamicTreeNode = {"": ["box?", "parent=", "next=", "childOne=", "childTwo=", "userData=", "key="],
  "super": "Object",
  next$0: function() { return this.next.call$0(); },
  get$isLeaf: function() {
@@ -7477,8 +7296,7 @@ $$.DynamicTreeNode = {"":
 }
 };
 
-$$.Pair = {"":
- ["proxyA=", "proxyB="],
+$$.Pair = {"": ["proxyA=", "proxyB="],
  "super": "Object",
  compareTo$1: function(pair2) {
   if ($.ltB(this.proxyA.get$key(), pair2.get$proxyA().get$key()))
@@ -7494,8 +7312,7 @@ $$.Pair = {"":
 }
 };
 
-$$.CircleShape = {"":
- ["position?", "type", "radius"],
+$$.CircleShape = {"": ["position?", "type", "radius"],
  "super": "Shape",
  computeAxisAlignedBox$2: function(argBox, argTransform) {
   var p = $.Vector$(0, 0);
@@ -7527,8 +7344,7 @@ $$.CircleShape = {"":
 }
 };
 
-$$.MassData = {"":
- ["mass?", "center?", "inertia?"],
+$$.MassData = {"": ["mass?", "center?", "inertia?"],
  "super": "Object",
  setFrom$1: function(md) {
   this.mass = md.get$mass();
@@ -7537,8 +7353,7 @@ $$.MassData = {"":
 }
 };
 
-$$.PolygonShape = {"":
- ["centroid?", "vertices?", "normals?", "vertexCount?", "type", "radius"],
+$$.PolygonShape = {"": ["centroid?", "vertices?", "normals?", "vertexCount?", "type", "radius"],
  "super": "Shape",
  getSupport$1: function(d) {
   var t1 = this.vertices;
@@ -8119,13 +7934,11 @@ $$.PolygonShape = {"":
 }
 };
 
-$$.Shape = {"":
- ["type=", "radius="],
+$$.Shape = {"": ["type=", "radius="],
  "super": "Object"
 };
 
-$$.Matrix22 = {"":
- ["col1?", "col2?"],
+$$.Matrix22 = {"": ["col1?", "col2?"],
  "super": "Object",
  operator$eq$1: function(other) {
   if (typeof other === 'object' && other !== null && !!other.is$Matrix22)
@@ -8379,8 +8192,7 @@ $$.Matrix22 = {"":
  is$Matrix22: true
 };
 
-$$.Matrix33 = {"":
- ["col1?", "col2?", "col3"],
+$$.Matrix33 = {"": ["col1?", "col2?", "col3"],
  "super": "Object",
  setZero$0: function() {
   this.col1.setZero$0();
@@ -8426,8 +8238,7 @@ $$.Matrix33 = {"":
 }
 };
 
-$$.Sweep = {"":
- ["localCenter?", "centerZero?", "center?", "angleZero=", "angle="],
+$$.Sweep = {"": ["localCenter?", "centerZero?", "center?", "angleZero=", "angle="],
  "super": "Object",
  operator$eq$1: function(other) {
   return $.eqB(this.localCenter, other.get$localCenter()) && $.eqB(this.centerZero, other.get$centerZero()) && $.eqB(this.center, other.get$center()) && $.eqB(this.angleZero, other.get$angleZero()) && $.eqB(this.angle, other.get$angle());
@@ -8688,8 +8499,7 @@ $$.Sweep = {"":
 }
 };
 
-$$.Transform = {"":
- ["position?", "rotation?"],
+$$.Transform = {"": ["position?", "rotation?"],
  "super": "Object",
  operator$eq$1: function(other) {
   return $.eqB(this.position, other.get$position()) && $.eqB(this.rotation, other.get$rotation());
@@ -8700,8 +8510,7 @@ $$.Transform = {"":
 }
 };
 
-$$.Vector = {"":
- ["x=", "y="],
+$$.Vector = {"": ["x=", "y="],
  "super": "Object",
  operator$eq$1: function(other) {
   return $.eqB(this.x, other.get$x()) && $.eqB(this.y, other.get$y());
@@ -8907,8 +8716,7 @@ $$.Vector = {"":
 }
 };
 
-$$.Vector3 = {"":
- ["x=", "y=", "z?"],
+$$.Vector3 = {"": ["x=", "y=", "z?"],
  "super": "Object",
  operator$eq$1: function(other) {
   if (typeof other === 'object' && other !== null && !!other.is$Vector3)
@@ -9161,8 +8969,7 @@ $$.Vector3 = {"":
  is$Vector3: true
 };
 
-$$.Body = {"":
- ["world", "flags=", "contactList=", "sleepTime=", "userData=", "_linearVelocity", "_angularVelocity", "mass?", "invMass?", "next=", "prev=", "fixtureList", "fixtureCount", "jointList=", "_force?", "_torque=", "_inertia", "invInertia?", "linearDamping?", "angularDamping?", "_type?", "islandIndex!", "originTransform?", "sweep?", "_fixDef", "_pmd", "_pxf", "oldCenter", "tempCenter"],
+$$.Body = {"": ["world", "flags=", "contactList=", "sleepTime=", "userData=", "_linearVelocity", "_angularVelocity", "mass?", "invMass?", "next=", "prev=", "fixtureList", "fixtureCount", "jointList=", "_force?", "_torque=", "_inertia", "invInertia?", "linearDamping?", "angularDamping?", "_type?", "islandIndex!", "originTransform?", "sweep?", "_fixDef", "_pmd", "_pxf", "oldCenter", "tempCenter"],
  "super": "Object",
  next$0: function() { return this.next.call$0(); },
  createFixture$1: function(def) {
@@ -9713,13 +9520,11 @@ $$.Body = {"":
 }
 };
 
-$$.BodyDef = {"":
- ["type=", "angle=", "userData=", "position?", "linearVelocity=", "angularVelocity=", "fixedRotation?", "isSleeping", "bullet=", "allowSleep?", "linearDamping?", "angularDamping?", "awake=", "active?"],
+$$.BodyDef = {"": ["type=", "angle=", "userData=", "position?", "linearVelocity=", "angularVelocity=", "fixedRotation?", "isSleeping", "bullet=", "allowSleep?", "linearDamping?", "angularDamping?", "awake=", "active?"],
  "super": "Object"
 };
 
-$$.ContactManager = {"":
- ["broadPhase?", "contactList=", "contactCount?", "contactFilter", "contactListener?", "pool"],
+$$.ContactManager = {"": ["broadPhase?", "contactList=", "contactCount?", "contactFilter", "contactListener?", "pool"],
  "super": "Object",
  addPair$2: function(fixtureA, fixtureB) {
   var bodyA = fixtureA.get$body();
@@ -9942,8 +9747,7 @@ $$.ContactManager = {"":
 }
 };
 
-$$.Filter = {"":
- ["categoryBits?", "maskBits?", "groupIndex?"],
+$$.Filter = {"": ["categoryBits?", "maskBits?", "groupIndex?"],
  "super": "Object",
  setFrom$1: function(other) {
   this.categoryBits = other.get$categoryBits();
@@ -9952,8 +9756,7 @@ $$.Filter = {"":
 }
 };
 
-$$.Fixture = {"":
- ["box?", "density?", "next=", "body?", "shape?", "friction=", "restitution=", "proxy?", "filter?", "isSensor?", "userData=", "_poolOne", "_poolTwo"],
+$$.Fixture = {"": ["box?", "density?", "next=", "body?", "shape?", "friction=", "restitution=", "proxy?", "filter?", "isSensor?", "userData=", "_poolOne", "_poolTwo"],
  "super": "Object",
  next$0: function() { return this.next.call$0(); },
  create$2: function(b, def) {
@@ -10225,8 +10028,7 @@ $$.Fixture = {"":
 }
 };
 
-$$.FixtureDef = {"":
- ["shape?", "userData=", "friction=", "restitution=", "density?", "isSensor?", "filter?"],
+$$.FixtureDef = {"": ["shape?", "userData=", "friction=", "restitution=", "density?", "isSensor?", "filter?"],
  "super": "Object",
  FixtureDef$0: function() {
   var t1 = this.filter;
@@ -10236,8 +10038,7 @@ $$.FixtureDef = {"":
 }
 };
 
-$$.Island = {"":
- ["listener", "bodies?", "contacts", "joints?", "positions", "velocities", "bodyCount", "jointCount", "contactCount?", "bodyCapacity", "contactCapacity", "jointCapacity", "positionIterationCount", "_contactSolver", "_translation", "impulse"],
+$$.Island = {"": ["listener", "bodies?", "contacts", "joints?", "positions", "velocities", "bodyCount", "jointCount", "contactCount?", "bodyCapacity", "contactCapacity", "jointCapacity", "positionIterationCount", "_contactSolver", "_translation", "impulse"],
  "super": "Object",
  init$4: function(argBodyCapacity, argContactCapacity, argJointCapacity, argListener) {
   this.bodyCapacity = argBodyCapacity;
@@ -11794,8 +11595,7 @@ $$.Island = {"":
 }
 };
 
-$$.Position = {"":
- ["x=", "a="],
+$$.Position = {"": ["x=", "a="],
  "super": "Object",
  Position$0: function() {
   this.x = $.Vector$(0, 0);
@@ -11803,8 +11603,7 @@ $$.Position = {"":
 }
 };
 
-$$.Velocity = {"":
- ["v?", "a="],
+$$.Velocity = {"": ["v?", "a="],
  "super": "Object",
  Velocity$0: function() {
   this.v = $.Vector$(0, 0);
@@ -11812,13 +11611,11 @@ $$.Velocity = {"":
 }
 };
 
-$$.TimeStep = {"":
- ["dt", "inv_dt", "dtRatio?", "velocityIterations", "positionIterations", "warmStarting?"],
+$$.TimeStep = {"": ["dt", "inv_dt", "dtRatio?", "velocityIterations", "positionIterations", "warmStarting?"],
  "super": "Object"
 };
 
-$$.World = {"":
- ["_flags", "_contactManager", "_bodyList", "_jointList", "_bodyCount", "_jointCount", "_gravity", "_allowSleep", "_debugDraw", "_fixtureDestructionListener", "_jointDestructionListener", "_pool", "_inverseTimestep", "_warmStarting", "_continuousPhysics", "_contactStacks", "center?", "axis", "timestep", "cA", "cB", "wqwrapper", "toiInput", "toiOutput", "backup", "toiSolver", "contacts", "island", "stack"],
+$$.World = {"": ["_flags", "_contactManager", "_bodyList", "_jointList", "_bodyCount", "_jointCount", "_gravity", "_allowSleep", "_debugDraw", "_fixtureDestructionListener", "_jointDestructionListener", "_pool", "_inverseTimestep", "_warmStarting", "_continuousPhysics", "_contactStacks", "center?", "axis", "timestep", "cA", "cB", "wqwrapper", "toiInput", "toiOutput", "backup", "toiSolver", "contacts", "island", "stack"],
  "super": "Object",
  _addType$3: function(creatorStack, type1, type2) {
   var register = $.ContactRegister$();
@@ -12668,13 +12465,11 @@ $$.World = {"":
 }
 };
 
-$$.WorldQueryWrapper = {"":
- ["broadPhase?", "callback"],
+$$.WorldQueryWrapper = {"": ["broadPhase?", "callback"],
  "super": "Object"
 };
 
-$$.Contact = {"":
- ["flags=", "prev=", "next=", "edge1?", "edge2?", "fixtureA?", "fixtureB?", "manifold=", "toiCount="],
+$$.Contact = {"": ["flags=", "prev=", "next=", "edge1?", "edge2?", "fixtureA?", "fixtureB?", "manifold=", "toiCount="],
  "super": "Object",
  next$0: function() { return this.next.call$0(); },
  init$2: function(fixA, fixB) {
@@ -12991,8 +12786,7 @@ $$.Contact = {"":
 }
 };
 
-$$.ContactConstraint = {"":
- ["points?", "localNormal?", "localPoint?", "normal?", "normalMass?", "K?", "bodyA=", "bodyB=", "type=", "radius=", "friction=", "restitution=", "pointCount=", "manifold="],
+$$.ContactConstraint = {"": ["points?", "localNormal?", "localPoint?", "normal?", "normalMass?", "K?", "bodyA=", "bodyB=", "type=", "radius=", "friction=", "restitution=", "pointCount=", "manifold="],
  "super": "Object",
  setFrom$1: function(cp) {
   this.pointCount = cp.get$pointCount();
@@ -13099,8 +12893,7 @@ $$.ContactConstraint = {"":
 }
 };
 
-$$.ContactConstraintPoint = {"":
- ["localPoint?", "rA?", "rB?", "normalImpulse=", "tangentImpulse=", "normalMass=", "tangentMass=", "velocityBias="],
+$$.ContactConstraintPoint = {"": ["localPoint?", "rA?", "rB?", "normalImpulse=", "tangentImpulse=", "normalMass=", "tangentMass=", "velocityBias="],
  "super": "Object",
  setFrom$1: function(cp) {
   this.localPoint.setFrom$1(cp.get$localPoint());
@@ -13117,14 +12910,12 @@ $$.ContactConstraintPoint = {"":
 }
 };
 
-$$.ContactEdge = {"":
- ["other=", "contact=", "prev=", "next="],
+$$.ContactEdge = {"": ["other=", "contact=", "prev=", "next="],
  "super": "Object",
  next$0: function() { return this.next.call$0(); }
 };
 
-$$.CircleContact = {"":
- ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
+$$.CircleContact = {"": ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
  "super": "Contact",
  init$2: function(fA, fB) {
   $.Expect_equals(0, fA.get$type(), null);
@@ -13136,13 +12927,11 @@ $$.CircleContact = {"":
 }
 };
 
-$$.ContactRegister = {"":
- ["creator?", "primary?"],
+$$.ContactRegister = {"": ["creator?", "primary?"],
  "super": "Object"
 };
 
-$$.ContactSolver = {"":
- ["constraints", "constraintCount", "worldManifold", "tangent", "temp1", "temp2", "P", "dv", "dv1", "dv2", "x?", "d", "P1", "P2", "psolver", "rA?", "rB?"],
+$$.ContactSolver = {"": ["constraints", "constraintCount", "worldManifold", "tangent", "temp1", "temp2", "P", "dv", "dv1", "dv2", "x?", "d", "P1", "P2", "psolver", "rA?", "rB?"],
  "super": "Object",
  init$3: function(contacts, contactCount, impulseRatio) {
   if (typeof contacts !== 'string' && (typeof contacts !== 'object' || contacts === null || contacts.constructor !== Array && !contacts.is$JavaScriptIndexingBehavior))
@@ -21420,8 +21209,7 @@ $$.ContactSolver = {"":
 }
 };
 
-$$.PositionSolverManifold = {"":
- ["normal?", "point", "separation", "pointA", "pointB", "temp", "planePoint", "clipPoint"],
+$$.PositionSolverManifold = {"": ["normal?", "point", "separation", "pointA", "pointB", "temp", "planePoint", "clipPoint"],
  "super": "Object",
  initialize$2: function(cc, index) {
   switch (cc.get$type()) {
@@ -21488,8 +21276,7 @@ $$.PositionSolverManifold = {"":
 }
 };
 
-$$.PolygonAndCircleContact = {"":
- ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
+$$.PolygonAndCircleContact = {"": ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
  "super": "Contact",
  init$2: function(fA, fB) {
   $.Expect_equals(1, fA.get$type(), null);
@@ -21501,8 +21288,7 @@ $$.PolygonAndCircleContact = {"":
 }
 };
 
-$$.PolygonContact = {"":
- ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
+$$.PolygonContact = {"": ["flags", "prev", "next", "edge1", "edge2", "fixtureA", "fixtureB", "manifold", "toiCount", "pool", "_oldManifold"],
  "super": "Contact",
  init$2: function(fA, fB) {
   $.Expect_equals(1, fA.get$type(), null);
@@ -21514,8 +21300,7 @@ $$.PolygonContact = {"":
 }
 };
 
-$$.TimeOfImpactSolver = {"":
- ["constraints", "count?", "toiBody", "psm", "rA?", "rB?", "P", "temp"],
+$$.TimeOfImpactSolver = {"": ["constraints", "count?", "toiBody", "psm", "rA?", "rB?", "P", "temp"],
  "super": "Object",
  initialize$3: function(contacts, argCount, argToiBody) {
   this.count = argCount;
@@ -22432,8 +22217,7 @@ $$.TimeOfImpactSolver = {"":
 }
 };
 
-$$.TimeOfImpactSolverManifold = {"":
- ["normal?", "point", "separation", "pointA", "pointB", "temp", "planePoint", "clipPoint"],
+$$.TimeOfImpactSolverManifold = {"": ["normal?", "point", "separation", "pointA", "pointB", "temp", "planePoint", "clipPoint"],
  "super": "Object",
  initialize$2: function(cc, index) {
   switch (cc.get$type()) {
@@ -22484,8 +22268,7 @@ $$.TimeOfImpactSolverManifold = {"":
 }
 };
 
-$$.TimeOfImpactConstraint = {"":
- ["localPoints?", "localNormal?", "localPoint?", "type=", "radius=", "pointCount=", "bodyA=", "bodyB="],
+$$.TimeOfImpactConstraint = {"": ["localPoints?", "localNormal?", "localPoint?", "type=", "radius=", "pointCount=", "bodyA=", "bodyB="],
  "super": "Object",
  setFrom$1: function(argOther) {
   for (var t1 = this.localPoints, t2 = t1.length, i = 0; i < t2; ++i) {
@@ -22550,8 +22333,7 @@ $$.TimeOfImpactConstraint = {"":
 }
 };
 
-$$.Joint = {"":
- ["type=", "_prev!", "_lib_next=", "edgeA?", "edgeB?", "bodyA=", "bodyB=", "islandFlag=", "collideConnected?", "userData="],
+$$.Joint = {"": ["type=", "_prev!", "_lib_next=", "edgeA?", "edgeB?", "bodyA=", "bodyB=", "islandFlag=", "collideConnected?", "userData="],
  "super": "Object",
  get$active: function() {
   return this.bodyA.get$active() === true && this.bodyB.get$active() === true;
@@ -22564,19 +22346,16 @@ $$.Joint = {"":
 }
 };
 
-$$.JointEdge = {"":
- ["other=", "joint=", "prev=", "next="],
+$$.JointEdge = {"": ["other=", "joint=", "prev=", "next="],
  "super": "Object",
  next$0: function() { return this.next.call$0(); }
 };
 
-$$.JointDef = {"":
- ["type=", "userData=", "bodyA=", "bodyB=", "collideConnected?"],
+$$.JointDef = {"": ["type=", "userData=", "bodyA=", "bodyB=", "collideConnected?"],
  "super": "Object"
 };
 
-$$.ConstantVolumeJoint = {"":
- ["bodies?", "targetLengths", "targetVolume", "normals?", "step", "_impulse", "_world", "distanceJoints", "frequencyHz?", "dampingRatio?", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
+$$.ConstantVolumeJoint = {"": ["bodies?", "targetLengths", "targetVolume", "normals?", "step", "_impulse", "_world", "distanceJoints", "frequencyHz?", "dampingRatio?", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
  "super": "Joint",
  step$3: function(arg0, arg1, arg2) { return this.step.call$3(arg0, arg1, arg2); },
  get$area: function() {
@@ -23574,8 +23353,7 @@ $$.ConstantVolumeJoint = {"":
 }
 };
 
-$$.DistanceJoint = {"":
- ["localAnchor1", "localAnchor2", "u", "impulse", "mass?", "length=", "frequencyHz?", "dampingRatio?", "gamma", "bias", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
+$$.DistanceJoint = {"": ["localAnchor1", "localAnchor2", "u", "impulse", "mass?", "length=", "frequencyHz?", "dampingRatio?", "gamma", "bias", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
  "super": "Joint",
  initVelocityConstraints$1: function(step) {
   var b1 = this.bodyA;
@@ -25566,8 +25344,7 @@ $$.DistanceJoint = {"":
 }
 };
 
-$$.DistanceJointDef = {"":
- ["localAnchorA?", "localAnchorB?", "length=", "frequencyHz?", "dampingRatio?", "type", "userData", "bodyA", "bodyB", "collideConnected"],
+$$.DistanceJointDef = {"": ["localAnchorA?", "localAnchorB?", "length=", "frequencyHz?", "dampingRatio?", "type", "userData", "bodyA", "bodyB", "collideConnected"],
  "super": "JointDef",
  initialize$4: function(b1, b2, anchor1, anchor2) {
   this.bodyA = b1;
@@ -25583,8 +25360,7 @@ $$.DistanceJointDef = {"":
 }
 };
 
-$$.FrictionJoint = {"":
- ["_localAnchorA", "_localAnchorB", "_linearImpulse", "_angularImpulse", "_maxForce", "_maxTorque", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
+$$.FrictionJoint = {"": ["_localAnchorA", "_localAnchorB", "_linearImpulse", "_angularImpulse", "_maxForce", "_maxTorque", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
  "super": "Joint",
  get$maxForce: function() {
   return this._maxForce;
@@ -27344,8 +27120,7 @@ $$.FrictionJoint = {"":
 }
 };
 
-$$.RevoluteJoint = {"":
- ["localAnchor1", "localAnchor2", "impulse", "_motorImpulse", "mass?", "motorMass", "_enableMotor", "_maxMotorTorque", "_motorSpeed", "_enableLimit", "referenceAngle?", "lowerAngle?", "upperAngle?", "limitState", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
+$$.RevoluteJoint = {"": ["localAnchor1", "localAnchor2", "impulse", "_motorImpulse", "mass?", "motorMass", "_enableMotor", "_maxMotorTorque", "_motorSpeed", "_enableLimit", "referenceAngle?", "lowerAngle?", "upperAngle?", "limitState", "type", "_prev", "_lib_next", "edgeA", "edgeB", "bodyA", "bodyB", "islandFlag", "collideConnected", "userData", "localCenterA", "localCenterB", "invMassA", "invIA", "invMassB", "invIB"],
  "super": "Joint",
  initVelocityConstraints$1: function(step) {
   var b1 = this.bodyA;
@@ -30575,8 +30350,7 @@ $$.RevoluteJoint = {"":
 }
 };
 
-$$.RevoluteJointDef = {"":
- ["localAnchorA?", "localAnchorB?", "referenceAngle?", "enableLimit?", "lowerAngle?", "upperAngle?", "enableMotor?", "motorSpeed?", "maxMotorTorque?", "type", "userData", "bodyA", "bodyB", "collideConnected"],
+$$.RevoluteJointDef = {"": ["localAnchorA?", "localAnchorB?", "referenceAngle?", "enableLimit?", "lowerAngle?", "upperAngle?", "enableMotor?", "motorSpeed?", "maxMotorTorque?", "type", "userData", "bodyA", "bodyB", "collideConnected"],
  "super": "JointDef",
  initialize$3: function(b1, b2, anchor) {
   this.bodyA = b1;
@@ -30590,8 +30364,7 @@ $$.RevoluteJointDef = {"":
 }
 };
 
-$$.DefaultWorldPool = {"":
- ["collision", "timeOfImpact", "distance"],
+$$.DefaultWorldPool = {"": ["collision", "timeOfImpact", "distance"],
  "super": "Object",
  timeOfImpact$2: function(arg0, arg1) { return this.timeOfImpact.call$2(arg0, arg1); },
  distance$3: function(arg0, arg1, arg2) { return this.distance.call$3(arg0, arg1, arg2); },
@@ -30620,8 +30393,7 @@ $$.DefaultWorldPool = {"":
 }
 };
 
-$$.Maps__emitMap_anon = {"":
- ["result_3", "box_0", "visiting_2"],
+$$.Maps__emitMap_anon = {"": ["result_3", "box_0", "visiting_2"],
  "super": "Closure",
  call$2: function(k, v) {
   var t1 = this.box_0;
@@ -30636,24 +30408,21 @@ $$.Maps__emitMap_anon = {"":
 }
 };
 
-$$.BenchmarkRunner_setupBenchmarks_anon0 = {"":
- [],
+$$.BenchmarkRunner_setupBenchmarks_anon0 = {"": [],
  "super": "Closure",
  call$1: function(e) {
   return $.trim(e);
 }
 };
 
-$$.BenchmarkRunner_setupBenchmarks_anon = {"":
- ["filterList_0"],
+$$.BenchmarkRunner_setupBenchmarks_anon = {"": ["filterList_0"],
  "super": "Closure",
  call$1: function(e) {
   return !$.eqB($.indexOf$1(this.filterList_0, e.get$name()), -1);
 }
 };
 
-$$.DoubleLinkedQueue_length__ = {"":
- ["box_0"],
+$$.DoubleLinkedQueue_length__ = {"": ["box_0"],
  "super": "Closure",
  call$1: function(element) {
   var t1 = this.box_0;
@@ -30661,16 +30430,14 @@ $$.DoubleLinkedQueue_length__ = {"":
 }
 };
 
-$$.BroadPhase_updatePairs_anon = {"":
- [],
+$$.BroadPhase_updatePairs_anon = {"": [],
  "super": "Closure",
  call$2: function(a, b) {
   return $.compareTo(a, b);
 }
 };
 
-$$.Closure = {"":
- [],
+$$.Closure = {"": [],
  "super": "Object",
  toString$0: function() {
   return 'Closure';
@@ -30678,13 +30445,13 @@ $$.Closure = {"":
 };
 
 $$.BoundClosure = {'':
- ['self', 'target'],
- 'super': 'Closure',
+['self', 'target'],
+'super': 'Closure',
 call$1: function(p0) { return this.self[this.target](p0); }
 };
 $$.BoundClosure0 = {'':
- ['self', 'target'],
- 'super': 'Closure',
+['self', 'target'],
+'super': 'Closure',
 call$0: function() { return this.self[this.target](); }
 };
 $.gt$slow = function(a, b) {
@@ -30944,17 +30711,17 @@ $.allMatches = function(receiver, str) {
   return $.allMatchesInStringUnchecked(receiver, str);
 };
 
+$.Collections_map = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true;)
+    destination.push(f.call$1(t1.next$0()));
+  return destination;
+};
+
 $.map = function(receiver, f) {
   if (!$.isJsArray(receiver))
     return receiver.map$1(f);
   else
     return $.Collections_map(receiver, [], f);
-};
-
-$.Collections_map = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true;)
-    destination.push(f.call$1(t1.next$0()));
-  return destination;
 };
 
 $.Options_Options = function() {
@@ -31633,19 +31400,12 @@ $.PolygonAndCircleContact$ = function(argPool) {
   return new $.PolygonAndCircleContact(null, null, null, $.ContactEdge$(), $.ContactEdge$(), null, null, t1, null, argPool, $.Manifold$());
 };
 
-$.sort = function(receiver, compare) {
-  if (!$.isJsArray(receiver))
-    return receiver.sort$1(compare);
-  $.checkMutable(receiver, 'sort');
-  $.DualPivotQuicksort_sort(receiver, compare);
+$.DualPivotQuicksort_sort = function(a, compare) {
+  $.DualPivotQuicksort__doSort(a, 0, a.length - 1, compare);
 };
 
 $.gt = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? a > b : $.gt$slow(a, b);
-};
-
-$.DualPivotQuicksort_sort = function(a, compare) {
-  $.DualPivotQuicksort__doSort(a, 0, a.length - 1, compare);
 };
 
 $.TimeStep$ = function() {
@@ -31719,9 +31479,17 @@ $.TimeOfImpactOutput$ = function() {
 };
 
 $.contains$1 = function(receiver, other) {
-  if (!(typeof receiver === 'string'))
-    return receiver.contains$1(other);
-  return $.contains$2(receiver, other, 0);
+  if (typeof receiver !== 'string' && (typeof receiver !== 'object' || receiver === null || receiver.constructor !== Array && !receiver.is$JavaScriptIndexingBehavior))
+    return $.contains$1$bailout(1, receiver, other);
+  if (typeof receiver === 'string')
+    return $.contains$2(receiver, other, 0);
+  else if ($.isJsArray(receiver)) {
+    for (var i = 0; i < receiver.length; ++i)
+      if ($.eqB(other, receiver[i]))
+        return true;
+    return false;
+  }
+  return receiver.contains$1(other);
 };
 
 $.mul = function(a, b) {
@@ -31957,7 +31725,7 @@ $.Island$ = function() {
 $.removeLast = function(receiver) {
   if ($.isJsArray(receiver)) {
     $.checkGrowable(receiver, 'removeLast');
-    if ($.get$length(receiver) === 0)
+    if ($.eqB($.get$length(receiver), 0))
       throw $.$$throw($.IndexOutOfRangeException$(-1));
     return receiver.pop();
   }
@@ -32217,6 +31985,13 @@ $.Vector_crossVectorAndNumToOut = function(a, s, out) {
     throw $.iae(t2);
   out.set$x(s * t2);
   out.set$y(tempy);
+};
+
+$.sort$1 = function(receiver, compare) {
+  if (!$.isJsArray(receiver))
+    return receiver.sort$1(compare);
+  $.checkMutable(receiver, 'sort');
+  $.DualPivotQuicksort_sort(receiver, compare);
 };
 
 $.mod = function(a, b) {
@@ -32537,7 +32312,7 @@ $.setRange$4 = function(receiver, start, length$, from, startFrom) {
   if (!$.isJsArray(receiver))
     return receiver.setRange$4(start, length$, from, startFrom);
   $.checkMutable(receiver, 'indexed set');
-  if (length$ === 0)
+  if ($.eqB(length$, 0))
     return;
   $.checkNull(start);
   $.checkNull(length$);
@@ -32600,7 +32375,7 @@ $.Vector_dot = function(one, two) {
 
 $.stringContainsUnchecked = function(receiver, other, startIndex) {
   if (typeof other === 'string')
-    return !($.indexOf$2(receiver, other, startIndex) === -1);
+    return !$.eqB($.indexOf$2(receiver, other, startIndex), -1);
   else if (typeof other === 'object' && other !== null && !!other.is$JSSyntaxRegExp)
     return other.hasMatch$1($.substring$1(receiver, startIndex));
   else
@@ -32612,7 +32387,7 @@ $.StringImplementation_concatAll = function(strings) {
 };
 
 $.Expect_equals = function(expected, actual, reason) {
-  if (expected === actual)
+  if ($.eqB(expected, actual))
     return;
   var msg = reason == null ? '' : ', \'' + $.S(reason) + '\'';
   $.Expect__fail('Expect.equals(expected: <' + $.S(expected) + '>, actual: <' + $.S(actual) + '>' + msg + ') fails.');
@@ -33081,6 +32856,18 @@ $.StringImplementation__toJsStringArray$bailout = function(state0, strings) {
     }
   }
   return array;
+};
+
+$.contains$1$bailout = function(state0, receiver, other) {
+  if (typeof receiver === 'string')
+    return $.contains$2(receiver, other, 0);
+  else if ($.isJsArray(receiver)) {
+    for (var i = 0; $.ltB(i, $.get$length(receiver)); ++i)
+      if ($.eqB(other, $.index(receiver, i)))
+        return true;
+    return false;
+  }
+  return receiver.contains$1(other);
 };
 
 $.toStringWrapper.call$0 = $.toStringWrapper;

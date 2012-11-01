@@ -166,7 +166,7 @@ class DynamicTree {
   /** Allocates a new node and increases the node count. */
   DynamicTreeNode _allocateNode() {
     // If node stack is empty, add nodes to it.
-    if (_nodeStack.isEmpty()) {
+    if (_nodeStack.isEmpty) {
       for (int i = 0; i < _DEFAULT_NODE_ADDITION; ++i)
         _nodeStack.addFirst(new DynamicTreeNode._construct());
     }

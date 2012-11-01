@@ -62,7 +62,7 @@ class BenchmarkRunner {
       new DominoTowerBench(_solveLoops, _steps),
     ];
 
-    if (filter == null || filter.isEmpty()) {
+    if (filter == null || filter.isEmpty) {
       benchmarks.map(_addBenchmark);
     } else {
       List<String> filterList = filter.split(",").map((e) => e.trim());
@@ -94,7 +94,7 @@ void main() {
   final runner = new BenchmarkRunner();
   var args = (new Options()).arguments.iterator();
   String filter;
-  while (args.hasNext()) {
+  while (args.hasNext) {
     if (args.next() == "--filter") {
       filter = args.next();
       break;
