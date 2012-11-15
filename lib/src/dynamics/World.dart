@@ -19,6 +19,9 @@
  *
  * Author: Daniel Murphy
  */
+
+part of box2d;
+
 class World {
   static const int WORLD_POOL_SIZE = 100;
   static const int WORLD_POOL_CONTAINER_SIZE = 10;

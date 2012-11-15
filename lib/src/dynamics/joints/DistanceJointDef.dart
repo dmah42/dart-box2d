@@ -20,6 +20,9 @@
  * slightly. This helps when saving and loading a game.
  * Warning: Do not use a zero or short length.
  */
+
+part of box2d;
+
 class DistanceJointDef extends JointDef {
   /** The local anchor point relative to body1's origin. */
   final Vector localAnchorA;

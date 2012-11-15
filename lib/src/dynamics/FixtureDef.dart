@@ -16,6 +16,9 @@
  * A fixture definition is used to create a fixture. You can reuse fixture
  * definitions.
  */
+
+part of box2d;
+
 class FixtureDef {
   /**
    * The shape to use in the fixture. This must be set.

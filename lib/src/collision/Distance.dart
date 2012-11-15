@@ -16,6 +16,9 @@
  * This is non-static for faster pooling. To get an instance,
  * use the SingletonPool rather than construct a distance object.
  */
+
+part of box2d;
+
 class Distance {
   int calls;
   int iters;

@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** A 2x2 matrix class. */
+
+part of box2d;
+
 class Matrix22 {
   Vector col1;
   Vector col2;

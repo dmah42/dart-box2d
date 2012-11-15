@@ -15,6 +15,9 @@
 /**
  * Contains contact filtering data.
  */
+
+part of box2d;
+
 class Filter {
   /**
    * Collision category bits.

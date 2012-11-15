@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#library('DominoTest');
-#import('dart:html');
-#import('package:box2d/box2d_browser.dart');
-#source('demo.dart');
+library DominoTest;
+import 'dart:html';
+import 'package:box2d/box2d_browser.dart';
+
+import 'demo.dart';
 
 /** Demonstration of dominoes being knocked over. */
 class DominoTest extends Demo {

@@ -16,6 +16,9 @@
  * Drops a single ball endlessly. No corresponding html page because its not
  * very interesting to look at anyway. Just used for benchmarking.
  */
+
+part of BenchmarkRunner;
+
 class BallDropBench extends Benchmark {
   static const String NAME = "Ball Drop";
 

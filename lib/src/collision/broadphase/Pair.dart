@@ -15,6 +15,9 @@
 /**
  * A pair of dynamic tree nodes that is comparable.
  */
+
+part of box2d;
+
 class Pair implements Comparable {
   DynamicTreeNode proxyA;
   DynamicTreeNode proxyB;

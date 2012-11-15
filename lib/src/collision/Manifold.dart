@@ -17,6 +17,9 @@
  * of contact, such as clip pont versus plain with radius and point versus point
  * with radius (as with circles).
  */
+
+part of box2d;
+
 class Manifold {
   /** The points of contact. */
   final List<ManifoldPoint> points;

@@ -13,6 +13,9 @@
 // limitations under the License.
 
 //  GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
+
+part of box2d;
+
 class SimplexVertex {
   final Vector wA; // support point in shapeA
   final Vector wB; // support point in shapeB

@@ -16,6 +16,9 @@
  * This is the viewport transform used from drawing.
  * Use yFlip if you are drawing from the top-left corner.
  */
+
+part of box2d;
+
 class IViewportTransform {
   IViewportTransform(Vector e, Vector c, num s) :
     extents = new Vector.copy(e),

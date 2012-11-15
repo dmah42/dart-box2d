@@ -16,6 +16,9 @@
  * Global tuning constants based on MKS units and various integer
  * maximums(vertices per shape, pairs, etc.).
  */
+
+part of box2d;
+
 class Settings {
   /** Size that pool stacks are initialized to. */
   static const int CONTACT_STACK_INIT_SIZE = 10;

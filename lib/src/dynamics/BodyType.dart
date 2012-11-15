@@ -23,6 +23,9 @@
  * Dynamic: Have positive mass, non-zero velocity determined by forces, and is
  *   moved by the physics solver.
  */
+
+part of box2d;
+
 class BodyType {
   BodyType();
 

@@ -16,6 +16,9 @@
  * Transform for drawing using a canvas context. Y-flip is permenantly set
  * to true.
  */
+
+part of box2d_browser;
+
 class CanvasViewportTransform extends IViewportTransform {
   static const int DEFAULT_DRAWING_SCALE = 20;
 

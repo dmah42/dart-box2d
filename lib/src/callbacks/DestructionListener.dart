@@ -18,6 +18,9 @@
  * may nullify references to these joints and shapes. It is called when any
  * fixture is about to be destroyed due to the destruction of its parent body.
  */
+
+part of box2d;
+
 typedef void FixtureDestructionListener(Fixture fixture);
 
 typedef void JointDestructionListener(Joint joint);

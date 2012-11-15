@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+library demo;
+
+import 'dart:html';
+import 'package:box2d/box2d_browser.dart';
+
 /**
  * An abstract class for any Demo of the Box2D library.
  */
@@ -127,7 +132,7 @@ abstract class Demo {
     }, 200);
   }
 
-  abstract void initialize();
+  void initialize();
 
   /**
    * Starts running the demo as an animation using an animation scheduler.

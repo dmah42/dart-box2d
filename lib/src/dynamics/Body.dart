@@ -15,6 +15,9 @@
 /**
  * A rigid body. Bodies are created using World.createBody.
  */
+
+part of box2d;
+
 class Body {
   /** Flags for different states the body can take on. */
   static const int ISLAND_FLAG = 0x0001;

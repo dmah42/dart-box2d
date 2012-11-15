@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of racer;
+
 class Tire {
   Tire(World world, this._maxForwardSpeed, this._maxBackwardSpeed,
       this._maxDriveForce, this._maxLateralImpulse)

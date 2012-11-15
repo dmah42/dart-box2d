@@ -20,6 +20,9 @@
  * to drive the relative rotation about the shared point. A maximum motor torque
  * is provided so that infinite forces are not generated.
  */
+
+part of box2d;
+
 class RevoluteJoint extends Joint {
   final Vector localAnchor1;
   final Vector localAnchor2;

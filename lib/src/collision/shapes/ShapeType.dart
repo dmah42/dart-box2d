@@ -16,6 +16,9 @@
  * An enum class with the different kinds of shapes. The two kinds of valid
  * shapes are circles and polygons.
  */
+
+part of box2d;
+
 class ShapeType {
   // Circle and Polygon.
   static const int TYPE_COUNT = 2;

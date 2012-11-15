@@ -16,6 +16,9 @@
  * Defines a rigid body. Manipulate the properties of the definition in order
  * to create bodies with those properties. BodyDefinitions can be reused.
  */
+
+part of box2d;
+
 class BodyDef {
   /**
    * The body type: static, kinematic, or dynamic.

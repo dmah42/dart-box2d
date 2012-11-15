@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#library('racer');
+library racer;
 
-#import('dart:html');
-#import('dart:math', prefix: 'Math');
-#import('package:box2d/box2d_browser.dart');
+import 'dart:html';
+import 'dart:math' as Math;
+import 'package:box2d/box2d_browser.dart';
+import '../demo.dart';
 
-#source('../demo.dart');
-#source('car.dart');
-#source('control_state.dart');
-#source('ground_area.dart');
-#source('tire.dart');
+part 'car.dart';
+part 'control_state.dart';
+part 'ground_area.dart';
+part 'tire.dart';
 
 class Racer extends Demo implements ContactListener {
   static void main() {

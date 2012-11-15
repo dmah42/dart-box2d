@@ -16,6 +16,9 @@
  * Class used for computing the time of impact. This class should not be
  * constructed usually, just retrieve from the SingletonPool.getTimeOfImpact().
  */
+
+part of box2d;
+
 class TimeOfImpact {
   static const int MAX_ITERATIONS = 1000;
 

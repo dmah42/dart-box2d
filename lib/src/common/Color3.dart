@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** Similar to javax.vecmath.Color3 holder. */
+
+part of box2d;
+
 class Color3 {
   int x;
   int y;

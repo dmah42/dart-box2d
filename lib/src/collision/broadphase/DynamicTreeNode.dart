@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** This is a node for the DynamicTree. */
+
+part of box2d;
+
 class DynamicTreeNode {
   AxisAlignedBox box;
 

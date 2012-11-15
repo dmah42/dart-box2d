@@ -15,6 +15,9 @@
 /**
  * An enum class for the different kinds of Manifolds.
  */
+
+part of box2d;
+
 class ManifoldType {
   static const int CIRCLES = 0;
   static const int FACE_A = 1;

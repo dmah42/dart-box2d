@@ -14,6 +14,9 @@
 /**
  * A 3-by-3 matrix. Stored in column-major order.
  */
+
+part of box2d;
+
 class Matrix33 {
   final Vector3 col1;
   final Vector3 col2;

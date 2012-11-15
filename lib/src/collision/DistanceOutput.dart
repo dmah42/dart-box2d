@@ -15,6 +15,9 @@
 /**
  * Output for Distance.
  */
+
+part of box2d;
+
 class DistanceOutput {
   /** Closest point on shapeA */
   final Vector pointA;

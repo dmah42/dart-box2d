@@ -15,6 +15,9 @@
  * Provides object pooling for some objects used in the engine.
  * Objects retrieved from here should only be used temporarily.
  */
+
+part of box2d;
+
 class DefaultWorldPool {
   Collision collision;
   TimeOfImpact timeOfImpact;

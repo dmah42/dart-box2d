@@ -18,6 +18,9 @@
  * the compression of one part of the area will be offset by the expansion of
  * other parts.
  */
+
+part of box2d;
+
 class ConstantVolumeJoint extends Joint {
   List<Body> bodies;
   List<num> targetLengths;

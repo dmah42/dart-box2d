@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of box2d;
+
 class ContactConstraintPoint {
   final Vector localPoint;
   //TODO(gregbglw): Find out what rA and rB mean and change the names.

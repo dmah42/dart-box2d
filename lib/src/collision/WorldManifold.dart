@@ -15,6 +15,9 @@
 /**
  * Used to compute the current state of a contact manifold.
  */
+
+part of box2d;
+
 class WorldManifold {
   /**
    * World vector pointing from A to B

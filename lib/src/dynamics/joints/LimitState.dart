@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** Enum class for the different states of joint limits. */
+
+part of box2d;
+
 class LimitState {
   static const int INACTIVE = 0;
   static const int AT_LOWER = 1;

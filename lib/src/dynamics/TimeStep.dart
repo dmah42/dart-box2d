@@ -15,6 +15,9 @@
 /**
  * This is an internal structure.
  */
+
+part of box2d;
+
 class TimeStep {
   TimeStep() :
     dt = 0,

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of racer;
+
 class Car {
   Car(World world) {
     final BodyDef def = new BodyDef();

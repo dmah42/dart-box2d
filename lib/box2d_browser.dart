@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-library box2d_html;
+library box2d_browser;
 
 import 'package:box2d/box2d.dart';
 import 'dart:html';

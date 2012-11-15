@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of box2d;
+
 class ContactSolver {
   /**
    * For each solver, this is the initial number of constraints

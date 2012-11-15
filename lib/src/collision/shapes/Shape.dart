@@ -17,6 +17,9 @@
  * like. Shapes used for simulation in World are created automatically when
  * a Fixture is created.  Shapes may encapsulate a one or more child shapes.
  */
+
+part of box2d;
+
 abstract class Shape {
   /** The type of shape. Either circle or polygon. */
   int type;
@@ -37,21 +40,21 @@ abstract class Shape {
    * transform:  the shape world transform.
    * point: a point in world coordinates.
    */
-  abstract bool testPoint(Transform transform, Vector point);
+  bool testPoint(Transform transform, Vector point);
 
   /**
    * Computes the associated axis aligned bounding box for a child shape
    * given a transform. Returns through the given out paramater.
    */
-  abstract void computeAxisAlignedBox(AxisAlignedBox box, Transform transform);
+  void computeAxisAlignedBox(AxisAlignedBox box, Transform transform);
 
   /**
    * Computes (and returns through the given out parameter massData) the mass
    * properties of this shape using its dimensions and the
    * given density. The inertia tensor is computed about the local origin.
    */
-  abstract void computeMass(MassData massData, num density);
+  void computeMass(MassData massData, num density);
 
   /** Returns a clone of this shape. */
-  abstract Shape clone();
+  Shape clone();
 }

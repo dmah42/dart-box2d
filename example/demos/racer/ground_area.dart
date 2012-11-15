@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of racer;
+
 class GroundArea implements Hashable {
   GroundArea(this.frictionModifier, this.outOfCourse)
       : hashCode = _lastHash++;

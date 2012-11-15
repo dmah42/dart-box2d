@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#library('DominoTower');
-#import('dart:html');
-#import('dart:math', prefix: 'Math');
-#import('package:box2d/box2d_browser.dart');
-#source('demo.dart');
+library DominoTower;
+import 'dart:html';
+import 'dart:math' as Math;
+import 'package:box2d/box2d_browser.dart';
+
+import 'demo.dart';
 
 class DominoTower extends Demo {
   static const num DOMINO_WIDTH = .2;

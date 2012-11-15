@@ -16,6 +16,9 @@
  * Input for Distance.
  * You have the option to use the shape radii in the computation.
  */
+
+part of box2d;
+
 class DistanceInput {
     DistanceProxy proxyA;
     DistanceProxy proxyB;

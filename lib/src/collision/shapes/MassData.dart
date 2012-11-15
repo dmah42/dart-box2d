@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** This holds the mass data computed for a shape. */
+
+part of box2d;
+
 class MassData {
   /** The mass of the shape, usually in kilograms. */
   num mass;

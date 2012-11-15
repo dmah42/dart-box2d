@@ -16,6 +16,9 @@
  * A transform is a translation and a rotation. It represents the position and
  * orientation of rigid frames.
  */
+
+part of box2d;
+
 class Transform {
   /** The translation caused by a transform. */
   final Vector position;

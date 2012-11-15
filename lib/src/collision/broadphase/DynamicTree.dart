@@ -20,6 +20,9 @@
  * client object. This allows the client object to move by small amounts without
  * triggering a tree update.
  */
+
+part of box2d;
+
 class DynamicTree {
   static const int MAX_STACK_SIZE = 64;
 

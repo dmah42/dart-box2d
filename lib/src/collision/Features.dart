@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** The features that intersect to form the contact point */
+
+part of box2d;
+
 class Features {
   /** The edge that defines the outward contact normal. */
   int referenceEdge;

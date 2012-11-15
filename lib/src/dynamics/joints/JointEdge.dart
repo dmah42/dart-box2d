@@ -19,6 +19,9 @@
  * maintained in each attached body. Each joint has two joint
  * nodes, one for each attached body.
  */
+
+part of box2d;
+
 class JointEdge {
   /**
    * Constructs a new joint edge with everything set to null.

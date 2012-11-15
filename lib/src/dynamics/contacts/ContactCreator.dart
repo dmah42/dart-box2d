@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-interface ContactCreator {
+part of box2d;
+
+abstract class ContactCreator {
   Contact contactCreateFcn(DefaultWorldPool argPool, Fixture fixtureA,
       Fixture fixtureB);
   void contactDestroyFcn(DefaultWorldPool argPool, Contact contact);

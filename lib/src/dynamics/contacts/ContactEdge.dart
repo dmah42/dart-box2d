@@ -18,6 +18,9 @@
  * part of a doubly linked list that is maintained in each attached body. Each
  * contact has two contact nodes, one for each attached body.
  */
+
+part of box2d;
+
 class ContactEdge {
   /** The other body attached to the edge. */
   Body other;

@@ -19,6 +19,9 @@
  */
 // TODO(gregbglw): Test all of these methods to make sure that they draw the
 // correct things.
+
+part of box2d_browser;
+
 class CanvasDraw extends DebugDraw {
   /** The canvas rendering context with which to draw. */
   CanvasRenderingContext2D ctx;

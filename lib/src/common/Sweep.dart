@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of box2d;
+
 class Sweep {
   /** Local center of mass position. */
   final Vector localCenter;

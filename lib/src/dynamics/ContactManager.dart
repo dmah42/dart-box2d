@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /* Detects shapes collisions (contact). */
+
+part of box2d;
+
 class ContactManager implements PairCallback {
   BroadPhase broadPhase;
   Contact contactList;

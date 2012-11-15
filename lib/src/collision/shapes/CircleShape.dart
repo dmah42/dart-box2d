@@ -15,6 +15,9 @@
 /**
  * A shape commonly known as the circle.
  */
+
+part of box2d;
+
 class CircleShape extends Shape {
   /**
    * The current position of the center of this circle.

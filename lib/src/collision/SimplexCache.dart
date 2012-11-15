@@ -15,6 +15,9 @@
 /**
  *  Used to warm start [distance]. Set count to zero on first call.
  */
+
+part of box2d;
+
 class SimplexCache {
   /** length or area */
   num metric;

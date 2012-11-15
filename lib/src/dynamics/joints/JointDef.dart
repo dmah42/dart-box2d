@@ -15,6 +15,9 @@
 /**
  * Joint definitions are used to construct joints.
  */
+
+part of box2d;
+
 class JointDef {
   JointDef() :
     type = JointType.UNKNOWN,

@@ -15,6 +15,9 @@
  * The base joint class. Joints are used to constrain two bodies together in
  * various fashions. Some joints also feature limits and motors.
  */
+
+part of box2d;
+
 class Joint {
   int type;
 

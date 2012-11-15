@@ -16,6 +16,9 @@
  * A manifold point is a contact point belonging to a contact manifold. It holds
  * the details of the geometry and dynamics of the contact points.
  */
+
+part of box2d;
+
 class ManifoldPoint {
   /**
    * Usage depends on manifold type. For circles, is the local center of

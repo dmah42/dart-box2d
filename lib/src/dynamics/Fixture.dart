@@ -16,6 +16,9 @@
  * A fixture is used to attach a shape to a body for collision detection.
  * You cannot reuse fixtures.
  */
+
+part of box2d;
+
 class Fixture {
   final AxisAlignedBox box;
 

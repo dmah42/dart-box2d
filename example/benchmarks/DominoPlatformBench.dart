@@ -15,6 +15,8 @@
 /**
  * Demonstration of dominoes being knocked over.
  */
+part of BenchmarkRunner;
+
 class DominoPlatformBench extends Benchmark {
   static const String NAME = "Domino Platforms";
 

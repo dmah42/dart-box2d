@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** An enum class for determining the state of contact points. */
+
+part of box2d;
+
 class PointState {
   static const int NULL_STATE = 0;
   static const int ADD_STATE = 1;

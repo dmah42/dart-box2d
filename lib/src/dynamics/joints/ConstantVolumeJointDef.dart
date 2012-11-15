@@ -16,6 +16,9 @@
  * Definition for a [ConstantVolumeJoint], which connects a group
  * a bodies together so they maintain a constant volume within them.
  */
+
+part of box2d;
+
 class ConstantVolumeJointDef extends JointDef {
   num frequencyHz;
   num dampingRatio;

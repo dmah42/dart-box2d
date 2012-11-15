@@ -25,7 +25,10 @@
  * warning: You cannot create/destroy Box2D entities inside these callbacks.
  *
  */
-interface ContactListener {
+
+part of box2d;
+
+abstract class ContactListener {
   /**
    * Called when two fixtures begin to touch.
    */

@@ -18,6 +18,9 @@
  * In other words, you can implement this class if you want finer control over
  * contact creation.
  */
+
+part of box2d;
+
 class ContactFilter {
   ContactFilter();
 

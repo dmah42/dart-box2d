@@ -11,10 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#library('BallCage');
-#import('dart:html');
-#import('package:box2d/box2d_browser.dart');
-#source('demo.dart');
+library BallCage;
+import 'dart:html';
+import 'package:box2d/box2d_browser.dart';
+
+import 'demo.dart';
 
 class CollisionListener implements ContactListener {
   void beginContact(Contact contact) {

@@ -14,6 +14,9 @@
 /**
  * A distance proxy is used by the GJK algorithm. It encapsulates any shape.
  */
+
+part of box2d;
+
 class DistanceProxy {
   final List<Vector> vertices;
   int count;

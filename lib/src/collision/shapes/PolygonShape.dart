@@ -16,6 +16,9 @@
  * Convex Polygon Shape. Create using Body.createShape(ShapeDef) rather than the
  * constructor here, which is off-limits to the likes of you.
  */
+
+part of box2d;
+
 class PolygonShape extends Shape {
   /**
    * Local position of the shape centroid in parent body frame.

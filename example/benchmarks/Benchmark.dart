@@ -15,6 +15,9 @@
 /**
  * A Benchmark wraps up a Demo in order to run that Demo as a benchmark.
  */
+
+part of BenchmarkRunner;
+
 abstract class Benchmark {
   /** All of the bodies in a simulation. */
   List<Body> bodies;
@@ -46,9 +49,9 @@ abstract class Benchmark {
   Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
 
   /** Sets up the physics world. */
-  abstract void initialize();
+  void initialize();
 
-  abstract String get name;
+  String get name;
 
   /**
    * Resets the world to a fresh state. Call this before running a benchmark

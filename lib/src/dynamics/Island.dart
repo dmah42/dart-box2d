@@ -16,6 +16,9 @@
  * Island represents a grouping of objects to apply DFS solving
  * for movement and collisions.
  */
+
+part of box2d;
+
 class Island {
   ContactListener listener;
 

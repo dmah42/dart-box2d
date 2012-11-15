@@ -16,6 +16,9 @@
  * Contact ids to facilitate warm starting. Basically just containers for
  * an individual Features object that contains interesting information.
  */
+
+part of box2d;
+
 class ContactID {
   /** The features that intersect to form the contact point */
   final Features features;

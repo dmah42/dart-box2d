@@ -25,6 +25,9 @@
  *  - If you add/remove shapes from a body and recompute the mass,
  *    the joints will be broken.
  */
+
+part of box2d;
+
 class RevoluteJointDef extends JointDef {
   /**
    *  The local anchor point relative to body1's origin.

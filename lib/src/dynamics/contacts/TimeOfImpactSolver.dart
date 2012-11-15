@@ -16,6 +16,9 @@
  * This is a pure position solver for a single movable body in contact with
  * multiple non-moving bodies.
  */
+
+part of box2d;
+
 class TimeOfImpactSolver {
   List<TimeOfImpactConstraint> constraints;
   int count;

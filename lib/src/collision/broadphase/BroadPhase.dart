@@ -24,6 +24,9 @@
  * new pairs. It is up to the client to consume the new pairs and to track
  * subsequent overlap.
  */
+
+part of box2d;
+
 class BroadPhase implements TreeCallback {
   static const int NULL_PROXY = -1;
   static const int PAIR_CAPACITY = 16;

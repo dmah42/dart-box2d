@@ -15,6 +15,9 @@
 /**
  * This class defines contact between two shapes.
  */
+
+part of box2d;
+
 abstract class Contact {
   /** Used when crawling contact graph when forming islands. */
   static const int ISLAND_FLAG = 0x0001;
@@ -117,7 +120,7 @@ abstract class Contact {
   bool get enabled => (flags & ENABLED_FLAG) == ENABLED_FLAG;
 
   /** Abstract method. */
-  abstract void evaluate(Manifold argManifold, Transform xfA, Transform xfB);
+  void evaluate(Manifold argManifold, Transform xfA, Transform xfB);
 
   /**
    * Flag this contact for filtering. Filtering will occur the next time step.

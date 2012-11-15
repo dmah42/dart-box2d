@@ -14,6 +14,9 @@
 
 /** A 2-dimensional vector class. */
 //TODO(gregbglw): Consider if/how should reconcile this with touch/vector.
+
+part of box2d;
+
 class Vector {
   // Each vector is defined as the vector originating from (0,0) to these x and
   // y coordinates.

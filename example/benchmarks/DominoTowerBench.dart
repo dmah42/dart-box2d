@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+part of BenchmarkRunner;
+
 class DominoTowerBench extends Benchmark {
   static const num DOMINO_WIDTH = .2;
   static const num DOMINO_FRICTION = 0.1;

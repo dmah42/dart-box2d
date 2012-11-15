@@ -14,6 +14,9 @@
 
 // TODO(dominic): This should probably be split into Velocity and Position
 // constraints.
+
+part of box2d;
+
 class ContactConstraint {
   List<ContactConstraintPoint> points;
 

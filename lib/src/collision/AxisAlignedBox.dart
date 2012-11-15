@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** An axis-aligned bounding box. */
+
+part of box2d;
+
 class AxisAlignedBox {
   /** Bottom left vertex of bounding box. */
   Vector lowerBound;

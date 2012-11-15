@@ -16,6 +16,9 @@
  * An enum class of joint types. The currently implemented joint types are
  * distance, constant volume, and revolute.
  */
+
+part of box2d;
+
 class JointType {
   static const int UNKNOWN = 0;
   static const int REVOLUTE = 1;

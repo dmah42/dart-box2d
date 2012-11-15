@@ -17,6 +17,9 @@
  * continued.
  */
 //TODO(gregbglw): Make a typedef. 
-interface TreeCallback {
+
+part of box2d;
+
+abstract class TreeCallback {
   bool treeCallback(DynamicTreeNode node);
 }

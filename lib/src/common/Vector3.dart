@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** A three dimensional vector. */
+
+part of box2d;
+
 class Vector3 {
   // Each vector is defined as the vector originating from (0,0) to the point
   // defined by these values.

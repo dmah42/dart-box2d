@@ -13,6 +13,9 @@
 // limitations under the License.
 
 //TODO(gregbglw): Make a typedef.
-interface PairCallback {
+
+part of box2d;
+
+abstract class PairCallback {
   void addPair(userDataA, userDataB);
 }

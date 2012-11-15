@@ -17,6 +17,9 @@
  * queries, and time of impact (TimeOfImpact) queries. Collision methods are non-static
  * for pooling speed, retrieve a collision object from the [SingletonPool].
  */
+
+part of box2d;
+
 class Collision {
   static const int NULL_FEATURE = Settings.MAX_INTEGER;
 

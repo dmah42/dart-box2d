@@ -16,7 +16,10 @@
  * Callback class for AABB queries. See method "query" in [World].
  */
 //TODO(gregbglw): Make a typedef.
-interface QueryCallback {
+
+part of box2d;
+
+abstract class QueryCallback {
   /**
    * Called for each fixture found in the query AABB.
    * return false to terminate the query.

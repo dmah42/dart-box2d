@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** Class for internal use by Distance.dart. */
+
+part of box2d;
+
 class Simplex {
   final SimplexVertex v1;
   final SimplexVertex v2;

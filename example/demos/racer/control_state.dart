@@ -13,6 +13,9 @@
 // limitations under the License.
 
 /** Used to track keyboard state. Entries are masked bitwise. */
+
+part of racer;
+
 class ControlState {
   static const int UP = 1;
   static const int DOWN = 2;

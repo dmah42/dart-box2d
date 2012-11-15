@@ -18,6 +18,9 @@
  * Not intended to replace your own custom rendering
  * routines! Draws shapes by default.
  */
+
+part of box2d;
+
 abstract class DebugDraw {
   // TODO(gregbglw): Draw joints once have them implemented. Also draw other
   // neat stuff described below.
@@ -48,33 +51,29 @@ abstract class DebugDraw {
   void clearFlags(int value) { flags &= ~value; }
 
   /** Draw a closed polygon provided in CCW order. */
-  abstract void drawPolygon(List<Vector> vertices, int vertexCount,
-      Color3 color);
+  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color);
 
   /** Draws the given point with the given radius and color.  */
-  abstract void drawPoint(Vector point, num radiusOnScreen, Color3 color);
+  void drawPoint(Vector point, num radiusOnScreen, Color3 color);
 
   /** Draw a solid closed polygon provided in CCW order. */
-  abstract void drawSolidPolygon(List<Vector> vertices, int vertexCount,
-      Color3 color);
+  void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color);
 
   /** Draw a circle. */
-  abstract void drawCircle(Vector center, num radius, Color3 color,
-      [Vector axis]);
+  void drawCircle(Vector center, num radius, Color3 color, [Vector axis]);
 
   /** Draw a solid circle. */
-  abstract void drawSolidCircle(Vector center, num radius, Color3 color,
-      [Vector axis]);
+  void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]);
 
   /** Draw a line segment. */
-  abstract void drawSegment(Vector p1, Vector p2, Color3 color);
+  void drawSegment(Vector p1, Vector p2, Color3 color);
 
   /** Draw a transform.  Choose your own length scale. */
-  abstract void drawTransform(Transform xf, Color3 color);
+  void drawTransform(Transform xf, Color3 color);
 
   /** Draw a string. */
   // TODO(dominich): font.
-  abstract void drawString(num x, num y, String s, Color3 color);
+  void drawString(num x, num y, String s, Color3 color);
 
   /**
    * Sets the center of the viewport to the given x and y values and the
