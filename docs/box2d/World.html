@@ -32,1167 +32,1163 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>The world class manages all physics entities, dynamic simulation,
-and asynchronous queries. The world also contains efficient memory
-management facilities.</p>
-<p>Author: Daniel Murphy</p>
 <pre class="source">
 class World {
-  static const int WORLD_POOL_SIZE = 100;
-  static const int WORLD_POOL_CONTAINER_SIZE = 10;
-
-  static const int NEW_FIXTURE = 0x0001;
-  static const int LOCKED = 0x0002;
-  static const int CLEAR_FORCES = 0x0004;
-
-  int _flags;
-
-  ContactManager _contactManager;
-
-  Body _bodyList;
-  Joint _jointList;
-
-  int _bodyCount;
-  int _jointCount;
-
-  final Vector _gravity;
-  bool _allowSleep;
-
-  DebugDraw _debugDraw;
-
-  FixtureDestructionListener _fixtureDestructionListener;
-  JointDestructionListener _jointDestructionListener;
-
-  final DefaultWorldPool _pool;
-
-  /**
-   * This is used to compute the time step ratio to
-   * support a variable time step.
-   */
-  num _inverseTimestep;
-
-  /**
-   * This is for debugging the solver.
-   */
-  bool _warmStarting;
-
-  /**
-   * This is for debugging the solver.
-   */
-  bool _continuousPhysics;
-
-  List&lt;List&lt;ContactRegister&gt;&gt; _contactStacks;
-
-  /** Pooling */
-  final Vector center;
-  final Vector axis;
-
-  final TimeStep timestep;
-  final Vector cA;
-  final Vector cB;
-  final WorldQueryWrapper wqwrapper;
-
-  final TimeOfImpactInput toiInput;
-  final TimeOfImpactOutput toiOutput;
-  final Sweep backup;
-  final TimeOfImpactSolver toiSolver;
-  List&lt;Contact&gt; contacts;
-  final Island island;
-  List&lt;Body&gt; stack;
-
-  /**
-   * Constructs a world object.
-   *
-   * gravity
-   *   the world gravity vector.
-   * doSleep
-   *   improve performance by not simulating inactive bodies.
-   */
-  World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
-    _pool = argPool,
-    _jointDestructionListener = null,
-    _fixtureDestructionListener = null,
-    _debugDraw = null,
-
-    _bodyList = null,
-    _jointList = null,
-
-    _bodyCount = 0,
-    _jointCount = 0,
-
-    _warmStarting = true,
-    _continuousPhysics = true,
-
-    _allowSleep = doSleep,
-    _gravity = gravity,
-
-    _flags = CLEAR_FORCES,
-
-    _inverseTimestep = 0,
-
-    _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
-
-    // Initialize Pool Objects.
-    center = new Vector(),
-    axis = new Vector(),
-    timestep = new TimeStep(),
-    cA = new Vector(),
-    cB = new Vector(),
-    wqwrapper = new WorldQueryWrapper(),
-    toiInput = new TimeOfImpactInput(),
-    toiOutput = new TimeOfImpactOutput(),
-    backup = new Sweep(),
-    toiSolver = new TimeOfImpactSolver(),
-    contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
-    island = new Island(),
-    stack = new List&lt;Body&gt;(10) {
-
-    _contactManager = new ContactManager(this);
-
-    // Initialize settings.
-    for (int i = 0; i &lt; _contactStacks.length; i++) {
-      _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
-    }
-    _initializeRegisters();
-  }
-
-  void _addType(Queue&lt;Contact&gt; creatorStack, int type1, int type2) {
-    ContactRegister register = new ContactRegister();
-    register.creator = creatorStack;
-    register.primary = true;
-    _contactStacks[type1][type2] = register;
-
-    if (type1 != type2) {
-      ContactRegister register2 = new ContactRegister();
-      register2.creator = creatorStack;
-      register2.primary = false;
-      _contactStacks[type2][type1] = register2;
-    }
-  }
-
-  void _initializeRegisters() {
-    _addType(_pool.getCircleContactStack(), ShapeType.CIRCLE, ShapeType.CIRCLE);
-    _addType(_pool.getPolyCircleContactStack(), ShapeType.POLYGON,
-        ShapeType.CIRCLE);
-    _addType(_pool.getPolyContactStack(), ShapeType.POLYGON, ShapeType.POLYGON);
-  }
-
-  Contact popContact(Fixture fixtureA, Fixture fixtureB) {
-    int type1 = fixtureA.type;
-    int type2 = fixtureB.type;
-
-    ContactRegister reg = _contactStacks[type1][type2];
-    Queue&lt;Contact&gt; creator = reg.creator;
-    if (creator != null) {
-
-      // Ensure that the creator isn't depleted of contact stacks.
-      if (creator.isEmpty()) {
-        creator = _getFreshContactStack(type1, type2);
-      }
-
-      if (reg.primary) {
-        Contact c = creator.removeFirst();
-        c.init(fixtureA, fixtureB);
-        return c;
-      } else {
-        Contact c = creator.removeFirst();
-        c.init(fixtureB, fixtureA);
-        return c;
-      }
-    } else {
-      return null;
-    }
-  }
-
-  /** Returns a newly stocked contact stack of the appropriate type. */
-  Queue&lt;Contact&gt; _getFreshContactStack(int type1, int type2) {
-    if (type1 == ShapeType.CIRCLE &amp;&amp; type2 == ShapeType.CIRCLE) {
-      return _pool.getCircleContactStack();
-    } else if (type1 == ShapeType.POLYGON &amp;&amp; type2 == ShapeType.POLYGON) {
-      return _pool.getPolyContactStack();
-    } else {
-      return _pool.getPolyCircleContactStack();
-    }
-  }
-
-  void pushContact(Contact contact) {
-    if (contact.manifold.pointCount &gt; 0) {
-      contact.fixtureA.body.awake = true;
-      contact.fixtureB.body.awake = true;
-    }
-
-    int type1 = contact.fixtureA.type;
-    int type2 = contact.fixtureB.type;
-
-    Queue&lt;Contact&gt; creator = _contactStacks[type1][type2].creator;
-    creator.addFirst(contact);
-  }
-
-
-  /**
-   * Register a contact filter to provide specific control over collision.
-   * Otherwise the default filter is used (_defaultFilter). The listener is
-   * owned by you and must remain in scope.
-   */
-  void set contactFilter(ContactFilter filter) {
-    _contactManager.contactFilter = filter;
-  }
-
-  /**
-   * Register a contact event listener. The listener is owned by you and must
-   * remain in scope.
-   */
-  void set contactListener(ContactListener listener) {
-    _contactManager.contactListener = listener;
-  }
-
-  ContactListener get contactListener =&gt; _contactManager.contactListener;
-
-  /**
-   * Register a routine for debug drawing. The debug draw functions are called
-   * inside with World.DrawDebugData method. The debug draw object is owned
-   * by you and must remain in scope.
-   */
-  void set debugDraw(DebugDraw debugDraw) {
-    _debugDraw = debugDraw;
-  }
-
-  /**
-   * Create a rigid body given a definition. No reference to the definition
-   * is retained.
-   */
-  Body createBody(BodyDef def) {
-    assert (locked == false);
-    if (locked) {
-      return null;
-    }
-    Body b = new Body(def, this);
-
-    // add to world doubly linked list
-    b.prev = null;
-    b.next = _bodyList;
-    if (_bodyList != null) {
-      _bodyList.prev = b;
-    }
-    _bodyList = b;
-    ++_bodyCount;
-
-    return b;
-  }
-
-  /**
-   * Create a joint to constrain bodies together. No reference to the definition
-   * is retained. This may cause the connected bodies to cease colliding.
-   *
-   * Warning: This function is locked during callbacks.
-   */
-  Joint createJoint(JointDef def) {
-    assert (locked == false);
-    if (locked) {
-      return null;
-    }
-
-    Joint j = new Joint.create(this, def);
-
-    // Connect to the world list.
-    j._prev = null;
-    j._next = _jointList;
-    if (_jointList != null) _jointList._prev = j;
-    _jointList = j;
-    ++_jointCount;
-
-    // Connect to the bodies' doubly linked lists.
-    j.edgeA.joint = j;
-    j.edgeA.other = j.bodyB;
-    j.edgeA.prev = null;
-    j.edgeA.next = j.bodyA.jointList;
-    if (j.bodyA.jointList != null) {
-      j.bodyA.jointList.prev = j.edgeA;
-    }
-    j.bodyA.jointList = j.edgeA;
-
-    j.edgeB.joint = j;
-    j.edgeB.other = j.bodyA;
-    j.edgeB.prev = null;
-    j.edgeB.next = j.bodyB.jointList;
-    if (j.bodyB.jointList != null) {
-      j.bodyB.jointList.prev = j.edgeB;
-    }
-    j.bodyB.jointList = j.edgeB;
-
-    Body bodyA = def.bodyA;
-    Body bodyB = def.bodyB;
-
-    // If the joint prevents collisions, then flag any contacts for filtering.
-    if (def.collideConnected == false) {
-      ContactEdge edge = bodyB.contactList;
-      while (edge != null) {
-        if (edge.other == bodyA) {
-          // Flag the contact for filtering at the next time step (where either
-          // body is awake).
-          edge.contact.flagForFiltering();
-        }
-
-        edge = edge.next;
-      }
-    }
-
-    // Note: creating a joint doesn't wake the bodies.
-
-    return j;
-  }
-
-  /**
-   * Destroy a joint. This may cause the connected bodies to begin colliding.
-   *
-   * Warning: This function is locked during callbacks.
-   */
-  void destroyJoint(Joint joint) {
-    assert (locked == false);
-    if (locked) {
-      return;
-    }
-
-    bool collideConnected = joint.collideConnected;
-
-    // Remove from the doubly linked list.
-    if (joint._prev != null) joint._prev._next = joint._next;
-
-    if (joint._next != null) joint._next._prev = joint._prev;
-
-    if (joint == _jointList) _jointList = joint._next;
-
-    // Disconnect from island graph.
-    Body bodyA = joint.bodyA;
-    Body bodyB = joint.bodyB;
-
-    // Wake up connected bodies.
-    bodyA.awake = true;
-    bodyB.awake = true;
-
-    // Remove from body 1.
-    if (joint.edgeA.prev != null) {
-      joint.edgeA.prev.next = joint.edgeA.next;
-    }
-
-    if (joint.edgeA.next != null) {
-      joint.edgeA.next.prev = joint.edgeA.prev;
-    }
-
-    if (joint.edgeA == bodyA.jointList) {
-      bodyA.jointList = joint.edgeA.next;
-    }
-
-    joint.edgeA.prev = null;
-    joint.edgeA.next = null;
-
-    // Remove from body 2
-    if (joint.edgeB.prev != null) {
-      joint.edgeB.prev.next = joint.edgeB.next;
-    }
-
-    if (joint.edgeB.next != null) {
-      joint.edgeB.next.prev = joint.edgeB.prev;
-    }
-
-    if (joint.edgeB == bodyB.jointList) {
-      bodyB.jointList = joint.edgeB.next;
-    }
-
-    joint.edgeB.prev = null;
-    joint.edgeB.next = null;
-
-    Joint.destroy(joint);
-
-    assert (_jointCount &gt; 0);
-    --_jointCount;
-
-    // If the joint prevents collisions, then flag any contacts for filtering.
-    if (collideConnected == false) {
-      ContactEdge edge = bodyB.contactList;
-      while (edge != null) {
-        if (edge.other == bodyA) {
-          // Flag the contact for filtering at the next time step (where either
-          // body is awake).
-          edge.contact.flagForFiltering();
-        }
-
-        edge = edge.next;
-      }
-    }
-  }
-
-  /**
-   * Destroy a rigid body given a definition. No reference to the definition
-   * is retained. This function is locked during callbacks.
-   *
-   * warning: This automatically deletes all associated shapes.
-   * warning: This function is locked during callbacks.
-   */
-  void destroyBody(Body body) {
-    assert (_bodyCount &gt; 0);
-    assert (locked == false);
-    if (locked) {
-      return;
-    }
-
-    // Delete the attached joints.
-    JointEdge je = body.jointList;
-    while (je != null) {
-      JointEdge je0 = je;
-      je = je.next;
-      if (_jointDestructionListener != null) {
-        _jointDestructionListener(je0.joint);
-      }
-
-      destroyJoint(je0.joint);
-    }
-    body.jointList = null;
-
-    // Delete the attached contacts.
-    ContactEdge ce = body.contactList;
-    while (ce != null) {
-      ContactEdge ce0 = ce;
-      ce = ce.next;
-      _contactManager.destroy(ce0.contact);
-    }
-    body.contactList = null;
-
-    Fixture f = body.fixtureList;
-    while (f != null) {
-      Fixture f0 = f;
-      f = f.next;
-
-      if (_fixtureDestructionListener != null) {
-        _fixtureDestructionListener(f0);
-      }
-
-      f0.destroyProxy(_contactManager.broadPhase);
-      f0.destroy();
-      // TODO djm recycle fixtures (here or in that destroy method)
-    }
-    body.fixtureList = null;
-    body.fixtureCount = 0;
-
-    // Remove world body list.
-    if (body.prev != null) {
-      body.prev.next = body.next;
-    }
-
-    if (body.next != null) {
-      body.next.prev = body.prev;
-    }
-
-    if (body == _bodyList) {
-      _bodyList = body.next;
-    }
-
-    --_bodyCount;
-  }
-
-  /**
-   * Take a time step. This performs collision detection, integration,
-   * and constraint solution.
-   *
-   * param timeStep
-   *   the amount of time to simulate, this should not vary.
-   * param velocityIterations
-   *   for the velocity constraint solver.
-   * param positionIterations
-   *   for the position constraint solver.
-   */
-  void step(num dt, int velocityIterations, int positionIterations) {
-
-    // If new fixtures were added, we need to find the new contacts.
-    if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
-      _contactManager.findNewContacts();
-      _flags &amp;= ~NEW_FIXTURE;
-    }
-
-    _flags |= LOCKED;
-
-    timestep.dt = dt;
-    timestep.velocityIterations = velocityIterations;
-    timestep.positionIterations = positionIterations;
-    if (dt &gt; 0.0) {
-      timestep.inv_dt = 1.0 / dt;
-    } else {
-      timestep.inv_dt = 0.0;
-    }
-
-    timestep.dtRatio = _inverseTimestep * dt;
-    timestep.warmStarting = _warmStarting;
-
-    // Update contacts. This is where some contacts are destroyed.
-    _contactManager.collide();
-
-    // Integrate velocities, solve velocity constraints, and integrate
-    // positions.
-    if (timestep.dt &gt; 0.0) {
-      solve(timestep);
-    }
-
-    // Handle TimeOfImpact events.
-    if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
-      solveTimeOfImpact();
-    }
-
-    if (timestep.dt &gt; 0.0) {
-      _inverseTimestep = timestep.inv_dt;
-    }
-
-    if ((_flags &amp; CLEAR_FORCES) == CLEAR_FORCES) {
-      clearForces();
-    }
-
-    _flags &amp;= ~LOCKED;
-  }
-
-  /**
-   * Call this after you are done with time steps to clear the forces.
-   * You normally call this after each call to Step, unless you are
-   * performing sub-steps. By default, forces will be automatically cleared,
-   * so you don't need to call this function.
-   *
-   * see setAutoClearForces
-   */
-  void clearForces() {
-    for (Body body = _bodyList; body != null; body = body.next) {
-      body._force.setZero();
-      body._torque = 0.0;
-    }
-  }
-
-  /**
-   * Call this to draw shapes and other debug draw data.
-   */
-  void drawDebugData() {
-    if (_debugDraw == null) {
-      return;
-    }
-
-    final int drawFlags = _debugDraw.flags;
-
-    if ((drawFlags &amp; DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
-      Transform xf = new Transform();
-      Color3 color = new Color3();
-      for (Body b = _bodyList; b != null; b = b.next) {
-        xf.setFrom(b.originTransform);
-        for (Fixture f = b.fixtureList; f != null; f = f.next) {
-          if (b.active == false) {
-            color.setFromRGBF(0.5, 0.5, 0.3);
-            drawShape(f, xf, color);
-          } else if (b.type == BodyType.STATIC) {
-            color.setFromRGBF(0.5, 0.9, 0.3);
-            drawShape(f, xf, color);
-          } else if (b.type == BodyType.KINEMATIC) {
-            color.setFromRGBF(0.5, 0.5, 0.9);
-            drawShape(f, xf, color);
-          } else if (b.awake == false) {
-            color.setFromRGBF(0.9, 0.9, 0.9);
-            drawShape(f, xf, color);
-          } else {
-            color.setFromRGBF(0.9, 0.7, 0.7);
-            drawShape(f, xf, color);
-          }
-        }
-      }
-    }
-
-    if ((drawFlags &amp; DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
-      for (Joint j = _jointList; j != null; j = j._next)
-        drawJoint(j);
-    }
-
-    if ((drawFlags &amp; DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
-      Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
-      for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-        Fixture fixtureA = c.fixtureA;
-        Fixture fixtureB = c.fixtureB;
-
-        cA.setFrom(fixtureA.box.center);
-        cB.setFrom(fixtureB.box.center);
-
-        _debugDraw.drawSegment(cA, cB, color);
-      }
-    }
-
-    if ((drawFlags &amp; DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
-      Color3 color = new Color3.fromRGBF(0.9, 0.3, 0.9);
-
-      for (Body b = _bodyList; b != null; b = b.next) {
-        if (!b.active) {
-          continue;
-        }
-
-        for (Fixture f = b.fixtureList; f != null; f = f.next) {
-          AxisAlignedBox aabb = f.proxy.box;
-
-          List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
-          for (int i = 0; i &lt; vs.length; i++) {
-            vs[i] = new Vector();
-          }
-
-          vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
-          vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
-          vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
-          vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
-
-          if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
-            _debugDraw.drawPolygon(vs, 4, color);
-          } else {
-            _debugDraw.drawSolidPolygon(vs, 4, color);
-          }
-        }
-      }
-    }
-
-    if ((drawFlags &amp; DebugDraw.e_centerOfMassBit) ==
-        DebugDraw.e_centerOfMassBit) {
-      Transform xf = new Transform();
-      final Color3 color = new Color3.fromRGB(1, 0, 0);
-      for (Body b = _bodyList; b != null; b = b.next) {
-        xf.setFrom(b.originTransform);
-        xf.position.setFrom(b.worldCenter);
-        _debugDraw.drawTransform(xf, color);
-      }
-    }
-  }
-
-  /**
-   * Query the world for all fixtures that potentially overlap the
-   * provided AABB.
-   *
-   * param callback
-   *   a user implemented callback class.
-   * param aabb
-   *   the query box.
-   */
-  void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
-    wqwrapper.broadPhase = _contactManager.broadPhase;
-    wqwrapper.callback = callback;
-    _contactManager.broadPhase.query(wqwrapper, aabb);
-  }
-
-  /**
-   * Get the world contact list. With the returned contact, use Contact.getNext
-   * to get the next contact in the world list. A null contact indicates the
-   * end of the list.
-   *
-   * return the head of the world contact list.
-   * warning contacts are
-   */
-  Contact get contactList =&gt; _contactManager.contactList;
-
-  /**
-   * Get the number of broad-phase proxies.
-   */
-  int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
-
-  /**
-   * Get the number of contacts (each may have 0 or more contact points).
-   */
-  int get contactCount =&gt; _contactManager.contactCount;
-
-  /**
-   * Is the world locked (in the middle of a time step).
-   */
-  bool get locked =&gt; (_flags &amp; LOCKED) == LOCKED;
-
-  /**
-   * Set flag to control automatic clearing of forces after each time step.
-   */
-  void set autoClearForces(bool flag) {
-    if (flag) {
-      _flags |= CLEAR_FORCES;
-    } else {
-      _flags &amp;= ~CLEAR_FORCES;
-    }
-  }
-
-  Joint get jointList =&gt; _jointList;
-
-  int get jointCount =&gt; _jointCount;
-
-  /**
-   * Get the flag that controls automatic clearing of forces after each time
-   * step.
-   */
-  bool get autoClearForces =&gt; (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
-
-  void solve(TimeStep timeStep) {
-    // Size the  for the worst case.
-    island.init(_bodyCount, _contactManager.contactCount, _jointCount,
-        _contactManager.contactListener);
-
-    // Clear all the island flags.
-    for (Body b = _bodyList; b != null; b = b.next) {
-      b.flags &amp;= ~Body.ISLAND_FLAG;
-    }
-    for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-      c.flags &amp;= ~Contact.ISLAND_FLAG;
-    }
-    for (Joint j = jointList; j != null; j = j._next) {
-      j.islandFlag = false;
-    }
-
-    // Build and simulate all awake islands.
-    int stackSize = _bodyCount;
-    if (stack.length &lt; stackSize) {
-      stack = new List&lt;Body&gt;(stackSize);
-    }
-
-    for (Body seed = _bodyList; seed != null; seed = seed.next) {
-      if ((seed.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
-        continue;
-      }
-
-      if (seed.awake == false || seed.active == false) {
-        continue;
-      }
-
-      // The seed can be dynamic or kinematic.
-      if (seed.type == BodyType.STATIC) {
-        continue;
-      }
-
-      // Reset island and stack.
-      island.clear();
-      int stackCount = 0;
-      stack[stackCount++] = seed;
-      seed.flags |= Body.ISLAND_FLAG;
-
-      // Perform a depth first search (DFS) on the constraint graph.
-      while (stackCount &gt; 0) {
-        // Grab the next body off the stack and add it to the island.
-        Body b = stack[--stackCount];
-        assert (b.active);
-        island.addBody(b);
-
-        // Make sure the body is awake.
-        b.awake = true;
-
-        // To keep islands as small as possible, we don't
-        // propagate islands across static bodies.
-        if (b.type == BodyType.STATIC) {
-          continue;
-        }
-
-        // Search all contacts connected to this body.
-        for (ContactEdge ce = b.contactList; ce != null; ce = ce.next) {
-          Contact contact = ce.contact;
-
-          // Has this contact already been added to an island?
-          if ((contact.flags &amp; Contact.ISLAND_FLAG) == Contact.ISLAND_FLAG) {
-            continue;
-          }
-
-          // Is this contact solid and touching?
-          if (contact.enabled == false || contact.touching == false) {
-            continue;
-          }
-
-          // Skip sensors.
-          bool sensorA = contact.fixtureA.isSensor;
-          bool sensorB = contact.fixtureB.isSensor;
-          if (sensorA || sensorB) {
-            continue;
-          }
-
-          island.addContact(contact);
-          contact.flags |= Contact.ISLAND_FLAG;
-
-          Body other = ce.other;
-
-          // Was the other body already added to this island?
-          if ((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
-            continue;
-          }
-
-          assert (stackCount &lt; stackSize);
-          stack[stackCount++] = other;
-          other.flags |= Body.ISLAND_FLAG;
-        }
-
-        // Search all joints connect to this body.
-        for (JointEdge je = b.jointList; je != null; je = je.next) {
-          if (je.joint.islandFlag == true) {
-            continue;
-          }
-
-          Body other = je.other;
-
-          // Don't simulate joints connected to inactive bodies.
-          if (other.active == false) {
-            continue;
-          }
-
-          island.addJoint(je.joint);
-          je.joint.islandFlag = true;
-
-          if (((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG)) {
-            continue;
-          }
-
-          assert (stackCount &lt; stackSize);
-          stack[stackCount++] = other;
-          other.flags |= Body.ISLAND_FLAG;
-        }
-      }
-
-      island.solve(timeStep, _gravity, _allowSleep);
-
-      // Post solve cleanup.
-      for (int i = 0; i &lt; island.bodyCount; ++i) {
-        // Allow static bodies to participate in other islands.
-        Body b = island.bodies[i];
-        if (b.type == BodyType.STATIC) {
-          b.flags &amp;= ~Body.ISLAND_FLAG;
-        }
-      }
-    }
-
-    // Synchronize fixtures, check for out of range bodies.
-    for (Body b = _bodyList; b != null; b = b.next) {
-      // If a body was not in an island then it did not move.
-      if ((b.flags &amp; Body.ISLAND_FLAG) == 0) {
-        continue;
-      }
-
-      if (b.type == BodyType.STATIC) {
-        continue;
-      }
-
-      // Update fixtures (for broad-phase).
-      b.synchronizeFixtures();
-    }
-
-    // Look for new contacts.
-    _contactManager.findNewContacts();
-  }
-
-  void solveTimeOfImpact() {
-    // Prepare all contacts.
-    for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-      // Enable the contact
-      c.flags |= Contact.ENABLED_FLAG;
-
-      // Set the number of TimeOfImpact events for this contact to zero.
-      c.toiCount = 0;
-    }
-
-    // Initialize the TimeOfImpact flag.
-    for (Body body = _bodyList; body != null; body = body.next) {
-      // Kinematic, and static bodies will not be affected by the TimeOfImpact
-      // event.  If a body was not in an island then it did not move.
-      if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
-          == BodyType.KINEMATIC
-          || body.type == BodyType.STATIC) {
-        body.flags |= Body.TO_I_FLAG;
-      }
-      else {
-        body.flags &amp;= ~Body.TO_I_FLAG;
-      }
-    }
-
-    // Collide non-bullets.
-    for (Body body = _bodyList; body != null; body = body.next) {
-      if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-        continue;
-      }
-
-      if (body.bullet == true) {
-        continue;
-      }
-
-      solveTimeOfImpactGivenBody(body);
-
-      body.flags |= Body.TO_I_FLAG;
-    }
-
-    // Collide bullets.
-    for (Body body = _bodyList; body != null; body = body.next) {
-      if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-        continue;
-      }
-
-      if (body.bullet == false) {
-        continue;
-      }
-
-      solveTimeOfImpactGivenBody(body);
-
-      body.flags |= Body.TO_I_FLAG;
-    }
-  }
-
-  void solveTimeOfImpactGivenBody(Body body) {
-    // Find the minimum contact.
-    Contact toiContact = null;
-    num toi = 1.0;
-    Body toiOther = null;
-    bool found;
-    int count;
-    int iter = 0;
-
-    bool bullet = body.bullet;
-
-    // Iterate until all contacts agree on the minimum TimeOfImpact. We have
-    // to iterate because the TimeOfImpact algorithm may skip some intermediate
-    // collisions when objects rotate through each other.
-    do {
-      count = 0;
-      found = false;
-      for (ContactEdge ce = body.contactList; ce != null; ce = ce.next) {
-        if (ce.contact == toiContact) {
-          continue;
-        }
-
-        Body other = ce.other;
-        int type = other.type;
-
-        // Only bullets perform TimeOfImpact with dynamic bodies.
-        if (bullet == true) {
-          // Bullets only perform TimeOfImpact with bodies that have their
-          // TimeOfImpact resolved.
-          if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
-            continue;
-          }
-
-          // No repeated hits on non-static bodies
-          if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
-                Contact.BULLET_HIT_FLAG) != 0) {
-            continue;
-          }
-        } else if (type == BodyType.DYNAMIC) {
-          continue;
-        }
-
-        // Check for a disabled contact.
-        Contact contact = ce.contact;
-        if (contact.enabled == false) {
-          continue;
-        }
-
-        // Prevent infinite looping.
-        if (contact.toiCount &gt; 10) {
-          continue;
-        }
-
-        Fixture fixtureA = contact.fixtureA;
-        Fixture fixtureB = contact.fixtureB;
-
-        // Cull sensors.
-        if (fixtureA.isSensor || fixtureB.isSensor) {
-          continue;
-        }
-
-        Body bodyA = fixtureA.body;
-        Body bodyB = fixtureB.body;
-
-        // Compute the time of impact in interval [0, minTimeOfImpact]
-        toiInput.proxyA.setFromShape(fixtureA.shape);
-        toiInput.proxyB.setFromShape(fixtureB.shape);
-        toiInput.sweepA.setFrom(bodyA.sweep);
-        toiInput.sweepB.setFrom(bodyB.sweep);
-        toiInput.tMax = toi;
-
-        _pool.timeOfImpact.timeOfImpact(toiOutput, toiInput);
-
-        if (toiOutput.state == TimeOfImpactOutputState.TOUCHING &amp;&amp;
-            toiOutput.t &lt; toi) {
-          toiContact = contact;
-          toi = toiOutput.t;
-          toiOther = other;
-          found = true;
-        }
-
-        ++count;
-      }
-
-      ++iter;
-    } while (found &amp;&amp; count &gt; 1 &amp;&amp; iter &lt; 50);
-
-    if (toiContact == null) {
-      body.advance(1.0);
-      return;
-    }
-
-    backup.setFrom(body.sweep);
-    body.advance(toi);
-    toiContact.update(_contactManager.contactListener);
-    if (toiContact.enabled == false) {
-      // Contact disabled. Backup and recurse.
-      body.sweep.setFrom(backup);
-      solveTimeOfImpactGivenBody(body);
-    }
-
-    ++toiContact.toiCount;
-
-    // Update all the valid contacts on this body and build a contact island.
-    if (contacts == null || contacts.length &lt;
-        Settings.MAX_TIME_OF_IMPACT_CONTACTS){
-      contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
-    }
-
-    count = 0;
-    for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
-        &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
-      Body other = ce.other;
-      int type = other.type;
-
-      // Only perform correction with static bodies, so the
-      // body won't get pushed out of the world.
-      if (type == BodyType.DYNAMIC) {
-        continue;
-      }
-
-      // Check for a disabled contact.
-      Contact contact = ce.contact;
-      if (contact.enabled == false) {
-        continue;
-      }
-
-      Fixture fixtureA = contact.fixtureA;
-      Fixture fixtureB = contact.fixtureB;
-
-      // Cull sensors.
-      if (fixtureA.isSensor || fixtureB.isSensor) {
-        continue;
-      }
-
-      // The contact likely has some new contact points. The listener
-      // gives the user a chance to disable the contact.
-      if (contact != toiContact) {
-        contact.update(_contactManager.contactListener);
-      }
-
-      // Did the user disable the contact?
-      if (contact.enabled == false) {
-        // Skip this contact.
-        continue;
-      }
-
-      if (contact.touching == false) {
-        continue;
-      }
-
-      contacts[count] = contact;
-      ++count;
-    }
-
-    // Reduce the TimeOfImpact body's overlap with the contact island.
-    toiSolver.initialize(contacts, count, body);
-
-    num k_toiBaumgarte = 0.75;
-    // bool solved = false;
-    for (int i = 0; i &lt; 20; ++i) {
-      bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
-      if (contactsOkay) {
-        // solved = true;
-        break;
-      }
-    }
-
-    if (toiOther.type != BodyType.STATIC) {
-      toiContact.flags |= Contact.BULLET_HIT_FLAG;
-    }
-  }
-
-  void drawShape(Fixture fixture, Transform xf, Color3 color) {
-    switch (fixture.type) {
-      case ShapeType.CIRCLE:
-        final CircleShape circle = fixture.shape;
-
-        // Vector center = Mul(xf, circle.p);
-        Transform.mulToOut(xf, circle.position, center);
-        num radius = circle.radius;
-        axis.setFrom(xf.rotation.col1);
-
-        if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
-          _debugDraw.drawCircle(center, radius, color, axis);
-        } else {
-          _debugDraw.drawSolidCircle(center, radius, color, axis);
-        }
-        break;
-
-      case ShapeType.POLYGON:
-        final PolygonShape poly = fixture.shape;
-        int vertexCount = poly.vertexCount;
-        assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-        List&lt;Vector&gt; vertices =
-            new List&lt;Vector&gt;(vertexCount);
-        for (int i = 0; i &lt; vertexCount; i++) {
-          vertices[i] = new Vector();
-        }
-
-        for (int i = 0; i &lt; vertexCount; ++i) {
-          assert(poly.vertices[i] != null);
-          assert(vertices[i] != null);
-          Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
-        }
-
-        if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
-          _debugDraw.drawPolygon(vertices, vertexCount, color);
-        } else {
-          if (vertexCount &gt; 2) {
-            _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-          } else {
-            _debugDraw.drawPolygon(vertices, vertexCount, color);
-          }
-        }
-        break;
-    }
-  }
-
-  /** Draws a joint for debugging purposes. */
-  //TODO(gregbglw): Draw more types of joints.
-  void drawJoint(Joint joint) {
-    Body bodyA = joint.bodyA;
-    Body bodyB = joint.bodyB;
-    Transform xf1 = bodyA.originTransform;
-    Transform xf2 = bodyB.originTransform;
-    Vector x1 = new Vector.copy(xf1.position);
-    Vector x2 = new Vector.copy(xf2.position);
-    Vector p1 = new Vector();
-    Vector p2 = new Vector();
-    joint.getAnchorA(p1);
-    joint.getAnchorB(p2);
-
-    // Set the drawing color.
-    Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
-
-    switch (joint.type) {
-      case JointType.DISTANCE :
-        _debugDraw.drawSegment(p1, p2, color);
-        break;
-
-      case JointType.PULLEY :
-        throw new NotImplementedException();
-        //Vector s1 = pulley.getGroundAnchorA();
-        //Vector s2 = pulley.getGroundAnchorB();
-        //_debugDraw.drawSegment(s1, p1, color);
-        //_debugDraw.drawSegment(s2, p2, color);
-        //_debugDraw.drawSegment(s1, s2, color);
-        //break;
-
-      case JointType.FRICTION:
-        _debugDraw.drawSegment(x1, x2, color);
-        break;
-
-      case JointType.CONSTANT_VOLUME :
-        // Nothing to see here.
-      case JointType.MOUSE :
-        // Don't draw anything for mouse. Already have cursor!
-        break;
-      default :
-        Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
-        Vector p2t = new Vector.copy(p2);
-        _debugDraw.drawSegment(x1, p1, color);
-        _debugDraw.drawSegment(p1t, p2, color);
-        _debugDraw.drawSegment(x2, p2t, color);
-    }
-  }
+ static const int WORLD_POOL_SIZE = 100;
+ static const int WORLD_POOL_CONTAINER_SIZE = 10;
+
+ static const int NEW_FIXTURE = 0x0001;
+ static const int LOCKED = 0x0002;
+ static const int CLEAR_FORCES = 0x0004;
+
+ int _flags;
+
+ ContactManager _contactManager;
+
+ Body _bodyList;
+ Joint _jointList;
+
+ int _bodyCount;
+ int _jointCount;
+
+ final Vector _gravity;
+ bool _allowSleep;
+
+ DebugDraw _debugDraw;
+
+ FixtureDestructionListener _fixtureDestructionListener;
+ JointDestructionListener _jointDestructionListener;
+
+ final DefaultWorldPool _pool;
+
+ /**
+  * This is used to compute the time step ratio to
+  * support a variable time step.
+  */
+ num _inverseTimestep;
+
+ /**
+  * This is for debugging the solver.
+  */
+ bool _warmStarting;
+
+ /**
+  * This is for debugging the solver.
+  */
+ bool _continuousPhysics;
+
+ List&lt;List&lt;ContactRegister&gt;&gt; _contactStacks;
+
+ /** Pooling */
+ final Vector center;
+ final Vector axis;
+
+ final TimeStep timestep;
+ final Vector cA;
+ final Vector cB;
+ final WorldQueryWrapper wqwrapper;
+
+ final TimeOfImpactInput toiInput;
+ final TimeOfImpactOutput toiOutput;
+ final Sweep backup;
+ final TimeOfImpactSolver toiSolver;
+ List&lt;Contact&gt; contacts;
+ final Island island;
+ List&lt;Body&gt; stack;
+
+ /**
+  * Constructs a world object.
+  *
+  * gravity
+  *   the world gravity vector.
+  * doSleep
+  *   improve performance by not simulating inactive bodies.
+  */
+ World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
+   _pool = argPool,
+   _jointDestructionListener = null,
+   _fixtureDestructionListener = null,
+   _debugDraw = null,
+
+   _bodyList = null,
+   _jointList = null,
+
+   _bodyCount = 0,
+   _jointCount = 0,
+
+   _warmStarting = true,
+   _continuousPhysics = true,
+
+   _allowSleep = doSleep,
+   _gravity = gravity,
+
+   _flags = CLEAR_FORCES,
+
+   _inverseTimestep = 0,
+
+   _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
+
+   // Initialize Pool Objects.
+   center = new Vector(),
+   axis = new Vector(),
+   timestep = new TimeStep(),
+   cA = new Vector(),
+   cB = new Vector(),
+   wqwrapper = new WorldQueryWrapper(),
+   toiInput = new TimeOfImpactInput(),
+   toiOutput = new TimeOfImpactOutput(),
+   backup = new Sweep(),
+   toiSolver = new TimeOfImpactSolver(),
+   contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
+   island = new Island(),
+   stack = new List&lt;Body&gt;(10) {
+
+   _contactManager = new ContactManager(this);
+
+   // Initialize settings.
+   for (int i = 0; i &lt; _contactStacks.length; i++) {
+     _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
+   }
+   _initializeRegisters();
+ }
+
+ void _addType(Queue&lt;Contact&gt; creatorStack, int type1, int type2) {
+   ContactRegister register = new ContactRegister();
+   register.creator = creatorStack;
+   register.primary = true;
+   _contactStacks[type1][type2] = register;
+
+   if (type1 != type2) {
+     ContactRegister register2 = new ContactRegister();
+     register2.creator = creatorStack;
+     register2.primary = false;
+     _contactStacks[type2][type1] = register2;
+   }
+ }
+
+ void _initializeRegisters() {
+   _addType(_pool.getCircleContactStack(), ShapeType.CIRCLE, ShapeType.CIRCLE);
+   _addType(_pool.getPolyCircleContactStack(), ShapeType.POLYGON,
+       ShapeType.CIRCLE);
+   _addType(_pool.getPolyContactStack(), ShapeType.POLYGON, ShapeType.POLYGON);
+ }
+
+ Contact popContact(Fixture fixtureA, Fixture fixtureB) {
+   int type1 = fixtureA.type;
+   int type2 = fixtureB.type;
+
+   ContactRegister reg = _contactStacks[type1][type2];
+   Queue&lt;Contact&gt; creator = reg.creator;
+   if (creator != null) {
+
+     // Ensure that the creator isn't depleted of contact stacks.
+     if (creator.isEmpty) {
+       creator = _getFreshContactStack(type1, type2);
+     }
+
+     if (reg.primary) {
+       Contact c = creator.removeFirst();
+       c.init(fixtureA, fixtureB);
+       return c;
+     } else {
+       Contact c = creator.removeFirst();
+       c.init(fixtureB, fixtureA);
+       return c;
+     }
+   } else {
+     return null;
+   }
+ }
+
+ /** Returns a newly stocked contact stack of the appropriate type. */
+ Queue&lt;Contact&gt; _getFreshContactStack(int type1, int type2) {
+   if (type1 == ShapeType.CIRCLE &amp;&amp; type2 == ShapeType.CIRCLE) {
+     return _pool.getCircleContactStack();
+   } else if (type1 == ShapeType.POLYGON &amp;&amp; type2 == ShapeType.POLYGON) {
+     return _pool.getPolyContactStack();
+   } else {
+     return _pool.getPolyCircleContactStack();
+   }
+ }
+
+ void pushContact(Contact contact) {
+   if (contact.manifold.pointCount &gt; 0) {
+     contact.fixtureA.body.awake = true;
+     contact.fixtureB.body.awake = true;
+   }
+
+   int type1 = contact.fixtureA.type;
+   int type2 = contact.fixtureB.type;
+
+   Queue&lt;Contact&gt; creator = _contactStacks[type1][type2].creator;
+   creator.addFirst(contact);
+ }
+
+
+ /**
+  * Register a contact filter to provide specific control over collision.
+  * Otherwise the default filter is used (_defaultFilter). The listener is
+  * owned by you and must remain in scope.
+  */
+ void set contactFilter(ContactFilter filter) {
+   _contactManager.contactFilter = filter;
+ }
+
+ /**
+  * Register a contact event listener. The listener is owned by you and must
+  * remain in scope.
+  */
+ void set contactListener(ContactListener listener) {
+   _contactManager.contactListener = listener;
+ }
+
+ ContactListener get contactListener =&gt; _contactManager.contactListener;
+
+ /**
+  * Register a routine for debug drawing. The debug draw functions are called
+  * inside with World.DrawDebugData method. The debug draw object is owned
+  * by you and must remain in scope.
+  */
+ void set debugDraw(DebugDraw debugDraw) {
+   _debugDraw = debugDraw;
+ }
+
+ /**
+  * Create a rigid body given a definition. No reference to the definition
+  * is retained.
+  */
+ Body createBody(BodyDef def) {
+   assert (locked == false);
+   if (locked) {
+     return null;
+   }
+   Body b = new Body(def, this);
+
+   // add to world doubly linked list
+   b.prev = null;
+   b.next = _bodyList;
+   if (_bodyList != null) {
+     _bodyList.prev = b;
+   }
+   _bodyList = b;
+   ++_bodyCount;
+
+   return b;
+ }
+
+ /**
+  * Create a joint to constrain bodies together. No reference to the definition
+  * is retained. This may cause the connected bodies to cease colliding.
+  *
+  * Warning: This function is locked during callbacks.
+  */
+ Joint createJoint(JointDef def) {
+   assert (locked == false);
+   if (locked) {
+     return null;
+   }
+
+   Joint j = new Joint.create(this, def);
+
+   // Connect to the world list.
+   j._prev = null;
+   j._next = _jointList;
+   if (_jointList != null) _jointList._prev = j;
+   _jointList = j;
+   ++_jointCount;
+
+   // Connect to the bodies' doubly linked lists.
+   j.edgeA.joint = j;
+   j.edgeA.other = j.bodyB;
+   j.edgeA.prev = null;
+   j.edgeA.next = j.bodyA.jointList;
+   if (j.bodyA.jointList != null) {
+     j.bodyA.jointList.prev = j.edgeA;
+   }
+   j.bodyA.jointList = j.edgeA;
+
+   j.edgeB.joint = j;
+   j.edgeB.other = j.bodyA;
+   j.edgeB.prev = null;
+   j.edgeB.next = j.bodyB.jointList;
+   if (j.bodyB.jointList != null) {
+     j.bodyB.jointList.prev = j.edgeB;
+   }
+   j.bodyB.jointList = j.edgeB;
+
+   Body bodyA = def.bodyA;
+   Body bodyB = def.bodyB;
+
+   // If the joint prevents collisions, then flag any contacts for filtering.
+   if (def.collideConnected == false) {
+     ContactEdge edge = bodyB.contactList;
+     while (edge != null) {
+       if (edge.other == bodyA) {
+         // Flag the contact for filtering at the next time step (where either
+         // body is awake).
+         edge.contact.flagForFiltering();
+       }
+
+       edge = edge.next;
+     }
+   }
+
+   // Note: creating a joint doesn't wake the bodies.
+
+   return j;
+ }
+
+ /**
+  * Destroy a joint. This may cause the connected bodies to begin colliding.
+  *
+  * Warning: This function is locked during callbacks.
+  */
+ void destroyJoint(Joint joint) {
+   assert (locked == false);
+   if (locked) {
+     return;
+   }
+
+   bool collideConnected = joint.collideConnected;
+
+   // Remove from the doubly linked list.
+   if (joint._prev != null) joint._prev._next = joint._next;
+
+   if (joint._next != null) joint._next._prev = joint._prev;
+
+   if (joint == _jointList) _jointList = joint._next;
+
+   // Disconnect from island graph.
+   Body bodyA = joint.bodyA;
+   Body bodyB = joint.bodyB;
+
+   // Wake up connected bodies.
+   bodyA.awake = true;
+   bodyB.awake = true;
+
+   // Remove from body 1.
+   if (joint.edgeA.prev != null) {
+     joint.edgeA.prev.next = joint.edgeA.next;
+   }
+
+   if (joint.edgeA.next != null) {
+     joint.edgeA.next.prev = joint.edgeA.prev;
+   }
+
+   if (joint.edgeA == bodyA.jointList) {
+     bodyA.jointList = joint.edgeA.next;
+   }
+
+   joint.edgeA.prev = null;
+   joint.edgeA.next = null;
+
+   // Remove from body 2
+   if (joint.edgeB.prev != null) {
+     joint.edgeB.prev.next = joint.edgeB.next;
+   }
+
+   if (joint.edgeB.next != null) {
+     joint.edgeB.next.prev = joint.edgeB.prev;
+   }
+
+   if (joint.edgeB == bodyB.jointList) {
+     bodyB.jointList = joint.edgeB.next;
+   }
+
+   joint.edgeB.prev = null;
+   joint.edgeB.next = null;
+
+   Joint.destroy(joint);
+
+   assert (_jointCount &gt; 0);
+   --_jointCount;
+
+   // If the joint prevents collisions, then flag any contacts for filtering.
+   if (collideConnected == false) {
+     ContactEdge edge = bodyB.contactList;
+     while (edge != null) {
+       if (edge.other == bodyA) {
+         // Flag the contact for filtering at the next time step (where either
+         // body is awake).
+         edge.contact.flagForFiltering();
+       }
+
+       edge = edge.next;
+     }
+   }
+ }
+
+ /**
+  * Destroy a rigid body given a definition. No reference to the definition
+  * is retained. This function is locked during callbacks.
+  *
+  * warning: This automatically deletes all associated shapes.
+  * warning: This function is locked during callbacks.
+  */
+ void destroyBody(Body body) {
+   assert (_bodyCount &gt; 0);
+   assert (locked == false);
+   if (locked) {
+     return;
+   }
+
+   // Delete the attached joints.
+   JointEdge je = body.jointList;
+   while (je != null) {
+     JointEdge je0 = je;
+     je = je.next;
+     if (_jointDestructionListener != null) {
+       _jointDestructionListener(je0.joint);
+     }
+
+     destroyJoint(je0.joint);
+   }
+   body.jointList = null;
+
+   // Delete the attached contacts.
+   ContactEdge ce = body.contactList;
+   while (ce != null) {
+     ContactEdge ce0 = ce;
+     ce = ce.next;
+     _contactManager.destroy(ce0.contact);
+   }
+   body.contactList = null;
+
+   Fixture f = body.fixtureList;
+   while (f != null) {
+     Fixture f0 = f;
+     f = f.next;
+
+     if (_fixtureDestructionListener != null) {
+       _fixtureDestructionListener(f0);
+     }
+
+     f0.destroyProxy(_contactManager.broadPhase);
+     f0.destroy();
+     // TODO djm recycle fixtures (here or in that destroy method)
+   }
+   body.fixtureList = null;
+   body.fixtureCount = 0;
+
+   // Remove world body list.
+   if (body.prev != null) {
+     body.prev.next = body.next;
+   }
+
+   if (body.next != null) {
+     body.next.prev = body.prev;
+   }
+
+   if (body == _bodyList) {
+     _bodyList = body.next;
+   }
+
+   --_bodyCount;
+ }
+
+ /**
+  * Take a time step. This performs collision detection, integration,
+  * and constraint solution.
+  *
+  * param timeStep
+  *   the amount of time to simulate, this should not vary.
+  * param velocityIterations
+  *   for the velocity constraint solver.
+  * param positionIterations
+  *   for the position constraint solver.
+  */
+ void step(num dt, int velocityIterations, int positionIterations) {
+
+   // If new fixtures were added, we need to find the new contacts.
+   if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
+     _contactManager.findNewContacts();
+     _flags &amp;= ~NEW_FIXTURE;
+   }
+
+   _flags |= LOCKED;
+
+   timestep.dt = dt;
+   timestep.velocityIterations = velocityIterations;
+   timestep.positionIterations = positionIterations;
+   if (dt &gt; 0.0) {
+     timestep.inv_dt = 1.0 / dt;
+   } else {
+     timestep.inv_dt = 0.0;
+   }
+
+   timestep.dtRatio = _inverseTimestep * dt;
+   timestep.warmStarting = _warmStarting;
+
+   // Update contacts. This is where some contacts are destroyed.
+   _contactManager.collide();
+
+   // Integrate velocities, solve velocity constraints, and integrate
+   // positions.
+   if (timestep.dt &gt; 0.0) {
+     solve(timestep);
+   }
+
+   // Handle TimeOfImpact events.
+   if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
+     solveTimeOfImpact();
+   }
+
+   if (timestep.dt &gt; 0.0) {
+     _inverseTimestep = timestep.inv_dt;
+   }
+
+   if ((_flags &amp; CLEAR_FORCES) == CLEAR_FORCES) {
+     clearForces();
+   }
+
+   _flags &amp;= ~LOCKED;
+ }
+
+ /**
+  * Call this after you are done with time steps to clear the forces.
+  * You normally call this after each call to Step, unless you are
+  * performing sub-steps. By default, forces will be automatically cleared,
+  * so you don't need to call this function.
+  *
+  * see setAutoClearForces
+  */
+ void clearForces() {
+   for (Body body = _bodyList; body != null; body = body.next) {
+     body._force.setZero();
+     body._torque = 0.0;
+   }
+ }
+
+ /**
+  * Call this to draw shapes and other debug draw data.
+  */
+ void drawDebugData() {
+   if (_debugDraw == null) {
+     return;
+   }
+
+   final int drawFlags = _debugDraw.flags;
+
+   if ((drawFlags &amp; DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
+     Transform xf = new Transform();
+     Color3 color = new Color3();
+     for (Body b = _bodyList; b != null; b = b.next) {
+       xf.setFrom(b.originTransform);
+       for (Fixture f = b.fixtureList; f != null; f = f.next) {
+         if (b.active == false) {
+           color.setFromRGBF(0.5, 0.5, 0.3);
+           drawShape(f, xf, color);
+         } else if (b.type == BodyType.STATIC) {
+           color.setFromRGBF(0.5, 0.9, 0.3);
+           drawShape(f, xf, color);
+         } else if (b.type == BodyType.KINEMATIC) {
+           color.setFromRGBF(0.5, 0.5, 0.9);
+           drawShape(f, xf, color);
+         } else if (b.awake == false) {
+           color.setFromRGBF(0.9, 0.9, 0.9);
+           drawShape(f, xf, color);
+         } else {
+           color.setFromRGBF(0.9, 0.7, 0.7);
+           drawShape(f, xf, color);
+         }
+       }
+     }
+   }
+
+   if ((drawFlags &amp; DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
+     for (Joint j = _jointList; j != null; j = j._next)
+       drawJoint(j);
+   }
+
+   if ((drawFlags &amp; DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
+     Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
+     for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+       Fixture fixtureA = c.fixtureA;
+       Fixture fixtureB = c.fixtureB;
+
+       cA.setFrom(fixtureA.box.center);
+       cB.setFrom(fixtureB.box.center);
+
+       _debugDraw.drawSegment(cA, cB, color);
+     }
+   }
+
+   if ((drawFlags &amp; DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
+     Color3 color = new Color3.fromRGBF(0.9, 0.3, 0.9);
+
+     for (Body b = _bodyList; b != null; b = b.next) {
+       if (!b.active) {
+         continue;
+       }
+
+       for (Fixture f = b.fixtureList; f != null; f = f.next) {
+         AxisAlignedBox aabb = f.proxy.box;
+
+         List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
+         for (int i = 0; i &lt; vs.length; i++) {
+           vs[i] = new Vector();
+         }
+
+         vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
+         vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
+         vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
+         vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
+
+         if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
+           _debugDraw.drawPolygon(vs, 4, color);
+         } else {
+           _debugDraw.drawSolidPolygon(vs, 4, color);
+         }
+       }
+     }
+   }
+
+   if ((drawFlags &amp; DebugDraw.e_centerOfMassBit) ==
+       DebugDraw.e_centerOfMassBit) {
+     Transform xf = new Transform();
+     final Color3 color = new Color3.fromRGB(1, 0, 0);
+     for (Body b = _bodyList; b != null; b = b.next) {
+       xf.setFrom(b.originTransform);
+       xf.position.setFrom(b.worldCenter);
+       _debugDraw.drawTransform(xf, color);
+     }
+   }
+ }
+
+ /**
+  * Query the world for all fixtures that potentially overlap the
+  * provided AABB.
+  *
+  * param callback
+  *   a user implemented callback class.
+  * param aabb
+  *   the query box.
+  */
+ void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
+   wqwrapper.broadPhase = _contactManager.broadPhase;
+   wqwrapper.callback = callback;
+   _contactManager.broadPhase.query(wqwrapper, aabb);
+ }
+
+ /**
+  * Get the world contact list. With the returned contact, use Contact.getNext
+  * to get the next contact in the world list. A null contact indicates the
+  * end of the list.
+  *
+  * return the head of the world contact list.
+  * warning contacts are
+  */
+ Contact get contactList =&gt; _contactManager.contactList;
+
+ /**
+  * Get the number of broad-phase proxies.
+  */
+ int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
+
+ /**
+  * Get the number of contacts (each may have 0 or more contact points).
+  */
+ int get contactCount =&gt; _contactManager.contactCount;
+
+ /**
+  * Is the world locked (in the middle of a time step).
+  */
+ bool get locked =&gt; (_flags &amp; LOCKED) == LOCKED;
+
+ /**
+  * Set flag to control automatic clearing of forces after each time step.
+  */
+ void set autoClearForces(bool flag) {
+   if (flag) {
+     _flags |= CLEAR_FORCES;
+   } else {
+     _flags &amp;= ~CLEAR_FORCES;
+   }
+ }
+
+ Joint get jointList =&gt; _jointList;
+
+ int get jointCount =&gt; _jointCount;
+
+ /**
+  * Get the flag that controls automatic clearing of forces after each time
+  * step.
+  */
+ bool get autoClearForces =&gt; (_flags &amp; CLEAR_FORCES) == CLEAR_FORCES;
+
+ void solve(TimeStep timeStep) {
+   // Size the  for the worst case.
+   island.init(_bodyCount, _contactManager.contactCount, _jointCount,
+       _contactManager.contactListener);
+
+   // Clear all the island flags.
+   for (Body b = _bodyList; b != null; b = b.next) {
+     b.flags &amp;= ~Body.ISLAND_FLAG;
+   }
+   for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+     c.flags &amp;= ~Contact.ISLAND_FLAG;
+   }
+   for (Joint j = jointList; j != null; j = j._next) {
+     j.islandFlag = false;
+   }
+
+   // Build and simulate all awake islands.
+   int stackSize = _bodyCount;
+   if (stack.length &lt; stackSize) {
+     stack = new List&lt;Body&gt;(stackSize);
+   }
+
+   for (Body seed = _bodyList; seed != null; seed = seed.next) {
+     if ((seed.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
+       continue;
+     }
+
+     if (seed.awake == false || seed.active == false) {
+       continue;
+     }
+
+     // The seed can be dynamic or kinematic.
+     if (seed.type == BodyType.STATIC) {
+       continue;
+     }
+
+     // Reset island and stack.
+     island.clear();
+     int stackCount = 0;
+     stack[stackCount++] = seed;
+     seed.flags |= Body.ISLAND_FLAG;
+
+     // Perform a depth first search (DFS) on the constraint graph.
+     while (stackCount &gt; 0) {
+       // Grab the next body off the stack and add it to the island.
+       Body b = stack[--stackCount];
+       assert (b.active);
+       island.addBody(b);
+
+       // Make sure the body is awake.
+       b.awake = true;
+
+       // To keep islands as small as possible, we don't
+       // propagate islands across static bodies.
+       if (b.type == BodyType.STATIC) {
+         continue;
+       }
+
+       // Search all contacts connected to this body.
+       for (ContactEdge ce = b.contactList; ce != null; ce = ce.next) {
+         Contact contact = ce.contact;
+
+         // Has this contact already been added to an island?
+         if ((contact.flags &amp; Contact.ISLAND_FLAG) == Contact.ISLAND_FLAG) {
+           continue;
+         }
+
+         // Is this contact solid and touching?
+         if (contact.enabled == false || contact.touching == false) {
+           continue;
+         }
+
+         // Skip sensors.
+         bool sensorA = contact.fixtureA.isSensor;
+         bool sensorB = contact.fixtureB.isSensor;
+         if (sensorA || sensorB) {
+           continue;
+         }
+
+         island.addContact(contact);
+         contact.flags |= Contact.ISLAND_FLAG;
+
+         Body other = ce.other;
+
+         // Was the other body already added to this island?
+         if ((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
+           continue;
+         }
+
+         assert (stackCount &lt; stackSize);
+         stack[stackCount++] = other;
+         other.flags |= Body.ISLAND_FLAG;
+       }
+
+       // Search all joints connect to this body.
+       for (JointEdge je = b.jointList; je != null; je = je.next) {
+         if (je.joint.islandFlag == true) {
+           continue;
+         }
+
+         Body other = je.other;
+
+         // Don't simulate joints connected to inactive bodies.
+         if (other.active == false) {
+           continue;
+         }
+
+         island.addJoint(je.joint);
+         je.joint.islandFlag = true;
+
+         if (((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG)) {
+           continue;
+         }
+
+         assert (stackCount &lt; stackSize);
+         stack[stackCount++] = other;
+         other.flags |= Body.ISLAND_FLAG;
+       }
+     }
+
+     island.solve(timeStep, _gravity, _allowSleep);
+
+     // Post solve cleanup.
+     for (int i = 0; i &lt; island.bodyCount; ++i) {
+       // Allow static bodies to participate in other islands.
+       Body b = island.bodies[i];
+       if (b.type == BodyType.STATIC) {
+         b.flags &amp;= ~Body.ISLAND_FLAG;
+       }
+     }
+   }
+
+   // Synchronize fixtures, check for out of range bodies.
+   for (Body b = _bodyList; b != null; b = b.next) {
+     // If a body was not in an island then it did not move.
+     if ((b.flags &amp; Body.ISLAND_FLAG) == 0) {
+       continue;
+     }
+
+     if (b.type == BodyType.STATIC) {
+       continue;
+     }
+
+     // Update fixtures (for broad-phase).
+     b.synchronizeFixtures();
+   }
+
+   // Look for new contacts.
+   _contactManager.findNewContacts();
+ }
+
+ void solveTimeOfImpact() {
+   // Prepare all contacts.
+   for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+     // Enable the contact
+     c.flags |= Contact.ENABLED_FLAG;
+
+     // Set the number of TimeOfImpact events for this contact to zero.
+     c.toiCount = 0;
+   }
+
+   // Initialize the TimeOfImpact flag.
+   for (Body body = _bodyList; body != null; body = body.next) {
+     // Kinematic, and static bodies will not be affected by the TimeOfImpact
+     // event.  If a body was not in an island then it did not move.
+     if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
+         == BodyType.KINEMATIC
+         || body.type == BodyType.STATIC) {
+       body.flags |= Body.TO_I_FLAG;
+     }
+     else {
+       body.flags &amp;= ~Body.TO_I_FLAG;
+     }
+   }
+
+   // Collide non-bullets.
+   for (Body body = _bodyList; body != null; body = body.next) {
+     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
+       continue;
+     }
+
+     if (body.bullet == true) {
+       continue;
+     }
+
+     solveTimeOfImpactGivenBody(body);
+
+     body.flags |= Body.TO_I_FLAG;
+   }
+
+   // Collide bullets.
+   for (Body body = _bodyList; body != null; body = body.next) {
+     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
+       continue;
+     }
+
+     if (body.bullet == false) {
+       continue;
+     }
+
+     solveTimeOfImpactGivenBody(body);
+
+     body.flags |= Body.TO_I_FLAG;
+   }
+ }
+
+ void solveTimeOfImpactGivenBody(Body body) {
+   // Find the minimum contact.
+   Contact toiContact = null;
+   num toi = 1.0;
+   Body toiOther = null;
+   bool found;
+   int count;
+   int iter = 0;
+
+   bool bullet = body.bullet;
+
+   // Iterate until all contacts agree on the minimum TimeOfImpact. We have
+   // to iterate because the TimeOfImpact algorithm may skip some intermediate
+   // collisions when objects rotate through each other.
+   do {
+     count = 0;
+     found = false;
+     for (ContactEdge ce = body.contactList; ce != null; ce = ce.next) {
+       if (ce.contact == toiContact) {
+         continue;
+       }
+
+       Body other = ce.other;
+       int type = other.type;
+
+       // Only bullets perform TimeOfImpact with dynamic bodies.
+       if (bullet == true) {
+         // Bullets only perform TimeOfImpact with bodies that have their
+         // TimeOfImpact resolved.
+         if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
+           continue;
+         }
+
+         // No repeated hits on non-static bodies
+         if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
+               Contact.BULLET_HIT_FLAG) != 0) {
+           continue;
+         }
+       } else if (type == BodyType.DYNAMIC) {
+         continue;
+       }
+
+       // Check for a disabled contact.
+       Contact contact = ce.contact;
+       if (contact.enabled == false) {
+         continue;
+       }
+
+       // Prevent infinite looping.
+       if (contact.toiCount &gt; 10) {
+         continue;
+       }
+
+       Fixture fixtureA = contact.fixtureA;
+       Fixture fixtureB = contact.fixtureB;
+
+       // Cull sensors.
+       if (fixtureA.isSensor || fixtureB.isSensor) {
+         continue;
+       }
+
+       Body bodyA = fixtureA.body;
+       Body bodyB = fixtureB.body;
+
+       // Compute the time of impact in interval [0, minTimeOfImpact]
+       toiInput.proxyA.setFromShape(fixtureA.shape);
+       toiInput.proxyB.setFromShape(fixtureB.shape);
+       toiInput.sweepA.setFrom(bodyA.sweep);
+       toiInput.sweepB.setFrom(bodyB.sweep);
+       toiInput.tMax = toi;
+
+       _pool.timeOfImpact.timeOfImpact(toiOutput, toiInput);
+
+       if (toiOutput.state == TimeOfImpactOutputState.TOUCHING &amp;&amp;
+           toiOutput.t &lt; toi) {
+         toiContact = contact;
+         toi = toiOutput.t;
+         toiOther = other;
+         found = true;
+       }
+
+       ++count;
+     }
+
+     ++iter;
+   } while (found &amp;&amp; count &gt; 1 &amp;&amp; iter &lt; 50);
+
+   if (toiContact == null) {
+     body.advance(1.0);
+     return;
+   }
+
+   backup.setFrom(body.sweep);
+   body.advance(toi);
+   toiContact.update(_contactManager.contactListener);
+   if (toiContact.enabled == false) {
+     // Contact disabled. Backup and recurse.
+     body.sweep.setFrom(backup);
+     solveTimeOfImpactGivenBody(body);
+   }
+
+   ++toiContact.toiCount;
+
+   // Update all the valid contacts on this body and build a contact island.
+   if (contacts == null || contacts.length &lt;
+       Settings.MAX_TIME_OF_IMPACT_CONTACTS){
+     contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+   }
+
+   count = 0;
+   for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
+       &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
+     Body other = ce.other;
+     int type = other.type;
+
+     // Only perform correction with static bodies, so the
+     // body won't get pushed out of the world.
+     if (type == BodyType.DYNAMIC) {
+       continue;
+     }
+
+     // Check for a disabled contact.
+     Contact contact = ce.contact;
+     if (contact.enabled == false) {
+       continue;
+     }
+
+     Fixture fixtureA = contact.fixtureA;
+     Fixture fixtureB = contact.fixtureB;
+
+     // Cull sensors.
+     if (fixtureA.isSensor || fixtureB.isSensor) {
+       continue;
+     }
+
+     // The contact likely has some new contact points. The listener
+     // gives the user a chance to disable the contact.
+     if (contact != toiContact) {
+       contact.update(_contactManager.contactListener);
+     }
+
+     // Did the user disable the contact?
+     if (contact.enabled == false) {
+       // Skip this contact.
+       continue;
+     }
+
+     if (contact.touching == false) {
+       continue;
+     }
+
+     contacts[count] = contact;
+     ++count;
+   }
+
+   // Reduce the TimeOfImpact body's overlap with the contact island.
+   toiSolver.initialize(contacts, count, body);
+
+   num k_toiBaumgarte = 0.75;
+   // bool solved = false;
+   for (int i = 0; i &lt; 20; ++i) {
+     bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
+     if (contactsOkay) {
+       // solved = true;
+       break;
+     }
+   }
+
+   if (toiOther.type != BodyType.STATIC) {
+     toiContact.flags |= Contact.BULLET_HIT_FLAG;
+   }
+ }
+
+ void drawShape(Fixture fixture, Transform xf, Color3 color) {
+   switch (fixture.type) {
+     case ShapeType.CIRCLE:
+       final CircleShape circle = fixture.shape;
+
+       // Vector center = Mul(xf, circle.p);
+       Transform.mulToOut(xf, circle.position, center);
+       num radius = circle.radius;
+       axis.setFrom(xf.rotation.col1);
+
+       if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+         _debugDraw.drawCircle(center, radius, color, axis);
+       } else {
+         _debugDraw.drawSolidCircle(center, radius, color, axis);
+       }
+       break;
+
+     case ShapeType.POLYGON:
+       final PolygonShape poly = fixture.shape;
+       int vertexCount = poly.vertexCount;
+       assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
+       List&lt;Vector&gt; vertices =
+           new List&lt;Vector&gt;(vertexCount);
+       for (int i = 0; i &lt; vertexCount; i++) {
+         vertices[i] = new Vector();
+       }
+
+       for (int i = 0; i &lt; vertexCount; ++i) {
+         assert(poly.vertices[i] != null);
+         assert(vertices[i] != null);
+         Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
+       }
+
+       if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+         _debugDraw.drawPolygon(vertices, vertexCount, color);
+       } else {
+         if (vertexCount &gt; 2) {
+           _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+         } else {
+           _debugDraw.drawPolygon(vertices, vertexCount, color);
+         }
+       }
+       break;
+   }
+ }
+
+ /** Draws a joint for debugging purposes. */
+ //TODO(gregbglw): Draw more types of joints.
+ void drawJoint(Joint joint) {
+   Body bodyA = joint.bodyA;
+   Body bodyB = joint.bodyB;
+   Transform xf1 = bodyA.originTransform;
+   Transform xf2 = bodyB.originTransform;
+   Vector x1 = new Vector.copy(xf1.position);
+   Vector x2 = new Vector.copy(xf2.position);
+   Vector p1 = new Vector();
+   Vector p2 = new Vector();
+   joint.getAnchorA(p1);
+   joint.getAnchorB(p2);
+
+   // Set the drawing color.
+   Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
+
+   switch (joint.type) {
+     case JointType.DISTANCE :
+       _debugDraw.drawSegment(p1, p2, color);
+       break;
+
+     case JointType.PULLEY :
+       throw new NotImplementedException();
+       //Vector s1 = pulley.getGroundAnchorA();
+       //Vector s2 = pulley.getGroundAnchorB();
+       //_debugDraw.drawSegment(s1, p1, color);
+       //_debugDraw.drawSegment(s2, p2, color);
+       //_debugDraw.drawSegment(s1, s2, color);
+       //break;
+
+     case JointType.FRICTION:
+       _debugDraw.drawSegment(x1, x2, color);
+       break;
+
+     case JointType.CONSTANT_VOLUME :
+       // Nothing to see here.
+     case JointType.MOUSE :
+       // Don't draw anything for mouse. Already have cursor!
+       break;
+     default :
+       Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
+       Vector p2t = new Vector.copy(p2);
+       _debugDraw.drawSegment(x1, p1, color);
+       _debugDraw.drawSegment(p1t, p2, color);
+       _debugDraw.drawSegment(x2, p2t, color);
+   }
+ }
 }
 </pre>
 </div>
@@ -1273,51 +1269,51 @@ doSleep
   improve performance by not simulating inactive bodies.</p>
 <pre class="source">
 World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
-  _pool = argPool,
-  _jointDestructionListener = null,
-  _fixtureDestructionListener = null,
-  _debugDraw = null,
+ _pool = argPool,
+ _jointDestructionListener = null,
+ _fixtureDestructionListener = null,
+ _debugDraw = null,
 
-  _bodyList = null,
-  _jointList = null,
+ _bodyList = null,
+ _jointList = null,
 
-  _bodyCount = 0,
-  _jointCount = 0,
+ _bodyCount = 0,
+ _jointCount = 0,
 
-  _warmStarting = true,
-  _continuousPhysics = true,
+ _warmStarting = true,
+ _continuousPhysics = true,
 
-  _allowSleep = doSleep,
-  _gravity = gravity,
+ _allowSleep = doSleep,
+ _gravity = gravity,
 
-  _flags = CLEAR_FORCES,
+ _flags = CLEAR_FORCES,
 
-  _inverseTimestep = 0,
+ _inverseTimestep = 0,
 
-  _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
+ _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
-  // Initialize Pool Objects.
-  center = new Vector(),
-  axis = new Vector(),
-  timestep = new TimeStep(),
-  cA = new Vector(),
-  cB = new Vector(),
-  wqwrapper = new WorldQueryWrapper(),
-  toiInput = new TimeOfImpactInput(),
-  toiOutput = new TimeOfImpactOutput(),
-  backup = new Sweep(),
-  toiSolver = new TimeOfImpactSolver(),
-  contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
-  island = new Island(),
-  stack = new List&lt;Body&gt;(10) {
+ // Initialize Pool Objects.
+ center = new Vector(),
+ axis = new Vector(),
+ timestep = new TimeStep(),
+ cA = new Vector(),
+ cB = new Vector(),
+ wqwrapper = new WorldQueryWrapper(),
+ toiInput = new TimeOfImpactInput(),
+ toiOutput = new TimeOfImpactOutput(),
+ backup = new Sweep(),
+ toiSolver = new TimeOfImpactSolver(),
+ contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
+ island = new Island(),
+ stack = new List&lt;Body&gt;(10) {
 
-  _contactManager = new ContactManager(this);
+ _contactManager = new ContactManager(this);
 
-  // Initialize settings.
-  for (int i = 0; i &lt; _contactStacks.length; i++) {
-    _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
-  }
-  _initializeRegisters();
+ // Initialize settings.
+ for (int i = 0; i &lt; _contactStacks.length; i++) {
+   _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
+ }
+ _initializeRegisters();
 }
 </pre>
 </div>
@@ -1345,11 +1341,11 @@ void <strong>set autoClearForces</strong>(bool flag) <a class="anchor-link" href
 <p>Set flag to control automatic clearing of forces after each time step.</p>
 <pre class="source">
 void set autoClearForces(bool flag) {
-  if (flag) {
-    _flags |= CLEAR_FORCES;
-  } else {
-    _flags &amp;= ~CLEAR_FORCES;
-  }
+ if (flag) {
+   _flags |= CLEAR_FORCES;
+ } else {
+   _flags &amp;= ~CLEAR_FORCES;
+ }
 }
 </pre>
 </div>
@@ -1438,7 +1434,7 @@ Otherwise the default filter is used (_defaultFilter). The listener is
 owned by you and must remain in scope.</p>
 <pre class="source">
 void set contactFilter(ContactFilter filter) {
-  _contactManager.contactFilter = filter;
+ _contactManager.contactFilter = filter;
 }
 </pre>
 </div>
@@ -1474,7 +1470,7 @@ ContactListener get contactListener =&gt; _contactManager.contactListener;
 </pre>
 <pre class="source">
 void set contactListener(ContactListener listener) {
-  _contactManager.contactListener = listener;
+ _contactManager.contactListener = listener;
 }
 </pre>
 </div>
@@ -1501,7 +1497,7 @@ inside with World.DrawDebugData method. The debug draw object is owned
 by you and must remain in scope.</p>
 <pre class="source">
 void set debugDraw(DebugDraw debugDraw) {
-  _debugDraw = debugDraw;
+ _debugDraw = debugDraw;
 }
 </pre>
 </div>
@@ -1655,10 +1651,10 @@ so you don't need to call this function.</p>
 <p>see setAutoClearForces</p>
 <pre class="source">
 void clearForces() {
-  for (Body body = _bodyList; body != null; body = body.next) {
-    body._force.setZero();
-    body._torque = 0.0;
-  }
+ for (Body body = _bodyList; body != null; body = body.next) {
+   body._force.setZero();
+   body._torque = 0.0;
+ }
 }
 </pre>
 </div>
@@ -1672,22 +1668,22 @@ void clearForces() {
 is retained.</p>
 <pre class="source">
 Body createBody(BodyDef def) {
-  assert (locked == false);
-  if (locked) {
-    return null;
-  }
-  Body b = new Body(def, this);
+ assert (locked == false);
+ if (locked) {
+   return null;
+ }
+ Body b = new Body(def, this);
 
-  // add to world doubly linked list
-  b.prev = null;
-  b.next = _bodyList;
-  if (_bodyList != null) {
-    _bodyList.prev = b;
-  }
-  _bodyList = b;
-  ++_bodyCount;
+ // add to world doubly linked list
+ b.prev = null;
+ b.next = _bodyList;
+ if (_bodyList != null) {
+   _bodyList.prev = b;
+ }
+ _bodyList = b;
+ ++_bodyCount;
 
-  return b;
+ return b;
 }
 </pre>
 </div>
@@ -1702,59 +1698,59 @@ is retained. This may cause the connected bodies to cease colliding.</p>
 <p>Warning: This function is locked during callbacks.</p>
 <pre class="source">
 Joint createJoint(JointDef def) {
-  assert (locked == false);
-  if (locked) {
-    return null;
-  }
+ assert (locked == false);
+ if (locked) {
+   return null;
+ }
 
-  Joint j = new Joint.create(this, def);
+ Joint j = new Joint.create(this, def);
 
-  // Connect to the world list.
-  j._prev = null;
-  j._next = _jointList;
-  if (_jointList != null) _jointList._prev = j;
-  _jointList = j;
-  ++_jointCount;
+ // Connect to the world list.
+ j._prev = null;
+ j._next = _jointList;
+ if (_jointList != null) _jointList._prev = j;
+ _jointList = j;
+ ++_jointCount;
 
-  // Connect to the bodies' doubly linked lists.
-  j.edgeA.joint = j;
-  j.edgeA.other = j.bodyB;
-  j.edgeA.prev = null;
-  j.edgeA.next = j.bodyA.jointList;
-  if (j.bodyA.jointList != null) {
-    j.bodyA.jointList.prev = j.edgeA;
-  }
-  j.bodyA.jointList = j.edgeA;
+ // Connect to the bodies' doubly linked lists.
+ j.edgeA.joint = j;
+ j.edgeA.other = j.bodyB;
+ j.edgeA.prev = null;
+ j.edgeA.next = j.bodyA.jointList;
+ if (j.bodyA.jointList != null) {
+   j.bodyA.jointList.prev = j.edgeA;
+ }
+ j.bodyA.jointList = j.edgeA;
 
-  j.edgeB.joint = j;
-  j.edgeB.other = j.bodyA;
-  j.edgeB.prev = null;
-  j.edgeB.next = j.bodyB.jointList;
-  if (j.bodyB.jointList != null) {
-    j.bodyB.jointList.prev = j.edgeB;
-  }
-  j.bodyB.jointList = j.edgeB;
+ j.edgeB.joint = j;
+ j.edgeB.other = j.bodyA;
+ j.edgeB.prev = null;
+ j.edgeB.next = j.bodyB.jointList;
+ if (j.bodyB.jointList != null) {
+   j.bodyB.jointList.prev = j.edgeB;
+ }
+ j.bodyB.jointList = j.edgeB;
 
-  Body bodyA = def.bodyA;
-  Body bodyB = def.bodyB;
+ Body bodyA = def.bodyA;
+ Body bodyB = def.bodyB;
 
-  // If the joint prevents collisions, then flag any contacts for filtering.
-  if (def.collideConnected == false) {
-    ContactEdge edge = bodyB.contactList;
-    while (edge != null) {
-      if (edge.other == bodyA) {
-        // Flag the contact for filtering at the next time step (where either
-        // body is awake).
-        edge.contact.flagForFiltering();
-      }
+ // If the joint prevents collisions, then flag any contacts for filtering.
+ if (def.collideConnected == false) {
+   ContactEdge edge = bodyB.contactList;
+   while (edge != null) {
+     if (edge.other == bodyA) {
+       // Flag the contact for filtering at the next time step (where either
+       // body is awake).
+       edge.contact.flagForFiltering();
+     }
 
-      edge = edge.next;
-    }
-  }
+     edge = edge.next;
+   }
+ }
 
-  // Note: creating a joint doesn't wake the bodies.
+ // Note: creating a joint doesn't wake the bodies.
 
-  return j;
+ return j;
 }
 </pre>
 </div>
@@ -1770,64 +1766,64 @@ is retained. This function is locked during callbacks.</p>
 warning: This function is locked during callbacks.</p>
 <pre class="source">
 void destroyBody(Body body) {
-  assert (_bodyCount &gt; 0);
-  assert (locked == false);
-  if (locked) {
-    return;
-  }
+ assert (_bodyCount &gt; 0);
+ assert (locked == false);
+ if (locked) {
+   return;
+ }
 
-  // Delete the attached joints.
-  JointEdge je = body.jointList;
-  while (je != null) {
-    JointEdge je0 = je;
-    je = je.next;
-    if (_jointDestructionListener != null) {
-      _jointDestructionListener(je0.joint);
-    }
+ // Delete the attached joints.
+ JointEdge je = body.jointList;
+ while (je != null) {
+   JointEdge je0 = je;
+   je = je.next;
+   if (_jointDestructionListener != null) {
+     _jointDestructionListener(je0.joint);
+   }
 
-    destroyJoint(je0.joint);
-  }
-  body.jointList = null;
+   destroyJoint(je0.joint);
+ }
+ body.jointList = null;
 
-  // Delete the attached contacts.
-  ContactEdge ce = body.contactList;
-  while (ce != null) {
-    ContactEdge ce0 = ce;
-    ce = ce.next;
-    _contactManager.destroy(ce0.contact);
-  }
-  body.contactList = null;
+ // Delete the attached contacts.
+ ContactEdge ce = body.contactList;
+ while (ce != null) {
+   ContactEdge ce0 = ce;
+   ce = ce.next;
+   _contactManager.destroy(ce0.contact);
+ }
+ body.contactList = null;
 
-  Fixture f = body.fixtureList;
-  while (f != null) {
-    Fixture f0 = f;
-    f = f.next;
+ Fixture f = body.fixtureList;
+ while (f != null) {
+   Fixture f0 = f;
+   f = f.next;
 
-    if (_fixtureDestructionListener != null) {
-      _fixtureDestructionListener(f0);
-    }
+   if (_fixtureDestructionListener != null) {
+     _fixtureDestructionListener(f0);
+   }
 
-    f0.destroyProxy(_contactManager.broadPhase);
-    f0.destroy();
-    // TODO djm recycle fixtures (here or in that destroy method)
-  }
-  body.fixtureList = null;
-  body.fixtureCount = 0;
+   f0.destroyProxy(_contactManager.broadPhase);
+   f0.destroy();
+   // TODO djm recycle fixtures (here or in that destroy method)
+ }
+ body.fixtureList = null;
+ body.fixtureCount = 0;
 
-  // Remove world body list.
-  if (body.prev != null) {
-    body.prev.next = body.next;
-  }
+ // Remove world body list.
+ if (body.prev != null) {
+   body.prev.next = body.next;
+ }
 
-  if (body.next != null) {
-    body.next.prev = body.prev;
-  }
+ if (body.next != null) {
+   body.next.prev = body.prev;
+ }
 
-  if (body == _bodyList) {
-    _bodyList = body.next;
-  }
+ if (body == _bodyList) {
+   _bodyList = body.next;
+ }
 
-  --_bodyCount;
+ --_bodyCount;
 }
 </pre>
 </div>
@@ -1841,78 +1837,78 @@ void <strong>destroyJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint
 <p>Warning: This function is locked during callbacks.</p>
 <pre class="source">
 void destroyJoint(Joint joint) {
-  assert (locked == false);
-  if (locked) {
-    return;
-  }
+ assert (locked == false);
+ if (locked) {
+   return;
+ }
 
-  bool collideConnected = joint.collideConnected;
+ bool collideConnected = joint.collideConnected;
 
-  // Remove from the doubly linked list.
-  if (joint._prev != null) joint._prev._next = joint._next;
+ // Remove from the doubly linked list.
+ if (joint._prev != null) joint._prev._next = joint._next;
 
-  if (joint._next != null) joint._next._prev = joint._prev;
+ if (joint._next != null) joint._next._prev = joint._prev;
 
-  if (joint == _jointList) _jointList = joint._next;
+ if (joint == _jointList) _jointList = joint._next;
 
-  // Disconnect from island graph.
-  Body bodyA = joint.bodyA;
-  Body bodyB = joint.bodyB;
+ // Disconnect from island graph.
+ Body bodyA = joint.bodyA;
+ Body bodyB = joint.bodyB;
 
-  // Wake up connected bodies.
-  bodyA.awake = true;
-  bodyB.awake = true;
+ // Wake up connected bodies.
+ bodyA.awake = true;
+ bodyB.awake = true;
 
-  // Remove from body 1.
-  if (joint.edgeA.prev != null) {
-    joint.edgeA.prev.next = joint.edgeA.next;
-  }
+ // Remove from body 1.
+ if (joint.edgeA.prev != null) {
+   joint.edgeA.prev.next = joint.edgeA.next;
+ }
 
-  if (joint.edgeA.next != null) {
-    joint.edgeA.next.prev = joint.edgeA.prev;
-  }
+ if (joint.edgeA.next != null) {
+   joint.edgeA.next.prev = joint.edgeA.prev;
+ }
 
-  if (joint.edgeA == bodyA.jointList) {
-    bodyA.jointList = joint.edgeA.next;
-  }
+ if (joint.edgeA == bodyA.jointList) {
+   bodyA.jointList = joint.edgeA.next;
+ }
 
-  joint.edgeA.prev = null;
-  joint.edgeA.next = null;
+ joint.edgeA.prev = null;
+ joint.edgeA.next = null;
 
-  // Remove from body 2
-  if (joint.edgeB.prev != null) {
-    joint.edgeB.prev.next = joint.edgeB.next;
-  }
+ // Remove from body 2
+ if (joint.edgeB.prev != null) {
+   joint.edgeB.prev.next = joint.edgeB.next;
+ }
 
-  if (joint.edgeB.next != null) {
-    joint.edgeB.next.prev = joint.edgeB.prev;
-  }
+ if (joint.edgeB.next != null) {
+   joint.edgeB.next.prev = joint.edgeB.prev;
+ }
 
-  if (joint.edgeB == bodyB.jointList) {
-    bodyB.jointList = joint.edgeB.next;
-  }
+ if (joint.edgeB == bodyB.jointList) {
+   bodyB.jointList = joint.edgeB.next;
+ }
 
-  joint.edgeB.prev = null;
-  joint.edgeB.next = null;
+ joint.edgeB.prev = null;
+ joint.edgeB.next = null;
 
-  Joint.destroy(joint);
+ Joint.destroy(joint);
 
-  assert (_jointCount &gt; 0);
-  --_jointCount;
+ assert (_jointCount &gt; 0);
+ --_jointCount;
 
-  // If the joint prevents collisions, then flag any contacts for filtering.
-  if (collideConnected == false) {
-    ContactEdge edge = bodyB.contactList;
-    while (edge != null) {
-      if (edge.other == bodyA) {
-        // Flag the contact for filtering at the next time step (where either
-        // body is awake).
-        edge.contact.flagForFiltering();
-      }
+ // If the joint prevents collisions, then flag any contacts for filtering.
+ if (collideConnected == false) {
+   ContactEdge edge = bodyB.contactList;
+   while (edge != null) {
+     if (edge.other == bodyA) {
+       // Flag the contact for filtering at the next time step (where either
+       // body is awake).
+       edge.contact.flagForFiltering();
+     }
 
-      edge = edge.next;
-    }
-  }
+     edge = edge.next;
+   }
+ }
 }
 </pre>
 </div>
@@ -1925,96 +1921,96 @@ void <strong>drawDebugData</strong>() <a class="anchor-link" href="#drawDebugDat
 <p>Call this to draw shapes and other debug draw data.</p>
 <pre class="source">
 void drawDebugData() {
-  if (_debugDraw == null) {
-    return;
-  }
+ if (_debugDraw == null) {
+   return;
+ }
 
-  final int drawFlags = _debugDraw.flags;
+ final int drawFlags = _debugDraw.flags;
 
-  if ((drawFlags &amp; DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
-    Transform xf = new Transform();
-    Color3 color = new Color3();
-    for (Body b = _bodyList; b != null; b = b.next) {
-      xf.setFrom(b.originTransform);
-      for (Fixture f = b.fixtureList; f != null; f = f.next) {
-        if (b.active == false) {
-          color.setFromRGBF(0.5, 0.5, 0.3);
-          drawShape(f, xf, color);
-        } else if (b.type == BodyType.STATIC) {
-          color.setFromRGBF(0.5, 0.9, 0.3);
-          drawShape(f, xf, color);
-        } else if (b.type == BodyType.KINEMATIC) {
-          color.setFromRGBF(0.5, 0.5, 0.9);
-          drawShape(f, xf, color);
-        } else if (b.awake == false) {
-          color.setFromRGBF(0.9, 0.9, 0.9);
-          drawShape(f, xf, color);
-        } else {
-          color.setFromRGBF(0.9, 0.7, 0.7);
-          drawShape(f, xf, color);
-        }
-      }
-    }
-  }
+ if ((drawFlags &amp; DebugDraw.e_shapeBit) == DebugDraw.e_shapeBit) {
+   Transform xf = new Transform();
+   Color3 color = new Color3();
+   for (Body b = _bodyList; b != null; b = b.next) {
+     xf.setFrom(b.originTransform);
+     for (Fixture f = b.fixtureList; f != null; f = f.next) {
+       if (b.active == false) {
+         color.setFromRGBF(0.5, 0.5, 0.3);
+         drawShape(f, xf, color);
+       } else if (b.type == BodyType.STATIC) {
+         color.setFromRGBF(0.5, 0.9, 0.3);
+         drawShape(f, xf, color);
+       } else if (b.type == BodyType.KINEMATIC) {
+         color.setFromRGBF(0.5, 0.5, 0.9);
+         drawShape(f, xf, color);
+       } else if (b.awake == false) {
+         color.setFromRGBF(0.9, 0.9, 0.9);
+         drawShape(f, xf, color);
+       } else {
+         color.setFromRGBF(0.9, 0.7, 0.7);
+         drawShape(f, xf, color);
+       }
+     }
+   }
+ }
 
-  if ((drawFlags &amp; DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
-    for (Joint j = _jointList; j != null; j = j._next)
-      drawJoint(j);
-  }
+ if ((drawFlags &amp; DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
+   for (Joint j = _jointList; j != null; j = j._next)
+     drawJoint(j);
+ }
 
-  if ((drawFlags &amp; DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
-    Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
-    for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-      Fixture fixtureA = c.fixtureA;
-      Fixture fixtureB = c.fixtureB;
+ if ((drawFlags &amp; DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
+   Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
+   for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+     Fixture fixtureA = c.fixtureA;
+     Fixture fixtureB = c.fixtureB;
 
-      cA.setFrom(fixtureA.box.center);
-      cB.setFrom(fixtureB.box.center);
+     cA.setFrom(fixtureA.box.center);
+     cB.setFrom(fixtureB.box.center);
 
-      _debugDraw.drawSegment(cA, cB, color);
-    }
-  }
+     _debugDraw.drawSegment(cA, cB, color);
+   }
+ }
 
-  if ((drawFlags &amp; DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
-    Color3 color = new Color3.fromRGBF(0.9, 0.3, 0.9);
+ if ((drawFlags &amp; DebugDraw.e_aabbBit) == DebugDraw.e_aabbBit) {
+   Color3 color = new Color3.fromRGBF(0.9, 0.3, 0.9);
 
-    for (Body b = _bodyList; b != null; b = b.next) {
-      if (!b.active) {
-        continue;
-      }
+   for (Body b = _bodyList; b != null; b = b.next) {
+     if (!b.active) {
+       continue;
+     }
 
-      for (Fixture f = b.fixtureList; f != null; f = f.next) {
-        AxisAlignedBox aabb = f.proxy.box;
+     for (Fixture f = b.fixtureList; f != null; f = f.next) {
+       AxisAlignedBox aabb = f.proxy.box;
 
-        List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
-        for (int i = 0; i &lt; vs.length; i++) {
-          vs[i] = new Vector();
-        }
+       List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
+       for (int i = 0; i &lt; vs.length; i++) {
+         vs[i] = new Vector();
+       }
 
-        vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
-        vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
-        vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
-        vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
+       vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
+       vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
+       vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
+       vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
-        if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
-          _debugDraw.drawPolygon(vs, 4, color);
-        } else {
-          _debugDraw.drawSolidPolygon(vs, 4, color);
-        }
-      }
-    }
-  }
+       if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
+         _debugDraw.drawPolygon(vs, 4, color);
+       } else {
+         _debugDraw.drawSolidPolygon(vs, 4, color);
+       }
+     }
+   }
+ }
 
-  if ((drawFlags &amp; DebugDraw.e_centerOfMassBit) ==
-      DebugDraw.e_centerOfMassBit) {
-    Transform xf = new Transform();
-    final Color3 color = new Color3.fromRGB(1, 0, 0);
-    for (Body b = _bodyList; b != null; b = b.next) {
-      xf.setFrom(b.originTransform);
-      xf.position.setFrom(b.worldCenter);
-      _debugDraw.drawTransform(xf, color);
-    }
-  }
+ if ((drawFlags &amp; DebugDraw.e_centerOfMassBit) ==
+     DebugDraw.e_centerOfMassBit) {
+   Transform xf = new Transform();
+   final Color3 color = new Color3.fromRGB(1, 0, 0);
+   for (Body b = _bodyList; b != null; b = b.next) {
+     xf.setFrom(b.originTransform);
+     xf.position.setFrom(b.worldCenter);
+     _debugDraw.drawTransform(xf, color);
+   }
+ }
 }
 </pre>
 </div>
@@ -2027,50 +2023,50 @@ void <strong>drawJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <
 <p>Draws a joint for debugging purposes.</p>
 <pre class="source">
 void drawJoint(Joint joint) {
-  Body bodyA = joint.bodyA;
-  Body bodyB = joint.bodyB;
-  Transform xf1 = bodyA.originTransform;
-  Transform xf2 = bodyB.originTransform;
-  Vector x1 = new Vector.copy(xf1.position);
-  Vector x2 = new Vector.copy(xf2.position);
-  Vector p1 = new Vector();
-  Vector p2 = new Vector();
-  joint.getAnchorA(p1);
-  joint.getAnchorB(p2);
+ Body bodyA = joint.bodyA;
+ Body bodyB = joint.bodyB;
+ Transform xf1 = bodyA.originTransform;
+ Transform xf2 = bodyB.originTransform;
+ Vector x1 = new Vector.copy(xf1.position);
+ Vector x2 = new Vector.copy(xf2.position);
+ Vector p1 = new Vector();
+ Vector p2 = new Vector();
+ joint.getAnchorA(p1);
+ joint.getAnchorB(p2);
 
-  // Set the drawing color.
-  Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
+ // Set the drawing color.
+ Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
 
-  switch (joint.type) {
-    case JointType.DISTANCE :
-      _debugDraw.drawSegment(p1, p2, color);
-      break;
+ switch (joint.type) {
+   case JointType.DISTANCE :
+     _debugDraw.drawSegment(p1, p2, color);
+     break;
 
-    case JointType.PULLEY :
-      throw new NotImplementedException();
-      //Vector s1 = pulley.getGroundAnchorA();
-      //Vector s2 = pulley.getGroundAnchorB();
-      //_debugDraw.drawSegment(s1, p1, color);
-      //_debugDraw.drawSegment(s2, p2, color);
-      //_debugDraw.drawSegment(s1, s2, color);
-      //break;
+   case JointType.PULLEY :
+     throw new NotImplementedException();
+     //Vector s1 = pulley.getGroundAnchorA();
+     //Vector s2 = pulley.getGroundAnchorB();
+     //_debugDraw.drawSegment(s1, p1, color);
+     //_debugDraw.drawSegment(s2, p2, color);
+     //_debugDraw.drawSegment(s1, s2, color);
+     //break;
 
-    case JointType.FRICTION:
-      _debugDraw.drawSegment(x1, x2, color);
-      break;
+   case JointType.FRICTION:
+     _debugDraw.drawSegment(x1, x2, color);
+     break;
 
-    case JointType.CONSTANT_VOLUME :
-      // Nothing to see here.
-    case JointType.MOUSE :
-      // Don't draw anything for mouse. Already have cursor!
-      break;
-    default :
-      Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
-      Vector p2t = new Vector.copy(p2);
-      _debugDraw.drawSegment(x1, p1, color);
-      _debugDraw.drawSegment(p1t, p2, color);
-      _debugDraw.drawSegment(x2, p2t, color);
-  }
+   case JointType.CONSTANT_VOLUME :
+     // Nothing to see here.
+   case JointType.MOUSE :
+     // Don't draw anything for mouse. Already have cursor!
+     break;
+   default :
+     Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
+     Vector p2t = new Vector.copy(p2);
+     _debugDraw.drawSegment(x1, p1, color);
+     _debugDraw.drawSegment(p1t, p2, color);
+     _debugDraw.drawSegment(x2, p2t, color);
+ }
 }
 </pre>
 </div>
@@ -2082,49 +2078,49 @@ void <strong>drawShape</strong>(<a href="../box2d/Fixture.html">Fixture</a> fixt
 <div class="doc">
 <pre class="source">
 void drawShape(Fixture fixture, Transform xf, Color3 color) {
-  switch (fixture.type) {
-    case ShapeType.CIRCLE:
-      final CircleShape circle = fixture.shape;
+ switch (fixture.type) {
+   case ShapeType.CIRCLE:
+     final CircleShape circle = fixture.shape;
 
-      // Vector center = Mul(xf, circle.p);
-      Transform.mulToOut(xf, circle.position, center);
-      num radius = circle.radius;
-      axis.setFrom(xf.rotation.col1);
+     // Vector center = Mul(xf, circle.p);
+     Transform.mulToOut(xf, circle.position, center);
+     num radius = circle.radius;
+     axis.setFrom(xf.rotation.col1);
 
-      if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
-        _debugDraw.drawCircle(center, radius, color, axis);
-      } else {
-        _debugDraw.drawSolidCircle(center, radius, color, axis);
-      }
-      break;
+     if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+       _debugDraw.drawCircle(center, radius, color, axis);
+     } else {
+       _debugDraw.drawSolidCircle(center, radius, color, axis);
+     }
+     break;
 
-    case ShapeType.POLYGON:
-      final PolygonShape poly = fixture.shape;
-      int vertexCount = poly.vertexCount;
-      assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-      List&lt;Vector&gt; vertices =
-          new List&lt;Vector&gt;(vertexCount);
-      for (int i = 0; i &lt; vertexCount; i++) {
-        vertices[i] = new Vector();
-      }
+   case ShapeType.POLYGON:
+     final PolygonShape poly = fixture.shape;
+     int vertexCount = poly.vertexCount;
+     assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
+     List&lt;Vector&gt; vertices =
+         new List&lt;Vector&gt;(vertexCount);
+     for (int i = 0; i &lt; vertexCount; i++) {
+       vertices[i] = new Vector();
+     }
 
-      for (int i = 0; i &lt; vertexCount; ++i) {
-        assert(poly.vertices[i] != null);
-        assert(vertices[i] != null);
-        Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
-      }
+     for (int i = 0; i &lt; vertexCount; ++i) {
+       assert(poly.vertices[i] != null);
+       assert(vertices[i] != null);
+       Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
+     }
 
-      if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
-        _debugDraw.drawPolygon(vertices, vertexCount, color);
-      } else {
-        if (vertexCount &gt; 2) {
-          _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-        } else {
-          _debugDraw.drawPolygon(vertices, vertexCount, color);
-        }
-      }
-      break;
-  }
+     if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+       _debugDraw.drawPolygon(vertices, vertexCount, color);
+     } else {
+       if (vertexCount &gt; 2) {
+         _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+       } else {
+         _debugDraw.drawPolygon(vertices, vertexCount, color);
+       }
+     }
+     break;
+ }
 }
 </pre>
 </div>
@@ -2136,30 +2132,30 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
 <div class="doc">
 <pre class="source">
 Contact popContact(Fixture fixtureA, Fixture fixtureB) {
-  int type1 = fixtureA.type;
-  int type2 = fixtureB.type;
+ int type1 = fixtureA.type;
+ int type2 = fixtureB.type;
 
-  ContactRegister reg = _contactStacks[type1][type2];
-  Queue&lt;Contact&gt; creator = reg.creator;
-  if (creator != null) {
+ ContactRegister reg = _contactStacks[type1][type2];
+ Queue&lt;Contact&gt; creator = reg.creator;
+ if (creator != null) {
 
-    // Ensure that the creator isn't depleted of contact stacks.
-    if (creator.isEmpty()) {
-      creator = _getFreshContactStack(type1, type2);
-    }
+   // Ensure that the creator isn't depleted of contact stacks.
+   if (creator.isEmpty) {
+     creator = _getFreshContactStack(type1, type2);
+   }
 
-    if (reg.primary) {
-      Contact c = creator.removeFirst();
-      c.init(fixtureA, fixtureB);
-      return c;
-    } else {
-      Contact c = creator.removeFirst();
-      c.init(fixtureB, fixtureA);
-      return c;
-    }
-  } else {
-    return null;
-  }
+   if (reg.primary) {
+     Contact c = creator.removeFirst();
+     c.init(fixtureA, fixtureB);
+     return c;
+   } else {
+     Contact c = creator.removeFirst();
+     c.init(fixtureB, fixtureA);
+     return c;
+   }
+ } else {
+   return null;
+ }
 }
 </pre>
 </div>
@@ -2171,16 +2167,16 @@ void <strong>pushContact</strong>(<a href="../box2d/Contact.html">Contact</a> co
 <div class="doc">
 <pre class="source">
 void pushContact(Contact contact) {
-  if (contact.manifold.pointCount &gt; 0) {
-    contact.fixtureA.body.awake = true;
-    contact.fixtureB.body.awake = true;
-  }
+ if (contact.manifold.pointCount &gt; 0) {
+   contact.fixtureA.body.awake = true;
+   contact.fixtureB.body.awake = true;
+ }
 
-  int type1 = contact.fixtureA.type;
-  int type2 = contact.fixtureB.type;
+ int type1 = contact.fixtureA.type;
+ int type2 = contact.fixtureB.type;
 
-  Queue&lt;Contact&gt; creator = _contactStacks[type1][type2].creator;
-  creator.addFirst(contact);
+ Queue&lt;Contact&gt; creator = _contactStacks[type1][type2].creator;
+ creator.addFirst(contact);
 }
 </pre>
 </div>
@@ -2198,9 +2194,9 @@ param aabb
   the query box.</p>
 <pre class="source">
 void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
-  wqwrapper.broadPhase = _contactManager.broadPhase;
-  wqwrapper.callback = callback;
-  _contactManager.broadPhase.query(wqwrapper, aabb);
+ wqwrapper.broadPhase = _contactManager.broadPhase;
+ wqwrapper.callback = callback;
+ _contactManager.broadPhase.query(wqwrapper, aabb);
 }
 </pre>
 </div>
@@ -2212,154 +2208,154 @@ void <strong>solve</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> timeSt
 <div class="doc">
 <pre class="source">
 void solve(TimeStep timeStep) {
-  // Size the  for the worst case.
-  island.init(_bodyCount, _contactManager.contactCount, _jointCount,
-      _contactManager.contactListener);
+ // Size the  for the worst case.
+ island.init(_bodyCount, _contactManager.contactCount, _jointCount,
+     _contactManager.contactListener);
 
-  // Clear all the island flags.
-  for (Body b = _bodyList; b != null; b = b.next) {
-    b.flags &amp;= ~Body.ISLAND_FLAG;
-  }
-  for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-    c.flags &amp;= ~Contact.ISLAND_FLAG;
-  }
-  for (Joint j = jointList; j != null; j = j._next) {
-    j.islandFlag = false;
-  }
+ // Clear all the island flags.
+ for (Body b = _bodyList; b != null; b = b.next) {
+   b.flags &amp;= ~Body.ISLAND_FLAG;
+ }
+ for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+   c.flags &amp;= ~Contact.ISLAND_FLAG;
+ }
+ for (Joint j = jointList; j != null; j = j._next) {
+   j.islandFlag = false;
+ }
 
-  // Build and simulate all awake islands.
-  int stackSize = _bodyCount;
-  if (stack.length &lt; stackSize) {
-    stack = new List&lt;Body&gt;(stackSize);
-  }
+ // Build and simulate all awake islands.
+ int stackSize = _bodyCount;
+ if (stack.length &lt; stackSize) {
+   stack = new List&lt;Body&gt;(stackSize);
+ }
 
-  for (Body seed = _bodyList; seed != null; seed = seed.next) {
-    if ((seed.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
-      continue;
-    }
+ for (Body seed = _bodyList; seed != null; seed = seed.next) {
+   if ((seed.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
+     continue;
+   }
 
-    if (seed.awake == false || seed.active == false) {
-      continue;
-    }
+   if (seed.awake == false || seed.active == false) {
+     continue;
+   }
 
-    // The seed can be dynamic or kinematic.
-    if (seed.type == BodyType.STATIC) {
-      continue;
-    }
+   // The seed can be dynamic or kinematic.
+   if (seed.type == BodyType.STATIC) {
+     continue;
+   }
 
-    // Reset island and stack.
-    island.clear();
-    int stackCount = 0;
-    stack[stackCount++] = seed;
-    seed.flags |= Body.ISLAND_FLAG;
+   // Reset island and stack.
+   island.clear();
+   int stackCount = 0;
+   stack[stackCount++] = seed;
+   seed.flags |= Body.ISLAND_FLAG;
 
-    // Perform a depth first search (DFS) on the constraint graph.
-    while (stackCount &gt; 0) {
-      // Grab the next body off the stack and add it to the island.
-      Body b = stack[--stackCount];
-      assert (b.active);
-      island.addBody(b);
+   // Perform a depth first search (DFS) on the constraint graph.
+   while (stackCount &gt; 0) {
+     // Grab the next body off the stack and add it to the island.
+     Body b = stack[--stackCount];
+     assert (b.active);
+     island.addBody(b);
 
-      // Make sure the body is awake.
-      b.awake = true;
+     // Make sure the body is awake.
+     b.awake = true;
 
-      // To keep islands as small as possible, we don't
-      // propagate islands across static bodies.
-      if (b.type == BodyType.STATIC) {
-        continue;
-      }
+     // To keep islands as small as possible, we don't
+     // propagate islands across static bodies.
+     if (b.type == BodyType.STATIC) {
+       continue;
+     }
 
-      // Search all contacts connected to this body.
-      for (ContactEdge ce = b.contactList; ce != null; ce = ce.next) {
-        Contact contact = ce.contact;
+     // Search all contacts connected to this body.
+     for (ContactEdge ce = b.contactList; ce != null; ce = ce.next) {
+       Contact contact = ce.contact;
 
-        // Has this contact already been added to an island?
-        if ((contact.flags &amp; Contact.ISLAND_FLAG) == Contact.ISLAND_FLAG) {
-          continue;
-        }
+       // Has this contact already been added to an island?
+       if ((contact.flags &amp; Contact.ISLAND_FLAG) == Contact.ISLAND_FLAG) {
+         continue;
+       }
 
-        // Is this contact solid and touching?
-        if (contact.enabled == false || contact.touching == false) {
-          continue;
-        }
+       // Is this contact solid and touching?
+       if (contact.enabled == false || contact.touching == false) {
+         continue;
+       }
 
-        // Skip sensors.
-        bool sensorA = contact.fixtureA.isSensor;
-        bool sensorB = contact.fixtureB.isSensor;
-        if (sensorA || sensorB) {
-          continue;
-        }
+       // Skip sensors.
+       bool sensorA = contact.fixtureA.isSensor;
+       bool sensorB = contact.fixtureB.isSensor;
+       if (sensorA || sensorB) {
+         continue;
+       }
 
-        island.addContact(contact);
-        contact.flags |= Contact.ISLAND_FLAG;
+       island.addContact(contact);
+       contact.flags |= Contact.ISLAND_FLAG;
 
-        Body other = ce.other;
+       Body other = ce.other;
 
-        // Was the other body already added to this island?
-        if ((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
-          continue;
-        }
+       // Was the other body already added to this island?
+       if ((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG) {
+         continue;
+       }
 
-        assert (stackCount &lt; stackSize);
-        stack[stackCount++] = other;
-        other.flags |= Body.ISLAND_FLAG;
-      }
+       assert (stackCount &lt; stackSize);
+       stack[stackCount++] = other;
+       other.flags |= Body.ISLAND_FLAG;
+     }
 
-      // Search all joints connect to this body.
-      for (JointEdge je = b.jointList; je != null; je = je.next) {
-        if (je.joint.islandFlag == true) {
-          continue;
-        }
+     // Search all joints connect to this body.
+     for (JointEdge je = b.jointList; je != null; je = je.next) {
+       if (je.joint.islandFlag == true) {
+         continue;
+       }
 
-        Body other = je.other;
+       Body other = je.other;
 
-        // Don't simulate joints connected to inactive bodies.
-        if (other.active == false) {
-          continue;
-        }
+       // Don't simulate joints connected to inactive bodies.
+       if (other.active == false) {
+         continue;
+       }
 
-        island.addJoint(je.joint);
-        je.joint.islandFlag = true;
+       island.addJoint(je.joint);
+       je.joint.islandFlag = true;
 
-        if (((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG)) {
-          continue;
-        }
+       if (((other.flags &amp; Body.ISLAND_FLAG) == Body.ISLAND_FLAG)) {
+         continue;
+       }
 
-        assert (stackCount &lt; stackSize);
-        stack[stackCount++] = other;
-        other.flags |= Body.ISLAND_FLAG;
-      }
-    }
+       assert (stackCount &lt; stackSize);
+       stack[stackCount++] = other;
+       other.flags |= Body.ISLAND_FLAG;
+     }
+   }
 
-    island.solve(timeStep, _gravity, _allowSleep);
+   island.solve(timeStep, _gravity, _allowSleep);
 
-    // Post solve cleanup.
-    for (int i = 0; i &lt; island.bodyCount; ++i) {
-      // Allow static bodies to participate in other islands.
-      Body b = island.bodies[i];
-      if (b.type == BodyType.STATIC) {
-        b.flags &amp;= ~Body.ISLAND_FLAG;
-      }
-    }
-  }
+   // Post solve cleanup.
+   for (int i = 0; i &lt; island.bodyCount; ++i) {
+     // Allow static bodies to participate in other islands.
+     Body b = island.bodies[i];
+     if (b.type == BodyType.STATIC) {
+       b.flags &amp;= ~Body.ISLAND_FLAG;
+     }
+   }
+ }
 
-  // Synchronize fixtures, check for out of range bodies.
-  for (Body b = _bodyList; b != null; b = b.next) {
-    // If a body was not in an island then it did not move.
-    if ((b.flags &amp; Body.ISLAND_FLAG) == 0) {
-      continue;
-    }
+ // Synchronize fixtures, check for out of range bodies.
+ for (Body b = _bodyList; b != null; b = b.next) {
+   // If a body was not in an island then it did not move.
+   if ((b.flags &amp; Body.ISLAND_FLAG) == 0) {
+     continue;
+   }
 
-    if (b.type == BodyType.STATIC) {
-      continue;
-    }
+   if (b.type == BodyType.STATIC) {
+     continue;
+   }
 
-    // Update fixtures (for broad-phase).
-    b.synchronizeFixtures();
-  }
+   // Update fixtures (for broad-phase).
+   b.synchronizeFixtures();
+ }
 
-  // Look for new contacts.
-  _contactManager.findNewContacts();
+ // Look for new contacts.
+ _contactManager.findNewContacts();
 }
 </pre>
 </div>
@@ -2371,58 +2367,58 @@ void <strong>solveTimeOfImpact</strong>() <a class="anchor-link" href="#solveTim
 <div class="doc">
 <pre class="source">
 void solveTimeOfImpact() {
-  // Prepare all contacts.
-  for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-    // Enable the contact
-    c.flags |= Contact.ENABLED_FLAG;
+ // Prepare all contacts.
+ for (Contact c = _contactManager.contactList; c != null; c = c.next) {
+   // Enable the contact
+   c.flags |= Contact.ENABLED_FLAG;
 
-    // Set the number of TimeOfImpact events for this contact to zero.
-    c.toiCount = 0;
-  }
+   // Set the number of TimeOfImpact events for this contact to zero.
+   c.toiCount = 0;
+ }
 
-  // Initialize the TimeOfImpact flag.
-  for (Body body = _bodyList; body != null; body = body.next) {
-    // Kinematic, and static bodies will not be affected by the TimeOfImpact
-    // event.  If a body was not in an island then it did not move.
-    if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
-        == BodyType.KINEMATIC
-        || body.type == BodyType.STATIC) {
-      body.flags |= Body.TO_I_FLAG;
-    }
-    else {
-      body.flags &amp;= ~Body.TO_I_FLAG;
-    }
-  }
+ // Initialize the TimeOfImpact flag.
+ for (Body body = _bodyList; body != null; body = body.next) {
+   // Kinematic, and static bodies will not be affected by the TimeOfImpact
+   // event.  If a body was not in an island then it did not move.
+   if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
+       == BodyType.KINEMATIC
+       || body.type == BodyType.STATIC) {
+     body.flags |= Body.TO_I_FLAG;
+   }
+   else {
+     body.flags &amp;= ~Body.TO_I_FLAG;
+   }
+ }
 
-  // Collide non-bullets.
-  for (Body body = _bodyList; body != null; body = body.next) {
-    if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-      continue;
-    }
+ // Collide non-bullets.
+ for (Body body = _bodyList; body != null; body = body.next) {
+   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
+     continue;
+   }
 
-    if (body.bullet == true) {
-      continue;
-    }
+   if (body.bullet == true) {
+     continue;
+   }
 
-    solveTimeOfImpactGivenBody(body);
+   solveTimeOfImpactGivenBody(body);
 
-    body.flags |= Body.TO_I_FLAG;
-  }
+   body.flags |= Body.TO_I_FLAG;
+ }
 
-  // Collide bullets.
-  for (Body body = _bodyList; body != null; body = body.next) {
-    if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-      continue;
-    }
+ // Collide bullets.
+ for (Body body = _bodyList; body != null; body = body.next) {
+   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
+     continue;
+   }
 
-    if (body.bullet == false) {
-      continue;
-    }
+   if (body.bullet == false) {
+     continue;
+   }
 
-    solveTimeOfImpactGivenBody(body);
+   solveTimeOfImpactGivenBody(body);
 
-    body.flags |= Body.TO_I_FLAG;
-  }
+   body.flags |= Body.TO_I_FLAG;
+ }
 }
 </pre>
 </div>
@@ -2434,176 +2430,176 @@ void <strong>solveTimeOfImpactGivenBody</strong>(<a href="../box2d/Body.html">Bo
 <div class="doc">
 <pre class="source">
 void solveTimeOfImpactGivenBody(Body body) {
-  // Find the minimum contact.
-  Contact toiContact = null;
-  num toi = 1.0;
-  Body toiOther = null;
-  bool found;
-  int count;
-  int iter = 0;
+ // Find the minimum contact.
+ Contact toiContact = null;
+ num toi = 1.0;
+ Body toiOther = null;
+ bool found;
+ int count;
+ int iter = 0;
 
-  bool bullet = body.bullet;
+ bool bullet = body.bullet;
 
-  // Iterate until all contacts agree on the minimum TimeOfImpact. We have
-  // to iterate because the TimeOfImpact algorithm may skip some intermediate
-  // collisions when objects rotate through each other.
-  do {
-    count = 0;
-    found = false;
-    for (ContactEdge ce = body.contactList; ce != null; ce = ce.next) {
-      if (ce.contact == toiContact) {
-        continue;
-      }
+ // Iterate until all contacts agree on the minimum TimeOfImpact. We have
+ // to iterate because the TimeOfImpact algorithm may skip some intermediate
+ // collisions when objects rotate through each other.
+ do {
+   count = 0;
+   found = false;
+   for (ContactEdge ce = body.contactList; ce != null; ce = ce.next) {
+     if (ce.contact == toiContact) {
+       continue;
+     }
 
-      Body other = ce.other;
-      int type = other.type;
+     Body other = ce.other;
+     int type = other.type;
 
-      // Only bullets perform TimeOfImpact with dynamic bodies.
-      if (bullet == true) {
-        // Bullets only perform TimeOfImpact with bodies that have their
-        // TimeOfImpact resolved.
-        if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
-          continue;
-        }
+     // Only bullets perform TimeOfImpact with dynamic bodies.
+     if (bullet == true) {
+       // Bullets only perform TimeOfImpact with bodies that have their
+       // TimeOfImpact resolved.
+       if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
+         continue;
+       }
 
-        // No repeated hits on non-static bodies
-        if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
-              Contact.BULLET_HIT_FLAG) != 0) {
-          continue;
-        }
-      } else if (type == BodyType.DYNAMIC) {
-        continue;
-      }
+       // No repeated hits on non-static bodies
+       if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
+             Contact.BULLET_HIT_FLAG) != 0) {
+         continue;
+       }
+     } else if (type == BodyType.DYNAMIC) {
+       continue;
+     }
 
-      // Check for a disabled contact.
-      Contact contact = ce.contact;
-      if (contact.enabled == false) {
-        continue;
-      }
+     // Check for a disabled contact.
+     Contact contact = ce.contact;
+     if (contact.enabled == false) {
+       continue;
+     }
 
-      // Prevent infinite looping.
-      if (contact.toiCount &gt; 10) {
-        continue;
-      }
+     // Prevent infinite looping.
+     if (contact.toiCount &gt; 10) {
+       continue;
+     }
 
-      Fixture fixtureA = contact.fixtureA;
-      Fixture fixtureB = contact.fixtureB;
+     Fixture fixtureA = contact.fixtureA;
+     Fixture fixtureB = contact.fixtureB;
 
-      // Cull sensors.
-      if (fixtureA.isSensor || fixtureB.isSensor) {
-        continue;
-      }
+     // Cull sensors.
+     if (fixtureA.isSensor || fixtureB.isSensor) {
+       continue;
+     }
 
-      Body bodyA = fixtureA.body;
-      Body bodyB = fixtureB.body;
+     Body bodyA = fixtureA.body;
+     Body bodyB = fixtureB.body;
 
-      // Compute the time of impact in interval [0, minTimeOfImpact]
-      toiInput.proxyA.setFromShape(fixtureA.shape);
-      toiInput.proxyB.setFromShape(fixtureB.shape);
-      toiInput.sweepA.setFrom(bodyA.sweep);
-      toiInput.sweepB.setFrom(bodyB.sweep);
-      toiInput.tMax = toi;
+     // Compute the time of impact in interval [0, minTimeOfImpact]
+     toiInput.proxyA.setFromShape(fixtureA.shape);
+     toiInput.proxyB.setFromShape(fixtureB.shape);
+     toiInput.sweepA.setFrom(bodyA.sweep);
+     toiInput.sweepB.setFrom(bodyB.sweep);
+     toiInput.tMax = toi;
 
-      _pool.timeOfImpact.timeOfImpact(toiOutput, toiInput);
+     _pool.timeOfImpact.timeOfImpact(toiOutput, toiInput);
 
-      if (toiOutput.state == TimeOfImpactOutputState.TOUCHING &amp;&amp;
-          toiOutput.t &lt; toi) {
-        toiContact = contact;
-        toi = toiOutput.t;
-        toiOther = other;
-        found = true;
-      }
+     if (toiOutput.state == TimeOfImpactOutputState.TOUCHING &amp;&amp;
+         toiOutput.t &lt; toi) {
+       toiContact = contact;
+       toi = toiOutput.t;
+       toiOther = other;
+       found = true;
+     }
 
-      ++count;
-    }
+     ++count;
+   }
 
-    ++iter;
-  } while (found &amp;&amp; count &gt; 1 &amp;&amp; iter &lt; 50);
+   ++iter;
+ } while (found &amp;&amp; count &gt; 1 &amp;&amp; iter &lt; 50);
 
-  if (toiContact == null) {
-    body.advance(1.0);
-    return;
-  }
+ if (toiContact == null) {
+   body.advance(1.0);
+   return;
+ }
 
-  backup.setFrom(body.sweep);
-  body.advance(toi);
-  toiContact.update(_contactManager.contactListener);
-  if (toiContact.enabled == false) {
-    // Contact disabled. Backup and recurse.
-    body.sweep.setFrom(backup);
-    solveTimeOfImpactGivenBody(body);
-  }
+ backup.setFrom(body.sweep);
+ body.advance(toi);
+ toiContact.update(_contactManager.contactListener);
+ if (toiContact.enabled == false) {
+   // Contact disabled. Backup and recurse.
+   body.sweep.setFrom(backup);
+   solveTimeOfImpactGivenBody(body);
+ }
 
-  ++toiContact.toiCount;
+ ++toiContact.toiCount;
 
-  // Update all the valid contacts on this body and build a contact island.
-  if (contacts == null || contacts.length &lt;
-      Settings.MAX_TIME_OF_IMPACT_CONTACTS){
-    contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
-  }
+ // Update all the valid contacts on this body and build a contact island.
+ if (contacts == null || contacts.length &lt;
+     Settings.MAX_TIME_OF_IMPACT_CONTACTS){
+   contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+ }
 
-  count = 0;
-  for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
-      &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
-    Body other = ce.other;
-    int type = other.type;
+ count = 0;
+ for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
+     &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
+   Body other = ce.other;
+   int type = other.type;
 
-    // Only perform correction with static bodies, so the
-    // body won't get pushed out of the world.
-    if (type == BodyType.DYNAMIC) {
-      continue;
-    }
+   // Only perform correction with static bodies, so the
+   // body won't get pushed out of the world.
+   if (type == BodyType.DYNAMIC) {
+     continue;
+   }
 
-    // Check for a disabled contact.
-    Contact contact = ce.contact;
-    if (contact.enabled == false) {
-      continue;
-    }
+   // Check for a disabled contact.
+   Contact contact = ce.contact;
+   if (contact.enabled == false) {
+     continue;
+   }
 
-    Fixture fixtureA = contact.fixtureA;
-    Fixture fixtureB = contact.fixtureB;
+   Fixture fixtureA = contact.fixtureA;
+   Fixture fixtureB = contact.fixtureB;
 
-    // Cull sensors.
-    if (fixtureA.isSensor || fixtureB.isSensor) {
-      continue;
-    }
+   // Cull sensors.
+   if (fixtureA.isSensor || fixtureB.isSensor) {
+     continue;
+   }
 
-    // The contact likely has some new contact points. The listener
-    // gives the user a chance to disable the contact.
-    if (contact != toiContact) {
-      contact.update(_contactManager.contactListener);
-    }
+   // The contact likely has some new contact points. The listener
+   // gives the user a chance to disable the contact.
+   if (contact != toiContact) {
+     contact.update(_contactManager.contactListener);
+   }
 
-    // Did the user disable the contact?
-    if (contact.enabled == false) {
-      // Skip this contact.
-      continue;
-    }
+   // Did the user disable the contact?
+   if (contact.enabled == false) {
+     // Skip this contact.
+     continue;
+   }
 
-    if (contact.touching == false) {
-      continue;
-    }
+   if (contact.touching == false) {
+     continue;
+   }
 
-    contacts[count] = contact;
-    ++count;
-  }
+   contacts[count] = contact;
+   ++count;
+ }
 
-  // Reduce the TimeOfImpact body's overlap with the contact island.
-  toiSolver.initialize(contacts, count, body);
+ // Reduce the TimeOfImpact body's overlap with the contact island.
+ toiSolver.initialize(contacts, count, body);
 
-  num k_toiBaumgarte = 0.75;
-  // bool solved = false;
-  for (int i = 0; i &lt; 20; ++i) {
-    bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
-    if (contactsOkay) {
-      // solved = true;
-      break;
-    }
-  }
+ num k_toiBaumgarte = 0.75;
+ // bool solved = false;
+ for (int i = 0; i &lt; 20; ++i) {
+   bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
+   if (contactsOkay) {
+     // solved = true;
+     break;
+   }
+ }
 
-  if (toiOther.type != BodyType.STATIC) {
-    toiContact.flags |= Contact.BULLET_HIT_FLAG;
-  }
+ if (toiOther.type != BodyType.STATIC) {
+   toiContact.flags |= Contact.BULLET_HIT_FLAG;
+ }
 }
 </pre>
 </div>
@@ -2624,49 +2620,49 @@ param positionIterations
 <pre class="source">
 void step(num dt, int velocityIterations, int positionIterations) {
 
-  // If new fixtures were added, we need to find the new contacts.
-  if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
-    _contactManager.findNewContacts();
-    _flags &amp;= ~NEW_FIXTURE;
-  }
+ // If new fixtures were added, we need to find the new contacts.
+ if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
+   _contactManager.findNewContacts();
+   _flags &amp;= ~NEW_FIXTURE;
+ }
 
-  _flags |= LOCKED;
+ _flags |= LOCKED;
 
-  timestep.dt = dt;
-  timestep.velocityIterations = velocityIterations;
-  timestep.positionIterations = positionIterations;
-  if (dt &gt; 0.0) {
-    timestep.inv_dt = 1.0 / dt;
-  } else {
-    timestep.inv_dt = 0.0;
-  }
+ timestep.dt = dt;
+ timestep.velocityIterations = velocityIterations;
+ timestep.positionIterations = positionIterations;
+ if (dt &gt; 0.0) {
+   timestep.inv_dt = 1.0 / dt;
+ } else {
+   timestep.inv_dt = 0.0;
+ }
 
-  timestep.dtRatio = _inverseTimestep * dt;
-  timestep.warmStarting = _warmStarting;
+ timestep.dtRatio = _inverseTimestep * dt;
+ timestep.warmStarting = _warmStarting;
 
-  // Update contacts. This is where some contacts are destroyed.
-  _contactManager.collide();
+ // Update contacts. This is where some contacts are destroyed.
+ _contactManager.collide();
 
-  // Integrate velocities, solve velocity constraints, and integrate
-  // positions.
-  if (timestep.dt &gt; 0.0) {
-    solve(timestep);
-  }
+ // Integrate velocities, solve velocity constraints, and integrate
+ // positions.
+ if (timestep.dt &gt; 0.0) {
+   solve(timestep);
+ }
 
-  // Handle TimeOfImpact events.
-  if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
-    solveTimeOfImpact();
-  }
+ // Handle TimeOfImpact events.
+ if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
+   solveTimeOfImpact();
+ }
 
-  if (timestep.dt &gt; 0.0) {
-    _inverseTimestep = timestep.inv_dt;
-  }
+ if (timestep.dt &gt; 0.0) {
+   _inverseTimestep = timestep.inv_dt;
+ }
 
-  if ((_flags &amp; CLEAR_FORCES) == CLEAR_FORCES) {
-    clearForces();
-  }
+ if ((_flags &amp; CLEAR_FORCES) == CLEAR_FORCES) {
+   clearForces();
+ }
 
-  _flags &amp;= ~LOCKED;
+ _flags &amp;= ~LOCKED;
 }
 </pre>
 </div>

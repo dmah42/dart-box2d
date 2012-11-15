@@ -34,46 +34,46 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraintPoint {
-  final Vector localPoint;
-  //TODO(gregbglw): Find out what rA and rB mean and change the names.
-  final Vector rA;
-  final Vector rB;
+ final Vector localPoint;
+ //TODO(gregbglw): Find out what rA and rB mean and change the names.
+ final Vector rA;
+ final Vector rB;
 
-  num normalImpulse;
-  num tangentImpulse;
-  num normalMass;
-  num tangentMass;
-  num velocityBias;
+ num normalImpulse;
+ num tangentImpulse;
+ num normalMass;
+ num tangentMass;
+ num velocityBias;
 
-  /** Constructs a new ContactConstraintPoint. */
-  ContactConstraintPoint()
-    : localPoint = new Vector(),
-    rA = new Vector(),
-    rB = new Vector(),
-    normalImpulse = 0,
-    tangentImpulse = 0,
-    normalMass = 0,
-    tangentMass = 0,
-    velocityBias = 0 {}
+ /** Constructs a new ContactConstraintPoint. */
+ ContactConstraintPoint()
+   : localPoint = new Vector(),
+   rA = new Vector(),
+   rB = new Vector(),
+   normalImpulse = 0,
+   tangentImpulse = 0,
+   normalMass = 0,
+   tangentMass = 0,
+   velocityBias = 0 {}
 
-  /** Sets this point equal to the given point. */
-  void setFrom(ContactConstraintPoint cp) {
-    localPoint.setFrom(cp.localPoint);
-    rA.setFrom(cp.rA);
-    rB.setFrom(cp.rB);
-    normalImpulse = cp.normalImpulse;
-    tangentImpulse = cp.tangentImpulse;
-    normalMass = cp.normalMass;
-    tangentMass = cp.tangentMass;
-    velocityBias = cp.velocityBias;
-  }
+ /** Sets this point equal to the given point. */
+ void setFrom(ContactConstraintPoint cp) {
+   localPoint.setFrom(cp.localPoint);
+   rA.setFrom(cp.rA);
+   rB.setFrom(cp.rB);
+   normalImpulse = cp.normalImpulse;
+   tangentImpulse = cp.tangentImpulse;
+   normalMass = cp.normalMass;
+   tangentMass = cp.tangentMass;
+   velocityBias = cp.velocityBias;
+ }
 
-  String toString() {
-    return "normal impulse: $normalImpulse, tangentImpulse: $tangentImpulse"
-        ", normalMass: $normalMass, tangentMass: $tangentMass"
-        ", velocityBias: $velocityBias, localPoint: $localPoint"
-        ", rA: $rA, rB: $rB";
-  }
+ String toString() {
+   return "normal impulse: $normalImpulse, tangentImpulse: $tangentImpulse"
+       ", normalMass: $normalMass, tangentMass: $tangentMass"
+       ", velocityBias: $velocityBias, localPoint: $localPoint"
+       ", rA: $rA, rB: $rB";
+ }
 }
 </pre>
 </div>
@@ -87,14 +87,14 @@ new <strong>ContactConstraintPoint</strong>() <a class="anchor-link" href="#Cont
 <p>Constructs a new ContactConstraintPoint.</p>
 <pre class="source">
 ContactConstraintPoint()
-  : localPoint = new Vector(),
-  rA = new Vector(),
-  rB = new Vector(),
-  normalImpulse = 0,
-  tangentImpulse = 0,
-  normalMass = 0,
-  tangentMass = 0,
-  velocityBias = 0 {}
+ : localPoint = new Vector(),
+ rA = new Vector(),
+ rB = new Vector(),
+ normalImpulse = 0,
+ tangentImpulse = 0,
+ normalMass = 0,
+ tangentMass = 0,
+ velocityBias = 0 {}
 </pre>
 </div>
 </div>
@@ -208,14 +208,14 @@ void <strong>setFrom</strong>(<a href="../box2d/ContactConstraintPoint.html">Con
 <p>Sets this point equal to the given point.</p>
 <pre class="source">
 void setFrom(ContactConstraintPoint cp) {
-  localPoint.setFrom(cp.localPoint);
-  rA.setFrom(cp.rA);
-  rB.setFrom(cp.rB);
-  normalImpulse = cp.normalImpulse;
-  tangentImpulse = cp.tangentImpulse;
-  normalMass = cp.normalMass;
-  tangentMass = cp.tangentMass;
-  velocityBias = cp.velocityBias;
+ localPoint.setFrom(cp.localPoint);
+ rA.setFrom(cp.rA);
+ rB.setFrom(cp.rB);
+ normalImpulse = cp.normalImpulse;
+ tangentImpulse = cp.tangentImpulse;
+ normalMass = cp.normalMass;
+ tangentMass = cp.tangentMass;
+ velocityBias = cp.velocityBias;
 }
 </pre>
 </div>
@@ -230,10 +230,10 @@ String <strong>toString</strong>() <a class="anchor-link" href="#toString"
 <div class="docs-inherited-from">docs inherited from Object </div></div>
 <pre class="source">
 String toString() {
-  return "normal impulse: $normalImpulse, tangentImpulse: $tangentImpulse"
-      ", normalMass: $normalMass, tangentMass: $tangentMass"
-      ", velocityBias: $velocityBias, localPoint: $localPoint"
-      ", rA: $rA, rB: $rB";
+ return "normal impulse: $normalImpulse, tangentImpulse: $tangentImpulse"
+     ", normalMass: $normalMass, tangentMass: $tangentMass"
+     ", velocityBias: $velocityBias, localPoint: $localPoint"
+     ", rA: $rA, rB: $rB";
 }
 </pre>
 </div>

@@ -2,19 +2,19 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>CanvasDraw class / box2d_html Library / Dart Documentation</title>
+        <title>CanvasDraw class / box2d_browser Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
-        <body data-library="box2d_html" data-type="CanvasDraw">
+        <body data-library="box2d_browser" data-type="CanvasDraw">
         <div class="page">
         <div class="header">
           <a href="../index.html"><div class="logo"></div></a>
           <a href="../index.html">Dart Documentation</a>
-         &rsaquo; <a href="../box2d_html.html">box2d_html</a> &rsaquo; <a href="../box2d_html/CanvasDraw.html">CanvasDraw</a>        <div id="search-box">
+         &rsaquo; <a href="../box2d_browser.html">box2d_browser</a> &rsaquo; <a href="../box2d_browser/CanvasDraw.html">CanvasDraw</a>        <div id="search-box">
           <input type="search" name="q" id="q" autocomplete="off"
               class="search-input" placeholder="Search API">
         </div>
@@ -32,122 +32,119 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Draws using the given canvas context for debugging purposes.
-WARNING: This implementation modifies its arguments (e.g. Vectors) to save
-garbage.</p>
 <pre class="source">
 class CanvasDraw extends DebugDraw {
-  /** The canvas rendering context with which to draw. */
-  CanvasRenderingContext2D ctx;
+ /** The canvas rendering context with which to draw. */
+ CanvasRenderingContext2D ctx;
 
-  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
-    assert (null !== viewport &amp;&amp; null !== ctx);
-  }
+ CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
+   assert (null !== viewport &amp;&amp; null !== ctx);
+ }
 
-  /**
-   * Draw a closed polygon provided in CCW order. WARNING: This mutates
-   * [vertices].
-   */
-  void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-    _pathPolygon(vertices, vertexCount, color);
-    ctx.stroke();
-  }
+ /**
+  * Draw a closed polygon provided in CCW order. WARNING: This mutates
+  * [vertices].
+  */
+ void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
+   _pathPolygon(vertices, vertexCount, color);
+   ctx.stroke();
+ }
 
-  /**
-   * Draw a solid closed polygon provided in CCW order. WARNING: This mutates
-   * [vertices].
-   */
-  void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-    _pathPolygon(vertices, vertexCount, color);
-    ctx.fill();
-  }
+ /**
+  * Draw a solid closed polygon provided in CCW order. WARNING: This mutates
+  * [vertices].
+  */
+ void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
+   _pathPolygon(vertices, vertexCount, color);
+   ctx.fill();
+ }
 
-  void _pathPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-    // Set the color and convert to screen coordinates.
-    _color = color;
-    // TODO(gregbglw): Do a single ctx transform rather than convert all of
-    // these vectors.
-    for (int i = 0; i &lt; vertexCount; ++i)
-      getWorldToScreenToOut(vertices[i], vertices[i]);
+ void _pathPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
+   // Set the color and convert to screen coordinates.
+   _color = color;
+   // TODO(gregbglw): Do a single ctx transform rather than convert all of
+   // these vectors.
+   for (int i = 0; i &lt; vertexCount; ++i)
+     getWorldToScreenToOut(vertices[i], vertices[i]);
 
-    ctx.beginPath();
-    ctx.moveTo(vertices[0].x, vertices[0].y);
+   ctx.beginPath();
+   ctx.moveTo(vertices[0].x, vertices[0].y);
 
-    // Draw lines to all of the remaining points.
-    for (int i = 1; i &lt; vertexCount; ++i)
-      ctx.lineTo(vertices[i].x, vertices[i].y);
+   // Draw lines to all of the remaining points.
+   for (int i = 1; i &lt; vertexCount; ++i)
+     ctx.lineTo(vertices[i].x, vertices[i].y);
 
-    // Draw a line back to the starting point.
-    ctx.lineTo(vertices[0].x, vertices[0].y);
+   // Draw a line back to the starting point.
+   ctx.lineTo(vertices[0].x, vertices[0].y);
 
-    // Close the drawn polygon ready for fill/stroke
-    ctx.closePath();
-  }
+   // Close the drawn polygon ready for fill/stroke
+   ctx.closePath();
+ }
 
-  /** Draw a line segment. WARNING: This mutates [p1] and [p2]. */
-  void drawSegment(Vector p1, Vector p2, Color3 color) {
-    _color = color;
-    getWorldToScreenToOut(p1, p1);
-    getWorldToScreenToOut(p2, p2);
+ /** Draw a line segment. WARNING: This mutates [p1] and [p2]. */
+ void drawSegment(Vector p1, Vector p2, Color3 color) {
+   _color = color;
+   getWorldToScreenToOut(p1, p1);
+   getWorldToScreenToOut(p2, p2);
 
-    ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.closePath();
-    ctx.stroke();
-  }
+   ctx.beginPath();
+   ctx.moveTo(p1.x, p1.y);
+   ctx.lineTo(p2.x, p2.y);
+   ctx.closePath();
+   ctx.stroke();
+ }
 
-  /** Draw a circle. WARNING: This mutates [center]. */
-  void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
-    radius *= viewportTransform.scale;
-    _pathCircle(center, radius, color);
-    ctx.stroke();
-  }
+ /** Draw a circle. WARNING: This mutates [center]. */
+ void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
+   radius *= viewportTransform.scale;
+   _pathCircle(center, radius, color);
+   ctx.stroke();
+ }
 
-  /** Draw a solid circle. WARNING: This mutates [center]. */
-  void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
-    radius *= viewportTransform.scale;
-    drawPoint(center, radius, color);
-  }
+ /** Draw a solid circle. WARNING: This mutates [center]. */
+ void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
+   radius *= viewportTransform.scale;
+   drawPoint(center, radius, color);
+ }
 
-  /**
-   * Draws the given point with the given *unscaled* radius, in the given color.
-   * WARNING: This mutates [center].
-   */
-  void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
-    _pathCircle(point, radiusOnScreen, color);
-    ctx.fill();
-  }
+ /**
+  * Draws the given point with the given *unscaled* radius, in the given color.
+  * WARNING: This mutates [center].
+  */
+ void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
+   _pathCircle(point, radiusOnScreen, color);
+   ctx.fill();
+ }
 
-  void _pathCircle(Vector center, num radius, Color3 color) {
-    _color = color;
-    getWorldToScreenToOut(center, center);
+ void _pathCircle(Vector center, num radius, Color3 color) {
+   _color = color;
+   getWorldToScreenToOut(center, center);
 
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, radius, 0, MathBox.TWO_PI, true);
-    ctx.closePath();
-  }
+   ctx.beginPath();
+   ctx.arc(center.x, center.y, radius, 0, MathBox.TWO_PI, true);
+   ctx.closePath();
+ }
 
-  /**
-   * Draw a transform. Choose your own length scale. WARNING: This mutates
-   * [xf.position].
-   */
-  void drawTransform(Transform xf, Color3 color) {
-    drawCircle(xf.position, 0.1, color);
-    // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
-  }
+ /**
+  * Draw a transform. Choose your own length scale. WARNING: This mutates
+  * [xf.position].
+  */
+ void drawTransform(Transform xf, Color3 color) {
+   drawCircle(xf.position, 0.1, color);
+   // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
+ }
 
-  /** Draw a string. */
-  void drawString(num x, num y, String s, Color3 color) {
-    _color = color;
-    ctx.strokeText(s, x, y);
-  }
+ /** Draw a string. */
+ void drawString(num x, num y, String s, Color3 color) {
+   _color = color;
+   ctx.strokeText(s, x, y);
+ }
 
-  /** Sets the rendering context stroke and fill color to [color]. */
-  void set _color(Color3 color) {
-    ctx.setStrokeColorRgb(color.x, color.y, color.z, 0.9);
-    ctx.setFillColorRgb(color.x, color.y, color.z, 0.8);
-  }
+ /** Sets the rendering context stroke and fill color to [color]. */
+ void set _color(Color3 color) {
+   ctx.setStrokeColorRgb(color.x, color.y, color.z, 0.9);
+   ctx.setFillColorRgb(color.x, color.y, color.z, 0.8);
+ }
 }
 </pre>
 </div>
@@ -163,7 +160,7 @@ new <strong>CanvasDraw</strong>(<a href="../box2d/IViewportTransform.html">IView
 <div class="doc">
 <pre class="source">
 CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
-  assert (null !== viewport &amp;&amp; null !== ctx);
+ assert (null !== viewport &amp;&amp; null !== ctx);
 }
 </pre>
 </div>
@@ -240,9 +237,9 @@ void <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> cente
 <span class="param">center</span>.</p>
 <pre class="source">
 void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
-  radius *= viewportTransform.scale;
-  _pathCircle(center, radius, color);
-  ctx.stroke();
+ radius *= viewportTransform.scale;
+ _pathCircle(center, radius, color);
+ ctx.stroke();
 }
 </pre>
 </div>
@@ -256,8 +253,8 @@ void <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point,
 WARNING: This mutates <code>center</code>.</p>
 <pre class="source">
 void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
-  _pathCircle(point, radiusOnScreen, color);
-  ctx.fill();
+ _pathCircle(point, radiusOnScreen, color);
+ ctx.fill();
 }
 </pre>
 </div>
@@ -272,8 +269,8 @@ void <strong>drawPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector<
 <span class="param">vertices</span>.</p>
 <pre class="source">
 void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-  _pathPolygon(vertices, vertexCount, color);
-  ctx.stroke();
+ _pathPolygon(vertices, vertexCount, color);
+ ctx.stroke();
 }
 </pre>
 </div>
@@ -288,15 +285,15 @@ void <strong>drawSegment</strong>(<a href="../box2d/Vector.html">Vector</a> p1, 
 <span class="param">p2</span>.</p>
 <pre class="source">
 void drawSegment(Vector p1, Vector p2, Color3 color) {
-  _color = color;
-  getWorldToScreenToOut(p1, p1);
-  getWorldToScreenToOut(p2, p2);
+ _color = color;
+ getWorldToScreenToOut(p1, p1);
+ getWorldToScreenToOut(p2, p2);
 
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.closePath();
-  ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(p1.x, p1.y);
+ ctx.lineTo(p2.x, p2.y);
+ ctx.closePath();
+ ctx.stroke();
 }
 </pre>
 </div>
@@ -310,8 +307,8 @@ void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> 
 <span class="param">center</span>.</p>
 <pre class="source">
 void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
-  radius *= viewportTransform.scale;
-  drawPoint(center, radius, color);
+ radius *= viewportTransform.scale;
+ drawPoint(center, radius, color);
 }
 </pre>
 </div>
@@ -326,8 +323,8 @@ void <strong>drawSolidPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Ve
 <span class="param">vertices</span>.</p>
 <pre class="source">
 void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
-  _pathPolygon(vertices, vertexCount, color);
-  ctx.fill();
+ _pathPolygon(vertices, vertexCount, color);
+ ctx.fill();
 }
 </pre>
 </div>
@@ -340,8 +337,8 @@ void <strong>drawString</strong>(num x, num y, String s, <a href="../box2d/Color
 <p>Draw a string.</p>
 <pre class="source">
 void drawString(num x, num y, String s, Color3 color) {
-  _color = color;
-  ctx.strokeText(s, x, y);
+ _color = color;
+ ctx.strokeText(s, x, y);
 }
 </pre>
 </div>
@@ -355,8 +352,8 @@ void <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform<
 <code>xf.position</code>.</p>
 <pre class="source">
 void drawTransform(Transform xf, Color3 color) {
-  drawCircle(xf.position, 0.1, color);
-  // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
+ drawCircle(xf.position, 0.1, color);
+ // TODO(rupertk): Draw rotation representation (drawCircle axis parameter?)
 }
 </pre>
 </div>
@@ -370,7 +367,7 @@ void <strong>getScreenToWorldToOut</strong>(<a href="../box2d/Vector.html">Vecto
 converted to World coordinates and placed in the argWorld return vector.</p>
 <pre class="source">
 void getScreenToWorldToOut(Vector argScreen, Vector argWorld) {
-  viewportTransform.getScreenToWorld(argScreen, argWorld);
+ viewportTransform.getScreenToWorld(argScreen, argWorld);
 }
 </pre>
 </div>
@@ -384,7 +381,7 @@ void <strong>getWorldToScreenToOut</strong>(<a href="../box2d/Vector.html">Vecto
 converted to screen coordinates and placed in the argScreen return vector.</p>
 <pre class="source">
 void getWorldToScreenToOut(Vector argWorld, Vector argScreen) {
-  viewportTransform.getWorldToScreen(argWorld, argScreen);
+ viewportTransform.getWorldToScreen(argWorld, argScreen);
 }
 </pre>
 </div>
@@ -398,7 +395,7 @@ void <strong>setCamera</strong>(num x, num y, num scale) <a class="anchor-link" 
 viewport scale to the given scale.</p>
 <pre class="source">
 void setCamera(num x, num y, num scale) {
-  viewportTransform.setCamera(x,y,scale);
+ viewportTransform.setCamera(x,y,scale);
 }
 </pre>
 </div>

@@ -32,69 +32,68 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>The features that intersect to form the contact point</p>
 <pre class="source">
 class Features {
-  /** The edge that defines the outward contact normal. */
-  int referenceEdge;
+ /** The edge that defines the outward contact normal. */
+ int referenceEdge;
 
-  /** The edge most anti-parallel to the reference edge. */
-  int incidentEdge;
+ /** The edge most anti-parallel to the reference edge. */
+ int incidentEdge;
 
-  /** The vertex (0 or 1) on the incident edge that was clipped. */
-  int incidentVertex;
+ /** The vertex (0 or 1) on the incident edge that was clipped. */
+ int incidentVertex;
 
-  /** A value of 1 indicates that the reference edge is on shape2. */
-  int flip;
+ /** A value of 1 indicates that the reference edge is on shape2. */
+ int flip;
 
-  /**
-   * Constructs a new features with zero values for all fields.
-   */
-  Features() :
-    referenceEdge = 0,
-    incidentEdge = 0,
-    incidentVertex = 0,
-    flip = 0 { }
+ /**
+  * Constructs a new features with zero values for all fields.
+  */
+ Features() :
+   referenceEdge = 0,
+   incidentEdge = 0,
+   incidentVertex = 0,
+   flip = 0 { }
 
-  // Constructs a new Features that is a copy of the given features.
-  Features.copy(Features f) :
-    referenceEdge = f.referenceEdge,
-    incidentEdge = f.incidentEdge,
-    incidentVertex = f.incidentVertex,
-    flip = f.flip { }
+ // Constructs a new Features that is a copy of the given features.
+ Features.copy(Features f) :
+   referenceEdge = f.referenceEdge,
+   incidentEdge = f.incidentEdge,
+   incidentVertex = f.incidentVertex,
+   flip = f.flip { }
 
-  // Set this feature to be a copy of the given feature.
-  void setFrom(Features f) {
-    referenceEdge = f.referenceEdge;
-    incidentEdge = f.incidentEdge;
-    incidentVertex = f.incidentVertex;
-    flip = f.flip;
-  }
+ // Set this feature to be a copy of the given feature.
+ void setFrom(Features f) {
+   referenceEdge = f.referenceEdge;
+   incidentEdge = f.incidentEdge;
+   incidentVertex = f.incidentVertex;
+   flip = f.flip;
+ }
 
-  /**
-   * Returns true if this Features object is equal to the given object.
-   */
-  bool operator ==(other) =&gt;
-    referenceEdge == other.referenceEdge &amp;&amp;
-    incidentEdge == other.incidentEdge &amp;&amp;
-    incidentVertex == other.incidentVertex &amp;&amp; flip == other.flip;
+ /**
+  * Returns true if this Features object is equal to the given object.
+  */
+ bool operator ==(other) =&gt;
+   referenceEdge == other.referenceEdge &amp;&amp;
+   incidentEdge == other.incidentEdge &amp;&amp;
+   incidentVertex == other.incidentVertex &amp;&amp; flip == other.flip;
 
-  /**
-   * Returns a String representation of this Features.
-   */
-  String toString() {
-    return "Features: ($flip, $incidentEdge, $incidentVertex $referenceEdge)";
-  }
+ /**
+  * Returns a String representation of this Features.
+  */
+ String toString() {
+   return "Features: ($flip, $incidentEdge, $incidentVertex $referenceEdge)";
+ }
 
-  /**
-   * Sets all features to 0.
-   */
-  zero() {
-    referenceEdge = 0;
-    incidentEdge = 0;
-    incidentVertex = 0;
-    flip = 0;
-  }
+ /**
+  * Sets all features to 0.
+  */
+ zero() {
+   referenceEdge = 0;
+   incidentEdge = 0;
+   incidentVertex = 0;
+   flip = 0;
+ }
 }
 </pre>
 </div>
@@ -108,10 +107,10 @@ new <strong>Features</strong>() <a class="anchor-link" href="#Features"
 <p>Constructs a new features with zero values for all fields.</p>
 <pre class="source">
 Features() :
-  referenceEdge = 0,
-  incidentEdge = 0,
-  incidentVertex = 0,
-  flip = 0 { }
+ referenceEdge = 0,
+ incidentEdge = 0,
+ incidentVertex = 0,
+ flip = 0 { }
 </pre>
 </div>
 </div>
@@ -122,10 +121,10 @@ new <strong>Features.copy</strong>(<a href="../box2d/Features.html">Features</a>
 <div class="doc">
 <pre class="source">
 Features.copy(Features f) :
-  referenceEdge = f.referenceEdge,
-  incidentEdge = f.incidentEdge,
-  incidentVertex = f.incidentVertex,
-  flip = f.flip { }
+ referenceEdge = f.referenceEdge,
+ incidentEdge = f.incidentEdge,
+ incidentVertex = f.incidentVertex,
+ flip = f.flip { }
 </pre>
 </div>
 </div>
@@ -195,9 +194,9 @@ bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
 <p>Returns true if this Features object is equal to the given object.</p>
 <pre class="source">
 bool operator ==(other) =&gt;
-  referenceEdge == other.referenceEdge &amp;&amp;
-  incidentEdge == other.incidentEdge &amp;&amp;
-  incidentVertex == other.incidentVertex &amp;&amp; flip == other.flip;
+ referenceEdge == other.referenceEdge &amp;&amp;
+ incidentEdge == other.incidentEdge &amp;&amp;
+ incidentVertex == other.incidentVertex &amp;&amp; flip == other.flip;
 </pre>
 </div>
 </div>
@@ -211,10 +210,10 @@ void <strong>setFrom</strong>(<a href="../box2d/Features.html">Features</a> f) <
 <div class="doc">
 <pre class="source">
 void setFrom(Features f) {
-  referenceEdge = f.referenceEdge;
-  incidentEdge = f.incidentEdge;
-  incidentVertex = f.incidentVertex;
-  flip = f.flip;
+ referenceEdge = f.referenceEdge;
+ incidentEdge = f.incidentEdge;
+ incidentVertex = f.incidentVertex;
+ flip = f.flip;
 }
 </pre>
 </div>
@@ -227,7 +226,7 @@ String <strong>toString</strong>() <a class="anchor-link" href="#toString"
 <p>Returns a String representation of this Features.</p>
 <pre class="source">
 String toString() {
-  return "Features: ($flip, $incidentEdge, $incidentVertex $referenceEdge)";
+ return "Features: ($flip, $incidentEdge, $incidentVertex $referenceEdge)";
 }
 </pre>
 </div>
@@ -240,10 +239,10 @@ String toString() {
 <p>Sets all features to 0.</p>
 <pre class="source">
 zero() {
-  referenceEdge = 0;
-  incidentEdge = 0;
-  incidentVertex = 0;
-  flip = 0;
+ referenceEdge = 0;
+ incidentEdge = 0;
+ incidentVertex = 0;
+ flip = 0;
 }
 </pre>
 </div>

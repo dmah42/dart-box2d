@@ -34,18 +34,18 @@
 <div class="doc">
 <pre class="source">
 class CircleContact extends Contact {
-  CircleContact(DefaultWorldPool argPool) : super(argPool) { }
+ CircleContact(DefaultWorldPool argPool) : super(argPool) { }
 
-  void init(Fixture fA, Fixture fB) {
-    Expect.equals(ShapeType.CIRCLE, fA.type);
-    Expect.equals(ShapeType.CIRCLE, fB.type);
-    super.init(fA, fB);
-  }
+ void init(Fixture fA, Fixture fB) {
+   Expect.equals(ShapeType.CIRCLE, fA.type);
+   Expect.equals(ShapeType.CIRCLE, fB.type);
+   super.init(fA, fB);
+ }
 
-  void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
-    pool.collision.collideCircles(argManifold, fixtureA.shape, xfA,
-        fixtureB.shape, xfB);
-  }
+ void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
+   pool.collision.collideCircles(argManifold, fixtureA.shape, xfA,
+       fixtureB.shape, xfB);
+ }
 }
 </pre>
 </div>
@@ -107,11 +107,11 @@ bool get enabled =&gt; (flags &amp; ENABLED_FLAG) == ENABLED_FLAG;
 </pre>
 <pre class="source">
 void set enabled(bool flag) {
-  if (flag) {
-    flags |= ENABLED_FLAG;
-  } else {
-    flags &amp;= ~ENABLED_FLAG;
-  }
+ if (flag) {
+   flags |= ENABLED_FLAG;
+ } else {
+   flags &amp;= ~ENABLED_FLAG;
+ }
 }
 </pre>
 </div>
@@ -240,8 +240,8 @@ void <strong>evaluate</strong>(<a href="../box2d/Manifold.html">Manifold</a> arg
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Contact.html">Contact</a> </div></div>
 <pre class="source">
 void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
-  pool.collision.collideCircles(argManifold, fixtureA.shape, xfA,
-      fixtureB.shape, xfB);
+ pool.collision.collideCircles(argManifold, fixtureA.shape, xfA,
+     fixtureB.shape, xfB);
 }
 </pre>
 </div>
@@ -254,7 +254,7 @@ void <strong>flagForFiltering</strong>() <a class="anchor-link" href="#flagForFi
 <p>Flag this contact for filtering. Filtering will occur the next time step.</p>
 <pre class="source">
 void flagForFiltering() {
-  flags |= FILTER_FLAG;
+ flags |= FILTER_FLAG;
 }
 </pre>
 </div>
@@ -267,13 +267,13 @@ void <strong>getWorldManifold</strong>(<a href="../box2d/WorldManifold.html">Wor
 <p>Intializes the given world manifold.</p>
 <pre class="source">
 void getWorldManifold(WorldManifold worldManifold) {
-  final Body bodyA = fixtureA.body;
-  final Body bodyB = fixtureB.body;
-  final Shape shapeA = fixtureA.shape;
-  final Shape shapeB = fixtureB.shape;
+ final Body bodyA = fixtureA.body;
+ final Body bodyB = fixtureB.body;
+ final Shape shapeA = fixtureA.shape;
+ final Shape shapeB = fixtureB.shape;
 
-  worldManifold.initialize(manifold, bodyA.originTransform,
-      shapeA.radius, bodyB.originTransform, shapeB.radius);
+ worldManifold.initialize(manifold, bodyA.originTransform,
+     shapeA.radius, bodyB.originTransform, shapeB.radius);
 }
 </pre>
 </div>
@@ -288,9 +288,9 @@ void <strong>init</strong>(<a href="../box2d/Fixture.html">Fixture</a> fA, <a hr
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Contact.html">Contact</a> </div></div>
 <pre class="source">
 void init(Fixture fA, Fixture fB) {
-  Expect.equals(ShapeType.CIRCLE, fA.type);
-  Expect.equals(ShapeType.CIRCLE, fB.type);
-  super.init(fA, fB);
+ Expect.equals(ShapeType.CIRCLE, fA.type);
+ Expect.equals(ShapeType.CIRCLE, fB.type);
+ super.init(fA, fB);
 }
 </pre>
 </div>
@@ -302,80 +302,80 @@ void <strong>update</strong>(<a href="../box2d/ContactListener.html">ContactList
 <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
 void update(ContactListener listener) {
-  _oldManifold.setFrom(manifold);
+ _oldManifold.setFrom(manifold);
 
-  // Re-enable this contact.
-  flags |= ENABLED_FLAG;
+ // Re-enable this contact.
+ flags |= ENABLED_FLAG;
 
-  bool touching = false;
-  bool wasTouching = (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
+ bool touching = false;
+ bool wasTouching = (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 
-  bool sensorA = fixtureA.isSensor;
-  bool sensorB = fixtureB.isSensor;
-  bool sensor = sensorA || sensorB;
+ bool sensorA = fixtureA.isSensor;
+ bool sensorB = fixtureB.isSensor;
+ bool sensor = sensorA || sensorB;
 
-  Body bodyA = fixtureA.body;
-  Body bodyB = fixtureB.body;
-  Transform xfA = bodyA.originTransform;
-  Transform xfB = bodyB.originTransform;
+ Body bodyA = fixtureA.body;
+ Body bodyB = fixtureB.body;
+ Transform xfA = bodyA.originTransform;
+ Transform xfB = bodyB.originTransform;
 
-  if (sensor) {
-    Shape shapeA = fixtureA.shape;
-    Shape shapeB = fixtureB.shape;
-    touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
+ if (sensor) {
+   Shape shapeA = fixtureA.shape;
+   Shape shapeB = fixtureB.shape;
+   touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
 
-    // Sensors don't generate manifolds.
-    manifold.pointCount = 0;
-  } else {
-    evaluate(manifold, xfA, xfB);
-    touching = manifold.pointCount &gt; 0;
+   // Sensors don't generate manifolds.
+   manifold.pointCount = 0;
+ } else {
+   evaluate(manifold, xfA, xfB);
+   touching = manifold.pointCount &gt; 0;
 
-    // Match old contact ids to new contact ids and copy the
-    // stored impulses to warm start the solver.
-    for (int i = 0; i &lt; manifold.pointCount; ++i) {
-      ManifoldPoint mp2 = manifold.points[i];
-      mp2.normalImpulse = 0.0;
-      mp2.tangentImpulse = 0.0;
-      ContactID id2 = mp2.id;
+   // Match old contact ids to new contact ids and copy the
+   // stored impulses to warm start the solver.
+   for (int i = 0; i &lt; manifold.pointCount; ++i) {
+     ManifoldPoint mp2 = manifold.points[i];
+     mp2.normalImpulse = 0.0;
+     mp2.tangentImpulse = 0.0;
+     ContactID id2 = mp2.id;
 
-      for (int j = 0; j &lt; _oldManifold.pointCount; ++j) {
-        ManifoldPoint mp1 = _oldManifold.points[j];
+     for (int j = 0; j &lt; _oldManifold.pointCount; ++j) {
+       ManifoldPoint mp1 = _oldManifold.points[j];
 
-        if (mp1.id.isEqual(id2)) {
-          mp2.normalImpulse = mp1.normalImpulse;
-          mp2.tangentImpulse = mp1.tangentImpulse;
-          break;
-        }
-      }
-    }
+       if (mp1.id.isEqual(id2)) {
+         mp2.normalImpulse = mp1.normalImpulse;
+         mp2.tangentImpulse = mp1.tangentImpulse;
+         break;
+       }
+     }
+   }
 
-    if (touching != wasTouching) {
-      bodyA.awake = true;
-      bodyB.awake = true;
-    }
-  }
+   if (touching != wasTouching) {
+     bodyA.awake = true;
+     bodyB.awake = true;
+   }
+ }
 
-  if (touching) {
-    flags |= TOUCHING_FLAG;
-  } else {
-    flags &amp;= ~TOUCHING_FLAG;
-  }
+ if (touching) {
+   flags |= TOUCHING_FLAG;
+ } else {
+   flags &amp;= ~TOUCHING_FLAG;
+ }
 
-  if (listener == null) {
-    return;
-  }
+ if (listener == null) {
+   return;
+ }
 
-  if (wasTouching == false &amp;&amp; touching == true) {
-    listener.beginContact(this);
-  }
+ if (wasTouching == false &amp;&amp; touching == true) {
+   listener.beginContact(this);
+ }
 
-  if (wasTouching == true &amp;&amp; touching == false) {
-    listener.endContact(this);
-  }
+ if (wasTouching == true &amp;&amp; touching == false) {
+   listener.endContact(this);
+ }
 
-  if (sensor == false &amp;&amp; touching) {
-    listener.preSolve(this, _oldManifold);
-  }
+ if (sensor == false &amp;&amp; touching) {
+   listener.preSolve(this, _oldManifold);
+ }
 }
 </pre>
 </div>

@@ -32,35 +32,34 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A pair of dynamic tree nodes that is comparable.</p>
 <pre class="source">
 class Pair implements Comparable {
-  DynamicTreeNode proxyA;
-  DynamicTreeNode proxyB;
+ DynamicTreeNode proxyA;
+ DynamicTreeNode proxyB;
 
-  /**
-   * Constructs a new pair.
-   */
-  Pair() : proxyA = null, proxyB = null { }
+ /**
+  * Constructs a new pair.
+  */
+ Pair() : proxyA = null, proxyB = null { }
 
-  /**
-   * Compares this pair to the other pair. Returns a negative number if this
-   * pair is less, 0 if the pairs are equal, and a positive number if this pair
-   * is greater. Compared first on which proxyA is less and, in the case of a
-   * tie, on which proxyB is less.
-   */
-  int compareTo(Pair pair2) {
-    assert(proxyA != null &amp;&amp; pair2.proxyA != null);
-    if (this.proxyA.key &lt; pair2.proxyA.key)
-      return -1;
+ /**
+  * Compares this pair to the other pair. Returns a negative number if this
+  * pair is less, 0 if the pairs are equal, and a positive number if this pair
+  * is greater. Compared first on which proxyA is less and, in the case of a
+  * tie, on which proxyB is less.
+  */
+ int compareTo(Pair pair2) {
+   assert(proxyA != null &amp;&amp; pair2.proxyA != null);
+   if (this.proxyA.key &lt; pair2.proxyA.key)
+     return -1;
 
-    if (this.proxyA.key == pair2.proxyA.key) {
-      return (proxyB.key &lt; pair2.proxyB.key) ? -1 :
-          (proxyB.key == pair2.proxyB.key) ? 0 : 1;
-    }
+   if (this.proxyA.key == pair2.proxyA.key) {
+     return (proxyB.key &lt; pair2.proxyB.key) ? -1 :
+         (proxyB.key == pair2.proxyB.key) ? 0 : 1;
+   }
 
-    return 1;
-  }
+   return 1;
+ }
 }
 </pre>
 </div>
@@ -121,16 +120,16 @@ is greater. Compared first on which proxyA is less and, in the case of a
 tie, on which proxyB is less.</p>
 <pre class="source">
 int compareTo(Pair pair2) {
-  assert(proxyA != null &amp;&amp; pair2.proxyA != null);
-  if (this.proxyA.key &lt; pair2.proxyA.key)
-    return -1;
+ assert(proxyA != null &amp;&amp; pair2.proxyA != null);
+ if (this.proxyA.key &lt; pair2.proxyA.key)
+   return -1;
 
-  if (this.proxyA.key == pair2.proxyA.key) {
-    return (proxyB.key &lt; pair2.proxyB.key) ? -1 :
-        (proxyB.key == pair2.proxyB.key) ? 0 : 1;
-  }
+ if (this.proxyA.key == pair2.proxyA.key) {
+   return (proxyB.key &lt; pair2.proxyB.key) ? -1 :
+       (proxyB.key == pair2.proxyB.key) ? 0 : 1;
+ }
 
-  return 1;
+ return 1;
 }
 </pre>
 </div>

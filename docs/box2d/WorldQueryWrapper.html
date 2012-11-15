@@ -34,21 +34,21 @@
 <div class="doc">
 <pre class="source">
 class WorldQueryWrapper implements TreeCallback {
-  BroadPhase broadPhase;
-  QueryCallback callback;
+ BroadPhase broadPhase;
+ QueryCallback callback;
 
-  WorldQueryWrapper() { }
+ WorldQueryWrapper() { }
 
-  bool treeCallback(DynamicTreeNode node) {
-    Fixture fixture = node.userData;
-    return callback.reportFixture(fixture);
-  }
+ bool treeCallback(DynamicTreeNode node) {
+   Fixture fixture = node.userData;
+   return callback.reportFixture(fixture);
+ }
 }
 </pre>
 </div>
 <h3>Implements</h3>
 <p>
-<span class="type-box"><span class="icon-interface"></span><a href="../box2d/TreeCallback.html">TreeCallback</a></span></p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/TreeCallback.html">TreeCallback</a></span></p>
 <div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="WorldQueryWrapper">
@@ -98,8 +98,8 @@ bool <strong>treeCallback</strong>(<a href="../box2d/DynamicTreeNode.html">Dynam
 <div class="doc">
 <pre class="source">
 bool treeCallback(DynamicTreeNode node) {
-  Fixture fixture = node.userData;
-  return callback.reportFixture(fixture);
+ Fixture fixture = node.userData;
+ return callback.reportFixture(fixture);
 }
 </pre>
 </div>

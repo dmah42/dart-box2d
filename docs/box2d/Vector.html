@@ -32,184 +32,183 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A 2-dimensional vector class.</p>
 <pre class="source">
 class Vector {
-  // Each vector is defined as the vector originating from (0,0) to these x and
-  // y coordinates.
-  num x;
-  num y;
+ // Each vector is defined as the vector originating from (0,0) to these x and
+ // y coordinates.
+ num x;
+ num y;
 
-  Vector([this.x = 0, this.y = 0]);
+ Vector([this.x = 0, this.y = 0]);
 
-  /**
-   * Constructs a new vector with the same coordinates as the given vector.
-   */
-  Vector.copy(Vector other) : x = other.x, y = other.y;
+ /**
+  * Constructs a new vector with the same coordinates as the given vector.
+  */
+ Vector.copy(Vector other) : x = other.x, y = other.y;
 
-  /**
-   * Returns true if given object is a Vector with the same x and y values as
-   * this vector. Returns false otherwise.
-   */
-  bool operator ==(other) =&gt; x == other.x &amp;&amp; y == other.y;
+ /**
+  * Returns true if given object is a Vector with the same x and y values as
+  * this vector. Returns false otherwise.
+  */
+ bool operator ==(other) =&gt; x == other.x &amp;&amp; y == other.y;
 
-  /**
-   * Update the current vector by adding v.
-   */
-  Vector addLocal(Vector v) {
-    x += v.x;
-    y += v.y;
-    return this;
-  }
+ /**
+  * Update the current vector by adding v.
+  */
+ Vector addLocal(Vector v) {
+   x += v.x;
+   y += v.y;
+   return this;
+ }
 
-  /**
-   * Subtracts the given vector from this vector.
-   */
-  Vector subLocal(Vector other) {
-    x -= other.x;
-    y -= other.y;
-    return this;
-  }
+ /**
+  * Subtracts the given vector from this vector.
+  */
+ Vector subLocal(Vector other) {
+   x -= other.x;
+   y -= other.y;
+   return this;
+ }
 
-  Vector setCoords(num xCoord, num yCoord) {
-    x = xCoord;
-    y = yCoord;
-    return this;
-  }
+ Vector setCoords(num xCoord, num yCoord) {
+   x = xCoord;
+   y = yCoord;
+   return this;
+ }
 
-  /** Return the cross product of the twe given vectors. */
-  static num crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
+ /** Return the cross product of the twe given vectors. */
+ static num crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
 
-  /** Return the dot product of the two given vectors. */
-  static num dot(Vector one, Vector two) =&gt; (one.x * two.x + one.y * two.y);
+ /** Return the dot product of the two given vectors. */
+ static num dot(Vector one, Vector two) =&gt; (one.x * two.x + one.y * two.y);
 
-  /**
-   * Has the effect of swapping the x and y coordinates of the vector,
-   * multiplying both by the given number, and then flipping the sign of the new
-   * x coordinate. Returns the result through the out parameter.
-   */
-  static void crossNumAndVectorToOut(num s, Vector a, Vector out) {
-    num tempY = s * a.x;
-    out.x = -s * a.y;
-    out.y = tempY;
-  }
+ /**
+  * Has the effect of swapping the x and y coordinates of the vector,
+  * multiplying both by the given number, and then flipping the sign of the new
+  * x coordinate. Returns the result through the out parameter.
+  */
+ static void crossNumAndVectorToOut(num s, Vector a, Vector out) {
+   num tempY = s * a.x;
+   out.x = -s * a.y;
+   out.y = tempY;
+ }
 
-  /**
-   * Has the effect of swapping the x and y coordinates of the vector,
-   * multiplying both by the given number, and then flipping the sign of the new
-   * y coordinate. Returns the result through the out parameter.
-   */
-  static void crossVectorAndNumToOut(Vector a, num s, Vector out) {
-    num tempy = -s * a.x;
-    out.x = s * a.y;
-    out.y = tempy;
-  }
+ /**
+  * Has the effect of swapping the x and y coordinates of the vector,
+  * multiplying both by the given number, and then flipping the sign of the new
+  * y coordinate. Returns the result through the out parameter.
+  */
+ static void crossVectorAndNumToOut(Vector a, num s, Vector out) {
+   num tempy = -s * a.x;
+   out.x = s * a.y;
+   out.y = tempy;
+ }
 
-  /**
-   * Sets this vector to be a copy of the given vector.
-   */
-  Vector setFrom(Vector v) {
-    setCoords(v.x, v.y);
-    return this;
-  }
+ /**
+  * Sets this vector to be a copy of the given vector.
+  */
+ Vector setFrom(Vector v) {
+   setCoords(v.x, v.y);
+   return this;
+ }
 
-  /**
-   * Multiplies this vector by the given number.
-   */
-  Vector mulLocal(num d) {
-    x *= d;
-    y *= d;
-    return this;
-  }
+ /**
+  * Multiplies this vector by the given number.
+  */
+ Vector mulLocal(num d) {
+   x *= d;
+   y *= d;
+   return this;
+ }
 
-  Vector setZero() {
-    setCoords(0, 0);
-    return this;
-  }
+ Vector setZero() {
+   setCoords(0, 0);
+   return this;
+ }
 
-  num get length =&gt; Math.sqrt(this.lengthSquared);
+ num get length =&gt; Math.sqrt(this.lengthSquared);
 
-  /**
-   * Take the minimum of each coordinate from the two given vectors and store
-   * the result in the given out vector.
-   */
-  static void minToOut(Vector a, Vector b, Vector out) {
-    out.x = a.x &lt; b.x ? a.x : b.x;
-    out.y = a.y &lt; b.y ? a.y : b.y;
-  }
+ /**
+  * Take the minimum of each coordinate from the two given vectors and store
+  * the result in the given out vector.
+  */
+ static void minToOut(Vector a, Vector b, Vector out) {
+   out.x = a.x &lt; b.x ? a.x : b.x;
+   out.y = a.y &lt; b.y ? a.y : b.y;
+ }
 
-  /**
-   * Take the maximum of each coordinate from the two given vectors and store
-   * the result in the given out vector.
-   */
-  static void maxToOut(Vector a, Vector b, Vector out) {
-    out.x = a.x &gt; b.x ? a.x : b.x;
-    out.y = a.y &gt; b.y ? a.y : b.y;
-  }
+ /**
+  * Take the maximum of each coordinate from the two given vectors and store
+  * the result in the given out vector.
+  */
+ static void maxToOut(Vector a, Vector b, Vector out) {
+   out.x = a.x &gt; b.x ? a.x : b.x;
+   out.y = a.y &gt; b.y ? a.y : b.y;
+ }
 
-  /**
-   * Returns the length of this vector, squared.
-   */
-  num get lengthSquared =&gt; x * x + y * y;
+ /**
+  * Returns the length of this vector, squared.
+  */
+ num get lengthSquared =&gt; x * x + y * y;
 
-  /**
-   * Set the x and y coordinates of this vector to absolute values.
-   */
-  void absLocal() {
-    x = x.abs();
-    y = y.abs();
-  }
+ /**
+  * Set the x and y coordinates of this vector to absolute values.
+  */
+ void absLocal() {
+   x = x.abs();
+   y = y.abs();
+ }
 
-  /**
-   * Normalizes this vector and returns the length before normalization.
-   */
-  num normalize() {
-    num len = length;
-    if (len &lt; Settings.EPSILON) {
-      return 0;
-    }
+ /**
+  * Normalizes this vector and returns the length before normalization.
+  */
+ num normalize() {
+   num len = length;
+   if (len &lt; Settings.EPSILON) {
+     return 0;
+   }
 
-    num invLength = 1.0 / len;
-    x *= invLength;
-    y *= invLength;
-    return len;
-  }
+   num invLength = 1.0 / len;
+   x *= invLength;
+   y *= invLength;
+   return len;
+ }
 
-  /**
-   * Returns the distance between the point defined by this vector and the given
-   * vector.
-   */
-  num distanceBetween(Vector v) {
-    num xDelta = this.x - v.x;
-    num yDelta = this.y - v.y;
-    return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
-  }
+ /**
+  * Returns the distance between the point defined by this vector and the given
+  * vector.
+  */
+ num distanceBetween(Vector v) {
+   num xDelta = this.x - v.x;
+   num yDelta = this.y - v.y;
+   return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
+ }
 
-  /**
-   * Returns a vector that is the result of rotating the original vector by
-   * angle degrees counter-clockwise.
-   */
-  Vector rotate(num angle) {
-    Matrix22 mtx = new Matrix22();
-    mtx.setAngle(angle);
-    Vector temp = new Vector();
-    mtx.multiplyVectorToOut(this, temp);
-    return temp;
-  }
+ /**
+  * Returns a vector that is the result of rotating the original vector by
+  * angle degrees counter-clockwise.
+  */
+ Vector rotate(num angle) {
+   Matrix22 mtx = new Matrix22();
+   mtx.setAngle(angle);
+   Vector temp = new Vector();
+   mtx.multiplyVectorToOut(this, temp);
+   return temp;
+ }
 
-  /** Flips this vector such that the +/- of each x and y are reversed. */
-  Vector negateLocal() {
-    x = -x;
-    y = -y;
-    return this;
-  }
+ /** Flips this vector such that the +/- of each x and y are reversed. */
+ Vector negateLocal() {
+   x = -x;
+   y = -y;
+   return this;
+ }
 
-  /** Returns if the values of coordinates within the MAX_INTEGER. */
-  bool isValid() =&gt;
-      !x.isInfinite() &amp;&amp; !x.isNaN() &amp;&amp; !y.isInfinite() &amp;&amp; !y.isNaN();
+ /** Returns if the values of coordinates within the MAX_INTEGER. */
+ bool isValid() =&gt;
+     !x.isInfinite &amp;&amp; !x.isNaN &amp;&amp; !y.isInfinite &amp;&amp; !y.isNaN;
 
-  /** Returns a String representation of the given vector. */
-  String toString() =&gt; "($x, $y)";
+ /** Returns a String representation of the given vector. */
+ String toString() =&gt; "($x, $y)";
 }
 </pre>
 </div>
@@ -247,9 +246,9 @@ multiplying both by the given number, and then flipping the sign of the new
 x coordinate. Returns the result through the out parameter.</p>
 <pre class="source">
 static void crossNumAndVectorToOut(num s, Vector a, Vector out) {
-  num tempY = s * a.x;
-  out.x = -s * a.y;
-  out.y = tempY;
+ num tempY = s * a.x;
+ out.x = -s * a.y;
+ out.y = tempY;
 }
 </pre>
 </div>
@@ -264,9 +263,9 @@ multiplying both by the given number, and then flipping the sign of the new
 y coordinate. Returns the result through the out parameter.</p>
 <pre class="source">
 static void crossVectorAndNumToOut(Vector a, num s, Vector out) {
-  num tempy = -s * a.x;
-  out.x = s * a.y;
-  out.y = tempy;
+ num tempy = -s * a.x;
+ out.x = s * a.y;
+ out.y = tempy;
 }
 </pre>
 </div>
@@ -280,8 +279,8 @@ void <strong>minToOut</strong>(<a href="../box2d/Vector.html">Vector</a> a, <a h
 the result in the given out vector.</p>
 <pre class="source">
 static void minToOut(Vector a, Vector b, Vector out) {
-  out.x = a.x &lt; b.x ? a.x : b.x;
-  out.y = a.y &lt; b.y ? a.y : b.y;
+ out.x = a.x &lt; b.x ? a.x : b.x;
+ out.y = a.y &lt; b.y ? a.y : b.y;
 }
 </pre>
 </div>
@@ -295,8 +294,8 @@ void <strong>maxToOut</strong>(<a href="../box2d/Vector.html">Vector</a> a, <a h
 the result in the given out vector.</p>
 <pre class="source">
 static void maxToOut(Vector a, Vector b, Vector out) {
-  out.x = a.x &gt; b.x ? a.x : b.x;
-  out.y = a.y &gt; b.y ? a.y : b.y;
+ out.x = a.x &gt; b.x ? a.x : b.x;
+ out.y = a.y &gt; b.y ? a.y : b.y;
 }
 </pre>
 </div>
@@ -403,8 +402,8 @@ void <strong>absLocal</strong>() <a class="anchor-link" href="#absLocal"
 <p>Set the x and y coordinates of this vector to absolute values.</p>
 <pre class="source">
 void absLocal() {
-  x = x.abs();
-  y = y.abs();
+ x = x.abs();
+ y = y.abs();
 }
 </pre>
 </div>
@@ -417,9 +416,9 @@ void absLocal() {
 <p>Update the current vector by adding v.</p>
 <pre class="source">
 Vector addLocal(Vector v) {
-  x += v.x;
-  y += v.y;
-  return this;
+ x += v.x;
+ y += v.y;
+ return this;
 }
 </pre>
 </div>
@@ -433,9 +432,9 @@ num <strong>distanceBetween</strong>(<a href="../box2d/Vector.html">Vector</a> v
 vector.</p>
 <pre class="source">
 num distanceBetween(Vector v) {
-  num xDelta = this.x - v.x;
-  num yDelta = this.y - v.y;
-  return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
+ num xDelta = this.x - v.x;
+ num yDelta = this.y - v.y;
+ return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
 }
 </pre>
 </div>
@@ -448,7 +447,7 @@ bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
 <p>Returns if the values of coordinates within the MAX_INTEGER.</p>
 <pre class="source">
 bool isValid() =&gt;
-    !x.isInfinite() &amp;&amp; !x.isNaN() &amp;&amp; !y.isInfinite() &amp;&amp; !y.isNaN();
+   !x.isInfinite &amp;&amp; !x.isNaN &amp;&amp; !y.isInfinite &amp;&amp; !y.isNaN;
 </pre>
 </div>
 </div>
@@ -460,9 +459,9 @@ bool isValid() =&gt;
 <p>Multiplies this vector by the given number.</p>
 <pre class="source">
 Vector mulLocal(num d) {
-  x *= d;
-  y *= d;
-  return this;
+ x *= d;
+ y *= d;
+ return this;
 }
 </pre>
 </div>
@@ -475,9 +474,9 @@ Vector mulLocal(num d) {
 <p>Flips this vector such that the +/- of each x and y are reversed.</p>
 <pre class="source">
 Vector negateLocal() {
-  x = -x;
-  y = -y;
-  return this;
+ x = -x;
+ y = -y;
+ return this;
 }
 </pre>
 </div>
@@ -490,15 +489,15 @@ num <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
 <p>Normalizes this vector and returns the length before normalization.</p>
 <pre class="source">
 num normalize() {
-  num len = length;
-  if (len &lt; Settings.EPSILON) {
-    return 0;
-  }
+ num len = length;
+ if (len &lt; Settings.EPSILON) {
+   return 0;
+ }
 
-  num invLength = 1.0 / len;
-  x *= invLength;
-  y *= invLength;
-  return len;
+ num invLength = 1.0 / len;
+ x *= invLength;
+ y *= invLength;
+ return len;
 }
 </pre>
 </div>
@@ -512,11 +511,11 @@ num normalize() {
 angle degrees counter-clockwise.</p>
 <pre class="source">
 Vector rotate(num angle) {
-  Matrix22 mtx = new Matrix22();
-  mtx.setAngle(angle);
-  Vector temp = new Vector();
-  mtx.multiplyVectorToOut(this, temp);
-  return temp;
+ Matrix22 mtx = new Matrix22();
+ mtx.setAngle(angle);
+ Vector temp = new Vector();
+ mtx.multiplyVectorToOut(this, temp);
+ return temp;
 }
 </pre>
 </div>
@@ -528,9 +527,9 @@ Vector rotate(num angle) {
 <div class="doc">
 <pre class="source">
 Vector setCoords(num xCoord, num yCoord) {
-  x = xCoord;
-  y = yCoord;
-  return this;
+ x = xCoord;
+ y = yCoord;
+ return this;
 }
 </pre>
 </div>
@@ -543,8 +542,8 @@ Vector setCoords(num xCoord, num yCoord) {
 <p>Sets this vector to be a copy of the given vector.</p>
 <pre class="source">
 Vector setFrom(Vector v) {
-  setCoords(v.x, v.y);
-  return this;
+ setCoords(v.x, v.y);
+ return this;
 }
 </pre>
 </div>
@@ -556,8 +555,8 @@ Vector setFrom(Vector v) {
 <div class="doc">
 <pre class="source">
 Vector setZero() {
-  setCoords(0, 0);
-  return this;
+ setCoords(0, 0);
+ return this;
 }
 </pre>
 </div>
@@ -570,9 +569,9 @@ Vector setZero() {
 <p>Subtracts the given vector from this vector.</p>
 <pre class="source">
 Vector subLocal(Vector other) {
-  x -= other.x;
-  y -= other.y;
-  return this;
+ x -= other.x;
+ y -= other.y;
+ return this;
 }
 </pre>
 </div>

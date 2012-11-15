@@ -34,184 +34,184 @@
 <div class="doc">
 <pre class="source">
 class FrictionJoint extends Joint {
-  final Vector _localAnchorA;
-  final Vector _localAnchorB;
+ final Vector _localAnchorA;
+ final Vector _localAnchorB;
 
-  Vector _linearImpulse;
-  num _angularImpulse;
-  num _maxForce;
-  num _maxTorque;
+ Vector _linearImpulse;
+ num _angularImpulse;
+ num _maxForce;
+ num _maxTorque;
 
-  FrictionJoint(FrictionJointDef def)
-      : super(def),
-        _localAnchorA = new Vector.copy(def.localAnchorA),
-        _localAnchorB = new Vector.copy(def.localAnchorB),
-        _linearImpulse = new Vector(),
-        _angularImpulse = 0.0,
-        _maxForce = def.maxForce,
-        _maxTorque = def.maxTorque { }
+ FrictionJoint(FrictionJointDef def)
+     : super(def),
+       _localAnchorA = new Vector.copy(def.localAnchorA),
+       _localAnchorB = new Vector.copy(def.localAnchorB),
+       _linearImpulse = new Vector(),
+       _angularImpulse = 0.0,
+       _maxForce = def.maxForce,
+       _maxTorque = def.maxTorque { }
 
-  Vector getLocalAnchorA(Vector argOut) {
-    bodyA.getWorldPointToOut(_localAnchorA, argOut);
-  }
+ Vector getLocalAnchorA(Vector argOut) {
+   bodyA.getWorldPointToOut(_localAnchorA, argOut);
+ }
 
-  Vector getLocalAnchorB(Vector argOut) {
-    bodyB.getWorldPointToOut(_localAnchorB, argOut);
-  }
+ Vector getLocalAnchorB(Vector argOut) {
+   bodyB.getWorldPointToOut(_localAnchorB, argOut);
+ }
 
-  void getReactionForce(num inv_dt, Vector argOut) {
-    argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
-  }
+ void getReactionForce(num inv_dt, Vector argOut) {
+   argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
+ }
 
-  num getReactionTorque(num inv_dt) =&gt; inv_dt * _angularImpulse;
+ num getReactionTorque(num inv_dt) =&gt; inv_dt * _angularImpulse;
 
-  void set maxForce(num force) {
-    assert(force &gt;= 0.0);
-    _maxForce = force;
-  }
+ void set maxForce(num force) {
+   assert(force &gt;= 0.0);
+   _maxForce = force;
+ }
 
-  num get maxForce =&gt; _maxForce;
+ num get maxForce =&gt; _maxForce;
 
-  void set maxTorque(num torque) {
-    assert(torque &gt;= 0.0);
-    _maxTorque = torque;
-  }
+ void set maxTorque(num torque) {
+   assert(torque &gt;= 0.0);
+   _maxTorque = torque;
+ }
 
-  num get maxTorque =&gt; _maxTorque;
+ num get maxTorque =&gt; _maxTorque;
 
-  void initVelocityConstraints(TimeStep step) {
-    // Compute the effective mass matrix.
-    Vector r1 = new Vector();
-    Vector r2 = new Vector();
+ void initVelocityConstraints(TimeStep step) {
+   // Compute the effective mass matrix.
+   Vector r1 = new Vector();
+   Vector r2 = new Vector();
 
-    r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
-    r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+   r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
+   r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
+   Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
+   Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-    // J = [-I -r1_skew I r2_skew]
-    // [ 0 -1 0 1]
-    // r_skew = [-ry; rx]
+   // J = [-I -r1_skew I r2_skew]
+   // [ 0 -1 0 1]
+   // r_skew = [-ry; rx]
 
-    // Matlab
-    // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
-    // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
-    // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
+   // Matlab
+   // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
+   // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
+   // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
 
-    Matrix22 K = new Matrix22();
-    K.col1.x = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-    K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-    K.col2.x = K.col1.y;
-    K.col2.y = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+   Matrix22 K = new Matrix22();
+   K.col1.x = bodyA.invMass + bodyB.invMass +
+              bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
+   K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
+   K.col2.x = K.col1.y;
+   K.col2.y = bodyA.invMass + bodyB.invMass +
+              bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-    Matrix22 linearMass = new Matrix22();
-    linearMass.setFrom(K);
-    linearMass.invertLocal();
+   Matrix22 linearMass = new Matrix22();
+   linearMass.setFrom(K);
+   linearMass.invertLocal();
 
-    num angularMass = bodyA.invInertia + bodyB.invInertia;
-    if (angularMass &gt; 0.0) {
-      angularMass = 1.0 / angularMass;
-    }
+   num angularMass = bodyA.invInertia + bodyB.invInertia;
+   if (angularMass &gt; 0.0) {
+     angularMass = 1.0 / angularMass;
+   }
 
-    if (step.warmStarting) {
-      // Scale impulses.
-      _linearImpulse.mulLocal(step.dtRatio);
-      _angularImpulse *= step.dtRatio;
+   if (step.warmStarting) {
+     // Scale impulses.
+     _linearImpulse.mulLocal(step.dtRatio);
+     _angularImpulse *= step.dtRatio;
 
-      Vector P = new Vector();
-      P.setFrom(_linearImpulse);
+     Vector P = new Vector();
+     P.setFrom(_linearImpulse);
 
-      bodyA.linearVelocity.x -= bodyA.invMass * P.x;
-      bodyA.linearVelocity.y -= bodyA.invMass * P.y;
-      bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
+     bodyA.linearVelocity.x -= bodyA.invMass * P.x;
+     bodyA.linearVelocity.y -= bodyA.invMass * P.y;
+     bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
 
-      bodyB.linearVelocity.x += bodyB.invMass * P.x;
-      bodyB.linearVelocity.y += bodyB.invMass * P.y;
-      bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
-    } else {
-      _linearImpulse.setZero();
-      _angularImpulse = 0.0;
-    }
-  }
+     bodyB.linearVelocity.x += bodyB.invMass * P.x;
+     bodyB.linearVelocity.y += bodyB.invMass * P.y;
+     bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
+   } else {
+     _linearImpulse.setZero();
+     _angularImpulse = 0.0;
+   }
+ }
 
-  void solveVelocityConstraints(TimeStep step) {
-    // Solve angular friction
-    {
-      final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
-      num angularMass = bodyA.invInertia + bodyB.invInertia;
-      if (angularMass &gt; 0.0) {
-        angularMass = 1.0 / angularMass;
-      }
-      num impulse = -angularMass * Cdot;
+ void solveVelocityConstraints(TimeStep step) {
+   // Solve angular friction
+   {
+     final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
+     num angularMass = bodyA.invInertia + bodyB.invInertia;
+     if (angularMass &gt; 0.0) {
+       angularMass = 1.0 / angularMass;
+     }
+     num impulse = -angularMass * Cdot;
 
-      final num oldImpulse = _angularImpulse;
-      final num maxImpulse = step.dt * _maxTorque;
-      _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
-      impulse = _angularImpulse - oldImpulse;
+     final num oldImpulse = _angularImpulse;
+     final num maxImpulse = step.dt * _maxTorque;
+     _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
+     impulse = _angularImpulse - oldImpulse;
 
-      bodyA.angularVelocity -= bodyA.invInertia * impulse;
-      bodyB.angularVelocity += bodyB.invInertia * impulse;
-    }
+     bodyA.angularVelocity -= bodyA.invInertia * impulse;
+     bodyB.angularVelocity += bodyB.invInertia * impulse;
+   }
 
-    // Solve linear friction
-    {
-      Vector r1 = new Vector();
-      Vector r2 = new Vector();
+   // Solve linear friction
+   {
+     Vector r1 = new Vector();
+     Vector r2 = new Vector();
 
-      r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
-      r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
-      Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-      Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+     r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
+     r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
+     Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
+     Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-      Vector temp = new Vector();
-      Vector Cdot = new Vector();
+     Vector temp = new Vector();
+     Vector Cdot = new Vector();
 
-      Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
-      Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
+     Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
+     Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
 
-      Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
+     Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
 
-      Matrix22 K = new Matrix22();
-      K.col1.x = bodyA.invMass + bodyB.invMass +
-                 bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-      K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-      K.col2.x = K.col1.y;
-      K.col2.y = bodyA.invMass + bodyB.invMass +
-                 bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+     Matrix22 K = new Matrix22();
+     K.col1.x = bodyA.invMass + bodyB.invMass +
+                bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
+     K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
+     K.col2.x = K.col1.y;
+     K.col2.y = bodyA.invMass + bodyB.invMass +
+                bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-      Matrix22 linearMass = new Matrix22();
-      linearMass.setFrom(K);
-      linearMass.invertLocal();
+     Matrix22 linearMass = new Matrix22();
+     linearMass.setFrom(K);
+     linearMass.invertLocal();
 
-      Vector impulse = new Vector();
-      Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
-      impulse.negateLocal();
+     Vector impulse = new Vector();
+     Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
+     impulse.negateLocal();
 
-      Vector oldImpulse = new Vector();
-      oldImpulse.setFrom(_linearImpulse);
-      _linearImpulse.addLocal(impulse);
+     Vector oldImpulse = new Vector();
+     oldImpulse.setFrom(_linearImpulse);
+     _linearImpulse.addLocal(impulse);
 
-      num maxImpulse = step.dt * _maxForce;
-      if (_linearImpulse.lengthSquared &gt; maxImpulse * maxImpulse) {
-        _linearImpulse.normalize();
-        _linearImpulse.mulLocal(maxImpulse);
-      }
+     num maxImpulse = step.dt * _maxForce;
+     if (_linearImpulse.lengthSquared &gt; maxImpulse * maxImpulse) {
+       _linearImpulse.normalize();
+       _linearImpulse.mulLocal(maxImpulse);
+     }
 
-      impulse.setFrom(_linearImpulse).subLocal(oldImpulse);
+     impulse.setFrom(_linearImpulse).subLocal(oldImpulse);
 
-      bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
-      bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
-      bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
+     bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
+     bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
+     bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
 
-      bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
-      bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
-      bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
-    }
-  }
+     bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
+     bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
+     bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
+   }
+ }
 
-  bool solvePositionConstraints(num baumgarte) =&gt; true;
+ bool solvePositionConstraints(num baumgarte) =&gt; true;
 }
 </pre>
 </div>
@@ -227,13 +227,13 @@ new <strong>FrictionJoint</strong>(<a href="../box2d/FrictionJointDef.html">Fric
 <div class="doc">
 <pre class="source">
 FrictionJoint(FrictionJointDef def)
-    : super(def),
-      _localAnchorA = new Vector.copy(def.localAnchorA),
-      _localAnchorB = new Vector.copy(def.localAnchorB),
-      _linearImpulse = new Vector(),
-      _angularImpulse = 0.0,
-      _maxForce = def.maxForce,
-      _maxTorque = def.maxTorque { }
+   : super(def),
+     _localAnchorA = new Vector.copy(def.localAnchorA),
+     _localAnchorB = new Vector.copy(def.localAnchorB),
+     _linearImpulse = new Vector(),
+     _angularImpulse = 0.0,
+     _maxForce = def.maxForce,
+     _maxTorque = def.maxTorque { }
 </pre>
 </div>
 </div>
@@ -409,8 +409,8 @@ num get maxForce =&gt; _maxForce;
 </pre>
 <pre class="source">
 void set maxForce(num force) {
-  assert(force &gt;= 0.0);
-  _maxForce = force;
+ assert(force &gt;= 0.0);
+ _maxForce = force;
 }
 </pre>
 </div>
@@ -427,8 +427,8 @@ num get maxTorque =&gt; _maxTorque;
 </pre>
 <pre class="source">
 void set maxTorque(num torque) {
-  assert(torque &gt;= 0.0);
-  _maxTorque = torque;
+ assert(torque &gt;= 0.0);
+ _maxTorque = torque;
 }
 </pre>
 </div>
@@ -500,7 +500,7 @@ void getAnchorB(Vector argOut) { }
 <div class="doc">
 <pre class="source">
 Vector getLocalAnchorA(Vector argOut) {
-  bodyA.getWorldPointToOut(_localAnchorA, argOut);
+ bodyA.getWorldPointToOut(_localAnchorA, argOut);
 }
 </pre>
 </div>
@@ -512,7 +512,7 @@ Vector getLocalAnchorA(Vector argOut) {
 <div class="doc">
 <pre class="source">
 Vector getLocalAnchorB(Vector argOut) {
-  bodyB.getWorldPointToOut(_localAnchorB, argOut);
+ bodyB.getWorldPointToOut(_localAnchorB, argOut);
 }
 </pre>
 </div>
@@ -527,7 +527,7 @@ void <strong>getReactionForce</strong>(num inv_dt, <a href="../box2d/Vector.html
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void getReactionForce(num inv_dt, Vector argOut) {
-  argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
+ argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
 }
 </pre>
 </div>
@@ -552,60 +552,60 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 <div class="doc">
 <pre class="source">
 void initVelocityConstraints(TimeStep step) {
-  // Compute the effective mass matrix.
-  Vector r1 = new Vector();
-  Vector r2 = new Vector();
+ // Compute the effective mass matrix.
+ Vector r1 = new Vector();
+ Vector r2 = new Vector();
 
-  r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
-  r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
-  Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-  Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+ r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
+ r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
+ Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
+ Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-  // J = [-I -r1_skew I r2_skew]
-  // [ 0 -1 0 1]
-  // r_skew = [-ry; rx]
+ // J = [-I -r1_skew I r2_skew]
+ // [ 0 -1 0 1]
+ // r_skew = [-ry; rx]
 
-  // Matlab
-  // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
-  // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
-  // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
+ // Matlab
+ // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
+ // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
+ // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
 
-  Matrix22 K = new Matrix22();
-  K.col1.x = bodyA.invMass + bodyB.invMass +
-             bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-  K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-  K.col2.x = K.col1.y;
-  K.col2.y = bodyA.invMass + bodyB.invMass +
-             bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+ Matrix22 K = new Matrix22();
+ K.col1.x = bodyA.invMass + bodyB.invMass +
+            bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
+ K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
+ K.col2.x = K.col1.y;
+ K.col2.y = bodyA.invMass + bodyB.invMass +
+            bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-  Matrix22 linearMass = new Matrix22();
-  linearMass.setFrom(K);
-  linearMass.invertLocal();
+ Matrix22 linearMass = new Matrix22();
+ linearMass.setFrom(K);
+ linearMass.invertLocal();
 
-  num angularMass = bodyA.invInertia + bodyB.invInertia;
-  if (angularMass &gt; 0.0) {
-    angularMass = 1.0 / angularMass;
-  }
+ num angularMass = bodyA.invInertia + bodyB.invInertia;
+ if (angularMass &gt; 0.0) {
+   angularMass = 1.0 / angularMass;
+ }
 
-  if (step.warmStarting) {
-    // Scale impulses.
-    _linearImpulse.mulLocal(step.dtRatio);
-    _angularImpulse *= step.dtRatio;
+ if (step.warmStarting) {
+   // Scale impulses.
+   _linearImpulse.mulLocal(step.dtRatio);
+   _angularImpulse *= step.dtRatio;
 
-    Vector P = new Vector();
-    P.setFrom(_linearImpulse);
+   Vector P = new Vector();
+   P.setFrom(_linearImpulse);
 
-    bodyA.linearVelocity.x -= bodyA.invMass * P.x;
-    bodyA.linearVelocity.y -= bodyA.invMass * P.y;
-    bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
+   bodyA.linearVelocity.x -= bodyA.invMass * P.x;
+   bodyA.linearVelocity.y -= bodyA.invMass * P.y;
+   bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
 
-    bodyB.linearVelocity.x += bodyB.invMass * P.x;
-    bodyB.linearVelocity.y += bodyB.invMass * P.y;
-    bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
-  } else {
-    _linearImpulse.setZero();
-    _angularImpulse = 0.0;
-  }
+   bodyB.linearVelocity.x += bodyB.invMass * P.x;
+   bodyB.linearVelocity.y += bodyB.invMass * P.y;
+   bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
+ } else {
+   _linearImpulse.setZero();
+   _angularImpulse = 0.0;
+ }
 }
 </pre>
 </div>
@@ -630,78 +630,78 @@ void <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">
 <div class="doc">
 <pre class="source">
 void solveVelocityConstraints(TimeStep step) {
-  // Solve angular friction
-  {
-    final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
-    num angularMass = bodyA.invInertia + bodyB.invInertia;
-    if (angularMass &gt; 0.0) {
-      angularMass = 1.0 / angularMass;
-    }
-    num impulse = -angularMass * Cdot;
+ // Solve angular friction
+ {
+   final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
+   num angularMass = bodyA.invInertia + bodyB.invInertia;
+   if (angularMass &gt; 0.0) {
+     angularMass = 1.0 / angularMass;
+   }
+   num impulse = -angularMass * Cdot;
 
-    final num oldImpulse = _angularImpulse;
-    final num maxImpulse = step.dt * _maxTorque;
-    _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
-    impulse = _angularImpulse - oldImpulse;
+   final num oldImpulse = _angularImpulse;
+   final num maxImpulse = step.dt * _maxTorque;
+   _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
+   impulse = _angularImpulse - oldImpulse;
 
-    bodyA.angularVelocity -= bodyA.invInertia * impulse;
-    bodyB.angularVelocity += bodyB.invInertia * impulse;
-  }
+   bodyA.angularVelocity -= bodyA.invInertia * impulse;
+   bodyB.angularVelocity += bodyB.invInertia * impulse;
+ }
 
-  // Solve linear friction
-  {
-    Vector r1 = new Vector();
-    Vector r2 = new Vector();
+ // Solve linear friction
+ {
+   Vector r1 = new Vector();
+   Vector r2 = new Vector();
 
-    r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
-    r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+   r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
+   r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
+   Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
+   Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-    Vector temp = new Vector();
-    Vector Cdot = new Vector();
+   Vector temp = new Vector();
+   Vector Cdot = new Vector();
 
-    Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
-    Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
+   Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
+   Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
 
-    Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
+   Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
 
-    Matrix22 K = new Matrix22();
-    K.col1.x = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-    K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-    K.col2.x = K.col1.y;
-    K.col2.y = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+   Matrix22 K = new Matrix22();
+   K.col1.x = bodyA.invMass + bodyB.invMass +
+              bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
+   K.col1.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
+   K.col2.x = K.col1.y;
+   K.col2.y = bodyA.invMass + bodyB.invMass +
+              bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
 
-    Matrix22 linearMass = new Matrix22();
-    linearMass.setFrom(K);
-    linearMass.invertLocal();
+   Matrix22 linearMass = new Matrix22();
+   linearMass.setFrom(K);
+   linearMass.invertLocal();
 
-    Vector impulse = new Vector();
-    Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
-    impulse.negateLocal();
+   Vector impulse = new Vector();
+   Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
+   impulse.negateLocal();
 
-    Vector oldImpulse = new Vector();
-    oldImpulse.setFrom(_linearImpulse);
-    _linearImpulse.addLocal(impulse);
+   Vector oldImpulse = new Vector();
+   oldImpulse.setFrom(_linearImpulse);
+   _linearImpulse.addLocal(impulse);
 
-    num maxImpulse = step.dt * _maxForce;
-    if (_linearImpulse.lengthSquared &gt; maxImpulse * maxImpulse) {
-      _linearImpulse.normalize();
-      _linearImpulse.mulLocal(maxImpulse);
-    }
+   num maxImpulse = step.dt * _maxForce;
+   if (_linearImpulse.lengthSquared &gt; maxImpulse * maxImpulse) {
+     _linearImpulse.normalize();
+     _linearImpulse.mulLocal(maxImpulse);
+   }
 
-    impulse.setFrom(_linearImpulse).subLocal(oldImpulse);
+   impulse.setFrom(_linearImpulse).subLocal(oldImpulse);
 
-    bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
-    bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
-    bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
+   bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
+   bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
+   bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
 
-    bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
-    bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
-    bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
-  }
+   bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
+   bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
+   bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
+ }
 }
 </pre>
 </div>

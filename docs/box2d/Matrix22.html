@@ -32,137 +32,136 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A 2x2 matrix class.</p>
 <pre class="source">
 class Matrix22 {
-  Vector col1;
-  Vector col2;
+ Vector col1;
+ Vector col2;
 
-  /**
-   * Constructs a new Matrix. Defaults to both columns being default vectors.
-   */
-  Matrix22([Vector c1 = null, Vector c2 = null]) {
-    if (c1 == null) c1 = new Vector();
-    if (c2 == null) c2 = new Vector();
-    col1 = c1;
-    col2 = c2;
-  }
+ /**
+  * Constructs a new Matrix. Defaults to both columns being default vectors.
+  */
+ Matrix22([Vector c1 = null, Vector c2 = null]) {
+   if (c1 == null) c1 = new Vector();
+   if (c2 == null) c2 = new Vector();
+   col1 = c1;
+   col2 = c2;
+ }
 
-  /** Constructs a new Matrix22 representing an angle. */
-  Matrix22.fromAngle(num angle)
-      : col1 = new Vector(), col2 = new Vector() {
-    setAngle(angle);
-  }
+ /** Constructs a new Matrix22 representing an angle. */
+ Matrix22.fromAngle(num angle)
+     : col1 = new Vector(), col2 = new Vector() {
+   setAngle(angle);
+ }
 
-  /** Create a new Matrix equal to the given Matrix. */
-  Matrix22.copy(Matrix22 other)
-      : col1 = new Vector.copy(other.col1),
-        col2 = new Vector.copy(other.col2);
+ /** Create a new Matrix equal to the given Matrix. */
+ Matrix22.copy(Matrix22 other)
+     : col1 = new Vector.copy(other.col1),
+       col2 = new Vector.copy(other.col2);
 
-  /**
-   * Returns true if given object is a Matrix22 and its col1 and col2 are equal
-   * to the col1 and col2 of this Matrix22.
-   */
-  bool operator ==(other) {
-    return other is Matrix22 &amp;&amp; col1 == other.col1 &amp;&amp; col2 == other.col2;
-  }
+ /**
+  * Returns true if given object is a Matrix22 and its col1 and col2 are equal
+  * to the col1 and col2 of this Matrix22.
+  */
+ bool operator ==(other) {
+   return other is Matrix22 &amp;&amp; col1 == other.col1 &amp;&amp; col2 == other.col2;
+ }
 
-  /** Set as a matrix representing a rotation. */
-  void setAngle(num angle) {
-    num cosin = Math.cos(angle);
-    num sin = Math.sin(angle);
-    col1.setCoords(cosin, sin);
-    col2.setCoords(-sin, cosin);
-  }
+ /** Set as a matrix representing a rotation. */
+ void setAngle(num angle) {
+   num cosin = Math.cos(angle);
+   num sin = Math.sin(angle);
+   col1.setCoords(cosin, sin);
+   col2.setCoords(-sin, cosin);
+ }
 
-  /** Set as the identity matrix. */
-  void setIdentity() {
-    col1.setCoords(1, 0);
-    col2.setCoords(0, 1);
-  }
+ /** Set as the identity matrix. */
+ void setIdentity() {
+   col1.setCoords(1, 0);
+   col2.setCoords(0, 1);
+ }
 
-  /**
-   * Sets this matrix's columns equal to the given vectors, respectively.
-   */
-  void setFromColumns(Vector v1, Vector v2) {
-    col1.setFrom(v1);
-    col2.setFrom(v2);
-  }
+ /**
+  * Sets this matrix's columns equal to the given vectors, respectively.
+  */
+ void setFromColumns(Vector v1, Vector v2) {
+   col1.setFrom(v1);
+   col2.setFrom(v2);
+ }
 
-  /**
-   * Multiply this matrix by a vector. Return the result through the given out
-   * parameter.
-   */
-  void multiplyVectorToOut(Vector v, Vector out) {
-    num tempy = col1.y * v.x + col2.y * v.y;
-    out.x = col1.x * v.x + col2.x * v.y;
-    out.y = tempy;
-  }
+ /**
+  * Multiply this matrix by a vector. Return the result through the given out
+  * parameter.
+  */
+ void multiplyVectorToOut(Vector v, Vector out) {
+   num tempy = col1.y * v.x + col2.y * v.y;
+   out.x = col1.x * v.x + col2.x * v.y;
+   out.y = tempy;
+ }
 
-  /** Sets this matrix to be equal to the given matrix. */
-  void setFrom(Matrix22 matrix) {
-    col1.setFrom(matrix.col1);
-    col2.setFrom(matrix.col2);
-  }
+ /** Sets this matrix to be equal to the given matrix. */
+ void setFrom(Matrix22 matrix) {
+   col1.setFrom(matrix.col1);
+   col2.setFrom(matrix.col2);
+ }
 
-  /**
-   * Multiply the given vector by the transpose of the given matrix and store
-   * the result in the given parameter out.
-   */
-  static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-      Vector out) {
-    num outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
-    out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
-    out.x = outx;
-  }
+ /**
+  * Multiply the given vector by the transpose of the given matrix and store
+  * the result in the given parameter out.
+  */
+ static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
+     Vector out) {
+   num outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
+   out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
+   out.x = outx;
+ }
 
-  /**
-   * Multiply the given vector by the given matrix and store
-   * the result in the given parameter out.
-   */
-  static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-      Vector out) {
-    num tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
-    out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
-    out.y = tempy;
-  }
+ /**
+  * Multiply the given vector by the given matrix and store
+  * the result in the given parameter out.
+  */
+ static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
+     Vector out) {
+   num tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
+   out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
+   out.y = tempy;
+ }
 
-  /** Inverts this Matrix. */
-  Matrix22 invertLocal() {
-    num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
-    num det = a * d - b * c;
-    if (det != 0) {
-      det = 1.0 / det;
-    }
-    col1.x = det * d;
-    col2.x = -det * b;
-    col1.y = -det * c;
-    col2.y = det * a;
-    return this;
-  }
+ /** Inverts this Matrix. */
+ Matrix22 invertLocal() {
+   num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
+   num det = a * d - b * c;
+   if (det != 0) {
+     det = 1.0 / det;
+   }
+   col1.x = det * d;
+   col2.x = -det * b;
+   col1.y = -det * c;
+   col2.y = det * a;
+   return this;
+ }
 
-  /** Adds the given matrix to this matrix. Returns this matrix. */
-  Matrix22 addLocal(Matrix22 other) {
-    col1.x += other.col1.x;
-    col1.y += other.col1.y;
-    col2.x += other.col2.x;
-    col2.y += other.col2.y;
-    return this;
-  }
+ /** Adds the given matrix to this matrix. Returns this matrix. */
+ Matrix22 addLocal(Matrix22 other) {
+   col1.x += other.col1.x;
+   col1.y += other.col1.y;
+   col2.x += other.col2.x;
+   col2.y += other.col2.y;
+   return this;
+ }
 
-  void solveToOut(Vector b, Vector out) {
-    num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-    num det = a11 * a22 - a12 * a21;
-    if (det != 0.0){
-      det = 1.0 / det;
-    }
-    final num tempy =  det * (a11 * b.y - a21 * b.x) ;
-    out.x = det * (a22 * b.x - a12 * b.y);
-    out.y = tempy;
-  }
+ void solveToOut(Vector b, Vector out) {
+   num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+   num det = a11 * a22 - a12 * a21;
+   if (det != 0.0){
+     det = 1.0 / det;
+   }
+   final num tempy =  det * (a11 * b.y - a21 * b.x) ;
+   out.x = det * (a22 * b.x - a12 * b.y);
+   out.y = tempy;
+ }
 
-  /** Returns a String showing this matrix values. */
-  String toString() =&gt; "$col1, $col2";
+ /** Returns a String showing this matrix values. */
+ String toString() =&gt; "$col1, $col2";
 }
 </pre>
 </div>
@@ -177,10 +176,10 @@ void <strong>mulTransMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.ht
 the result in the given parameter out.</p>
 <pre class="source">
 static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-    Vector out) {
-  num outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
-  out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
-  out.x = outx;
+   Vector out) {
+ num outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
+ out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
+ out.x = outx;
 }
 </pre>
 </div>
@@ -194,10 +193,10 @@ void <strong>mulMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.html">M
 the result in the given parameter out.</p>
 <pre class="source">
 static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-    Vector out) {
-  num tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
-  out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
-  out.y = tempy;
+   Vector out) {
+ num tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
+ out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
+ out.y = tempy;
 }
 </pre>
 </div>
@@ -213,10 +212,10 @@ new <strong>Matrix22</strong>([<a href="../box2d/Vector.html">Vector</a> c1 = nu
 <p>Constructs a new Matrix. Defaults to both columns being default vectors.</p>
 <pre class="source">
 Matrix22([Vector c1 = null, Vector c2 = null]) {
-  if (c1 == null) c1 = new Vector();
-  if (c2 == null) c2 = new Vector();
-  col1 = c1;
-  col2 = c2;
+ if (c1 == null) c1 = new Vector();
+ if (c2 == null) c2 = new Vector();
+ col1 = c1;
+ col2 = c2;
 }
 </pre>
 </div>
@@ -229,8 +228,8 @@ new <strong>Matrix22.copy</strong>(<a href="../box2d/Matrix22.html">Matrix22</a>
 <p>Create a new Matrix equal to the given Matrix.</p>
 <pre class="source">
 Matrix22.copy(Matrix22 other)
-    : col1 = new Vector.copy(other.col1),
-      col2 = new Vector.copy(other.col2);
+   : col1 = new Vector.copy(other.col1),
+     col2 = new Vector.copy(other.col2);
 </pre>
 </div>
 </div>
@@ -242,8 +241,8 @@ new <strong>Matrix22.fromAngle</strong>(num angle) <a class="anchor-link" href="
 <p>Constructs a new Matrix22 representing an angle.</p>
 <pre class="source">
 Matrix22.fromAngle(num angle)
-    : col1 = new Vector(), col2 = new Vector() {
-  setAngle(angle);
+   : col1 = new Vector(), col2 = new Vector() {
+ setAngle(angle);
 }
 </pre>
 </div>
@@ -287,7 +286,7 @@ bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
 to the col1 and col2 of this Matrix22.</p>
 <pre class="source">
 bool operator ==(other) {
-  return other is Matrix22 &amp;&amp; col1 == other.col1 &amp;&amp; col2 == other.col2;
+ return other is Matrix22 &amp;&amp; col1 == other.col1 &amp;&amp; col2 == other.col2;
 }
 </pre>
 </div>
@@ -303,11 +302,11 @@ bool operator ==(other) {
 <p>Adds the given matrix to this matrix. Returns this matrix.</p>
 <pre class="source">
 Matrix22 addLocal(Matrix22 other) {
-  col1.x += other.col1.x;
-  col1.y += other.col1.y;
-  col2.x += other.col2.x;
-  col2.y += other.col2.y;
-  return this;
+ col1.x += other.col1.x;
+ col1.y += other.col1.y;
+ col2.x += other.col2.x;
+ col2.y += other.col2.y;
+ return this;
 }
 </pre>
 </div>
@@ -320,16 +319,16 @@ Matrix22 addLocal(Matrix22 other) {
 <p>Inverts this Matrix.</p>
 <pre class="source">
 Matrix22 invertLocal() {
-  num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
-  num det = a * d - b * c;
-  if (det != 0) {
-    det = 1.0 / det;
-  }
-  col1.x = det * d;
-  col2.x = -det * b;
-  col1.y = -det * c;
-  col2.y = det * a;
-  return this;
+ num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
+ num det = a * d - b * c;
+ if (det != 0) {
+   det = 1.0 / det;
+ }
+ col1.x = det * d;
+ col2.x = -det * b;
+ col1.y = -det * c;
+ col2.y = det * a;
+ return this;
 }
 </pre>
 </div>
@@ -343,9 +342,9 @@ void <strong>multiplyVectorToOut</strong>(<a href="../box2d/Vector.html">Vector<
 parameter.</p>
 <pre class="source">
 void multiplyVectorToOut(Vector v, Vector out) {
-  num tempy = col1.y * v.x + col2.y * v.y;
-  out.x = col1.x * v.x + col2.x * v.y;
-  out.y = tempy;
+ num tempy = col1.y * v.x + col2.y * v.y;
+ out.x = col1.x * v.x + col2.x * v.y;
+ out.y = tempy;
 }
 </pre>
 </div>
@@ -358,10 +357,10 @@ void <strong>setAngle</strong>(num angle) <a class="anchor-link" href="#setAngle
 <p>Set as a matrix representing a rotation.</p>
 <pre class="source">
 void setAngle(num angle) {
-  num cosin = Math.cos(angle);
-  num sin = Math.sin(angle);
-  col1.setCoords(cosin, sin);
-  col2.setCoords(-sin, cosin);
+ num cosin = Math.cos(angle);
+ num sin = Math.sin(angle);
+ col1.setCoords(cosin, sin);
+ col2.setCoords(-sin, cosin);
 }
 </pre>
 </div>
@@ -374,8 +373,8 @@ void <strong>setFrom</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matr
 <p>Sets this matrix to be equal to the given matrix.</p>
 <pre class="source">
 void setFrom(Matrix22 matrix) {
-  col1.setFrom(matrix.col1);
-  col2.setFrom(matrix.col2);
+ col1.setFrom(matrix.col1);
+ col2.setFrom(matrix.col2);
 }
 </pre>
 </div>
@@ -388,8 +387,8 @@ void <strong>setFromColumns</strong>(<a href="../box2d/Vector.html">Vector</a> v
 <p>Sets this matrix's columns equal to the given vectors, respectively.</p>
 <pre class="source">
 void setFromColumns(Vector v1, Vector v2) {
-  col1.setFrom(v1);
-  col2.setFrom(v2);
+ col1.setFrom(v1);
+ col2.setFrom(v2);
 }
 </pre>
 </div>
@@ -402,8 +401,8 @@ void <strong>setIdentity</strong>() <a class="anchor-link" href="#setIdentity"
 <p>Set as the identity matrix.</p>
 <pre class="source">
 void setIdentity() {
-  col1.setCoords(1, 0);
-  col2.setCoords(0, 1);
+ col1.setCoords(1, 0);
+ col2.setCoords(0, 1);
 }
 </pre>
 </div>
@@ -415,14 +414,14 @@ void <strong>solveToOut</strong>(<a href="../box2d/Vector.html">Vector</a> b, <a
 <div class="doc">
 <pre class="source">
 void solveToOut(Vector b, Vector out) {
-  num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-  num det = a11 * a22 - a12 * a21;
-  if (det != 0.0){
-    det = 1.0 / det;
-  }
-  final num tempy =  det * (a11 * b.y - a21 * b.x) ;
-  out.x = det * (a22 * b.x - a12 * b.y);
-  out.y = tempy;
+ num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+ num det = a11 * a22 - a12 * a21;
+ if (det != 0.0){
+   det = 1.0 / det;
+ }
+ final num tempy =  det * (a11 * b.y - a21 * b.x) ;
+ out.x = det * (a22 * b.x - a12 * b.y);
+ out.y = tempy;
 }
 </pre>
 </div>

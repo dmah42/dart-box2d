@@ -32,70 +32,69 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A distance proxy is used by the GJK algorithm. It encapsulates any shape.</p>
 <pre class="source">
 class DistanceProxy {
-  final List&lt;Vector&gt; vertices;
-  int count;
-  num radius;
+ final List&lt;Vector&gt; vertices;
+ int count;
+ num radius;
 
-  /**
-   * Constructs a new DistanceProxy.
-   */
-  DistanceProxy() :
-    vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-    count = 0,
-    radius = 0 {
+ /**
+  * Constructs a new DistanceProxy.
+  */
+ DistanceProxy() :
+   vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
+   count = 0,
+   radius = 0 {
 
-      for(int i = 0; i &lt; vertices.length; ++i)
-        vertices[i] = new Vector();
-    }
+     for(int i = 0; i &lt; vertices.length; ++i)
+       vertices[i] = new Vector();
+   }
 
-  /**
-   * Initialize the proxy using the given shape. The shape
-   * must remain in scope while the proxy is in use.
-   */
-  void setFromShape(shape) {
-    // If the shape is a circle...
-    if (shape.type == ShapeType.CIRCLE) {
-      vertices[0].setFrom(shape.position);
-      count = 1;
-      radius = shape.radius;
+ /**
+  * Initialize the proxy using the given shape. The shape
+  * must remain in scope while the proxy is in use.
+  */
+ void setFromShape(shape) {
+   // If the shape is a circle...
+   if (shape.type == ShapeType.CIRCLE) {
+     vertices[0].setFrom(shape.position);
+     count = 1;
+     radius = shape.radius;
 
-      // If the shape is a polygon...
-    } else if (shape.type == ShapeType.POLYGON) {
-      count = shape.vertexCount;
-      radius = shape.radius;
-      for(int i = 0; i &lt; count; i++) {
-        vertices[i].setFrom(shape.vertices[i]);
-      }
-    } else {
-      // Should always be a circle or a polygon.
-      assert(false);
-    }
-  }
+     // If the shape is a polygon...
+   } else if (shape.type == ShapeType.POLYGON) {
+     count = shape.vertexCount;
+     radius = shape.radius;
+     for(int i = 0; i &lt; count; i++) {
+       vertices[i].setFrom(shape.vertices[i]);
+     }
+   } else {
+     // Should always be a circle or a polygon.
+     assert(false);
+   }
+ }
 
-  /**
-   * Get the supporting vertex index in the given direction.
-   */
-  int getSupport(Vector direction) {
-    int bestIndex = 0;
-    num bestValue = Vector.dot(vertices[0], direction);
-    for (int i = 1; i &lt; count; ++i) {
-      num value = Vector.dot(vertices[i], direction);
-      if(value &gt; bestValue) {
-        bestIndex = i;
-        bestValue = value;
-      }
-    }
+ /**
+  * Get the supporting vertex index in the given direction.
+  */
+ int getSupport(Vector direction) {
+   int bestIndex = 0;
+   num bestValue = Vector.dot(vertices[0], direction);
+   for (int i = 1; i &lt; count; ++i) {
+     num value = Vector.dot(vertices[i], direction);
+     if(value &gt; bestValue) {
+       bestIndex = i;
+       bestValue = value;
+     }
+   }
 
-    return bestIndex;
-  }
+   return bestIndex;
+ }
 
-  /**
-   * Get the supporting vertex in the given direction.
-   */
-  Vector getSupportVertex(Vector direction) =&gt; vertices[getSupport(direction)];
+ /**
+  * Get the supporting vertex in the given direction.
+  */
+ Vector getSupportVertex(Vector direction) =&gt; vertices[getSupport(direction)];
 }
 </pre>
 </div>
@@ -109,13 +108,13 @@ new <strong>DistanceProxy</strong>() <a class="anchor-link" href="#DistanceProxy
 <p>Constructs a new DistanceProxy.</p>
 <pre class="source">
 DistanceProxy() :
-  vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
-  count = 0,
-  radius = 0 {
+ vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
+ count = 0,
+ radius = 0 {
 
-    for(int i = 0; i &lt; vertices.length; ++i)
-      vertices[i] = new Vector();
-  }
+   for(int i = 0; i &lt; vertices.length; ++i)
+     vertices[i] = new Vector();
+ }
 </pre>
 </div>
 </div>
@@ -169,17 +168,17 @@ int <strong>getSupport</strong>(<a href="../box2d/Vector.html">Vector</a> direct
 <p>Get the supporting vertex index in the given direction.</p>
 <pre class="source">
 int getSupport(Vector direction) {
-  int bestIndex = 0;
-  num bestValue = Vector.dot(vertices[0], direction);
-  for (int i = 1; i &lt; count; ++i) {
-    num value = Vector.dot(vertices[i], direction);
-    if(value &gt; bestValue) {
-      bestIndex = i;
-      bestValue = value;
-    }
-  }
+ int bestIndex = 0;
+ num bestValue = Vector.dot(vertices[0], direction);
+ for (int i = 1; i &lt; count; ++i) {
+   num value = Vector.dot(vertices[i], direction);
+   if(value &gt; bestValue) {
+     bestIndex = i;
+     bestValue = value;
+   }
+ }
 
-  return bestIndex;
+ return bestIndex;
 }
 </pre>
 </div>
@@ -204,23 +203,23 @@ void <strong>setFromShape</strong>(shape) <a class="anchor-link" href="#setFromS
 must remain in scope while the proxy is in use.</p>
 <pre class="source">
 void setFromShape(shape) {
-  // If the shape is a circle...
-  if (shape.type == ShapeType.CIRCLE) {
-    vertices[0].setFrom(shape.position);
-    count = 1;
-    radius = shape.radius;
+ // If the shape is a circle...
+ if (shape.type == ShapeType.CIRCLE) {
+   vertices[0].setFrom(shape.position);
+   count = 1;
+   radius = shape.radius;
 
-    // If the shape is a polygon...
-  } else if (shape.type == ShapeType.POLYGON) {
-    count = shape.vertexCount;
-    radius = shape.radius;
-    for(int i = 0; i &lt; count; i++) {
-      vertices[i].setFrom(shape.vertices[i]);
-    }
-  } else {
-    // Should always be a circle or a polygon.
-    assert(false);
-  }
+   // If the shape is a polygon...
+ } else if (shape.type == ShapeType.POLYGON) {
+   count = shape.vertexCount;
+   radius = shape.radius;
+   for(int i = 0; i &lt; count; i++) {
+     vertices[i].setFrom(shape.vertices[i]);
+   }
+ } else {
+   // Should always be a circle or a polygon.
+   assert(false);
+ }
 }
 </pre>
 </div>

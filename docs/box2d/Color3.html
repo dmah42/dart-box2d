@@ -32,41 +32,40 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Similar to javax.vecmath.Color3 holder.</p>
 <pre class="source">
 class Color3 {
-  int x;
-  int y;
-  int z;
+ int x;
+ int y;
+ int z;
 
-  Color3() : x = 0, y = 0, z = 0;
-  Color3.fromRGB(int r, int g, int b) : x = r, y = g, z = b;
-  Color3.fromRGBF(double r, double g, double b)
-      : x = (r * 255).floor().toInt(),
-        y = (g * 255).floor().toInt(),
-        z = (b * 255).floor().toInt();
-  Color3.fromColor3(Color3 color)
-      : x = color.x, y = color.y, z = color.z;
+ Color3() : x = 0, y = 0, z = 0;
+ Color3.fromRGB(int r, int g, int b) : x = r, y = g, z = b;
+ Color3.fromRGBF(double r, double g, double b)
+     : x = (r * 255).floor().toInt(),
+       y = (g * 255).floor().toInt(),
+       z = (b * 255).floor().toInt();
+ Color3.fromColor3(Color3 color)
+     : x = color.x, y = color.y, z = color.z;
 
-  void setFromRGB(int r, int g, int b) {
-    x = r; y = g; z = b;
-  }
+ void setFromRGB(int r, int g, int b) {
+   x = r; y = g; z = b;
+ }
 
-  void setFromRGBF(double r, double g, double b) {
-    x = (r * 255).floor().toInt();
-    y = (g * 255).floor().toInt();
-    z = (b * 255).floor().toInt();
-  }
+ void setFromRGBF(double r, double g, double b) {
+   x = (r * 255).floor().toInt();
+   y = (g * 255).floor().toInt();
+   z = (b * 255).floor().toInt();
+ }
 
-  void setFromColor3(Color3 color) {
-    x = color.x;
-    y = color.y;
-    z = color.z;
-  }
+ void setFromColor3(Color3 color) {
+   x = color.x;
+   y = color.y;
+   z = color.z;
+ }
 
-  bool operator ==(final other) {
-    return other is Color3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
-  }
+ bool operator ==(final other) {
+   return other is Color3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+ }
 }
 </pre>
 </div>
@@ -89,7 +88,7 @@ new <strong>Color3.fromColor3</strong>(<a href="../box2d/Color3.html">Color3</a>
 <div class="doc">
 <pre class="source">
 Color3.fromColor3(Color3 color)
-    : x = color.x, y = color.y, z = color.z;
+   : x = color.x, y = color.y, z = color.z;
 </pre>
 </div>
 </div>
@@ -110,9 +109,9 @@ new <strong>Color3.fromRGBF</strong>(double r, double g, double b) <a class="anc
 <div class="doc">
 <pre class="source">
 Color3.fromRGBF(double r, double g, double b)
-    : x = (r * 255).floor().toInt(),
-      y = (g * 255).floor().toInt(),
-      z = (b * 255).floor().toInt();
+   : x = (r * 255).floor().toInt(),
+     y = (g * 255).floor().toInt(),
+     z = (b * 255).floor().toInt();
 </pre>
 </div>
 </div>
@@ -173,7 +172,7 @@ the <code>hashCode</code> method as well to maintain consistency.</p>
 <div class="docs-inherited-from">docs inherited from Object </div></div>
 <pre class="source">
 bool operator ==(final other) {
-  return other is Color3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+ return other is Color3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
 }
 </pre>
 </div>
@@ -188,9 +187,9 @@ void <strong>setFromColor3</strong>(<a href="../box2d/Color3.html">Color3</a> co
 <div class="doc">
 <pre class="source">
 void setFromColor3(Color3 color) {
-  x = color.x;
-  y = color.y;
-  z = color.z;
+ x = color.x;
+ y = color.y;
+ z = color.z;
 }
 </pre>
 </div>
@@ -202,7 +201,7 @@ void <strong>setFromRGB</strong>(int r, int g, int b) <a class="anchor-link" hre
 <div class="doc">
 <pre class="source">
 void setFromRGB(int r, int g, int b) {
-  x = r; y = g; z = b;
+ x = r; y = g; z = b;
 }
 </pre>
 </div>
@@ -214,9 +213,9 @@ void <strong>setFromRGBF</strong>(double r, double g, double b) <a class="anchor
 <div class="doc">
 <pre class="source">
 void setFromRGBF(double r, double g, double b) {
-  x = (r * 255).floor().toInt();
-  y = (g * 255).floor().toInt();
-  z = (b * 255).floor().toInt();
+ x = (r * 255).floor().toInt();
+ y = (g * 255).floor().toInt();
+ z = (b * 255).floor().toInt();
 }
 </pre>
 </div>

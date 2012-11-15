@@ -34,33 +34,33 @@
 <div class="doc">
 <pre class="source">
 class FrictionJointDef extends JointDef {
-  /** The local anchor point relative to bodyA's origin. */
-  final Vector localAnchorA;
+ /** The local anchor point relative to bodyA's origin. */
+ final Vector localAnchorA;
 
-  /** The local anchor point relative to bodyB's origin. */
-  final Vector localAnchorB;
+ /** The local anchor point relative to bodyB's origin. */
+ final Vector localAnchorB;
 
-  /** The maximum friction force in N. */
-  num maxForce;
+ /** The maximum friction force in N. */
+ num maxForce;
 
-  /** The maximum friction torque in N-m. */
-  num maxTorque;
+ /** The maximum friction torque in N-m. */
+ num maxTorque;
 
-  FrictionJointDef()
-      : super(),
-        localAnchorA = new Vector(0.0, 0.0),
-        localAnchorB = new Vector(0.0, 0.0),
-        maxForce = 0.0,
-        maxTorque = 0.0 {
-    type = JointType.FRICTION;
-  }
+ FrictionJointDef()
+     : super(),
+       localAnchorA = new Vector(0.0, 0.0),
+       localAnchorB = new Vector(0.0, 0.0),
+       maxForce = 0.0,
+       maxTorque = 0.0 {
+   type = JointType.FRICTION;
+ }
 
-  void initialize(Body bA, Body bB, Vector anchor) {
-    bodyA = bA;
-    bodyB = bB;
-    bA.getLocalPointToOut(anchor, localAnchorA);
-    bB.getLocalPointToOut(anchor, localAnchorB);
-  }
+ void initialize(Body bA, Body bB, Vector anchor) {
+   bodyA = bA;
+   bodyB = bB;
+   bA.getLocalPointToOut(anchor, localAnchorA);
+   bB.getLocalPointToOut(anchor, localAnchorB);
+ }
 }
 </pre>
 </div>
@@ -76,12 +76,12 @@ new <strong>FrictionJointDef</strong>() <a class="anchor-link" href="#FrictionJo
 <div class="doc">
 <pre class="source">
 FrictionJointDef()
-    : super(),
-      localAnchorA = new Vector(0.0, 0.0),
-      localAnchorB = new Vector(0.0, 0.0),
-      maxForce = 0.0,
-      maxTorque = 0.0 {
-  type = JointType.FRICTION;
+   : super(),
+     localAnchorA = new Vector(0.0, 0.0),
+     localAnchorB = new Vector(0.0, 0.0),
+     maxForce = 0.0,
+     maxTorque = 0.0 {
+ type = JointType.FRICTION;
 }
 </pre>
 </div>
@@ -216,10 +216,10 @@ void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> bA, <a hr
 <div class="doc">
 <pre class="source">
 void initialize(Body bA, Body bB, Vector anchor) {
-  bodyA = bA;
-  bodyB = bB;
-  bA.getLocalPointToOut(anchor, localAnchorA);
-  bB.getLocalPointToOut(anchor, localAnchorB);
+ bodyA = bA;
+ bodyB = bB;
+ bA.getLocalPointToOut(anchor, localAnchorA);
+ bB.getLocalPointToOut(anchor, localAnchorB);
 }
 </pre>
 </div>

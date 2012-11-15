@@ -2,19 +2,19 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>CanvasViewportTransform class / box2d_html Library / Dart Documentation</title>
+        <title>CanvasViewportTransform class / box2d_browser Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
-        <body data-library="box2d_html" data-type="CanvasViewportTransform">
+        <body data-library="box2d_browser" data-type="CanvasViewportTransform">
         <div class="page">
         <div class="header">
           <a href="../index.html"><div class="logo"></div></a>
           <a href="../index.html">Dart Documentation</a>
-         &rsaquo; <a href="../box2d_html.html">box2d_html</a> &rsaquo; <a href="../box2d_html/CanvasViewportTransform.html">CanvasViewportTransform</a>        <div id="search-box">
+         &rsaquo; <a href="../box2d_browser.html">box2d_browser</a> &rsaquo; <a href="../box2d_browser/CanvasViewportTransform.html">CanvasViewportTransform</a>        <div id="search-box">
           <input type="search" name="q" id="q" autocomplete="off"
               class="search-input" placeholder="Search API">
         </div>
@@ -32,38 +32,36 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Transform for drawing using a canvas context. Y-flip is permenantly set
-to true.</p>
 <pre class="source">
 class CanvasViewportTransform extends IViewportTransform {
-  static const int DEFAULT_DRAWING_SCALE = 20;
+ static const int DEFAULT_DRAWING_SCALE = 20;
 
-  /**
-   * Constructs a new viewport transform with the default scale.
-   */
-  CanvasViewportTransform(Vector _extents, Vector _center) :
-    super(_extents, _center, DEFAULT_DRAWING_SCALE) {
-    yFlip = true;
-  }
+ /**
+  * Constructs a new viewport transform with the default scale.
+  */
+ CanvasViewportTransform(Vector _extents, Vector _center) :
+   super(_extents, _center, DEFAULT_DRAWING_SCALE) {
+   yFlip = true;
+ }
 
-  /**
-   * Sets the rendering context such that all drawing commands given in terms
-   * of the world coordinate system will display correctly on the canvas screen.
-   */
-  void updateTransformation(CanvasRenderingContext2D ctx) {
-    // Clear all previous transformation.
-    ctx.setTransform(1,0,0,1,0,0);
+ /**
+  * Sets the rendering context such that all drawing commands given in terms
+  * of the world coordinate system will display correctly on the canvas screen.
+  */
+ void updateTransformation(CanvasRenderingContext2D ctx) {
+   // Clear all previous transformation.
+   ctx.setTransform(1,0,0,1,0,0);
 
-    // Translate to the center of the canvas screen. This will be considered the
-    // actual origin.
-    ctx.translate(extents.x, extents.y);
+   // Translate to the center of the canvas screen. This will be considered the
+   // actual origin.
+   ctx.translate(extents.x, extents.y);
 
-    // Translate to account for the currently applied translation.
-    ctx.translate(translation.x, translation.y);
+   // Translate to account for the currently applied translation.
+   ctx.translate(translation.x, translation.y);
 
-    // Scale everything according to the current scale and mirror the y-axis.
-    ctx.scale(scale, -scale);
-  }
+   // Scale everything according to the current scale and mirror the y-axis.
+   ctx.scale(scale, -scale);
+ }
 
 }
 </pre>
@@ -96,8 +94,8 @@ new <strong>CanvasViewportTransform</strong>(<a href="../box2d/Vector.html">Vect
 <p>Constructs a new viewport transform with the default scale.</p>
 <pre class="source">
 CanvasViewportTransform(Vector _extents, Vector _center) :
-  super(_extents, _center, DEFAULT_DRAWING_SCALE) {
-  yFlip = true;
+ super(_extents, _center, DEFAULT_DRAWING_SCALE) {
+ yFlip = true;
 }
 </pre>
 </div>
@@ -160,15 +158,15 @@ example, if the actual canvas center is (5, 5) but the current center is
 (6, 6), the translation is (1, 1).</p>
 <pre class="source">
 Vector get translation {
-  Vector result = new Vector.copy(extents);
-  result.subLocal(center);
-  return result;
+ Vector result = new Vector.copy(extents);
+ result.subLocal(center);
+ return result;
 }
 </pre>
 <pre class="source">
 void set translation(Vector translation) {
-  center.setFrom(extents);
-  center.subLocal(translation);
+ center.setFrom(extents);
+ center.subLocal(translation);
 }
 </pre>
 </div>
@@ -199,12 +197,12 @@ corresponding world coordinates in argWorld. It should be safe
 to give the same object as both parameters.</p>
 <pre class="source">
 void getScreenToWorld(Vector argScreen, Vector argWorld) {
-  num translationCorrectedX = argScreen.x - translation.x;
-  num translationCorrectedY = argScreen.y + translation.y;
+ num translationCorrectedX = argScreen.x - translation.x;
+ num translationCorrectedY = argScreen.y + translation.y;
 
-  num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
-  num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-  argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+ num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+ num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+ argWorld.setCoords(gridCorrectedX, gridCorrectedY);
 }
 </pre>
 </div>
@@ -219,13 +217,13 @@ screen coordinate in argScreen.  It should be safe to give the
 same object as both parameters.</p>
 <pre class="source">
 void getWorldToScreen(Vector argWorld, Vector argScreen) {
-  // Correct for canvas considering the upper-left corner, rather than the
-  // center, to be the origin.
-  num gridCorrectedX = (argWorld.x * scale) + extents.x;
-  num gridCorrectedY = extents.y - (argWorld.y * scale);
+ // Correct for canvas considering the upper-left corner, rather than the
+ // center, to be the origin.
+ num gridCorrectedX = (argWorld.x * scale) + extents.x;
+ num gridCorrectedY = extents.y - (argWorld.y * scale);
 
-  argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
-      -translation.y);
+ argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+     -translation.y);
 }
 </pre>
 </div>
@@ -239,8 +237,8 @@ void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href
 and using the given scale.</p>
 <pre class="source">
 void setCamera(num x, num y, num s) {
-  center.setCoords(x, y);
-  scale = s;
+ center.setCoords(x, y);
+ scale = s;
 }
 </pre>
 </div>
@@ -254,18 +252,18 @@ void <strong>updateTransformation</strong>(CanvasRenderingContext2D ctx) <a clas
 of the world coordinate system will display correctly on the canvas screen.</p>
 <pre class="source">
 void updateTransformation(CanvasRenderingContext2D ctx) {
-  // Clear all previous transformation.
-  ctx.setTransform(1,0,0,1,0,0);
+ // Clear all previous transformation.
+ ctx.setTransform(1,0,0,1,0,0);
 
-  // Translate to the center of the canvas screen. This will be considered the
-  // actual origin.
-  ctx.translate(extents.x, extents.y);
+ // Translate to the center of the canvas screen. This will be considered the
+ // actual origin.
+ ctx.translate(extents.x, extents.y);
 
-  // Translate to account for the currently applied translation.
-  ctx.translate(translation.x, translation.y);
+ // Translate to account for the currently applied translation.
+ ctx.translate(translation.x, translation.y);
 
-  // Scale everything according to the current scale and mirror the y-axis.
-  ctx.scale(scale, -scale);
+ // Scale everything according to the current scale and mirror the y-axis.
+ ctx.scale(scale, -scale);
 }
 </pre>
 </div>

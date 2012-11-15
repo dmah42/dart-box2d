@@ -32,32 +32,28 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A contact edge connects bodies and contacts together in a contact graph. Each
-body is a node in the graph and each contact is an edge. A contact edge is a
-part of a doubly linked list that is maintained in each attached body. Each
-contact has two contact nodes, one for each attached body.</p>
 <pre class="source">
 class ContactEdge {
-  /** The other body attached to the edge. */
-  Body other;
+ /** The other body attached to the edge. */
+ Body other;
 
-  /** The contact. */
-  Contact contact;
+ /** The contact. */
+ Contact contact;
 
-  /** The previous contact edge in the body's contact list. */
-  ContactEdge prev;
+ /** The previous contact edge in the body's contact list. */
+ ContactEdge prev;
 
-  /** The next contact edge in the body's contact list. */
-  ContactEdge next;
+ /** The next contact edge in the body's contact list. */
+ ContactEdge next;
 
-  /**
-   * Constructs a new ContactEdge with all fields set to null.
-   */
-  ContactEdge() :
-    other = null,
-    contact = null,
-    prev = null,
-    next = null {}
+ /**
+  * Constructs a new ContactEdge with all fields set to null.
+  */
+ ContactEdge() :
+   other = null,
+   contact = null,
+   prev = null,
+   next = null {}
 }
 </pre>
 </div>
@@ -71,10 +67,10 @@ new <strong>ContactEdge</strong>() <a class="anchor-link" href="#ContactEdge"
 <p>Constructs a new ContactEdge with all fields set to null.</p>
 <pre class="source">
 ContactEdge() :
-  other = null,
-  contact = null,
-  prev = null,
-  next = null {}
+ other = null,
+ contact = null,
+ prev = null,
+ next = null {}
 </pre>
 </div>
 </div>

@@ -2,7 +2,7 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>ContactCreator interface / box2d Library / Dart Documentation</title>
+        <title>ContactCreator abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
@@ -27,40 +27,31 @@
 </div>
 <div class="content">
         <h2><strong>ContactCreator</strong>
-          interface
+          abstract class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
 <pre class="source">
-interface ContactCreator {
-  Contact contactCreateFcn(DefaultWorldPool argPool, Fixture fixtureA,
-      Fixture fixtureB);
-  void contactDestroyFcn(DefaultWorldPool argPool, Contact contact);
+abstract class ContactCreator {
+ Contact contactCreateFcn(DefaultWorldPool argPool, Fixture fixtureA,
+     Fixture fixtureB);
+ void contactDestroyFcn(DefaultWorldPool argPool, Contact contact);
 }
 </pre>
 </div>
 <div>
 <h3>Methods</h3>
 <div class="method"><h4 id="contactCreateFcn">
-<button class="show-code">Code</button>
-<a href="../box2d/Contact.html">Contact</a> <strong>contactCreateFcn</strong>(<a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool, <a href="../box2d/Fixture.html">Fixture</a> fixtureA, <a href="../box2d/Fixture.html">Fixture</a> fixtureB) <a class="anchor-link" href="#contactCreateFcn"
+abstract <a href="../box2d/Contact.html">Contact</a> <strong>contactCreateFcn</strong>(<a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool, <a href="../box2d/Fixture.html">Fixture</a> fixtureA, <a href="../box2d/Fixture.html">Fixture</a> fixtureB) <a class="anchor-link" href="#contactCreateFcn"
               title="Permalink to ContactCreator.contactCreateFcn">#</a></h4>
 <div class="doc">
-<pre class="source">
-Contact contactCreateFcn(DefaultWorldPool argPool, Fixture fixtureA,
-    Fixture fixtureB);
-</pre>
 </div>
 </div>
 <div class="method"><h4 id="contactDestroyFcn">
-<button class="show-code">Code</button>
-void <strong>contactDestroyFcn</strong>(<a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool, <a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#contactDestroyFcn"
+abstract void <strong>contactDestroyFcn</strong>(<a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool, <a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#contactDestroyFcn"
               title="Permalink to ContactCreator.contactDestroyFcn">#</a></h4>
 <div class="doc">
-<pre class="source">
-void contactDestroyFcn(DefaultWorldPool argPool, Contact contact);
-</pre>
 </div>
 </div>
 </div>

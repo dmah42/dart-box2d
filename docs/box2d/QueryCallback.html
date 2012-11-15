@@ -2,7 +2,7 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>QueryCallback interface / box2d Library / Dart Documentation</title>
+        <title>QueryCallback abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
@@ -27,34 +27,29 @@
 </div>
 <div class="content">
         <h2><strong>QueryCallback</strong>
-          interface
+          abstract class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Callback class for AABB queries. See method "query" in <a class="crossref" href="../box2d/World.html">World</a>.</p>
 <pre class="source">
-interface QueryCallback {
-  /**
-   * Called for each fixture found in the query AABB.
-   * return false to terminate the query.
-   */
-  bool reportFixture(Fixture fixture);
+abstract class QueryCallback {
+ /**
+  * Called for each fixture found in the query AABB.
+  * return false to terminate the query.
+  */
+ bool reportFixture(Fixture fixture);
 }
 </pre>
 </div>
 <div>
 <h3>Methods</h3>
 <div class="method"><h4 id="reportFixture">
-<button class="show-code">Code</button>
-bool <strong>reportFixture</strong>(<a href="../box2d/Fixture.html">Fixture</a> fixture) <a class="anchor-link" href="#reportFixture"
+abstract bool <strong>reportFixture</strong>(<a href="../box2d/Fixture.html">Fixture</a> fixture) <a class="anchor-link" href="#reportFixture"
               title="Permalink to QueryCallback.reportFixture">#</a></h4>
 <div class="doc">
 <p>Called for each fixture found in the query AABB.
 return false to terminate the query.</p>
-<pre class="source">
-bool reportFixture(Fixture fixture);
-</pre>
 </div>
 </div>
 </div>

@@ -32,40 +32,39 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Joint definitions are used to construct joints.</p>
 <pre class="source">
 class JointDef {
-  JointDef() :
-    type = JointType.UNKNOWN,
-    userData = null,
-    bodyA = null,
-    bodyB = null,
-    collideConnected = false { }
+ JointDef() :
+   type = JointType.UNKNOWN,
+   userData = null,
+   bodyA = null,
+   bodyB = null,
+   collideConnected = false { }
 
-  /**
-   * The joint type is set automatically for concrete joint types.
-   */
-  int type;
+ /**
+  * The joint type is set automatically for concrete joint types.
+  */
+ int type;
 
-  /**
-   * Use this to attach application specific data to your joints.
-   */
-  Object userData;
+ /**
+  * Use this to attach application specific data to your joints.
+  */
+ Object userData;
 
-  /**
-   * The first attached body.
-   */
-  Body bodyA;
+ /**
+  * The first attached body.
+  */
+ Body bodyA;
 
-  /**
-   * The second attached body.
-   */
-  Body bodyB;
+ /**
+  * The second attached body.
+  */
+ Body bodyB;
 
-  /**
-   * Set this flag to true if the attached bodies should collide.
-   */
-  bool collideConnected;
+ /**
+  * Set this flag to true if the attached bodies should collide.
+  */
+ bool collideConnected;
 }
 </pre>
 </div>
@@ -81,11 +80,11 @@ new <strong>JointDef</strong>() <a class="anchor-link" href="#JointDef"
 <div class="doc">
 <pre class="source">
 JointDef() :
-  type = JointType.UNKNOWN,
-  userData = null,
-  bodyA = null,
-  bodyB = null,
-  collideConnected = false { }
+ type = JointType.UNKNOWN,
+ userData = null,
+ bodyA = null,
+ bodyB = null,
+ collideConnected = false { }
 </pre>
 </div>
 </div>

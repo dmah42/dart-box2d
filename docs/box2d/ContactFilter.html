@@ -32,28 +32,24 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Implement a subtype of this class and pass it as the argument to
-world.setContactFilter to provide collision filtering.
-In other words, you can implement this class if you want finer control over
-contact creation.</p>
 <pre class="source">
 class ContactFilter {
-  ContactFilter();
+ ContactFilter();
 
-  /**
-   * Return true if contact calculations should be performed between these two
-   * shapes.
-   */
-  bool shouldCollide(Fixture fixtureA, Fixture fixtureB) {
-    final Filter filterA = fixtureA.filter;
-    final Filter filterB = fixtureB.filter;
+ /**
+  * Return true if contact calculations should be performed between these two
+  * shapes.
+  */
+ bool shouldCollide(Fixture fixtureA, Fixture fixtureB) {
+   final Filter filterA = fixtureA.filter;
+   final Filter filterB = fixtureB.filter;
 
-    if (filterA.groupIndex != 0 &amp;&amp; filterA.groupIndex == filterB.groupIndex)
-      return filterA.groupIndex &gt; 0;
+   if (filterA.groupIndex != 0 &amp;&amp; filterA.groupIndex == filterB.groupIndex)
+     return filterA.groupIndex &gt; 0;
 
-    return (filterA.maskBits &amp; filterB.categoryBits) != 0 &amp;&amp;
-           (filterA.categoryBits &amp; filterB.maskBits) != 0;
-  }
+   return (filterA.maskBits &amp; filterB.categoryBits) != 0 &amp;&amp;
+          (filterA.categoryBits &amp; filterB.maskBits) != 0;
+ }
 }
 </pre>
 </div>
@@ -81,14 +77,14 @@ bool <strong>shouldCollide</strong>(<a href="../box2d/Fixture.html">Fixture</a> 
 shapes.</p>
 <pre class="source">
 bool shouldCollide(Fixture fixtureA, Fixture fixtureB) {
-  final Filter filterA = fixtureA.filter;
-  final Filter filterB = fixtureB.filter;
+ final Filter filterA = fixtureA.filter;
+ final Filter filterB = fixtureB.filter;
 
-  if (filterA.groupIndex != 0 &amp;&amp; filterA.groupIndex == filterB.groupIndex)
-    return filterA.groupIndex &gt; 0;
+ if (filterA.groupIndex != 0 &amp;&amp; filterA.groupIndex == filterB.groupIndex)
+   return filterA.groupIndex &gt; 0;
 
-  return (filterA.maskBits &amp; filterB.categoryBits) != 0 &amp;&amp;
-         (filterA.categoryBits &amp; filterB.maskBits) != 0;
+ return (filterA.maskBits &amp; filterB.categoryBits) != 0 &amp;&amp;
+        (filterA.categoryBits &amp; filterB.maskBits) != 0;
 }
 </pre>
 </div>

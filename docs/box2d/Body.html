@@ -32,914 +32,913 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A rigid body. Bodies are created using World.createBody.</p>
 <pre class="source">
 class Body {
-  /** Flags for different states the body can take on. */
-  static const int ISLAND_FLAG = 0x0001;
-  static const int AWAKE_FLAG = 0x0002;
-  static const int AUTO_SLEEP_FLAG = 0x0004;
-  static const int BULLET_FLAG = 0x0008;
-  static const int FIXED_ROTATION_FLAG = 0x0010;
-  static const int ACTIVE_FLAG = 0x0020;
-  static const int TO_I_FLAG = 0x0040;
+ /** Flags for different states the body can take on. */
+ static const int ISLAND_FLAG = 0x0001;
+ static const int AWAKE_FLAG = 0x0002;
+ static const int AUTO_SLEEP_FLAG = 0x0004;
+ static const int BULLET_FLAG = 0x0008;
+ static const int FIXED_ROTATION_FLAG = 0x0010;
+ static const int ACTIVE_FLAG = 0x0020;
+ static const int TO_I_FLAG = 0x0040;
 
-  World world;
+ World world;
 
-  int flags;
+ int flags;
 
-  ContactEdge contactList;
+ ContactEdge contactList;
 
-  num sleepTime;
+ num sleepTime;
 
-  /** User can store what they want in here. */
-  Object userData;
+ /** User can store what they want in here. */
+ Object userData;
 
-  /** The linear velocity of this body. */
-  final Vector _linearVelocity;
+ /** The linear velocity of this body. */
+ final Vector _linearVelocity;
 
-  /** The angular velocity of this body. */
-  num _angularVelocity;
+ /** The angular velocity of this body. */
+ num _angularVelocity;
 
-  /** This body's mass. */
-  num mass;
+ /** This body's mass. */
+ num mass;
 
-  /** The inverse of the body mass. */
-  num invMass;
+ /** The inverse of the body mass. */
+ num invMass;
 
-  /** For mantaining the linked list of bodies. */
-  Body next;
-  Body prev;
+ /** For mantaining the linked list of bodies. */
+ Body next;
+ Body prev;
 
-  Fixture fixtureList;
-  int fixtureCount;
+ Fixture fixtureList;
+ int fixtureCount;
 
-  JointEdge jointList;
+ JointEdge jointList;
 
-  /** Forces applied on the body. */
-  final Vector _force;
+ /** Forces applied on the body. */
+ final Vector _force;
 
-  num _torque;
+ num _torque;
 
-  /** Rotational intertia about the center of mass. */
-  num _inertia;
+ /** Rotational intertia about the center of mass. */
+ num _inertia;
 
-  /** The inverse of the intertia about the center of mass. */
-  num invInertia;
+ /** The inverse of the intertia about the center of mass. */
+ num invInertia;
 
-  num linearDamping;
-
-  num angularDamping;
-
-  /** This body's type. See BodyType.dart. */
-  int _type;
-
-  int islandIndex;
-
-  /** The body origin transform. */
-  final Transform originTransform;
-
-  /** The swept motion for CCD. */
-  final Sweep sweep;
-
-  /** Private pool of objects for internal use. */
-  FixtureDef _fixDef;
-  MassData _pmd;
-  Transform _pxf;
-  Vector oldCenter;
-  Vector tempCenter;
-
-  Body(BodyDef bd, this.world)
-      : flags = 0,
-        // Set the origin transform.
-        originTransform = new Transform(),
-
-        // Set the sweep.
-        sweep = new Sweep(),
-
-        jointList = null,
-        contactList = null,
-        prev = null,
-        next = null,
-
-        // Set the linear and angular velocities.
-        _linearVelocity = new Vector.copy(bd.linearVelocity),
-        _angularVelocity = 0,
-
-        // Set the linear and angular damping.
-        linearDamping = bd.linearDamping,
-        angularDamping = bd.angularDamping,
-
-        // Set force and torque.
-        _force = new Vector(),
-        _torque = 0,
-
-        _inertia = 0,
-        invInertia = 0,
-
-        userData = bd.userData,
-
-        fixtureList = null,
-        fixtureCount = 0,
-
-        // Initialize pool objects.
-        _fixDef = new FixtureDef(),
-        _pmd = new MassData(),
-        _pxf = new Transform(),
-        oldCenter = new Vector(),
-        tempCenter = new Vector(),
-
-        sleepTime = 0,
-
-        _type = bd.type {
-    if (bd.bullet) {
-      flags |= BULLET_FLAG;
-    }
-    if (bd.fixedRotation) {
-      flags |= FIXED_ROTATION_FLAG;
-    }
-    if (bd.allowSleep) {
-      flags |= AUTO_SLEEP_FLAG;
-    }
-    if (bd.awake) {
-      flags |= AWAKE_FLAG;
-    }
-    if (bd.active) {
-      flags |= ACTIVE_FLAG;
-    }
-
-    originTransform.position.setFrom(bd.position);
-    originTransform.rotation.setAngle(bd.angle);
-    sweep.localCenter.setZero();
-    Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.setFrom(sweep.centerZero);
-    sweep.angle = bd.angle;
-    sweep.angleZero = bd.angle;
-
-    if (_type == BodyType.DYNAMIC) {
-      mass = 1;
-      invMass = 1;
-    } else {
-      mass = 0;
-      invMass = 0;
-    }
-  }
-
-  /**
-   * Creates a fixture and attach it to this body. Use this function if you need
-   * to set some fixture parameters, like friction. Otherwise you can create the
-   * fixture directly from a shape.
-   * If the density is non-zero, this function automatically updates the mass
-   * of the body.
-   * Contacts are not created until the next time step.
-   */
-  Fixture createFixture(FixtureDef def) {
-    assert (world.locked == false);
-
-    Fixture fixture = new Fixture();
-    fixture.create(this, def);
-
-    if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
-      BroadPhase broadPhase = world._contactManager.broadPhase;
-      fixture.createProxy(broadPhase, originTransform);
-    }
-
-    fixture.next = fixtureList;
-    fixtureList = fixture;
-    ++fixtureCount;
-
-    fixture.body = this;
-
-    // Adjust mass properties if needed.
-    if (fixture.density &gt; 0.0) {
-      resetMassData();
-    }
-
-    // Let the world know we have a new fixture. This will cause new contacts
-    // to be created at the beginning of the next time step.
-    world._flags |= World.NEW_FIXTURE;
-
-    return fixture;
-  }
-
-  /**
-   * Creates a fixture from a shape and attach it to this body.
-   * This is a convenience function. Use FixtureDef if you need to set
-   * parameters like friction, restitution, user data, or filtering.
-   * If the density is non-zero, this function automatically updates the mass
-   * of the body.
-   */
-  Fixture createFixtureFromShape(Shape shape, [num density = 0]) {
-    _fixDef.shape = shape;
-    _fixDef.density = density;
-
-    return createFixture(_fixDef);
-  }
-
-  /**
-   * Destroy a fixture. This removes the fixture from the broad-phase and
-   * destroys all contacts associated with this fixture. This will
-   * automatically adjust the mass of the body if the body is dynamic and the
-   * fixture has positive density.
-   * All fixtures attached to a body are implicitly destroyed when the body is
-   * destroyed.
-   */
-  void destroyFixture(Fixture fixture) {
-    assert (world.locked == false);
-    if (world.locked == true) {
-      return;
-    }
-
-    assert (fixture.body == this);
-
-    // Remove the fixture from this body's singly linked list.
-    assert (fixtureCount &gt; 0);
-    Fixture node = fixtureList;
-    Fixture last = null; // java change
-    bool found = false;
-    while (node != null) {
-      if (node == fixture) {
-        node = fixture.next;
-        found = true;
-        break;
-      }
-      last = node;
-      node = node.next;
-    }
-
-    // You tried to remove a shape that is not attached to this body.
-    assert (found);
-
-    if (last == null) {
-      fixtureList = fixture.next;
-    } else {
-      last.next = fixture.next;
-    }
-
-    // Destroy any contacts associated with the fixture.
-    ContactEdge edge = contactList;
-    while (edge != null) {
-      Contact c = edge.contact;
-      edge = edge.next;
-
-      Fixture fixtureA = c.fixtureA;
-      Fixture fixtureB = c.fixtureB;
-
-      if (fixture == fixtureA || fixture == fixtureB) {
-        // This destroys the contact and removes it from
-        // this body's contact list.
-        world._contactManager.destroy(c);
-      }
-    }
-
-    if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
-      assert (fixture.proxy != null);
-      BroadPhase broadPhase = world._contactManager.broadPhase;
-      fixture.destroyProxy(broadPhase);
-    } else {
-      assert (fixture.proxy == null);
-    }
-
-    fixture.destroy();
-    fixture.body = null;
-    fixture.next = null;
-    fixture = null;
-
-    --fixtureCount;
-
-    // Reset the mass data.
-    resetMassData();
-  }
-
-  /**
-   * Set the position of the body's origin and rotation.
-   * This breaks any contacts and wakes the other bodies.
-   * Manipulating a body's transform may cause non-physical behavior.
-   */
-  void setTransform(Vector argPosition, num argAngle) {
-    assert (world.locked == false);
-    if (world.locked == true) {
-      return;
-    }
-
-    originTransform.rotation.setAngle(argAngle);
-    originTransform.position.setFrom(argPosition);
-
-    Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.setFrom(sweep.centerZero);
-
-    sweep.angleZero = argAngle;
-    sweep.angle = argAngle;
-
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    for (Fixture f = fixtureList; f != null; f = f.next) {
-      f.synchronize(broadPhase, originTransform, originTransform);
-    }
-
-    world._contactManager.findNewContacts();
-  }
-
-  /**
-   * Get the world body origin position. Do not modify.
-   */
-  Vector get position =&gt; originTransform.position;
-
-  /**
-   * Get the angle in radians.
-   */
-  num get angle =&gt; sweep.angle;
-
-  /**
-   * Get the world position of the center of mass. Do not modify.
-   */
-  Vector get worldCenter =&gt; sweep.center; 
-
-  /**
-   * Get the local position of the center of mass. Do not modify.
-   */
-  Vector get localCenter =&gt; sweep.localCenter; 
-
-  Vector get linearVelocity =&gt; _linearVelocity; 
-
-  void set linearVelocity(Vector v) {
-    if (_type == BodyType.STATIC) {
-      return;
-    }
-
-    if (Vector.dot(v, v) &gt; 0.0) {
-      awake = true;
-    }
-
-    _linearVelocity.setFrom(v);
-  }
-
-  num get angularVelocity =&gt; _angularVelocity; 
-
-  void set angularVelocity(num w) {
-    if (_type != BodyType.STATIC) {
-
-      // Set awake if want to set velocity to non-zero value.
-      if (w * w &gt; 0) {
-        awake = true;
-      }
-
-      _angularVelocity = w;
-    }
-  }
-
-  /**
-   * Apply a force at a world point. If the force is not
-   * applied at the center of mass, it will generate a torque and
-   * affect the angular velocity. This wakes up the body.
-   *
-   * force
-   *   the world force vector, usually in Newtons (N).
-   * point
-   *   the world position of the point of application.
-   */
-  void applyForce(Vector force, Vector point) {
-    if (_type != BodyType.DYNAMIC) {
-      return;
-    }
-
-    awake = true;
-
-    _force.x += force.x;
-    _force.y += force.y;
-
-    _torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
-        * force.x;
-  }
-
-  /**
-   * Apply a torque. This affects the angular velocity
-   * without affecting the linear velocity of the center of mass.
-   * This wakes up the body.
-   *
-   * torque
-   *   about the z-axis (out of the screen), usually in N-m.
-   */
-  void applyTorque(num torque) {
-    if (_type != BodyType.DYNAMIC) {
-      return;
-    }
-
-    awake = true;
-
-    _torque += torque;
-  }
-
-  /**
-   * Apply an impulse at a point. This immediately modifies the velocity.
-   * It also modifies the angular velocity if the point of application
-   * is not at the center of mass. This wakes up the body.
-   *
-   * impulse
-   *   the world impulse vector, usually in N-seconds or kg-m/s.
-   * point
-   *   the world position of the point of application.
-   */
-  void applyLinearImpulse(Vector impulse, Vector point) {
-    if (_type != BodyType.DYNAMIC) {
-      return;
-    }
-
-    awake = true;
-
-    _linearVelocity.x += impulse.x * invMass;
-    _linearVelocity.y += impulse.y * invMass;
-
-    _angularVelocity += invInertia * ((point.x - sweep.center.x) *
-        impulse.y - (point.y - sweep.center.y) * impulse.x);
-  }
-
-  /**
-   * Apply an angular impulse.
-   *
-   * impulse
-   *   the angular impulse in units of kg*m*m/s
-   */
-  void applyAngularImpulse(num impulse) {
-    if (_type != BodyType.DYNAMIC) {
-      return;
-    }
-
-    awake = true;
-    _angularVelocity += invInertia * impulse;
-  }
-
-  /**
-   * Get the central rotational inertia of the body.
-   *
-   * returns the rotational inertia, usually in kg-m^2.
-   */
-  num get inertia {
-    return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
-        sweep.localCenter.y * sweep.localCenter.y);
-  }
-
-  /**
-   * Get the mass data of the body. The rotational inertia is relative
-   * to the center of mass. Result is returned through the given out parameter
-   * data.
-   */
-  void getMassData(MassData data) {
-    data.mass = mass;
-    final Vector lc = sweep.localCenter;
-    data.inertia = _inertia + mass * lc.lengthSquared;
-    data.center.x = lc.x;
-    data.center.y = lc.y;
-  }
-
-  /**
-   * Set the mass properties to override the mass properties of the fixtures.
-   * Note that this changes the center of mass position.
-   * Note that creating or destroying fixtures can also alter the mass.
-   * This function has no effect if the body isn't dynamic.
-   *
-   * data
-   *   the mass properties.
-   */
-  void set massData(MassData data) {
-    assert(world.locked == false);
-    if (world.locked == true) {
-      return;
-    }
-
-    if (_type != BodyType.DYNAMIC) {
-      return;
-    }
-
-    invMass = 0.0;
-    _inertia = 0.0;
-    invInertia = 0.0;
-
-    mass = data.mass;
-    if (mass &lt;= 0.0)
-      mass = 1;
-
-    invMass = 1.0 / mass;
-
-    if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-      _inertia = data.inertia - mass * Vector.dot(data.center,
-          data.center);
-      assert (_inertia &gt; 0.0);
-      invInertia = 1.0 / _inertia;
-    }
-
-    // Move center of mass.
-    oldCenter.setFrom(sweep.center);
-    sweep.localCenter.setFrom(data.center);
-    Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.setFrom(sweep.centerZero);
-
-    // Update center of mass velocity.
-    final Vector temp = new Vector.copy(sweep.center);
-    temp.subLocal(oldCenter);
-    Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.addLocal(temp);
-  }
-
-  /**
-   * This resets the mass properties to the sum of the mass properties of the
-   * fixtures.
-   * This normally does not need to be called unless you called setMassData to
-   * override the mass and you later want to reset the mass.
-   */
-  void resetMassData() {
-    // Compute mass data from shapes. Each shape has its own density.
-    mass = 0.0;
-    invMass = 0.0;
-    _inertia = 0.0;
-    invInertia = 0.0;
-    sweep.localCenter.setZero();
-
-    // Static and kinematic bodies have zero mass.
-    if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
-      sweep.center.setFrom(originTransform.position);
-      sweep.centerZero.setFrom(originTransform.position);
-      return;
-    }
-
-    assert (_type == BodyType.DYNAMIC);
-
-    // Accumulate mass over all fixtures.
-    tempCenter.setZero();
-    MassData massData = _pmd;
-    for (Fixture f = fixtureList; f != null; f = f.next) {
-      if (f.density == 0.0) {
-        continue;
-      }
-      f.getMassData(massData);
-      mass += massData.mass;
-      final temp = new Vector.copy(massData.center);
-      temp.mulLocal(massData.mass);
-      tempCenter.addLocal(temp);
-      _inertia += massData.inertia;
-    }
-
-    // Compute center of mass.
-    if (mass &gt; 0.0) {
-      invMass = 1.0 / mass;
-      tempCenter.mulLocal(invMass);
-    } else {
-      // Force all dynamic bodies to have a positive mass.
-      mass = 1.0;
-      invMass = 1.0;
-    }
-
-    if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-      // Center the inertia about the center of mass.
-      _inertia -= mass * Vector.dot(tempCenter, tempCenter);
-      assert (_inertia &gt; 0.0);
-      invInertia = 1.0 / _inertia;
-    } else {
-      _inertia = 0.0;
-      invInertia = 0.0;
-    }
-
-    // Move center of mass.
-    oldCenter.setFrom(sweep.center);
-    sweep.localCenter.setFrom(tempCenter);
-    Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.setFrom(sweep.centerZero);
-
-    // Update center of mass velocity.
-    final Vector temp = new Vector.copy(sweep.center);
-    temp.subLocal(oldCenter);
-    Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.addLocal(temp);
-  }
-
-  /**
-   * Get the world coordinates of a point given the local coordinates.
-   *
-   * localPoint
-   *   a point on the body measured relative the the body's origin.
-   * returns the same point expressed in world coordinates.
-   */
-  Vector getWorldPoint(Vector localPoint) {
-    Vector v = new Vector();
-    getWorldPointToOut(localPoint, v);
-    return v;
-  }
-
-  /**
-   * Get the world coordinates of a point given the local coordinates to the
-   * given out parameter.
-   */
-  void getWorldPointToOut(Vector localPoint, Vector out) {
-    Transform.mulToOut(originTransform, localPoint, out);
-  }
-
-  /**
-   * Get the world coordinates of a vector given the local coordinates.
-   *
-   * localVector: a vector fixed in the body.
-   * return the same vector expressed in world coordinates.
-   */
-  Vector getWorldVector(Vector localVector) {
-    Vector out = new Vector();
-    getWorldVectorToOut(localVector, out);
-    return out;
-  }
-
-  /**
-   * Get the world coordinates of a vector given the local coordinates to the
-   * given out paramater.
-   */
-  void getWorldVectorToOut(Vector localVector, Vector out) {
-    Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
-        out);
-  }
-
-  /**
-   * Gets a local point relative to the body's origin given a world point.
-   * Returns this through the given out parameter.
-   */
-  void getLocalPointToOut(Vector worldPoint, Vector out) {
-    Transform.mulTransToOut(originTransform, worldPoint, out);
-  }
-
-  /**
-   * Gets a local point relative to the body's origin given a world point.
-   *
-   * worldPoint: point in world coordinates.
-   * returns the corresponding local point relative to the body's origin.
-   */
-  Vector getLocalPoint(Vector worldPoint) {
-    Vector out = new Vector();
-    getLocalPointToOut(worldPoint, out);
-    return out;
-  }
-
-  /**
-   * Gets a local vector given a world vector.
-   *
-   * worldVector: vector in world coordinates.
-   * returns the corresponding local vector.
-   */
-  Vector getLocalVector(Vector worldVector) {
-    Vector out = new Vector();
-    getLocalVectorToOut(worldVector, out);
-    return out;
-  }
-
-  /**
-   * Gets a local vector given a world vector and stores the result in the given
-   * out parameter.
-   */
-  void getLocalVectorToOut(Vector worldVector, Vector out) {
-    Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
-        out);
-  }
-
-  /**
-   * Get the world linear velocity of a world point attached to this body.
-   *
-   * worldPoint: point in world coordinates.
-   * returns the world velocity of a point.
-   */
-  Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
-    Vector out = new Vector();
-    getLinearVelocityFromWorldPointToOut(worldPoint, out);
-    return out;
-  }
-
-  void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
-    out.setFrom(worldPoint).subLocal(sweep.center);
-    Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
-    out.addLocal(_linearVelocity);
-  }
-
-  /**
-   * Get the world velocity of a local point.
-   *
-   * localPoint: point in local coordinates.
-   * returns the world velocity of a point.
-   */
-  Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
-    Vector out = new Vector();
-    getLinearVelocityFromLocalPointToOut(localPoint, out);
-    return out;
-  }
-
-  /**
-   * Get the world velocity of a local point and store the result in the given
-   * out parameter.
-   */
-  void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
-    getWorldPointToOut(localPoint, out);
-    getLinearVelocityFromWorldPointToOut(out, out);
-  }
-
-  /**
-   * The type of this body. Either dynamic, static, or kinematic.
-   */
-  int get type =&gt; _type; 
-
-  /**
-   * The type of this body. This may alter the mass and velocity.
-   */
-  void set type(int otherType) {
-    if (_type == otherType) {
-      return;
-    }
-
-    _type = otherType;
-
-    resetMassData();
-
-    if (_type == BodyType.STATIC) {
-      _linearVelocity.setZero();
-      _angularVelocity = 0.0;
-    }
-
-    awake = true;
-
-    _force.setZero();
-    _torque = 0.0;
-
-    // Since the body type changed, we need to flag contacts for filtering.
-    for (ContactEdge ce = contactList; ce != null; ce = ce.next) {
-      ce.contact.flagForFiltering();
-    }
-  }
-
-  /** Is this body treated like a bullet for continuous collision detection? */
-  bool get bullet =&gt; (flags &amp; BULLET_FLAG) == BULLET_FLAG; 
-
-  /**
-   * Should this body be treated like a bullet for continuous collision
-   * detection?
-   */
-  void set bullet(bool flag) {
-    if (flag)
-      flags |= BULLET_FLAG;
-    else
-      flags &amp;= ~BULLET_FLAG;
-  }
-
-  /**
-   * You can disable sleeping on this body. If you disable sleeping, the
-   * body will be woken.
-   */
-  void set sleepingAllowed(bool flag) {
-    if (flag) {
-      flags |= AUTO_SLEEP_FLAG;
-    } else {
-      flags &amp;= ~AUTO_SLEEP_FLAG;
-      awake = true;
-    }
-  }
-
-  /**
-   * Is this body allowed to sleep?
-   */
-  bool get sleepingAllowed =&gt; (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
-
-  /**
-   * The sleep state of the body. A sleeping body has very
-   * low CPU cost.
-   */
-  void set awake(bool flag) {
-    if (flag) {
-      if ((flags &amp; AWAKE_FLAG) == 0) {
-        flags |= AWAKE_FLAG;
-        sleepTime = 0.0;
-      }
-    } else {
-      flags &amp;= ~AWAKE_FLAG;
-      sleepTime = 0.0;
-      _linearVelocity.setZero();
-      _angularVelocity = 0.0;
-      _force.setZero();
-      _torque = 0.0;
-    }
-  }
-
-  bool get awake =&gt; (flags &amp; AWAKE_FLAG) == AWAKE_FLAG; 
-
-  /**
-   * Set the active state of the body. An inactive body is not
-   * simulated and cannot be collided with or woken up.
-   * If you pass a flag of true, all fixtures will be added to the
-   * broad-phase.
-   * If you pass a flag of false, all fixtures will be removed from
-   * the broad-phase and all contacts will be destroyed.
-   * Fixtures and joints are otherwise unaffected. You may continue
-   * to create/destroy fixtures and joints on inactive bodies.
-   * Fixtures on an inactive body are implicitly inactive and will
-   * not participate in collisions, ray-casts, or queries.
-   * Joints connected to an inactive body are implicitly inactive.
-   * An inactive body is still owned by a World object and remains
-   * in the body list.
-   */
-  void set active(bool flag) {
-    if (flag == active) {
-      return;
-    }
-
-    if (flag) {
-      flags |= ACTIVE_FLAG;
-
-      // Create all proxies.
-      BroadPhase broadPhase = world._contactManager.broadPhase;
-      for (Fixture f = fixtureList; f != null; f = f.next) {
-        f.createProxy(broadPhase, originTransform);
-      }
-
-      // Contacts are created the next time step.
-    } else {
-      flags &amp;= ~ACTIVE_FLAG;
-
-      // Destroy all proxies.
-      BroadPhase broadPhase = world._contactManager.broadPhase;
-      for (Fixture f = fixtureList; f != null; f = f.next) {
-        f.destroyProxy(broadPhase);
-      }
-
-      // Destroy the attached contacts.
-      ContactEdge ce = contactList;
-      while (ce != null) {
-        ContactEdge ce0 = ce;
-        ce = ce.next;
-        world._contactManager.destroy(ce0.contact);
-      }
-      contactList = null;
-    }
-  }
-
-  /**
-   * Get the active state of the body.
-   */
-  bool get active =&gt; (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG; 
-
-  /**
-   * Set this body to have fixed rotation. This causes the mass
-   * to be reset.
-   */
-  void set fixedRotation(bool flag) {
-    if (flag)
-      flags |= FIXED_ROTATION_FLAG;
-    else
-      flags &amp;= ~FIXED_ROTATION_FLAG;
-
-    resetMassData();
-  }
-
-  /**
-   * Does this body have fixed rotation?
-   */
-  bool get fixedRotation {
-    return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
-  }
-
-  void synchronizeFixtures() {
-    final Transform xf1 = _pxf;
-    xf1.rotation.setAngle(sweep.angleZero);
-    Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
-        xf1.position);
-    xf1.position.mulLocal(-1);
-    xf1.position.addLocal(sweep.centerZero);
-
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    for (Fixture f = fixtureList; f != null; f = f.next)
-      f.synchronize(broadPhase, xf1, originTransform);
-  }
-
-  void synchronizeTransform() {
-    final num c = Math.cos(sweep.angle);
-    final num s = Math.sin(sweep.angle);
-    final Transform t = originTransform;
-    final Matrix22 r = t.rotation;
-    final Vector p = t.position;
-
-    r.col1.x = c;
-    r.col2.x = -s;
-    r.col1.y = s;
-    r.col2.y = c;
-    p.x = (r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y) * -1 +
-        sweep.center.x;
-    p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
-        sweep.center.y;
-  }
-
-  /**
-   * This is used to prevent connected bodies from colliding.
-   * It may lie, depending on the collideConnected flag.
-   */
-  bool shouldCollide(Body other) {
-    // At least one body should be dynamic.
-    return !(_type != BodyType.DYNAMIC &amp;&amp; other._type != BodyType.DYNAMIC);
-  }
-
-  void advance(num t) {
-    sweep.advance(t);
-    sweep.center.setFrom(sweep.centerZero);
-    sweep.angle = sweep.angleZero;
-    synchronizeTransform();
-  }
+ num linearDamping;
+
+ num angularDamping;
+
+ /** This body's type. See BodyType.dart. */
+ int _type;
+
+ int islandIndex;
+
+ /** The body origin transform. */
+ final Transform originTransform;
+
+ /** The swept motion for CCD. */
+ final Sweep sweep;
+
+ /** Private pool of objects for internal use. */
+ FixtureDef _fixDef;
+ MassData _pmd;
+ Transform _pxf;
+ Vector oldCenter;
+ Vector tempCenter;
+
+ Body(BodyDef bd, this.world)
+     : flags = 0,
+       // Set the origin transform.
+       originTransform = new Transform(),
+
+       // Set the sweep.
+       sweep = new Sweep(),
+
+       jointList = null,
+       contactList = null,
+       prev = null,
+       next = null,
+
+       // Set the linear and angular velocities.
+       _linearVelocity = new Vector.copy(bd.linearVelocity),
+       _angularVelocity = 0,
+
+       // Set the linear and angular damping.
+       linearDamping = bd.linearDamping,
+       angularDamping = bd.angularDamping,
+
+       // Set force and torque.
+       _force = new Vector(),
+       _torque = 0,
+
+       _inertia = 0,
+       invInertia = 0,
+
+       userData = bd.userData,
+
+       fixtureList = null,
+       fixtureCount = 0,
+
+       // Initialize pool objects.
+       _fixDef = new FixtureDef(),
+       _pmd = new MassData(),
+       _pxf = new Transform(),
+       oldCenter = new Vector(),
+       tempCenter = new Vector(),
+
+       sleepTime = 0,
+
+       _type = bd.type {
+   if (bd.bullet) {
+     flags |= BULLET_FLAG;
+   }
+   if (bd.fixedRotation) {
+     flags |= FIXED_ROTATION_FLAG;
+   }
+   if (bd.allowSleep) {
+     flags |= AUTO_SLEEP_FLAG;
+   }
+   if (bd.awake) {
+     flags |= AWAKE_FLAG;
+   }
+   if (bd.active) {
+     flags |= ACTIVE_FLAG;
+   }
+
+   originTransform.position.setFrom(bd.position);
+   originTransform.rotation.setAngle(bd.angle);
+   sweep.localCenter.setZero();
+   Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+   sweep.center.setFrom(sweep.centerZero);
+   sweep.angle = bd.angle;
+   sweep.angleZero = bd.angle;
+
+   if (_type == BodyType.DYNAMIC) {
+     mass = 1;
+     invMass = 1;
+   } else {
+     mass = 0;
+     invMass = 0;
+   }
+ }
+
+ /**
+  * Creates a fixture and attach it to this body. Use this function if you need
+  * to set some fixture parameters, like friction. Otherwise you can create the
+  * fixture directly from a shape.
+  * If the density is non-zero, this function automatically updates the mass
+  * of the body.
+  * Contacts are not created until the next time step.
+  */
+ Fixture createFixture(FixtureDef def) {
+   assert (world.locked == false);
+
+   Fixture fixture = new Fixture();
+   fixture.create(this, def);
+
+   if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
+     BroadPhase broadPhase = world._contactManager.broadPhase;
+     fixture.createProxy(broadPhase, originTransform);
+   }
+
+   fixture.next = fixtureList;
+   fixtureList = fixture;
+   ++fixtureCount;
+
+   fixture.body = this;
+
+   // Adjust mass properties if needed.
+   if (fixture.density &gt; 0.0) {
+     resetMassData();
+   }
+
+   // Let the world know we have a new fixture. This will cause new contacts
+   // to be created at the beginning of the next time step.
+   world._flags |= World.NEW_FIXTURE;
+
+   return fixture;
+ }
+
+ /**
+  * Creates a fixture from a shape and attach it to this body.
+  * This is a convenience function. Use FixtureDef if you need to set
+  * parameters like friction, restitution, user data, or filtering.
+  * If the density is non-zero, this function automatically updates the mass
+  * of the body.
+  */
+ Fixture createFixtureFromShape(Shape shape, [num density = 0]) {
+   _fixDef.shape = shape;
+   _fixDef.density = density;
+
+   return createFixture(_fixDef);
+ }
+
+ /**
+  * Destroy a fixture. This removes the fixture from the broad-phase and
+  * destroys all contacts associated with this fixture. This will
+  * automatically adjust the mass of the body if the body is dynamic and the
+  * fixture has positive density.
+  * All fixtures attached to a body are implicitly destroyed when the body is
+  * destroyed.
+  */
+ void destroyFixture(Fixture fixture) {
+   assert (world.locked == false);
+   if (world.locked == true) {
+     return;
+   }
+
+   assert (fixture.body == this);
+
+   // Remove the fixture from this body's singly linked list.
+   assert (fixtureCount &gt; 0);
+   Fixture node = fixtureList;
+   Fixture last = null; // java change
+   bool found = false;
+   while (node != null) {
+     if (node == fixture) {
+       node = fixture.next;
+       found = true;
+       break;
+     }
+     last = node;
+     node = node.next;
+   }
+
+   // You tried to remove a shape that is not attached to this body.
+   assert (found);
+
+   if (last == null) {
+     fixtureList = fixture.next;
+   } else {
+     last.next = fixture.next;
+   }
+
+   // Destroy any contacts associated with the fixture.
+   ContactEdge edge = contactList;
+   while (edge != null) {
+     Contact c = edge.contact;
+     edge = edge.next;
+
+     Fixture fixtureA = c.fixtureA;
+     Fixture fixtureB = c.fixtureB;
+
+     if (fixture == fixtureA || fixture == fixtureB) {
+       // This destroys the contact and removes it from
+       // this body's contact list.
+       world._contactManager.destroy(c);
+     }
+   }
+
+   if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
+     assert (fixture.proxy != null);
+     BroadPhase broadPhase = world._contactManager.broadPhase;
+     fixture.destroyProxy(broadPhase);
+   } else {
+     assert (fixture.proxy == null);
+   }
+
+   fixture.destroy();
+   fixture.body = null;
+   fixture.next = null;
+   fixture = null;
+
+   --fixtureCount;
+
+   // Reset the mass data.
+   resetMassData();
+ }
+
+ /**
+  * Set the position of the body's origin and rotation.
+  * This breaks any contacts and wakes the other bodies.
+  * Manipulating a body's transform may cause non-physical behavior.
+  */
+ void setTransform(Vector argPosition, num argAngle) {
+   assert (world.locked == false);
+   if (world.locked == true) {
+     return;
+   }
+
+   originTransform.rotation.setAngle(argAngle);
+   originTransform.position.setFrom(argPosition);
+
+   Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+   sweep.center.setFrom(sweep.centerZero);
+
+   sweep.angleZero = argAngle;
+   sweep.angle = argAngle;
+
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   for (Fixture f = fixtureList; f != null; f = f.next) {
+     f.synchronize(broadPhase, originTransform, originTransform);
+   }
+
+   world._contactManager.findNewContacts();
+ }
+
+ /**
+  * Get the world body origin position. Do not modify.
+  */
+ Vector get position =&gt; originTransform.position;
+
+ /**
+  * Get the angle in radians.
+  */
+ num get angle =&gt; sweep.angle;
+
+ /**
+  * Get the world position of the center of mass. Do not modify.
+  */
+ Vector get worldCenter =&gt; sweep.center; 
+
+ /**
+  * Get the local position of the center of mass. Do not modify.
+  */
+ Vector get localCenter =&gt; sweep.localCenter; 
+
+ Vector get linearVelocity =&gt; _linearVelocity; 
+
+ void set linearVelocity(Vector v) {
+   if (_type == BodyType.STATIC) {
+     return;
+   }
+
+   if (Vector.dot(v, v) &gt; 0.0) {
+     awake = true;
+   }
+
+   _linearVelocity.setFrom(v);
+ }
+
+ num get angularVelocity =&gt; _angularVelocity; 
+
+ void set angularVelocity(num w) {
+   if (_type != BodyType.STATIC) {
+
+     // Set awake if want to set velocity to non-zero value.
+     if (w * w &gt; 0) {
+       awake = true;
+     }
+
+     _angularVelocity = w;
+   }
+ }
+
+ /**
+  * Apply a force at a world point. If the force is not
+  * applied at the center of mass, it will generate a torque and
+  * affect the angular velocity. This wakes up the body.
+  *
+  * force
+  *   the world force vector, usually in Newtons (N).
+  * point
+  *   the world position of the point of application.
+  */
+ void applyForce(Vector force, Vector point) {
+   if (_type != BodyType.DYNAMIC) {
+     return;
+   }
+
+   awake = true;
+
+   _force.x += force.x;
+   _force.y += force.y;
+
+   _torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
+       * force.x;
+ }
+
+ /**
+  * Apply a torque. This affects the angular velocity
+  * without affecting the linear velocity of the center of mass.
+  * This wakes up the body.
+  *
+  * torque
+  *   about the z-axis (out of the screen), usually in N-m.
+  */
+ void applyTorque(num torque) {
+   if (_type != BodyType.DYNAMIC) {
+     return;
+   }
+
+   awake = true;
+
+   _torque += torque;
+ }
+
+ /**
+  * Apply an impulse at a point. This immediately modifies the velocity.
+  * It also modifies the angular velocity if the point of application
+  * is not at the center of mass. This wakes up the body.
+  *
+  * impulse
+  *   the world impulse vector, usually in N-seconds or kg-m/s.
+  * point
+  *   the world position of the point of application.
+  */
+ void applyLinearImpulse(Vector impulse, Vector point) {
+   if (_type != BodyType.DYNAMIC) {
+     return;
+   }
+
+   awake = true;
+
+   _linearVelocity.x += impulse.x * invMass;
+   _linearVelocity.y += impulse.y * invMass;
+
+   _angularVelocity += invInertia * ((point.x - sweep.center.x) *
+       impulse.y - (point.y - sweep.center.y) * impulse.x);
+ }
+
+ /**
+  * Apply an angular impulse.
+  *
+  * impulse
+  *   the angular impulse in units of kg*m*m/s
+  */
+ void applyAngularImpulse(num impulse) {
+   if (_type != BodyType.DYNAMIC) {
+     return;
+   }
+
+   awake = true;
+   _angularVelocity += invInertia * impulse;
+ }
+
+ /**
+  * Get the central rotational inertia of the body.
+  *
+  * returns the rotational inertia, usually in kg-m^2.
+  */
+ num get inertia {
+   return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
+       sweep.localCenter.y * sweep.localCenter.y);
+ }
+
+ /**
+  * Get the mass data of the body. The rotational inertia is relative
+  * to the center of mass. Result is returned through the given out parameter
+  * data.
+  */
+ void getMassData(MassData data) {
+   data.mass = mass;
+   final Vector lc = sweep.localCenter;
+   data.inertia = _inertia + mass * lc.lengthSquared;
+   data.center.x = lc.x;
+   data.center.y = lc.y;
+ }
+
+ /**
+  * Set the mass properties to override the mass properties of the fixtures.
+  * Note that this changes the center of mass position.
+  * Note that creating or destroying fixtures can also alter the mass.
+  * This function has no effect if the body isn't dynamic.
+  *
+  * data
+  *   the mass properties.
+  */
+ void set massData(MassData data) {
+   assert(world.locked == false);
+   if (world.locked == true) {
+     return;
+   }
+
+   if (_type != BodyType.DYNAMIC) {
+     return;
+   }
+
+   invMass = 0.0;
+   _inertia = 0.0;
+   invInertia = 0.0;
+
+   mass = data.mass;
+   if (mass &lt;= 0.0)
+     mass = 1;
+
+   invMass = 1.0 / mass;
+
+   if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
+     _inertia = data.inertia - mass * Vector.dot(data.center,
+         data.center);
+     assert (_inertia &gt; 0.0);
+     invInertia = 1.0 / _inertia;
+   }
+
+   // Move center of mass.
+   oldCenter.setFrom(sweep.center);
+   sweep.localCenter.setFrom(data.center);
+   Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+   sweep.center.setFrom(sweep.centerZero);
+
+   // Update center of mass velocity.
+   final Vector temp = new Vector.copy(sweep.center);
+   temp.subLocal(oldCenter);
+   Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+   _linearVelocity.addLocal(temp);
+ }
+
+ /**
+  * This resets the mass properties to the sum of the mass properties of the
+  * fixtures.
+  * This normally does not need to be called unless you called setMassData to
+  * override the mass and you later want to reset the mass.
+  */
+ void resetMassData() {
+   // Compute mass data from shapes. Each shape has its own density.
+   mass = 0.0;
+   invMass = 0.0;
+   _inertia = 0.0;
+   invInertia = 0.0;
+   sweep.localCenter.setZero();
+
+   // Static and kinematic bodies have zero mass.
+   if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
+     sweep.center.setFrom(originTransform.position);
+     sweep.centerZero.setFrom(originTransform.position);
+     return;
+   }
+
+   assert (_type == BodyType.DYNAMIC);
+
+   // Accumulate mass over all fixtures.
+   tempCenter.setZero();
+   MassData massData = _pmd;
+   for (Fixture f = fixtureList; f != null; f = f.next) {
+     if (f.density == 0.0) {
+       continue;
+     }
+     f.getMassData(massData);
+     mass += massData.mass;
+     final temp = new Vector.copy(massData.center);
+     temp.mulLocal(massData.mass);
+     tempCenter.addLocal(temp);
+     _inertia += massData.inertia;
+   }
+
+   // Compute center of mass.
+   if (mass &gt; 0.0) {
+     invMass = 1.0 / mass;
+     tempCenter.mulLocal(invMass);
+   } else {
+     // Force all dynamic bodies to have a positive mass.
+     mass = 1.0;
+     invMass = 1.0;
+   }
+
+   if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
+     // Center the inertia about the center of mass.
+     _inertia -= mass * Vector.dot(tempCenter, tempCenter);
+     assert (_inertia &gt; 0.0);
+     invInertia = 1.0 / _inertia;
+   } else {
+     _inertia = 0.0;
+     invInertia = 0.0;
+   }
+
+   // Move center of mass.
+   oldCenter.setFrom(sweep.center);
+   sweep.localCenter.setFrom(tempCenter);
+   Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+   sweep.center.setFrom(sweep.centerZero);
+
+   // Update center of mass velocity.
+   final Vector temp = new Vector.copy(sweep.center);
+   temp.subLocal(oldCenter);
+   Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+   _linearVelocity.addLocal(temp);
+ }
+
+ /**
+  * Get the world coordinates of a point given the local coordinates.
+  *
+  * localPoint
+  *   a point on the body measured relative the the body's origin.
+  * returns the same point expressed in world coordinates.
+  */
+ Vector getWorldPoint(Vector localPoint) {
+   Vector v = new Vector();
+   getWorldPointToOut(localPoint, v);
+   return v;
+ }
+
+ /**
+  * Get the world coordinates of a point given the local coordinates to the
+  * given out parameter.
+  */
+ void getWorldPointToOut(Vector localPoint, Vector out) {
+   Transform.mulToOut(originTransform, localPoint, out);
+ }
+
+ /**
+  * Get the world coordinates of a vector given the local coordinates.
+  *
+  * localVector: a vector fixed in the body.
+  * return the same vector expressed in world coordinates.
+  */
+ Vector getWorldVector(Vector localVector) {
+   Vector out = new Vector();
+   getWorldVectorToOut(localVector, out);
+   return out;
+ }
+
+ /**
+  * Get the world coordinates of a vector given the local coordinates to the
+  * given out paramater.
+  */
+ void getWorldVectorToOut(Vector localVector, Vector out) {
+   Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
+       out);
+ }
+
+ /**
+  * Gets a local point relative to the body's origin given a world point.
+  * Returns this through the given out parameter.
+  */
+ void getLocalPointToOut(Vector worldPoint, Vector out) {
+   Transform.mulTransToOut(originTransform, worldPoint, out);
+ }
+
+ /**
+  * Gets a local point relative to the body's origin given a world point.
+  *
+  * worldPoint: point in world coordinates.
+  * returns the corresponding local point relative to the body's origin.
+  */
+ Vector getLocalPoint(Vector worldPoint) {
+   Vector out = new Vector();
+   getLocalPointToOut(worldPoint, out);
+   return out;
+ }
+
+ /**
+  * Gets a local vector given a world vector.
+  *
+  * worldVector: vector in world coordinates.
+  * returns the corresponding local vector.
+  */
+ Vector getLocalVector(Vector worldVector) {
+   Vector out = new Vector();
+   getLocalVectorToOut(worldVector, out);
+   return out;
+ }
+
+ /**
+  * Gets a local vector given a world vector and stores the result in the given
+  * out parameter.
+  */
+ void getLocalVectorToOut(Vector worldVector, Vector out) {
+   Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
+       out);
+ }
+
+ /**
+  * Get the world linear velocity of a world point attached to this body.
+  *
+  * worldPoint: point in world coordinates.
+  * returns the world velocity of a point.
+  */
+ Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
+   Vector out = new Vector();
+   getLinearVelocityFromWorldPointToOut(worldPoint, out);
+   return out;
+ }
+
+ void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
+   out.setFrom(worldPoint).subLocal(sweep.center);
+   Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+   out.addLocal(_linearVelocity);
+ }
+
+ /**
+  * Get the world velocity of a local point.
+  *
+  * localPoint: point in local coordinates.
+  * returns the world velocity of a point.
+  */
+ Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
+   Vector out = new Vector();
+   getLinearVelocityFromLocalPointToOut(localPoint, out);
+   return out;
+ }
+
+ /**
+  * Get the world velocity of a local point and store the result in the given
+  * out parameter.
+  */
+ void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
+   getWorldPointToOut(localPoint, out);
+   getLinearVelocityFromWorldPointToOut(out, out);
+ }
+
+ /**
+  * The type of this body. Either dynamic, static, or kinematic.
+  */
+ int get type =&gt; _type; 
+
+ /**
+  * The type of this body. This may alter the mass and velocity.
+  */
+ void set type(int otherType) {
+   if (_type == otherType) {
+     return;
+   }
+
+   _type = otherType;
+
+   resetMassData();
+
+   if (_type == BodyType.STATIC) {
+     _linearVelocity.setZero();
+     _angularVelocity = 0.0;
+   }
+
+   awake = true;
+
+   _force.setZero();
+   _torque = 0.0;
+
+   // Since the body type changed, we need to flag contacts for filtering.
+   for (ContactEdge ce = contactList; ce != null; ce = ce.next) {
+     ce.contact.flagForFiltering();
+   }
+ }
+
+ /** Is this body treated like a bullet for continuous collision detection? */
+ bool get bullet =&gt; (flags &amp; BULLET_FLAG) == BULLET_FLAG; 
+
+ /**
+  * Should this body be treated like a bullet for continuous collision
+  * detection?
+  */
+ void set bullet(bool flag) {
+   if (flag)
+     flags |= BULLET_FLAG;
+   else
+     flags &amp;= ~BULLET_FLAG;
+ }
+
+ /**
+  * You can disable sleeping on this body. If you disable sleeping, the
+  * body will be woken.
+  */
+ void set sleepingAllowed(bool flag) {
+   if (flag) {
+     flags |= AUTO_SLEEP_FLAG;
+   } else {
+     flags &amp;= ~AUTO_SLEEP_FLAG;
+     awake = true;
+   }
+ }
+
+ /**
+  * Is this body allowed to sleep?
+  */
+ bool get sleepingAllowed =&gt; (flags &amp; AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
+
+ /**
+  * The sleep state of the body. A sleeping body has very
+  * low CPU cost.
+  */
+ void set awake(bool flag) {
+   if (flag) {
+     if ((flags &amp; AWAKE_FLAG) == 0) {
+       flags |= AWAKE_FLAG;
+       sleepTime = 0.0;
+     }
+   } else {
+     flags &amp;= ~AWAKE_FLAG;
+     sleepTime = 0.0;
+     _linearVelocity.setZero();
+     _angularVelocity = 0.0;
+     _force.setZero();
+     _torque = 0.0;
+   }
+ }
+
+ bool get awake =&gt; (flags &amp; AWAKE_FLAG) == AWAKE_FLAG; 
+
+ /**
+  * Set the active state of the body. An inactive body is not
+  * simulated and cannot be collided with or woken up.
+  * If you pass a flag of true, all fixtures will be added to the
+  * broad-phase.
+  * If you pass a flag of false, all fixtures will be removed from
+  * the broad-phase and all contacts will be destroyed.
+  * Fixtures and joints are otherwise unaffected. You may continue
+  * to create/destroy fixtures and joints on inactive bodies.
+  * Fixtures on an inactive body are implicitly inactive and will
+  * not participate in collisions, ray-casts, or queries.
+  * Joints connected to an inactive body are implicitly inactive.
+  * An inactive body is still owned by a World object and remains
+  * in the body list.
+  */
+ void set active(bool flag) {
+   if (flag == active) {
+     return;
+   }
+
+   if (flag) {
+     flags |= ACTIVE_FLAG;
+
+     // Create all proxies.
+     BroadPhase broadPhase = world._contactManager.broadPhase;
+     for (Fixture f = fixtureList; f != null; f = f.next) {
+       f.createProxy(broadPhase, originTransform);
+     }
+
+     // Contacts are created the next time step.
+   } else {
+     flags &amp;= ~ACTIVE_FLAG;
+
+     // Destroy all proxies.
+     BroadPhase broadPhase = world._contactManager.broadPhase;
+     for (Fixture f = fixtureList; f != null; f = f.next) {
+       f.destroyProxy(broadPhase);
+     }
+
+     // Destroy the attached contacts.
+     ContactEdge ce = contactList;
+     while (ce != null) {
+       ContactEdge ce0 = ce;
+       ce = ce.next;
+       world._contactManager.destroy(ce0.contact);
+     }
+     contactList = null;
+   }
+ }
+
+ /**
+  * Get the active state of the body.
+  */
+ bool get active =&gt; (flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG; 
+
+ /**
+  * Set this body to have fixed rotation. This causes the mass
+  * to be reset.
+  */
+ void set fixedRotation(bool flag) {
+   if (flag)
+     flags |= FIXED_ROTATION_FLAG;
+   else
+     flags &amp;= ~FIXED_ROTATION_FLAG;
+
+   resetMassData();
+ }
+
+ /**
+  * Does this body have fixed rotation?
+  */
+ bool get fixedRotation {
+   return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
+ }
+
+ void synchronizeFixtures() {
+   final Transform xf1 = _pxf;
+   xf1.rotation.setAngle(sweep.angleZero);
+   Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
+       xf1.position);
+   xf1.position.mulLocal(-1);
+   xf1.position.addLocal(sweep.centerZero);
+
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   for (Fixture f = fixtureList; f != null; f = f.next)
+     f.synchronize(broadPhase, xf1, originTransform);
+ }
+
+ void synchronizeTransform() {
+   final num c = Math.cos(sweep.angle);
+   final num s = Math.sin(sweep.angle);
+   final Transform t = originTransform;
+   final Matrix22 r = t.rotation;
+   final Vector p = t.position;
+
+   r.col1.x = c;
+   r.col2.x = -s;
+   r.col1.y = s;
+   r.col2.y = c;
+   p.x = (r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y) * -1 +
+       sweep.center.x;
+   p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
+       sweep.center.y;
+ }
+
+ /**
+  * This is used to prevent connected bodies from colliding.
+  * It may lie, depending on the collideConnected flag.
+  */
+ bool shouldCollide(Body other) {
+   // At least one body should be dynamic.
+   return !(_type != BodyType.DYNAMIC &amp;&amp; other._type != BodyType.DYNAMIC);
+ }
+
+ void advance(num t) {
+   sweep.advance(t);
+   sweep.center.setFrom(sweep.centerZero);
+   sweep.angle = sweep.angleZero;
+   synchronizeTransform();
+ }
 }
 </pre>
 </div>
@@ -1040,79 +1039,79 @@ new <strong>Body</strong>(<a href="../box2d/BodyDef.html">BodyDef</a> bd, <a hre
 <div class="doc">
 <pre class="source">
 Body(BodyDef bd, this.world)
-    : flags = 0,
-      // Set the origin transform.
-      originTransform = new Transform(),
+   : flags = 0,
+     // Set the origin transform.
+     originTransform = new Transform(),
 
-      // Set the sweep.
-      sweep = new Sweep(),
+     // Set the sweep.
+     sweep = new Sweep(),
 
-      jointList = null,
-      contactList = null,
-      prev = null,
-      next = null,
+     jointList = null,
+     contactList = null,
+     prev = null,
+     next = null,
 
-      // Set the linear and angular velocities.
-      _linearVelocity = new Vector.copy(bd.linearVelocity),
-      _angularVelocity = 0,
+     // Set the linear and angular velocities.
+     _linearVelocity = new Vector.copy(bd.linearVelocity),
+     _angularVelocity = 0,
 
-      // Set the linear and angular damping.
-      linearDamping = bd.linearDamping,
-      angularDamping = bd.angularDamping,
+     // Set the linear and angular damping.
+     linearDamping = bd.linearDamping,
+     angularDamping = bd.angularDamping,
 
-      // Set force and torque.
-      _force = new Vector(),
-      _torque = 0,
+     // Set force and torque.
+     _force = new Vector(),
+     _torque = 0,
 
-      _inertia = 0,
-      invInertia = 0,
+     _inertia = 0,
+     invInertia = 0,
 
-      userData = bd.userData,
+     userData = bd.userData,
 
-      fixtureList = null,
-      fixtureCount = 0,
+     fixtureList = null,
+     fixtureCount = 0,
 
-      // Initialize pool objects.
-      _fixDef = new FixtureDef(),
-      _pmd = new MassData(),
-      _pxf = new Transform(),
-      oldCenter = new Vector(),
-      tempCenter = new Vector(),
+     // Initialize pool objects.
+     _fixDef = new FixtureDef(),
+     _pmd = new MassData(),
+     _pxf = new Transform(),
+     oldCenter = new Vector(),
+     tempCenter = new Vector(),
 
-      sleepTime = 0,
+     sleepTime = 0,
 
-      _type = bd.type {
-  if (bd.bullet) {
-    flags |= BULLET_FLAG;
-  }
-  if (bd.fixedRotation) {
-    flags |= FIXED_ROTATION_FLAG;
-  }
-  if (bd.allowSleep) {
-    flags |= AUTO_SLEEP_FLAG;
-  }
-  if (bd.awake) {
-    flags |= AWAKE_FLAG;
-  }
-  if (bd.active) {
-    flags |= ACTIVE_FLAG;
-  }
+     _type = bd.type {
+ if (bd.bullet) {
+   flags |= BULLET_FLAG;
+ }
+ if (bd.fixedRotation) {
+   flags |= FIXED_ROTATION_FLAG;
+ }
+ if (bd.allowSleep) {
+   flags |= AUTO_SLEEP_FLAG;
+ }
+ if (bd.awake) {
+   flags |= AWAKE_FLAG;
+ }
+ if (bd.active) {
+   flags |= ACTIVE_FLAG;
+ }
 
-  originTransform.position.setFrom(bd.position);
-  originTransform.rotation.setAngle(bd.angle);
-  sweep.localCenter.setZero();
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
-  sweep.angle = bd.angle;
-  sweep.angleZero = bd.angle;
+ originTransform.position.setFrom(bd.position);
+ originTransform.rotation.setAngle(bd.angle);
+ sweep.localCenter.setZero();
+ Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+ sweep.center.setFrom(sweep.centerZero);
+ sweep.angle = bd.angle;
+ sweep.angleZero = bd.angle;
 
-  if (_type == BodyType.DYNAMIC) {
-    mass = 1;
-    invMass = 1;
-  } else {
-    mass = 0;
-    invMass = 0;
-  }
+ if (_type == BodyType.DYNAMIC) {
+   mass = 1;
+   invMass = 1;
+ } else {
+   mass = 0;
+   invMass = 0;
+ }
 }
 </pre>
 </div>
@@ -1151,38 +1150,38 @@ An inactive body is still owned by a World object and remains
 in the body list.</p>
 <pre class="source">
 void set active(bool flag) {
-  if (flag == active) {
-    return;
-  }
+ if (flag == active) {
+   return;
+ }
 
-  if (flag) {
-    flags |= ACTIVE_FLAG;
+ if (flag) {
+   flags |= ACTIVE_FLAG;
 
-    // Create all proxies.
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    for (Fixture f = fixtureList; f != null; f = f.next) {
-      f.createProxy(broadPhase, originTransform);
-    }
+   // Create all proxies.
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   for (Fixture f = fixtureList; f != null; f = f.next) {
+     f.createProxy(broadPhase, originTransform);
+   }
 
-    // Contacts are created the next time step.
-  } else {
-    flags &amp;= ~ACTIVE_FLAG;
+   // Contacts are created the next time step.
+ } else {
+   flags &amp;= ~ACTIVE_FLAG;
 
-    // Destroy all proxies.
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    for (Fixture f = fixtureList; f != null; f = f.next) {
-      f.destroyProxy(broadPhase);
-    }
+   // Destroy all proxies.
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   for (Fixture f = fixtureList; f != null; f = f.next) {
+     f.destroyProxy(broadPhase);
+   }
 
-    // Destroy the attached contacts.
-    ContactEdge ce = contactList;
-    while (ce != null) {
-      ContactEdge ce0 = ce;
-      ce = ce.next;
-      world._contactManager.destroy(ce0.contact);
-    }
-    contactList = null;
-  }
+   // Destroy the attached contacts.
+   ContactEdge ce = contactList;
+   while (ce != null) {
+     ContactEdge ce0 = ce;
+     ce = ce.next;
+     world._contactManager.destroy(ce0.contact);
+   }
+   contactList = null;
+ }
 }
 </pre>
 </div>
@@ -1224,15 +1223,15 @@ num get angularVelocity =&gt; _angularVelocity;
 </pre>
 <pre class="source">
 void set angularVelocity(num w) {
-  if (_type != BodyType.STATIC) {
+ if (_type != BodyType.STATIC) {
 
-    // Set awake if want to set velocity to non-zero value.
-    if (w * w &gt; 0) {
-      awake = true;
-    }
+   // Set awake if want to set velocity to non-zero value.
+   if (w * w &gt; 0) {
+     awake = true;
+   }
 
-    _angularVelocity = w;
-  }
+   _angularVelocity = w;
+ }
 }
 </pre>
 </div>
@@ -1251,19 +1250,19 @@ bool get awake =&gt; (flags &amp; AWAKE_FLAG) == AWAKE_FLAG;
 </pre>
 <pre class="source">
 void set awake(bool flag) {
-  if (flag) {
-    if ((flags &amp; AWAKE_FLAG) == 0) {
-      flags |= AWAKE_FLAG;
-      sleepTime = 0.0;
-    }
-  } else {
-    flags &amp;= ~AWAKE_FLAG;
-    sleepTime = 0.0;
-    _linearVelocity.setZero();
-    _angularVelocity = 0.0;
-    _force.setZero();
-    _torque = 0.0;
-  }
+ if (flag) {
+   if ((flags &amp; AWAKE_FLAG) == 0) {
+     flags |= AWAKE_FLAG;
+     sleepTime = 0.0;
+   }
+ } else {
+   flags &amp;= ~AWAKE_FLAG;
+   sleepTime = 0.0;
+   _linearVelocity.setZero();
+   _angularVelocity = 0.0;
+   _force.setZero();
+   _torque = 0.0;
+ }
 }
 </pre>
 </div>
@@ -1288,10 +1287,10 @@ void <strong>set bullet</strong>(bool flag) <a class="anchor-link" href="#bullet
 detection?</p>
 <pre class="source">
 void set bullet(bool flag) {
-  if (flag)
-    flags |= BULLET_FLAG;
-  else
-    flags &amp;= ~BULLET_FLAG;
+ if (flag)
+   flags |= BULLET_FLAG;
+ else
+   flags &amp;= ~BULLET_FLAG;
 }
 </pre>
 </div>
@@ -1316,7 +1315,7 @@ bool <strong>get fixedRotation</strong> <a class="anchor-link" href="#fixedRotat
 <p>Does this body have fixed rotation?</p>
 <pre class="source">
 bool get fixedRotation {
-  return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
+ return (flags &amp; FIXED_ROTATION_FLAG) == FIXED_ROTATION_FLAG;
 }
 </pre>
 </div>
@@ -1330,12 +1329,12 @@ void <strong>set fixedRotation</strong>(bool flag) <a class="anchor-link" href="
 to be reset.</p>
 <pre class="source">
 void set fixedRotation(bool flag) {
-  if (flag)
-    flags |= FIXED_ROTATION_FLAG;
-  else
-    flags &amp;= ~FIXED_ROTATION_FLAG;
+ if (flag)
+   flags |= FIXED_ROTATION_FLAG;
+ else
+   flags &amp;= ~FIXED_ROTATION_FLAG;
 
-  resetMassData();
+ resetMassData();
 }
 </pre>
 </div>
@@ -1387,8 +1386,8 @@ final num         <strong>inertia</strong> <a class="anchor-link"
 <p>returns the rotational inertia, usually in kg-m^2.</p>
 <pre class="source">
 num get inertia {
-  return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
-      sweep.localCenter.y * sweep.localCenter.y);
+ return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
+     sweep.localCenter.y * sweep.localCenter.y);
 }
 </pre>
 </div>
@@ -1467,15 +1466,15 @@ Vector get linearVelocity =&gt; _linearVelocity;
 </pre>
 <pre class="source">
 void set linearVelocity(Vector v) {
-  if (_type == BodyType.STATIC) {
-    return;
-  }
+ if (_type == BodyType.STATIC) {
+   return;
+ }
 
-  if (Vector.dot(v, v) &gt; 0.0) {
-    awake = true;
-  }
+ if (Vector.dot(v, v) &gt; 0.0) {
+   awake = true;
+ }
 
-  _linearVelocity.setFrom(v);
+ _linearVelocity.setFrom(v);
 }
 </pre>
 </div>
@@ -1519,43 +1518,43 @@ This function has no effect if the body isn't dynamic.</p>
   the mass properties.</p>
 <pre class="source">
 void set massData(MassData data) {
-  assert(world.locked == false);
-  if (world.locked == true) {
-    return;
-  }
+ assert(world.locked == false);
+ if (world.locked == true) {
+   return;
+ }
 
-  if (_type != BodyType.DYNAMIC) {
-    return;
-  }
+ if (_type != BodyType.DYNAMIC) {
+   return;
+ }
 
-  invMass = 0.0;
-  _inertia = 0.0;
-  invInertia = 0.0;
+ invMass = 0.0;
+ _inertia = 0.0;
+ invInertia = 0.0;
 
-  mass = data.mass;
-  if (mass &lt;= 0.0)
-    mass = 1;
+ mass = data.mass;
+ if (mass &lt;= 0.0)
+   mass = 1;
 
-  invMass = 1.0 / mass;
+ invMass = 1.0 / mass;
 
-  if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-    _inertia = data.inertia - mass * Vector.dot(data.center,
-        data.center);
-    assert (_inertia &gt; 0.0);
-    invInertia = 1.0 / _inertia;
-  }
+ if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
+   _inertia = data.inertia - mass * Vector.dot(data.center,
+       data.center);
+   assert (_inertia &gt; 0.0);
+   invInertia = 1.0 / _inertia;
+ }
 
-  // Move center of mass.
-  oldCenter.setFrom(sweep.center);
-  sweep.localCenter.setFrom(data.center);
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
+ // Move center of mass.
+ oldCenter.setFrom(sweep.center);
+ sweep.localCenter.setFrom(data.center);
+ Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+ sweep.center.setFrom(sweep.centerZero);
 
-  // Update center of mass velocity.
-  final Vector temp = new Vector.copy(sweep.center);
-  temp.subLocal(oldCenter);
-  Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-  _linearVelocity.addLocal(temp);
+ // Update center of mass velocity.
+ final Vector temp = new Vector.copy(sweep.center);
+ temp.subLocal(oldCenter);
+ Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+ _linearVelocity.addLocal(temp);
 }
 </pre>
 </div>
@@ -1643,12 +1642,12 @@ void <strong>set sleepingAllowed</strong>(bool flag) <a class="anchor-link" href
 body will be woken.</p>
 <pre class="source">
 void set sleepingAllowed(bool flag) {
-  if (flag) {
-    flags |= AUTO_SLEEP_FLAG;
-  } else {
-    flags &amp;= ~AUTO_SLEEP_FLAG;
-    awake = true;
-  }
+ if (flag) {
+   flags |= AUTO_SLEEP_FLAG;
+ } else {
+   flags &amp;= ~AUTO_SLEEP_FLAG;
+   awake = true;
+ }
 }
 </pre>
 </div>
@@ -1709,28 +1708,28 @@ void <strong>set type</strong>(int otherType) <a class="anchor-link" href="#type
 <p>The type of this body. This may alter the mass and velocity.</p>
 <pre class="source">
 void set type(int otherType) {
-  if (_type == otherType) {
-    return;
-  }
+ if (_type == otherType) {
+   return;
+ }
 
-  _type = otherType;
+ _type = otherType;
 
-  resetMassData();
+ resetMassData();
 
-  if (_type == BodyType.STATIC) {
-    _linearVelocity.setZero();
-    _angularVelocity = 0.0;
-  }
+ if (_type == BodyType.STATIC) {
+   _linearVelocity.setZero();
+   _angularVelocity = 0.0;
+ }
 
-  awake = true;
+ awake = true;
 
-  _force.setZero();
-  _torque = 0.0;
+ _force.setZero();
+ _torque = 0.0;
 
-  // Since the body type changed, we need to flag contacts for filtering.
-  for (ContactEdge ce = contactList; ce != null; ce = ce.next) {
-    ce.contact.flagForFiltering();
-  }
+ // Since the body type changed, we need to flag contacts for filtering.
+ for (ContactEdge ce = contactList; ce != null; ce = ce.next) {
+   ce.contact.flagForFiltering();
+ }
 }
 </pre>
 </div>
@@ -1783,10 +1782,10 @@ void <strong>advance</strong>(num t) <a class="anchor-link" href="#advance"
 <div class="doc">
 <pre class="source">
 void advance(num t) {
-  sweep.advance(t);
-  sweep.center.setFrom(sweep.centerZero);
-  sweep.angle = sweep.angleZero;
-  synchronizeTransform();
+ sweep.advance(t);
+ sweep.center.setFrom(sweep.centerZero);
+ sweep.angle = sweep.angleZero;
+ synchronizeTransform();
 }
 </pre>
 </div>
@@ -1801,12 +1800,12 @@ void <strong>applyAngularImpulse</strong>(num impulse) <a class="anchor-link" hr
   the angular impulse in units of kg<em>m</em>m/s</p>
 <pre class="source">
 void applyAngularImpulse(num impulse) {
-  if (_type != BodyType.DYNAMIC) {
-    return;
-  }
+ if (_type != BodyType.DYNAMIC) {
+   return;
+ }
 
-  awake = true;
-  _angularVelocity += invInertia * impulse;
+ awake = true;
+ _angularVelocity += invInertia * impulse;
 }
 </pre>
 </div>
@@ -1825,17 +1824,17 @@ point
   the world position of the point of application.</p>
 <pre class="source">
 void applyForce(Vector force, Vector point) {
-  if (_type != BodyType.DYNAMIC) {
-    return;
-  }
+ if (_type != BodyType.DYNAMIC) {
+   return;
+ }
 
-  awake = true;
+ awake = true;
 
-  _force.x += force.x;
-  _force.y += force.y;
+ _force.x += force.x;
+ _force.y += force.y;
 
-  _torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
-      * force.x;
+ _torque += (point.x - sweep.center.x) * force.y - (point.y - sweep.center.y)
+     * force.x;
 }
 </pre>
 </div>
@@ -1854,17 +1853,17 @@ point
   the world position of the point of application.</p>
 <pre class="source">
 void applyLinearImpulse(Vector impulse, Vector point) {
-  if (_type != BodyType.DYNAMIC) {
-    return;
-  }
+ if (_type != BodyType.DYNAMIC) {
+   return;
+ }
 
-  awake = true;
+ awake = true;
 
-  _linearVelocity.x += impulse.x * invMass;
-  _linearVelocity.y += impulse.y * invMass;
+ _linearVelocity.x += impulse.x * invMass;
+ _linearVelocity.y += impulse.y * invMass;
 
-  _angularVelocity += invInertia * ((point.x - sweep.center.x) *
-      impulse.y - (point.y - sweep.center.y) * impulse.x);
+ _angularVelocity += invInertia * ((point.x - sweep.center.x) *
+     impulse.y - (point.y - sweep.center.y) * impulse.x);
 }
 </pre>
 </div>
@@ -1881,13 +1880,13 @@ This wakes up the body.</p>
   about the z-axis (out of the screen), usually in N-m.</p>
 <pre class="source">
 void applyTorque(num torque) {
-  if (_type != BodyType.DYNAMIC) {
-    return;
-  }
+ if (_type != BodyType.DYNAMIC) {
+   return;
+ }
 
-  awake = true;
+ awake = true;
 
-  _torque += torque;
+ _torque += torque;
 }
 </pre>
 </div>
@@ -1905,32 +1904,32 @@ of the body.
 Contacts are not created until the next time step.</p>
 <pre class="source">
 Fixture createFixture(FixtureDef def) {
-  assert (world.locked == false);
+ assert (world.locked == false);
 
-  Fixture fixture = new Fixture();
-  fixture.create(this, def);
+ Fixture fixture = new Fixture();
+ fixture.create(this, def);
 
-  if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    fixture.createProxy(broadPhase, originTransform);
-  }
+ if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   fixture.createProxy(broadPhase, originTransform);
+ }
 
-  fixture.next = fixtureList;
-  fixtureList = fixture;
-  ++fixtureCount;
+ fixture.next = fixtureList;
+ fixtureList = fixture;
+ ++fixtureCount;
 
-  fixture.body = this;
+ fixture.body = this;
 
-  // Adjust mass properties if needed.
-  if (fixture.density &gt; 0.0) {
-    resetMassData();
-  }
+ // Adjust mass properties if needed.
+ if (fixture.density &gt; 0.0) {
+   resetMassData();
+ }
 
-  // Let the world know we have a new fixture. This will cause new contacts
-  // to be created at the beginning of the next time step.
-  world._flags |= World.NEW_FIXTURE;
+ // Let the world know we have a new fixture. This will cause new contacts
+ // to be created at the beginning of the next time step.
+ world._flags |= World.NEW_FIXTURE;
 
-  return fixture;
+ return fixture;
 }
 </pre>
 </div>
@@ -1947,10 +1946,10 @@ If the density is non-zero, this function automatically updates the mass
 of the body.</p>
 <pre class="source">
 Fixture createFixtureFromShape(Shape shape, [num density = 0]) {
-  _fixDef.shape = shape;
-  _fixDef.density = density;
+ _fixDef.shape = shape;
+ _fixDef.density = density;
 
-  return createFixture(_fixDef);
+ return createFixture(_fixDef);
 }
 </pre>
 </div>
@@ -1968,70 +1967,70 @@ All fixtures attached to a body are implicitly destroyed when the body is
 destroyed.</p>
 <pre class="source">
 void destroyFixture(Fixture fixture) {
-  assert (world.locked == false);
-  if (world.locked == true) {
-    return;
-  }
+ assert (world.locked == false);
+ if (world.locked == true) {
+   return;
+ }
 
-  assert (fixture.body == this);
+ assert (fixture.body == this);
 
-  // Remove the fixture from this body's singly linked list.
-  assert (fixtureCount &gt; 0);
-  Fixture node = fixtureList;
-  Fixture last = null; // java change
-  bool found = false;
-  while (node != null) {
-    if (node == fixture) {
-      node = fixture.next;
-      found = true;
-      break;
-    }
-    last = node;
-    node = node.next;
-  }
+ // Remove the fixture from this body's singly linked list.
+ assert (fixtureCount &gt; 0);
+ Fixture node = fixtureList;
+ Fixture last = null; // java change
+ bool found = false;
+ while (node != null) {
+   if (node == fixture) {
+     node = fixture.next;
+     found = true;
+     break;
+   }
+   last = node;
+   node = node.next;
+ }
 
-  // You tried to remove a shape that is not attached to this body.
-  assert (found);
+ // You tried to remove a shape that is not attached to this body.
+ assert (found);
 
-  if (last == null) {
-    fixtureList = fixture.next;
-  } else {
-    last.next = fixture.next;
-  }
+ if (last == null) {
+   fixtureList = fixture.next;
+ } else {
+   last.next = fixture.next;
+ }
 
-  // Destroy any contacts associated with the fixture.
-  ContactEdge edge = contactList;
-  while (edge != null) {
-    Contact c = edge.contact;
-    edge = edge.next;
+ // Destroy any contacts associated with the fixture.
+ ContactEdge edge = contactList;
+ while (edge != null) {
+   Contact c = edge.contact;
+   edge = edge.next;
 
-    Fixture fixtureA = c.fixtureA;
-    Fixture fixtureB = c.fixtureB;
+   Fixture fixtureA = c.fixtureA;
+   Fixture fixtureB = c.fixtureB;
 
-    if (fixture == fixtureA || fixture == fixtureB) {
-      // This destroys the contact and removes it from
-      // this body's contact list.
-      world._contactManager.destroy(c);
-    }
-  }
+   if (fixture == fixtureA || fixture == fixtureB) {
+     // This destroys the contact and removes it from
+     // this body's contact list.
+     world._contactManager.destroy(c);
+   }
+ }
 
-  if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
-    assert (fixture.proxy != null);
-    BroadPhase broadPhase = world._contactManager.broadPhase;
-    fixture.destroyProxy(broadPhase);
-  } else {
-    assert (fixture.proxy == null);
-  }
+ if ((flags &amp; ACTIVE_FLAG) == ACTIVE_FLAG) {
+   assert (fixture.proxy != null);
+   BroadPhase broadPhase = world._contactManager.broadPhase;
+   fixture.destroyProxy(broadPhase);
+ } else {
+   assert (fixture.proxy == null);
+ }
 
-  fixture.destroy();
-  fixture.body = null;
-  fixture.next = null;
-  fixture = null;
+ fixture.destroy();
+ fixture.body = null;
+ fixture.next = null;
+ fixture = null;
 
-  --fixtureCount;
+ --fixtureCount;
 
-  // Reset the mass data.
-  resetMassData();
+ // Reset the mass data.
+ resetMassData();
 }
 </pre>
 </div>
@@ -2046,9 +2045,9 @@ void destroyFixture(Fixture fixture) {
 returns the world velocity of a point.</p>
 <pre class="source">
 Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
-  Vector out = new Vector();
-  getLinearVelocityFromLocalPointToOut(localPoint, out);
-  return out;
+ Vector out = new Vector();
+ getLinearVelocityFromLocalPointToOut(localPoint, out);
+ return out;
 }
 </pre>
 </div>
@@ -2062,8 +2061,8 @@ void <strong>getLinearVelocityFromLocalPointToOut</strong>(<a href="../box2d/Vec
 out parameter.</p>
 <pre class="source">
 void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
-  getWorldPointToOut(localPoint, out);
-  getLinearVelocityFromWorldPointToOut(out, out);
+ getWorldPointToOut(localPoint, out);
+ getLinearVelocityFromWorldPointToOut(out, out);
 }
 </pre>
 </div>
@@ -2078,9 +2077,9 @@ void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
 returns the world velocity of a point.</p>
 <pre class="source">
 Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
-  Vector out = new Vector();
-  getLinearVelocityFromWorldPointToOut(worldPoint, out);
-  return out;
+ Vector out = new Vector();
+ getLinearVelocityFromWorldPointToOut(worldPoint, out);
+ return out;
 }
 </pre>
 </div>
@@ -2092,9 +2091,9 @@ void <strong>getLinearVelocityFromWorldPointToOut</strong>(<a href="../box2d/Vec
 <div class="doc">
 <pre class="source">
 void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
-  out.setFrom(worldPoint).subLocal(sweep.center);
-  Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
-  out.addLocal(_linearVelocity);
+ out.setFrom(worldPoint).subLocal(sweep.center);
+ Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+ out.addLocal(_linearVelocity);
 }
 </pre>
 </div>
@@ -2109,9 +2108,9 @@ void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
 returns the corresponding local point relative to the body's origin.</p>
 <pre class="source">
 Vector getLocalPoint(Vector worldPoint) {
-  Vector out = new Vector();
-  getLocalPointToOut(worldPoint, out);
-  return out;
+ Vector out = new Vector();
+ getLocalPointToOut(worldPoint, out);
+ return out;
 }
 </pre>
 </div>
@@ -2125,7 +2124,7 @@ void <strong>getLocalPointToOut</strong>(<a href="../box2d/Vector.html">Vector</
 Returns this through the given out parameter.</p>
 <pre class="source">
 void getLocalPointToOut(Vector worldPoint, Vector out) {
-  Transform.mulTransToOut(originTransform, worldPoint, out);
+ Transform.mulTransToOut(originTransform, worldPoint, out);
 }
 </pre>
 </div>
@@ -2140,9 +2139,9 @@ void getLocalPointToOut(Vector worldPoint, Vector out) {
 returns the corresponding local vector.</p>
 <pre class="source">
 Vector getLocalVector(Vector worldVector) {
-  Vector out = new Vector();
-  getLocalVectorToOut(worldVector, out);
-  return out;
+ Vector out = new Vector();
+ getLocalVectorToOut(worldVector, out);
+ return out;
 }
 </pre>
 </div>
@@ -2156,8 +2155,8 @@ void <strong>getLocalVectorToOut</strong>(<a href="../box2d/Vector.html">Vector<
 out parameter.</p>
 <pre class="source">
 void getLocalVectorToOut(Vector worldVector, Vector out) {
-  Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
-      out);
+ Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
+     out);
 }
 </pre>
 </div>
@@ -2172,11 +2171,11 @@ to the center of mass. Result is returned through the given out parameter
 data.</p>
 <pre class="source">
 void getMassData(MassData data) {
-  data.mass = mass;
-  final Vector lc = sweep.localCenter;
-  data.inertia = _inertia + mass * lc.lengthSquared;
-  data.center.x = lc.x;
-  data.center.y = lc.y;
+ data.mass = mass;
+ final Vector lc = sweep.localCenter;
+ data.inertia = _inertia + mass * lc.lengthSquared;
+ data.center.x = lc.x;
+ data.center.y = lc.y;
 }
 </pre>
 </div>
@@ -2192,9 +2191,9 @@ void getMassData(MassData data) {
 returns the same point expressed in world coordinates.</p>
 <pre class="source">
 Vector getWorldPoint(Vector localPoint) {
-  Vector v = new Vector();
-  getWorldPointToOut(localPoint, v);
-  return v;
+ Vector v = new Vector();
+ getWorldPointToOut(localPoint, v);
+ return v;
 }
 </pre>
 </div>
@@ -2208,7 +2207,7 @@ void <strong>getWorldPointToOut</strong>(<a href="../box2d/Vector.html">Vector</
 given out parameter.</p>
 <pre class="source">
 void getWorldPointToOut(Vector localPoint, Vector out) {
-  Transform.mulToOut(originTransform, localPoint, out);
+ Transform.mulToOut(originTransform, localPoint, out);
 }
 </pre>
 </div>
@@ -2223,9 +2222,9 @@ void getWorldPointToOut(Vector localPoint, Vector out) {
 return the same vector expressed in world coordinates.</p>
 <pre class="source">
 Vector getWorldVector(Vector localVector) {
-  Vector out = new Vector();
-  getWorldVectorToOut(localVector, out);
-  return out;
+ Vector out = new Vector();
+ getWorldVectorToOut(localVector, out);
+ return out;
 }
 </pre>
 </div>
@@ -2239,8 +2238,8 @@ void <strong>getWorldVectorToOut</strong>(<a href="../box2d/Vector.html">Vector<
 given out paramater.</p>
 <pre class="source">
 void getWorldVectorToOut(Vector localVector, Vector out) {
-  Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
-      out);
+ Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
+     out);
 }
 </pre>
 </div>
@@ -2256,68 +2255,68 @@ This normally does not need to be called unless you called setMassData to
 override the mass and you later want to reset the mass.</p>
 <pre class="source">
 void resetMassData() {
-  // Compute mass data from shapes. Each shape has its own density.
-  mass = 0.0;
-  invMass = 0.0;
-  _inertia = 0.0;
-  invInertia = 0.0;
-  sweep.localCenter.setZero();
+ // Compute mass data from shapes. Each shape has its own density.
+ mass = 0.0;
+ invMass = 0.0;
+ _inertia = 0.0;
+ invInertia = 0.0;
+ sweep.localCenter.setZero();
 
-  // Static and kinematic bodies have zero mass.
-  if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
-    sweep.center.setFrom(originTransform.position);
-    sweep.centerZero.setFrom(originTransform.position);
-    return;
-  }
+ // Static and kinematic bodies have zero mass.
+ if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
+   sweep.center.setFrom(originTransform.position);
+   sweep.centerZero.setFrom(originTransform.position);
+   return;
+ }
 
-  assert (_type == BodyType.DYNAMIC);
+ assert (_type == BodyType.DYNAMIC);
 
-  // Accumulate mass over all fixtures.
-  tempCenter.setZero();
-  MassData massData = _pmd;
-  for (Fixture f = fixtureList; f != null; f = f.next) {
-    if (f.density == 0.0) {
-      continue;
-    }
-    f.getMassData(massData);
-    mass += massData.mass;
-    final temp = new Vector.copy(massData.center);
-    temp.mulLocal(massData.mass);
-    tempCenter.addLocal(temp);
-    _inertia += massData.inertia;
-  }
+ // Accumulate mass over all fixtures.
+ tempCenter.setZero();
+ MassData massData = _pmd;
+ for (Fixture f = fixtureList; f != null; f = f.next) {
+   if (f.density == 0.0) {
+     continue;
+   }
+   f.getMassData(massData);
+   mass += massData.mass;
+   final temp = new Vector.copy(massData.center);
+   temp.mulLocal(massData.mass);
+   tempCenter.addLocal(temp);
+   _inertia += massData.inertia;
+ }
 
-  // Compute center of mass.
-  if (mass &gt; 0.0) {
-    invMass = 1.0 / mass;
-    tempCenter.mulLocal(invMass);
-  } else {
-    // Force all dynamic bodies to have a positive mass.
-    mass = 1.0;
-    invMass = 1.0;
-  }
+ // Compute center of mass.
+ if (mass &gt; 0.0) {
+   invMass = 1.0 / mass;
+   tempCenter.mulLocal(invMass);
+ } else {
+   // Force all dynamic bodies to have a positive mass.
+   mass = 1.0;
+   invMass = 1.0;
+ }
 
-  if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-    // Center the inertia about the center of mass.
-    _inertia -= mass * Vector.dot(tempCenter, tempCenter);
-    assert (_inertia &gt; 0.0);
-    invInertia = 1.0 / _inertia;
-  } else {
-    _inertia = 0.0;
-    invInertia = 0.0;
-  }
+ if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
+   // Center the inertia about the center of mass.
+   _inertia -= mass * Vector.dot(tempCenter, tempCenter);
+   assert (_inertia &gt; 0.0);
+   invInertia = 1.0 / _inertia;
+ } else {
+   _inertia = 0.0;
+   invInertia = 0.0;
+ }
 
-  // Move center of mass.
-  oldCenter.setFrom(sweep.center);
-  sweep.localCenter.setFrom(tempCenter);
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
+ // Move center of mass.
+ oldCenter.setFrom(sweep.center);
+ sweep.localCenter.setFrom(tempCenter);
+ Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+ sweep.center.setFrom(sweep.centerZero);
 
-  // Update center of mass velocity.
-  final Vector temp = new Vector.copy(sweep.center);
-  temp.subLocal(oldCenter);
-  Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-  _linearVelocity.addLocal(temp);
+ // Update center of mass velocity.
+ final Vector temp = new Vector.copy(sweep.center);
+ temp.subLocal(oldCenter);
+ Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+ _linearVelocity.addLocal(temp);
 }
 </pre>
 </div>
@@ -2332,26 +2331,26 @@ This breaks any contacts and wakes the other bodies.
 Manipulating a body's transform may cause non-physical behavior.</p>
 <pre class="source">
 void setTransform(Vector argPosition, num argAngle) {
-  assert (world.locked == false);
-  if (world.locked == true) {
-    return;
-  }
+ assert (world.locked == false);
+ if (world.locked == true) {
+   return;
+ }
 
-  originTransform.rotation.setAngle(argAngle);
-  originTransform.position.setFrom(argPosition);
+ originTransform.rotation.setAngle(argAngle);
+ originTransform.position.setFrom(argPosition);
 
-  Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-  sweep.center.setFrom(sweep.centerZero);
+ Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
+ sweep.center.setFrom(sweep.centerZero);
 
-  sweep.angleZero = argAngle;
-  sweep.angle = argAngle;
+ sweep.angleZero = argAngle;
+ sweep.angle = argAngle;
 
-  BroadPhase broadPhase = world._contactManager.broadPhase;
-  for (Fixture f = fixtureList; f != null; f = f.next) {
-    f.synchronize(broadPhase, originTransform, originTransform);
-  }
+ BroadPhase broadPhase = world._contactManager.broadPhase;
+ for (Fixture f = fixtureList; f != null; f = f.next) {
+   f.synchronize(broadPhase, originTransform, originTransform);
+ }
 
-  world._contactManager.findNewContacts();
+ world._contactManager.findNewContacts();
 }
 </pre>
 </div>
@@ -2365,8 +2364,8 @@ bool <strong>shouldCollide</strong>(<a href="../box2d/Body.html">Body</a> other)
 It may lie, depending on the collideConnected flag.</p>
 <pre class="source">
 bool shouldCollide(Body other) {
-  // At least one body should be dynamic.
-  return !(_type != BodyType.DYNAMIC &amp;&amp; other._type != BodyType.DYNAMIC);
+ // At least one body should be dynamic.
+ return !(_type != BodyType.DYNAMIC &amp;&amp; other._type != BodyType.DYNAMIC);
 }
 </pre>
 </div>
@@ -2378,16 +2377,16 @@ void <strong>synchronizeFixtures</strong>() <a class="anchor-link" href="#synchr
 <div class="doc">
 <pre class="source">
 void synchronizeFixtures() {
-  final Transform xf1 = _pxf;
-  xf1.rotation.setAngle(sweep.angleZero);
-  Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
-      xf1.position);
-  xf1.position.mulLocal(-1);
-  xf1.position.addLocal(sweep.centerZero);
+ final Transform xf1 = _pxf;
+ xf1.rotation.setAngle(sweep.angleZero);
+ Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
+     xf1.position);
+ xf1.position.mulLocal(-1);
+ xf1.position.addLocal(sweep.centerZero);
 
-  BroadPhase broadPhase = world._contactManager.broadPhase;
-  for (Fixture f = fixtureList; f != null; f = f.next)
-    f.synchronize(broadPhase, xf1, originTransform);
+ BroadPhase broadPhase = world._contactManager.broadPhase;
+ for (Fixture f = fixtureList; f != null; f = f.next)
+   f.synchronize(broadPhase, xf1, originTransform);
 }
 </pre>
 </div>
@@ -2399,20 +2398,20 @@ void <strong>synchronizeTransform</strong>() <a class="anchor-link" href="#synch
 <div class="doc">
 <pre class="source">
 void synchronizeTransform() {
-  final num c = Math.cos(sweep.angle);
-  final num s = Math.sin(sweep.angle);
-  final Transform t = originTransform;
-  final Matrix22 r = t.rotation;
-  final Vector p = t.position;
+ final num c = Math.cos(sweep.angle);
+ final num s = Math.sin(sweep.angle);
+ final Transform t = originTransform;
+ final Matrix22 r = t.rotation;
+ final Vector p = t.position;
 
-  r.col1.x = c;
-  r.col2.x = -s;
-  r.col1.y = s;
-  r.col2.y = c;
-  p.x = (r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y) * -1 +
-      sweep.center.x;
-  p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
-      sweep.center.y;
+ r.col1.x = c;
+ r.col2.x = -s;
+ r.col1.y = s;
+ r.col2.y = c;
+ p.x = (r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y) * -1 +
+     sweep.center.x;
+ p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
+     sweep.center.y;
 }
 </pre>
 </div>

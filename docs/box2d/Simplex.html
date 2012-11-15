@@ -32,345 +32,344 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Class for internal use by Distance.dart.</p>
 <pre class="source">
 class Simplex {
-  final SimplexVertex v1;
-  final SimplexVertex v2;
-  final SimplexVertex v3;
-  final List&lt;SimplexVertex&gt; vertices;
-  int count;
+ final SimplexVertex v1;
+ final SimplexVertex v2;
+ final SimplexVertex v3;
+ final List&lt;SimplexVertex&gt; vertices;
+ int count;
 
-  Simplex() :
-    count = 0,
-    v1 = new SimplexVertex(),
-    v2 = new SimplexVertex(),
-    v3 = new SimplexVertex(),
-    vertices = new List&lt;SimplexVertex&gt;(3),
-    e13 = new Vector(),
-    e12 = new Vector(),
-    e23 = new Vector(),
-    case2 = new Vector(),
-    case22 = new Vector(),
-    case3 = new Vector(),
-    case33 = new Vector() {
+ Simplex() :
+   count = 0,
+   v1 = new SimplexVertex(),
+   v2 = new SimplexVertex(),
+   v3 = new SimplexVertex(),
+   vertices = new List&lt;SimplexVertex&gt;(3),
+   e13 = new Vector(),
+   e12 = new Vector(),
+   e23 = new Vector(),
+   case2 = new Vector(),
+   case22 = new Vector(),
+   case3 = new Vector(),
+   case33 = new Vector() {
 
-    vertices[0] = v1;
-    vertices[1] = v2;
-    vertices[2] = v3;
-  }
+   vertices[0] = v1;
+   vertices[1] = v2;
+   vertices[2] = v3;
+ }
 
-  /** Pooling. */
-  final Vector e13;
-  final Vector e23;
-  final Vector e12;
-  final Vector case2;
-  final Vector case22;
-  final Vector case3;
-  final Vector case33;
+ /** Pooling. */
+ final Vector e13;
+ final Vector e23;
+ final Vector e12;
+ final Vector case2;
+ final Vector case22;
+ final Vector case3;
+ final Vector case33;
 
-  void readCache(SimplexCache cache, DistanceProxy proxyA,
-      Transform transformA, DistanceProxy proxyB,
-      Transform transformB) {
-    assert (cache.count &lt;= 3);
+ void readCache(SimplexCache cache, DistanceProxy proxyA,
+     Transform transformA, DistanceProxy proxyB,
+     Transform transformB) {
+   assert (cache.count &lt;= 3);
 
-    // Copy data from cache.
-    count = cache.count;
+   // Copy data from cache.
+   count = cache.count;
 
-    for (int i = 0; i &lt; count; ++i) {
-      SimplexVertex v = vertices[i];
-      v.indexA = cache.indexA[i];
-      v.indexB = cache.indexB[i];
-      Vector wALocal = proxyA.vertices[v.indexA];
-      Vector wBLocal = proxyB.vertices[v.indexB];
-      Transform.mulToOut(transformA, wALocal, v.wA);
-      Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).subLocal(v.wA);
-      v.a = 0.0;
-    }
+   for (int i = 0; i &lt; count; ++i) {
+     SimplexVertex v = vertices[i];
+     v.indexA = cache.indexA[i];
+     v.indexB = cache.indexB[i];
+     Vector wALocal = proxyA.vertices[v.indexA];
+     Vector wBLocal = proxyB.vertices[v.indexB];
+     Transform.mulToOut(transformA, wALocal, v.wA);
+     Transform.mulToOut(transformB, wBLocal, v.wB);
+     v.w.setFrom(v.wB).subLocal(v.wA);
+     v.a = 0.0;
+   }
 
-    // Compute the new simplex metric, if it is substantially different than
-    // old metric then flush the simplex.
-    if (count &gt; 1) {
-      num metric1 = cache.metric;
-      num metric2 = getMetric();
-      if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
-          Settings.EPSILON) {
-        // Reset the simplex.
-        count = 0;
-      }
-    }
+   // Compute the new simplex metric, if it is substantially different than
+   // old metric then flush the simplex.
+   if (count &gt; 1) {
+     num metric1 = cache.metric;
+     num metric2 = getMetric();
+     if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
+         Settings.EPSILON) {
+       // Reset the simplex.
+       count = 0;
+     }
+   }
 
-    // If the cache is empty or invalid ...
-    if (count == 0) {
-      SimplexVertex v = vertices[0];
-      v.indexA = 0;
-      v.indexB = 0;
-      Vector wALocal = proxyA.vertices[0];
-      Vector wBLocal = proxyB.vertices[0];
-      Transform.mulToOut(transformA, wALocal, v.wA);
-      Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).subLocal(v.wA);
-      count = 1;
-    }
-  }
+   // If the cache is empty or invalid ...
+   if (count == 0) {
+     SimplexVertex v = vertices[0];
+     v.indexA = 0;
+     v.indexB = 0;
+     Vector wALocal = proxyA.vertices[0];
+     Vector wBLocal = proxyB.vertices[0];
+     Transform.mulToOut(transformA, wALocal, v.wA);
+     Transform.mulToOut(transformB, wBLocal, v.wB);
+     v.w.setFrom(v.wB).subLocal(v.wA);
+     count = 1;
+   }
+ }
 
-  void writeCache(SimplexCache cache) {
-    cache.metric = getMetric();
-    cache.count = count;
+ void writeCache(SimplexCache cache) {
+   cache.metric = getMetric();
+   cache.count = count;
 
-    for (int i = 0; i &lt; count; ++i) {
-      cache.indexA[i] = (vertices[i].indexA);
-      cache.indexB[i] = (vertices[i].indexB);
-    }
-  }
+   for (int i = 0; i &lt; count; ++i) {
+     cache.indexA[i] = (vertices[i].indexA);
+     cache.indexB[i] = (vertices[i].indexB);
+   }
+ }
 
-  void getSearchDirection(Vector out) {
-    switch (count) {
-      case 1 :
-        out.setFrom(v1.w).negateLocal();
-        return;
-      case 2 :
-        e12.setFrom(v2.w).subLocal(v1.w);
-        // use out for a temp variable real quick
-        out.setFrom(v1.w).negateLocal();
-        num sgn = Vector.crossVectors(e12, out);
+ void getSearchDirection(Vector out) {
+   switch (count) {
+     case 1 :
+       out.setFrom(v1.w).negateLocal();
+       return;
+     case 2 :
+       e12.setFrom(v2.w).subLocal(v1.w);
+       // use out for a temp variable real quick
+       out.setFrom(v1.w).negateLocal();
+       num sgn = Vector.crossVectors(e12, out);
 
-        if (sgn &gt; 0) {
-          // Origin is left of e12.
-          Vector.crossNumAndVectorToOut(1, e12, out);
-        }
-        else {
-          // Origin is right of e12.
-          Vector.crossVectorAndNumToOut(e12, 1, out);
-        }
-        break;
-      default :
-        assert (false);
-        out.setZero();
-        return;
-    }
-  }
-
-
-  /**
-   * this returns pooled objects. don't keep or modify them
-   */
-  void getClosestPoint(Vector out) {
-    switch (count) {
-      case 0 :
-        assert (false);
-        out.setZero();
-        return;
-      case 1 :
-        out.setFrom(v1.w);
-        return;
-      case 2 :
-        case22.setFrom(v2.w).mulLocal(v2.a);
-        case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
-        out.setFrom(case2);
-        return;
-      case 3 :
-        out.setZero();
-        return;
-      default :
-        assert (false);
-        out.setZero();
-        return;
-    }
-  }
+       if (sgn &gt; 0) {
+         // Origin is left of e12.
+         Vector.crossNumAndVectorToOut(1, e12, out);
+       }
+       else {
+         // Origin is right of e12.
+         Vector.crossVectorAndNumToOut(e12, 1, out);
+       }
+       break;
+     default :
+       assert (false);
+       out.setZero();
+       return;
+   }
+ }
 
 
-  void getWitnessPoints(Vector pA, Vector pB) {
-    switch (count) {
-      case 0 :
-        assert (false);
-        break;
+ /**
+  * this returns pooled objects. don't keep or modify them
+  */
+ void getClosestPoint(Vector out) {
+   switch (count) {
+     case 0 :
+       assert (false);
+       out.setZero();
+       return;
+     case 1 :
+       out.setFrom(v1.w);
+       return;
+     case 2 :
+       case22.setFrom(v2.w).mulLocal(v2.a);
+       case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
+       out.setFrom(case2);
+       return;
+     case 3 :
+       out.setZero();
+       return;
+     default :
+       assert (false);
+       out.setZero();
+       return;
+   }
+ }
 
-      case 1 :
-        pA.setFrom(v1.wA);
-        pB.setFrom(v1.wB);
-        break;
 
-      case 2 :
-        case2.setFrom(v1.wA).mulLocal(v1.a);
-        pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
-        case2.setFrom(v1.wB).mulLocal(v1.a);
-        pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
+ void getWitnessPoints(Vector pA, Vector pB) {
+   switch (count) {
+     case 0 :
+       assert (false);
+       break;
 
-        break;
+     case 1 :
+       pA.setFrom(v1.wA);
+       pB.setFrom(v1.wB);
+       break;
 
-      case 3 :
-        pA.setFrom(v1.wA).mulLocal(v1.a);
-        case3.setFrom(v2.wA).mulLocal(v2.a);
-        case33.setFrom(v3.wA).mulLocal(v3.a);
-        pA.addLocal(case3).addLocal(case33);
-        pB.setFrom(pA);
-        break;
+     case 2 :
+       case2.setFrom(v1.wA).mulLocal(v1.a);
+       pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
+       case2.setFrom(v1.wB).mulLocal(v1.a);
+       pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
 
-      default :
-        assert (false);
-        break;
-    }
-  }
+       break;
 
-  num getMetric() {
-    switch (count) {
-      case 0 :
-        assert (false);
-        return 0.0;
+     case 3 :
+       pA.setFrom(v1.wA).mulLocal(v1.a);
+       case3.setFrom(v2.wA).mulLocal(v2.a);
+       case33.setFrom(v3.wA).mulLocal(v3.a);
+       pA.addLocal(case3).addLocal(case33);
+       pB.setFrom(pA);
+       break;
 
-      case 1 :
-        return 0.0;
+     default :
+       assert (false);
+       break;
+   }
+ }
 
-      case 2 :
-        return MathBox.distance(v1.w, v2.w);
+ num getMetric() {
+   switch (count) {
+     case 0 :
+       assert (false);
+       return 0.0;
 
-      case 3 :
-        case3.setFrom(v2.w).subLocal(v1.w);
-        case33.setFrom(v3.w).subLocal(v1.w);
-        return Vector.crossVectors(case3, case33);
+     case 1 :
+       return 0.0;
 
-      default :
-        assert (false);
-        return 0.0;
-    }
-  }
+     case 2 :
+       return MathBox.distance(v1.w, v2.w);
 
-  /**
-   * Solve a line segment using barycentric coordinates.
-   */
-  void solve2() {
-    Vector w1 = v1.w;
-    Vector w2 = v2.w;
-    e12.setFrom(w2).subLocal(w1);
+     case 3 :
+       case3.setFrom(v2.w).subLocal(v1.w);
+       case33.setFrom(v3.w).subLocal(v1.w);
+       return Vector.crossVectors(case3, case33);
 
-    // w1 region
-    num d12_2 = -Vector.dot(w1, e12);
-    if (d12_2 &lt;= 0.0) {
-      // a2 &lt;= 0, so we clamp it to 0
-      v1.a = 1.0;
-      count = 1;
-      return;
-    }
+     default :
+       assert (false);
+       return 0.0;
+   }
+ }
 
-    // w2 region
-    num d12_1 = Vector.dot(w2, e12);
-    if (d12_1 &lt;= 0.0) {
-      // a1 &lt;= 0, so we clamp it to 0
-      v2.a = 1.0;
-      count = 1;
-      v1.setFrom(v2);
-      return;
-    }
+ /**
+  * Solve a line segment using barycentric coordinates.
+  */
+ void solve2() {
+   Vector w1 = v1.w;
+   Vector w2 = v2.w;
+   e12.setFrom(w2).subLocal(w1);
 
-    // Must be in e12 region.
-    num inv_d12 = 1.0 / (d12_1 + d12_2);
-    v1.a = d12_1 * inv_d12;
-    v2.a = d12_2 * inv_d12;
-    count = 2;
-  }
+   // w1 region
+   num d12_2 = -Vector.dot(w1, e12);
+   if (d12_2 &lt;= 0.0) {
+     // a2 &lt;= 0, so we clamp it to 0
+     v1.a = 1.0;
+     count = 1;
+     return;
+   }
 
-  /**
-   * Solve a line segment using barycentric coordinates.&lt;br/&gt;
-   * Possible regions:&lt;br/&gt;
-   * - points[2]&lt;br/&gt;
-   * - edge points[0]-points[2]&lt;br/&gt;
-   * - edge points[1]-points[2]&lt;br/&gt;
-   * - inside the triangle
-   */
-  void solve3() {
-    Vector w1 = v1.w;
-    Vector w2 = v2.w;
-    Vector w3 = v3.w;
+   // w2 region
+   num d12_1 = Vector.dot(w2, e12);
+   if (d12_1 &lt;= 0.0) {
+     // a1 &lt;= 0, so we clamp it to 0
+     v2.a = 1.0;
+     count = 1;
+     v1.setFrom(v2);
+     return;
+   }
 
-    // Edge12
-    e12.setFrom(w2).subLocal(w1);
-    num w1e12 = Vector.dot(w1, e12);
-    num w2e12 = Vector.dot(w2, e12);
-    num d12_1 = w2e12;
-    num d12_2 = -w1e12;
+   // Must be in e12 region.
+   num inv_d12 = 1.0 / (d12_1 + d12_2);
+   v1.a = d12_1 * inv_d12;
+   v2.a = d12_2 * inv_d12;
+   count = 2;
+ }
 
-    // Edge13
-    e13.setFrom(w3).subLocal(w1);
-    num w1e13 = Vector.dot(w1, e13);
-    num w3e13 = Vector.dot(w3, e13);
-    num d13_1 = w3e13;
-    num d13_2 = -w1e13;
+ /**
+  * Solve a line segment using barycentric coordinates.&lt;br/&gt;
+  * Possible regions:&lt;br/&gt;
+  * - points[2]&lt;br/&gt;
+  * - edge points[0]-points[2]&lt;br/&gt;
+  * - edge points[1]-points[2]&lt;br/&gt;
+  * - inside the triangle
+  */
+ void solve3() {
+   Vector w1 = v1.w;
+   Vector w2 = v2.w;
+   Vector w3 = v3.w;
 
-    // Edge23
-    e23.setFrom(w3).subLocal(w2);
-    num w2e23 = Vector.dot(w2, e23);
-    num w3e23 = Vector.dot(w3, e23);
-    num d23_1 = w3e23;
-    num d23_2 = -w2e23;
+   // Edge12
+   e12.setFrom(w2).subLocal(w1);
+   num w1e12 = Vector.dot(w1, e12);
+   num w2e12 = Vector.dot(w2, e12);
+   num d12_1 = w2e12;
+   num d12_2 = -w1e12;
 
-    // Triangle123
-    num n123 = Vector.crossVectors(e12, e13);
+   // Edge13
+   e13.setFrom(w3).subLocal(w1);
+   num w1e13 = Vector.dot(w1, e13);
+   num w3e13 = Vector.dot(w3, e13);
+   num d13_1 = w3e13;
+   num d13_2 = -w1e13;
 
-    num d123_1 = n123 * Vector.crossVectors(w2, w3);
-    num d123_2 = n123 * Vector.crossVectors(w3, w1);
-    num d123_3 = n123 * Vector.crossVectors(w1, w2);
+   // Edge23
+   e23.setFrom(w3).subLocal(w2);
+   num w2e23 = Vector.dot(w2, e23);
+   num w3e23 = Vector.dot(w3, e23);
+   num d23_1 = w3e23;
+   num d23_2 = -w2e23;
 
-    // w1 region
-    if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
-      v1.a = 1.0;
-      count = 1;
-      return;
-    }
+   // Triangle123
+   num n123 = Vector.crossVectors(e12, e13);
 
-    // e12
-    if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
-      num inv_d12 = 1.0 / (d12_1 + d12_2);
-      v1.a = d12_1 * inv_d12;
-      v2.a = d12_2 * inv_d12;
-      count = 2;
-      return;
-    }
+   num d123_1 = n123 * Vector.crossVectors(w2, w3);
+   num d123_2 = n123 * Vector.crossVectors(w3, w1);
+   num d123_3 = n123 * Vector.crossVectors(w1, w2);
 
-    // e13
-    if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
-      num inv_d13 = 1.0 / (d13_1 + d13_2);
-      v1.a = d13_1 * inv_d13;
-      v3.a = d13_2 * inv_d13;
-      count = 2;
-      v2.setFrom(v3);
-      return;
-    }
+   // w1 region
+   if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
+     v1.a = 1.0;
+     count = 1;
+     return;
+   }
 
-    // w2 region
-    if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
-      v2.a = 1.0;
-      count = 1;
-      v1.setFrom(v2);
-      return;
-    }
+   // e12
+   if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
+     num inv_d12 = 1.0 / (d12_1 + d12_2);
+     v1.a = d12_1 * inv_d12;
+     v2.a = d12_2 * inv_d12;
+     count = 2;
+     return;
+   }
 
-    // w3 region
-    if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
-      v3.a = 1.0;
-      count = 1;
-      v1.setFrom(v3);
-      return;
-    }
+   // e13
+   if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
+     num inv_d13 = 1.0 / (d13_1 + d13_2);
+     v1.a = d13_1 * inv_d13;
+     v3.a = d13_2 * inv_d13;
+     count = 2;
+     v2.setFrom(v3);
+     return;
+   }
 
-    // e23
-    if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
-      num inv_d23 = 1.0 / (d23_1 + d23_2);
-      v2.a = d23_1 * inv_d23;
-      v3.a = d23_2 * inv_d23;
-      count = 2;
-      v1.setFrom(v3);
-      return;
-    }
+   // w2 region
+   if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
+     v2.a = 1.0;
+     count = 1;
+     v1.setFrom(v2);
+     return;
+   }
 
-    // Must be in triangle123
-    num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
-    v1.a = d123_1 * inv_d123;
-    v2.a = d123_2 * inv_d123;
-    v3.a = d123_3 * inv_d123;
-    count = 3;
-  }
+   // w3 region
+   if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
+     v3.a = 1.0;
+     count = 1;
+     v1.setFrom(v3);
+     return;
+   }
+
+   // e23
+   if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
+     num inv_d23 = 1.0 / (d23_1 + d23_2);
+     v2.a = d23_1 * inv_d23;
+     v3.a = d23_2 * inv_d23;
+     count = 2;
+     v1.setFrom(v3);
+     return;
+   }
+
+   // Must be in triangle123
+   num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
+   v1.a = d123_1 * inv_d123;
+   v2.a = d123_2 * inv_d123;
+   v3.a = d123_3 * inv_d123;
+   count = 3;
+ }
 }
 </pre>
 </div>
@@ -383,22 +382,22 @@ new <strong>Simplex</strong>() <a class="anchor-link" href="#Simplex"
 <div class="doc">
 <pre class="source">
 Simplex() :
-  count = 0,
-  v1 = new SimplexVertex(),
-  v2 = new SimplexVertex(),
-  v3 = new SimplexVertex(),
-  vertices = new List&lt;SimplexVertex&gt;(3),
-  e13 = new Vector(),
-  e12 = new Vector(),
-  e23 = new Vector(),
-  case2 = new Vector(),
-  case22 = new Vector(),
-  case3 = new Vector(),
-  case33 = new Vector() {
+ count = 0,
+ v1 = new SimplexVertex(),
+ v2 = new SimplexVertex(),
+ v3 = new SimplexVertex(),
+ vertices = new List&lt;SimplexVertex&gt;(3),
+ e13 = new Vector(),
+ e12 = new Vector(),
+ e23 = new Vector(),
+ case2 = new Vector(),
+ case22 = new Vector(),
+ case3 = new Vector(),
+ case33 = new Vector() {
 
-  vertices[0] = v1;
-  vertices[1] = v2;
-  vertices[2] = v3;
+ vertices[0] = v1;
+ vertices[1] = v2;
+ vertices[2] = v3;
 }
 </pre>
 </div>
@@ -562,27 +561,27 @@ void <strong>getClosestPoint</strong>(<a href="../box2d/Vector.html">Vector</a> 
 <p>this returns pooled objects. don't keep or modify them</p>
 <pre class="source">
 void getClosestPoint(Vector out) {
-  switch (count) {
-    case 0 :
-      assert (false);
-      out.setZero();
-      return;
-    case 1 :
-      out.setFrom(v1.w);
-      return;
-    case 2 :
-      case22.setFrom(v2.w).mulLocal(v2.a);
-      case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
-      out.setFrom(case2);
-      return;
-    case 3 :
-      out.setZero();
-      return;
-    default :
-      assert (false);
-      out.setZero();
-      return;
-  }
+ switch (count) {
+   case 0 :
+     assert (false);
+     out.setZero();
+     return;
+   case 1 :
+     out.setFrom(v1.w);
+     return;
+   case 2 :
+     case22.setFrom(v2.w).mulLocal(v2.a);
+     case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
+     out.setFrom(case2);
+     return;
+   case 3 :
+     out.setZero();
+     return;
+   default :
+     assert (false);
+     out.setZero();
+     return;
+ }
 }
 </pre>
 </div>
@@ -594,26 +593,26 @@ num <strong>getMetric</strong>() <a class="anchor-link" href="#getMetric"
 <div class="doc">
 <pre class="source">
 num getMetric() {
-  switch (count) {
-    case 0 :
-      assert (false);
-      return 0.0;
+ switch (count) {
+   case 0 :
+     assert (false);
+     return 0.0;
 
-    case 1 :
-      return 0.0;
+   case 1 :
+     return 0.0;
 
-    case 2 :
-      return MathBox.distance(v1.w, v2.w);
+   case 2 :
+     return MathBox.distance(v1.w, v2.w);
 
-    case 3 :
-      case3.setFrom(v2.w).subLocal(v1.w);
-      case33.setFrom(v3.w).subLocal(v1.w);
-      return Vector.crossVectors(case3, case33);
+   case 3 :
+     case3.setFrom(v2.w).subLocal(v1.w);
+     case33.setFrom(v3.w).subLocal(v1.w);
+     return Vector.crossVectors(case3, case33);
 
-    default :
-      assert (false);
-      return 0.0;
-  }
+   default :
+     assert (false);
+     return 0.0;
+ }
 }
 </pre>
 </div>
@@ -625,30 +624,30 @@ void <strong>getSearchDirection</strong>(<a href="../box2d/Vector.html">Vector</
 <div class="doc">
 <pre class="source">
 void getSearchDirection(Vector out) {
-  switch (count) {
-    case 1 :
-      out.setFrom(v1.w).negateLocal();
-      return;
-    case 2 :
-      e12.setFrom(v2.w).subLocal(v1.w);
-      // use out for a temp variable real quick
-      out.setFrom(v1.w).negateLocal();
-      num sgn = Vector.crossVectors(e12, out);
+ switch (count) {
+   case 1 :
+     out.setFrom(v1.w).negateLocal();
+     return;
+   case 2 :
+     e12.setFrom(v2.w).subLocal(v1.w);
+     // use out for a temp variable real quick
+     out.setFrom(v1.w).negateLocal();
+     num sgn = Vector.crossVectors(e12, out);
 
-      if (sgn &gt; 0) {
-        // Origin is left of e12.
-        Vector.crossNumAndVectorToOut(1, e12, out);
-      }
-      else {
-        // Origin is right of e12.
-        Vector.crossVectorAndNumToOut(e12, 1, out);
-      }
-      break;
-    default :
-      assert (false);
-      out.setZero();
-      return;
-  }
+     if (sgn &gt; 0) {
+       // Origin is left of e12.
+       Vector.crossNumAndVectorToOut(1, e12, out);
+     }
+     else {
+       // Origin is right of e12.
+       Vector.crossVectorAndNumToOut(e12, 1, out);
+     }
+     break;
+   default :
+     assert (false);
+     out.setZero();
+     return;
+ }
 }
 </pre>
 </div>
@@ -660,36 +659,36 @@ void <strong>getWitnessPoints</strong>(<a href="../box2d/Vector.html">Vector</a>
 <div class="doc">
 <pre class="source">
 void getWitnessPoints(Vector pA, Vector pB) {
-  switch (count) {
-    case 0 :
-      assert (false);
-      break;
+ switch (count) {
+   case 0 :
+     assert (false);
+     break;
 
-    case 1 :
-      pA.setFrom(v1.wA);
-      pB.setFrom(v1.wB);
-      break;
+   case 1 :
+     pA.setFrom(v1.wA);
+     pB.setFrom(v1.wB);
+     break;
 
-    case 2 :
-      case2.setFrom(v1.wA).mulLocal(v1.a);
-      pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
-      case2.setFrom(v1.wB).mulLocal(v1.a);
-      pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
+   case 2 :
+     case2.setFrom(v1.wA).mulLocal(v1.a);
+     pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
+     case2.setFrom(v1.wB).mulLocal(v1.a);
+     pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
 
-      break;
+     break;
 
-    case 3 :
-      pA.setFrom(v1.wA).mulLocal(v1.a);
-      case3.setFrom(v2.wA).mulLocal(v2.a);
-      case33.setFrom(v3.wA).mulLocal(v3.a);
-      pA.addLocal(case3).addLocal(case33);
-      pB.setFrom(pA);
-      break;
+   case 3 :
+     pA.setFrom(v1.wA).mulLocal(v1.a);
+     case3.setFrom(v2.wA).mulLocal(v2.a);
+     case33.setFrom(v3.wA).mulLocal(v3.a);
+     pA.addLocal(case3).addLocal(case33);
+     pB.setFrom(pA);
+     break;
 
-    default :
-      assert (false);
-      break;
-  }
+   default :
+     assert (false);
+     break;
+ }
 }
 </pre>
 </div>
@@ -701,49 +700,49 @@ void <strong>readCache</strong>(<a href="../box2d/SimplexCache.html">SimplexCach
 <div class="doc">
 <pre class="source">
 void readCache(SimplexCache cache, DistanceProxy proxyA,
-    Transform transformA, DistanceProxy proxyB,
-    Transform transformB) {
-  assert (cache.count &lt;= 3);
+   Transform transformA, DistanceProxy proxyB,
+   Transform transformB) {
+ assert (cache.count &lt;= 3);
 
-  // Copy data from cache.
-  count = cache.count;
+ // Copy data from cache.
+ count = cache.count;
 
-  for (int i = 0; i &lt; count; ++i) {
-    SimplexVertex v = vertices[i];
-    v.indexA = cache.indexA[i];
-    v.indexB = cache.indexB[i];
-    Vector wALocal = proxyA.vertices[v.indexA];
-    Vector wBLocal = proxyB.vertices[v.indexB];
-    Transform.mulToOut(transformA, wALocal, v.wA);
-    Transform.mulToOut(transformB, wBLocal, v.wB);
-    v.w.setFrom(v.wB).subLocal(v.wA);
-    v.a = 0.0;
-  }
+ for (int i = 0; i &lt; count; ++i) {
+   SimplexVertex v = vertices[i];
+   v.indexA = cache.indexA[i];
+   v.indexB = cache.indexB[i];
+   Vector wALocal = proxyA.vertices[v.indexA];
+   Vector wBLocal = proxyB.vertices[v.indexB];
+   Transform.mulToOut(transformA, wALocal, v.wA);
+   Transform.mulToOut(transformB, wBLocal, v.wB);
+   v.w.setFrom(v.wB).subLocal(v.wA);
+   v.a = 0.0;
+ }
 
-  // Compute the new simplex metric, if it is substantially different than
-  // old metric then flush the simplex.
-  if (count &gt; 1) {
-    num metric1 = cache.metric;
-    num metric2 = getMetric();
-    if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
-        Settings.EPSILON) {
-      // Reset the simplex.
-      count = 0;
-    }
-  }
+ // Compute the new simplex metric, if it is substantially different than
+ // old metric then flush the simplex.
+ if (count &gt; 1) {
+   num metric1 = cache.metric;
+   num metric2 = getMetric();
+   if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
+       Settings.EPSILON) {
+     // Reset the simplex.
+     count = 0;
+   }
+ }
 
-  // If the cache is empty or invalid ...
-  if (count == 0) {
-    SimplexVertex v = vertices[0];
-    v.indexA = 0;
-    v.indexB = 0;
-    Vector wALocal = proxyA.vertices[0];
-    Vector wBLocal = proxyB.vertices[0];
-    Transform.mulToOut(transformA, wALocal, v.wA);
-    Transform.mulToOut(transformB, wBLocal, v.wB);
-    v.w.setFrom(v.wB).subLocal(v.wA);
-    count = 1;
-  }
+ // If the cache is empty or invalid ...
+ if (count == 0) {
+   SimplexVertex v = vertices[0];
+   v.indexA = 0;
+   v.indexB = 0;
+   Vector wALocal = proxyA.vertices[0];
+   Vector wBLocal = proxyB.vertices[0];
+   Transform.mulToOut(transformA, wALocal, v.wA);
+   Transform.mulToOut(transformB, wBLocal, v.wB);
+   v.w.setFrom(v.wB).subLocal(v.wA);
+   count = 1;
+ }
 }
 </pre>
 </div>
@@ -756,34 +755,34 @@ void <strong>solve2</strong>() <a class="anchor-link" href="#solve2"
 <p>Solve a line segment using barycentric coordinates.</p>
 <pre class="source">
 void solve2() {
-  Vector w1 = v1.w;
-  Vector w2 = v2.w;
-  e12.setFrom(w2).subLocal(w1);
+ Vector w1 = v1.w;
+ Vector w2 = v2.w;
+ e12.setFrom(w2).subLocal(w1);
 
-  // w1 region
-  num d12_2 = -Vector.dot(w1, e12);
-  if (d12_2 &lt;= 0.0) {
-    // a2 &lt;= 0, so we clamp it to 0
-    v1.a = 1.0;
-    count = 1;
-    return;
-  }
+ // w1 region
+ num d12_2 = -Vector.dot(w1, e12);
+ if (d12_2 &lt;= 0.0) {
+   // a2 &lt;= 0, so we clamp it to 0
+   v1.a = 1.0;
+   count = 1;
+   return;
+ }
 
-  // w2 region
-  num d12_1 = Vector.dot(w2, e12);
-  if (d12_1 &lt;= 0.0) {
-    // a1 &lt;= 0, so we clamp it to 0
-    v2.a = 1.0;
-    count = 1;
-    v1.setFrom(v2);
-    return;
-  }
+ // w2 region
+ num d12_1 = Vector.dot(w2, e12);
+ if (d12_1 &lt;= 0.0) {
+   // a1 &lt;= 0, so we clamp it to 0
+   v2.a = 1.0;
+   count = 1;
+   v1.setFrom(v2);
+   return;
+ }
 
-  // Must be in e12 region.
-  num inv_d12 = 1.0 / (d12_1 + d12_2);
-  v1.a = d12_1 * inv_d12;
-  v2.a = d12_2 * inv_d12;
-  count = 2;
+ // Must be in e12 region.
+ num inv_d12 = 1.0 / (d12_1 + d12_2);
+ v1.a = d12_1 * inv_d12;
+ v2.a = d12_2 * inv_d12;
+ count = 2;
 }
 </pre>
 </div>
@@ -801,96 +800,96 @@ Possible regions:&lt;br/>
 - inside the triangle</p>
 <pre class="source">
 void solve3() {
-  Vector w1 = v1.w;
-  Vector w2 = v2.w;
-  Vector w3 = v3.w;
+ Vector w1 = v1.w;
+ Vector w2 = v2.w;
+ Vector w3 = v3.w;
 
-  // Edge12
-  e12.setFrom(w2).subLocal(w1);
-  num w1e12 = Vector.dot(w1, e12);
-  num w2e12 = Vector.dot(w2, e12);
-  num d12_1 = w2e12;
-  num d12_2 = -w1e12;
+ // Edge12
+ e12.setFrom(w2).subLocal(w1);
+ num w1e12 = Vector.dot(w1, e12);
+ num w2e12 = Vector.dot(w2, e12);
+ num d12_1 = w2e12;
+ num d12_2 = -w1e12;
 
-  // Edge13
-  e13.setFrom(w3).subLocal(w1);
-  num w1e13 = Vector.dot(w1, e13);
-  num w3e13 = Vector.dot(w3, e13);
-  num d13_1 = w3e13;
-  num d13_2 = -w1e13;
+ // Edge13
+ e13.setFrom(w3).subLocal(w1);
+ num w1e13 = Vector.dot(w1, e13);
+ num w3e13 = Vector.dot(w3, e13);
+ num d13_1 = w3e13;
+ num d13_2 = -w1e13;
 
-  // Edge23
-  e23.setFrom(w3).subLocal(w2);
-  num w2e23 = Vector.dot(w2, e23);
-  num w3e23 = Vector.dot(w3, e23);
-  num d23_1 = w3e23;
-  num d23_2 = -w2e23;
+ // Edge23
+ e23.setFrom(w3).subLocal(w2);
+ num w2e23 = Vector.dot(w2, e23);
+ num w3e23 = Vector.dot(w3, e23);
+ num d23_1 = w3e23;
+ num d23_2 = -w2e23;
 
-  // Triangle123
-  num n123 = Vector.crossVectors(e12, e13);
+ // Triangle123
+ num n123 = Vector.crossVectors(e12, e13);
 
-  num d123_1 = n123 * Vector.crossVectors(w2, w3);
-  num d123_2 = n123 * Vector.crossVectors(w3, w1);
-  num d123_3 = n123 * Vector.crossVectors(w1, w2);
+ num d123_1 = n123 * Vector.crossVectors(w2, w3);
+ num d123_2 = n123 * Vector.crossVectors(w3, w1);
+ num d123_3 = n123 * Vector.crossVectors(w1, w2);
 
-  // w1 region
-  if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
-    v1.a = 1.0;
-    count = 1;
-    return;
-  }
+ // w1 region
+ if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
+   v1.a = 1.0;
+   count = 1;
+   return;
+ }
 
-  // e12
-  if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
-    num inv_d12 = 1.0 / (d12_1 + d12_2);
-    v1.a = d12_1 * inv_d12;
-    v2.a = d12_2 * inv_d12;
-    count = 2;
-    return;
-  }
+ // e12
+ if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
+   num inv_d12 = 1.0 / (d12_1 + d12_2);
+   v1.a = d12_1 * inv_d12;
+   v2.a = d12_2 * inv_d12;
+   count = 2;
+   return;
+ }
 
-  // e13
-  if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
-    num inv_d13 = 1.0 / (d13_1 + d13_2);
-    v1.a = d13_1 * inv_d13;
-    v3.a = d13_2 * inv_d13;
-    count = 2;
-    v2.setFrom(v3);
-    return;
-  }
+ // e13
+ if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
+   num inv_d13 = 1.0 / (d13_1 + d13_2);
+   v1.a = d13_1 * inv_d13;
+   v3.a = d13_2 * inv_d13;
+   count = 2;
+   v2.setFrom(v3);
+   return;
+ }
 
-  // w2 region
-  if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
-    v2.a = 1.0;
-    count = 1;
-    v1.setFrom(v2);
-    return;
-  }
+ // w2 region
+ if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
+   v2.a = 1.0;
+   count = 1;
+   v1.setFrom(v2);
+   return;
+ }
 
-  // w3 region
-  if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
-    v3.a = 1.0;
-    count = 1;
-    v1.setFrom(v3);
-    return;
-  }
+ // w3 region
+ if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
+   v3.a = 1.0;
+   count = 1;
+   v1.setFrom(v3);
+   return;
+ }
 
-  // e23
-  if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
-    num inv_d23 = 1.0 / (d23_1 + d23_2);
-    v2.a = d23_1 * inv_d23;
-    v3.a = d23_2 * inv_d23;
-    count = 2;
-    v1.setFrom(v3);
-    return;
-  }
+ // e23
+ if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
+   num inv_d23 = 1.0 / (d23_1 + d23_2);
+   v2.a = d23_1 * inv_d23;
+   v3.a = d23_2 * inv_d23;
+   count = 2;
+   v1.setFrom(v3);
+   return;
+ }
 
-  // Must be in triangle123
-  num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
-  v1.a = d123_1 * inv_d123;
-  v2.a = d123_2 * inv_d123;
-  v3.a = d123_3 * inv_d123;
-  count = 3;
+ // Must be in triangle123
+ num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
+ v1.a = d123_1 * inv_d123;
+ v2.a = d123_2 * inv_d123;
+ v3.a = d123_3 * inv_d123;
+ count = 3;
 }
 </pre>
 </div>
@@ -902,13 +901,13 @@ void <strong>writeCache</strong>(<a href="../box2d/SimplexCache.html">SimplexCac
 <div class="doc">
 <pre class="source">
 void writeCache(SimplexCache cache) {
-  cache.metric = getMetric();
-  cache.count = count;
+ cache.metric = getMetric();
+ cache.count = count;
 
-  for (int i = 0; i &lt; count; ++i) {
-    cache.indexA[i] = (vertices[i].indexA);
-    cache.indexB[i] = (vertices[i].indexB);
-  }
+ for (int i = 0; i &lt; count; ++i) {
+   cache.indexA[i] = (vertices[i].indexA);
+   cache.indexB[i] = (vertices[i].indexB);
+ }
 }
 </pre>
 </div>

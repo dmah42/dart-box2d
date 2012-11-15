@@ -34,67 +34,67 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraint {
-  List&lt;ContactConstraintPoint&gt; points;
+ List&lt;ContactConstraintPoint&gt; points;
 
-  final Vector localNormal;
-  final Vector localPoint;
-  final Vector normal;
+ final Vector localNormal;
+ final Vector localPoint;
+ final Vector normal;
 
-  final Matrix22 normalMass;
-  //TODO(gregbglw): What does K mean? Find out and change the name.
-  final Matrix22 K;
+ final Matrix22 normalMass;
+ //TODO(gregbglw): What does K mean? Find out and change the name.
+ final Matrix22 K;
 
-  Body bodyA;
-  Body bodyB;
+ Body bodyA;
+ Body bodyB;
 
-  int type;
+ int type;
 
-  num radius;
-  num friction;
-  num restitution;
-  int pointCount;
+ num radius;
+ num friction;
+ num restitution;
+ int pointCount;
 
-  Manifold manifold;
+ Manifold manifold;
 
-  ContactConstraint() :
-    points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-    pointCount = 0,
-    manifold = null,
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    normal = new Vector(),
-    normalMass = new Matrix22(),
-    K = new Matrix22() {
-    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-        points[i] = new ContactConstraintPoint();
-    }
-  }
+ ContactConstraint() :
+   points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+   pointCount = 0,
+   manifold = null,
+   localNormal = new Vector(),
+   localPoint = new Vector(),
+   normal = new Vector(),
+   normalMass = new Matrix22(),
+   K = new Matrix22() {
+   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
+       points[i] = new ContactConstraintPoint();
+   }
+ }
 
-  void setFrom(ContactConstraint cp) {
-    pointCount = cp.pointCount;
-    localNormal.setFrom(cp.localNormal);
-    localPoint.setFrom(cp.localPoint);
-    normal.setFrom(cp.normal);
-    normalMass.setFrom(cp.normalMass);
-    K.setFrom(cp.K);
-    bodyA = cp.bodyA;
-    bodyB = cp.bodyB;
-    type = cp.type;
-    radius = cp.radius;
-    friction = cp.friction;
-    restitution = cp.restitution;
-    manifold = cp.manifold;
-    for(int i=0; i&lt;cp.pointCount; i++) {
-      points[i].setFrom(cp.points[i]);
-    }
-  }
+ void setFrom(ContactConstraint cp) {
+   pointCount = cp.pointCount;
+   localNormal.setFrom(cp.localNormal);
+   localPoint.setFrom(cp.localPoint);
+   normal.setFrom(cp.normal);
+   normalMass.setFrom(cp.normalMass);
+   K.setFrom(cp.K);
+   bodyA = cp.bodyA;
+   bodyB = cp.bodyB;
+   type = cp.type;
+   radius = cp.radius;
+   friction = cp.friction;
+   restitution = cp.restitution;
+   manifold = cp.manifold;
+   for(int i=0; i&lt;cp.pointCount; i++) {
+     points[i].setFrom(cp.points[i]);
+   }
+ }
 
-  String toString() {
-    String result = 'localNormal: "$localNormal", localPoint: "$localPoint" '
-        'normal: "$normal", radius: "$radius" friction: "$friction" '
-        'restitution: "$restitution", pointCount: "$pointCount"';
-    return result;
-  }
+ String toString() {
+   String result = 'localNormal: "$localNormal", localPoint: "$localPoint" '
+       'normal: "$normal", radius: "$radius" friction: "$friction" '
+       'restitution: "$restitution", pointCount: "$pointCount"';
+   return result;
+ }
 }
 </pre>
 </div>
@@ -107,17 +107,17 @@ new <strong>ContactConstraint</strong>() <a class="anchor-link" href="#ContactCo
 <div class="doc">
 <pre class="source">
 ContactConstraint() :
-  points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-  pointCount = 0,
-  manifold = null,
-  localNormal = new Vector(),
-  localPoint = new Vector(),
-  normal = new Vector(),
-  normalMass = new Matrix22(),
-  K = new Matrix22() {
-  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-      points[i] = new ContactConstraintPoint();
-  }
+ points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+ pointCount = 0,
+ manifold = null,
+ localNormal = new Vector(),
+ localPoint = new Vector(),
+ normal = new Vector(),
+ normalMass = new Matrix22(),
+ K = new Matrix22() {
+ for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
+     points[i] = new ContactConstraintPoint();
+ }
 }
 </pre>
 </div>
@@ -303,22 +303,22 @@ void <strong>setFrom</strong>(<a href="../box2d/ContactConstraint.html">ContactC
 <div class="doc">
 <pre class="source">
 void setFrom(ContactConstraint cp) {
-  pointCount = cp.pointCount;
-  localNormal.setFrom(cp.localNormal);
-  localPoint.setFrom(cp.localPoint);
-  normal.setFrom(cp.normal);
-  normalMass.setFrom(cp.normalMass);
-  K.setFrom(cp.K);
-  bodyA = cp.bodyA;
-  bodyB = cp.bodyB;
-  type = cp.type;
-  radius = cp.radius;
-  friction = cp.friction;
-  restitution = cp.restitution;
-  manifold = cp.manifold;
-  for(int i=0; i&lt;cp.pointCount; i++) {
-    points[i].setFrom(cp.points[i]);
-  }
+ pointCount = cp.pointCount;
+ localNormal.setFrom(cp.localNormal);
+ localPoint.setFrom(cp.localPoint);
+ normal.setFrom(cp.normal);
+ normalMass.setFrom(cp.normalMass);
+ K.setFrom(cp.K);
+ bodyA = cp.bodyA;
+ bodyB = cp.bodyB;
+ type = cp.type;
+ radius = cp.radius;
+ friction = cp.friction;
+ restitution = cp.restitution;
+ manifold = cp.manifold;
+ for(int i=0; i&lt;cp.pointCount; i++) {
+   points[i].setFrom(cp.points[i]);
+ }
 }
 </pre>
 </div>
@@ -333,10 +333,10 @@ String <strong>toString</strong>() <a class="anchor-link" href="#toString"
 <div class="docs-inherited-from">docs inherited from Object </div></div>
 <pre class="source">
 String toString() {
-  String result = 'localNormal: "$localNormal", localPoint: "$localPoint" '
-      'normal: "$normal", radius: "$radius" friction: "$friction" '
-      'restitution: "$restitution", pointCount: "$pointCount"';
-  return result;
+ String result = 'localNormal: "$localNormal", localPoint: "$localPoint" '
+     'normal: "$normal", radius: "$radius" friction: "$friction" '
+     'restitution: "$restitution", pointCount: "$pointCount"';
+ return result;
 }
 </pre>
 </div>

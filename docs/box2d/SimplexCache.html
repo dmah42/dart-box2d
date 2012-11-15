@@ -32,43 +32,42 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p> Used to warm start <code>distance</code>. Set count to zero on first call.</p>
 <pre class="source">
 class SimplexCache {
-  /** length or area */
-  num metric;
+ /** length or area */
+ num metric;
 
-  int count;
+ int count;
 
-  /** vertices on shape A */
-  final List&lt;int&gt; indexA;
+ /** vertices on shape A */
+ final List&lt;int&gt; indexA;
 
-  /** vertices on shape B */
-  final List&lt;int&gt; indexB;
+ /** vertices on shape B */
+ final List&lt;int&gt; indexB;
 
-  /**
-   * Constructs a new SimplexCache.
-   */
-  SimplexCache() :
-    metric = 0,
-    count = 0,
-    indexA = new List&lt;int&gt;(3),
-    indexB = new List&lt;int&gt;(3) {
-    for (int i = 0; i &lt; 3; ++i) {
-      indexA[i] = Settings.MAX_INTEGER;
-      indexB[i] = Settings.MAX_INTEGER;
-    }
-  }
+ /**
+  * Constructs a new SimplexCache.
+  */
+ SimplexCache() :
+   metric = 0,
+   count = 0,
+   indexA = new List&lt;int&gt;(3),
+   indexB = new List&lt;int&gt;(3) {
+   for (int i = 0; i &lt; 3; ++i) {
+     indexA[i] = Settings.MAX_INTEGER;
+     indexB[i] = Settings.MAX_INTEGER;
+   }
+ }
 
-  /**
-   * Sets this cache equal to the given cache.
-   */
-  void setFrom(SimplexCache sc) {
-    indexA.setRange(0, indexA.length, sc.indexA);
-    indexB.setRange(0, indexB.length, sc.indexB);
-    metric = sc.metric;
-    count = sc.count;
-  }
+ /**
+  * Sets this cache equal to the given cache.
+  */
+ void setFrom(SimplexCache sc) {
+   indexA.setRange(0, indexA.length, sc.indexA);
+   indexB.setRange(0, indexB.length, sc.indexB);
+   metric = sc.metric;
+   count = sc.count;
+ }
 }
 </pre>
 </div>
@@ -82,14 +81,14 @@ new <strong>SimplexCache</strong>() <a class="anchor-link" href="#SimplexCache"
 <p>Constructs a new SimplexCache.</p>
 <pre class="source">
 SimplexCache() :
-  metric = 0,
-  count = 0,
-  indexA = new List&lt;int&gt;(3),
-  indexB = new List&lt;int&gt;(3) {
-  for (int i = 0; i &lt; 3; ++i) {
-    indexA[i] = Settings.MAX_INTEGER;
-    indexB[i] = Settings.MAX_INTEGER;
-  }
+ metric = 0,
+ count = 0,
+ indexA = new List&lt;int&gt;(3),
+ indexB = new List&lt;int&gt;(3) {
+ for (int i = 0; i &lt; 3; ++i) {
+   indexA[i] = Settings.MAX_INTEGER;
+   indexB[i] = Settings.MAX_INTEGER;
+ }
 }
 </pre>
 </div>
@@ -159,10 +158,10 @@ void <strong>setFrom</strong>(<a href="../box2d/SimplexCache.html">SimplexCache<
 <p>Sets this cache equal to the given cache.</p>
 <pre class="source">
 void setFrom(SimplexCache sc) {
-  indexA.setRange(0, indexA.length, sc.indexA);
-  indexB.setRange(0, indexB.length, sc.indexB);
-  metric = sc.metric;
-  count = sc.count;
+ indexA.setRange(0, indexA.length, sc.indexA);
+ indexB.setRange(0, indexB.length, sc.indexB);
+ metric = sc.metric;
+ count = sc.count;
 }
 </pre>
 </div>

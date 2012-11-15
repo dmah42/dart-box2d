@@ -32,49 +32,47 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Definition for a <a class="crossref" href="../box2d/ConstantVolumeJoint.html">ConstantVolumeJoint</a>, which connects a group
-a bodies together so they maintain a constant volume within them.</p>
 <pre class="source">
 class ConstantVolumeJointDef extends JointDef {
-  num frequencyHz;
-  num dampingRatio;
+ num frequencyHz;
+ num dampingRatio;
 
-  List&lt;Body&gt; bodies;
-  List&lt;DistanceJoint&gt; joints;
+ List&lt;Body&gt; bodies;
+ List&lt;DistanceJoint&gt; joints;
 
-  ConstantVolumeJointDef() :
-    super(),
-    bodies = new List&lt;Body&gt;(),
-    joints = null,
-    frequencyHz = 0.0,
-    dampingRatio = 0.0 {
-    type = JointType.CONSTANT_VOLUME;
-    collideConnected = false;
-  }
+ ConstantVolumeJointDef() :
+   super(),
+   bodies = new List&lt;Body&gt;(),
+   joints = null,
+   frequencyHz = 0.0,
+   dampingRatio = 0.0 {
+   type = JointType.CONSTANT_VOLUME;
+   collideConnected = false;
+ }
 
-  /**
-   * Adds a body to the group.
-   */
-  void addBody(Body argBody) {
-    bodies.add(argBody);
-    if (bodies.length == 1) {
-      bodyA = argBody;
-    } else if (bodies.length == 2) {
-      bodyB = argBody;
-    }
-  }
+ /**
+  * Adds a body to the group.
+  */
+ void addBody(Body argBody) {
+   bodies.add(argBody);
+   if (bodies.length == 1) {
+     bodyA = argBody;
+   } else if (bodies.length == 2) {
+     bodyB = argBody;
+   }
+ }
 
-  /**
-   * Adds a body and the pre-made distance joint.  Should only
-   * be used for deserialization.
-   */
-  void addBodyAndJoint(Body argBody, DistanceJoint argJoint) {
-    addBody(argBody);
-    if(joints == null){
-      joints = new List&lt;DistanceJoint&gt;();
-    }
-    joints.add(argJoint);
-  }
+ /**
+  * Adds a body and the pre-made distance joint.  Should only
+  * be used for deserialization.
+  */
+ void addBodyAndJoint(Body argBody, DistanceJoint argJoint) {
+   addBody(argBody);
+   if(joints == null){
+     joints = new List&lt;DistanceJoint&gt;();
+   }
+   joints.add(argJoint);
+ }
 }
 </pre>
 </div>
@@ -90,13 +88,13 @@ new <strong>ConstantVolumeJointDef</strong>() <a class="anchor-link" href="#Cons
 <div class="doc">
 <pre class="source">
 ConstantVolumeJointDef() :
-  super(),
-  bodies = new List&lt;Body&gt;(),
-  joints = null,
-  frequencyHz = 0.0,
-  dampingRatio = 0.0 {
-  type = JointType.CONSTANT_VOLUME;
-  collideConnected = false;
+ super(),
+ bodies = new List&lt;Body&gt;(),
+ joints = null,
+ frequencyHz = 0.0,
+ dampingRatio = 0.0 {
+ type = JointType.CONSTANT_VOLUME;
+ collideConnected = false;
 }
 </pre>
 </div>
@@ -228,12 +226,12 @@ void <strong>addBody</strong>(<a href="../box2d/Body.html">Body</a> argBody) <a 
 <p>Adds a body to the group.</p>
 <pre class="source">
 void addBody(Body argBody) {
-  bodies.add(argBody);
-  if (bodies.length == 1) {
-    bodyA = argBody;
-  } else if (bodies.length == 2) {
-    bodyB = argBody;
-  }
+ bodies.add(argBody);
+ if (bodies.length == 1) {
+   bodyA = argBody;
+ } else if (bodies.length == 2) {
+   bodyB = argBody;
+ }
 }
 </pre>
 </div>
@@ -247,11 +245,11 @@ void <strong>addBodyAndJoint</strong>(<a href="../box2d/Body.html">Body</a> argB
 be used for deserialization.</p>
 <pre class="source">
 void addBodyAndJoint(Body argBody, DistanceJoint argJoint) {
-  addBody(argBody);
-  if(joints == null){
-    joints = new List&lt;DistanceJoint&gt;();
-  }
-  joints.add(argJoint);
+ addBody(argBody);
+ if(joints == null){
+   joints = new List&lt;DistanceJoint&gt;();
+ }
+ joints.add(argJoint);
 }
 </pre>
 </div>

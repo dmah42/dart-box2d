@@ -2,7 +2,7 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>ContactListener interface / box2d Library / Dart Documentation</title>
+        <title>ContactListener abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
@@ -27,87 +27,69 @@
 </div>
 <div class="content">
         <h2><strong>ContactListener</strong>
-          interface
+          abstract class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Implement this interface to get contact information. You can use these
-results for things like sounds and game logic. You can also get contact
-results by traversing the contact lists after the time step. However, you
-might miss some contacts because continuous physics leads to sub-stepping.
-Additionally you may receive multiple callbacks for the same contact in a
-single time step.
-You should strive to make your callbacks efficient because there may be
-many callbacks per time step.</p>
-<p>warning: You cannot create/destroy Box2D entities inside these callbacks.</p>
 <pre class="source">
-interface ContactListener {
-  /**
-   * Called when two fixtures begin to touch.
-   */
-  void beginContact(Contact contact);
+abstract class ContactListener {
+ /**
+  * Called when two fixtures begin to touch.
+  */
+ void beginContact(Contact contact);
 
-  /**
-   * Called when two fixtures cease to touch.
-   */
-  void endContact(Contact contact);
+ /**
+  * Called when two fixtures cease to touch.
+  */
+ void endContact(Contact contact);
 
-  /**
-   * This is called after a contact is updated. This allows you to inspect a
-   * contact before it goes to the solver. If you are careful, you can modify 
-   * the contact manifold (e.g. disable contact).
-   * A copy of the old manifold is provided so that you can detect changes.
-   * Note: this is called only for awake bodies.
-   * Note: this is called even when the number of contact points is zero.
-   * Note: this is not called for sensors.
-   * Note: if you set the number of contact points to zero, you will not
-   * get an EndContact callback. However, you may get a BeginContact callback
-   * the next step.
-   * Note: the oldManifold parameter is pooled, so it will be the same object
-   * for every callback for each thread.
-   */
-  void preSolve(Contact contact, Manifold oldManifold);
+ /**
+  * This is called after a contact is updated. This allows you to inspect a
+  * contact before it goes to the solver. If you are careful, you can modify 
+  * the contact manifold (e.g. disable contact).
+  * A copy of the old manifold is provided so that you can detect changes.
+  * Note: this is called only for awake bodies.
+  * Note: this is called even when the number of contact points is zero.
+  * Note: this is not called for sensors.
+  * Note: if you set the number of contact points to zero, you will not
+  * get an EndContact callback. However, you may get a BeginContact callback
+  * the next step.
+  * Note: the oldManifold parameter is pooled, so it will be the same object
+  * for every callback for each thread.
+  */
+ void preSolve(Contact contact, Manifold oldManifold);
 
-  /**
-   * This lets you inspect a contact after the solver is finished. This is
-   * useful for inspecting impulses.
-   * Note: the contact manifold does not include time of impact impulses,
-   * which can be arbitrarily large if the sub-step is small. Hence the impulse
-   * is provided explicitly in a separate data structure.
-   * Note: this is only called for contacts that are touching, solid, and awake.
-   */
-   void postSolve(Contact contact, ContactImpulse impulse);
+ /**
+  * This lets you inspect a contact after the solver is finished. This is
+  * useful for inspecting impulses.
+  * Note: the contact manifold does not include time of impact impulses,
+  * which can be arbitrarily large if the sub-step is small. Hence the impulse
+  * is provided explicitly in a separate data structure.
+  * Note: this is only called for contacts that are touching, solid, and awake.
+  */
+  void postSolve(Contact contact, ContactImpulse impulse);
 }
 </pre>
 </div>
 <div>
 <h3>Methods</h3>
 <div class="method"><h4 id="beginContact">
-<button class="show-code">Code</button>
-void <strong>beginContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#beginContact"
+abstract void <strong>beginContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#beginContact"
               title="Permalink to ContactListener.beginContact">#</a></h4>
 <div class="doc">
 <p>Called when two fixtures begin to touch.</p>
-<pre class="source">
-void beginContact(Contact contact);
-</pre>
 </div>
 </div>
 <div class="method"><h4 id="endContact">
-<button class="show-code">Code</button>
-void <strong>endContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#endContact"
+abstract void <strong>endContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#endContact"
               title="Permalink to ContactListener.endContact">#</a></h4>
 <div class="doc">
 <p>Called when two fixtures cease to touch.</p>
-<pre class="source">
-void endContact(Contact contact);
-</pre>
 </div>
 </div>
 <div class="method"><h4 id="postSolve">
-<button class="show-code">Code</button>
-void <strong>postSolve</strong>(<a href="../box2d/Contact.html">Contact</a> contact, <a href="../box2d/ContactImpulse.html">ContactImpulse</a> impulse) <a class="anchor-link" href="#postSolve"
+abstract void <strong>postSolve</strong>(<a href="../box2d/Contact.html">Contact</a> contact, <a href="../box2d/ContactImpulse.html">ContactImpulse</a> impulse) <a class="anchor-link" href="#postSolve"
               title="Permalink to ContactListener.postSolve">#</a></h4>
 <div class="doc">
 <p>This lets you inspect a contact after the solver is finished. This is
@@ -116,14 +98,10 @@ Note: the contact manifold does not include time of impact impulses,
 which can be arbitrarily large if the sub-step is small. Hence the impulse
 is provided explicitly in a separate data structure.
 Note: this is only called for contacts that are touching, solid, and awake.</p>
-<pre class="source">
-void postSolve(Contact contact, ContactImpulse impulse);
-</pre>
 </div>
 </div>
 <div class="method"><h4 id="preSolve">
-<button class="show-code">Code</button>
-void <strong>preSolve</strong>(<a href="../box2d/Contact.html">Contact</a> contact, <a href="../box2d/Manifold.html">Manifold</a> oldManifold) <a class="anchor-link" href="#preSolve"
+abstract void <strong>preSolve</strong>(<a href="../box2d/Contact.html">Contact</a> contact, <a href="../box2d/Manifold.html">Manifold</a> oldManifold) <a class="anchor-link" href="#preSolve"
               title="Permalink to ContactListener.preSolve">#</a></h4>
 <div class="doc">
 <p>This is called after a contact is updated. This allows you to inspect a
@@ -138,9 +116,6 @@ get an EndContact callback. However, you may get a BeginContact callback
 the next step.
 Note: the oldManifold parameter is pooled, so it will be the same object
 for every callback for each thread.</p>
-<pre class="source">
-void preSolve(Contact contact, Manifold oldManifold);
-</pre>
 </div>
 </div>
 </div>

@@ -32,113 +32,111 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>The base joint class. Joints are used to constrain two bodies together in
-various fashions. Some joints also feature limits and motors.</p>
 <pre class="source">
 class Joint {
-  int type;
+ int type;
 
-  Joint _prev;
-  Joint _next;
+ Joint _prev;
+ Joint _next;
 
-  JointEdge edgeA;
-  JointEdge edgeB;
+ JointEdge edgeA;
+ JointEdge edgeB;
 
-  Body bodyA;
-  Body bodyB;
+ Body bodyA;
+ Body bodyB;
 
-  bool islandFlag;
+ bool islandFlag;
 
-  bool collideConnected;
+ bool collideConnected;
 
-  Object userData;
+ Object userData;
 
-  // Cache here per time step to reduce cache misses.
-  final Vector localCenterA;
-  final Vector localCenterB;
+ // Cache here per time step to reduce cache misses.
+ final Vector localCenterA;
+ final Vector localCenterB;
 
-  num invMassA;
-  num invIA;
-  num invMassB;
-  num invIB;
+ num invMassA;
+ num invIA;
+ num invMassB;
+ num invIB;
 
-  Joint(JointDef def) :
-    type = def.type,
-    _prev = null,
-    _next = null,
-    bodyA = def.bodyA,
-    bodyB = def.bodyB,
-    collideConnected = def.collideConnected,
-    islandFlag = false,
-    userData = def.userData,
+ Joint(JointDef def) :
+   type = def.type,
+   _prev = null,
+   _next = null,
+   bodyA = def.bodyA,
+   bodyB = def.bodyB,
+   collideConnected = def.collideConnected,
+   islandFlag = false,
+   userData = def.userData,
 
-    localCenterA = new Vector(),
-    localCenterB = new Vector(),
-    edgeA = new JointEdge(),
-    edgeB = new JointEdge() { }
+   localCenterA = new Vector(),
+   localCenterB = new Vector(),
+   edgeA = new JointEdge(),
+   edgeB = new JointEdge() { }
 
-  // TODO(dominich): use 'is' to create the right type of Joint and remove the
-  // *Def.type.
-  factory Joint.create(World argWorld, JointDef def) {
-    switch(def.type){
-      case JointType.MOUSE:
-        throw new NotImplementedException();
-        //  return new MouseJoint(def);
-      case JointType.DISTANCE:
-        return new DistanceJoint(def);
-      case JointType.PRISMATIC:
-        throw new NotImplementedException();
-        //  return new PrismaticJoint(def);
-      case JointType.REVOLUTE:
-        return new RevoluteJoint(def);
-      case JointType.WELD:
-        throw new NotImplementedException();
-        //return new WeldJoint(def);
-      case JointType.FRICTION:
-        return new FrictionJoint(def);
-      case JointType.LINE:
-        throw new NotImplementedException();
-        //return new LineJoint(def);
-      case JointType.GEAR:
-        throw new NotImplementedException();
-        //return new GearJoint(def);
-      case JointType.PULLEY:
-        throw new NotImplementedException();
-        //return new PulleyJoint(def);
-      case JointType.CONSTANT_VOLUME:
-        return new ConstantVolumeJoint(argWorld, def);
-    }
-    return null;
-  }
+ // TODO(dominich): use 'is' to create the right type of Joint and remove the
+ // *Def.type.
+ factory Joint.create(World argWorld, JointDef def) {
+   switch(def.type){
+     case JointType.MOUSE:
+       throw new NotImplementedException();
+       //  return new MouseJoint(def);
+     case JointType.DISTANCE:
+       return new DistanceJoint(def);
+     case JointType.PRISMATIC:
+       throw new NotImplementedException();
+       //  return new PrismaticJoint(def);
+     case JointType.REVOLUTE:
+       return new RevoluteJoint(def);
+     case JointType.WELD:
+       throw new NotImplementedException();
+       //return new WeldJoint(def);
+     case JointType.FRICTION:
+       return new FrictionJoint(def);
+     case JointType.LINE:
+       throw new NotImplementedException();
+       //return new LineJoint(def);
+     case JointType.GEAR:
+       throw new NotImplementedException();
+       //return new GearJoint(def);
+     case JointType.PULLEY:
+       throw new NotImplementedException();
+       //return new PulleyJoint(def);
+     case JointType.CONSTANT_VOLUME:
+       return new ConstantVolumeJoint(argWorld, def);
+   }
+   return null;
+ }
 
-  static void destroy(Joint joint) {
-    joint.destructor();
-  }
+ static void destroy(Joint joint) {
+   joint.destructor();
+ }
 
-  /** Get the anchor point on bodyA in world coordinates. */
-  void getAnchorA(Vector argOut) { }
+ /** Get the anchor point on bodyA in world coordinates. */
+ void getAnchorA(Vector argOut) { }
 
-  /** Get the anchor point on bodyB in world coordinates. */
-  void getAnchorB(Vector argOut) { }
+ /** Get the anchor point on bodyB in world coordinates. */
+ void getAnchorB(Vector argOut) { }
 
-  /** Get the reaction force on body2 at the joint anchor in Newtons. */
-  void getReactionForce(num inv_dt, Vector argOut) { }
+ /** Get the reaction force on body2 at the joint anchor in Newtons. */
+ void getReactionForce(num inv_dt, Vector argOut) { }
 
-  /** Get the reaction torque on body2 in N*m. */
-  num getReactionTorque(num inv_dt) { }
+ /** Get the reaction torque on body2 in N*m. */
+ num getReactionTorque(num inv_dt) { }
 
-  /** Short-cut function to determine if either body is inactive. */
-  bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
+ /** Short-cut function to determine if either body is inactive. */
+ bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 
-  void initVelocityConstraints(TimeStep step) { }
+ void initVelocityConstraints(TimeStep step) { }
 
-  void solveVelocityConstraints(TimeStep step) { }
+ void solveVelocityConstraints(TimeStep step) { }
 
-  /** This returns true if the position errors are within tolerance. */
-  bool solvePositionConstraints(num baumgarte) { }
+ /** This returns true if the position errors are within tolerance. */
+ bool solvePositionConstraints(num baumgarte) { }
 
-  /** Override to handle destruction of joint. */
-  void destructor() { }
+ /** Override to handle destruction of joint. */
+ void destructor() { }
 }
 </pre>
 </div>
@@ -154,7 +152,7 @@ void <strong>destroy</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a 
 <div class="doc">
 <pre class="source">
 static void destroy(Joint joint) {
-  joint.destructor();
+ joint.destructor();
 }
 </pre>
 </div>
@@ -169,19 +167,19 @@ new <strong>Joint</strong>(<a href="../box2d/JointDef.html">JointDef</a> def) <a
 <div class="doc">
 <pre class="source">
 Joint(JointDef def) :
-  type = def.type,
-  _prev = null,
-  _next = null,
-  bodyA = def.bodyA,
-  bodyB = def.bodyB,
-  collideConnected = def.collideConnected,
-  islandFlag = false,
-  userData = def.userData,
+ type = def.type,
+ _prev = null,
+ _next = null,
+ bodyA = def.bodyA,
+ bodyB = def.bodyB,
+ collideConnected = def.collideConnected,
+ islandFlag = false,
+ userData = def.userData,
 
-  localCenterA = new Vector(),
-  localCenterB = new Vector(),
-  edgeA = new JointEdge(),
-  edgeB = new JointEdge() { }
+ localCenterA = new Vector(),
+ localCenterB = new Vector(),
+ edgeA = new JointEdge(),
+ edgeB = new JointEdge() { }
 </pre>
 </div>
 </div>
@@ -192,35 +190,35 @@ factory <strong>Joint.create</strong>(<a href="../box2d/World.html">World</a> ar
 <div class="doc">
 <pre class="source">
 factory Joint.create(World argWorld, JointDef def) {
-  switch(def.type){
-    case JointType.MOUSE:
-      throw new NotImplementedException();
-      //  return new MouseJoint(def);
-    case JointType.DISTANCE:
-      return new DistanceJoint(def);
-    case JointType.PRISMATIC:
-      throw new NotImplementedException();
-      //  return new PrismaticJoint(def);
-    case JointType.REVOLUTE:
-      return new RevoluteJoint(def);
-    case JointType.WELD:
-      throw new NotImplementedException();
-      //return new WeldJoint(def);
-    case JointType.FRICTION:
-      return new FrictionJoint(def);
-    case JointType.LINE:
-      throw new NotImplementedException();
-      //return new LineJoint(def);
-    case JointType.GEAR:
-      throw new NotImplementedException();
-      //return new GearJoint(def);
-    case JointType.PULLEY:
-      throw new NotImplementedException();
-      //return new PulleyJoint(def);
-    case JointType.CONSTANT_VOLUME:
-      return new ConstantVolumeJoint(argWorld, def);
-  }
-  return null;
+ switch(def.type){
+   case JointType.MOUSE:
+     throw new NotImplementedException();
+     //  return new MouseJoint(def);
+   case JointType.DISTANCE:
+     return new DistanceJoint(def);
+   case JointType.PRISMATIC:
+     throw new NotImplementedException();
+     //  return new PrismaticJoint(def);
+   case JointType.REVOLUTE:
+     return new RevoluteJoint(def);
+   case JointType.WELD:
+     throw new NotImplementedException();
+     //return new WeldJoint(def);
+   case JointType.FRICTION:
+     return new FrictionJoint(def);
+   case JointType.LINE:
+     throw new NotImplementedException();
+     //return new LineJoint(def);
+   case JointType.GEAR:
+     throw new NotImplementedException();
+     //return new GearJoint(def);
+   case JointType.PULLEY:
+     throw new NotImplementedException();
+     //return new PulleyJoint(def);
+   case JointType.CONSTANT_VOLUME:
+     return new ConstantVolumeJoint(argWorld, def);
+ }
+ return null;
 }
 </pre>
 </div>

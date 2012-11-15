@@ -32,133 +32,131 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A fixture is used to attach a shape to a body for collision detection.
-You cannot reuse fixtures.</p>
 <pre class="source">
 class Fixture {
-  final AxisAlignedBox box;
+ final AxisAlignedBox box;
 
-  num density;
+ num density;
 
-  Fixture next;
+ Fixture next;
 
-  Body body;
+ Body body;
 
-  Shape shape;
+ Shape shape;
 
-  num friction;
+ num friction;
 
-  num restitution;
+ num restitution;
 
-  DynamicTreeNode proxy;
+ DynamicTreeNode proxy;
 
-  final Filter filter;
+ final Filter filter;
 
-  bool isSensor;
+ bool isSensor;
 
-  Object userData;
+ Object userData;
 
-  final AxisAlignedBox _poolOne;
-  final AxisAlignedBox _poolTwo;
+ final AxisAlignedBox _poolOne;
+ final AxisAlignedBox _poolTwo;
 
-  /** Constructs a new Fixture with default values. */
-  Fixture()
-      : box = new AxisAlignedBox(),
-        body = null,
-        next = null,
-        proxy = null,
-        shape = null,
-        filter = new Filter(),
-        _poolOne = new AxisAlignedBox(),
-        _poolTwo = new AxisAlignedBox();
+ /** Constructs a new Fixture with default values. */
+ Fixture()
+     : box = new AxisAlignedBox(),
+       body = null,
+       next = null,
+       proxy = null,
+       shape = null,
+       filter = new Filter(),
+       _poolOne = new AxisAlignedBox(),
+       _poolTwo = new AxisAlignedBox();
 
-  /** Sets this fixture according to the given body and definition. */
-  void create(Body b, FixtureDef def) {
-    userData = def.userData;
-    friction = def.friction;
-    restitution = def.restitution;
+ /** Sets this fixture according to the given body and definition. */
+ void create(Body b, FixtureDef def) {
+   userData = def.userData;
+   friction = def.friction;
+   restitution = def.restitution;
 
-    body = b;
-    next = null;
+   body = b;
+   next = null;
 
-    filter.setFrom(def.filter);
+   filter.setFrom(def.filter);
 
-    isSensor = def.isSensor;
+   isSensor = def.isSensor;
 
-    shape = def.shape.clone();
+   shape = def.shape.clone();
 
-    density = def.density;
-  }
+   density = def.density;
+ }
 
-  /**
-   * Destroys this fixture. Before being called, this shape's proxy must be
-   * destroyed. After being called, this fixture's shape is null.
-   */
-  void destroy() {
-    // The proxy must be destroyed before calling this.
-    assert(proxy == null);
+ /**
+  * Destroys this fixture. Before being called, this shape's proxy must be
+  * destroyed. After being called, this fixture's shape is null.
+  */
+ void destroy() {
+   // The proxy must be destroyed before calling this.
+   assert(proxy == null);
 
-    // Free the child shape.
-    shape = null;
-  }
+   // Free the child shape.
+   shape = null;
+ }
 
-  /** These support body activation/deactivation. */
-  void createProxy(BroadPhase broadPhase, Transform xf){
-    assert(proxy == null);
+ /** These support body activation/deactivation. */
+ void createProxy(BroadPhase broadPhase, Transform xf){
+   assert(proxy == null);
 
-    // Create proxy in the broad-phase.
-    shape.computeAxisAlignedBox(box, xf);
-    proxy = broadPhase.createProxy(box, this);
-  }
+   // Create proxy in the broad-phase.
+   shape.computeAxisAlignedBox(box, xf);
+   proxy = broadPhase.createProxy(box, this);
+ }
 
-  /** Destroys this Fixture's proxy. */
-  void destroyProxy(BroadPhase broadPhase) {
-    // If proxy is already destroyed, do nothing.
-    if (proxy == null) {
-      return;
-    }
+ /** Destroys this Fixture's proxy. */
+ void destroyProxy(BroadPhase broadPhase) {
+   // If proxy is already destroyed, do nothing.
+   if (proxy == null) {
+     return;
+   }
 
-    // Destroy the proxy.
-    broadPhase.destroyProxy(proxy);
-    proxy = null;
-  }
+   // Destroy the proxy.
+   broadPhase.destroyProxy(proxy);
+   proxy = null;
+ }
 
-  //TODO(gregbglw): Write comment once know what does.
-  void synchronize(BroadPhase broadPhase, Transform transformOne,
-      Transform transformTwo) {
-    if (proxy == null) {
-      return;
-    }
+ //TODO(gregbglw): Write comment once know what does.
+ void synchronize(BroadPhase broadPhase, Transform transformOne,
+     Transform transformTwo) {
+   if (proxy == null) {
+     return;
+   }
 
-    // Compute an Axis Aligned Box that covers the swept shape.
-    shape.computeAxisAlignedBox(_poolOne, transformOne);
-    shape.computeAxisAlignedBox(_poolTwo, transformTwo);
-    box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
-        _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
-    box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
-        _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
-    box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
-        _poolOne.upperBound.x : _poolTwo.upperBound.x;
-    box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
-        _poolOne.upperBound.y : _poolTwo.upperBound.y;
+   // Compute an Axis Aligned Box that covers the swept shape.
+   shape.computeAxisAlignedBox(_poolOne, transformOne);
+   shape.computeAxisAlignedBox(_poolTwo, transformTwo);
+   box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
+       _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
+   box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
+       _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
+   box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
+       _poolOne.upperBound.x : _poolTwo.upperBound.x;
+   box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
+       _poolOne.upperBound.y : _poolTwo.upperBound.y;
 
-    Vector disp = _poolOne.lowerBound;
-    disp.x = transformTwo.position.x - transformOne.position.x;
-    disp.y = transformTwo.position.y - transformOne.position.y;
+   Vector disp = _poolOne.lowerBound;
+   disp.x = transformTwo.position.x - transformOne.position.x;
+   disp.y = transformTwo.position.y - transformOne.position.y;
 
-    broadPhase.moveProxy(proxy, box, disp);
-  }
+   broadPhase.moveProxy(proxy, box, disp);
+ }
 
-  /**
-   * Get the mass data for this fixture. The mass data is based on the density
-   * and the shape. The rotational inertia is about the shape's origin.
-   */
-  void getMassData(MassData massData) {
-    shape.computeMass(massData, density);
-  }
+ /**
+  * Get the mass data for this fixture. The mass data is based on the density
+  * and the shape. The rotational inertia is about the shape's origin.
+  */
+ void getMassData(MassData massData) {
+   shape.computeMass(massData, density);
+ }
 
-  /** Get the type of the child shape. */
-  int get type =&gt; shape.type;
+ /** Get the type of the child shape. */
+ int get type =&gt; shape.type;
 }
 </pre>
 </div>
@@ -172,14 +170,14 @@ new <strong>Fixture</strong>() <a class="anchor-link" href="#Fixture"
 <p>Constructs a new Fixture with default values.</p>
 <pre class="source">
 Fixture()
-    : box = new AxisAlignedBox(),
-      body = null,
-      next = null,
-      proxy = null,
-      shape = null,
-      filter = new Filter(),
-      _poolOne = new AxisAlignedBox(),
-      _poolTwo = new AxisAlignedBox();
+   : box = new AxisAlignedBox(),
+     body = null,
+     next = null,
+     proxy = null,
+     shape = null,
+     filter = new Filter(),
+     _poolOne = new AxisAlignedBox(),
+     _poolTwo = new AxisAlignedBox();
 </pre>
 </div>
 </div>
@@ -342,20 +340,20 @@ void <strong>create</strong>(<a href="../box2d/Body.html">Body</a> b, <a href=".
 <p>Sets this fixture according to the given body and definition.</p>
 <pre class="source">
 void create(Body b, FixtureDef def) {
-  userData = def.userData;
-  friction = def.friction;
-  restitution = def.restitution;
+ userData = def.userData;
+ friction = def.friction;
+ restitution = def.restitution;
 
-  body = b;
-  next = null;
+ body = b;
+ next = null;
 
-  filter.setFrom(def.filter);
+ filter.setFrom(def.filter);
 
-  isSensor = def.isSensor;
+ isSensor = def.isSensor;
 
-  shape = def.shape.clone();
+ shape = def.shape.clone();
 
-  density = def.density;
+ density = def.density;
 }
 </pre>
 </div>
@@ -368,11 +366,11 @@ void <strong>createProxy</strong>(<a href="../box2d/BroadPhase.html">BroadPhase<
 <p>These support body activation/deactivation.</p>
 <pre class="source">
 void createProxy(BroadPhase broadPhase, Transform xf){
-  assert(proxy == null);
+ assert(proxy == null);
 
-  // Create proxy in the broad-phase.
-  shape.computeAxisAlignedBox(box, xf);
-  proxy = broadPhase.createProxy(box, this);
+ // Create proxy in the broad-phase.
+ shape.computeAxisAlignedBox(box, xf);
+ proxy = broadPhase.createProxy(box, this);
 }
 </pre>
 </div>
@@ -386,11 +384,11 @@ void <strong>destroy</strong>() <a class="anchor-link" href="#destroy"
 destroyed. After being called, this fixture's shape is null.</p>
 <pre class="source">
 void destroy() {
-  // The proxy must be destroyed before calling this.
-  assert(proxy == null);
+ // The proxy must be destroyed before calling this.
+ assert(proxy == null);
 
-  // Free the child shape.
-  shape = null;
+ // Free the child shape.
+ shape = null;
 }
 </pre>
 </div>
@@ -403,14 +401,14 @@ void <strong>destroyProxy</strong>(<a href="../box2d/BroadPhase.html">BroadPhase
 <p>Destroys this Fixture's proxy.</p>
 <pre class="source">
 void destroyProxy(BroadPhase broadPhase) {
-  // If proxy is already destroyed, do nothing.
-  if (proxy == null) {
-    return;
-  }
+ // If proxy is already destroyed, do nothing.
+ if (proxy == null) {
+   return;
+ }
 
-  // Destroy the proxy.
-  broadPhase.destroyProxy(proxy);
-  proxy = null;
+ // Destroy the proxy.
+ broadPhase.destroyProxy(proxy);
+ proxy = null;
 }
 </pre>
 </div>
@@ -424,7 +422,7 @@ void <strong>getMassData</strong>(<a href="../box2d/MassData.html">MassData</a> 
 and the shape. The rotational inertia is about the shape's origin.</p>
 <pre class="source">
 void getMassData(MassData massData) {
-  shape.computeMass(massData, density);
+ shape.computeMass(massData, density);
 }
 </pre>
 </div>
@@ -436,28 +434,28 @@ void <strong>synchronize</strong>(<a href="../box2d/BroadPhase.html">BroadPhase<
 <div class="doc">
 <pre class="source">
 void synchronize(BroadPhase broadPhase, Transform transformOne,
-    Transform transformTwo) {
-  if (proxy == null) {
-    return;
-  }
+   Transform transformTwo) {
+ if (proxy == null) {
+   return;
+ }
 
-  // Compute an Axis Aligned Box that covers the swept shape.
-  shape.computeAxisAlignedBox(_poolOne, transformOne);
-  shape.computeAxisAlignedBox(_poolTwo, transformTwo);
-  box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
-      _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
-  box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
-      _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
-  box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
-      _poolOne.upperBound.x : _poolTwo.upperBound.x;
-  box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
-      _poolOne.upperBound.y : _poolTwo.upperBound.y;
+ // Compute an Axis Aligned Box that covers the swept shape.
+ shape.computeAxisAlignedBox(_poolOne, transformOne);
+ shape.computeAxisAlignedBox(_poolTwo, transformTwo);
+ box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
+     _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
+ box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
+     _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
+ box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
+     _poolOne.upperBound.x : _poolTwo.upperBound.x;
+ box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
+     _poolOne.upperBound.y : _poolTwo.upperBound.y;
 
-  Vector disp = _poolOne.lowerBound;
-  disp.x = transformTwo.position.x - transformOne.position.x;
-  disp.y = transformTwo.position.y - transformOne.position.y;
+ Vector disp = _poolOne.lowerBound;
+ disp.x = transformTwo.position.x - transformOne.position.x;
+ disp.y = transformTwo.position.y - transformOne.position.y;
 
-  broadPhase.moveProxy(proxy, box, disp);
+ broadPhase.moveProxy(proxy, box, disp);
 }
 </pre>
 </div>

@@ -34,72 +34,72 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactSolverManifold {
-  final Vector normal;
-  final Vector point;
-  num separation;
+ final Vector normal;
+ final Vector point;
+ num separation;
 
-  /** Pooling */
-  final Vector pointA;
-  final Vector pointB;
-  final Vector temp;
-  final Vector planePoint;
-  final Vector clipPoint;
+ /** Pooling */
+ final Vector pointA;
+ final Vector pointB;
+ final Vector temp;
+ final Vector planePoint;
+ final Vector clipPoint;
 
-  /** constructor that initiliazes everything. */
-  TimeOfImpactSolverManifold() :
-    normal = new Vector(),
-    point = new Vector(),
-    separation = 0,
-    pointA = new Vector(),
-    pointB = new Vector(),
-    temp = new Vector(),
-    planePoint = new Vector(),
-    clipPoint = new Vector() { }
+ /** constructor that initiliazes everything. */
+ TimeOfImpactSolverManifold() :
+   normal = new Vector(),
+   point = new Vector(),
+   separation = 0,
+   pointA = new Vector(),
+   pointB = new Vector(),
+   temp = new Vector(),
+   planePoint = new Vector(),
+   clipPoint = new Vector() { }
 
-  void initialize(TimeOfImpactConstraint cc, int index) {
-    assert(cc.pointCount &gt; 0);
+ void initialize(TimeOfImpactConstraint cc, int index) {
+   assert(cc.pointCount &gt; 0);
 
-    switch (cc.type) {
-      case ManifoldType.CIRCLES:
-        pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-        pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
-        if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
-            * Settings.EPSILON) {
-          normal.setFrom(pointB).subLocal(pointA);
-          normal.normalize();
-        } else {
-          normal.setCoords(1, 0);
-        }
+   switch (cc.type) {
+     case ManifoldType.CIRCLES:
+       pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+       pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+       if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
+           * Settings.EPSILON) {
+         normal.setFrom(pointB).subLocal(pointA);
+         normal.normalize();
+       } else {
+         normal.setCoords(1, 0);
+       }
 
-        point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-        temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        break;
+       point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+       temp.setFrom(pointB).subLocal(pointA);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       break;
 
-      case ManifoldType.FACE_A:
-        normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
-        planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+     case ManifoldType.FACE_A:
+       normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
+       planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
-        clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
-        break;
+       clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       point.setFrom(clipPoint);
+       break;
 
-      case ManifoldType.FACE_B:
-        normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
-        planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+     case ManifoldType.FACE_B:
+       normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
+       planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
-        clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
+       clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       point.setFrom(clipPoint);
 
-        // Ensure normal points from A to B
-        normal.negateLocal();
-        break;
-    }
-  }
+       // Ensure normal points from A to B
+       normal.negateLocal();
+       break;
+   }
+ }
 }
 </pre>
 </div>
@@ -113,14 +113,14 @@ new <strong>TimeOfImpactSolverManifold</strong>() <a class="anchor-link" href="#
 <p>constructor that initiliazes everything.</p>
 <pre class="source">
 TimeOfImpactSolverManifold() :
-  normal = new Vector(),
-  point = new Vector(),
-  separation = 0,
-  pointA = new Vector(),
-  pointB = new Vector(),
-  temp = new Vector(),
-  planePoint = new Vector(),
-  clipPoint = new Vector() { }
+ normal = new Vector(),
+ point = new Vector(),
+ separation = 0,
+ pointA = new Vector(),
+ pointB = new Vector(),
+ temp = new Vector(),
+ planePoint = new Vector(),
+ clipPoint = new Vector() { }
 </pre>
 </div>
 </div>
@@ -234,48 +234,48 @@ void <strong>initialize</strong>(<a href="../box2d/TimeOfImpactConstraint.html">
 <div class="doc">
 <pre class="source">
 void initialize(TimeOfImpactConstraint cc, int index) {
-  assert(cc.pointCount &gt; 0);
+ assert(cc.pointCount &gt; 0);
 
-  switch (cc.type) {
-    case ManifoldType.CIRCLES:
-      pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-      pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
-      if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
-          * Settings.EPSILON) {
-        normal.setFrom(pointB).subLocal(pointA);
-        normal.normalize();
-      } else {
-        normal.setCoords(1, 0);
-      }
+ switch (cc.type) {
+   case ManifoldType.CIRCLES:
+     pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+     pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+     if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
+         * Settings.EPSILON) {
+       normal.setFrom(pointB).subLocal(pointA);
+       normal.normalize();
+     } else {
+       normal.setCoords(1, 0);
+     }
 
-      point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-      temp.setFrom(pointB).subLocal(pointA);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      break;
+     point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+     temp.setFrom(pointB).subLocal(pointA);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     break;
 
-    case ManifoldType.FACE_A:
-      normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
-      planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+   case ManifoldType.FACE_A:
+     normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
+     planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
-      clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-      temp.setFrom(clipPoint).subLocal(planePoint);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      point.setFrom(clipPoint);
-      break;
+     clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     point.setFrom(clipPoint);
+     break;
 
-    case ManifoldType.FACE_B:
-      normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
-      planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+   case ManifoldType.FACE_B:
+     normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
+     planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
-      clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-      temp.setFrom(clipPoint).subLocal(planePoint);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      point.setFrom(clipPoint);
+     clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     point.setFrom(clipPoint);
 
-      // Ensure normal points from A to B
-      normal.negateLocal();
-      break;
-  }
+     // Ensure normal points from A to B
+     normal.negateLocal();
+     break;
+ }
 }
 </pre>
 </div>

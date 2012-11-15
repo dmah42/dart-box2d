@@ -32,37 +32,32 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A joint edge is used to connect bodies and joints together
-in a joint graph where each body is a node and each joint
-is an edge. A joint edge belongs to a doubly linked list
-maintained in each attached body. Each joint has two joint
-nodes, one for each attached body.</p>
 <pre class="source">
 class JointEdge {
-  /**
-   * Constructs a new joint edge with everything set to null.
-   */
-  JointEdge() { }
+ /**
+  * Constructs a new joint edge with everything set to null.
+  */
+ JointEdge() { }
 
-  /**
-   * Provides quick access to the other body attached.
-   */
-  Body other;
+ /**
+  * Provides quick access to the other body attached.
+  */
+ Body other;
 
-  /**
-   * The joint.
-   */
-  Joint joint;
+ /**
+  * The joint.
+  */
+ Joint joint;
 
-  /**
-   * The previous joint edge in the body's joint list.
-   */
-  JointEdge prev;
+ /**
+  * The previous joint edge in the body's joint list.
+  */
+ JointEdge prev;
 
-  /**
-   * The next joint edge in the body's joint list.
-   */
-  JointEdge next;
+ /**
+  * The next joint edge in the body's joint list.
+  */
+ JointEdge next;
 }
 </pre>
 </div>

@@ -32,42 +32,41 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>This holds the mass data computed for a shape.</p>
 <pre class="source">
 class MassData {
-  /** The mass of the shape, usually in kilograms. */
-  num mass;
+ /** The mass of the shape, usually in kilograms. */
+ num mass;
 
-  /** The position of the shape's centroid relative to the shape's origin. */
-  Vector center;
+ /** The position of the shape's centroid relative to the shape's origin. */
+ Vector center;
 
-  /** The rotational inertia of the shape about the local origin. */
-  num inertia;
+ /** The rotational inertia of the shape about the local origin. */
+ num inertia;
 
-  /**
-   * Constructs a blank mass data.
-   */
-  MassData() :
-    mass = 0,
-    inertia = 0,
-    center = new Vector() { }
+ /**
+  * Constructs a blank mass data.
+  */
+ MassData() :
+   mass = 0,
+   inertia = 0,
+   center = new Vector() { }
 
-  /**
-   * Copies from the given mass data.
-   */
-  MassData.copy(MassData md) :
-    mass = md.mass,
-    inertia = md.inertia,
-    center = new Vector.copy(md.center) { }
+ /**
+  * Copies from the given mass data.
+  */
+ MassData.copy(MassData md) :
+   mass = md.mass,
+   inertia = md.inertia,
+   center = new Vector.copy(md.center) { }
 
-  /**
-   * Sets this mass data equal to the given mass data.
-   */
-  void setFrom(MassData md) {
-    mass = md.mass;
-    inertia = md.inertia;
-    center.setFrom(md.center);
-  }
+ /**
+  * Sets this mass data equal to the given mass data.
+  */
+ void setFrom(MassData md) {
+   mass = md.mass;
+   inertia = md.inertia;
+   center.setFrom(md.center);
+ }
 }
 </pre>
 </div>
@@ -81,9 +80,9 @@ new <strong>MassData</strong>() <a class="anchor-link" href="#MassData"
 <p>Constructs a blank mass data.</p>
 <pre class="source">
 MassData() :
-  mass = 0,
-  inertia = 0,
-  center = new Vector() { }
+ mass = 0,
+ inertia = 0,
+ center = new Vector() { }
 </pre>
 </div>
 </div>
@@ -95,9 +94,9 @@ new <strong>MassData.copy</strong>(<a href="../box2d/MassData.html">MassData</a>
 <p>Copies from the given mass data.</p>
 <pre class="source">
 MassData.copy(MassData md) :
-  mass = md.mass,
-  inertia = md.inertia,
-  center = new Vector.copy(md.center) { }
+ mass = md.mass,
+ inertia = md.inertia,
+ center = new Vector.copy(md.center) { }
 </pre>
 </div>
 </div>
@@ -154,9 +153,9 @@ void <strong>setFrom</strong>(<a href="../box2d/MassData.html">MassData</a> md) 
 <p>Sets this mass data equal to the given mass data.</p>
 <pre class="source">
 void setFrom(MassData md) {
-  mass = md.mass;
-  inertia = md.inertia;
-  center.setFrom(md.center);
+ mass = md.mass;
+ inertia = md.inertia;
+ center.setFrom(md.center);
 }
 </pre>
 </div>

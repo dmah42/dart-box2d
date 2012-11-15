@@ -32,102 +32,101 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A three dimensional vector.</p>
 <pre class="source">
 class Vector3 {
-  // Each vector is defined as the vector originating from (0,0) to the point
-  // defined by these values.
-  num x;
-  num y;
-  num z;
+ // Each vector is defined as the vector originating from (0,0) to the point
+ // defined by these values.
+ num x;
+ num y;
+ num z;
 
-  Vector3([this.x = 0, this.y = 0, this.z = 0]);
+ Vector3([this.x = 0, this.y = 0, this.z = 0]);
 
-  Vector3.copy(Vector3 argCopy) {
-    x = argCopy.x;
-    y = argCopy.y;
-    z = argCopy.z;
-  }
+ Vector3.copy(Vector3 argCopy) {
+   x = argCopy.x;
+   y = argCopy.y;
+   z = argCopy.z;
+ }
 
-  bool operator ==(other) {
-    return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
-  }
+ bool operator ==(other) {
+   return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+ }
 
-  /** Sets this vector equal to the given vector. */
-  Vector3 setFrom(Vector3 argVec) {
-    x = argVec.x;
-    y = argVec.y;
-    z = argVec.z;
-    return this;
-  }
+ /** Sets this vector equal to the given vector. */
+ Vector3 setFrom(Vector3 argVec) {
+   x = argVec.x;
+   y = argVec.y;
+   z = argVec.z;
+   return this;
+ }
 
-  /** Sets the vectors coordinate values to those given. */
-  Vector3 setCoords(num argX, num argY, num argZ) {
-    x = argX;
-    y = argY;
-    z = argZ;
-    return this;
-  }
+ /** Sets the vectors coordinate values to those given. */
+ Vector3 setCoords(num argX, num argY, num argZ) {
+   x = argX;
+   y = argY;
+   z = argZ;
+   return this;
+ }
 
-  Vector3 addLocal(Vector3 argVec) {
-    x += argVec.x;
-    y += argVec.y;
-    z += argVec.z;
-    return this;
-  }
+ Vector3 addLocal(Vector3 argVec) {
+   x += argVec.x;
+   y += argVec.y;
+   z += argVec.z;
+   return this;
+ }
 
-  Vector3 add(Vector3 argVec) =&gt;
-      new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+ Vector3 add(Vector3 argVec) =&gt;
+     new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
 
-  Vector3 subLocal(Vector3 argVec) {
-    x -= argVec.x;
-    y -= argVec.y;
-    z -= argVec.z;
-    return this;
-  }
+ Vector3 subLocal(Vector3 argVec) {
+   x -= argVec.x;
+   y -= argVec.y;
+   z -= argVec.z;
+   return this;
+ }
 
-  Vector3 sub(Vector3 argVec) =&gt;
-      new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+ Vector3 sub(Vector3 argVec) =&gt;
+     new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
 
-  Vector3 mulLocal(num argScalar) {
-    x *= argScalar;
-    y *= argScalar;
-    z *= argScalar;
-    return this;
-  }
+ Vector3 mulLocal(num argScalar) {
+   x *= argScalar;
+   y *= argScalar;
+   z *= argScalar;
+   return this;
+ }
 
-  Vector3 mul(num argScalar) =&gt;
-      new Vector3(x * argScalar, y * argScalar, z * argScalar);
+ Vector3 mul(num argScalar) =&gt;
+     new Vector3(x * argScalar, y * argScalar, z * argScalar);
 
-  Vector3 negateLocal() {
-    x = -x;
-    y = -y;
-    z = -z;
-    return this;
-  }
+ Vector3 negateLocal() {
+   x = -x;
+   y = -y;
+   z = -z;
+   return this;
+ }
 
-  void setZero() {
-    x = 0;
-    y = 0;
-    z = 0;
-  }
+ void setZero() {
+   x = 0;
+   y = 0;
+   z = 0;
+ }
 
-  String toString() =&gt; "($x, $y, $z)";
+ String toString() =&gt; "($x, $y, $z)";
 
-  static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+ static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
 
-  static Vector3 cross(Vector3 a, Vector3 b) =&gt;
-      new Vector3(a.y * b.z - a.z * b.y,
-                  a.z * b.x - a.x * b.z,
-                  a.x * b.y - a.y * b.x);
+ static Vector3 cross(Vector3 a, Vector3 b) =&gt;
+     new Vector3(a.y * b.z - a.z * b.y,
+                 a.z * b.x - a.x * b.z,
+                 a.x * b.y - a.y * b.x);
 
-  static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
-    final num tempy = a.z * b.x - a.x * b.z;
-    final num tempz = a.x * b.y - a.y * b.x;
-    out.x = a.y * b.z - a.z * b.y;
-    out.y = tempy;
-    out.z = tempz;
-  }
+ static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
+   final num tempy = a.z * b.x - a.x * b.z;
+   final num tempz = a.x * b.y - a.y * b.x;
+   out.x = a.y * b.z - a.z * b.y;
+   out.y = tempy;
+   out.z = tempz;
+ }
 }
 </pre>
 </div>
@@ -150,9 +149,9 @@ static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
 <div class="doc">
 <pre class="source">
 static Vector3 cross(Vector3 a, Vector3 b) =&gt;
-    new Vector3(a.y * b.z - a.z * b.y,
-                a.z * b.x - a.x * b.z,
-                a.x * b.y - a.y * b.x);
+   new Vector3(a.y * b.z - a.z * b.y,
+               a.z * b.x - a.x * b.z,
+               a.x * b.y - a.y * b.x);
 </pre>
 </div>
 </div>
@@ -163,11 +162,11 @@ void <strong>crossToOut</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, 
 <div class="doc">
 <pre class="source">
 static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
-  final num tempy = a.z * b.x - a.x * b.z;
-  final num tempz = a.x * b.y - a.y * b.x;
-  out.x = a.y * b.z - a.z * b.y;
-  out.y = tempy;
-  out.z = tempz;
+ final num tempy = a.z * b.x - a.x * b.z;
+ final num tempz = a.x * b.y - a.y * b.x;
+ out.x = a.y * b.z - a.z * b.y;
+ out.y = tempy;
+ out.z = tempz;
 }
 </pre>
 </div>
@@ -192,9 +191,9 @@ new <strong>Vector3.copy</strong>(<a href="../box2d/Vector3.html">Vector3</a> ar
 <div class="doc">
 <pre class="source">
 Vector3.copy(Vector3 argCopy) {
-  x = argCopy.x;
-  y = argCopy.y;
-  z = argCopy.z;
+ x = argCopy.x;
+ y = argCopy.y;
+ z = argCopy.z;
 }
 </pre>
 </div>
@@ -256,7 +255,7 @@ the <code>hashCode</code> method as well to maintain consistency.</p>
 <div class="docs-inherited-from">docs inherited from Object </div></div>
 <pre class="source">
 bool operator ==(other) {
-  return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
+ return other is Vector3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
 }
 </pre>
 </div>
@@ -271,7 +270,7 @@ bool operator ==(other) {
 <div class="doc">
 <pre class="source">
 Vector3 add(Vector3 argVec) =&gt;
-    new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+   new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
 </pre>
 </div>
 </div>
@@ -282,10 +281,10 @@ Vector3 add(Vector3 argVec) =&gt;
 <div class="doc">
 <pre class="source">
 Vector3 addLocal(Vector3 argVec) {
-  x += argVec.x;
-  y += argVec.y;
-  z += argVec.z;
-  return this;
+ x += argVec.x;
+ y += argVec.y;
+ z += argVec.z;
+ return this;
 }
 </pre>
 </div>
@@ -297,7 +296,7 @@ Vector3 addLocal(Vector3 argVec) {
 <div class="doc">
 <pre class="source">
 Vector3 mul(num argScalar) =&gt;
-    new Vector3(x * argScalar, y * argScalar, z * argScalar);
+   new Vector3(x * argScalar, y * argScalar, z * argScalar);
 </pre>
 </div>
 </div>
@@ -308,10 +307,10 @@ Vector3 mul(num argScalar) =&gt;
 <div class="doc">
 <pre class="source">
 Vector3 mulLocal(num argScalar) {
-  x *= argScalar;
-  y *= argScalar;
-  z *= argScalar;
-  return this;
+ x *= argScalar;
+ y *= argScalar;
+ z *= argScalar;
+ return this;
 }
 </pre>
 </div>
@@ -323,10 +322,10 @@ Vector3 mulLocal(num argScalar) {
 <div class="doc">
 <pre class="source">
 Vector3 negateLocal() {
-  x = -x;
-  y = -y;
-  z = -z;
-  return this;
+ x = -x;
+ y = -y;
+ z = -z;
+ return this;
 }
 </pre>
 </div>
@@ -339,10 +338,10 @@ Vector3 negateLocal() {
 <p>Sets the vectors coordinate values to those given.</p>
 <pre class="source">
 Vector3 setCoords(num argX, num argY, num argZ) {
-  x = argX;
-  y = argY;
-  z = argZ;
-  return this;
+ x = argX;
+ y = argY;
+ z = argZ;
+ return this;
 }
 </pre>
 </div>
@@ -355,10 +354,10 @@ Vector3 setCoords(num argX, num argY, num argZ) {
 <p>Sets this vector equal to the given vector.</p>
 <pre class="source">
 Vector3 setFrom(Vector3 argVec) {
-  x = argVec.x;
-  y = argVec.y;
-  z = argVec.z;
-  return this;
+ x = argVec.x;
+ y = argVec.y;
+ z = argVec.z;
+ return this;
 }
 </pre>
 </div>
@@ -370,9 +369,9 @@ void <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
 <div class="doc">
 <pre class="source">
 void setZero() {
-  x = 0;
-  y = 0;
-  z = 0;
+ x = 0;
+ y = 0;
+ z = 0;
 }
 </pre>
 </div>
@@ -384,7 +383,7 @@ void setZero() {
 <div class="doc">
 <pre class="source">
 Vector3 sub(Vector3 argVec) =&gt;
-    new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+   new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
 </pre>
 </div>
 </div>
@@ -395,10 +394,10 @@ Vector3 sub(Vector3 argVec) =&gt;
 <div class="doc">
 <pre class="source">
 Vector3 subLocal(Vector3 argVec) {
-  x -= argVec.x;
-  y -= argVec.y;
-  z -= argVec.z;
-  return this;
+ x -= argVec.x;
+ y -= argVec.y;
+ z -= argVec.z;
+ return this;
 }
 </pre>
 </div>

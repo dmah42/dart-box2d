@@ -34,74 +34,74 @@
 <div class="doc">
 <pre class="source">
 class PositionSolverManifold {
-  Vector normal;
-  Vector point;
-  num separation;
+ Vector normal;
+ Vector point;
+ num separation;
 
-  /** Pooling */
-  Vector pointA;
-  Vector pointB;
-  Vector temp;
-  Vector planePoint;
-  Vector clipPoint;
+ /** Pooling */
+ Vector pointA;
+ Vector pointB;
+ Vector temp;
+ Vector planePoint;
+ Vector clipPoint;
 
-  PositionSolverManifold() :
-    normal = new Vector(),
-    point = new Vector(),
-    separation = 0,
+ PositionSolverManifold() :
+   normal = new Vector(),
+   point = new Vector(),
+   separation = 0,
 
-    // Initialize pool variables.
-    pointA = new Vector(),
-    pointB = new Vector(),
-    temp = new Vector(),
-    planePoint = new Vector(),
-    clipPoint = new Vector() { }
+   // Initialize pool variables.
+   pointA = new Vector(),
+   pointB = new Vector(),
+   temp = new Vector(),
+   planePoint = new Vector(),
+   clipPoint = new Vector() { }
 
-  void initialize(ContactConstraint cc, int index) {
-    assert(cc.pointCount &gt; 0);
+ void initialize(ContactConstraint cc, int index) {
+   assert(cc.pointCount &gt; 0);
 
-    switch (cc.type) {
-      case ManifoldType.CIRCLES:
-        cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
-        cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
-        if (MathBox.distanceSquared(pointA, pointB) &gt;
-            Settings.EPSILON * Settings.EPSILON){
-          normal.setFrom(pointB).subLocal(pointA);
-          normal.normalize();
-        } else {
-          normal.setCoords(1.0, 0.0);
-        }
+   switch (cc.type) {
+     case ManifoldType.CIRCLES:
+       cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
+       cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
+       if (MathBox.distanceSquared(pointA, pointB) &gt;
+           Settings.EPSILON * Settings.EPSILON){
+         normal.setFrom(pointB).subLocal(pointA);
+         normal.normalize();
+       } else {
+         normal.setCoords(1.0, 0.0);
+       }
 
-        point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-        temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        break;
+       point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+       temp.setFrom(pointB).subLocal(pointA);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       break;
 
-      case ManifoldType.FACE_A:
-        cc.bodyA.getWorldVectorToOut(cc.localNormal, normal);
-        cc.bodyA.getWorldPointToOut(cc.localPoint, planePoint);
+     case ManifoldType.FACE_A:
+       cc.bodyA.getWorldVectorToOut(cc.localNormal, normal);
+       cc.bodyA.getWorldPointToOut(cc.localPoint, planePoint);
 
-        cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
-            clipPoint);
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
-        break;
+       cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
+           clipPoint);
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       point.setFrom(clipPoint);
+       break;
 
-      case ManifoldType.FACE_B:
-        cc.bodyB.getWorldVectorToOut(cc.localNormal, normal);
-        cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
+     case ManifoldType.FACE_B:
+       cc.bodyB.getWorldVectorToOut(cc.localNormal, normal);
+       cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
-        cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
-        point.setFrom(clipPoint);
+       cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
+       point.setFrom(clipPoint);
 
-        // Ensure normal points from A to B
-        normal.negateLocal();
-        break;
-    }
-  }
+       // Ensure normal points from A to B
+       normal.negateLocal();
+       break;
+   }
+ }
 }
 </pre>
 </div>
@@ -114,16 +114,16 @@ new <strong>PositionSolverManifold</strong>() <a class="anchor-link" href="#Posi
 <div class="doc">
 <pre class="source">
 PositionSolverManifold() :
-  normal = new Vector(),
-  point = new Vector(),
-  separation = 0,
+ normal = new Vector(),
+ point = new Vector(),
+ separation = 0,
 
-  // Initialize pool variables.
-  pointA = new Vector(),
-  pointB = new Vector(),
-  temp = new Vector(),
-  planePoint = new Vector(),
-  clipPoint = new Vector() { }
+ // Initialize pool variables.
+ pointA = new Vector(),
+ pointB = new Vector(),
+ temp = new Vector(),
+ planePoint = new Vector(),
+ clipPoint = new Vector() { }
 </pre>
 </div>
 </div>
@@ -237,49 +237,49 @@ void <strong>initialize</strong>(<a href="../box2d/ContactConstraint.html">Conta
 <div class="doc">
 <pre class="source">
 void initialize(ContactConstraint cc, int index) {
-  assert(cc.pointCount &gt; 0);
+ assert(cc.pointCount &gt; 0);
 
-  switch (cc.type) {
-    case ManifoldType.CIRCLES:
-      cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
-      cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
-      if (MathBox.distanceSquared(pointA, pointB) &gt;
-          Settings.EPSILON * Settings.EPSILON){
-        normal.setFrom(pointB).subLocal(pointA);
-        normal.normalize();
-      } else {
-        normal.setCoords(1.0, 0.0);
-      }
+ switch (cc.type) {
+   case ManifoldType.CIRCLES:
+     cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
+     cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
+     if (MathBox.distanceSquared(pointA, pointB) &gt;
+         Settings.EPSILON * Settings.EPSILON){
+       normal.setFrom(pointB).subLocal(pointA);
+       normal.normalize();
+     } else {
+       normal.setCoords(1.0, 0.0);
+     }
 
-      point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-      temp.setFrom(pointB).subLocal(pointA);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      break;
+     point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+     temp.setFrom(pointB).subLocal(pointA);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     break;
 
-    case ManifoldType.FACE_A:
-      cc.bodyA.getWorldVectorToOut(cc.localNormal, normal);
-      cc.bodyA.getWorldPointToOut(cc.localPoint, planePoint);
+   case ManifoldType.FACE_A:
+     cc.bodyA.getWorldVectorToOut(cc.localNormal, normal);
+     cc.bodyA.getWorldPointToOut(cc.localPoint, planePoint);
 
-      cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
-          clipPoint);
-      temp.setFrom(clipPoint).subLocal(planePoint);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      point.setFrom(clipPoint);
-      break;
+     cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
+         clipPoint);
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     point.setFrom(clipPoint);
+     break;
 
-    case ManifoldType.FACE_B:
-      cc.bodyB.getWorldVectorToOut(cc.localNormal, normal);
-      cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
+   case ManifoldType.FACE_B:
+     cc.bodyB.getWorldVectorToOut(cc.localNormal, normal);
+     cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
-      cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-      temp.setFrom(clipPoint).subLocal(planePoint);
-      separation = Vector.dot(temp, normal) - cc.radius;
-      point.setFrom(clipPoint);
+     cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
+     point.setFrom(clipPoint);
 
-      // Ensure normal points from A to B
-      normal.negateLocal();
-      break;
-  }
+     // Ensure normal points from A to B
+     normal.negateLocal();
+     break;
+ }
 }
 </pre>
 </div>

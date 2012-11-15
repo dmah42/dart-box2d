@@ -32,42 +32,40 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Contact ids to facilitate warm starting. Basically just containers for
-an individual Features object that contains interesting information.</p>
 <pre class="source">
 class ContactID {
-  /** The features that intersect to form the contact point */
-  final Features features;
+ /** The features that intersect to form the contact point */
+ final Features features;
 
-  /**
-   * Constructs a new ContactID. */
-  ContactID() : features = new Features();
+ /**
+  * Constructs a new ContactID. */
+ ContactID() : features = new Features();
 
-  /**
-   * Constructs a ContactID that is a copy of the given ContactID.
-   */
-  ContactID.copy(ContactID other) :
-    features = new Features.copy(other.features);
+ /**
+  * Constructs a ContactID that is a copy of the given ContactID.
+  */
+ ContactID.copy(ContactID other) :
+   features = new Features.copy(other.features);
 
-  /**
-   * Returns true if this ContactID equals the given ContactID.
-   */
-  bool operator ==(other) =&gt; other.features == features;
+ /**
+  * Returns true if this ContactID equals the given ContactID.
+  */
+ bool operator ==(other) =&gt; other.features == features;
 
-  /**
-   * Sets this contactID to be equal to the given ContactID.
-   */
-  void setFrom(ContactID other) { features.setFrom(other.features); }
+ /**
+  * Sets this contactID to be equal to the given ContactID.
+  */
+ void setFrom(ContactID other) { features.setFrom(other.features); }
 
-  /**
-   * Returns true if this ContactID equals the given ContactID.
-   */
-  bool isEqual(ContactID other) =&gt; other.features == features;
+ /**
+  * Returns true if this ContactID equals the given ContactID.
+  */
+ bool isEqual(ContactID other) =&gt; other.features == features;
 
-  /**
-   * Zeroes out the data.
-   */
-  void zero() { features.zero(); }
+ /**
+  * Zeroes out the data.
+  */
+ void zero() { features.zero(); }
 }
 </pre>
 </div>
@@ -92,7 +90,7 @@ new <strong>ContactID.copy</strong>(<a href="../box2d/ContactID.html">ContactID<
 <p>Constructs a ContactID that is a copy of the given ContactID.</p>
 <pre class="source">
 ContactID.copy(ContactID other) :
-  features = new Features.copy(other.features);
+ features = new Features.copy(other.features);
 </pre>
 </div>
 </div>

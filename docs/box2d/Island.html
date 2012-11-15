@@ -32,292 +32,290 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Island represents a grouping of objects to apply DFS solving
-for movement and collisions.</p>
 <pre class="source">
 class Island {
-  ContactListener listener;
+ ContactListener listener;
 
-  List&lt;Body&gt; bodies;
-  List&lt;Contact&gt; contacts;
-  List&lt;Joint&gt; joints;
+ List&lt;Body&gt; bodies;
+ List&lt;Contact&gt; contacts;
+ List&lt;Joint&gt; joints;
 
-  List&lt;Position&gt; positions;
-  List&lt;Velocity&gt; velocities;
+ List&lt;Position&gt; positions;
+ List&lt;Velocity&gt; velocities;
 
-  int bodyCount;
-  int jointCount;
-  int contactCount;
+ int bodyCount;
+ int jointCount;
+ int contactCount;
 
-  int bodyCapacity;
-  int contactCapacity;
-  int jointCapacity;
+ int bodyCapacity;
+ int contactCapacity;
+ int jointCapacity;
 
-  int positionIterationCount;
+ int positionIterationCount;
 
-  // Pool objects to cut down on object creation.
-  ContactSolver _contactSolver;
-  Vector _translation;
-  ContactImpulse impulse;
+ // Pool objects to cut down on object creation.
+ ContactSolver _contactSolver;
+ Vector _translation;
+ ContactImpulse impulse;
 
-  Island() :
-    _contactSolver = new ContactSolver(),
-    _translation = new Vector(),
-    impulse = new ContactImpulse() { }
+ Island() :
+   _contactSolver = new ContactSolver(),
+   _translation = new Vector(),
+   impulse = new ContactImpulse() { }
 
-  //TODO(gregbglw): No need to keep capacity, count and array for these items as
-  // in C. Simply measure the length of the array, for example, in order to
-  // determine capacity.
-  void init(int argBodyCapacity, int argContactCapacity, int argJointCapacity,
-      ContactListener argListener) {
-    bodyCapacity = argBodyCapacity;
-    contactCapacity = argContactCapacity;
-    jointCapacity = argJointCapacity;
-    bodyCount = 0;
-    contactCount = 0;
+ //TODO(gregbglw): No need to keep capacity, count and array for these items as
+ // in C. Simply measure the length of the array, for example, in order to
+ // determine capacity.
+ void init(int argBodyCapacity, int argContactCapacity, int argJointCapacity,
+     ContactListener argListener) {
+   bodyCapacity = argBodyCapacity;
+   contactCapacity = argContactCapacity;
+   jointCapacity = argJointCapacity;
+   bodyCount = 0;
+   contactCount = 0;
 
-    listener = argListener;
+   listener = argListener;
 
-    if (bodies == null || bodyCapacity &gt; bodies.length) {
-      bodies = new List&lt;Body&gt;(bodyCapacity);
-    }
-    if (contacts == null || contactCapacity &gt; contacts.length) {
-      contacts = new List&lt;Contact&gt;(contactCapacity);
-    }
-    if (joints == null || jointCapacity &gt; joints.length) {
-      joints = new List&lt;Joint&gt;(jointCapacity);
-    }
+   if (bodies == null || bodyCapacity &gt; bodies.length) {
+     bodies = new List&lt;Body&gt;(bodyCapacity);
+   }
+   if (contacts == null || contactCapacity &gt; contacts.length) {
+     contacts = new List&lt;Contact&gt;(contactCapacity);
+   }
+   if (joints == null || jointCapacity &gt; joints.length) {
+     joints = new List&lt;Joint&gt;(jointCapacity);
+   }
 
-    // dynamic array
-    if (velocities == null || bodyCapacity &gt; velocities.length) {
-      final List&lt;Velocity&gt; old = velocities == null ?
-          new List&lt;Velocity&gt;(0) : velocities;
-      velocities = new List&lt;Velocity&gt;(bodyCapacity);
-      velocities.setRange(0, old.length, old);
-      for (int i=old.length; i&lt;velocities.length; i++) {
-        velocities[i] = new Velocity();
-      }
-    }
+   // dynamic array
+   if (velocities == null || bodyCapacity &gt; velocities.length) {
+     final List&lt;Velocity&gt; old = velocities == null ?
+         new List&lt;Velocity&gt;(0) : velocities;
+     velocities = new List&lt;Velocity&gt;(bodyCapacity);
+     velocities.setRange(0, old.length, old);
+     for (int i=old.length; i&lt;velocities.length; i++) {
+       velocities[i] = new Velocity();
+     }
+   }
 
-    // dynamic array
-    if(positions == null || bodyCapacity &gt; positions.length){
-      List&lt;Position&gt; old = positions == null ?
-          new List&lt;Position&gt;(0) : positions;
-      positions = new List&lt;Position&gt;(bodyCapacity);
-      positions.setRange(0, old.length, old);
-      for (int i=old.length; i&lt;positions.length; i++) {
-        positions[i] = new Position();
-      }
-    }
-  }
+   // dynamic array
+   if(positions == null || bodyCapacity &gt; positions.length){
+     List&lt;Position&gt; old = positions == null ?
+         new List&lt;Position&gt;(0) : positions;
+     positions = new List&lt;Position&gt;(bodyCapacity);
+     positions.setRange(0, old.length, old);
+     for (int i=old.length; i&lt;positions.length; i++) {
+       positions[i] = new Position();
+     }
+   }
+ }
 
-  void clear() {
-    bodyCount = 0;
-    contactCount = 0;
-    jointCount = 0;
-  }
+ void clear() {
+   bodyCount = 0;
+   contactCount = 0;
+   jointCount = 0;
+ }
 
-  void solve(TimeStep step, Vector gravity, bool allowSleep){
-    // Integrate velocities and apply damping.
-    for (int i = 0; i &lt; bodyCount; ++i){
-      Body b = bodies[i];
+ void solve(TimeStep step, Vector gravity, bool allowSleep){
+   // Integrate velocities and apply damping.
+   for (int i = 0; i &lt; bodyCount; ++i){
+     Body b = bodies[i];
 
-      if (b.type != BodyType.DYNAMIC){
-        continue;
-      }
+     if (b.type != BodyType.DYNAMIC){
+       continue;
+     }
 
-      final velocityDelta = new Vector(
-          (b._force.x * b.invMass + gravity.x) * step.dt,
-          (b._force.y * b.invMass + gravity.y) * step.dt);
-      b.linearVelocity.addLocal(velocityDelta);
-      num newAngularVelocity = b.angularVelocity +
-          (step.dt * b.invInertia * b._torque);
-      b.angularVelocity = newAngularVelocity;
+     final velocityDelta = new Vector(
+         (b._force.x * b.invMass + gravity.x) * step.dt,
+         (b._force.y * b.invMass + gravity.y) * step.dt);
+     b.linearVelocity.addLocal(velocityDelta);
+     num newAngularVelocity = b.angularVelocity +
+         (step.dt * b.invInertia * b._torque);
+     b.angularVelocity = newAngularVelocity;
 
-      num a = (1.0 - step.dt * b.linearDamping);
-      num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
-      b.linearVelocity.mulLocal(a1);
+     num a = (1.0 - step.dt * b.linearDamping);
+     num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
+     b.linearVelocity.mulLocal(a1);
 
-      num a2 = (1.0 - step.dt * b.angularDamping);
-      num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
-      b.angularVelocity *= 0.0 &gt; b1 ? 0.0 : b1;
-    }
+     num a2 = (1.0 - step.dt * b.angularDamping);
+     num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
+     b.angularVelocity *= 0.0 &gt; b1 ? 0.0 : b1;
+   }
 
-    // Partition contacts so that contacts with static bodies are solved last.
-    int i1 = -1;
-    for (int i2 = 0; i2 &lt; contactCount; ++i2) {
-      Fixture fixtureA = contacts[i2].fixtureA;
-      Fixture fixtureB = contacts[i2].fixtureB;
-      Body bodyA = fixtureA.body;
-      Body bodyB = fixtureB.body;
-      bool nonStatic = bodyA.type != BodyType.STATIC &amp;&amp; bodyB.type
-          != BodyType.STATIC;
-      if (nonStatic){
-        ++i1;
-        //Swap(contacts[i1], contacts[i2]);
-        Contact temp = contacts[i1];
-        contacts[i1] = contacts[i2];
-        contacts[i2] = temp;
-      }
-    }
+   // Partition contacts so that contacts with static bodies are solved last.
+   int i1 = -1;
+   for (int i2 = 0; i2 &lt; contactCount; ++i2) {
+     Fixture fixtureA = contacts[i2].fixtureA;
+     Fixture fixtureB = contacts[i2].fixtureB;
+     Body bodyA = fixtureA.body;
+     Body bodyB = fixtureB.body;
+     bool nonStatic = bodyA.type != BodyType.STATIC &amp;&amp; bodyB.type
+         != BodyType.STATIC;
+     if (nonStatic){
+       ++i1;
+       //Swap(contacts[i1], contacts[i2]);
+       Contact temp = contacts[i1];
+       contacts[i1] = contacts[i2];
+       contacts[i2] = temp;
+     }
+   }
 
-    // Initialize velocity constraints.
-    _contactSolver.init(contacts, contactCount, step.dtRatio);
-    _contactSolver.warmStart();
+   // Initialize velocity constraints.
+   _contactSolver.init(contacts, contactCount, step.dtRatio);
+   _contactSolver.warmStart();
 
-    for (int i = 0; i &lt; jointCount; ++i){
-      joints[i].initVelocityConstraints(step);
-    }
+   for (int i = 0; i &lt; jointCount; ++i){
+     joints[i].initVelocityConstraints(step);
+   }
 
-    for (int i = 0; i &lt; step.velocityIterations; ++i) {
-      for (int j = 0; j &lt; jointCount; ++j){
-        joints[j].solveVelocityConstraints(step);
-      }
-      _contactSolver.solveVelocityConstraints();
-    }
+   for (int i = 0; i &lt; step.velocityIterations; ++i) {
+     for (int j = 0; j &lt; jointCount; ++j){
+       joints[j].solveVelocityConstraints(step);
+     }
+     _contactSolver.solveVelocityConstraints();
+   }
 
-    // Post-solve (store impulses for warm starting).
-    _contactSolver.storeImpulses();
+   // Post-solve (store impulses for warm starting).
+   _contactSolver.storeImpulses();
 
-    // Integrate positions.
-    Vector temp = new Vector();
-    for (int i = 0; i &lt; bodyCount; ++i){
-      Body b = bodies[i];
+   // Integrate positions.
+   Vector temp = new Vector();
+   for (int i = 0; i &lt; bodyCount; ++i){
+     Body b = bodies[i];
 
-      if (b.type == BodyType.STATIC){
-        continue;
-      }
+     if (b.type == BodyType.STATIC){
+       continue;
+     }
 
-      // Check for large velocities.
-      _translation.setFrom(b.linearVelocity);
-      _translation.mulLocal(step.dt);
-      if (Vector.dot(_translation, _translation) &gt;
-          Settings.MAX_TRANSLATION_SQUARED){
-        num ratio = Settings.MAX_TRANSLATION / _translation.length;
-        b.linearVelocity.mulLocal(ratio);
-      }
+     // Check for large velocities.
+     _translation.setFrom(b.linearVelocity);
+     _translation.mulLocal(step.dt);
+     if (Vector.dot(_translation, _translation) &gt;
+         Settings.MAX_TRANSLATION_SQUARED){
+       num ratio = Settings.MAX_TRANSLATION / _translation.length;
+       b.linearVelocity.mulLocal(ratio);
+     }
 
-      num rotation = step.dt * b.angularVelocity;
-      if (rotation * rotation &gt; Settings.MAX_ROTATION_SQUARED) {
-        num ratio = Settings.MAX_ROTATION / rotation.abs();
-        b.angularVelocity *= ratio;
-      }
+     num rotation = step.dt * b.angularVelocity;
+     if (rotation * rotation &gt; Settings.MAX_ROTATION_SQUARED) {
+       num ratio = Settings.MAX_ROTATION / rotation.abs();
+       b.angularVelocity *= ratio;
+     }
 
-      // Store positions for continuous collision.
-      b.sweep.centerZero.setFrom(b.sweep.center);
-      b.sweep.angleZero = b.sweep.angle;
+     // Store positions for continuous collision.
+     b.sweep.centerZero.setFrom(b.sweep.center);
+     b.sweep.angleZero = b.sweep.angle;
 
-      // Integrate
-      temp.setFrom(b.linearVelocity);
-      temp.mulLocal(step.dt);
-      b.sweep.center.addLocal(temp);
-      b.sweep.angle += step.dt * b.angularVelocity;
+     // Integrate
+     temp.setFrom(b.linearVelocity);
+     temp.mulLocal(step.dt);
+     b.sweep.center.addLocal(temp);
+     b.sweep.angle += step.dt * b.angularVelocity;
 
-      // Compute new transform
-      b.synchronizeTransform();
+     // Compute new transform
+     b.synchronizeTransform();
 
-      // Note: shapes are synchronized later.
-    }
+     // Note: shapes are synchronized later.
+   }
 
-    // Iterate over constraints.
-    for (int i = 0; i &lt; step.positionIterations; ++i){
-      bool contactsOkay =
-          _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+   // Iterate over constraints.
+   for (int i = 0; i &lt; step.positionIterations; ++i){
+     bool contactsOkay =
+         _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
 
-      bool jointsOkay = true;
-      for (int j = 0; j &lt; jointCount; ++j){
-        bool jointOkay =
-            joints[j].solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
-        jointsOkay = jointsOkay &amp;&amp; jointOkay;
-      }
+     bool jointsOkay = true;
+     for (int j = 0; j &lt; jointCount; ++j){
+       bool jointOkay =
+           joints[j].solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+       jointsOkay = jointsOkay &amp;&amp; jointOkay;
+     }
 
-      if (contactsOkay &amp;&amp; jointsOkay){
-        // Exit early if the position errors are small.
-        break;
-      }
-    }
+     if (contactsOkay &amp;&amp; jointsOkay){
+       // Exit early if the position errors are small.
+       break;
+     }
+   }
 
-    report(_contactSolver.constraints);
+   report(_contactSolver.constraints);
 
 
-    if (allowSleep){
-      num minSleepTime = Settings.BIG_NUMBER;
+   if (allowSleep){
+     num minSleepTime = Settings.BIG_NUMBER;
 
-      num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
-          * Settings.LINEAR_SLEEP_TOLERANCE;
-      num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
-          * Settings.ANGULAR_SLEEP_TOLERANCE;
+     num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
+         * Settings.LINEAR_SLEEP_TOLERANCE;
+     num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
+         * Settings.ANGULAR_SLEEP_TOLERANCE;
 
-      for (int i = 0; i &lt; bodyCount; ++i){
-        Body b = bodies[i];
-        if (b.type == BodyType.STATIC){
-          continue;
-        }
+     for (int i = 0; i &lt; bodyCount; ++i){
+       Body b = bodies[i];
+       if (b.type == BodyType.STATIC){
+         continue;
+       }
 
-        if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0){
-          b.sleepTime = 0.0;
-          minSleepTime = 0.0;
-        }
+       if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0){
+         b.sleepTime = 0.0;
+         minSleepTime = 0.0;
+       }
 
-        if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
-            b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
-            Vector.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
-          b.sleepTime = 0.0;
-          minSleepTime = 0.0;
-        }
-        else{
-          b.sleepTime += step.dt;
-          minSleepTime = Math.min(minSleepTime, b.sleepTime);
-        }
-      }
+       if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
+           b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
+           Vector.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
+         b.sleepTime = 0.0;
+         minSleepTime = 0.0;
+       }
+       else{
+         b.sleepTime += step.dt;
+         minSleepTime = Math.min(minSleepTime, b.sleepTime);
+       }
+     }
 
-      if (minSleepTime &gt;= Settings.TIME_TO_SLEEP){
-        for (int i = 0; i &lt; bodyCount; ++i){
-          Body b = bodies[i];
-          b.awake = false;
-        }
-      }
-    }
+     if (minSleepTime &gt;= Settings.TIME_TO_SLEEP){
+       for (int i = 0; i &lt; bodyCount; ++i){
+         Body b = bodies[i];
+         b.awake = false;
+       }
+     }
+   }
 
-  }
+ }
 
-  /** Adds a body to the Island. */
-  void addBody(Body body){
-    assert(bodyCount &lt; bodyCapacity);
-    body.islandIndex = bodyCount;
-    bodies[bodyCount++] = body;
-  }
+ /** Adds a body to the Island. */
+ void addBody(Body body){
+   assert(bodyCount &lt; bodyCapacity);
+   body.islandIndex = bodyCount;
+   bodies[bodyCount++] = body;
+ }
 
-  /** Add a contact to the Island. */
-  void addContact(Contact contact) {
-    assert(contactCount &lt; contactCapacity);
-    contacts[contactCount++] = contact;
-  }
+ /** Add a contact to the Island. */
+ void addContact(Contact contact) {
+   assert(contactCount &lt; contactCapacity);
+   contacts[contactCount++] = contact;
+ }
 
-  /** Add a joint to the Island. */
-  void addJoint(Joint joint) {
-    assert(jointCount &lt; jointCapacity);
-    joints[jointCount++] = joint;
-  }
+ /** Add a joint to the Island. */
+ void addJoint(Joint joint) {
+   assert(jointCount &lt; jointCapacity);
+   joints[jointCount++] = joint;
+ }
 
-  void report(List&lt;ContactConstraint&gt; constraints){
-    if (listener == null){
-      return;
-    }
+ void report(List&lt;ContactConstraint&gt; constraints){
+   if (listener == null){
+     return;
+   }
 
-    for (int i = 0; i &lt; contactCount; ++i){
-      Contact c = contacts[i];
+   for (int i = 0; i &lt; contactCount; ++i){
+     Contact c = contacts[i];
 
-      ContactConstraint cc = constraints[i];
+     ContactConstraint cc = constraints[i];
 
-      for (int j = 0; j &lt; cc.pointCount; ++j){
-        impulse.normalImpulses[j] = cc.points[j].normalImpulse;
-        impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
-      }
+     for (int j = 0; j &lt; cc.pointCount; ++j){
+       impulse.normalImpulses[j] = cc.points[j].normalImpulse;
+       impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
+     }
 
-      listener.postSolve(c, impulse);
-    }
-  }
+     listener.postSolve(c, impulse);
+   }
+ }
 }
 </pre>
 </div>
@@ -330,9 +328,9 @@ new <strong>Island</strong>() <a class="anchor-link" href="#Island"
 <div class="doc">
 <pre class="source">
 Island() :
-  _contactSolver = new ContactSolver(),
-  _translation = new Vector(),
-  impulse = new ContactImpulse() { }
+ _contactSolver = new ContactSolver(),
+ _translation = new Vector(),
+ impulse = new ContactImpulse() { }
 </pre>
 </div>
 </div>
@@ -518,9 +516,9 @@ void <strong>addBody</strong>(<a href="../box2d/Body.html">Body</a> body) <a cla
 <p>Adds a body to the Island.</p>
 <pre class="source">
 void addBody(Body body){
-  assert(bodyCount &lt; bodyCapacity);
-  body.islandIndex = bodyCount;
-  bodies[bodyCount++] = body;
+ assert(bodyCount &lt; bodyCapacity);
+ body.islandIndex = bodyCount;
+ bodies[bodyCount++] = body;
 }
 </pre>
 </div>
@@ -533,8 +531,8 @@ void <strong>addContact</strong>(<a href="../box2d/Contact.html">Contact</a> con
 <p>Add a contact to the Island.</p>
 <pre class="source">
 void addContact(Contact contact) {
-  assert(contactCount &lt; contactCapacity);
-  contacts[contactCount++] = contact;
+ assert(contactCount &lt; contactCapacity);
+ contacts[contactCount++] = contact;
 }
 </pre>
 </div>
@@ -547,8 +545,8 @@ void <strong>addJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a
 <p>Add a joint to the Island.</p>
 <pre class="source">
 void addJoint(Joint joint) {
-  assert(jointCount &lt; jointCapacity);
-  joints[jointCount++] = joint;
+ assert(jointCount &lt; jointCapacity);
+ joints[jointCount++] = joint;
 }
 </pre>
 </div>
@@ -560,9 +558,9 @@ void <strong>clear</strong>() <a class="anchor-link" href="#clear"
 <div class="doc">
 <pre class="source">
 void clear() {
-  bodyCount = 0;
-  contactCount = 0;
-  jointCount = 0;
+ bodyCount = 0;
+ contactCount = 0;
+ jointCount = 0;
 }
 </pre>
 </div>
@@ -574,46 +572,46 @@ void <strong>init</strong>(int argBodyCapacity, int argContactCapacity, int argJ
 <div class="doc">
 <pre class="source">
 void init(int argBodyCapacity, int argContactCapacity, int argJointCapacity,
-    ContactListener argListener) {
-  bodyCapacity = argBodyCapacity;
-  contactCapacity = argContactCapacity;
-  jointCapacity = argJointCapacity;
-  bodyCount = 0;
-  contactCount = 0;
+   ContactListener argListener) {
+ bodyCapacity = argBodyCapacity;
+ contactCapacity = argContactCapacity;
+ jointCapacity = argJointCapacity;
+ bodyCount = 0;
+ contactCount = 0;
 
-  listener = argListener;
+ listener = argListener;
 
-  if (bodies == null || bodyCapacity &gt; bodies.length) {
-    bodies = new List&lt;Body&gt;(bodyCapacity);
-  }
-  if (contacts == null || contactCapacity &gt; contacts.length) {
-    contacts = new List&lt;Contact&gt;(contactCapacity);
-  }
-  if (joints == null || jointCapacity &gt; joints.length) {
-    joints = new List&lt;Joint&gt;(jointCapacity);
-  }
+ if (bodies == null || bodyCapacity &gt; bodies.length) {
+   bodies = new List&lt;Body&gt;(bodyCapacity);
+ }
+ if (contacts == null || contactCapacity &gt; contacts.length) {
+   contacts = new List&lt;Contact&gt;(contactCapacity);
+ }
+ if (joints == null || jointCapacity &gt; joints.length) {
+   joints = new List&lt;Joint&gt;(jointCapacity);
+ }
 
-  // dynamic array
-  if (velocities == null || bodyCapacity &gt; velocities.length) {
-    final List&lt;Velocity&gt; old = velocities == null ?
-        new List&lt;Velocity&gt;(0) : velocities;
-    velocities = new List&lt;Velocity&gt;(bodyCapacity);
-    velocities.setRange(0, old.length, old);
-    for (int i=old.length; i&lt;velocities.length; i++) {
-      velocities[i] = new Velocity();
-    }
-  }
+ // dynamic array
+ if (velocities == null || bodyCapacity &gt; velocities.length) {
+   final List&lt;Velocity&gt; old = velocities == null ?
+       new List&lt;Velocity&gt;(0) : velocities;
+   velocities = new List&lt;Velocity&gt;(bodyCapacity);
+   velocities.setRange(0, old.length, old);
+   for (int i=old.length; i&lt;velocities.length; i++) {
+     velocities[i] = new Velocity();
+   }
+ }
 
-  // dynamic array
-  if(positions == null || bodyCapacity &gt; positions.length){
-    List&lt;Position&gt; old = positions == null ?
-        new List&lt;Position&gt;(0) : positions;
-    positions = new List&lt;Position&gt;(bodyCapacity);
-    positions.setRange(0, old.length, old);
-    for (int i=old.length; i&lt;positions.length; i++) {
-      positions[i] = new Position();
-    }
-  }
+ // dynamic array
+ if(positions == null || bodyCapacity &gt; positions.length){
+   List&lt;Position&gt; old = positions == null ?
+       new List&lt;Position&gt;(0) : positions;
+   positions = new List&lt;Position&gt;(bodyCapacity);
+   positions.setRange(0, old.length, old);
+   for (int i=old.length; i&lt;positions.length; i++) {
+     positions[i] = new Position();
+   }
+ }
 }
 </pre>
 </div>
@@ -625,22 +623,22 @@ void <strong>report</strong>(List&lt;<a href="../box2d/ContactConstraint.html">C
 <div class="doc">
 <pre class="source">
 void report(List&lt;ContactConstraint&gt; constraints){
-  if (listener == null){
-    return;
-  }
+ if (listener == null){
+   return;
+ }
 
-  for (int i = 0; i &lt; contactCount; ++i){
-    Contact c = contacts[i];
+ for (int i = 0; i &lt; contactCount; ++i){
+   Contact c = contacts[i];
 
-    ContactConstraint cc = constraints[i];
+   ContactConstraint cc = constraints[i];
 
-    for (int j = 0; j &lt; cc.pointCount; ++j){
-      impulse.normalImpulses[j] = cc.points[j].normalImpulse;
-      impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
-    }
+   for (int j = 0; j &lt; cc.pointCount; ++j){
+     impulse.normalImpulses[j] = cc.points[j].normalImpulse;
+     impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
+   }
 
-    listener.postSolve(c, impulse);
-  }
+   listener.postSolve(c, impulse);
+ }
 }
 </pre>
 </div>
@@ -652,166 +650,166 @@ void <strong>solve</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step, 
 <div class="doc">
 <pre class="source">
 void solve(TimeStep step, Vector gravity, bool allowSleep){
-  // Integrate velocities and apply damping.
-  for (int i = 0; i &lt; bodyCount; ++i){
-    Body b = bodies[i];
+ // Integrate velocities and apply damping.
+ for (int i = 0; i &lt; bodyCount; ++i){
+   Body b = bodies[i];
 
-    if (b.type != BodyType.DYNAMIC){
-      continue;
-    }
+   if (b.type != BodyType.DYNAMIC){
+     continue;
+   }
 
-    final velocityDelta = new Vector(
-        (b._force.x * b.invMass + gravity.x) * step.dt,
-        (b._force.y * b.invMass + gravity.y) * step.dt);
-    b.linearVelocity.addLocal(velocityDelta);
-    num newAngularVelocity = b.angularVelocity +
-        (step.dt * b.invInertia * b._torque);
-    b.angularVelocity = newAngularVelocity;
+   final velocityDelta = new Vector(
+       (b._force.x * b.invMass + gravity.x) * step.dt,
+       (b._force.y * b.invMass + gravity.y) * step.dt);
+   b.linearVelocity.addLocal(velocityDelta);
+   num newAngularVelocity = b.angularVelocity +
+       (step.dt * b.invInertia * b._torque);
+   b.angularVelocity = newAngularVelocity;
 
-    num a = (1.0 - step.dt * b.linearDamping);
-    num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
-    b.linearVelocity.mulLocal(a1);
+   num a = (1.0 - step.dt * b.linearDamping);
+   num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
+   b.linearVelocity.mulLocal(a1);
 
-    num a2 = (1.0 - step.dt * b.angularDamping);
-    num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
-    b.angularVelocity *= 0.0 &gt; b1 ? 0.0 : b1;
-  }
+   num a2 = (1.0 - step.dt * b.angularDamping);
+   num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
+   b.angularVelocity *= 0.0 &gt; b1 ? 0.0 : b1;
+ }
 
-  // Partition contacts so that contacts with static bodies are solved last.
-  int i1 = -1;
-  for (int i2 = 0; i2 &lt; contactCount; ++i2) {
-    Fixture fixtureA = contacts[i2].fixtureA;
-    Fixture fixtureB = contacts[i2].fixtureB;
-    Body bodyA = fixtureA.body;
-    Body bodyB = fixtureB.body;
-    bool nonStatic = bodyA.type != BodyType.STATIC &amp;&amp; bodyB.type
-        != BodyType.STATIC;
-    if (nonStatic){
-      ++i1;
-      //Swap(contacts[i1], contacts[i2]);
-      Contact temp = contacts[i1];
-      contacts[i1] = contacts[i2];
-      contacts[i2] = temp;
-    }
-  }
+ // Partition contacts so that contacts with static bodies are solved last.
+ int i1 = -1;
+ for (int i2 = 0; i2 &lt; contactCount; ++i2) {
+   Fixture fixtureA = contacts[i2].fixtureA;
+   Fixture fixtureB = contacts[i2].fixtureB;
+   Body bodyA = fixtureA.body;
+   Body bodyB = fixtureB.body;
+   bool nonStatic = bodyA.type != BodyType.STATIC &amp;&amp; bodyB.type
+       != BodyType.STATIC;
+   if (nonStatic){
+     ++i1;
+     //Swap(contacts[i1], contacts[i2]);
+     Contact temp = contacts[i1];
+     contacts[i1] = contacts[i2];
+     contacts[i2] = temp;
+   }
+ }
 
-  // Initialize velocity constraints.
-  _contactSolver.init(contacts, contactCount, step.dtRatio);
-  _contactSolver.warmStart();
+ // Initialize velocity constraints.
+ _contactSolver.init(contacts, contactCount, step.dtRatio);
+ _contactSolver.warmStart();
 
-  for (int i = 0; i &lt; jointCount; ++i){
-    joints[i].initVelocityConstraints(step);
-  }
+ for (int i = 0; i &lt; jointCount; ++i){
+   joints[i].initVelocityConstraints(step);
+ }
 
-  for (int i = 0; i &lt; step.velocityIterations; ++i) {
-    for (int j = 0; j &lt; jointCount; ++j){
-      joints[j].solveVelocityConstraints(step);
-    }
-    _contactSolver.solveVelocityConstraints();
-  }
+ for (int i = 0; i &lt; step.velocityIterations; ++i) {
+   for (int j = 0; j &lt; jointCount; ++j){
+     joints[j].solveVelocityConstraints(step);
+   }
+   _contactSolver.solveVelocityConstraints();
+ }
 
-  // Post-solve (store impulses for warm starting).
-  _contactSolver.storeImpulses();
+ // Post-solve (store impulses for warm starting).
+ _contactSolver.storeImpulses();
 
-  // Integrate positions.
-  Vector temp = new Vector();
-  for (int i = 0; i &lt; bodyCount; ++i){
-    Body b = bodies[i];
+ // Integrate positions.
+ Vector temp = new Vector();
+ for (int i = 0; i &lt; bodyCount; ++i){
+   Body b = bodies[i];
 
-    if (b.type == BodyType.STATIC){
-      continue;
-    }
+   if (b.type == BodyType.STATIC){
+     continue;
+   }
 
-    // Check for large velocities.
-    _translation.setFrom(b.linearVelocity);
-    _translation.mulLocal(step.dt);
-    if (Vector.dot(_translation, _translation) &gt;
-        Settings.MAX_TRANSLATION_SQUARED){
-      num ratio = Settings.MAX_TRANSLATION / _translation.length;
-      b.linearVelocity.mulLocal(ratio);
-    }
+   // Check for large velocities.
+   _translation.setFrom(b.linearVelocity);
+   _translation.mulLocal(step.dt);
+   if (Vector.dot(_translation, _translation) &gt;
+       Settings.MAX_TRANSLATION_SQUARED){
+     num ratio = Settings.MAX_TRANSLATION / _translation.length;
+     b.linearVelocity.mulLocal(ratio);
+   }
 
-    num rotation = step.dt * b.angularVelocity;
-    if (rotation * rotation &gt; Settings.MAX_ROTATION_SQUARED) {
-      num ratio = Settings.MAX_ROTATION / rotation.abs();
-      b.angularVelocity *= ratio;
-    }
+   num rotation = step.dt * b.angularVelocity;
+   if (rotation * rotation &gt; Settings.MAX_ROTATION_SQUARED) {
+     num ratio = Settings.MAX_ROTATION / rotation.abs();
+     b.angularVelocity *= ratio;
+   }
 
-    // Store positions for continuous collision.
-    b.sweep.centerZero.setFrom(b.sweep.center);
-    b.sweep.angleZero = b.sweep.angle;
+   // Store positions for continuous collision.
+   b.sweep.centerZero.setFrom(b.sweep.center);
+   b.sweep.angleZero = b.sweep.angle;
 
-    // Integrate
-    temp.setFrom(b.linearVelocity);
-    temp.mulLocal(step.dt);
-    b.sweep.center.addLocal(temp);
-    b.sweep.angle += step.dt * b.angularVelocity;
+   // Integrate
+   temp.setFrom(b.linearVelocity);
+   temp.mulLocal(step.dt);
+   b.sweep.center.addLocal(temp);
+   b.sweep.angle += step.dt * b.angularVelocity;
 
-    // Compute new transform
-    b.synchronizeTransform();
+   // Compute new transform
+   b.synchronizeTransform();
 
-    // Note: shapes are synchronized later.
-  }
+   // Note: shapes are synchronized later.
+ }
 
-  // Iterate over constraints.
-  for (int i = 0; i &lt; step.positionIterations; ++i){
-    bool contactsOkay =
-        _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+ // Iterate over constraints.
+ for (int i = 0; i &lt; step.positionIterations; ++i){
+   bool contactsOkay =
+       _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
 
-    bool jointsOkay = true;
-    for (int j = 0; j &lt; jointCount; ++j){
-      bool jointOkay =
-          joints[j].solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
-      jointsOkay = jointsOkay &amp;&amp; jointOkay;
-    }
+   bool jointsOkay = true;
+   for (int j = 0; j &lt; jointCount; ++j){
+     bool jointOkay =
+         joints[j].solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
+     jointsOkay = jointsOkay &amp;&amp; jointOkay;
+   }
 
-    if (contactsOkay &amp;&amp; jointsOkay){
-      // Exit early if the position errors are small.
-      break;
-    }
-  }
+   if (contactsOkay &amp;&amp; jointsOkay){
+     // Exit early if the position errors are small.
+     break;
+   }
+ }
 
-  report(_contactSolver.constraints);
+ report(_contactSolver.constraints);
 
 
-  if (allowSleep){
-    num minSleepTime = Settings.BIG_NUMBER;
+ if (allowSleep){
+   num minSleepTime = Settings.BIG_NUMBER;
 
-    num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
-        * Settings.LINEAR_SLEEP_TOLERANCE;
-    num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
-        * Settings.ANGULAR_SLEEP_TOLERANCE;
+   num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
+       * Settings.LINEAR_SLEEP_TOLERANCE;
+   num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
+       * Settings.ANGULAR_SLEEP_TOLERANCE;
 
-    for (int i = 0; i &lt; bodyCount; ++i){
-      Body b = bodies[i];
-      if (b.type == BodyType.STATIC){
-        continue;
-      }
+   for (int i = 0; i &lt; bodyCount; ++i){
+     Body b = bodies[i];
+     if (b.type == BodyType.STATIC){
+       continue;
+     }
 
-      if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0){
-        b.sleepTime = 0.0;
-        minSleepTime = 0.0;
-      }
+     if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0){
+       b.sleepTime = 0.0;
+       minSleepTime = 0.0;
+     }
 
-      if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
-          b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
-          Vector.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
-        b.sleepTime = 0.0;
-        minSleepTime = 0.0;
-      }
-      else{
-        b.sleepTime += step.dt;
-        minSleepTime = Math.min(minSleepTime, b.sleepTime);
-      }
-    }
+     if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
+         b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
+         Vector.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
+       b.sleepTime = 0.0;
+       minSleepTime = 0.0;
+     }
+     else{
+       b.sleepTime += step.dt;
+       minSleepTime = Math.min(minSleepTime, b.sleepTime);
+     }
+   }
 
-    if (minSleepTime &gt;= Settings.TIME_TO_SLEEP){
-      for (int i = 0; i &lt; bodyCount; ++i){
-        Body b = bodies[i];
-        b.awake = false;
-      }
-    }
-  }
+   if (minSleepTime &gt;= Settings.TIME_TO_SLEEP){
+     for (int i = 0; i &lt; bodyCount; ++i){
+       Body b = bodies[i];
+       b.awake = false;
+     }
+   }
+ }
 
 }
 </pre>

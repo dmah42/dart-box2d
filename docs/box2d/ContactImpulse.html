@@ -32,17 +32,14 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Contact impulses for reporting. Impulses are used instead of forces because
-sub-step forces may approach infinity for rigid body collisions. These
-match up one-to-one with the contact points in <a class="crossref" href="../box2d/Manifold.html">Manifold</a>.</p>
 <pre class="source">
 class ContactImpulse {
-  List&lt;num&gt; normalImpulses;
-  List&lt;num&gt; tangentImpulses;
+ List&lt;num&gt; normalImpulses;
+ List&lt;num&gt; tangentImpulses;
 
-  ContactImpulse() :
-    normalImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS),
-    tangentImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS);
+ ContactImpulse() :
+   normalImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS),
+   tangentImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS);
 }
 </pre>
 </div>
@@ -55,8 +52,8 @@ new <strong>ContactImpulse</strong>() <a class="anchor-link" href="#ContactImpul
 <div class="doc">
 <pre class="source">
 ContactImpulse() :
-  normalImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS),
-  tangentImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS);
+ normalImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS),
+ tangentImpulses = new List&lt;num&gt;(Settings.MAX_MANIFOLD_POINTS);
 </pre>
 </div>
 </div>

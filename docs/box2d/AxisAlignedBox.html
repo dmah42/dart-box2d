@@ -32,77 +32,76 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>An axis-aligned bounding box.</p>
 <pre class="source">
 class AxisAlignedBox {
-  /** Bottom left vertex of bounding box. */
-  Vector lowerBound;
+ /** Bottom left vertex of bounding box. */
+ Vector lowerBound;
 
-  /** Top right vertex of bounding box. */
-  Vector upperBound;
+ /** Top right vertex of bounding box. */
+ Vector upperBound;
 
-  /**
-   * Constructs a new box with the given lower and upper bounds. If no bounds
-   * are specified, constructs the box with both bounds at the origin.
-   */
-  AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound == null) lowerBound = new Vector();
-    if (upperBound == null) upperBound = new Vector();
-  }
+ /**
+  * Constructs a new box with the given lower and upper bounds. If no bounds
+  * are specified, constructs the box with both bounds at the origin.
+  */
+ AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
+   if (lowerBound == null) lowerBound = new Vector();
+   if (upperBound == null) upperBound = new Vector();
+ }
 
-  /**
-   * Sets this box to be a combination of the two given boxes.
-   * The combination is determined by picking and choosing the lowest x and y
-   * values from the lowerBounds to form a new lower bound and picking and
-   * choosing the largest x and y values from the upperBounds to form a new
-   * upperBound.
-   */
-  void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
-    lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
-    lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
-    upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
-    upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
-  }
+ /**
+  * Sets this box to be a combination of the two given boxes.
+  * The combination is determined by picking and choosing the lowest x and y
+  * values from the lowerBounds to form a new lower bound and picking and
+  * choosing the largest x and y values from the upperBounds to form a new
+  * upperBound.
+  */
+ void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
+   lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+   lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+   upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+   upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+ }
 
-  /** Sets the bounds to the given values. */
-  AxisAlignedBox setBounds(Vector lower, Vector upper) {
-    lowerBound.setFrom(lower);
-    upperBound.setFrom(upper);
-    return this;
-  }
+ /** Sets the bounds to the given values. */
+ AxisAlignedBox setBounds(Vector lower, Vector upper) {
+   lowerBound.setFrom(lower);
+   upperBound.setFrom(upper);
+   return this;
+ }
 
-  /** Returns true if the given box overlaps with this box. */
-  static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
-    !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
-      (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
+ /** Returns true if the given box overlaps with this box. */
+ static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
+   !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
+     (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
 
-  /**
-   * Returns true if the lower bound is strictly less than the upper bound and
-   * both bounds are themselves valid (Vector.isValid() returns true).
-   */
-  bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
-                    lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
+ /**
+  * Returns true if the lower bound is strictly less than the upper bound and
+  * both bounds are themselves valid (Vector.isValid() returns true).
+  */
+ bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
+                   lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
 
-  /** Returns the center of this box. */
-  Vector get center {
-    Vector c = new Vector.copy(lowerBound);
-    c.addLocal(upperBound);
-    c.mulLocal(.5);
-    return c;
-  }
+ /** Returns the center of this box. */
+ Vector get center {
+   Vector c = new Vector.copy(lowerBound);
+   c.addLocal(upperBound);
+   c.mulLocal(.5);
+   return c;
+ }
 
-  /** Returns true if this box contains the given box. */
-  bool contains(AxisAlignedBox aabb) =&gt;
-      lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
-      upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
+ /** Returns true if this box contains the given box. */
+ bool contains(AxisAlignedBox aabb) =&gt;
+     lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
+     upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
 
-  /** Sets this box to be a copy of the given box. */
-  void setFrom(AxisAlignedBox other) {
-    lowerBound.setFrom(other.lowerBound);
-    upperBound.setFrom(other.upperBound);
-  }
+ /** Sets this box to be a copy of the given box. */
+ void setFrom(AxisAlignedBox other) {
+   lowerBound.setFrom(other.lowerBound);
+   upperBound.setFrom(other.upperBound);
+ }
 
-  String toString() =&gt; "$lowerBound, $upperBound";
+ String toString() =&gt; "$lowerBound, $upperBound";
 }
 </pre>
 </div>
@@ -116,8 +115,8 @@ bool <strong>testOverlap</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAli
 <p>Returns true if the given box overlaps with this box.</p>
 <pre class="source">
 static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
-  !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
-    (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
+ !((b.lowerBound.x &gt; a.upperBound.x || b.lowerBound.y &gt; a.upperBound.y) ||
+   (a.lowerBound.x &gt; b.upperBound.x || a.lowerBound.y &gt; b.upperBound.y));
 </pre>
 </div>
 </div>
@@ -133,8 +132,8 @@ new <strong>AxisAlignedBox</strong>([<a href="../box2d/Vector.html">Vector</a> l
 are specified, constructs the box with both bounds at the origin.</p>
 <pre class="source">
 AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-  if (lowerBound == null) lowerBound = new Vector();
-  if (upperBound == null) upperBound = new Vector();
+ if (lowerBound == null) lowerBound = new Vector();
+ if (upperBound == null) upperBound = new Vector();
 }
 </pre>
 </div>
@@ -152,10 +151,10 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> 
 <p>Returns the center of this box.</p>
 <pre class="source">
 Vector get center {
-  Vector c = new Vector.copy(lowerBound);
-  c.addLocal(upperBound);
-  c.mulLocal(.5);
-  return c;
+ Vector c = new Vector.copy(lowerBound);
+ c.addLocal(upperBound);
+ c.mulLocal(.5);
+ return c;
 }
 </pre>
 </div>
@@ -197,8 +196,8 @@ bool <strong>contains</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAligne
 <p>Returns true if this box contains the given box.</p>
 <pre class="source">
 bool contains(AxisAlignedBox aabb) =&gt;
-    lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
-    upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
+   lowerBound.x &gt; aabb.lowerBound.x &amp;&amp; lowerBound.y &gt; aabb.lowerBound.y &amp;&amp;
+   upperBound.y &lt; aabb.upperBound.y &amp;&amp; upperBound.x &lt; aabb.upperBound.x;
 </pre>
 </div>
 </div>
@@ -211,7 +210,7 @@ bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
 both bounds are themselves valid (Vector.isValid() returns true).</p>
 <pre class="source">
 bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
-                  lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
+                 lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
 </pre>
 </div>
 </div>
@@ -223,9 +222,9 @@ bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&
 <p>Sets the bounds to the given values.</p>
 <pre class="source">
 AxisAlignedBox setBounds(Vector lower, Vector upper) {
-  lowerBound.setFrom(lower);
-  upperBound.setFrom(upper);
-  return this;
+ lowerBound.setFrom(lower);
+ upperBound.setFrom(upper);
+ return this;
 }
 </pre>
 </div>
@@ -238,8 +237,8 @@ void <strong>setFrom</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAligned
 <p>Sets this box to be a copy of the given box.</p>
 <pre class="source">
 void setFrom(AxisAlignedBox other) {
-  lowerBound.setFrom(other.lowerBound);
-  upperBound.setFrom(other.upperBound);
+ lowerBound.setFrom(other.lowerBound);
+ upperBound.setFrom(other.upperBound);
 }
 </pre>
 </div>
@@ -256,10 +255,10 @@ choosing the largest x and y values from the upperBounds to form a new
 upperBound.</p>
 <pre class="source">
 void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
-  lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
-  lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
-  upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
-  upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+ lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+ lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+ upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+ upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
 }
 </pre>
 </div>

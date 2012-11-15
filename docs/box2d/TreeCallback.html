@@ -2,7 +2,7 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>TreeCallback interface / box2d Library / Dart Documentation</title>
+        <title>TreeCallback abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
@@ -27,32 +27,26 @@
 </div>
 <div class="content">
         <h2><strong>TreeCallback</strong>
-          interface
+          abstract class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Callback from a tree query request. Returns true if the query should be
-continued.</p>
 <pre class="source">
-interface TreeCallback {
-  bool treeCallback(DynamicTreeNode node);
+abstract class TreeCallback {
+ bool treeCallback(DynamicTreeNode node);
 }
 </pre>
 </div>
-<h3>Implemented by</h3>
+<h3>Subclasses</h3>
 <p>
 <span class="type-box"><span class="icon-class"></span><a href="../box2d/BroadPhase.html">BroadPhase</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/WorldQueryWrapper.html">WorldQueryWrapper</a></span></p>
 <div>
 <h3>Methods</h3>
 <div class="method"><h4 id="treeCallback">
-<button class="show-code">Code</button>
-bool <strong>treeCallback</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> node) <a class="anchor-link" href="#treeCallback"
+abstract bool <strong>treeCallback</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> node) <a class="anchor-link" href="#treeCallback"
               title="Permalink to TreeCallback.treeCallback">#</a></h4>
 <div class="doc">
-<pre class="source">
-bool treeCallback(DynamicTreeNode node);
-</pre>
 </div>
 </div>
 </div>

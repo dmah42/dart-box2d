@@ -34,48 +34,48 @@
 <div class="doc">
 <pre class="source">
 class MathBox {
-  static const double TWO_PI = Math.PI * 2.0;
+ static const double TWO_PI = Math.PI * 2.0;
 
-  MathBox();
+ MathBox();
 
-  /**
-   * Return the distance between the two given vectors, but squared.
-   */
-  static num distanceSquared(Vector v1, Vector v2) {
-    num dx = (v1.x - v2.x);
-    num dy = (v1.y - v2.y);
-    return dx * dx + dy * dy;
-  }
+ /**
+  * Return the distance between the two given vectors, but squared.
+  */
+ static num distanceSquared(Vector v1, Vector v2) {
+   num dx = (v1.x - v2.x);
+   num dy = (v1.y - v2.y);
+   return dx * dx + dy * dy;
+ }
 
-  /**
-   * Return the distance between the two given vectors.
-   */
-  static num distance(Vector v1, Vector v2) {
-    return Math.sqrt(distanceSquared(v1, v2));
-  }
+ /**
+  * Return the distance between the two given vectors.
+  */
+ static num distance(Vector v1, Vector v2) {
+   return Math.sqrt(distanceSquared(v1, v2));
+ }
 
-  /** Returns the closest value to [a] that is in between [low] and [high] */
-  static num clamp(num a, num low, num high) {
-    return Math.max(low, Math.min(a, high));
-  }
+ /** Returns the closest value to [a] that is in between [low] and [high] */
+ static num clamp(num a, num low, num high) {
+   return Math.max(low, Math.min(a, high));
+ }
 
-  /**
-   * Given a value within the range specified by [fromMin] and [fromMax],
-   * returns a value with the same relative position in the range specified
-   * from [toMin] and [toMax]. For example, given a [val] of 2 in the
-   * "from range" of 0-4, and a "to range" of 10-20, would return 15.
-   */
-  static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
-      num toMax) {
-    final num mult = (val - fromMin) / (fromMax - fromMin);
-    final num res = toMin + mult * (toMax - toMin);
-    return res;
-  }
+ /**
+  * Given a value within the range specified by [fromMin] and [fromMax],
+  * returns a value with the same relative position in the range specified
+  * from [toMin] and [toMax]. For example, given a [val] of 2 in the
+  * "from range" of 0-4, and a "to range" of 10-20, would return 15.
+  */
+ static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
+     num toMax) {
+   final num mult = (val - fromMin) / (fromMax - fromMin);
+   final num res = toMin + mult * (toMax - toMin);
+   return res;
+ }
 
-  /** Convert from [deg] degrees to radians. */
-  static num degToRad(num deg) =&gt; (Math.PI / 180.0) * deg;
-  /** Convert from [rad] radians to degrees. */
-  static num radToDeg(num rad) =&gt; (180.0 / Math.PI) * rad;
+ /** Convert from [deg] degrees to radians. */
+ static num degToRad(num deg) =&gt; (Math.PI / 180.0) * deg;
+ /** Convert from [rad] radians to degrees. */
+ static num radToDeg(num rad) =&gt; (180.0 / Math.PI) * rad;
 }
 </pre>
 </div>
@@ -104,9 +104,9 @@ num <strong>distanceSquared</strong>(<a href="../box2d/Vector.html">Vector</a> v
 <p>Return the distance between the two given vectors, but squared.</p>
 <pre class="source">
 static num distanceSquared(Vector v1, Vector v2) {
-  num dx = (v1.x - v2.x);
-  num dy = (v1.y - v2.y);
-  return dx * dx + dy * dy;
+ num dx = (v1.x - v2.x);
+ num dy = (v1.y - v2.y);
+ return dx * dx + dy * dy;
 }
 </pre>
 </div>
@@ -119,7 +119,7 @@ num <strong>distance</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a h
 <p>Return the distance between the two given vectors.</p>
 <pre class="source">
 static num distance(Vector v1, Vector v2) {
-  return Math.sqrt(distanceSquared(v1, v2));
+ return Math.sqrt(distanceSquared(v1, v2));
 }
 </pre>
 </div>
@@ -135,7 +135,7 @@ num <strong>clamp</strong>(num a, num low, num high) <a class="anchor-link" href
 <span class="param">high</span></p>
 <pre class="source">
 static num clamp(num a, num low, num high) {
-  return Math.max(low, Math.min(a, high));
+ return Math.max(low, Math.min(a, high));
 }
 </pre>
 </div>
@@ -156,10 +156,10 @@ from
 "from range" of 0-4, and a "to range" of 10-20, would return 15.</p>
 <pre class="source">
 static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
-    num toMax) {
-  final num mult = (val - fromMin) / (fromMax - fromMin);
-  final num res = toMin + mult * (toMax - toMin);
-  return res;
+   num toMax) {
+ final num mult = (val - fromMin) / (fromMax - fromMin);
+ final num res = toMin + mult * (toMax - toMin);
+ return res;
 }
 </pre>
 </div>

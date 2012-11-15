@@ -32,76 +32,73 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A manifold for two touching convex shapes. Box2D has support for many kinds
-of contact, such as clip pont versus plain with radius and point versus point
-with radius (as with circles).</p>
 <pre class="source">
 class Manifold {
-  /** The points of contact. */
-  final List&lt;ManifoldPoint&gt; points;
+ /** The points of contact. */
+ final List&lt;ManifoldPoint&gt; points;
 
-  /**
-   * The meaning of the localNormal depends on the type of this manifold. The
-   * different meanings (or lack thereof) are outlined below.
-   * Circles: not used.
-   * faceA: The normal on polygonA.
-   * faceB: The normal on polygonB.
-   */
-  final Vector localNormal;
+ /**
+  * The meaning of the localNormal depends on the type of this manifold. The
+  * different meanings (or lack thereof) are outlined below.
+  * Circles: not used.
+  * faceA: The normal on polygonA.
+  * faceB: The normal on polygonB.
+  */
+ final Vector localNormal;
 
-  /**
-   * The meaning of the localPoint depends on the type of this manifold. The
-   * different meanings (or lack thereof) are outlined below.
-   * Circles: The local center of circleA.
-   * faceA: The center of faceA.
-   * faceB: The center of faceB.
-   */
-  final Vector localPoint;
+ /**
+  * The meaning of the localPoint depends on the type of this manifold. The
+  * different meanings (or lack thereof) are outlined below.
+  * Circles: The local center of circleA.
+  * faceA: The center of faceA.
+  * faceB: The center of faceB.
+  */
+ final Vector localPoint;
 
-  /** The type of manifold. See [ManifoldType]. */
-  int type;
+ /** The type of manifold. See [ManifoldType]. */
+ int type;
 
-  /** The number of manifold points. */
-  int pointCount;
+ /** The number of manifold points. */
+ int pointCount;
 
-  /**
-   * Creates a manifold with 0 points. It's point array should be full of
-   * already instantiated ManifoldPoints.
-   */
-  Manifold() :
-      points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new Vector(),
-      localPoint = new Vector(),
-      pointCount = 0 {
-    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-      points[i] = new ManifoldPoint();
-  }
+ /**
+  * Creates a manifold with 0 points. It's point array should be full of
+  * already instantiated ManifoldPoints.
+  */
+ Manifold() :
+     points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+     localNormal = new Vector(),
+     localPoint = new Vector(),
+     pointCount = 0 {
+   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+     points[i] = new ManifoldPoint();
+ }
 
-  /**
-   * Creates a new manifold that is a copy of the given manifold.
-   */
-  Manifold.copy(Manifold other) :
-      points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new Vector.copy(other.localNormal),
-      localPoint = new Vector.copy(other.localPoint),
-      pointCount = other.pointCount,
-      type = other.type {
-    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-      points[i] = new ManifoldPoint.copy(other.points[i]);
-  }
+ /**
+  * Creates a new manifold that is a copy of the given manifold.
+  */
+ Manifold.copy(Manifold other) :
+     points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+     localNormal = new Vector.copy(other.localNormal),
+     localPoint = new Vector.copy(other.localPoint),
+     pointCount = other.pointCount,
+     type = other.type {
+   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+     points[i] = new ManifoldPoint.copy(other.points[i]);
+ }
 
-  /**
-   * Sets this manifold to be a copy of the given manifold.
-   */
-  void setFrom(Manifold other) {
-    for (int i = 0; i &lt; other.pointCount; ++i)
-      points[i].setFrom(other.points[i]);
+ /**
+  * Sets this manifold to be a copy of the given manifold.
+  */
+ void setFrom(Manifold other) {
+   for (int i = 0; i &lt; other.pointCount; ++i)
+     points[i].setFrom(other.points[i]);
 
-    type = other.type;
-    localNormal.setFrom(other.localNormal);
-    localPoint.setFrom(other.localPoint);
-    pointCount = other.pointCount;
-  }
+   type = other.type;
+   localNormal.setFrom(other.localNormal);
+   localPoint.setFrom(other.localPoint);
+   pointCount = other.pointCount;
+ }
 }
 </pre>
 </div>
@@ -116,12 +113,12 @@ new <strong>Manifold</strong>() <a class="anchor-link" href="#Manifold"
 already instantiated ManifoldPoints.</p>
 <pre class="source">
 Manifold() :
-    points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    pointCount = 0 {
-  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-    points[i] = new ManifoldPoint();
+   points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+   localNormal = new Vector(),
+   localPoint = new Vector(),
+   pointCount = 0 {
+ for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+   points[i] = new ManifoldPoint();
 }
 </pre>
 </div>
@@ -134,13 +131,13 @@ new <strong>Manifold.copy</strong>(<a href="../box2d/Manifold.html">Manifold</a>
 <p>Creates a new manifold that is a copy of the given manifold.</p>
 <pre class="source">
 Manifold.copy(Manifold other) :
-    points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new Vector.copy(other.localNormal),
-    localPoint = new Vector.copy(other.localPoint),
-    pointCount = other.pointCount,
-    type = other.type {
-  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-    points[i] = new ManifoldPoint.copy(other.points[i]);
+   points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+   localNormal = new Vector.copy(other.localNormal),
+   localPoint = new Vector.copy(other.localPoint),
+   pointCount = other.pointCount,
+   type = other.type {
+ for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+   points[i] = new ManifoldPoint.copy(other.points[i]);
 }
 </pre>
 </div>
@@ -232,13 +229,13 @@ void <strong>setFrom</strong>(<a href="../box2d/Manifold.html">Manifold</a> othe
 <p>Sets this manifold to be a copy of the given manifold.</p>
 <pre class="source">
 void setFrom(Manifold other) {
-  for (int i = 0; i &lt; other.pointCount; ++i)
-    points[i].setFrom(other.points[i]);
+ for (int i = 0; i &lt; other.pointCount; ++i)
+   points[i].setFrom(other.points[i]);
 
-  type = other.type;
-  localNormal.setFrom(other.localNormal);
-  localPoint.setFrom(other.localPoint);
-  pointCount = other.pointCount;
+ type = other.type;
+ localNormal.setFrom(other.localNormal);
+ localPoint.setFrom(other.localPoint);
+ pointCount = other.pointCount;
 }
 </pre>
 </div>

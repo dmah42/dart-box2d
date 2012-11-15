@@ -32,53 +32,51 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A manifold point is a contact point belonging to a contact manifold. It holds
-the details of the geometry and dynamics of the contact points.</p>
 <pre class="source">
 class ManifoldPoint {
-  /**
-   * Usage depends on manifold type. For circles, is the local center of
-   * circleB. For faceA, is the local center of CircleB or the clip point of
-   * polygonB. For faceB, is the clip point of polygonA.
-   */
-  final Vector localPoint;
+ /**
+  * Usage depends on manifold type. For circles, is the local center of
+  * circleB. For faceA, is the local center of CircleB or the clip point of
+  * polygonB. For faceB, is the clip point of polygonA.
+  */
+ final Vector localPoint;
 
-  /** The non-penetration impulse. */
-  num normalImpulse;
+ /** The non-penetration impulse. */
+ num normalImpulse;
 
-  /** The friction impulse. */
-  num tangentImpulse;
+ /** The friction impulse. */
+ num tangentImpulse;
 
-  /** Unique identifier for a contact point between two shapes. */
-  final ContactID id;
+ /** Unique identifier for a contact point between two shapes. */
+ final ContactID id;
 
-  /**
-   * Constructs a new ManifoldPoint.
-   */
-  ManifoldPoint() :
-    localPoint = new Vector(),
-    tangentImpulse = 0,
-    normalImpulse = 0,
-    id = new ContactID() { }
+ /**
+  * Constructs a new ManifoldPoint.
+  */
+ ManifoldPoint() :
+   localPoint = new Vector(),
+   tangentImpulse = 0,
+   normalImpulse = 0,
+   id = new ContactID() { }
 
-  /**
-   * Constructs a new ManifoldPoint that is a copy of the given point.
-   */
-  ManifoldPoint.copy(ManifoldPoint other) :
-    localPoint = new Vector.copy(other.localPoint),
-    normalImpulse = other.normalImpulse,
-    tangentImpulse = other.tangentImpulse,
-    id = new ContactID.copy(other.id) { }
+ /**
+  * Constructs a new ManifoldPoint that is a copy of the given point.
+  */
+ ManifoldPoint.copy(ManifoldPoint other) :
+   localPoint = new Vector.copy(other.localPoint),
+   normalImpulse = other.normalImpulse,
+   tangentImpulse = other.tangentImpulse,
+   id = new ContactID.copy(other.id) { }
 
-  /**
-   * Sets this ManifoldPoint to be equal to the given point.
-   */
-  void setFrom(ManifoldPoint other) {
-    localPoint.setFrom(other.localPoint);
-    normalImpulse = other.normalImpulse;
-    tangentImpulse = other.tangentImpulse;
-    id.setFrom(other.id);
-  }
+ /**
+  * Sets this ManifoldPoint to be equal to the given point.
+  */
+ void setFrom(ManifoldPoint other) {
+   localPoint.setFrom(other.localPoint);
+   normalImpulse = other.normalImpulse;
+   tangentImpulse = other.tangentImpulse;
+   id.setFrom(other.id);
+ }
 }
 </pre>
 </div>
@@ -92,10 +90,10 @@ new <strong>ManifoldPoint</strong>() <a class="anchor-link" href="#ManifoldPoint
 <p>Constructs a new ManifoldPoint.</p>
 <pre class="source">
 ManifoldPoint() :
-  localPoint = new Vector(),
-  tangentImpulse = 0,
-  normalImpulse = 0,
-  id = new ContactID() { }
+ localPoint = new Vector(),
+ tangentImpulse = 0,
+ normalImpulse = 0,
+ id = new ContactID() { }
 </pre>
 </div>
 </div>
@@ -107,10 +105,10 @@ new <strong>ManifoldPoint.copy</strong>(<a href="../box2d/ManifoldPoint.html">Ma
 <p>Constructs a new ManifoldPoint that is a copy of the given point.</p>
 <pre class="source">
 ManifoldPoint.copy(ManifoldPoint other) :
-  localPoint = new Vector.copy(other.localPoint),
-  normalImpulse = other.normalImpulse,
-  tangentImpulse = other.tangentImpulse,
-  id = new ContactID.copy(other.id) { }
+ localPoint = new Vector.copy(other.localPoint),
+ normalImpulse = other.normalImpulse,
+ tangentImpulse = other.tangentImpulse,
+ id = new ContactID.copy(other.id) { }
 </pre>
 </div>
 </div>
@@ -182,10 +180,10 @@ void <strong>setFrom</strong>(<a href="../box2d/ManifoldPoint.html">ManifoldPoin
 <p>Sets this ManifoldPoint to be equal to the given point.</p>
 <pre class="source">
 void setFrom(ManifoldPoint other) {
-  localPoint.setFrom(other.localPoint);
-  normalImpulse = other.normalImpulse;
-  tangentImpulse = other.tangentImpulse;
-  id.setFrom(other.id);
+ localPoint.setFrom(other.localPoint);
+ normalImpulse = other.normalImpulse;
+ tangentImpulse = other.tangentImpulse;
+ id.setFrom(other.id);
 }
 </pre>
 </div>

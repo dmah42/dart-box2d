@@ -32,43 +32,41 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Provides object pooling for some objects used in the engine.
-Objects retrieved from here should only be used temporarily.</p>
 <pre class="source">
 class DefaultWorldPool {
-  Collision collision;
-  TimeOfImpact timeOfImpact;
-  Distance distance;
+ Collision collision;
+ TimeOfImpact timeOfImpact;
+ Distance distance;
 
-  DefaultWorldPool() {
-    distance = new Distance._construct();
-    collision = new Collision._construct(this);
-    timeOfImpact = new TimeOfImpact._construct(this);
-  }
+ DefaultWorldPool() {
+   distance = new Distance._construct();
+   collision = new Collision._construct(this);
+   timeOfImpact = new TimeOfImpact._construct(this);
+ }
 
-  Queue&lt;CircleContact&gt; getCircleContactStack() {
-    final queue = new Queue&lt;CircleContact&gt;();
-    for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-      queue.addFirst(new CircleContact(this));
-    }
-    return queue;
-  }
+ Queue&lt;CircleContact&gt; getCircleContactStack() {
+   final queue = new Queue&lt;CircleContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new CircleContact(this));
+   }
+   return queue;
+ }
 
-  Queue&lt;PolygonAndCircleContact&gt; getPolyCircleContactStack() {
-    final queue = new Queue&lt;PolygonAndCircleContact&gt;();
-    for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-      queue.addFirst(new PolygonAndCircleContact(this));
-    }
-    return queue;
-  }
+ Queue&lt;PolygonAndCircleContact&gt; getPolyCircleContactStack() {
+   final queue = new Queue&lt;PolygonAndCircleContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new PolygonAndCircleContact(this));
+   }
+   return queue;
+ }
 
-  Queue&lt;PolygonContact&gt; getPolyContactStack() {
-    final queue = new Queue&lt;PolygonContact&gt;();
-    for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-      queue.addFirst(new PolygonContact(this));
-    }
-    return queue;
-  }
+ Queue&lt;PolygonContact&gt; getPolyContactStack() {
+   final queue = new Queue&lt;PolygonContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new PolygonContact(this));
+   }
+   return queue;
+ }
 }
 </pre>
 </div>
@@ -81,9 +79,9 @@ new <strong>DefaultWorldPool</strong>() <a class="anchor-link" href="#DefaultWor
 <div class="doc">
 <pre class="source">
 DefaultWorldPool() {
-  distance = new Distance._construct();
-  collision = new Collision._construct(this);
-  timeOfImpact = new TimeOfImpact._construct(this);
+ distance = new Distance._construct();
+ collision = new Collision._construct(this);
+ timeOfImpact = new TimeOfImpact._construct(this);
 }
 </pre>
 </div>
@@ -137,11 +135,11 @@ Queue&lt;<a href="../box2d/CircleContact.html">CircleContact</a>&gt; <strong>get
 <div class="doc">
 <pre class="source">
 Queue&lt;CircleContact&gt; getCircleContactStack() {
-  final queue = new Queue&lt;CircleContact&gt;();
-  for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-    queue.addFirst(new CircleContact(this));
-  }
-  return queue;
+ final queue = new Queue&lt;CircleContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new CircleContact(this));
+ }
+ return queue;
 }
 </pre>
 </div>
@@ -153,11 +151,11 @@ Queue&lt;<a href="../box2d/PolygonAndCircleContact.html">PolygonAndCircleContact
 <div class="doc">
 <pre class="source">
 Queue&lt;PolygonAndCircleContact&gt; getPolyCircleContactStack() {
-  final queue = new Queue&lt;PolygonAndCircleContact&gt;();
-  for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-    queue.addFirst(new PolygonAndCircleContact(this));
-  }
-  return queue;
+ final queue = new Queue&lt;PolygonAndCircleContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new PolygonAndCircleContact(this));
+ }
+ return queue;
 }
 </pre>
 </div>
@@ -169,11 +167,11 @@ Queue&lt;<a href="../box2d/PolygonContact.html">PolygonContact</a>&gt; <strong>g
 <div class="doc">
 <pre class="source">
 Queue&lt;PolygonContact&gt; getPolyContactStack() {
-  final queue = new Queue&lt;PolygonContact&gt;();
-  for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
-    queue.addFirst(new PolygonContact(this));
-  }
-  return queue;
+ final queue = new Queue&lt;PolygonContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new PolygonContact(this));
+ }
+ return queue;
 }
 </pre>
 </div>

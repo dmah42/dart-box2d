@@ -32,37 +32,36 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>This is a node for the DynamicTree.</p>
 <pre class="source">
 class DynamicTreeNode {
-  AxisAlignedBox box;
+ AxisAlignedBox box;
 
-  DynamicTreeNode parent;
+ DynamicTreeNode parent;
 
-  DynamicTreeNode next;
+ DynamicTreeNode next;
 
-  DynamicTreeNode childOne;
+ DynamicTreeNode childOne;
 
-  DynamicTreeNode childTwo;
+ DynamicTreeNode childTwo;
 
-  /** Can contain whatever is useful to the user. */
-  var userData;
+ /** Can contain whatever is useful to the user. */
+ var userData;
 
-  /** Used for sorting. */
-  int key;
+ /** Used for sorting. */
+ int key;
 
-  /** Should never be constructed outside the engine. */
-  DynamicTreeNode._construct()
-    : box = new AxisAlignedBox(),
-      parent = null,
-      next = null,
-      childOne = null,
-      childTwo = null;
+ /** Should never be constructed outside the engine. */
+ DynamicTreeNode._construct()
+   : box = new AxisAlignedBox(),
+     parent = null,
+     next = null,
+     childOne = null,
+     childTwo = null;
 
-  /** Returns true if this node is a leaf. */
-  bool get isLeaf =&gt; childOne == null;
+ /** Returns true if this node is a leaf. */
+ bool get isLeaf =&gt; childOne == null;
 
-  String toString() =&gt; box.toString();
+ String toString() =&gt; box.toString();
 }
 </pre>
 </div>

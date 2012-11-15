@@ -32,19 +32,13 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A body type enum. There are three types of bodies.</p>
-<p>Static: Have zero mass, zero velocity and can be moved manually.</p>
-<p>Kinematic: Have zero mass, a non-zero velocity set by user, and are moved by
-  the physics solver.</p>
-<p>Dynamic: Have positive mass, non-zero velocity determined by forces, and is
-  moved by the physics solver.</p>
 <pre class="source">
 class BodyType {
-  BodyType();
+ BodyType();
 
-  static const int STATIC = 0;
-  static const int KINEMATIC = 1;
-  static const int DYNAMIC = 2;
+ static const int STATIC = 0;
+ static const int KINEMATIC = 1;
+ static const int DYNAMIC = 2;
 }
 </pre>
 </div>

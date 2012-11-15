@@ -32,73 +32,72 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A shape commonly known as the circle.</p>
 <pre class="source">
 class CircleShape extends Shape {
-  /**
-   * The current position of the center of this circle.
-   */
-  final Vector position;
+ /**
+  * The current position of the center of this circle.
+  */
+ final Vector position;
 
-  /**
-   * A constructor for internal use only. Instead use Body.createShape with a
-   * CircleDef.
-   */
-  CircleShape() :
-    super(ShapeType.CIRCLE, 0),
-    position = new Vector() {
-  }
+ /**
+  * A constructor for internal use only. Instead use Body.createShape with a
+  * CircleDef.
+  */
+ CircleShape() :
+   super(ShapeType.CIRCLE, 0),
+   position = new Vector() {
+ }
 
-  /**
-   * Constructs a new CircleShape equal to the given CircleShape.
-   */
-  CircleShape.copy(CircleShape other) :
-    super(other.type, other.radius),
-    position = new Vector.copy(other.position) { }
+ /**
+  * Constructs a new CircleShape equal to the given CircleShape.
+  */
+ CircleShape.copy(CircleShape other) :
+   super(other.type, other.radius),
+   position = new Vector.copy(other.position) { }
 
 
-  /**
-   * Returns true if the point is contained in the given shape when the given
-   * rotation transform is applied. Implements superclass abstract method of
-   * the same name.
-   */
-  bool testPoint(Transform transform, Vector point) {
-    Vector center = new Vector();
-    transform.rotation.multiplyVectorToOut(position, center);
-    center.addLocal(transform.position);
+ /**
+  * Returns true if the point is contained in the given shape when the given
+  * rotation transform is applied. Implements superclass abstract method of
+  * the same name.
+  */
+ bool testPoint(Transform transform, Vector point) {
+   Vector center = new Vector();
+   transform.rotation.multiplyVectorToOut(position, center);
+   center.addLocal(transform.position);
 
-    Vector d = center.subLocal(point).negateLocal();
-    return Vector.dot(d, d) &lt;= radius * radius;
-  }
+   Vector d = center.subLocal(point).negateLocal();
+   return Vector.dot(d, d) &lt;= radius * radius;
+ }
 
-  /**
-   * Compute the axis aligned box for this Shape when the given transform is
-   * applied. Stores the result in the given box.
-   */
-  void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-    Vector p = new Vector();
-    Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
-    p.addLocal(argTransform.position);
+ /**
+  * Compute the axis aligned box for this Shape when the given transform is
+  * applied. Stores the result in the given box.
+  */
+ void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
+   Vector p = new Vector();
+   Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+   p.addLocal(argTransform.position);
 
-    argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
-    argBox.upperBound.setCoords(p.x + radius, p.y + radius);
-  }
+   argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
+   argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+ }
 
-  /** Returns a clone of this circle. */
-  Shape clone() =&gt; new CircleShape.copy(this);
+ /** Returns a clone of this circle. */
+ Shape clone() =&gt; new CircleShape.copy(this);
 
-  /**
-   * Computes the mass properties of this Circle at the given density and stores
-   * the result in the given MassData object.
-   */
-  void computeMass(MassData massData, num density) {
-    massData.mass = density * Math.PI * radius * radius;
-    massData.center.setFrom(position);
+ /**
+  * Computes the mass properties of this Circle at the given density and stores
+  * the result in the given MassData object.
+  */
+ void computeMass(MassData massData, num density) {
+   massData.mass = density * Math.PI * radius * radius;
+   massData.center.setFrom(position);
 
-    // Store inertia above the local origin.
-    massData.inertia = massData.mass * (.5 * radius * radius +
-        Vector.dot(position, position));
-  }
+   // Store inertia above the local origin.
+   massData.inertia = massData.mass * (.5 * radius * radius +
+       Vector.dot(position, position));
+ }
 }
 </pre>
 </div>
@@ -116,8 +115,8 @@ new <strong>CircleShape</strong>() <a class="anchor-link" href="#CircleShape"
 CircleDef.</p>
 <pre class="source">
 CircleShape() :
-  super(ShapeType.CIRCLE, 0),
-  position = new Vector() {
+ super(ShapeType.CIRCLE, 0),
+ position = new Vector() {
 }
 </pre>
 </div>
@@ -130,8 +129,8 @@ new <strong>CircleShape.copy</strong>(<a href="../box2d/CircleShape.html">Circle
 <p>Constructs a new CircleShape equal to the given CircleShape.</p>
 <pre class="source">
 CircleShape.copy(CircleShape other) :
-  super(other.type, other.radius),
-  position = new Vector.copy(other.position) { }
+ super(other.type, other.radius),
+ position = new Vector.copy(other.position) { }
 </pre>
 </div>
 </div>
@@ -200,12 +199,12 @@ void <strong>computeAxisAlignedBox</strong>(<a href="../box2d/AxisAlignedBox.htm
 applied. Stores the result in the given box.</p>
 <pre class="source">
 void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-  Vector p = new Vector();
-  Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
-  p.addLocal(argTransform.position);
+ Vector p = new Vector();
+ Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+ p.addLocal(argTransform.position);
 
-  argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
-  argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+ argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
+ argBox.upperBound.setCoords(p.x + radius, p.y + radius);
 }
 </pre>
 </div>
@@ -219,12 +218,12 @@ void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> 
 the result in the given MassData object.</p>
 <pre class="source">
 void computeMass(MassData massData, num density) {
-  massData.mass = density * Math.PI * radius * radius;
-  massData.center.setFrom(position);
+ massData.mass = density * Math.PI * radius * radius;
+ massData.center.setFrom(position);
 
-  // Store inertia above the local origin.
-  massData.inertia = massData.mass * (.5 * radius * radius +
-      Vector.dot(position, position));
+ // Store inertia above the local origin.
+ massData.inertia = massData.mass * (.5 * radius * radius +
+     Vector.dot(position, position));
 }
 </pre>
 </div>
@@ -239,12 +238,12 @@ rotation transform is applied. Implements superclass abstract method of
 the same name.</p>
 <pre class="source">
 bool testPoint(Transform transform, Vector point) {
-  Vector center = new Vector();
-  transform.rotation.multiplyVectorToOut(position, center);
-  center.addLocal(transform.position);
+ Vector center = new Vector();
+ transform.rotation.multiplyVectorToOut(position, center);
+ center.addLocal(transform.position);
 
-  Vector d = center.subLocal(point).negateLocal();
-  return Vector.dot(d, d) &lt;= radius * radius;
+ Vector d = center.subLocal(point).negateLocal();
+ return Vector.dot(d, d) &lt;= radius * radius;
 }
 </pre>
 </div>

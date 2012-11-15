@@ -32,100 +32,99 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>A 3-by-3 matrix. Stored in column-major order.</p>
 <pre class="source">
 class Matrix33 {
-  final Vector3 col1;
-  final Vector3 col2;
-  final Vector3 col3;
+ final Vector3 col1;
+ final Vector3 col2;
+ final Vector3 col3;
 
-  Matrix33() :
-    col1 = new Vector3(),
-    col2 = new Vector3(),
-    col3 = new Vector3() { }
+ Matrix33() :
+   col1 = new Vector3(),
+   col2 = new Vector3(),
+   col3 = new Vector3() { }
 
-  Matrix33.setCols(Vector3 argCol1, Vector3 argCol2, Vector3 argCol3) :
-    col1 = new Vector3.copy(argCol1),
-    col2 = new Vector3.copy(argCol2),
-    col3 = new Vector3.copy(argCol3) { }
+ Matrix33.setCols(Vector3 argCol1, Vector3 argCol2, Vector3 argCol3) :
+   col1 = new Vector3.copy(argCol1),
+   col2 = new Vector3.copy(argCol2),
+   col3 = new Vector3.copy(argCol3) { }
 
-  void setZero() {
-    col1.setZero();
-    col2.setZero();
-    col3.setZero();
-  }
+ void setZero() {
+   col1.setZero();
+   col2.setZero();
+   col3.setZero();
+ }
 
-  // Multiply a matrix times a vector.
-  static Vector3 mul(Matrix33 A, Vector3 v){
-    return new Vector3(v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x,
-        v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y,
-        v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z);
-  }
+ // Multiply a matrix times a vector.
+ static Vector3 mul(Matrix33 A, Vector3 v){
+   return new Vector3(v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x,
+       v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y,
+       v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z);
+ }
 
-  static void mulToOut(Matrix33 A, Vector3 v, Vector3 out){
-    final num tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
-    final num tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
-    out.x = v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x;
-    out.y = tempy;
-    out.z = tempz;
-  }
+ static void mulToOut(Matrix33 A, Vector3 v, Vector3 out){
+   final num tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
+   final num tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
+   out.x = v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x;
+   out.y = tempy;
+   out.z = tempz;
+ }
 
-  /**
-   * Solve A * x = b, where b is a column vector. This is more efficient
-   * than computing the inverse in one-shot cases.
-   */
-  Vector solve22(Vector b) {
-    Vector x = new Vector();
-    solve22ToOut(b, x);
-    return x;
-  }
+ /**
+  * Solve A * x = b, where b is a column vector. This is more efficient
+  * than computing the inverse in one-shot cases.
+  */
+ Vector solve22(Vector b) {
+   Vector x = new Vector();
+   solve22ToOut(b, x);
+   return x;
+ }
 
-  /**
-   * Solve A * x = b, where b is a column vector. This is more efficient
-   * than computing the inverse in one-shot cases.
-   */
-  void solve22ToOut(Vector b, Vector out) {
-    final num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-    num det = a11 * a22 - a12 * a21;
-    if (det != 0.0){
-      det = 1.0 / det;
-    }
-    out.x = det * (a22 * b.x - a12 * b.y);
-    out.y = det * (a11 * b.y - a21 * b.x);
-  }
+ /**
+  * Solve A * x = b, where b is a column vector. This is more efficient
+  * than computing the inverse in one-shot cases.
+  */
+ void solve22ToOut(Vector b, Vector out) {
+   final num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+   num det = a11 * a22 - a12 * a21;
+   if (det != 0.0){
+     det = 1.0 / det;
+   }
+   out.x = det * (a22 * b.x - a12 * b.y);
+   out.y = det * (a11 * b.y - a21 * b.x);
+ }
 
-  /**
-   * Solve A * x = b, where b is a column vector. This is more efficient
-   * than computing the inverse in one-shot cases.
-   */
-  Vector3 solve33(Vector3 b) {
-    Vector3 x = new Vector3();
-    solve33ToOut(b, x);
-    return x;
-  }
+ /**
+  * Solve A * x = b, where b is a column vector. This is more efficient
+  * than computing the inverse in one-shot cases.
+  */
+ Vector3 solve33(Vector3 b) {
+   Vector3 x = new Vector3();
+   solve33ToOut(b, x);
+   return x;
+ }
 
-  /**
-   * Solve A * x = b, where b is a column vector. This is more efficient
-   * than computing the inverse in one-shot cases.
-   * out: the result
-   */
-  void solve33ToOut(Vector3 b, Vector3 out) {
-    Vector3.crossToOut(col2, col3, out);
-    num det = Vector3.dot(col1, out);
-    if (det != 0.0){
-      det = 1.0 / det;
-    }
+ /**
+  * Solve A * x = b, where b is a column vector. This is more efficient
+  * than computing the inverse in one-shot cases.
+  * out: the result
+  */
+ void solve33ToOut(Vector3 b, Vector3 out) {
+   Vector3.crossToOut(col2, col3, out);
+   num det = Vector3.dot(col1, out);
+   if (det != 0.0){
+     det = 1.0 / det;
+   }
 
-    Vector3.crossToOut(col2, col3, out);
-    final num x = det * Vector3.dot(b, out);
-    Vector3.crossToOut(b, col3, out);
-    final num y = det * Vector3.dot(col1, out);
-    Vector3.crossToOut(col2, b, out);
-    num z = det * Vector3.dot(col1, out);
-    out.x = x;
-    out.y = y;
-    out.z = z;
-  }
+   Vector3.crossToOut(col2, col3, out);
+   final num x = det * Vector3.dot(b, out);
+   Vector3.crossToOut(b, col3, out);
+   final num y = det * Vector3.dot(col1, out);
+   Vector3.crossToOut(col2, b, out);
+   num z = det * Vector3.dot(col1, out);
+   out.x = x;
+   out.y = y;
+   out.z = z;
+ }
 }
 </pre>
 </div>
@@ -138,9 +137,9 @@ class Matrix33 {
 <div class="doc">
 <pre class="source">
 static Vector3 mul(Matrix33 A, Vector3 v){
-  return new Vector3(v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x,
-      v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y,
-      v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z);
+ return new Vector3(v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x,
+     v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y,
+     v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z);
 }
 </pre>
 </div>
@@ -152,11 +151,11 @@ void <strong>mulToOut</strong>(<a href="../box2d/Matrix33.html">Matrix33</a> A, 
 <div class="doc">
 <pre class="source">
 static void mulToOut(Matrix33 A, Vector3 v, Vector3 out){
-  final num tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
-  final num tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
-  out.x = v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x;
-  out.y = tempy;
-  out.z = tempz;
+ final num tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
+ final num tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
+ out.x = v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x;
+ out.y = tempy;
+ out.z = tempz;
 }
 </pre>
 </div>
@@ -171,9 +170,9 @@ new <strong>Matrix33</strong>() <a class="anchor-link" href="#Matrix33"
 <div class="doc">
 <pre class="source">
 Matrix33() :
-  col1 = new Vector3(),
-  col2 = new Vector3(),
-  col3 = new Vector3() { }
+ col1 = new Vector3(),
+ col2 = new Vector3(),
+ col3 = new Vector3() { }
 </pre>
 </div>
 </div>
@@ -184,9 +183,9 @@ new <strong>Matrix33.setCols</strong>(<a href="../box2d/Vector3.html">Vector3</a
 <div class="doc">
 <pre class="source">
 Matrix33.setCols(Vector3 argCol1, Vector3 argCol2, Vector3 argCol3) :
-  col1 = new Vector3.copy(argCol1),
-  col2 = new Vector3.copy(argCol2),
-  col3 = new Vector3.copy(argCol3) { }
+ col1 = new Vector3.copy(argCol1),
+ col2 = new Vector3.copy(argCol2),
+ col3 = new Vector3.copy(argCol3) { }
 </pre>
 </div>
 </div>
@@ -239,9 +238,9 @@ void <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
 <div class="doc">
 <pre class="source">
 void setZero() {
-  col1.setZero();
-  col2.setZero();
-  col3.setZero();
+ col1.setZero();
+ col2.setZero();
+ col3.setZero();
 }
 </pre>
 </div>
@@ -255,9 +254,9 @@ void setZero() {
 than computing the inverse in one-shot cases.</p>
 <pre class="source">
 Vector solve22(Vector b) {
-  Vector x = new Vector();
-  solve22ToOut(b, x);
-  return x;
+ Vector x = new Vector();
+ solve22ToOut(b, x);
+ return x;
 }
 </pre>
 </div>
@@ -271,13 +270,13 @@ void <strong>solve22ToOut</strong>(<a href="../box2d/Vector.html">Vector</a> b, 
 than computing the inverse in one-shot cases.</p>
 <pre class="source">
 void solve22ToOut(Vector b, Vector out) {
-  final num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-  num det = a11 * a22 - a12 * a21;
-  if (det != 0.0){
-    det = 1.0 / det;
-  }
-  out.x = det * (a22 * b.x - a12 * b.y);
-  out.y = det * (a11 * b.y - a21 * b.x);
+ final num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+ num det = a11 * a22 - a12 * a21;
+ if (det != 0.0){
+   det = 1.0 / det;
+ }
+ out.x = det * (a22 * b.x - a12 * b.y);
+ out.y = det * (a11 * b.y - a21 * b.x);
 }
 </pre>
 </div>
@@ -291,9 +290,9 @@ void solve22ToOut(Vector b, Vector out) {
 than computing the inverse in one-shot cases.</p>
 <pre class="source">
 Vector3 solve33(Vector3 b) {
-  Vector3 x = new Vector3();
-  solve33ToOut(b, x);
-  return x;
+ Vector3 x = new Vector3();
+ solve33ToOut(b, x);
+ return x;
 }
 </pre>
 </div>
@@ -308,21 +307,21 @@ than computing the inverse in one-shot cases.
 out: the result</p>
 <pre class="source">
 void solve33ToOut(Vector3 b, Vector3 out) {
-  Vector3.crossToOut(col2, col3, out);
-  num det = Vector3.dot(col1, out);
-  if (det != 0.0){
-    det = 1.0 / det;
-  }
+ Vector3.crossToOut(col2, col3, out);
+ num det = Vector3.dot(col1, out);
+ if (det != 0.0){
+   det = 1.0 / det;
+ }
 
-  Vector3.crossToOut(col2, col3, out);
-  final num x = det * Vector3.dot(b, out);
-  Vector3.crossToOut(b, col3, out);
-  final num y = det * Vector3.dot(col1, out);
-  Vector3.crossToOut(col2, b, out);
-  num z = det * Vector3.dot(col1, out);
-  out.x = x;
-  out.y = y;
-  out.z = z;
+ Vector3.crossToOut(col2, col3, out);
+ final num x = det * Vector3.dot(b, out);
+ Vector3.crossToOut(b, col3, out);
+ final num y = det * Vector3.dot(col1, out);
+ Vector3.crossToOut(col2, b, out);
+ num z = det * Vector3.dot(col1, out);
+ out.x = x;
+ out.y = y;
+ out.z = z;
 }
 </pre>
 </div>

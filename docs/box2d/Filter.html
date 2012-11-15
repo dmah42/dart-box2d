@@ -32,48 +32,47 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Contains contact filtering data.</p>
 <pre class="source">
 class Filter {
-  /**
-   * Collision category bits.
-   */
-  int categoryBits;
+ /**
+  * Collision category bits.
+  */
+ int categoryBits;
 
-  /**
-   * Collision mask bits. These are the categories that this shape would accept
-   * for collision.
-   */
-  int maskBits;
+ /**
+  * Collision mask bits. These are the categories that this shape would accept
+  * for collision.
+  */
+ int maskBits;
 
-  /**
-   * Collision groups allow a certain group of objects to never collide
-   * (negative) or always collide (positive). A groupIndex value of 0 means no
-   * collision group.
-   */
-  int groupIndex;
+ /**
+  * Collision groups allow a certain group of objects to never collide
+  * (negative) or always collide (positive). A groupIndex value of 0 means no
+  * collision group.
+  */
+ int groupIndex;
 
-  /**
-   * Constructs a new filter with everything set to 0.
-   */
-  Filter() : categoryBits = 0, maskBits = 0, groupIndex = 0 { }
+ /**
+  * Constructs a new filter with everything set to 0.
+  */
+ Filter() : categoryBits = 0, maskBits = 0, groupIndex = 0 { }
 
-  /**
-   * Constructs a new Filter that is a copy of the other filter.
-   */
-  Filter.copy(Filter other) :
-    categoryBits = other.categoryBits,
-    maskBits = other.maskBits,
-    groupIndex = other.groupIndex { }
+ /**
+  * Constructs a new Filter that is a copy of the other filter.
+  */
+ Filter.copy(Filter other) :
+   categoryBits = other.categoryBits,
+   maskBits = other.maskBits,
+   groupIndex = other.groupIndex { }
 
-  /**
-   * Sets this filter equal to the given filter.
-   */
-  void setFrom(Filter other) {
-    categoryBits = other.categoryBits;
-    maskBits = other.maskBits;
-    groupIndex = other.groupIndex;
-  }
+ /**
+  * Sets this filter equal to the given filter.
+  */
+ void setFrom(Filter other) {
+   categoryBits = other.categoryBits;
+   maskBits = other.maskBits;
+   groupIndex = other.groupIndex;
+ }
 }
 </pre>
 </div>
@@ -98,9 +97,9 @@ new <strong>Filter.copy</strong>(<a href="../box2d/Filter.html">Filter</a> other
 <p>Constructs a new Filter that is a copy of the other filter.</p>
 <pre class="source">
 Filter.copy(Filter other) :
-  categoryBits = other.categoryBits,
-  maskBits = other.maskBits,
-  groupIndex = other.groupIndex { }
+ categoryBits = other.categoryBits,
+ maskBits = other.maskBits,
+ groupIndex = other.groupIndex { }
 </pre>
 </div>
 </div>
@@ -160,9 +159,9 @@ void <strong>setFrom</strong>(<a href="../box2d/Filter.html">Filter</a> other) <
 <p>Sets this filter equal to the given filter.</p>
 <pre class="source">
 void setFrom(Filter other) {
-  categoryBits = other.categoryBits;
-  maskBits = other.maskBits;
-  groupIndex = other.groupIndex;
+ categoryBits = other.categoryBits;
+ maskBits = other.maskBits;
+ groupIndex = other.groupIndex;
 }
 </pre>
 </div>

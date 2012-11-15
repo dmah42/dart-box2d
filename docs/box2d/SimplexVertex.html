@@ -34,31 +34,31 @@
 <div class="doc">
 <pre class="source">
 class SimplexVertex {
-  final Vector wA; // support point in shapeA
-  final Vector wB; // support point in shapeB
-  final Vector w; // wB - wA
-  num a; // barycentric coordinate for closest point
-  int indexA; // wA index
-  int indexB; // wB index
+ final Vector wA; // support point in shapeA
+ final Vector wB; // support point in shapeB
+ final Vector w; // wB - wA
+ num a; // barycentric coordinate for closest point
+ int indexA; // wA index
+ int indexB; // wB index
 
-  SimplexVertex() :
-    wA = new Vector(),
-    wB = new Vector(),
-    w = new Vector(),
-    a = 0,
-    indexA = 0,
-    indexB = 0 { }
+ SimplexVertex() :
+   wA = new Vector(),
+   wB = new Vector(),
+   w = new Vector(),
+   a = 0,
+   indexA = 0,
+   indexB = 0 { }
 
-  void setFrom(SimplexVertex sv) {
-    wA.setFrom(sv.wA);
-    wB.setFrom(sv.wB);
-    w.setFrom(sv.w);
-    a = sv.a;
-    indexA = sv.indexA;
-    indexB = sv.indexB;
-  }
+ void setFrom(SimplexVertex sv) {
+   wA.setFrom(sv.wA);
+   wB.setFrom(sv.wB);
+   w.setFrom(sv.w);
+   a = sv.a;
+   indexA = sv.indexA;
+   indexB = sv.indexB;
+ }
 
-  String toString() =&gt; "wA: $wA, wB: $wB, w: $w";
+ String toString() =&gt; "wA: $wA, wB: $wB, w: $w";
 }
 </pre>
 </div>
@@ -71,12 +71,12 @@ new <strong>SimplexVertex</strong>() <a class="anchor-link" href="#SimplexVertex
 <div class="doc">
 <pre class="source">
 SimplexVertex() :
-  wA = new Vector(),
-  wB = new Vector(),
-  w = new Vector(),
-  a = 0,
-  indexA = 0,
-  indexB = 0 { }
+ wA = new Vector(),
+ wB = new Vector(),
+ w = new Vector(),
+ a = 0,
+ indexA = 0,
+ indexB = 0 { }
 </pre>
 </div>
 </div>
@@ -165,12 +165,12 @@ void <strong>setFrom</strong>(<a href="../box2d/SimplexVertex.html">SimplexVerte
 <div class="doc">
 <pre class="source">
 void setFrom(SimplexVertex sv) {
-  wA.setFrom(sv.wA);
-  wB.setFrom(sv.wB);
-  w.setFrom(sv.w);
-  a = sv.a;
-  indexA = sv.indexA;
-  indexB = sv.indexB;
+ wA.setFrom(sv.wA);
+ wB.setFrom(sv.wB);
+ w.setFrom(sv.w);
+ a = sv.a;
+ indexA = sv.indexA;
+ indexB = sv.indexB;
 }
 </pre>
 </div>

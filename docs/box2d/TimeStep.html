@@ -32,31 +32,30 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>This is an internal structure.</p>
 <pre class="source">
 class TimeStep {
-  TimeStep() :
-    dt = 0,
-    inv_dt = 0,
-    dtRatio = 0,
-    velocityIterations = 0,
-    positionIterations = 0,
-    warmStarting = true { }
+ TimeStep() :
+   dt = 0,
+   inv_dt = 0,
+   dtRatio = 0,
+   velocityIterations = 0,
+   positionIterations = 0,
+   warmStarting = true { }
 
-  /** time step */
-  num dt;
+ /** time step */
+ num dt;
 
-  /** inverse time step (0 if dt == 0). */
-  num inv_dt;
+ /** inverse time step (0 if dt == 0). */
+ num inv_dt;
 
-  /** dt * inv_dt0 */
-  num dtRatio;
+ /** dt * inv_dt0 */
+ num dtRatio;
 
-  int velocityIterations;
+ int velocityIterations;
 
-  int positionIterations;
+ int positionIterations;
 
-  bool warmStarting;
+ bool warmStarting;
 }
 </pre>
 </div>
@@ -69,12 +68,12 @@ new <strong>TimeStep</strong>() <a class="anchor-link" href="#TimeStep"
 <div class="doc">
 <pre class="source">
 TimeStep() :
-  dt = 0,
-  inv_dt = 0,
-  dtRatio = 0,
-  velocityIterations = 0,
-  positionIterations = 0,
-  warmStarting = true { }
+ dt = 0,
+ inv_dt = 0,
+ dtRatio = 0,
+ velocityIterations = 0,
+ positionIterations = 0,
+ warmStarting = true { }
 </pre>
 </div>
 </div>
