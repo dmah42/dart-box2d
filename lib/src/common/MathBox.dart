@@ -52,7 +52,7 @@ class MathBox {
   /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
    *  [matrix] must be a 2x2 or 3x3 matrix, and in the latter case the top-left
    *  2x2 elements will be used. [b] must be a vec2. */
-  static vec2 solve22(Dynamic matrix, vec2 b) {
+  static vec2 solve22(dynamic matrix, vec2 b) {
     assert(matrix is mat2 || matrix is mat3);
     num a11 = matrix.col0.x, a12 = matrix.col1.x,
         a21 = matrix.col0.y, a22 = matrix.col1.y;
