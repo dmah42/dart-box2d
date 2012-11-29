@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-library box2d_console;
+library box2d;
 
 import 'dart:collection';
 import 'dart:math' as Math;
