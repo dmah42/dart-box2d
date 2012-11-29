@@ -17,7 +17,7 @@ library racer;
 import 'dart:html';
 import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
-import 'package:dartvectormath/vector_math_html.dart';
+import 'package:dartvectormath/vector_math_browser.dart';
 
 part '../demo.dart';
 part 'car.dart';

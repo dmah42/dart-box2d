@@ -26,16 +26,8 @@ class CanvasDraw extends DebugDraw {
   /** The canvas rendering context with which to draw. */
   CanvasRenderingContext2D ctx;
 
-<<<<<<< HEAD
-  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
-    assert (null != viewport && null != ctx);
-||||||| merged common ancestors
-  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
-    assert (null !== viewport && null !== ctx);
-=======
   CanvasDraw(ViewportTransform viewport, this.ctx) : super(viewport) {
-    assert (null !== viewport && null !== ctx);
->>>>>>> Fix up build
+    assert (null != viewport && null != ctx);
   }
 
   /**
