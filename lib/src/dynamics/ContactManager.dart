@@ -41,7 +41,7 @@ class ContactManager implements PairCallback {
     Body bodyB = fixtureB.body;
 
     // Are the fixtures on the same body?
-    if (bodyA === bodyB) {
+    if (bodyA == bodyB) {
       return;
     }
 

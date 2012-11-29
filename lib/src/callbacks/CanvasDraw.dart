@@ -27,7 +27,7 @@ class CanvasDraw extends DebugDraw {
   CanvasRenderingContext2D ctx;
 
   CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
-    assert (null !== viewport && null !== ctx);
+    assert (null != viewport && null != ctx);
   }
 
   /**

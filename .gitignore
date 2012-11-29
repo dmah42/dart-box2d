@@ -1,4 +1,5 @@
 out
 packages
 pubspec.lock
+*.deps
 *.map

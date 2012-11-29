@@ -623,7 +623,7 @@ class World {
           vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
           vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
-          if (0 !== (drawFlags & DebugDraw.e_lineDrawingBit)) {
+          if (0 != (drawFlags & DebugDraw.e_lineDrawingBit)) {
             _debugDraw.drawPolygon(vs, 4, color);
           } else {
             _debugDraw.drawSolidPolygon(vs, 4, color);
@@ -1094,7 +1094,7 @@ class World {
         num radius = circle.radius;
         axis.setFrom(xf.rotation.col1);
 
-        if (0 !== (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
+        if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);
         } else {
           _debugDraw.drawSolidCircle(center, radius, color, axis);
@@ -1117,7 +1117,7 @@ class World {
           Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
         }
 
-        if (0 !== (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
+        if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawPolygon(vertices, vertexCount, color);
         } else {
           if (vertexCount > 2) {
@@ -1153,7 +1153,7 @@ class World {
         break;
 
       case JointType.PULLEY :
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //Vector s1 = pulley.getGroundAnchorA();
         //Vector s2 = pulley.getGroundAnchorB();
         //_debugDraw.drawSegment(s1, p1, color);

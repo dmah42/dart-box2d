@@ -285,7 +285,7 @@ class DynamicTree {
    if (node1 != null) {
      // If the sibling was the first child, make the new parent the first child
      // of the old parent. Otherwise, make it the second.
-     if (sibling.parent.childOne === sibling)
+     if (sibling.parent.childOne == sibling)
        node1.childOne = node2;
      else
        node1.childTwo = node2;
@@ -321,9 +321,9 @@ class DynamicTree {
  void _removeLeaf(DynamicTreeNode argNode) {
    // If asked to remove the root, set the root to null. If that was also the
    // last leaf, then set lastLeaf to null as well.
-   if (argNode === _root) {
+   if (argNode == _root) {
      _root = null;
-     if (_lastLeaf === argNode) {
+     if (_lastLeaf == argNode) {
        _lastLeaf = null;
      }
      return;
@@ -334,12 +334,12 @@ class DynamicTree {
    DynamicTreeNode sibling;
 
    // Find the sibling of the node to remove.
-   sibling = (node2.childOne === argNode ? node2.childTwo : node2.childOne);
+   sibling = (node2.childOne == argNode ? node2.childTwo : node2.childOne);
 
    // If the grandparent node of the node to remove isn't null, destroy the
    // parent node and connect the grandparent node directly to the sibling.
    if (node1 != null) {
-     if (node1.childOne === node2)
+     if (node1.childOne == node2)
        node1.childOne = sibling;
      else
        node1.childTwo = sibling;
@@ -372,7 +372,7 @@ class DynamicTree {
    }
 
    // If we just removed the last leaf, the root is the new last leaf.
-   if (_lastLeaf === argNode) {
+   if (_lastLeaf == argNode) {
      _lastLeaf = _root;
    }
  }

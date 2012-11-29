@@ -31,7 +31,7 @@ class BoxTest extends Demo {
   }
 
   void initialize() {
-    assert (null !== world);
+    assert (null != world);
     _createGround();
     _createBox();
   }

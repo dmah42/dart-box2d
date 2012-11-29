@@ -32,7 +32,7 @@ class FrictionJointTest extends Demo {
   }
 
   void initialize() {
-    assert (null !== world);
+    assert (null != world);
     
     _createGround();
     _createBoxShapeAndFixture();

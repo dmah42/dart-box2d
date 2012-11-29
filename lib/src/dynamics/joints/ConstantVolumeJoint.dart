@@ -43,7 +43,7 @@ class ConstantVolumeJoint extends Joint {
     super(def),
     _impulse = 0 {
     if (def.bodies.length <= 2) {
-      throw new IllegalArgumentException(
+      throw new ArgumentError(
           "You cannot create a constant volume joint with less than three "
           "bodies.");
     }
@@ -63,7 +63,7 @@ class ConstantVolumeJoint extends Joint {
     targetVolume = area;
 
     if (def.joints != null && def.joints.length != def.bodies.length) {
-      throw new IllegalArgumentException(
+      throw new ArgumentError(
           "Incorrect joint definition.  Joints have to correspond to "
           "the bodies");
     }
@@ -225,18 +225,18 @@ class ConstantVolumeJoint extends Joint {
   }
 
   void getAnchorA(Vector argOut) {
-    throw new NotImplementedException();
+    throw new UnimplementedError();
   }
 
   void getAnchorB(Vector argOut) {
-    throw new NotImplementedException();
+    throw new UnimplementedError();
   }
 
   void getReactionForce(num inv_dt, Vector argOut) {
-    throw new NotImplementedException();
+    throw new UnimplementedError();
   }
 
   num getReactionTorque(num inv_dt) {
-    throw new NotImplementedException();
+    throw new UnimplementedError();
   }
 }

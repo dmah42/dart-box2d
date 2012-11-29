@@ -151,8 +151,8 @@ class BroadPhase implements TreeCallback {
       // Skip any duplicate pairs.
       while (i < _pairCount) {
         Pair pair = _pairBuffer[i];
-        if (pair.proxyA !== primaryPair.proxyA ||
-            pair.proxyB !== primaryPair.proxyB) {
+        if (pair.proxyA != primaryPair.proxyA ||
+            pair.proxyB != primaryPair.proxyB) {
           break;
         }
         ++i;
@@ -219,7 +219,7 @@ class BroadPhase implements TreeCallback {
 
   void _unbufferMove(DynamicTreeNode proxy) {
     int index = moveBuffer.indexOf(proxy);
-    if (index !== -1)
+    if (index != -1)
       moveBuffer.removeRange(index, 1);
   }
 }

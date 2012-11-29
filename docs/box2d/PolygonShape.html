@@ -119,7 +119,7 @@ class PolygonShape extends Shape {
 
    // Copy vertices.
    for (int i = 0; i &lt; vertexCount; ++i) {
-     assert(vertices[i] !== null);
+     assert(vertices[i] != null);
      vertices[i].setFrom(otherVertices[i]);
    }
 
@@ -912,7 +912,7 @@ void setFrom(List&lt;Vector&gt; otherVertices, int count) {
 
  // Copy vertices.
  for (int i = 0; i &lt; vertexCount; ++i) {
-   assert(vertices[i] !== null);
+   assert(vertices[i] != null);
    vertices[i].setFrom(otherVertices[i]);
  }
 

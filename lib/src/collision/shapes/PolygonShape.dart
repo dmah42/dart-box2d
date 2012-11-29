@@ -105,7 +105,7 @@ class PolygonShape extends Shape {
 
     // Copy vertices.
     for (int i = 0; i < vertexCount; ++i) {
-      assert(vertices[i] !== null);
+      assert(vertices[i] != null);
       vertices[i].setFrom(otherVertices[i]);
     }
 

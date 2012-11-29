@@ -79,7 +79,7 @@ abstract class Demo {
     _stopwatch = new Stopwatch()..start();
     query("#title").innerHTML = name;
     bool doSleep = true;
-    if (null === gravity) gravity = new Vector(0, GRAVITY);
+    if (null == gravity) gravity = new Vector(0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 

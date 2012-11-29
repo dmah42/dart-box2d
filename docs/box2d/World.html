@@ -634,7 +634,7 @@ class World {
          vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
          vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
-         if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
+         if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
            _debugDraw.drawPolygon(vs, 4, color);
          } else {
            _debugDraw.drawSolidPolygon(vs, 4, color);
@@ -1105,7 +1105,7 @@ class World {
        num radius = circle.radius;
        axis.setFrom(xf.rotation.col1);
 
-       if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+       if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawCircle(center, radius, color, axis);
        } else {
          _debugDraw.drawSolidCircle(center, radius, color, axis);
@@ -1128,7 +1128,7 @@ class World {
          Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
        }
 
-       if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+       if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawPolygon(vertices, vertexCount, color);
        } else {
          if (vertexCount &gt; 2) {
@@ -1164,7 +1164,7 @@ class World {
        break;
 
      case JointType.PULLEY :
-       throw new NotImplementedException();
+       throw new UnimplementedError();
        //Vector s1 = pulley.getGroundAnchorA();
        //Vector s2 = pulley.getGroundAnchorB();
        //_debugDraw.drawSegment(s1, p1, color);
@@ -1992,7 +1992,7 @@ void drawDebugData() {
        vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
        vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
-       if (0 !== (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
+       if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawPolygon(vs, 4, color);
        } else {
          _debugDraw.drawSolidPolygon(vs, 4, color);
@@ -2043,7 +2043,7 @@ void drawJoint(Joint joint) {
      break;
 
    case JointType.PULLEY :
-     throw new NotImplementedException();
+     throw new UnimplementedError();
      //Vector s1 = pulley.getGroundAnchorA();
      //Vector s2 = pulley.getGroundAnchorB();
      //_debugDraw.drawSegment(s1, p1, color);
@@ -2087,7 +2087,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
      num radius = circle.radius;
      axis.setFrom(xf.rotation.col1);
 
-     if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+     if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
        _debugDraw.drawCircle(center, radius, color, axis);
      } else {
        _debugDraw.drawSolidCircle(center, radius, color, axis);
@@ -2110,7 +2110,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
        Transform.mulToOut(xf, poly.vertices[i], vertices[i]);
      }
 
-     if (0 !== (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
+     if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
        _debugDraw.drawPolygon(vertices, vertexCount, color);
      } else {
        if (vertexCount &gt; 2) {

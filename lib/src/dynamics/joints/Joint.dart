@@ -65,28 +65,28 @@ class Joint {
   factory Joint.create(World argWorld, JointDef def) {
     switch(def.type){
       case JointType.MOUSE:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //  return new MouseJoint(def);
       case JointType.DISTANCE:
         return new DistanceJoint(def);
       case JointType.PRISMATIC:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //  return new PrismaticJoint(def);
       case JointType.REVOLUTE:
         return new RevoluteJoint(def);
       case JointType.WELD:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //return new WeldJoint(def);
       case JointType.FRICTION:
         return new FrictionJoint(def);
       case JointType.LINE:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //return new LineJoint(def);
       case JointType.GEAR:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //return new GearJoint(def);
       case JointType.PULLEY:
-        throw new NotImplementedException();
+        throw new UnimplementedError();
         //return new PulleyJoint(def);
       case JointType.CONSTANT_VOLUME:
         return new ConstantVolumeJoint(argWorld, def);
