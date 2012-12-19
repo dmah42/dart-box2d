@@ -327,6 +327,20 @@ $$._StopwatchImpl = {"":"Object;_start,_stop",
   if (this._start == null || !(this._stop == null))
     return;
   this._stop = $.Primitives_numMicroseconds();
+},
+ get$elapsedTicks: function() {
+  var t1, t2;
+  t1 = this._start;
+  if (t1 == null)
+    return 0;
+  t2 = this._stop;
+  return t2 == null ? $.sub($._StopwatchImpl__now(), this._start) : $.sub(t2, t1);
+},
+ get$elapsedMilliseconds: function() {
+  return $.tdiv($.mul(this.get$elapsedTicks(), 1000), this.get$frequency());
+},
+ get$frequency: function() {
+  return $._StopwatchImpl__frequency();
 }
 };
 
@@ -448,14 +462,14 @@ $$.ObjectInterceptor = {"":"Object;",
  get$filter: function(receiver) {
   return receiver.get$filter();
 },
- get$isNegative: function(receiver) {
-  return receiver.get$isNegative();
+ abs$0: function(receiver) {
+  return receiver.abs$0();
 },
  split$1: function(receiver, a0) {
   return receiver.split$1(a0);
 },
- ceil$0: function(receiver) {
-  return receiver.ceil$0();
+ get$isNegative: function(receiver) {
+  return receiver.get$isNegative();
 },
  filter$1: function(receiver, a0) {
   return receiver.filter$1(a0);
@@ -466,17 +480,17 @@ $$.ObjectInterceptor = {"":"Object;",
  indexOf$1: function(receiver, a0) {
   return receiver.indexOf$1(a0);
 },
- get$isNaN: function(receiver) {
-  return receiver.get$isNaN();
-},
  get$length: function(receiver) {
   return receiver.get$length();
+},
+ truncate$0: function(receiver) {
+  return receiver.truncate$0();
 },
  sort$1: function(receiver, a0) {
   return receiver.sort$1(a0);
 },
- abs$0: function(receiver) {
-  return receiver.abs$0();
+ ceil$0: function(receiver) {
+  return receiver.ceil$0();
 },
  addLast$1: function(receiver, a0) {
   return receiver.addLast$1(a0);
@@ -487,8 +501,8 @@ $$.ObjectInterceptor = {"":"Object;",
  allMatches$1: function(receiver, a0) {
   return receiver.allMatches$1(a0);
 },
- truncate$0: function(receiver) {
-  return receiver.truncate$0();
+ get$isNaN: function(receiver) {
+  return receiver.get$isNaN();
 },
  compareTo$1: function(receiver, a0) {
   return receiver.compareTo$1(a0);
@@ -853,7 +867,7 @@ $$.Benchmark = {"":"Object;bodies>",
       for (i = 0; i < t4; ++i)
         this.world.step$3(0.016666666666666666, t6, t6);
       watch.stop$0();
-      this._recordResults$4(watch.elapsedInMs$0(), resultsWriter, t6, t4);
+      this._recordResults$4(watch.get$elapsedMilliseconds(), resultsWriter, t6, t4);
     }
   }
 },
@@ -892,7 +906,7 @@ $$.Benchmark = {"":"Object;bodies>",
                 for (i = 0; $.ltB(i, t4); ++i)
                   this.world.step$3(0.016666666666666666, t6, t6);
                 watch.stop$0();
-                this._recordResults$4(watch.elapsedInMs$0(), resultsWriter, t6, t4);
+                this._recordResults$4(watch.get$elapsedMilliseconds(), resultsWriter, t6, t4);
               }
           }
   }
@@ -2754,10 +2768,10 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
   R = xf1.get$rotation();
   dLocal1x = $.add($.mul(dx, R.get$col1().get$x()), $.mul(dy, R.get$col1().get$y()));
   if (typeof dLocal1x !== 'number')
-    return this.findMaxSeparation$5$bailout(3, results, dLocal1x, xf1, poly2, xf2, dx, dy, poly1, normals1, count1, R);
+    return this.findMaxSeparation$5$bailout(3, results, dLocal1x, xf1, poly2, poly1, xf2, dy, count1, normals1, dx, R);
   dLocal1y = $.add($.mul(dx, R.get$col2().get$x()), $.mul(dy, R.get$col2().get$y()));
   if (typeof dLocal1y !== 'number')
-    return this.findMaxSeparation$5$bailout(4, results, dLocal1x, xf1, poly2, xf2, poly1, normals1, count1, dLocal1y);
+    return this.findMaxSeparation$5$bailout(4, results, dLocal1x, xf1, poly2, poly1, xf2, count1, normals1, dLocal1y);
   for (maxDot = 1e-12, i = 0, edge = 0; i < count1; ++i) {
     if (i >= normals1.length)
       throw $.ioore(i);
@@ -2831,12 +2845,12 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
       break;
     case 3:
       R = env10;
-      count1 = env9;
+      dx = env9;
       normals1 = env8;
-      poly1 = env7;
+      count1 = env7;
       dy = env6;
-      dx = env5;
-      xf2 = env4;
+      xf2 = env5;
+      poly1 = env4;
       poly2 = env3;
       xf1 = env2;
       dLocal1x = env1;
@@ -2844,10 +2858,10 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
       break;
     case 4:
       dLocal1y = env8;
-      count1 = env7;
-      normals1 = env6;
-      poly1 = env5;
-      xf2 = env4;
+      normals1 = env7;
+      count1 = env6;
+      xf2 = env5;
+      poly1 = env4;
       poly2 = env3;
       xf1 = env2;
       dLocal1x = env1;
@@ -3033,7 +3047,7 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
   }
 },
  collidePolygons$5: function(manifold, polyA, xfA, polyB, xfB) {
-  var totalRadius, t2, t1, t3, t4, edge1, xf2, xf1, poly2, poly1, flip, count1, vertices1, t5, t6, t7, t8, frontOffset, sideOffset1, sideOffset2, t9, np, i, pointCount, cp;
+  var totalRadius, t2, t1, t3, t4, edge1, xf2, xf1, poly2, poly1, flip, count1, vertices1, t5, t6, t7, t8, frontOffset, sideOffset1, sideOffset2, t9, np, pointCount, i, cp;
   manifold.set$pointCount(0);
   totalRadius = $.add(polyA.get$radius(), polyB.get$radius());
   if (typeof totalRadius !== 'number')
@@ -3105,7 +3119,7 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
     return;
   manifold.get$localNormal().setFrom$1(t5);
   manifold.get$localPoint().setFrom$1(t6);
-  for (t2 = t1.length, i = 0, pointCount = 0; i < 2; ++i) {
+  for (t2 = t1.length, pointCount = 0, i = 0; i < 2; ++i) {
     if (i >= t2)
       throw $.ioore(i);
     t3 = t1[i].get$v();
@@ -3203,7 +3217,7 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
       $.Transform_mulToOut(xf1, t3, t3);
       frontOffset = $.add($.mul(t4.x, t2.x), $.mul(t4.y, t2.y));
     case 2:
-      var totalRadius, xfB, polyB, xfA, polyA, manifold, t2, t1, t3, t4, edge1, xf2, xf1, poly2, poly1, flip, count1, vertices1, t5, t6, t7, t8, frontOffset, sideOffset1, sideOffset2, t9, np, i, pointCount, cp;
+      var totalRadius, xfB, polyB, xfA, polyA, manifold, t2, t1, t3, t4, edge1, xf2, xf1, poly2, poly1, flip, count1, vertices1, t5, t6, t7, t8, frontOffset, sideOffset1, sideOffset2, t9, np, pointCount, i, cp;
       state0 = 0;
       sideOffset1 = $.add($.neg($.add($.mul(t8.x, t2.x), $.mul(t8.y, t2.y))), totalRadius);
       sideOffset2 = $.add($.add($.mul(t8.x, t3.x), $.mul(t8.y, t3.y)), totalRadius);
@@ -3218,7 +3232,7 @@ $$.Collision = {"":"Object;_pool,cache,input,output,results1,results2,incidentEd
         return;
       manifold.get$localNormal().setFrom$1(t5);
       manifold.get$localPoint().setFrom$1(t6);
-      for (t2 = t1.length, i = 0, pointCount = 0; i < 2; ++i) {
+      for (t2 = t1.length, pointCount = 0, i = 0; i < 2; ++i) {
         if (i >= t2)
           throw $.ioore(i);
         t3 = t1[i].get$v();
@@ -10474,7 +10488,7 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
     c$0: {
       t1 = this.bodies;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior))
-        return this.solve$3$bailout(2, step, gravity, allowSleep, i, t1);
+        return this.solve$3$bailout(2, step, gravity, i, allowSleep, t1);
       if (i >= t1.length)
         throw $.ioore(i);
       b = t1[i];
@@ -10501,11 +10515,11 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       t6 *= t2;
       t1 = t1.get$y();
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(8, step, gravity, allowSleep, b, t6, i, t1);
+        return this.solve$3$bailout(8, step, gravity, allowSleep, b, i, t6, t1);
       t4 = t1 * t4;
       t1 = gravity.get$y();
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(10, step, t1, gravity, b, allowSleep, t6, i, t4);
+        return this.solve$3$bailout(10, step, t1, gravity, b, allowSleep, i, t6, t4);
       t1 = t4 + t1;
       velocityDelta = $.Vector$(t6, t1 * t2);
       b.get$linearVelocity().addLocal$1(velocityDelta);
@@ -10514,10 +10528,10 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
         return this.solve$3$bailout(12, step, gravity, allowSleep, b, t6, i);
       t11 = step.get$dt();
       if (typeof t11 !== 'number')
-        return this.solve$3$bailout(13, step, gravity, allowSleep, b, t6, t11, i);
+        return this.solve$3$bailout(13, step, gravity, allowSleep, b, t6, i, t11);
       t13 = b.get$invInertia();
       if (typeof t13 !== 'number')
-        return this.solve$3$bailout(14, step, gravity, allowSleep, b, t6, t11, i, t13);
+        return this.solve$3$bailout(14, step, gravity, allowSleep, b, t6, i, t11, t13);
       t13 = t11 * t13;
       t11 = b.get$_torque();
       if (typeof t11 !== 'number')
@@ -10740,12 +10754,12 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
     while (true) {
       t1 = this.jointCount;
       if (typeof t1 !== 'number')
-        return this.solve$3$bailout(46, step, jointsOkay, allowSleep, t2, j, i, contactsOkay, t1);
+        return this.solve$3$bailout(46, step, jointsOkay, j, t2, allowSleep, i, contactsOkay, t1);
       if (!(j < t1))
         break;
       t1 = this.joints;
       if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior))
-        return this.solve$3$bailout(47, t1, jointsOkay, allowSleep, step, j, i, t2, contactsOkay);
+        return this.solve$3$bailout(47, t1, jointsOkay, j, step, allowSleep, t2, i, contactsOkay);
       if (j >= t1.length)
         throw $.ioore(j);
       jointOkay = t1[j].solvePositionConstraints$1(0.2);
@@ -10865,8 +10879,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       break;
     case 2:
       t1 = env4;
-      i = env3;
-      allowSleep = env2;
+      allowSleep = env3;
+      i = env2;
       gravity = env1;
       step = env0;
       break;
@@ -10915,8 +10929,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       break;
     case 8:
       t1 = env6;
-      i = env5;
-      t3 = env4;
+      t3 = env5;
+      i = env4;
       b = env3;
       allowSleep = env2;
       gravity = env1;
@@ -10925,8 +10939,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
     case 9:
       t8 = env7;
       t1 = env6;
-      i = env5;
-      t3 = env4;
+      t3 = env5;
+      i = env4;
       b = env3;
       allowSleep = env2;
       gravity = env1;
@@ -10934,8 +10948,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       break;
     case 10:
       t8 = env7;
-      i = env6;
-      t3 = env5;
+      t3 = env6;
+      i = env5;
       allowSleep = env4;
       b = env3;
       gravity = env2;
@@ -10943,8 +10957,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       step = env0;
       break;
     case 11:
-      i = env7;
-      t3 = env6;
+      t3 = env7;
+      i = env6;
       allowSleep = env5;
       t8 = env4;
       b = env3;
@@ -10961,8 +10975,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       step = env0;
       break;
     case 13:
-      i = env6;
-      t13 = env5;
+      t13 = env6;
+      i = env5;
       t3 = env4;
       b = env3;
       allowSleep = env2;
@@ -10971,8 +10985,8 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       break;
     case 14:
       t15 = env7;
-      i = env6;
-      t13 = env5;
+      t13 = env6;
+      i = env5;
       t3 = env4;
       b = env3;
       allowSleep = env2;
@@ -11269,19 +11283,19 @@ $$.Island = {"":"Object;listener,bodies>,contacts,joints>,positions,velocities,b
       t2 = env7;
       contactsOkay = env6;
       i = env5;
-      j = env4;
+      allowSleep = env4;
       t1 = env3;
-      allowSleep = env2;
+      j = env2;
       jointsOkay = env1;
       step = env0;
       break;
     case 47:
       contactsOkay = env7;
-      t1 = env6;
-      i = env5;
-      j = env4;
+      i = env6;
+      t1 = env5;
+      allowSleep = env4;
       step = env3;
-      allowSleep = env2;
+      j = env2;
       jointsOkay = env1;
       t2 = env0;
       break;
@@ -32647,8 +32661,18 @@ $.SimplexCache$ = function() {
   return t1;
 };
 
+$.DistanceJointDef$ = function() {
+  var t1 = new $.DistanceJointDef($.Vector$(0, 0), $.Vector$(0, 0), 1, 0, 0, 0, null, null, null, false);
+  t1.DistanceJointDef$0();
+  return t1;
+};
+
 $.RangeError$value = function(value) {
   return new $.RangeError("value " + $.S(value));
+};
+
+$.Vector_dot = function(one, two) {
+  return $.add($.mul(one.get$x(), two.get$x()), $.mul(one.get$y(), two.get$y()));
 };
 
 $.ArgumentError$ = function(message) {
@@ -32662,16 +32686,6 @@ $.DistanceInput$ = function() {
 $.coreSort = function(l, compare) {
   $._Sort__doSort(l, 0, l.length - 1, compare);
   return;
-};
-
-$.Vector_dot = function(one, two) {
-  return $.add($.mul(one.get$x(), two.get$x()), $.mul(one.get$y(), two.get$y()));
-};
-
-$.DistanceJointDef$ = function() {
-  var t1 = new $.DistanceJointDef($.Vector$(0, 0), $.Vector$(0, 0), 1, 0, 0, 0, null, null, null, false);
-  t1.DistanceJointDef$0();
-  return t1;
 };
 
 $.Matrix22$ = function(c1, c2) {
@@ -32717,6 +32731,14 @@ $._StopwatchImpl$ = function() {
   return new $._StopwatchImpl(null, null);
 };
 
+$._StopwatchImpl__frequency = function() {
+  return 1000000;
+};
+
+$._StopwatchImpl__now = function() {
+  return $.Primitives_numMicroseconds();
+};
+
 $.Matrix33$ = function() {
   return new $.Matrix33($.Vector3$(0, 0, 0), $.Vector3$(0, 0, 0), $.Vector3$(0, 0, 0));
 };
@@ -32730,6 +32752,10 @@ $.PolygonShape$ = function() {
   return t2;
 };
 
+$.EdgeResults$ = function() {
+  return new $.EdgeResults(0, 0);
+};
+
 $.Vector3_crossToOut = function(a, b, out) {
   var tempy, tempz;
   tempy = $.sub($.mul(a.get$z(), b.get$x()), $.mul(a.get$x(), b.get$z()));
@@ -32737,10 +32763,6 @@ $.Vector3_crossToOut = function(a, b, out) {
   out.x = $.sub($.mul(a.get$y(), b.get$z()), $.mul(a.get$z(), b.get$y()));
   out.y = tempy;
   out.z = tempz;
-};
-
-$.EdgeResults$ = function() {
-  return new $.EdgeResults(0, 0);
 };
 
 $.BroadPhase$ = function() {
@@ -33210,10 +33232,6 @@ $.ContactImpulse$ = function() {
   return new $.ContactImpulse($.List_List(2), $.List_List(2));
 };
 
-$.BallDropBench$ = function(solveLoops, steps) {
-  return new $.BallDropBench(null, null, solveLoops, steps);
-};
-
 $.ContactConstraint$ = function() {
   var t1 = new $.ContactConstraint($.List_List(2), $.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), $.Matrix22$(null, null), $.Matrix22$(null, null), null, null, null, null, null, null, 0, null);
   t1.ContactConstraint$0();
@@ -33261,6 +33279,10 @@ $.Manifold$ = function() {
   return t1;
 };
 
+$.BallDropBench$ = function(solveLoops, steps) {
+  return new $.BallDropBench(null, null, solveLoops, steps);
+};
+
 $.Body$ = function(bd, world) {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12;
   t1 = $.Transform$();
@@ -33305,10 +33327,6 @@ $.ManifoldPoint$ = function() {
   return new $.ManifoldPoint($.Vector$(0, 0), 0, 0, $.ContactID$());
 };
 
-$.ContactRegister$ = function() {
-  return new $.ContactRegister(null, false);
-};
-
 $.ContactID$ = function() {
   return new $.ContactID($.Features$());
 };
@@ -33319,6 +33337,10 @@ $.TimeStep$ = function() {
 
 $.WorldQueryWrapper$ = function() {
   return new $.WorldQueryWrapper(null, null);
+};
+
+$.ContactRegister$ = function() {
+  return new $.ContactRegister(null, false);
 };
 
 $.TimeOfImpactInput$ = function() {
@@ -33333,12 +33355,12 @@ $.Sweep$ = function() {
   return new $.Sweep($.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), 0, 0);
 };
 
-$.Features$ = function() {
-  return new $.Features(0, 0, 0, 0);
-};
-
 $.ContactConstraintPoint$ = function() {
   return new $.ContactConstraintPoint($.Vector$(0, 0), $.Vector$(0, 0), $.Vector$(0, 0), 0, 0, 0, 0, 0);
+};
+
+$.Features$ = function() {
+  return new $.Features(0, 0, 0, 0);
 };
 
 $.TimeOfImpactSolver$ = function() {

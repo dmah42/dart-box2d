@@ -101,7 +101,7 @@ abstract class Benchmark {
         watch.stop();
 
         // Record the running time.
-        _recordResults(watch.elapsedInMs(), resultsWriter, solveCount,
+        _recordResults(watch.elapsedMilliseconds, resultsWriter, solveCount,
             stepCount);
       }
     }
