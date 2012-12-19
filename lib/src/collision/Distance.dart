@@ -101,6 +101,7 @@ class Distance {
           break;
         default :
           assert (false);
+          return;
       }
 
       // If we have 3 points, then the origin is in the corresponding triangle.

@@ -1176,6 +1176,7 @@ class World {
         _debugDraw.drawSegment(x1, p1, color);
         _debugDraw.drawSegment(p1t, p2, color);
         _debugDraw.drawSegment(x2, p2t, color);
+        break;
     }
   }
 }

@@ -77,7 +77,7 @@ abstract class Demo {
   Demo(String name, [Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
       : bodies = new List<Body>() {
     _stopwatch = new Stopwatch()..start();
-    query("#title").innerHTML = name;
+    query("#title").innerHtml = name;
     bool doSleep = true;
     if (null == gravity) gravity = new Vector(0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
@@ -124,11 +124,11 @@ abstract class Demo {
     fpsCounter = query("#fps-counter");
     worldStepTime = query("#world-step-time");
     window.setInterval(() {
-      fpsCounter.innerHTML = frameCount.toString();
+      fpsCounter.innerHtml = frameCount.toString();
       frameCount = 0;
     }, 1000);
     window.setInterval(() {
-      worldStepTime.innerHTML = "${elapsedUs / 1000} ms";
+      worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
     }, 200);
   }
 

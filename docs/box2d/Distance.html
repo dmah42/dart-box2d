@@ -115,6 +115,7 @@ class Distance {
          break;
        default :
          assert (false);
+         return;
      }
 
      // If we have 3 points, then the origin is in the corresponding triangle.
@@ -399,6 +400,7 @@ void distance(DistanceOutput output, SimplexCache cache,
        break;
      default :
        assert (false);
+       return;
    }
 
    // If we have 3 points, then the origin is in the corresponding triangle.
