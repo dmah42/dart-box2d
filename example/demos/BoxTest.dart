@@ -16,8 +16,8 @@ library BoxTest;
 import 'dart:html';
 import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
-import 'package:dartvectormath/vector_math_browser.dart';
-part 'demo.dart';
+import 'package:vector_math/vector_math_browser.dart';
+import 'demo.dart';
 
 class BoxTest extends Demo {
   /** Constructs a new BoxTest. */

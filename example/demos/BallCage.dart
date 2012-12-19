@@ -14,9 +14,9 @@
 library BallCage;
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
-import 'package:dartvectormath/vector_math_browser.dart';
+import 'package:vector_math/vector_math_browser.dart';
 
-part 'demo.dart';
+import 'demo.dart';
 
 class BallCage extends Demo {
   /** Starting position of ball cage in the world. */
