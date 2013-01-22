@@ -13,6 +13,7 @@
 // limitations under the License.
 library box2d;
 
+import 'dart:collection';
 import 'dart:math' as Math;
 
 part 'src/callbacks/PairCallback.dart';
