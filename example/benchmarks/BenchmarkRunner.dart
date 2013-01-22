@@ -65,8 +65,8 @@ class BenchmarkRunner {
     if (filter == null || filter.isEmpty) {
       benchmarks.map(_addBenchmark);
     } else {
-      List<String> filterList = filter.split(",").map((e) => e.trim());
-      benchmarks.filter((e) => filterList.indexOf(e.name) != -1).map(_addBenchmark);
+      List<String> filterList = filter.split(",").mappedBy((e) => e.trim());
+      benchmarks.where((e) => filterList.indexOf(e.name) != -1).mappedBy(_addBenchmark);
     }
   }
 
@@ -92,14 +92,10 @@ class BenchmarkRunner {
 void main() {
   // TODO(dominich): Options for step sizes.
   final runner = new BenchmarkRunner();
-  var args = (new Options()).arguments.iterator();
-  String filter;
-  while (args.hasNext) {
-    if (args.next() == "--filter") {
-      filter = args.next();
-      break;
-    }
-  }
-  runner.setupBenchmarks(filter);
+
+  var parser = new ArgParser();
+  parser.addOption('filter', abbr: 'f');
+  var results = parser.Parse(new Options().arguments);
+  runner.setupBenchmarks(results['filter']);
   runner.runBenchmarks();
 }
