@@ -14,7 +14,7 @@
 
 part of racer;
 
-class GroundArea implements Hashable {
+class GroundArea {
   GroundArea(this.frictionModifier, this.outOfCourse)
       : hashCode = _lastHash++;
 
