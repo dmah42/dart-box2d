@@ -4,18 +4,19 @@
   <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
   <property environment="env" />
-  <fail message="ERROR: Please set environmental variable DART_SDK"> 
-    <condition> 
-      <not> 
-        <isset property="env.DART_SDK" /> 
-      </not> 
-    </condition> 
+  <fail message="ERROR: Please set environmental variable DART_SDK">
+    <condition>
+      <not>
+        <isset property="env.DART_SDK" />
+      </not>
+    </condition>
   </fail>
 
   <property name="dart.sdk.dir" value="${env.DART_SDK}" />
   <property name="dartdoc.dart" value="${dart.sdk.dir}/bin/dartdoc" />
   <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dart_analyzer" />
   <property name="dart_analyzer.args" value="--enable_type_checks" />
+  <property name="pub.dart" value="${dart.sdk.dir}/bin/pub" />
 
   <!-- Set envvar DB2D_WITH_CHECKS to compile with checks. -->
   <condition property="withChecks" value="true">
@@ -73,8 +74,14 @@
 
   <!-- MAIN -->
   <target name="default"
-    depends="analyze, generate-JS, generate-docs"
+    depends="pub-update, analyze, generate-JS, generate-docs"
     description="Analyze, generate JS and library's DartDoc." />
+
+  <target name="pub-update">
+    <exec executable="${pub.dart}" failonerror="true">
+      <arg line="update"/>
+    </exec>
+  </target>
 
   <target name="analyze"
     depends="analyze-libs, analyze-demos, analyze-benchmarks"
