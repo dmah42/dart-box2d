@@ -1,0 +1,924 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>PolygonShape class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="PolygonShape">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/PolygonShape.html">PolygonShape</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>PolygonShape</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class PolygonShape extends Shape {
+ /**
+  * Local position of the shape centroid in parent body frame.
+  */
+ final vec2 centroid;
+
+ /**
+  * The vertices of the shape. Note: Use getVertexCount() rather than
+  * vertices.length to get the number of active vertices.
+  */
+ final List&lt;vec2&gt; vertices;
+
+ /**
+  * The normals of the shape. Note: Use getVertexCount() rather than
+  * normals.length to get the number of active normals.
+  */
+ final List&lt;vec2&gt; normals;
+
+ int vertexCount;
+
+ /**
+  * Constructs a new PolygonShape.
+  */
+ PolygonShape() :
+     super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+     vertexCount = 0,
+     vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+     normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+     centroid = new vec2.zero() {
+   for (int i = 0; i &lt; vertices.length; ++i)
+     vertices[i] = new vec2.zero();
+   for (int i = 0; i &lt; normals.length; ++i)
+     normals[i] = new vec2.zero();
+ }
+
+ /**
+  * Constructs a new PolygonShape equal to the given shape.
+  */
+ PolygonShape.copy(PolygonShape other) :
+     super(ShapeType.POLYGON, other.radius),
+     vertexCount = other.vertexCount,
+     vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+     normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+     centroid = new vec2.copy(other.centroid) {
+   // Copy the vertices and normals from the other polygon shape.
+   for (int i = 0; i &lt; other.vertices.length; ++i)
+     vertices[i] = new vec2.copy(other.vertices[i]);
+
+   for (int i = 0; i &lt; other.normals.length; ++i)
+     normals[i] = new vec2.copy(other.normals[i]);
+ }
+
+ /**
+  * Get the supporting vertex index in the given direction.
+  */
+ int getSupport(vec2 d) {
+   int bestIndex = 0;
+   num bestValue = dot(vertices[0], d);
+   for (int i = 1; i &lt; vertexCount; ++i) {
+     num value = dot(vertices[i], d);
+     if (value &gt; bestValue) {
+       bestIndex = i;
+       bestValue = value;
+     }
+   }
+   return bestIndex;
+ }
+
+ Shape clone() =&gt; new PolygonShape.copy(this);
+
+ /**
+  * Get the supporting vertex in the given direction.
+  */
+ vec2 getSupportVertex(vec2 d) =&gt; vertices[getSupport(d)];
+
+ /**
+  * Copy vertices. This assumes the vertices define a convex polygon.
+  * It is assumed that the exterior is the the right of each edge.
+  * TODO(dominich): Consider removing [count].
+  */
+ void setFrom(List&lt;vec2&gt; otherVertices, int count) {
+   assert (2 &lt;= count &amp;&amp; count &lt;= Settings.MAX_POLYGON_VERTICES);
+   vertexCount = count;
+
+   // Copy vertices.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     assert(vertices[i] != null);
+     vertices[i].copyFrom(otherVertices[i]);
+   }
+
+   vec2 edge = new vec2.zero();
+
+   // Compute normals. Ensure the edges have non-zero length.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     final int i1 = i;
+     final int i2 = i + 1 &lt; vertexCount ? i + 1 : 0;
+     edge.copyFrom(vertices[i2]).sub(vertices[i1]);
+
+     assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
+     cross(edge, 1, normals[i]);
+     normals[i].normalize();
+   }
+
+   // Compute the polygon centroid.
+   computeCentroidToOut(vertices, vertexCount, centroid);
+ }
+
+ /**
+  * Build vertices to represent an axis-aligned box.
+  * hx is the half-width of the body and hy is the half height.
+  */
+ void setAsBox(num hx, num hy) {
+   vertexCount = 4;
+   vertices[0].setComponents(-hx, -hy);
+   vertices[1].setComponents(hx, -hy);
+   vertices[2].setComponents(hx, hy);
+   vertices[3].setComponents(-hx, hy);
+   normals[0].setComponents(0.0, -1.0);
+   normals[1].setComponents(1.0, 0.0);
+   normals[2].setComponents(0.0, 1.0);
+   normals[3].setComponents(-1.0, 0.0);
+   centroid.splat(0.0);
+ }
+
+ /**
+  * Build vertices to represent an oriented box. hx is the halfwidth, hy the
+  * half-height, center is the center of the box in local coordinates and angle
+  * is the rotation of the box in local coordinates.
+  */
+ void setAsBoxWithCenterAndAngle(num hx, num hy, vec2 center, num angle) {
+   setAsBox(hx, hy);
+   centroid.copyFrom(center);
+
+   Transform xf = new Transform();
+   xf.position.copyFrom(center);
+   xf.rotation.setRotation(angle);
+
+   // Transform vertices and normals.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     Transform.mulToOut(xf, vertices[i], vertices[i]);
+     xf.rotation.transform(normals[i]);
+   }
+ }
+
+ /** Set this as a single edge. */
+ void setAsEdge(vec2 v1, vec2 v2) {
+   vertexCount = 2;
+   vertices[0].copyFrom(v1);
+   vertices[1].copyFrom(v2);
+   centroid.copyFrom(v1).add(v2).scale(0.5);
+   normals[0].copyFrom(v2).sub(v1);
+   cross(normals[0], 1, normals[0]);
+   normals[0].normalize();
+   normals[1].copyFrom(normals[0]).negate();
+ }
+
+ /** See Shape.testPoint(Transform, vec2). */
+ bool testPoint(Transform xf, vec2 p) {
+   vec2 pLocal = (new vec2.copy(p)).sub(xf.position);
+   xf.rotation.transposed().transform(pLocal);
+
+   vec2 temp = new vec2.zero();
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     temp.copyFrom(pLocal).sub(vertices[i]);
+     if (dot(normals[i], temp) &gt; 0)
+       return false;
+   }
+
+   return true;
+ }
+
+ /**
+  * See Shape.computeAxisAlignedBox(AABB, Transform).
+  */
+ void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
+   final vec2 lower = new vec2.zero();
+   final vec2 upper = new vec2.zero();
+   final vec2 v = new vec2.zero();
+
+   Transform.mulToOut(argXf, vertices[0], lower);
+   upper.copyFrom(lower);
+
+   for (int i = 1; i &lt; vertexCount; ++i) {
+     Transform.mulToOut(argXf, vertices[i], v);
+     min(v, lower, lower);
+     max(v, upper, upper);
+   }
+
+   argAabb.lowerBound.x = lower.x - radius;
+   argAabb.lowerBound.y = lower.y - radius;
+   argAabb.upperBound.x = upper.x + radius;
+   argAabb.upperBound.y = upper.y + radius;
+ }
+
+ /**
+  * Get a vertex by index.
+  */
+ vec2 getVertex(int index) =&gt; vertices[index];
+
+ /**
+  * Compute the centroid and store the value in the given out parameter.
+  */
+ void computeCentroidToOut(List&lt;vec2&gt; vs, int count, vec2 out) {
+   assert (count &gt;= 3);
+
+   out.splat(0.0);
+   num area = 0.0;
+
+   if (count == 2) {
+     out.copyFrom(vs[0]).add(vs[1]).scale(.5);
+     return;
+   }
+
+   // pRef is the reference point for forming triangles.
+   // It's location doesn't change the result (except for rounding error).
+   final vec2 pRef = new vec2.zero();
+
+   final vec2 e1 = new vec2.zero();
+   final vec2 e2 = new vec2.zero();
+
+   final num inv3 = 1.0 / 3.0;
+
+   for (int i = 0; i &lt; count; ++i) {
+     // Triangle vertices.
+     final vec2 p1 = pRef;
+     final vec2 p2 = vs[i];
+     final vec2 p3 = i + 1 &lt; count ? vs[i + 1] : vs[0];
+
+     e1.copyFrom(p2).sub(p1);
+     e2.copyFrom(p3).sub(p1);
+
+     final num triangleArea = 0.5 * cross(e1, e2);
+     area += triangleArea;
+
+     // Area weighted centroid
+     out.add(p1).add(p2).add(p3).scale(triangleArea * inv3);
+   }
+
+   // Centroid
+   assert (area &gt; Settings.EPSILON);
+   out.scale(1.0 / area);
+ }
+
+ /**
+  * See Shape.computeMass(MassData)
+  */
+ void computeMass(MassData massData, num density) {
+   // Polygon mass, centroid, and inertia.
+   // Let rho be the polygon density in mass per unit area.
+   // Then:
+   // mass = rho * int(dA)
+   // centroid.x = (1/mass) * rho * int(x * dA)
+   // centroid.y = (1/mass) * rho * int(y * dA)
+   // I = rho * int((x*x + y*y) * dA)
+   //
+   // We can compute these integrals by summing all the integrals
+   // for each triangle of the polygon. To evaluate the integral
+   // for a single triangle, we make a change of variables to
+   // the (u,v) coordinates of the triangle:
+   // x = x0 + e1x * u + e2x * v
+   // y = y0 + e1y * u + e2y * v
+   // where 0 &lt;= u &amp;&amp; 0 &lt;= v &amp;&amp; u + v &lt;= 1.
+   //
+   // We integrate u from [0,1-v] and then v from [0,1].
+   // We also need to use the Jacobian of the transformation:
+   // D = cross(e1, e2)
+   //
+   // Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
+   //
+   // The rest of the derivation is handled by computer algebra.
+
+   assert (vertexCount &gt;= 2);
+
+   // A line segment has zero mass.
+   if (vertexCount == 2) {
+     // massData.center = 0.5 * (vertices[0] + vertices[1]);
+     massData.center.copyFrom(vertices[0]).add(vertices[1]).scale(0.5);
+     massData.mass = 0.0;
+     massData.inertia = 0.0;
+     return;
+   }
+
+   final vec2 center = new vec2.zero();
+   num area = 0.0;
+   num I = 0.0;
+
+   // pRef is the reference point for forming triangles.
+   // It's location doesn't change the result (except for rounding error).
+   final vec2 pRef = new vec2.zero();
+
+   final num k_inv3 = 1.0 / 3.0;
+
+   final vec2 e1 = new vec2.zero();
+   final vec2 e2 = new vec2.zero();
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     // Triangle vertices.
+     final vec2 p1 = pRef;
+     final vec2 p2 = vertices[i];
+     final vec2 p3 = i + 1 &lt; vertexCount ? vertices[i + 1] : vertices[0];
+
+     e1.copyFrom(p2).sub(p1);
+     e2.copyFrom(p3).sub(p1);
+
+     final num D = cross(e1, e2);
+     final num triangleArea = 0.5 * D;
+     area += triangleArea;
+
+     // Area weighted centroid
+     center.x += triangleArea * k_inv3 * (p1.x + p2.x + p3.x);
+     center.y += triangleArea * k_inv3 * (p1.y + p2.y + p3.y);
+
+     final num px = p1.x;
+     final num py = p1.y;
+     final num ex1 = e1.x;
+     final num ey1 = e1.y;
+     final num ex2 = e2.x;
+     final num ey2 = e2.y;
+
+     final num intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
+         (px * ex1 + px * ex2)) + 0.5 * px * px;
+     final num inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
+         (py * ey1 + py * ey2)) + 0.5 * py * py;
+
+     I += D * (intx2 + inty2);
+   }
+
+   // Total mass
+   massData.mass = density * area;
+
+   // Center of mass
+   assert (area &gt; Settings.EPSILON);
+   center.scale(1.0 / area);
+   massData.center.copyFrom(center);
+
+   // Inertia tensor relative to the local origin.
+   massData.inertia = I * density;
+ }
+
+ /**
+  * Get the centroid and apply the supplied transform.
+  */
+ vec2 applyTransformToCentroid(Transform xf) =&gt; Transform.mul(xf, centroid);
+
+ /**
+  * Get the centroid and apply the supplied transform. Return the result
+  * through the return parameter out.
+  */
+ vec2 centroidToOut(Transform xf, vec2 out) {
+   Transform.mulToOut(xf, centroid, out);
+   return out;
+ }
+}
+</pre>
+</div>
+<h3>Extends</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/Shape.html">Shape</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>PolygonShape</strong></span></p>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="PolygonShape">
+<button class="show-code">Code</button>
+new <strong>PolygonShape</strong>() <a class="anchor-link" href="#PolygonShape"
+              title="Permalink to PolygonShape.PolygonShape">#</a></h4>
+<div class="doc">
+<p>Constructs a new PolygonShape.</p>
+<pre class="source">
+PolygonShape() :
+   super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+   vertexCount = 0,
+   vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+   normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+   centroid = new vec2.zero() {
+ for (int i = 0; i &lt; vertices.length; ++i)
+   vertices[i] = new vec2.zero();
+ for (int i = 0; i &lt; normals.length; ++i)
+   normals[i] = new vec2.zero();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="PolygonShape.copy">
+<button class="show-code">Code</button>
+new <strong>PolygonShape.copy</strong>(<a href="../box2d/PolygonShape.html">PolygonShape</a> other) <a class="anchor-link" href="#PolygonShape.copy"
+              title="Permalink to PolygonShape.PolygonShape.copy">#</a></h4>
+<div class="doc">
+<p>Constructs a new PolygonShape equal to the given shape.</p>
+<pre class="source">
+PolygonShape.copy(PolygonShape other) :
+   super(ShapeType.POLYGON, other.radius),
+   vertexCount = other.vertexCount,
+   vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+   normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
+   centroid = new vec2.copy(other.centroid) {
+ // Copy the vertices and normals from the other polygon shape.
+ for (int i = 0; i &lt; other.vertices.length; ++i)
+   vertices[i] = new vec2.copy(other.vertices[i]);
+
+ for (int i = 0; i &lt; other.normals.length; ++i)
+   normals[i] = new vec2.copy(other.normals[i]);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="centroid">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>centroid</strong> <a class="anchor-link"
+            href="#centroid"
+            title="Permalink to PolygonShape.centroid">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+centroid
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="normals">
+<button class="show-code">Code</button>
+final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>normals</strong> <a class="anchor-link"
+            href="#normals"
+            title="Permalink to PolygonShape.normals">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+normals
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="radius">
+<button class="show-code">Code</button>
+num         <strong>radius</strong> <a class="anchor-link"
+            href="#radius"
+            title="Permalink to PolygonShape.radius">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
+<pre class="source">
+radius
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="type">
+<button class="show-code">Code</button>
+int         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to PolygonShape.type">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
+<pre class="source">
+type
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="vertexCount">
+<button class="show-code">Code</button>
+int         <strong>vertexCount</strong> <a class="anchor-link"
+            href="#vertexCount"
+            title="Permalink to PolygonShape.vertexCount">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+vertexCount
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="vertices">
+<button class="show-code">Code</button>
+final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>vertices</strong> <a class="anchor-link"
+            href="#vertices"
+            title="Permalink to PolygonShape.vertices">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+vertices
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="applyTransformToCentroid">
+<button class="show-code">Code</button>
+<a href="../vector_math/vec2.html">vec2</a> <strong>applyTransformToCentroid</strong>(<a href="../box2d/Transform.html">Transform</a> xf) <a class="anchor-link" href="#applyTransformToCentroid"
+              title="Permalink to PolygonShape.applyTransformToCentroid">#</a></h4>
+<div class="doc">
+<p>Get the centroid and apply the supplied transform.</p>
+<pre class="source">
+vec2 applyTransformToCentroid(Transform xf) =&gt; Transform.mul(xf, centroid);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="centroidToOut">
+<button class="show-code">Code</button>
+<a href="../vector_math/vec2.html">vec2</a> <strong>centroidToOut</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../vector_math/vec2.html">vec2</a> out) <a class="anchor-link" href="#centroidToOut"
+              title="Permalink to PolygonShape.centroidToOut">#</a></h4>
+<div class="doc">
+<p>Get the centroid and apply the supplied transform. Return the result
+through the return parameter out.</p>
+<pre class="source">
+vec2 centroidToOut(Transform xf, vec2 out) {
+ Transform.mulToOut(xf, centroid, out);
+ return out;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="clone">
+<button class="show-code">Code</button>
+<a href="../box2d/Shape.html">Shape</a> <strong>clone</strong>() <a class="anchor-link" href="#clone"
+              title="Permalink to PolygonShape.clone">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a clone of this shape. </p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Shape.html">Shape</a> </div></div>
+<pre class="source">
+Shape clone() =&gt; new PolygonShape.copy(this);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeAxisAlignedBox">
+<button class="show-code">Code</button>
+void <strong>computeAxisAlignedBox</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> argAabb, <a href="../box2d/Transform.html">Transform</a> argXf) <a class="anchor-link" href="#computeAxisAlignedBox"
+              title="Permalink to PolygonShape.computeAxisAlignedBox">#</a></h4>
+<div class="doc">
+<p>See Shape.computeAxisAlignedBox(AABB, Transform).</p>
+<pre class="source">
+void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
+ final vec2 lower = new vec2.zero();
+ final vec2 upper = new vec2.zero();
+ final vec2 v = new vec2.zero();
+
+ Transform.mulToOut(argXf, vertices[0], lower);
+ upper.copyFrom(lower);
+
+ for (int i = 1; i &lt; vertexCount; ++i) {
+   Transform.mulToOut(argXf, vertices[i], v);
+   min(v, lower, lower);
+   max(v, upper, upper);
+ }
+
+ argAabb.lowerBound.x = lower.x - radius;
+ argAabb.lowerBound.y = lower.y - radius;
+ argAabb.upperBound.x = upper.x + radius;
+ argAabb.upperBound.y = upper.y + radius;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeCentroidToOut">
+<button class="show-code">Code</button>
+void <strong>computeCentroidToOut</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; vs, int count, <a href="../vector_math/vec2.html">vec2</a> out) <a class="anchor-link" href="#computeCentroidToOut"
+              title="Permalink to PolygonShape.computeCentroidToOut">#</a></h4>
+<div class="doc">
+<p>Compute the centroid and store the value in the given out parameter.</p>
+<pre class="source">
+void computeCentroidToOut(List&lt;vec2&gt; vs, int count, vec2 out) {
+ assert (count &gt;= 3);
+
+ out.splat(0.0);
+ num area = 0.0;
+
+ if (count == 2) {
+   out.copyFrom(vs[0]).add(vs[1]).scale(.5);
+   return;
+ }
+
+ // pRef is the reference point for forming triangles.
+ // It's location doesn't change the result (except for rounding error).
+ final vec2 pRef = new vec2.zero();
+
+ final vec2 e1 = new vec2.zero();
+ final vec2 e2 = new vec2.zero();
+
+ final num inv3 = 1.0 / 3.0;
+
+ for (int i = 0; i &lt; count; ++i) {
+   // Triangle vertices.
+   final vec2 p1 = pRef;
+   final vec2 p2 = vs[i];
+   final vec2 p3 = i + 1 &lt; count ? vs[i + 1] : vs[0];
+
+   e1.copyFrom(p2).sub(p1);
+   e2.copyFrom(p3).sub(p1);
+
+   final num triangleArea = 0.5 * cross(e1, e2);
+   area += triangleArea;
+
+   // Area weighted centroid
+   out.add(p1).add(p2).add(p3).scale(triangleArea * inv3);
+ }
+
+ // Centroid
+ assert (area &gt; Settings.EPSILON);
+ out.scale(1.0 / area);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeMass">
+<button class="show-code">Code</button>
+void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, num density) <a class="anchor-link" href="#computeMass"
+              title="Permalink to PolygonShape.computeMass">#</a></h4>
+<div class="doc">
+<p>See Shape.computeMass(MassData)</p>
+<pre class="source">
+void computeMass(MassData massData, num density) {
+ // Polygon mass, centroid, and inertia.
+ // Let rho be the polygon density in mass per unit area.
+ // Then:
+ // mass = rho * int(dA)
+ // centroid.x = (1/mass) * rho * int(x * dA)
+ // centroid.y = (1/mass) * rho * int(y * dA)
+ // I = rho * int((x*x + y*y) * dA)
+ //
+ // We can compute these integrals by summing all the integrals
+ // for each triangle of the polygon. To evaluate the integral
+ // for a single triangle, we make a change of variables to
+ // the (u,v) coordinates of the triangle:
+ // x = x0 + e1x * u + e2x * v
+ // y = y0 + e1y * u + e2y * v
+ // where 0 &lt;= u &amp;&amp; 0 &lt;= v &amp;&amp; u + v &lt;= 1.
+ //
+ // We integrate u from [0,1-v] and then v from [0,1].
+ // We also need to use the Jacobian of the transformation:
+ // D = cross(e1, e2)
+ //
+ // Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
+ //
+ // The rest of the derivation is handled by computer algebra.
+
+ assert (vertexCount &gt;= 2);
+
+ // A line segment has zero mass.
+ if (vertexCount == 2) {
+   // massData.center = 0.5 * (vertices[0] + vertices[1]);
+   massData.center.copyFrom(vertices[0]).add(vertices[1]).scale(0.5);
+   massData.mass = 0.0;
+   massData.inertia = 0.0;
+   return;
+ }
+
+ final vec2 center = new vec2.zero();
+ num area = 0.0;
+ num I = 0.0;
+
+ // pRef is the reference point for forming triangles.
+ // It's location doesn't change the result (except for rounding error).
+ final vec2 pRef = new vec2.zero();
+
+ final num k_inv3 = 1.0 / 3.0;
+
+ final vec2 e1 = new vec2.zero();
+ final vec2 e2 = new vec2.zero();
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   // Triangle vertices.
+   final vec2 p1 = pRef;
+   final vec2 p2 = vertices[i];
+   final vec2 p3 = i + 1 &lt; vertexCount ? vertices[i + 1] : vertices[0];
+
+   e1.copyFrom(p2).sub(p1);
+   e2.copyFrom(p3).sub(p1);
+
+   final num D = cross(e1, e2);
+   final num triangleArea = 0.5 * D;
+   area += triangleArea;
+
+   // Area weighted centroid
+   center.x += triangleArea * k_inv3 * (p1.x + p2.x + p3.x);
+   center.y += triangleArea * k_inv3 * (p1.y + p2.y + p3.y);
+
+   final num px = p1.x;
+   final num py = p1.y;
+   final num ex1 = e1.x;
+   final num ey1 = e1.y;
+   final num ex2 = e2.x;
+   final num ey2 = e2.y;
+
+   final num intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
+       (px * ex1 + px * ex2)) + 0.5 * px * px;
+   final num inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
+       (py * ey1 + py * ey2)) + 0.5 * py * py;
+
+   I += D * (intx2 + inty2);
+ }
+
+ // Total mass
+ massData.mass = density * area;
+
+ // Center of mass
+ assert (area &gt; Settings.EPSILON);
+ center.scale(1.0 / area);
+ massData.center.copyFrom(center);
+
+ // Inertia tensor relative to the local origin.
+ massData.inertia = I * density;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getSupport">
+<button class="show-code">Code</button>
+int <strong>getSupport</strong>(<a href="../vector_math/vec2.html">vec2</a> d) <a class="anchor-link" href="#getSupport"
+              title="Permalink to PolygonShape.getSupport">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex index in the given direction.</p>
+<pre class="source">
+int getSupport(vec2 d) {
+ int bestIndex = 0;
+ num bestValue = dot(vertices[0], d);
+ for (int i = 1; i &lt; vertexCount; ++i) {
+   num value = dot(vertices[i], d);
+   if (value &gt; bestValue) {
+     bestIndex = i;
+     bestValue = value;
+   }
+ }
+ return bestIndex;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getSupportVertex">
+<button class="show-code">Code</button>
+<a href="../vector_math/vec2.html">vec2</a> <strong>getSupportVertex</strong>(<a href="../vector_math/vec2.html">vec2</a> d) <a class="anchor-link" href="#getSupportVertex"
+              title="Permalink to PolygonShape.getSupportVertex">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex in the given direction.</p>
+<pre class="source">
+vec2 getSupportVertex(vec2 d) =&gt; vertices[getSupport(d)];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getVertex">
+<button class="show-code">Code</button>
+<a href="../vector_math/vec2.html">vec2</a> <strong>getVertex</strong>(int index) <a class="anchor-link" href="#getVertex"
+              title="Permalink to PolygonShape.getVertex">#</a></h4>
+<div class="doc">
+<p>Get a vertex by index.</p>
+<pre class="source">
+vec2 getVertex(int index) =&gt; vertices[index];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsBox">
+<button class="show-code">Code</button>
+void <strong>setAsBox</strong>(num hx, num hy) <a class="anchor-link" href="#setAsBox"
+              title="Permalink to PolygonShape.setAsBox">#</a></h4>
+<div class="doc">
+<p>Build vertices to represent an axis-aligned box.
+hx is the half-width of the body and hy is the half height.</p>
+<pre class="source">
+void setAsBox(num hx, num hy) {
+ vertexCount = 4;
+ vertices[0].setComponents(-hx, -hy);
+ vertices[1].setComponents(hx, -hy);
+ vertices[2].setComponents(hx, hy);
+ vertices[3].setComponents(-hx, hy);
+ normals[0].setComponents(0.0, -1.0);
+ normals[1].setComponents(1.0, 0.0);
+ normals[2].setComponents(0.0, 1.0);
+ normals[3].setComponents(-1.0, 0.0);
+ centroid.splat(0.0);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsBoxWithCenterAndAngle">
+<button class="show-code">Code</button>
+void <strong>setAsBoxWithCenterAndAngle</strong>(num hx, num hy, <a href="../vector_math/vec2.html">vec2</a> center, num angle) <a class="anchor-link" href="#setAsBoxWithCenterAndAngle"
+              title="Permalink to PolygonShape.setAsBoxWithCenterAndAngle">#</a></h4>
+<div class="doc">
+<p>Build vertices to represent an oriented box. hx is the halfwidth, hy the
+half-height, center is the center of the box in local coordinates and angle
+is the rotation of the box in local coordinates.</p>
+<pre class="source">
+void setAsBoxWithCenterAndAngle(num hx, num hy, vec2 center, num angle) {
+ setAsBox(hx, hy);
+ centroid.copyFrom(center);
+
+ Transform xf = new Transform();
+ xf.position.copyFrom(center);
+ xf.rotation.setRotation(angle);
+
+ // Transform vertices and normals.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   Transform.mulToOut(xf, vertices[i], vertices[i]);
+   xf.rotation.transform(normals[i]);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsEdge">
+<button class="show-code">Code</button>
+void <strong>setAsEdge</strong>(<a href="../vector_math/vec2.html">vec2</a> v1, <a href="../vector_math/vec2.html">vec2</a> v2) <a class="anchor-link" href="#setAsEdge"
+              title="Permalink to PolygonShape.setAsEdge">#</a></h4>
+<div class="doc">
+<p>Set this as a single edge. </p>
+<pre class="source">
+void setAsEdge(vec2 v1, vec2 v2) {
+ vertexCount = 2;
+ vertices[0].copyFrom(v1);
+ vertices[1].copyFrom(v2);
+ centroid.copyFrom(v1).add(v2).scale(0.5);
+ normals[0].copyFrom(v2).sub(v1);
+ cross(normals[0], 1, normals[0]);
+ normals[0].normalize();
+ normals[1].copyFrom(normals[0]).negate();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; otherVertices, int count) <a class="anchor-link" href="#setFrom"
+              title="Permalink to PolygonShape.setFrom">#</a></h4>
+<div class="doc">
+<p>Copy vertices. This assumes the vertices define a convex polygon.
+It is assumed that the exterior is the the right of each edge.
+TODO(dominich): Consider removing 
+<span class="param">count</span>.</p>
+<pre class="source">
+void setFrom(List&lt;vec2&gt; otherVertices, int count) {
+ assert (2 &lt;= count &amp;&amp; count &lt;= Settings.MAX_POLYGON_VERTICES);
+ vertexCount = count;
+
+ // Copy vertices.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   assert(vertices[i] != null);
+   vertices[i].copyFrom(otherVertices[i]);
+ }
+
+ vec2 edge = new vec2.zero();
+
+ // Compute normals. Ensure the edges have non-zero length.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   final int i1 = i;
+   final int i2 = i + 1 &lt; vertexCount ? i + 1 : 0;
+   edge.copyFrom(vertices[i2]).sub(vertices[i1]);
+
+   assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
+   cross(edge, 1, normals[i]);
+   normals[i].normalize();
+ }
+
+ // Compute the polygon centroid.
+ computeCentroidToOut(vertices, vertexCount, centroid);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="testPoint">
+<button class="show-code">Code</button>
+bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../vector_math/vec2.html">vec2</a> p) <a class="anchor-link" href="#testPoint"
+              title="Permalink to PolygonShape.testPoint">#</a></h4>
+<div class="doc">
+<p>See Shape.testPoint(Transform, vec2). </p>
+<pre class="source">
+bool testPoint(Transform xf, vec2 p) {
+ vec2 pLocal = (new vec2.copy(p)).sub(xf.position);
+ xf.rotation.transposed().transform(pLocal);
+
+ vec2 temp = new vec2.zero();
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   temp.copyFrom(pLocal).sub(vertices[i]);
+   if (dot(normals[i], temp) &gt; 0)
+     return false;
+ }
+
+ return true;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

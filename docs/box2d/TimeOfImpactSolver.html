@@ -1,0 +1,449 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>TimeOfImpactSolver class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="TimeOfImpactSolver">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/TimeOfImpactSolver.html">TimeOfImpactSolver</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>TimeOfImpactSolver</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class TimeOfImpactSolver {
+ List&lt;TimeOfImpactConstraint&gt; constraints;
+ int count;
+ Body toiBody;
+
+ /** Pooling. */
+ final TimeOfImpactSolverManifold psm;
+ final vec2 rA;
+ final vec2 rB;
+ final vec2 P;
+ final vec2 temp;
+
+ TimeOfImpactSolver() :
+   count = 0,
+   toiBody = null,
+   constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+
+   // Initialize pool variables.
+   psm = new TimeOfImpactSolverManifold(),
+   rA = new vec2.zero(),
+   rB = new vec2.zero(),
+   P = new vec2.zero(),
+   temp = new vec2.zero() {
+   for (int i = 0; i&lt;constraints.length; i++){
+     constraints[i] = new TimeOfImpactConstraint();
+   }
+ }
+
+ void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
+   count = argCount;
+   toiBody = argToiBody;
+
+   if(count &gt;= constraints.length){
+     List&lt;TimeOfImpactConstraint&gt; old = constraints;
+     int newLen = math.max(count, old.length*2);
+     constraints = new List&lt;TimeOfImpactConstraint&gt;(newLen);
+     constraints.setRange(0, old.length, old);
+     for(int i=old.length; i&lt;constraints.length; i++){
+       constraints[i] = new TimeOfImpactConstraint();
+     }
+   }
+
+   for (int i=0; i&lt;count; i++) {
+     Contact contact = contacts[i];
+
+     Fixture fixtureA = contact.fixtureA;
+     Fixture fixtureB = contact.fixtureB;
+     Shape shapeA = fixtureA.shape;
+     Shape shapeB = fixtureB.shape;
+     num radiusA = shapeA.radius;
+     num radiusB = shapeB.radius;
+     Body bodyA = fixtureA.body;
+     Body bodyB = fixtureB.body;
+     Manifold manifold = contact.manifold;
+
+     assert(manifold.pointCount &gt; 0);
+
+     TimeOfImpactConstraint constraint = constraints[i];
+     constraint.bodyA = bodyA;
+     constraint.bodyB = bodyB;
+     constraint.localNormal.copyFrom(manifold.localNormal);
+     constraint.localPoint.copyFrom(manifold.localPoint);
+     constraint.type = manifold.type;
+     constraint.pointCount = manifold.pointCount;
+     constraint.radius = radiusA + radiusB;
+
+     for (int j = 0; j &lt; constraint.pointCount; ++j){
+       ManifoldPoint cp = manifold.points[j];
+       constraint.localPoints[j] = cp.localPoint;
+     }
+   }
+ }
+
+ /**
+  * Perform one solver iteration. Returns true if converged.
+  */
+ bool solve(num baumgarte){
+   num minSeparation = 0;
+
+   for (int i = 0; i &lt; count; ++i){
+     TimeOfImpactConstraint c = constraints[i];
+     Body bodyA = c.bodyA;
+     Body bodyB = c.bodyB;
+
+     num massA = bodyA.mass;
+     num massB = bodyB.mass;
+
+     // Only the TimeOfImpact body should move.
+     if (bodyA == toiBody){
+       massB = 0.0;
+     } else{
+       massA = 0.0;
+     }
+
+     num invMassA = massA * bodyA.invMass;
+     num invIA = massA * bodyA.invInertia;
+     num invMassB = massB * bodyB.invMass;
+     num invIB = massB * bodyB.invInertia;
+
+     // Solve normal constraints
+     for (int j = 0; j &lt; c.pointCount; ++j){
+       psm.initialize(c, j);
+       vec2 normal = psm.normal;
+
+       vec2 point = psm.point;
+       num separation = psm.separation;
+
+       rA.copyFrom(point).sub(bodyA.sweep.center);
+       rB.copyFrom(point).sub(bodyB.sweep.center);
+
+       // Track max constraint error.
+       minSeparation = math.min(minSeparation, separation);
+
+       // Prevent large corrections and allow slop.
+       num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
+                     -Settings.MAX_LINEAR_CORRECTION, 0.0);
+
+       // Compute the effective mass.
+       num rnA = cross(rA, normal);
+       num rnB = cross(rB, normal);
+       num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
+
+       // Compute normal impulse
+       num impulse = K &gt; 0.0 ? - C / K : 0.0;
+
+       P.copyFrom(normal).scale(impulse);
+
+       temp.copyFrom(P).scale(invMassA);
+       bodyA.sweep.center.sub(temp);
+       bodyA.sweep.angle -= invIA * cross(rA, P);
+       bodyA.synchronizeTransform();
+
+       temp.copyFrom(P).scale(invMassB);
+       bodyB.sweep.center.add(temp);
+       bodyB.sweep.angle += invIB * cross(rB, P);
+       bodyB.synchronizeTransform();
+     }
+   }
+
+   // We can't expect minSpeparation &gt;= -_LINEAR_SLOP because we don't
+   // push the separation above -_LINEAR_SLOP.
+   return minSeparation &gt;= -1.5 * Settings.LINEAR_SLOP;
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="TimeOfImpactSolver">
+<button class="show-code">Code</button>
+new <strong>TimeOfImpactSolver</strong>() <a class="anchor-link" href="#TimeOfImpactSolver"
+              title="Permalink to TimeOfImpactSolver.TimeOfImpactSolver">#</a></h4>
+<div class="doc">
+<pre class="source">
+TimeOfImpactSolver() :
+ count = 0,
+ toiBody = null,
+ constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+
+ // Initialize pool variables.
+ psm = new TimeOfImpactSolverManifold(),
+ rA = new vec2.zero(),
+ rB = new vec2.zero(),
+ P = new vec2.zero(),
+ temp = new vec2.zero() {
+ for (int i = 0; i&lt;constraints.length; i++){
+   constraints[i] = new TimeOfImpactConstraint();
+ }
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="constraints">
+<button class="show-code">Code</button>
+List&lt;<a href="../box2d/TimeOfImpactConstraint.html">TimeOfImpactConstraint</a>&gt;         <strong>constraints</strong> <a class="anchor-link"
+            href="#constraints"
+            title="Permalink to TimeOfImpactSolver.constraints">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+constraints
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="count">
+<button class="show-code">Code</button>
+int         <strong>count</strong> <a class="anchor-link"
+            href="#count"
+            title="Permalink to TimeOfImpactSolver.count">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+count
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="P">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>P</strong> <a class="anchor-link"
+            href="#P"
+            title="Permalink to TimeOfImpactSolver.P">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+P
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="psm">
+<button class="show-code">Code</button>
+final <a href="../box2d/TimeOfImpactSolverManifold.html">TimeOfImpactSolverManifold</a>         <strong>psm</strong> <a class="anchor-link"
+            href="#psm"
+            title="Permalink to TimeOfImpactSolver.psm">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+psm
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="rA">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a class="anchor-link"
+            href="#rA"
+            title="Permalink to TimeOfImpactSolver.rA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+rA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="rB">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a class="anchor-link"
+            href="#rB"
+            title="Permalink to TimeOfImpactSolver.rB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+rB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="temp">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
+            href="#temp"
+            title="Permalink to TimeOfImpactSolver.temp">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+temp
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="toiBody">
+<button class="show-code">Code</button>
+<a href="../box2d/Body.html">Body</a>         <strong>toiBody</strong> <a class="anchor-link"
+            href="#toiBody"
+            title="Permalink to TimeOfImpactSolver.toiBody">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+toiBody
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="initialize">
+<button class="show-code">Code</button>
+void <strong>initialize</strong>(List&lt;<a href="../box2d/Contact.html">Contact</a>&gt; contacts, int argCount, <a href="../box2d/Body.html">Body</a> argToiBody) <a class="anchor-link" href="#initialize"
+              title="Permalink to TimeOfImpactSolver.initialize">#</a></h4>
+<div class="doc">
+<pre class="source">
+void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
+ count = argCount;
+ toiBody = argToiBody;
+
+ if(count &gt;= constraints.length){
+   List&lt;TimeOfImpactConstraint&gt; old = constraints;
+   int newLen = math.max(count, old.length*2);
+   constraints = new List&lt;TimeOfImpactConstraint&gt;(newLen);
+   constraints.setRange(0, old.length, old);
+   for(int i=old.length; i&lt;constraints.length; i++){
+     constraints[i] = new TimeOfImpactConstraint();
+   }
+ }
+
+ for (int i=0; i&lt;count; i++) {
+   Contact contact = contacts[i];
+
+   Fixture fixtureA = contact.fixtureA;
+   Fixture fixtureB = contact.fixtureB;
+   Shape shapeA = fixtureA.shape;
+   Shape shapeB = fixtureB.shape;
+   num radiusA = shapeA.radius;
+   num radiusB = shapeB.radius;
+   Body bodyA = fixtureA.body;
+   Body bodyB = fixtureB.body;
+   Manifold manifold = contact.manifold;
+
+   assert(manifold.pointCount &gt; 0);
+
+   TimeOfImpactConstraint constraint = constraints[i];
+   constraint.bodyA = bodyA;
+   constraint.bodyB = bodyB;
+   constraint.localNormal.copyFrom(manifold.localNormal);
+   constraint.localPoint.copyFrom(manifold.localPoint);
+   constraint.type = manifold.type;
+   constraint.pointCount = manifold.pointCount;
+   constraint.radius = radiusA + radiusB;
+
+   for (int j = 0; j &lt; constraint.pointCount; ++j){
+     ManifoldPoint cp = manifold.points[j];
+     constraint.localPoints[j] = cp.localPoint;
+   }
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solve">
+<button class="show-code">Code</button>
+bool <strong>solve</strong>(num baumgarte) <a class="anchor-link" href="#solve"
+              title="Permalink to TimeOfImpactSolver.solve">#</a></h4>
+<div class="doc">
+<p>Perform one solver iteration. Returns true if converged.</p>
+<pre class="source">
+bool solve(num baumgarte){
+ num minSeparation = 0;
+
+ for (int i = 0; i &lt; count; ++i){
+   TimeOfImpactConstraint c = constraints[i];
+   Body bodyA = c.bodyA;
+   Body bodyB = c.bodyB;
+
+   num massA = bodyA.mass;
+   num massB = bodyB.mass;
+
+   // Only the TimeOfImpact body should move.
+   if (bodyA == toiBody){
+     massB = 0.0;
+   } else{
+     massA = 0.0;
+   }
+
+   num invMassA = massA * bodyA.invMass;
+   num invIA = massA * bodyA.invInertia;
+   num invMassB = massB * bodyB.invMass;
+   num invIB = massB * bodyB.invInertia;
+
+   // Solve normal constraints
+   for (int j = 0; j &lt; c.pointCount; ++j){
+     psm.initialize(c, j);
+     vec2 normal = psm.normal;
+
+     vec2 point = psm.point;
+     num separation = psm.separation;
+
+     rA.copyFrom(point).sub(bodyA.sweep.center);
+     rB.copyFrom(point).sub(bodyB.sweep.center);
+
+     // Track max constraint error.
+     minSeparation = math.min(minSeparation, separation);
+
+     // Prevent large corrections and allow slop.
+     num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
+                   -Settings.MAX_LINEAR_CORRECTION, 0.0);
+
+     // Compute the effective mass.
+     num rnA = cross(rA, normal);
+     num rnB = cross(rB, normal);
+     num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
+
+     // Compute normal impulse
+     num impulse = K &gt; 0.0 ? - C / K : 0.0;
+
+     P.copyFrom(normal).scale(impulse);
+
+     temp.copyFrom(P).scale(invMassA);
+     bodyA.sweep.center.sub(temp);
+     bodyA.sweep.angle -= invIA * cross(rA, P);
+     bodyA.synchronizeTransform();
+
+     temp.copyFrom(P).scale(invMassB);
+     bodyB.sweep.center.add(temp);
+     bodyB.sweep.angle += invIB * cross(rB, P);
+     bodyB.synchronizeTransform();
+   }
+ }
+
+ // We can't expect minSpeparation &gt;= -_LINEAR_SLOP because we don't
+ // push the separation above -_LINEAR_SLOP.
+ return minSeparation &gt;= -1.5 * Settings.LINEAR_SLOP;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

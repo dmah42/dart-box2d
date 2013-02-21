@@ -1,0 +1,1933 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>vector_math Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico">
+        
+        </head>
+        <body data-library="vector_math">
+        <div class="page">
+        <div class="header">
+          <a href="index.html"><div class="logo"></div></a>
+          <a href="index.html">Dart Documentation</a>
+         &rsaquo; <a href="vector_math.html">vector_math</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+<h2><strong>vector_math</strong> library</h2>
+<div>
+<h3>Functions</h3>
+<div class="method"><h4 id="pickRay">
+<button class="show-code">Code</button>
+bool <strong>pickRay</strong>(<a href="vector_math/mat4.html">mat4</a> cameraMatrix, num viewportX, num viewportWidth, num viewportY, num viewportHeight, num pickX, num pickY, <a href="vector_math/vec3.html">vec3</a> rayNear, <a href="vector_math/vec3.html">vec3</a> rayFar) <a class="anchor-link" href="#pickRay"
+              title="Permalink to pickRay">#</a></h4>
+<div class="doc">
+<p>On success, 
+<span class="param">rayNear</span> and 
+<span class="param">rayFar</span> are the points where
+the screen space 
+<span class="param">pickX</span>, 
+<span class="param">pickY</span> intersect with the near and far
+planes respectively.</p>
+<p>The viewport is specified by (
+<span class="param">viewportX</span>, 
+<span class="param">viewportWidth</span>) and
+(
+<span class="param">viewportY</span>, 
+<span class="param">viewportHeight</span>).</p>
+<p>
+<span class="param">cameraMatrix</span> includes both the projection and view transforms.</p>
+<p>Returns false on error, for example, the mouse is not in the viewport</p>
+<pre class="source">
+bool pickRay(mat4 cameraMatrix, num viewportX, num viewportWidth,
+              num viewportY, num viewportHeight,
+              num pickX, num pickY,
+              vec3 rayNear, vec3 rayFar) {
+
+ bool r;
+
+ r = unproject(cameraMatrix, viewportX, viewportWidth,
+               viewportY, viewportHeight, pickX, viewportHeight-pickY, 0.0, rayNear);
+ if (!r) {
+   return false;
+ }
+
+ r = unproject(cameraMatrix, viewportX, viewportWidth,
+               viewportY, viewportHeight, pickX, viewportHeight-pickY, 1.0, rayFar);
+
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="unproject">
+<button class="show-code">Code</button>
+bool <strong>unproject</strong>(<a href="vector_math/mat4.html">mat4</a> cameraMatrix, num viewportX, num viewportWidth, num viewportY, num viewportHeight, num pickX, num pickY, num pickZ, <a href="vector_math/vec3.html">vec3</a> pickWorld) <a class="anchor-link" href="#unproject"
+              title="Permalink to unproject">#</a></h4>
+<div class="doc">
+<p>On success, Sets 
+<span class="param">pickWorld</span> to be the world space position of
+the screen space 
+<span class="param">pickX</span>, 
+<span class="param">pickY</span>, and 
+<span class="param">pickZ</span>.</p>
+<p>The viewport is specified by (
+<span class="param">viewportX</span>, 
+<span class="param">viewportWidth</span>) and
+(
+<span class="param">viewportY</span>, 
+<span class="param">viewportHeight</span>).</p>
+<p>
+<span class="param">cameraMatrix</span> includes both the projection and view transforms.</p>
+<p>
+<span class="param">pickZ</span> is typically either 0.0 (near plane) or 1.0 (far plane).</p>
+<p>Returns false on error, for example, the mouse is not in the viewport</p>
+<pre class="source">
+bool unproject(mat4 cameraMatrix, num viewportX, num viewportWidth,
+              num viewportY, num viewportHeight,
+              num pickX, num pickY, num pickZ,
+              vec3 pickWorld) {
+ pickX = (pickX - viewportX);
+ pickY = (pickY - viewportY);
+ pickX = (2.0 * pickX / viewportWidth) - 1.0;
+ pickY = (2.0 * pickY / viewportHeight) - 1.0;
+ pickZ = (2.0 * pickZ) - 1.0;
+
+ // Check if pick point is inside unit cube
+ if (pickX &lt; -1.0 || pickY &lt; -1.0 || pickX &gt; 1.0 || pickY &gt; 1.0 ||
+     pickZ &lt; -1.0 || pickZ &gt; 1.0) {
+   return false;
+ }
+
+ // Copy camera matrix.
+ mat4 invertedCameraMatrix = new mat4.copy(cameraMatrix);
+ // Invert the camera matrix.
+ invertedCameraMatrix.invert();
+ // Determine intersection point.
+ vec4 v = new vec4.raw(pickX, pickY, pickZ, 1.0);
+ invertedCameraMatrix.transform(v);
+ if (v.w == 0.0) {
+   return false;
+ }
+ double invW = 1.0 / v.w;
+ pickWorld.x = v.x * invW;
+ pickWorld.y = v.y * invW;
+ pickWorld.z = v.z * invW;
+
+ return true;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makePlaneReflection">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makePlaneReflection</strong>(<a href="vector_math/vec3.html">vec3</a> planeNormal, <a href="vector_math/vec3.html">vec3</a> planePoint) <a class="anchor-link" href="#makePlaneReflection"
+              title="Permalink to makePlaneReflection">#</a></h4>
+<div class="doc">
+<p>Returns a transformation matrix that transforms points by reflecting
+them through the plane specified with 
+<span class="param">planeNormal</span> and 
+<span class="param">planePoint</span></p>
+<pre class="source">
+mat4 makePlaneReflection(vec3 planeNormal, vec3 planePoint) {
+ vec4 v = new vec4(planeNormal, 0.0);
+ mat4 outer = new mat4.outer(v,v);
+ outer.scale(2.0);
+ mat4 r = new mat4();
+ r = r - outer;
+ double scale = 2.0 * dot(planePoint, planeNormal);
+ vec3 scaledNormal = (planeNormal.scaled(scale));
+ vec4 T = new vec4(scaledNormal, 1.0);
+ r.col3 = T;
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makePlaneProjection">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makePlaneProjection</strong>(<a href="vector_math/vec3.html">vec3</a> planeNormal, <a href="vector_math/vec3.html">vec3</a> planePoint) <a class="anchor-link" href="#makePlaneProjection"
+              title="Permalink to makePlaneProjection">#</a></h4>
+<div class="doc">
+<p>Returns a transformation matrix that transforms points onto
+the plane specified with 
+<span class="param">planeNormal</span> and 
+<span class="param">planePoint</span></p>
+<pre class="source">
+mat4 makePlaneProjection(vec3 planeNormal, vec3 planePoint) {
+ vec4 v = new vec4(planeNormal, 0.0);
+ mat4 outer = new mat4.outer(v, v);
+ mat4 r = new mat4();
+ r = r - outer;
+ vec3 scaledNormal = (planeNormal.scaled(dot(planePoint, planeNormal)));
+ vec4 T = new vec4(scaledNormal, 1.0);
+ r.col3 = T;
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makeOrthographic">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographic</strong>(double left, double right, double bottom, double top, double znear, double zfar) <a class="anchor-link" href="#makeOrthographic"
+              title="Permalink to makeOrthographic">#</a></h4>
+<div class="doc">
+<p>Returns an OpenGL orthographic camera projection matrix</p>
+<pre class="source">
+mat4 makeOrthographic(double left, double right, double bottom, double top, double znear, double zfar) {
+ double rml = right - left;
+ double rpl = right + left;
+ double tmb = top - bottom;
+ double tpb = top + bottom;
+ double fmn = zfar - znear;
+ double fpn = zfar + znear;
+
+ mat4 r = new mat4.zero();
+ r[0].x = 2.0/rml;
+ r[1].y = 2.0/tmb;
+ r[2].z = -2.0/fmn;
+ r[3].x = -rpl/rml;
+ r[3].y = -tpb/tmb;
+ r[3].z = -fpn/fmn;
+ r[3].w = 1.0;
+
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makeFrustum">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeFrustum</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeFrustum"
+              title="Permalink to makeFrustum">#</a></h4>
+<div class="doc">
+<p>Returns an OpenGL frustum camera projection matrix</p>
+<pre class="source">
+mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
+ double two_near = 2.0 * near;
+ double right_minus_left = right - left;
+ double top_minus_bottom = top - bottom;
+ double far_minus_near = far - near;
+
+ mat4 view = new mat4.zero();
+ view[0].x = two_near / right_minus_left;
+
+ view[1].y = two_near / top_minus_bottom;
+
+ view[2].x = (right + left) / right_minus_left;
+ view[2].y = (top + bottom) / top_minus_bottom;
+ view[2].z = -(far + near) / far_minus_near;
+ view[2].w = -1.0;
+
+ view[3].z = -(two_near * far) / far_minus_near;
+ view[3].w = 0.0;
+
+ return view;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makePerspective">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makePerspective</strong>(double fov_y_radians, double aspect_ratio, double znear, double zfar) <a class="anchor-link" href="#makePerspective"
+              title="Permalink to makePerspective">#</a></h4>
+<div class="doc">
+<p>Returns an OpenGL perspective camera projection matrix</p>
+<pre class="source">
+mat4 makePerspective(double fov_y_radians, double aspect_ratio, double znear, double zfar) {
+ double height = tan(fov_y_radians * 0.5) * znear;
+ double width = height * aspect_ratio;
+
+ return makeFrustum(-width, width, -height, height, znear, zfar);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makeLookAt">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeLookAt</strong>(<a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#makeLookAt"
+              title="Permalink to makeLookAt">#</a></h4>
+<div class="doc">
+<p>Returns an OpenGL look at matrix.
+The camera is located at 
+<span class="param">cameraPosition</span> and is focused
+on <code>cameraFocusPostion</code>.</p>
+<p>The 
+<span class="param">upDirection</span> is almost always (0, 1, 0).</p>
+<pre class="source">
+mat4 makeLookAt(vec3 cameraPosition, vec3 cameraFocusPosition, vec3 upDirection) {
+ vec3 z = cameraPosition - cameraFocusPosition;
+ z.normalize();
+
+ vec3 x = upDirection.cross(z);
+ x.normalize();
+
+ vec3 y = z.cross(x);
+ y.normalize();
+
+ mat4 r = new mat4.zero();
+ r[0].xyz = x;
+ r[1].xyz = y;
+ r[2].xyz = z;
+ r[3].w = 1.0;
+ r = r.transposed();
+ vec3 rotatedEye = r * -cameraPosition;
+ r[3].xyz = rotatedEye;
+
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="absoluteError">
+<button class="show-code">Code</button>
+double <strong>absoluteError</strong>(calculated, correct) <a class="anchor-link" href="#absoluteError"
+              title="Permalink to absoluteError">#</a></h4>
+<div class="doc">
+<p>Returns absolute error between 
+<span class="param">calculated</span> and 
+<span class="param">correct</span>. The type of 
+<span class="param">calculated</span> and 
+<span class="param">correct</span> must match and can be any vector, matrix, or quaternion.</p>
+<pre class="source">
+double absoluteError(dynamic calculated, dynamic correct) {
+ if (calculated is double &amp;&amp; correct is double) {
+   double diff = (calculated - correct).abs();
+   return diff;
+ }
+ return calculated.absoluteError(correct);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="relativeError">
+<button class="show-code">Code</button>
+double <strong>relativeError</strong>(calculated, correct) <a class="anchor-link" href="#relativeError"
+              title="Permalink to relativeError">#</a></h4>
+<div class="doc">
+<p>Returns relative error between 
+<span class="param">calculated</span> and 
+<span class="param">correct</span>. The type of 
+<span class="param">calculated</span> and 
+<span class="param">correct</span> must match and can be any vector, matrix, or quaternion.</p>
+<pre class="source">
+double relativeError(dynamic calculated, dynamic correct) {
+ if (calculated is double &amp;&amp; correct is double) {
+   double diff = (calculated - correct).abs();
+   return diff/correct;
+ }
+ return calculated.relativeError(correct);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="atan">
+<button class="show-code">Code</button>
+<strong>atan</strong>(arg, [arg2]) <a class="anchor-link" href="#atan"
+              title="Permalink to atan">#</a></h4>
+<div class="doc">
+<p>Returns atan(
+<span class="param">arg</span>) or atan(
+<span class="param">arg</span>/
+<span class="param">arg2</span>)</p>
+<p>Arguments can be of type <code>double</code>, <a class="crossref" href="vector_math/vec2.html">vec2</a>, <a class="crossref" href="vector_math/vec3.html">vec3</a> or <a class="crossref" href="vector_math/vec4.html">vec4</a>
+Return type matches input argument type</p>
+<pre class="source">
+dynamic atan(dynamic arg, [dynamic arg2]) {
+ if (arg2 == null) {
+   if (arg is double) {
+     return Math.atan(arg);
+   }
+   if (arg is vec2) {
+     return new vec2(Math.atan(arg.x), Math.atan(arg.y));
+   }
+   if (arg is vec3) {
+     return new vec3(Math.atan(arg.x), Math.atan(arg.y), Math.atan(arg.z));
+   }
+   if (arg is vec4) {
+     return new vec4(Math.atan(arg.x), Math.atan(arg.y), Math.atan(arg.z), Math.atan(arg.w));
+   }
+ } else {
+   if (arg is double) {
+     return Math.atan2(arg, arg2);
+   }
+   if (arg is vec2) {
+     return new vec2(Math.atan2(arg.x, arg2.x), Math.atan2(arg.y, arg2.y));
+   }
+   if (arg is vec3) {
+     return new vec3(Math.atan2(arg.x, arg2.x), Math.atan2(arg.y, arg2.y), Math.atan2(arg.z, arg2.z));
+   }
+   if (arg is vec4) {
+     return new vec4(Math.atan2(arg.x, arg2.x), Math.atan2(arg.y, arg2.y), Math.atan2(arg.z, arg2.z), Math.atan2(arg.w, arg2.w));
+   }
+ }
+ throw new ArgumentError('');
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="smoothstep">
+<button class="show-code">Code</button>
+<strong>smoothstep</strong>(edge0, edge1, x, [out = null]) <a class="anchor-link" href="#smoothstep"
+              title="Permalink to smoothstep">#</a></h4>
+<div class="doc">
+<p>Hermite intpolation between 
+<span class="param">edge0</span> and 
+<span class="param">edge1</span>. 
+<span class="param">edge0</span> &lt; 
+<span class="param">x</span> &lt; 
+<span class="param">edge1</span>.</p>
+<pre class="source">
+dynamic smoothstep(dynamic edge0, dynamic edge1, dynamic x, [dynamic out=null]) {
+ if (x is double) {
+   return _ScalerHelpers.smoothstep(edge0, edge1, x);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.smoothstep(edge0.x, edge1.x, x.x);
+   (out as vec2).y = _ScalerHelpers.smoothstep(edge0.y, edge1.y, x.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.smoothstep(edge0.x, edge1.x, x.x);
+   (out as vec3).y = _ScalerHelpers.smoothstep(edge0.y, edge1.y, x.y);
+   (out as vec3).z = _ScalerHelpers.smoothstep(edge0.z, edge1.z, x.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.smoothstep(edge0.x, edge1.x, x.x);
+   (out as vec4).y = _ScalerHelpers.smoothstep(edge0.y, edge1.y, x.y);
+   (out as vec4).z = _ScalerHelpers.smoothstep(edge0.z, edge1.z, x.z);
+   (out as vec4).w = _ScalerHelpers.smoothstep(edge0.w, edge1.w, x.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="step">
+<button class="show-code">Code</button>
+<strong>step</strong>(x, y, [out = null]) <a class="anchor-link" href="#step"
+              title="Permalink to step">#</a></h4>
+<div class="doc">
+<p>Returns 0.0 if x &lt; 
+<span class="param">y</span> and 1.0 otherwise.</p>
+<pre class="source">
+dynamic step(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is double) {
+   return _ScalerHelpers.step(x, y);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.step(x.x, y.x);
+   (out as vec2).y = _ScalerHelpers.step(x.y, y.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.step(x.x, y.x);
+   (out as vec3).y = _ScalerHelpers.step(x.y, y.y);
+   (out as vec3).z = _ScalerHelpers.step(x.z, y.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.step(x.x, y.x);
+   (out as vec4).y = _ScalerHelpers.step(x.y, y.y);
+   (out as vec4).z = _ScalerHelpers.step(x.z, y.z);
+   (out as vec4).w = _ScalerHelpers.step(x.w, y.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mix">
+<button class="show-code">Code</button>
+<strong>mix</strong>(x, y, t) <a class="anchor-link" href="#mix"
+              title="Permalink to mix">#</a></h4>
+<div class="doc">
+<p>Linear interpolation between 
+<span class="param">x</span> and 
+<span class="param">y</span> with 
+<span class="param">t</span>. 
+<span class="param">t</span> must be between 0.0 and 1.0.</p>
+<pre class="source">
+dynamic mix(dynamic x, dynamic y, dynamic t) {
+ if (t is double) {
+     if (x is double) {
+       return _ScalerHelpers.mix(x, y, t);
+     }
+     if (x is vec2) {
+       x = x as vec2;
+       return new vec2(_ScalerHelpers.mix(x.x, y.x, t), _ScalerHelpers.mix(x.y, y.y, t));
+     }
+     if (x is vec3) {
+       x = x as vec3;
+       return new vec3(_ScalerHelpers.mix(x.x, y.x, t), _ScalerHelpers.mix(x.y, y.y, t), _ScalerHelpers.mix(x.z, y.z, t));
+     }
+     if (x is vec4) {
+       x = x as vec4;
+       return new vec4(_ScalerHelpers.mix(x.x, y.x, t), _ScalerHelpers.mix(x.y, y.y, t), _ScalerHelpers.mix(x.z, y.z, t), _ScalerHelpers.mix(x.w, y.w, t));
+     }
+     throw new ArgumentError(x);
+
+ } else {
+     if (x is double) {
+       return _ScalerHelpers.mix(x, y, t);
+     }
+     if (x is vec2) {
+       x = x as vec2;
+       return new vec2(_ScalerHelpers.mix(x.x, y.x, t.x), _ScalerHelpers.mix(x.y, y.y, t.y));
+     }
+     if (x is vec3) {
+       x = x as vec3;
+       return new vec3(_ScalerHelpers.mix(x.x, y.x, t.x), _ScalerHelpers.mix(x.y, y.y, t.y), _ScalerHelpers.mix(x.z, y.z, t.z));
+     }
+     if (x is vec4) {
+       x = x as vec4;
+       return new vec4(_ScalerHelpers.mix(x.x, y.x, t.x), _ScalerHelpers.mix(x.y, y.y, t.y), _ScalerHelpers.mix(x.z, y.z, t.z), _ScalerHelpers.mix(x.w, y.w, t.w));
+     }
+     throw new ArgumentError(x);
+
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="clamp">
+<button class="show-code">Code</button>
+<strong>clamp</strong>(x, min_, max_, [out = null]) <a class="anchor-link" href="#clamp"
+              title="Permalink to clamp">#</a></h4>
+<div class="doc">
+<p>Component wise clamp of 
+<span class="param">x</span> between 
+<span class="param">min_</span> and 
+<span class="param">max_</span></p>
+<pre class="source">
+dynamic clamp(dynamic x, dynamic min_, dynamic max_, [dynamic out=null]) {
+ if (x is double) {
+   return _ScalerHelpers.clamp(x, min_, max_);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.clamp(x.x, min_.x, max_.x);
+   (out as vec2).y = _ScalerHelpers.clamp(x.y, min_.y, max_.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.clamp(x.x, min_.x, max_.x);
+   (out as vec3).y = _ScalerHelpers.clamp(x.y, min_.y, max_.y);
+   (out as vec3).z = _ScalerHelpers.clamp(x.z, min_.z, max_.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.clamp(x.x, min_.x, max_.x);
+   (out as vec4).y = _ScalerHelpers.clamp(x.y, min_.y, max_.y);
+   (out as vec4).z = _ScalerHelpers.clamp(x.z, min_.z, max_.z);
+   (out as vec4).w = _ScalerHelpers.clamp(x.w, min_.w, max_.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="max">
+<button class="show-code">Code</button>
+<strong>max</strong>(x, y, [out = null]) <a class="anchor-link" href="#max"
+              title="Permalink to max">#</a></h4>
+<div class="doc">
+<p>Returns component wise maximum of 
+<span class="param">x</span> and 
+<span class="param">y</span></p>
+<pre class="source">
+dynamic max(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is double) {
+   return Math.max(x, y);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.max(x.x, y.x);
+   (out as vec2).y = Math.max(x.y, y.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.max(x.x, y.x);
+   (out as vec3).y = Math.max(x.y, y.y);
+   (out as vec3).z = Math.max(x.z, y.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.max(x.x, y.x);
+   (out as vec4).y = Math.max(x.y, y.y);
+   (out as vec4).z = Math.max(x.z, y.z);
+   (out as vec4).w = Math.max(x.w, y.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="min">
+<button class="show-code">Code</button>
+<strong>min</strong>(x, y, [out = null]) <a class="anchor-link" href="#min"
+              title="Permalink to min">#</a></h4>
+<div class="doc">
+<p>Returns component wise minimum of 
+<span class="param">x</span> and 
+<span class="param">y</span></p>
+<pre class="source">
+dynamic min(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is double) {
+   return Math.min(x, y);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.min(x.x, y.x);
+   (out as vec2).y = Math.min(x.y, y.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.min(x.x, y.x);
+   (out as vec3).y = Math.min(x.y, y.y);
+   (out as vec3).z = Math.min(x.z, y.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.min(x.x, y.x);
+   (out as vec4).y = Math.min(x.y, y.y);
+   (out as vec4).z = Math.min(x.z, y.z);
+   (out as vec4).w = Math.min(x.w, y.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="mod">
+<button class="show-code">Code</button>
+<strong>mod</strong>(x, y, [out = null]) <a class="anchor-link" href="#mod"
+              title="Permalink to mod">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">x</span> mod 
+<span class="param">y</span></p>
+<pre class="source">
+dynamic mod(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is double) {
+   return _ScalerHelpers.mod(x, y);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.mod(x.x, y.x);
+   (out as vec2).y = _ScalerHelpers.mod(x.y, y.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.mod(x.x, y.x);
+   (out as vec3).y = _ScalerHelpers.mod(x.y, y.y);
+   (out as vec3).z = _ScalerHelpers.mod(x.z, y.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.mod(x.x, y.x);
+   (out as vec4).y = _ScalerHelpers.mod(x.y, y.y);
+   (out as vec4).z = _ScalerHelpers.mod(x.z, y.z);
+   (out as vec4).w = _ScalerHelpers.mod(x.w, y.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="fract">
+<button class="show-code">Code</button>
+<strong>fract</strong>(arg, [out = null]) <a class="anchor-link" href="#fract"
+              title="Permalink to fract">#</a></h4>
+<div class="doc">
+<p>Returns fraction of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic fract(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.fract(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.fract(arg.x);
+   (out as vec2).y = _ScalerHelpers.fract(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.fract(arg.x);
+   (out as vec3).y = _ScalerHelpers.fract(arg.y);
+   (out as vec3).z = _ScalerHelpers.fract(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.fract(arg.x);
+   (out as vec4).y = _ScalerHelpers.fract(arg.y);
+   (out as vec4).z = _ScalerHelpers.fract(arg.z);
+   (out as vec4).w = _ScalerHelpers.fract(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="ceil">
+<button class="show-code">Code</button>
+<strong>ceil</strong>(arg, [out = null]) <a class="anchor-link" href="#ceil"
+              title="Permalink to ceil">#</a></h4>
+<div class="doc">
+<p>Returns ceiling of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic ceil(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.ceil(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.ceil(arg.x);
+   (out as vec2).y = _ScalerHelpers.ceil(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.ceil(arg.x);
+   (out as vec3).y = _ScalerHelpers.ceil(arg.y);
+   (out as vec3).z = _ScalerHelpers.ceil(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.ceil(arg.x);
+   (out as vec4).y = _ScalerHelpers.ceil(arg.y);
+   (out as vec4).z = _ScalerHelpers.ceil(arg.z);
+   (out as vec4).w = _ScalerHelpers.ceil(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="roundEven">
+<button class="show-code">Code</button>
+<strong>roundEven</strong>(arg, [out = null]) <a class="anchor-link" href="#roundEven"
+              title="Permalink to roundEven">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">arg</span> rounded to nearest even integer.</p>
+<pre class="source">
+dynamic roundEven(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.roundEven(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.roundEven(arg.x);
+   (out as vec2).y = _ScalerHelpers.roundEven(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.roundEven(arg.x);
+   (out as vec3).y = _ScalerHelpers.roundEven(arg.y);
+   (out as vec3).z = _ScalerHelpers.roundEven(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.roundEven(arg.x);
+   (out as vec4).y = _ScalerHelpers.roundEven(arg.y);
+   (out as vec4).z = _ScalerHelpers.roundEven(arg.z);
+   (out as vec4).w = _ScalerHelpers.roundEven(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="round">
+<button class="show-code">Code</button>
+<strong>round</strong>(arg, [out = null]) <a class="anchor-link" href="#round"
+              title="Permalink to round">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">arg</span> rounded to nearest integer.</p>
+<pre class="source">
+dynamic round(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.round(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.round(arg.x);
+   (out as vec2).y = _ScalerHelpers.round(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.round(arg.x);
+   (out as vec3).y = _ScalerHelpers.round(arg.y);
+   (out as vec3).z = _ScalerHelpers.round(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.round(arg.x);
+   (out as vec4).y = _ScalerHelpers.round(arg.y);
+   (out as vec4).z = _ScalerHelpers.round(arg.z);
+   (out as vec4).w = _ScalerHelpers.round(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="trunc">
+<button class="show-code">Code</button>
+<strong>trunc</strong>(arg, [out = null]) <a class="anchor-link" href="#trunc"
+              title="Permalink to trunc">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">arg</span> truncated.</p>
+<pre class="source">
+dynamic trunc(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.truncate(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.truncate(arg.x);
+   (out as vec2).y = _ScalerHelpers.truncate(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.truncate(arg.x);
+   (out as vec3).y = _ScalerHelpers.truncate(arg.y);
+   (out as vec3).z = _ScalerHelpers.truncate(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.truncate(arg.x);
+   (out as vec4).y = _ScalerHelpers.truncate(arg.y);
+   (out as vec4).z = _ScalerHelpers.truncate(arg.z);
+   (out as vec4).w = _ScalerHelpers.truncate(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="floor">
+<button class="show-code">Code</button>
+<strong>floor</strong>(arg, [out = null]) <a class="anchor-link" href="#floor"
+              title="Permalink to floor">#</a></h4>
+<div class="doc">
+<p>Returns floor value of 
+<span class="param">arg</span>.</p>
+<pre class="source">
+dynamic floor(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.floor(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.floor(arg.x);
+   (out as vec2).y = _ScalerHelpers.floor(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.floor(arg.x);
+   (out as vec3).y = _ScalerHelpers.floor(arg.y);
+   (out as vec3).z = _ScalerHelpers.floor(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.floor(arg.x);
+   (out as vec4).y = _ScalerHelpers.floor(arg.y);
+   (out as vec4).z = _ScalerHelpers.floor(arg.z);
+   (out as vec4).w = _ScalerHelpers.floor(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="sign">
+<button class="show-code">Code</button>
+<strong>sign</strong>(arg, [out = null]) <a class="anchor-link" href="#sign"
+              title="Permalink to sign">#</a></h4>
+<div class="doc">
+<p>Returns 1.0 or 0.0 or -1.0 depending on sign of 
+<span class="param">arg</span>.</p>
+<pre class="source">
+dynamic sign(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.sign(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.sign(arg.x);
+   (out as vec2).y = _ScalerHelpers.sign(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.sign(arg.x);
+   (out as vec3).y = _ScalerHelpers.sign(arg.y);
+   (out as vec3).z = _ScalerHelpers.sign(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.sign(arg.x);
+   (out as vec4).y = _ScalerHelpers.sign(arg.y);
+   (out as vec4).z = _ScalerHelpers.sign(arg.z);
+   (out as vec4).w = _ScalerHelpers.sign(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="abs">
+<button class="show-code">Code</button>
+<strong>abs</strong>(arg, [out = null]) <a class="anchor-link" href="#abs"
+              title="Permalink to abs">#</a></h4>
+<div class="doc">
+<p>Returns absolute value of 
+<span class="param">arg</span>.</p>
+<pre class="source">
+dynamic abs(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.abs(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.abs(arg.x);
+   (out as vec2).y = _ScalerHelpers.abs(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.abs(arg.x);
+   (out as vec3).y = _ScalerHelpers.abs(arg.y);
+   (out as vec3).z = _ScalerHelpers.abs(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.abs(arg.x);
+   (out as vec4).y = _ScalerHelpers.abs(arg.y);
+   (out as vec4).z = _ScalerHelpers.abs(arg.z);
+   (out as vec4).w = _ScalerHelpers.abs(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="inversesqrt">
+<button class="show-code">Code</button>
+<strong>inversesqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#inversesqrt"
+              title="Permalink to inversesqrt">#</a></h4>
+<div class="doc">
+<p>Returns the inverse square root of 
+<span class="param">arg</span>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic inversesqrt(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.inversesqrt(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.inversesqrt(arg.x);
+   (out as vec2).y = _ScalerHelpers.inversesqrt(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.inversesqrt(arg.x);
+   (out as vec3).y = _ScalerHelpers.inversesqrt(arg.y);
+   (out as vec3).z = _ScalerHelpers.inversesqrt(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.inversesqrt(arg.x);
+   (out as vec4).y = _ScalerHelpers.inversesqrt(arg.y);
+   (out as vec4).z = _ScalerHelpers.inversesqrt(arg.z);
+   (out as vec4).w = _ScalerHelpers.inversesqrt(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="sqrt">
+<button class="show-code">Code</button>
+<strong>sqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#sqrt"
+              title="Permalink to sqrt">#</a></h4>
+<div class="doc">
+<p>Returns the square root of 
+<span class="param">arg</span>.</p>
+<pre class="source">
+dynamic sqrt(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.sqrt(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.sqrt(arg.x);
+   (out as vec2).y = Math.sqrt(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.sqrt(arg.x);
+   (out as vec3).y = Math.sqrt(arg.y);
+   (out as vec3).z = Math.sqrt(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.sqrt(arg.x);
+   (out as vec4).y = Math.sqrt(arg.y);
+   (out as vec4).z = Math.sqrt(arg.z);
+   (out as vec4).w = Math.sqrt(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="log2">
+<button class="show-code">Code</button>
+<strong>log2</strong>(arg, [out = null]) <a class="anchor-link" href="#log2"
+              title="Permalink to log2">#</a></h4>
+<div class="doc">
+<p>Returns the logarithm of 
+<span class="param">arg</span> base <em>2</em>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic log2(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.log2(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.log2(arg.x);
+   (out as vec2).y = _ScalerHelpers.log2(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.log2(arg.x);
+   (out as vec3).y = _ScalerHelpers.log2(arg.y);
+   (out as vec3).z = _ScalerHelpers.log2(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.log2(arg.x);
+   (out as vec4).y = _ScalerHelpers.log2(arg.y);
+   (out as vec4).z = _ScalerHelpers.log2(arg.z);
+   (out as vec4).w = _ScalerHelpers.log2(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="exp2">
+<button class="show-code">Code</button>
+<strong>exp2</strong>(arg, [out = null]) <a class="anchor-link" href="#exp2"
+              title="Permalink to exp2">#</a></h4>
+<div class="doc">
+<p>Returns <em>2</em> raised to the exponent 
+<span class="param">arg</span>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic exp2(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.exp2(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.exp2(arg.x);
+   (out as vec2).y = _ScalerHelpers.exp2(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.exp2(arg.x);
+   (out as vec3).y = _ScalerHelpers.exp2(arg.y);
+   (out as vec3).z = _ScalerHelpers.exp2(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.exp2(arg.x);
+   (out as vec4).y = _ScalerHelpers.exp2(arg.y);
+   (out as vec4).z = _ScalerHelpers.exp2(arg.z);
+   (out as vec4).w = _ScalerHelpers.exp2(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="log">
+<button class="show-code">Code</button>
+<strong>log</strong>(arg, [out = null]) <a class="anchor-link" href="#log"
+              title="Permalink to log">#</a></h4>
+<div class="doc">
+<p>Returns the logarithm of 
+<span class="param">arg</span> base <em>e</em>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic log(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.log(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.log(arg.x);
+   (out as vec2).y = Math.log(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.log(arg.x);
+   (out as vec3).y = Math.log(arg.y);
+   (out as vec3).z = Math.log(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.log(arg.x);
+   (out as vec4).y = Math.log(arg.y);
+   (out as vec4).z = Math.log(arg.z);
+   (out as vec4).w = Math.log(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="exp">
+<button class="show-code">Code</button>
+<strong>exp</strong>(arg, [out = null]) <a class="anchor-link" href="#exp"
+              title="Permalink to exp">#</a></h4>
+<div class="doc">
+<p>Returns <em>e</em> raised to the exponent 
+<span class="param">arg</span>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic exp(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.exp(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.exp(arg.x);
+   (out as vec2).y = Math.exp(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.exp(arg.x);
+   (out as vec3).y = Math.exp(arg.y);
+   (out as vec3).z = Math.exp(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.exp(arg.x);
+   (out as vec4).y = Math.exp(arg.y);
+   (out as vec4).z = Math.exp(arg.z);
+   (out as vec4).w = Math.exp(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="pow">
+<button class="show-code">Code</button>
+<strong>pow</strong>(x, y, [out = null]) <a class="anchor-link" href="#pow"
+              title="Permalink to pow">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">x</span> raised to the exponent 
+<span class="param">y</span>. Supports vectors and numbers.</p>
+<pre class="source">
+dynamic pow(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is double) {
+   return Math.pow(x, y);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.pow(x.x, y.x);
+   (out as vec2).y = Math.pow(x.y, y.y);
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.pow(x.x, y.x);
+   (out as vec3).y = Math.pow(x.y, y.y);
+   (out as vec3).z = Math.pow(x.z, y.z);
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.pow(x.x, y.x);
+   (out as vec4).y = Math.pow(x.y, y.y);
+   (out as vec4).z = Math.pow(x.z, y.z);
+   (out as vec4).w = Math.pow(x.w, y.w);
+   return out;
+ }
+ throw new ArgumentError(x);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="degrees">
+<button class="show-code">Code</button>
+<strong>degrees</strong>(arg, [out = null]) <a class="anchor-link" href="#degrees"
+              title="Permalink to degrees">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">arg</span> converted from radians to degrees. Return types matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic degrees(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.degrees(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.degrees(arg.x);
+   (out as vec2).y = _ScalerHelpers.degrees(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.degrees(arg.x);
+   (out as vec3).y = _ScalerHelpers.degrees(arg.y);
+   (out as vec3).z = _ScalerHelpers.degrees(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.degrees(arg.x);
+   (out as vec4).y = _ScalerHelpers.degrees(arg.y);
+   (out as vec4).z = _ScalerHelpers.degrees(arg.z);
+   (out as vec4).w = _ScalerHelpers.degrees(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="radians">
+<button class="show-code">Code</button>
+<strong>radians</strong>(arg, [out = null]) <a class="anchor-link" href="#radians"
+              title="Permalink to radians">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">arg</span> converted from degrees to radians. Return types matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic radians(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return _ScalerHelpers.radians(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = _ScalerHelpers.radians(arg.x);
+   (out as vec2).y = _ScalerHelpers.radians(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = _ScalerHelpers.radians(arg.x);
+   (out as vec3).y = _ScalerHelpers.radians(arg.y);
+   (out as vec3).z = _ScalerHelpers.radians(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = _ScalerHelpers.radians(arg.x);
+   (out as vec4).y = _ScalerHelpers.radians(arg.y);
+   (out as vec4).z = _ScalerHelpers.radians(arg.z);
+   (out as vec4).w = _ScalerHelpers.radians(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="acos">
+<button class="show-code">Code</button>
+<strong>acos</strong>(arg, [out = null]) <a class="anchor-link" href="#acos"
+              title="Permalink to acos">#</a></h4>
+<div class="doc">
+<p>Returns arc cosine of 
+<span class="param">arg</span>. Return type matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic acos(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.acos(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.acos(arg.x);
+   (out as vec2).y = Math.acos(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.acos(arg.x);
+   (out as vec3).y = Math.acos(arg.y);
+   (out as vec3).z = Math.acos(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.acos(arg.x);
+   (out as vec4).y = Math.acos(arg.y);
+   (out as vec4).z = Math.acos(arg.z);
+   (out as vec4).w = Math.acos(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="asin">
+<button class="show-code">Code</button>
+<strong>asin</strong>(arg, [out = null]) <a class="anchor-link" href="#asin"
+              title="Permalink to asin">#</a></h4>
+<div class="doc">
+<p>Returns arc sine of 
+<span class="param">arg</span>. Return type matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic asin(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.asin(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.asin(arg.x);
+   (out as vec2).y = Math.asin(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.asin(arg.x);
+   (out as vec3).y = Math.asin(arg.y);
+   (out as vec3).z = Math.asin(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.asin(arg.x);
+   (out as vec4).y = Math.asin(arg.y);
+   (out as vec4).z = Math.asin(arg.z);
+   (out as vec4).w = Math.asin(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="tan">
+<button class="show-code">Code</button>
+<strong>tan</strong>(arg, [out = null]) <a class="anchor-link" href="#tan"
+              title="Permalink to tan">#</a></h4>
+<div class="doc">
+<p>Returns tangent of 
+<span class="param">arg</span>. Return type matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic tan(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.tan(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.tan(arg.x);
+   (out as vec2).y = Math.tan(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.tan(arg.x);
+   (out as vec3).y = Math.tan(arg.y);
+   (out as vec3).z = Math.tan(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.tan(arg.x);
+   (out as vec4).y = Math.tan(arg.y);
+   (out as vec4).z = Math.tan(arg.z);
+   (out as vec4).w = Math.tan(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="cos">
+<button class="show-code">Code</button>
+<strong>cos</strong>(arg, [out = null]) <a class="anchor-link" href="#cos"
+              title="Permalink to cos">#</a></h4>
+<div class="doc">
+<p>Returns cosine of 
+<span class="param">arg</span>. Return type matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic cos(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.cos(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.cos(arg.x);
+   (out as vec2).y = Math.cos(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.cos(arg.x);
+   (out as vec3).y = Math.cos(arg.y);
+   (out as vec3).z = Math.cos(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.cos(arg.x);
+   (out as vec4).y = Math.cos(arg.y);
+   (out as vec4).z = Math.cos(arg.z);
+   (out as vec4).w = Math.cos(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="sin">
+<button class="show-code">Code</button>
+<strong>sin</strong>(arg, [out = null]) <a class="anchor-link" href="#sin"
+              title="Permalink to sin">#</a></h4>
+<div class="doc">
+<p>Returns sine of 
+<span class="param">arg</span>. Return type matches the type of 
+<span class="param">arg</span></p>
+<pre class="source">
+dynamic sin(dynamic arg, [dynamic out=null]) {
+ if (arg is double) {
+   return Math.sin(arg);
+ }
+ if (arg is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   (out as vec2).x = Math.sin(arg.x);
+   (out as vec2).y = Math.sin(arg.y);
+   return out;
+ }
+ if (arg is vec3) {
+   if (out == null) {
+     out = new vec3.zero();
+   }
+   (out as vec3).x = Math.sin(arg.x);
+   (out as vec3).y = Math.sin(arg.y);
+   (out as vec3).z = Math.sin(arg.z);
+   return out;
+ }
+ if (arg is vec4) {
+   if (out == null) {
+     out = new vec4.zero();
+   }
+   (out as vec4).x = Math.sin(arg.x);
+   (out as vec4).y = Math.sin(arg.y);
+   (out as vec4).z = Math.sin(arg.z);
+   (out as vec4).w = Math.sin(arg.w);
+   return out;
+ }
+ throw new ArgumentError(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="buildPlaneVectors">
+<button class="show-code">Code</button>
+void <strong>buildPlaneVectors</strong>(<a href="vector_math/vec3.html">vec3</a> planeNormal, <a href="vector_math/vec3.html">vec3</a> u, <a href="vector_math/vec3.html">vec3</a> v) <a class="anchor-link" href="#buildPlaneVectors"
+              title="Permalink to buildPlaneVectors">#</a></h4>
+<div class="doc">
+<p>Sets 
+<span class="param">u</span> and 
+<span class="param">v</span> to be two vectors orthogonal to each other and 
+<span class="param">planeNormal</span></p>
+<pre class="source">
+void buildPlaneVectors(final vec3 planeNormal, vec3 u, vec3 v) {
+ if (planeNormal.z.abs() &gt; _ScalerHelpers._sqrtOneHalf) {
+   // choose u in y-z plane
+   double a = planeNormal.y*planeNormal.y + planeNormal.z*planeNormal.z;
+   double k = 1.0/Math.sqrt(a);
+   u.x = 0.0;
+   u.y = -planeNormal.z*k;
+   u.z = planeNormal.y*k;
+   v.x = a*k;
+   v.y = -planeNormal[0]*(planeNormal[1]*k);
+   v.z = planeNormal[0]*(-planeNormal[2]*k);
+ } else {
+   // choose u in x-y plane
+   double a = planeNormal.x*planeNormal.x + planeNormal.y*planeNormal.y;
+   double k = 1.0/Math.sqrt(a);
+   u.x = -planeNormal[1]*k;
+   u.y = planeNormal[0]*k;
+   u.z = 0.0;
+   v.x = -planeNormal[2]*(planeNormal[0]*k);
+   v.y = planeNormal[2]*(-planeNormal[1]*k);
+   v.z = a*k;
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="normalize">
+<button class="show-code">Code</button>
+<strong>normalize</strong>(x, [out = null]) <a class="anchor-link" href="#normalize"
+              title="Permalink to normalize">#</a></h4>
+<div class="doc">
+<p>Returns 
+<span class="param">x</span> normalized. Supports <code>double</code>, <a class="crossref" href="vector_math/vec2.html">vec2</a>, <a class="crossref" href="vector_math/vec3.html">vec3</a>, and <a class="crossref" href="vector_math/vec4.html">vec4</a> input types. The return type will match the type of 
+<span class="param">x</span></p>
+<pre class="source">
+dynamic normalize(dynamic x, [dynamic out=null]) {
+ if (x is num) {
+   return 1.0 * sign(x);
+ }
+ if (x is vec2) {
+   if (out == null) {
+     out = new vec2.copy(x);
+   }
+   (x as vec2).normalize();
+   return out;
+ }
+ if (x is vec3) {
+   if (out == null) {
+     out = new vec3.copy(x);
+   }
+   (x as vec3).normalize();
+   return out;
+ }
+ if (x is vec4) {
+   if (out == null) {
+     out = new vec4.copy(x);
+   }
+   (x as vec4).normalize();
+   return out;
+ }
+ return null;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="cross">
+<button class="show-code">Code</button>
+<strong>cross</strong>(x, y, [out = null]) <a class="anchor-link" href="#cross"
+              title="Permalink to cross">#</a></h4>
+<div class="doc">
+<p>Returns the cross product between 
+<span class="param">x</span> and 
+<span class="param">y</span>. 
+<span class="param">x</span> and 
+<span class="param">y</span> can be vec2, vec3 or num, but not all combinations are supported.</p>
+<pre class="source">
+dynamic cross(dynamic x, dynamic y, [dynamic out=null]) {
+ if (x is vec3 &amp;&amp; y is vec3) {
+   return x.cross(y, out);
+ } else if (x is vec2 &amp;&amp; y is vec2) {
+   return x.cross(y);
+ } else if (x is num &amp;&amp; y is vec2) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   out.x = -x * y.y;
+   out.y = x * y.x;
+   return out;
+ } else if (x is vec2 &amp;&amp; y is num) {
+   if (out == null) {
+     out = new vec2.zero();
+   }
+   out.x = y * x.y;
+   out.y = -y * x.x;
+   return out;
+ } else {
+   assert(false);
+ }
+ return null;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distance2">
+<button class="show-code">Code</button>
+double <strong>distance2</strong>(x, y) <a class="anchor-link" href="#distance2"
+              title="Permalink to distance2">#</a></h4>
+<div class="doc">
+<p>Returns the distance squared between vectors 
+<span class="param">x</span> and 
+<span class="param">y</span>.</p>
+<pre class="source">
+double distance2(dynamic x, dynamic y) {
+ return length2(x - y);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distance">
+<button class="show-code">Code</button>
+double <strong>distance</strong>(x, y) <a class="anchor-link" href="#distance"
+              title="Permalink to distance">#</a></h4>
+<div class="doc">
+<p>Returns the distance between vectors 
+<span class="param">x</span> and 
+<span class="param">y</span>. The dimension of 
+<span class="param">x</span> and 
+<span class="param">y</span> must match.</p>
+<pre class="source">
+double distance(dynamic x, dynamic y) {
+ return length(x - y);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="length2">
+<button class="show-code">Code</button>
+double <strong>length2</strong>(x) <a class="anchor-link" href="#length2"
+              title="Permalink to length2">#</a></h4>
+<div class="doc">
+<p>Returns the length squared of vector 
+<span class="param">x</span></p>
+<pre class="source">
+double length2(dynamic x) {
+ return x.length2;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="length">
+<button class="show-code">Code</button>
+double <strong>length</strong>(x) <a class="anchor-link" href="#length"
+              title="Permalink to length">#</a></h4>
+<div class="doc">
+<p>Returns the length of vector 
+<span class="param">x</span></p>
+<pre class="source">
+double length(dynamic x) {
+ return x.length;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="dot">
+<button class="show-code">Code</button>
+double <strong>dot</strong>(x, y) <a class="anchor-link" href="#dot"
+              title="Permalink to dot">#</a></h4>
+<div class="doc">
+<p>Returns the dot product between vectors 
+<span class="param">x</span> and 
+<span class="param">y</span>. The dimension of 
+<span class="param">x</span> and 
+<span class="param">y</span> must match.</p>
+<pre class="source">
+double dot(dynamic x, dynamic y) {
+ return x.dot(y);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Classes</h3>
+          <div class="type">
+          <h4>
+            <a href="vector_math/aabb3.html"><strong>aabb3</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/mat2.html"><strong>mat2</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/mat3.html"><strong>mat3</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/mat4.html"><strong>mat4</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/quat.html"><strong>quat</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/vec2.html"><strong>vec2</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/vec3.html"><strong>vec3</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="vector_math/vec4.html"><strong>vec4</strong></a>
+          </h4>
+          </div>
+          
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="client-live-nav.js"></script>
+        </body></html>
+        

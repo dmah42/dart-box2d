@@ -1,0 +1,790 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>SeparationFunction class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="SeparationFunction">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/SeparationFunction.html">SeparationFunction</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>SeparationFunction</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class SeparationFunction {
+ DistanceProxy proxyA;
+ DistanceProxy proxyB;
+ int type;
+ final vec2 localPoint;
+ final vec2 axis;
+ Sweep sweepA;
+ Sweep sweepB;
+
+ /** Pooling */
+ final vec2 localPointA;
+ final vec2 localPointB;
+ final vec2 pointA;
+ final vec2 pointB;
+ final vec2 localPointA1;
+ final vec2 localPointA2;
+ final vec2 normal;
+ final vec2 localPointB1;
+ final vec2 localPointB2;
+ final vec2 axisA;
+ final vec2 axisB;
+ final vec2 temp;
+ final Transform xfa;
+ final Transform xfb;
+
+ SeparationFunction() :
+   proxyA = new DistanceProxy(),
+   proxyB = new DistanceProxy(),
+   type = SeparationType.POINTS,
+   localPoint = new vec2.zero(),
+   axis = new vec2.zero(),
+   sweepA = new Sweep(),
+   sweepB = new Sweep(),
+   localPointA = new vec2.zero(),
+   localPointB = new vec2.zero(),
+   pointA = new vec2.zero(),
+   pointB = new vec2.zero(),
+   localPointA1 = new vec2.zero(),
+   localPointA2 = new vec2.zero(),
+   normal = new vec2.zero(),
+   localPointB1 = new vec2.zero(),
+   localPointB2 = new vec2.zero(),
+   temp = new vec2.zero(),
+   xfa = new Transform(),
+   xfb = new Transform(),
+   axisA = new vec2.zero(),
+   axisB = new vec2.zero() { }
+
+ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+     argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+   proxyA = argProxyA;
+   proxyB = argProxyB;
+   int count = cache.count;
+   assert (0 &lt; count &amp;&amp; count &lt; 3);
+
+   sweepA = argSweepA;
+   sweepB = argSweepB;
+
+   sweepA.getTransform(xfa, t1);
+   sweepB.getTransform(xfb, t1);
+
+   if (count == 1) {
+     type = SeparationType.POINTS;
+     localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+     localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+     Transform.mulToOut(xfa, localPointA, pointA);
+     Transform.mulToOut(xfb, localPointB, pointB);
+     axis.copyFrom(pointB).sub(pointA);
+     num s = axis.length;
+     axis.normalize();
+     return s;
+   } else if (cache.indexA[0] == cache.indexA[1]) {
+     // Two points on B and one on A.
+     type = SeparationType.FACE_B;
+
+     localPointB1.copyFrom(proxyB.vertices[cache.indexB[0]]);
+     localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
+
+     temp.copyFrom(localPointB2).sub(localPointB1);
+     cross(temp, 1, axis);
+     axis.normalize();
+
+     xfb.rotation.transformed(axis, normal);
+
+     localPoint.copyFrom(localPointB1).add(localPointB2).scale(0.5);
+     Transform.mulToOut(xfb, localPoint, pointB);
+
+     localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+     Transform.mulToOut(xfa, localPointA, pointA);
+
+     temp.copyFrom(pointA).sub(pointB);
+     num s = dot(temp, normal);
+     if (s &lt; 0.0) {
+       axis.negate();
+       s = -s;
+     }
+
+     return s;
+   } else {
+     // Two points on A and one or two points on B.
+     type = SeparationType.FACE_A;
+
+     localPointA1.copyFrom(proxyA.vertices[cache.indexA[0]]);
+     localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
+
+     temp.copyFrom(localPointA2).sub(localPointA1);
+     cross(temp, 1, axis);
+     axis.normalize();
+
+     xfa.rotation.transformed(axis, normal);
+
+     localPoint.copyFrom(localPointA1).add(localPointA2).scale(0.5);
+     Transform.mulToOut(xfa, localPoint, pointA);
+
+     localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+     Transform.mulToOut(xfb, localPointB, pointB);
+
+     temp.copyFrom(pointB).sub(pointA);
+     num s = dot(temp, normal);
+     if (s &lt; 0.0) {
+       axis.negate();
+       s = -s;
+     }
+     return s;
+   }
+ }
+
+ num findMinSeparation(List&lt;int&gt; indexes, num t) {
+   sweepA.getTransform(xfa, t);
+   sweepB.getTransform(xfb, t);
+
+   switch (type) {
+     case SeparationType.POINTS:
+       xfa.rotation.transposed().transformed(axis, axisA);
+       xfb.rotation.transposed().transformed(axis.negate(), axisB);
+       axis.negate();
+
+       indexes[0] = proxyA.getSupport(axisA);
+       indexes[1] = proxyB.getSupport(axisB);
+
+       localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+       localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+
+       Transform.mulToOut(xfa, localPointA, pointA);
+       Transform.mulToOut(xfb, localPointB, pointB);
+
+       return dot(pointB.sub(pointA), axis);
+
+     case SeparationType.FACE_A:
+       xfa.rotation.transformed(axis, normal);
+       Transform.mulToOut(xfa, localPoint, pointA);
+
+       normal.negate();
+       xfb.rotation.transposed().transformed(normal, axisB);
+       normal.negate();
+
+       indexes[0] = -1;
+       indexes[1] = proxyB.getSupport(axisB);
+
+       localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+       Transform.mulToOut(xfb, localPointB, pointB);
+
+       return dot(pointB.sub(pointA), normal);
+
+     case SeparationType.FACE_B:
+       xfb.rotation.transformed(axis, normal);
+       Transform.mulToOut(xfb, localPoint, pointB);
+
+       xfa.rotation.transposed().transformed(normal.negate(), axisA);
+       normal.negate();
+
+       indexes[1] = -1;
+       indexes[0] = proxyA.getSupport(axisA);
+
+       localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+       Transform.mulToOut(xfa, localPointA, pointA);
+
+       num separation = dot(pointA.sub(pointB), normal);
+       return separation;
+
+     default:
+       assert (false);
+       indexes[0] = -1;
+       indexes[1] = -1;
+       return 0;
+   }
+ }
+
+ num evaluate(int indexA, int indexB, num t) {
+   sweepA.getTransform(xfa, t);
+   sweepB.getTransform(xfb, t);
+
+   switch (type) {
+     case SeparationType.POINTS:
+       xfa.rotation.transposed().transformed(axis, axisA);
+       xfb.rotation.transposed().transformed(axis.negate(), axisB);
+       axis.negate();
+
+       localPointA.copyFrom(proxyA.vertices[indexA]);
+       localPointB.copyFrom(proxyB.vertices[indexB]);
+
+       Transform.mulToOut(xfa, localPointA, pointA);
+       Transform.mulToOut(xfb, localPointB, pointB);
+
+       return dot(pointB.sub(pointA), axis);
+
+     case SeparationType.FACE_A:
+       xfa.rotation.transformed(axis, normal);
+       Transform.mulToOut(xfa, localPoint, pointA);
+
+       normal.negate();
+       xfb.rotation.transposed().transformed(normal, axisB);
+       normal.negate();
+
+       localPointB.copyFrom(proxyB.vertices[indexB]);
+       Transform.mulToOut(xfb, localPointB, pointB);
+       num separation = dot(pointB.sub(pointA), normal);
+       return separation;
+
+     case SeparationType.FACE_B:
+       xfb.rotation.transformed(axis, normal);
+       Transform.mulToOut(xfb, localPoint, pointB);
+
+       xfa.rotation.transposed().transformed(normal.negate(), axisA);
+       normal.negate();
+
+       localPointA.copyFrom(proxyA.vertices[indexA]);
+       Transform.mulToOut(xfa, localPointA, pointA);
+
+       num separation = dot(pointA.sub(pointB), normal);
+       return separation;
+
+     default:
+       assert (false);
+       return 0;
+   }
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="SeparationFunction">
+<button class="show-code">Code</button>
+new <strong>SeparationFunction</strong>() <a class="anchor-link" href="#SeparationFunction"
+              title="Permalink to SeparationFunction.SeparationFunction">#</a></h4>
+<div class="doc">
+<pre class="source">
+SeparationFunction() :
+ proxyA = new DistanceProxy(),
+ proxyB = new DistanceProxy(),
+ type = SeparationType.POINTS,
+ localPoint = new vec2.zero(),
+ axis = new vec2.zero(),
+ sweepA = new Sweep(),
+ sweepB = new Sweep(),
+ localPointA = new vec2.zero(),
+ localPointB = new vec2.zero(),
+ pointA = new vec2.zero(),
+ pointB = new vec2.zero(),
+ localPointA1 = new vec2.zero(),
+ localPointA2 = new vec2.zero(),
+ normal = new vec2.zero(),
+ localPointB1 = new vec2.zero(),
+ localPointB2 = new vec2.zero(),
+ temp = new vec2.zero(),
+ xfa = new Transform(),
+ xfb = new Transform(),
+ axisA = new vec2.zero(),
+ axisB = new vec2.zero() { }
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="axis">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>axis</strong> <a class="anchor-link"
+            href="#axis"
+            title="Permalink to SeparationFunction.axis">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+axis
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="axisA">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>axisA</strong> <a class="anchor-link"
+            href="#axisA"
+            title="Permalink to SeparationFunction.axisA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+axisA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="axisB">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>axisB</strong> <a class="anchor-link"
+            href="#axisB"
+            title="Permalink to SeparationFunction.axisB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+axisB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPoint">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
+            href="#localPoint"
+            title="Permalink to SeparationFunction.localPoint">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPoint
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA</strong> <a class="anchor-link"
+            href="#localPointA"
+            title="Permalink to SeparationFunction.localPointA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA1">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA1</strong> <a class="anchor-link"
+            href="#localPointA1"
+            title="Permalink to SeparationFunction.localPointA1">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointA1
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointA2">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA2</strong> <a class="anchor-link"
+            href="#localPointA2"
+            title="Permalink to SeparationFunction.localPointA2">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointA2
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB</strong> <a class="anchor-link"
+            href="#localPointB"
+            title="Permalink to SeparationFunction.localPointB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB1">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB1</strong> <a class="anchor-link"
+            href="#localPointB1"
+            title="Permalink to SeparationFunction.localPointB1">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointB1
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="localPointB2">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB2</strong> <a class="anchor-link"
+            href="#localPointB2"
+            title="Permalink to SeparationFunction.localPointB2">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+localPointB2
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="normal">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong> <a class="anchor-link"
+            href="#normal"
+            title="Permalink to SeparationFunction.normal">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+normal
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pointA">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong> <a class="anchor-link"
+            href="#pointA"
+            title="Permalink to SeparationFunction.pointA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+pointA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="pointB">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong> <a class="anchor-link"
+            href="#pointB"
+            title="Permalink to SeparationFunction.pointB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+pointB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="proxyA">
+<button class="show-code">Code</button>
+<a href="../box2d/DistanceProxy.html">DistanceProxy</a>         <strong>proxyA</strong> <a class="anchor-link"
+            href="#proxyA"
+            title="Permalink to SeparationFunction.proxyA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+proxyA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="proxyB">
+<button class="show-code">Code</button>
+<a href="../box2d/DistanceProxy.html">DistanceProxy</a>         <strong>proxyB</strong> <a class="anchor-link"
+            href="#proxyB"
+            title="Permalink to SeparationFunction.proxyB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+proxyB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sweepA">
+<button class="show-code">Code</button>
+<a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepA</strong> <a class="anchor-link"
+            href="#sweepA"
+            title="Permalink to SeparationFunction.sweepA">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+sweepA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sweepB">
+<button class="show-code">Code</button>
+<a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepB</strong> <a class="anchor-link"
+            href="#sweepB"
+            title="Permalink to SeparationFunction.sweepB">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+sweepB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="temp">
+<button class="show-code">Code</button>
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
+            href="#temp"
+            title="Permalink to SeparationFunction.temp">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+temp
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="type">
+<button class="show-code">Code</button>
+int         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to SeparationFunction.type">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+type
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xfa">
+<button class="show-code">Code</button>
+final <a href="../box2d/Transform.html">Transform</a>         <strong>xfa</strong> <a class="anchor-link"
+            href="#xfa"
+            title="Permalink to SeparationFunction.xfa">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+xfa
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xfb">
+<button class="show-code">Code</button>
+final <a href="../box2d/Transform.html">Transform</a>         <strong>xfb</strong> <a class="anchor-link"
+            href="#xfb"
+            title="Permalink to SeparationFunction.xfb">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+xfb
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="evaluate">
+<button class="show-code">Code</button>
+num <strong>evaluate</strong>(int indexA, int indexB, num t) <a class="anchor-link" href="#evaluate"
+              title="Permalink to SeparationFunction.evaluate">#</a></h4>
+<div class="doc">
+<pre class="source">
+num evaluate(int indexA, int indexB, num t) {
+ sweepA.getTransform(xfa, t);
+ sweepB.getTransform(xfb, t);
+
+ switch (type) {
+   case SeparationType.POINTS:
+     xfa.rotation.transposed().transformed(axis, axisA);
+     xfb.rotation.transposed().transformed(axis.negate(), axisB);
+     axis.negate();
+
+     localPointA.copyFrom(proxyA.vertices[indexA]);
+     localPointB.copyFrom(proxyB.vertices[indexB]);
+
+     Transform.mulToOut(xfa, localPointA, pointA);
+     Transform.mulToOut(xfb, localPointB, pointB);
+
+     return dot(pointB.sub(pointA), axis);
+
+   case SeparationType.FACE_A:
+     xfa.rotation.transformed(axis, normal);
+     Transform.mulToOut(xfa, localPoint, pointA);
+
+     normal.negate();
+     xfb.rotation.transposed().transformed(normal, axisB);
+     normal.negate();
+
+     localPointB.copyFrom(proxyB.vertices[indexB]);
+     Transform.mulToOut(xfb, localPointB, pointB);
+     num separation = dot(pointB.sub(pointA), normal);
+     return separation;
+
+   case SeparationType.FACE_B:
+     xfb.rotation.transformed(axis, normal);
+     Transform.mulToOut(xfb, localPoint, pointB);
+
+     xfa.rotation.transposed().transformed(normal.negate(), axisA);
+     normal.negate();
+
+     localPointA.copyFrom(proxyA.vertices[indexA]);
+     Transform.mulToOut(xfa, localPointA, pointA);
+
+     num separation = dot(pointA.sub(pointB), normal);
+     return separation;
+
+   default:
+     assert (false);
+     return 0;
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="findMinSeparation">
+<button class="show-code">Code</button>
+num <strong>findMinSeparation</strong>(List&lt;int&gt; indexes, num t) <a class="anchor-link" href="#findMinSeparation"
+              title="Permalink to SeparationFunction.findMinSeparation">#</a></h4>
+<div class="doc">
+<pre class="source">
+num findMinSeparation(List&lt;int&gt; indexes, num t) {
+ sweepA.getTransform(xfa, t);
+ sweepB.getTransform(xfb, t);
+
+ switch (type) {
+   case SeparationType.POINTS:
+     xfa.rotation.transposed().transformed(axis, axisA);
+     xfb.rotation.transposed().transformed(axis.negate(), axisB);
+     axis.negate();
+
+     indexes[0] = proxyA.getSupport(axisA);
+     indexes[1] = proxyB.getSupport(axisB);
+
+     localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+     localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+
+     Transform.mulToOut(xfa, localPointA, pointA);
+     Transform.mulToOut(xfb, localPointB, pointB);
+
+     return dot(pointB.sub(pointA), axis);
+
+   case SeparationType.FACE_A:
+     xfa.rotation.transformed(axis, normal);
+     Transform.mulToOut(xfa, localPoint, pointA);
+
+     normal.negate();
+     xfb.rotation.transposed().transformed(normal, axisB);
+     normal.negate();
+
+     indexes[0] = -1;
+     indexes[1] = proxyB.getSupport(axisB);
+
+     localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+     Transform.mulToOut(xfb, localPointB, pointB);
+
+     return dot(pointB.sub(pointA), normal);
+
+   case SeparationType.FACE_B:
+     xfb.rotation.transformed(axis, normal);
+     Transform.mulToOut(xfb, localPoint, pointB);
+
+     xfa.rotation.transposed().transformed(normal.negate(), axisA);
+     normal.negate();
+
+     indexes[1] = -1;
+     indexes[0] = proxyA.getSupport(axisA);
+
+     localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+     Transform.mulToOut(xfa, localPointA, pointA);
+
+     num separation = dot(pointA.sub(pointB), normal);
+     return separation;
+
+   default:
+     assert (false);
+     indexes[0] = -1;
+     indexes[1] = -1;
+     return 0;
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="initialize">
+<button class="show-code">Code</button>
+num <strong>initialize</strong>(<a href="../box2d/SimplexCache.html">SimplexCache</a> cache, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyA, <a href="../box2d/Sweep.html">Sweep</a> argSweepA, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyB, <a href="../box2d/Sweep.html">Sweep</a> argSweepB, num t1) <a class="anchor-link" href="#initialize"
+              title="Permalink to SeparationFunction.initialize">#</a></h4>
+<div class="doc">
+<pre class="source">
+num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+   argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+ proxyA = argProxyA;
+ proxyB = argProxyB;
+ int count = cache.count;
+ assert (0 &lt; count &amp;&amp; count &lt; 3);
+
+ sweepA = argSweepA;
+ sweepB = argSweepB;
+
+ sweepA.getTransform(xfa, t1);
+ sweepB.getTransform(xfb, t1);
+
+ if (count == 1) {
+   type = SeparationType.POINTS;
+   localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+   localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+   Transform.mulToOut(xfa, localPointA, pointA);
+   Transform.mulToOut(xfb, localPointB, pointB);
+   axis.copyFrom(pointB).sub(pointA);
+   num s = axis.length;
+   axis.normalize();
+   return s;
+ } else if (cache.indexA[0] == cache.indexA[1]) {
+   // Two points on B and one on A.
+   type = SeparationType.FACE_B;
+
+   localPointB1.copyFrom(proxyB.vertices[cache.indexB[0]]);
+   localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
+
+   temp.copyFrom(localPointB2).sub(localPointB1);
+   cross(temp, 1, axis);
+   axis.normalize();
+
+   xfb.rotation.transformed(axis, normal);
+
+   localPoint.copyFrom(localPointB1).add(localPointB2).scale(0.5);
+   Transform.mulToOut(xfb, localPoint, pointB);
+
+   localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+   Transform.mulToOut(xfa, localPointA, pointA);
+
+   temp.copyFrom(pointA).sub(pointB);
+   num s = dot(temp, normal);
+   if (s &lt; 0.0) {
+     axis.negate();
+     s = -s;
+   }
+
+   return s;
+ } else {
+   // Two points on A and one or two points on B.
+   type = SeparationType.FACE_A;
+
+   localPointA1.copyFrom(proxyA.vertices[cache.indexA[0]]);
+   localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
+
+   temp.copyFrom(localPointA2).sub(localPointA1);
+   cross(temp, 1, axis);
+   axis.normalize();
+
+   xfa.rotation.transformed(axis, normal);
+
+   localPoint.copyFrom(localPointA1).add(localPointA2).scale(0.5);
+   Transform.mulToOut(xfa, localPoint, pointA);
+
+   localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+   Transform.mulToOut(xfb, localPointB, pointB);
+
+   temp.copyFrom(pointB).sub(pointA);
+   num s = dot(temp, normal);
+   if (s &lt; 0.0) {
+     axis.negate();
+     s = -s;
+   }
+   return s;
+ }
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
