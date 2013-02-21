@@ -31,7 +31,7 @@ class DistanceProxy {
     radius = 0 {
 
       for(int i = 0; i < vertices.length; ++i)
-        vertices[i] = new vec2();
+        vertices[i] = new vec2.zero();
     }
 
   /**

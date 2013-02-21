@@ -70,23 +70,15 @@ abstract class Benchmark {
    */
   void _recordResults(int time, int benchmarkIterations, int steps) {
     StringBuffer buffer = new StringBuffer();
-    buffer.add("$name ");
-    buffer.add(" ($steps steps, $benchmarkIterations solve loops)");
-    buffer.add(" : ");
-
-    buffer.add(time);
-    buffer.add('ms');
+    buffer.write("$name ($steps steps, $benchmarkIterations solve loops) : $time ms");
 
     // Calculate and write-out steps/second.
     num stepsPerSecond = (steps / (time / 1000));
-    buffer.add('  ($stepsPerSecond steps/second)');
+    buffer.write('  ($stepsPerSecond steps/second)');
 
     // Write out the checksum. This should be compared manually to other
     // implementations of the Box2D benchmarks.
-    buffer.add('\n');
-    buffer.add("Checksum: ");
-    buffer.add(checksum);
-    buffer.add('\n');
+    buffer.write("\nChecksum: $checksum\n");
     print(buffer);
   }
 
@@ -120,8 +112,8 @@ abstract class Benchmark {
    * producing the same output across different box2D implementations.
    */
   num get checksum {
-    final positionSum = new vec2();
-    final velocitySum = new vec2();
+    final positionSum = new vec2.zero();
+    final velocitySum = new vec2.zero();
     bodies.forEach((b) {
       positionSum.add(b.position);
       velocitySum.add(b.linearVelocity);

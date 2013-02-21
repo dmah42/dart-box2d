@@ -89,7 +89,7 @@ class ConstantVolumeJoint extends Joint {
 
     normals = new List<vec2>(bodies.length);
     for (int i = 0; i < normals.length; ++i) {
-      normals[i] = new vec2();
+      normals[i] = new vec2.zero();
     }
 
     this.bodyA = bodies[0];
@@ -135,7 +135,7 @@ class ConstantVolumeJoint extends Joint {
       perimeter += dist;
     }
 
-    final delta = new vec2();
+    final delta = new vec2.zero();
 
     num deltaArea = targetVolume - area;
     num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -162,7 +162,7 @@ class ConstantVolumeJoint extends Joint {
 
     final d = new List<vec2>(bodies.length);
     for (int i = 0; i < bodies.length; i++) {
-      d[i] = new vec2();
+      d[i] = new vec2.zero();
     }
 
     for (int i = 0; i < bodies.length; ++i) {
@@ -203,7 +203,7 @@ class ConstantVolumeJoint extends Joint {
 
     final d = new List<vec2>(bodies.length);
     for (int i = 0; i < bodies.length; i++) {
-      d[i] = new vec2();
+      d[i] = new vec2.zero();
     }
 
     for (int i = 0; i < bodies.length; ++i) {

@@ -21,7 +21,7 @@ class DominoPlatformBench extends Benchmark {
   DominoPlatformBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name => NAME;
+  String get name => "DominoPlatformBench";
 
   void initialize() {
     resetWorld();

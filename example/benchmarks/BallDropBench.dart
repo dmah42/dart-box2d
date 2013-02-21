@@ -46,5 +46,5 @@ class BallDropBench extends Benchmark {
     bodies.add(ballBody);
   }
 
-  String get name => NAME;
+  String get name => "BallDropBench";
 }

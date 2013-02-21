@@ -47,11 +47,11 @@ class PolygonShape extends Shape {
       vertexCount = 0,
       vertices = new List<vec2>(Settings.MAX_POLYGON_VERTICES),
       normals = new List<vec2>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new vec2() {
+      centroid = new vec2.zero() {
     for (int i = 0; i < vertices.length; ++i)
-      vertices[i] = new vec2();
+      vertices[i] = new vec2.zero();
     for (int i = 0; i < normals.length; ++i)
-      normals[i] = new vec2();
+      normals[i] = new vec2.zero();
   }
 
   /**
@@ -109,7 +109,7 @@ class PolygonShape extends Shape {
       vertices[i].copyFrom(otherVertices[i]);
     }
 
-    vec2 edge = new vec2();
+    vec2 edge = new vec2.zero();
 
     // Compute normals. Ensure the edges have non-zero length.
     for (int i = 0; i < vertexCount; ++i) {
@@ -180,7 +180,7 @@ class PolygonShape extends Shape {
     vec2 pLocal = (new vec2.copy(p)).sub(xf.position);
     xf.rotation.transposed().transform(pLocal);
 
-    vec2 temp = new vec2();
+    vec2 temp = new vec2.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       temp.copyFrom(pLocal).sub(vertices[i]);
@@ -195,17 +195,17 @@ class PolygonShape extends Shape {
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */
   void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
-    final vec2 lower = new vec2();
-    final vec2 upper = new vec2();
-    final vec2 v = new vec2();
+    final vec2 lower = new vec2.zero();
+    final vec2 upper = new vec2.zero();
+    final vec2 v = new vec2.zero();
 
     Transform.mulToOut(argXf, vertices[0], lower);
     upper.copyFrom(lower);
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
-      min(v, lower, out: lower);
-      max(v, upper, out: upper);
+      min(v, lower, lower);
+      max(v, upper, upper);
     }
 
     argAabb.lowerBound.x = lower.x - radius;
@@ -237,8 +237,8 @@ class PolygonShape extends Shape {
     // It's location doesn't change the result (except for rounding error).
     final vec2 pRef = new vec2.zero();
 
-    final vec2 e1 = new vec2();
-    final vec2 e2 = new vec2();
+    final vec2 e1 = new vec2.zero();
+    final vec2 e2 = new vec2.zero();
 
     final num inv3 = 1.0 / 3.0;
 
@@ -312,8 +312,8 @@ class PolygonShape extends Shape {
 
     final num k_inv3 = 1.0 / 3.0;
 
-    final vec2 e1 = new vec2();
-    final vec2 e2 = new vec2();
+    final vec2 e1 = new vec2.zero();
+    final vec2 e2 = new vec2.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       // Triangle vertices.

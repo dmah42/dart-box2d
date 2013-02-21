@@ -26,15 +26,15 @@ class TimeOfImpactConstraint {
 
   TimeOfImpactConstraint() :
     localPoints = new List<vec2>(Settings.MAX_MANIFOLD_POINTS),
-    localNormal = new vec2(),
-    localPoint = new vec2(),
+    localNormal = new vec2.zero(),
+    localPoint = new vec2.zero(),
     type = 0,
     radius = 0,
     pointCount = 0,
     bodyA = null,
     bodyB = null {
     for (int i = 0; i < localPoints.length; i++) {
-      localPoints[i] = new vec2();
+      localPoints[i] = new vec2.zero();
     }
   }
 

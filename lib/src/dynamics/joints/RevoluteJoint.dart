@@ -55,11 +55,11 @@ class RevoluteJoint extends Joint {
 
   RevoluteJoint(RevoluteJointDef def) :
     super(def),
-    localAnchor1 = new vec2(),
-    localAnchor2 = new vec2(),
-    impulse = new vec3(),
+    localAnchor1 = new vec2.zero(),
+    localAnchor2 = new vec2.zero(),
+    impulse = new vec3.zero(),
     _motorImpulse = 0,
-    mass = new mat3() {
+    mass = new mat3.zero() {
     localAnchor1.copyFrom(def.localAnchorA);
     localAnchor2.copyFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
@@ -185,7 +185,7 @@ class RevoluteJoint extends Joint {
       w2 += i2 * imp;
     }
 
-    vec2 temp = new vec2();
+    vec2 temp = new vec2.zero();
 
     // Solve limit constraint.
     if (_enableLimit && limitState != LimitState.INACTIVE) {
@@ -310,7 +310,7 @@ class RevoluteJoint extends Joint {
 
     // Solve point-to-point constraint.
     {
-      vec2 imp = new vec2();
+      vec2 imp = new vec2.zero();
 
       final vec2 r1 = localAnchor1 - b1.localCenter;
       final vec2 r2 = localAnchor2 - b2.localCenter;
@@ -326,7 +326,7 @@ class RevoluteJoint extends Joint {
       // Handle large detachment.
       final num k_allowedStretch = 10.0 * Settings.LINEAR_SLOP;
       if (C.length2 > k_allowedStretch * k_allowedStretch) {
-        vec2 u = new vec2();
+        vec2 u = new vec2.zero();
 
         // Use a particle solution (no rotation).
         num m = invMass1 + invMass2;
@@ -345,19 +345,19 @@ class RevoluteJoint extends Joint {
         C.sub(b1.sweep.center).sub(r1);
       }
 
-      mat2 K1 = new mat2();
+      mat2 K1 = new mat2.zero();
       K1.col0.x = invMass1 + invMass2;
       K1.col1.x = 0.0;
       K1.col0.y = 0.0;
       K1.col1.y = invMass1 + invMass2;
 
-      mat2 K2 = new mat2();
+      mat2 K2 = new mat2.zero();
       K2.col0.x = invI1 * r1.y * r1.y;
       K2.col1.x = -invI1 * r1.x * r1.y;
       K2.col0.y = -invI1 * r1.x * r1.y;
       K2.col1.y = invI1 * r1.x * r1.x;
 
-      mat2 K3 = new mat2();
+      mat2 K3 = new mat2.zero();
       K3.col0.x = invI2 * r2.y * r2.y;
       K3.col1.x = -invI2 * r2.x * r2.y;
       K3.col0.y = -invI2 * r2.x * r2.y;

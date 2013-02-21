@@ -14,9 +14,9 @@
 
 library demo;
 
+import 'dart:async';
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
-import 'package:vector_math/vector_math_browser.dart';
 
 /**
  * An abstract class for any Demo of the Box2D library.
@@ -124,13 +124,13 @@ abstract class Demo {
     frameCount = 0;
     fpsCounter = query("#fps-counter");
     worldStepTime = query("#world-step-time");
-    window.setInterval(() {
+    new Timer.repeating(1000, (Timer t) {
       fpsCounter.innerHtml = frameCount.toString();
       frameCount = 0;
-    }, 1000);
-    window.setInterval(() {
+    });
+    new Timer.repeating(200, (Timer t) {
       worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
-    }, 200);
+    });
   }
 
   void initialize();

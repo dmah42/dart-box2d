@@ -29,13 +29,13 @@ class Simplex {
     v2 = new SimplexVertex(),
     v3 = new SimplexVertex(),
     vertices = new List<SimplexVertex>(3),
-    e13 = new vec2(),
-    e12 = new vec2(),
-    e23 = new vec2(),
-    case2 = new vec2(),
-    case22 = new vec2(),
-    case3 = new vec2(),
-    case33 = new vec2() {
+    e13 = new vec2.zero(),
+    e12 = new vec2.zero(),
+    e23 = new vec2.zero(),
+    case2 = new vec2.zero(),
+    case22 = new vec2.zero(),
+    case3 = new vec2.zero(),
+    case33 = new vec2.zero() {
 
     vertices[0] = v1;
     vertices[1] = v2;

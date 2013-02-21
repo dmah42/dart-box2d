@@ -14,9 +14,8 @@
 
 library FrictionJointTest;
 import 'dart:html';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'package:box2d/box2d_browser.dart';
-import 'package:vector_math/vector_math_browser.dart';
 
 import 'demo.dart';
 

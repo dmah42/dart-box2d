@@ -27,7 +27,7 @@ class FrictionJoint extends Joint {
       : super(def),
         _localAnchorA = new vec2.copy(def.localAnchorA),
         _localAnchorB = new vec2.copy(def.localAnchorB),
-        _linearImpulse = new vec2(),
+        _linearImpulse = new vec2.zero(),
         _angularImpulse = 0.0,
         _maxForce = def.maxForce,
         _maxTorque = def.maxTorque { }
@@ -77,7 +77,7 @@ class FrictionJoint extends Joint {
     // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
     // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
 
-    mat2 K = new mat2();
+    mat2 K = new mat2.zero();
     K.col0.x = bodyA.invMass + bodyB.invMass +
                bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
     K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
@@ -145,7 +145,7 @@ class FrictionJoint extends Joint {
 
       Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 
-      mat2 K = new mat2();
+      mat2 K = new mat2.zero();
       K.col0.x = bodyA.invMass + bodyB.invMass +
                  bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
       K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;

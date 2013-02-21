@@ -40,7 +40,7 @@ class ManifoldPoint {
    * Constructs a new ManifoldPoint.
    */
   ManifoldPoint() :
-    localPoint = new vec2(),
+    localPoint = new vec2.zero(),
     tangentImpulse = 0,
     normalImpulse = 0,
     id = new ContactID() { }

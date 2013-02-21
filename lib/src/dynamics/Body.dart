@@ -115,7 +115,7 @@ class Body {
         angularDamping = bd.angularDamping,
 
         // Set force and torque.
-        _force = new vec2(),
+        _force = new vec2.zero(),
         _torque = 0,
 
         _inertia = 0,
@@ -130,8 +130,8 @@ class Body {
         _fixDef = new FixtureDef(),
         _pmd = new MassData(),
         _pxf = new Transform(),
-        oldCenter = new vec2(),
-        tempCenter = new vec2(),
+        oldCenter = new vec2.zero(),
+        tempCenter = new vec2.zero(),
 
         sleepTime = 0,
 
@@ -591,7 +591,7 @@ class Body {
    * returns the same point expressed in world coordinates.
    */
   vec2 getWorldPoint(vec2 localPoint) {
-    vec2 v = new vec2();
+    vec2 v = new vec2.zero();
     getWorldPointToOut(localPoint, v);
     return v;
   }
@@ -611,7 +611,7 @@ class Body {
    * return the same vector expressed in world coordinates.
    */
   vec2 getWorldVector(vec2 localVector) {
-    vec2 out = new vec2();
+    vec2 out = new vec2.zero();
     getWorldVectorToOut(localVector, out);
     return out;
   }
@@ -639,7 +639,7 @@ class Body {
    * returns the corresponding local point relative to the body's origin.
    */
   vec2 getLocalPoint(vec2 worldPoint) {
-    vec2 out = new vec2();
+    vec2 out = new vec2.zero();
     getLocalPointToOut(worldPoint, out);
     return out;
   }
@@ -651,7 +651,7 @@ class Body {
    * returns the corresponding local vector.
    */
   vec2 getLocalVector(vec2 worldVector) {
-    vec2 out = new vec2();
+    vec2 out = new vec2.zero();
     getLocalVectorToOut(worldVector, out);
     return out;
   }
@@ -671,7 +671,7 @@ class Body {
    * returns the world velocity of a point.
    */
   vec2 getLinearVelocityFromWorldPoint(vec2 worldPoint) {
-    vec2 out = new vec2();
+    vec2 out = new vec2.zero();
     getLinearVelocityFromWorldPointToOut(worldPoint, out);
     return out;
   }
@@ -689,7 +689,7 @@ class Body {
    * returns the world velocity of a point.
    */
   vec2 getLinearVelocityFromLocalPoint(vec2 localPoint) {
-    vec2 out = new vec2();
+    vec2 out = new vec2.zero();
     getLinearVelocityFromLocalPointToOut(localPoint, out);
     return out;
   }

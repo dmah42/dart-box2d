@@ -30,7 +30,7 @@ class CircleShape extends Shape {
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new vec2() {
+    position = new vec2.zero() {
   }
 
   /**

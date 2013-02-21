@@ -31,9 +31,9 @@ class Sweep {
    * set to zero.
    */
   Sweep() :
-    localCenter = new vec2(),
-    centerZero = new vec2(),
-    center = new vec2(),
+    localCenter = new vec2.zero(),
+    centerZero = new vec2.zero(),
+    center = new vec2.zero(),
     angleZero = 0,
     angle = 0;
 

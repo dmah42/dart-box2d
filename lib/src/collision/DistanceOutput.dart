@@ -31,6 +31,6 @@ class DistanceOutput {
   int iterations;
 
   DistanceOutput() :
-    pointA = new vec2(),
-    pointB = new vec2() { }
+    pointA = new vec2.zero(),
+    pointB = new vec2.zero() { }
 }

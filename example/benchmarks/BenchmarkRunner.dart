@@ -17,7 +17,6 @@ library BenchmarkRunner;
 import 'dart:math' as math;
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
-import 'package:vector_math/vector_math_console.dart';
 
 part 'Benchmark.dart';
 part 'BallCageBench.dart';
@@ -67,10 +66,14 @@ class BenchmarkRunner {
     ];
 
     if (filter == null || filter.isEmpty) {
-      benchmarks.map(_addBenchmark);
+      _benchmarks = benchmarks;
+      print(_benchmarks.length);
     } else {
-      List<String> filterList = filter.split(",").mappedBy((e) => e.trim());
-      benchmarks.where((e) => filterList.indexOf(e.name) != -1).mappedBy(_addBenchmark);
+      List<String> filterList = filter.split(",").map((e) => e.trim());
+      for (Benchmark benchmark in benchmarks) {
+        if (filterList.indexOf(benchmark.name) != -1)
+          _benchmarks.add(benchmark);
+      }
     }
   }
 
@@ -84,12 +87,6 @@ class BenchmarkRunner {
       print("$_resultsWriter------------------------------------------------");
     }
   }
-
-  /**
-   * Initializes the given benchmark and adds to the end of the queue of
-   * benchmarks to run.
-   */
-  void _addBenchmark(Benchmark benchmark) => _benchmarks.add(benchmark);
 }
 
 void main() {
@@ -98,7 +95,13 @@ void main() {
 
   var parser = new ArgParser();
   parser.addOption('filter', abbr: 'f');
-  var results = parser.Parse(new Options().arguments);
+  parser.addFlag('help', abbr: 'h');
+  var results = parser.parse(new Options().arguments);
+  if (results['help']) {
+    print('Usage: dart BenchmarkRunner.dart [--filter <tests-to-run>] [--help]');
+    print('  tests-to-run: comma separated list of tests to run');
+    return;
+  }
   runner.setupBenchmarks(results['filter']);
   runner.runBenchmarks();
 }

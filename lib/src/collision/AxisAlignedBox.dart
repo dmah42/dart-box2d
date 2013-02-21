@@ -28,8 +28,8 @@ class AxisAlignedBox {
    * are specified, constructs the box with both bounds at the origin.
    */
   AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound === null) lowerBound = new vec2();
-    if (upperBound === null) upperBound = new vec2();
+    if (lowerBound == null) lowerBound = new vec2.zero();
+    if (upperBound == null) upperBound = new vec2.zero();
   }
 
   /**
@@ -62,8 +62,8 @@ class AxisAlignedBox {
    * Returns true if the lower bound is strictly less than the upper bound and
    * both bounds are themselves valid (Vector.isValid() returns true).
    */
-  bool isValid() => !lowerBound.isInfinite() && !upperBound.isInfinite() &&
-                    !lowerBound.isNaN() && !upperBound.isNaN() &&
+  bool isValid() => !lowerBound.isInfinite && !upperBound.isInfinite &&
+                    !lowerBound.isNaN && !upperBound.isNaN &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */

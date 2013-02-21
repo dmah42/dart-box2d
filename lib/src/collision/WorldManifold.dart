@@ -40,12 +40,12 @@ class WorldManifold {
    * Constructs a new WorldManifold.
    */
   WorldManifold() :
-    normal = new vec2(),
-    pool3 = new vec2(),
-    pool4 = new vec2(),
+    normal = new vec2.zero(),
+    pool3 = new vec2.zero(),
+    pool4 = new vec2.zero(),
     points = new List<vec2>(Settings.MAX_MANIFOLD_POINTS) {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
-      points[i] = new vec2();
+      points[i] = new vec2.zero();
   }
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,

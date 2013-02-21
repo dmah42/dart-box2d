@@ -53,20 +53,20 @@ class ContactSolver {
 
     // Setup pool variables.
     worldManifold = new WorldManifold(),
-    tangent = new vec2(),
-    temp1 = new vec2(),
-    temp2 = new vec2(),
-    P = new vec2(),
-    dv = new vec2(),
-    dv1 = new vec2(),
-    dv2 = new vec2(),
-    x = new vec2(),
-    d = new vec2(),
-    P1 = new vec2(),
-    P2 = new vec2(),
+    tangent = new vec2.zero(),
+    temp1 = new vec2.zero(),
+    temp2 = new vec2.zero(),
+    P = new vec2.zero(),
+    dv = new vec2.zero(),
+    dv1 = new vec2.zero(),
+    dv2 = new vec2.zero(),
+    x = new vec2.zero(),
+    d = new vec2.zero(),
+    P1 = new vec2.zero(),
+    P2 = new vec2.zero(),
     psolver = new PositionSolverManifold(),
-    rA = new vec2(),
-    rB = new vec2() {
+    rA = new vec2.zero(),
+    rB = new vec2.zero() {
     for(int i=0; i < constraints.length; i++) {
       constraints[i] = new ContactConstraint();
     }
@@ -240,7 +240,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final vec2 normal = c.normal;
-      cross(normal, 1, out: tangent);
+      cross(normal, 1, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
@@ -592,16 +592,16 @@ class PositionSolverManifold {
   vec2 clipPoint;
 
   PositionSolverManifold() :
-    normal = new vec2(),
-    point = new vec2(),
+    normal = new vec2.zero(),
+    point = new vec2.zero(),
     separation = 0,
 
     // Initialize pool variables.
-    pointA = new vec2(),
-    pointB = new vec2(),
-    temp = new vec2(),
-    planePoint = new vec2(),
-    clipPoint = new vec2() { }
+    pointA = new vec2.zero(),
+    pointB = new vec2.zero(),
+    temp = new vec2.zero(),
+    planePoint = new vec2.zero(),
+    clipPoint = new vec2.zero() { }
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);

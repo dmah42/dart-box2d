@@ -276,24 +276,24 @@ class SeparationFunction {
     proxyA = new DistanceProxy(),
     proxyB = new DistanceProxy(),
     type = SeparationType.POINTS,
-    localPoint = new vec2(),
-    axis = new vec2(),
+    localPoint = new vec2.zero(),
+    axis = new vec2.zero(),
     sweepA = new Sweep(),
     sweepB = new Sweep(),
-    localPointA = new vec2(),
-    localPointB = new vec2(),
-    pointA = new vec2(),
-    pointB = new vec2(),
-    localPointA1 = new vec2(),
-    localPointA2 = new vec2(),
-    normal = new vec2(),
-    localPointB1 = new vec2(),
-    localPointB2 = new vec2(),
-    temp = new vec2(),
+    localPointA = new vec2.zero(),
+    localPointB = new vec2.zero(),
+    pointA = new vec2.zero(),
+    pointB = new vec2.zero(),
+    localPointA1 = new vec2.zero(),
+    localPointA2 = new vec2.zero(),
+    normal = new vec2.zero(),
+    localPointB1 = new vec2.zero(),
+    localPointB2 = new vec2.zero(),
+    temp = new vec2.zero(),
     xfa = new Transform(),
     xfb = new Transform(),
-    axisA = new vec2(),
-    axisB = new vec2() { }
+    axisA = new vec2.zero(),
+    axisB = new vec2.zero() { }
 
   num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
       argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -326,7 +326,7 @@ class SeparationFunction {
       localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.copyFrom(localPointB2).sub(localPointB1);
-      cross(temp, 1, out: axis);
+      cross(temp, 1, axis);
       axis.normalize();
 
       xfb.rotation.transformed(axis, normal);
@@ -353,7 +353,7 @@ class SeparationFunction {
       localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
 
       temp.copyFrom(localPointA2).sub(localPointA1);
-      cross(temp, 1, out: axis);
+      cross(temp, 1, axis);
       axis.normalize();
 
       xfa.rotation.transformed(axis, normal);

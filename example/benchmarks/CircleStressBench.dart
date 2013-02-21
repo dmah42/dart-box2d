@@ -28,7 +28,7 @@ class CircleStressBench extends Benchmark {
   CircleStressBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name => NAME;
+  String get name => "CircleStressBench";
 
   /** Creates all bodies. */
   void initialize() {

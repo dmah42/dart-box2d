@@ -118,11 +118,11 @@ class World {
     _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
 
     // Initialize Pool Objects.
-    center = new vec2(),
-    axis = new vec2(),
+    center = new vec2.zero(),
+    axis = new vec2.zero(),
     timestep = new TimeStep(),
-    cA = new vec2(),
-    cB = new vec2(),
+    cA = new vec2.zero(),
+    cB = new vec2.zero(),
     wqwrapper = new WorldQueryWrapper(),
     toiInput = new TimeOfImpactInput(),
     toiOutput = new TimeOfImpactOutput(),
@@ -1102,7 +1102,7 @@ class World {
         List<vec2> vertices =
             new List<vec2>(vertexCount);
         for (int i = 0; i < vertexCount; i++) {
-          vertices[i] = new vec2();
+          vertices[i] = new vec2.zero();
         }
 
         for (int i = 0; i < vertexCount; ++i) {
@@ -1133,8 +1133,8 @@ class World {
     Transform xf2 = bodyB.originTransform;
     vec2 x1 = new vec2.copy(xf1.position);
     vec2 x2 = new vec2.copy(xf2.position);
-    vec2 p1 = new vec2();
-    vec2 p2 = new vec2();
+    vec2 p1 = new vec2.zero();
+    vec2 p2 = new vec2.zero();
     joint.getAnchorA(p1);
     joint.getAnchorB(p2);
 

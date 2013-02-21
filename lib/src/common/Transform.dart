@@ -29,7 +29,7 @@ class Transform {
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new vec2(), rotation = new mat2();
+  Transform() : position = new vec2.zero(), rotation = new mat2.zero();
 
   /**
    * Constructs a new transform equal to the given transform.

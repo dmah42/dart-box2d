@@ -29,7 +29,7 @@ class BallCageBench extends Benchmark {
   BallCageBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name => NAME;
+  String get name => "BallCageBench";
 
   void initialize() {
     resetWorld();

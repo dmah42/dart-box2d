@@ -40,7 +40,7 @@ class DistanceJoint extends Joint {
     localAnchor2 = new vec2.copy(def.localAnchorB),
     length = def.length,
     impulse = 0.0,
-    u = new vec2(),
+    u = new vec2.zero(),
     frequencyHz = def.frequencyHz,
     dampingRatio = def.dampingRatio,
     gamma = 0.0,
@@ -67,8 +67,8 @@ class DistanceJoint extends Joint {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    vec2 r1 = new vec2();
-    vec2 r2 = new vec2();
+    vec2 r1 = new vec2.zero();
+    vec2 r2 = new vec2.zero();
 
     // Compute the effective mass matrix.
     r1.copyFrom(localAnchor1).sub(b1.localCenter);
@@ -119,7 +119,7 @@ class DistanceJoint extends Joint {
       // Scale the impulse to support a variable time time_step.
       impulse *= time_step.dtRatio;
 
-      vec2 P = new vec2();
+      vec2 P = new vec2.zero();
       P.copyFrom(u).scale(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;

@@ -20,8 +20,8 @@ class PolygonContact extends Contact {
     super(argPool) { }
 
   void init(Fixture fA, Fixture fB) {
-    Expect.equals(ShapeType.POLYGON, fA.type);
-    Expect.equals(ShapeType.POLYGON, fB.type);
+    expect(ShapeType.POLYGON, fA.type);
+    expect(ShapeType.POLYGON, fB.type);
     super.init(fA, fB);
   }
 

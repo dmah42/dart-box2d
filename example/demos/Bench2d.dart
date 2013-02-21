@@ -15,7 +15,6 @@
 library Bench2d;
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
-import 'package:vector_math/vector_math_browser.dart';
 
 class Bench2d {
   static const int CANVAS_WIDTH = 900;
@@ -94,7 +93,7 @@ class Bench2d {
       fixDef.density = 5;
 
       vec2 x = new vec2(-7.0, 0.75);
-      vec2 y = new vec2();
+      vec2 y = new vec2.zero();
       vec2 deltaX = new vec2(0.5625, 1);
       vec2 deltaY = new vec2(1.125, 0.0);
 

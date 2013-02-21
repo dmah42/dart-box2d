@@ -46,7 +46,7 @@ class Island {
 
   Island() :
     _contactSolver = new ContactSolver(),
-    _translation = new vec2(),
+    _translation = new vec2.zero(),
     impulse = new ContactImpulse() { }
 
   //TODO(gregbglw): No need to keep capacity, count and array for these items as
@@ -164,7 +164,7 @@ class Island {
     _contactSolver.storeImpulses();
 
     // Integrate positions.
-    vec2 temp = new vec2();
+    vec2 temp = new vec2.zero();
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
 
@@ -309,7 +309,7 @@ class Position {
   num a;
 
   Position() {
-    x = new vec2();
+    x = new vec2.zero();
     a = 0;
   }
 }
@@ -322,7 +322,7 @@ class Velocity {
   num a;
 
   Velocity() {
-    v = new vec2();
+    v = new vec2.zero();
     a = 0;
   }
 }

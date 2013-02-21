@@ -74,10 +74,13 @@
 
   <!-- MAIN -->
   <target name="default"
-    depends="pub-update, analyze, generate-JS, generate-docs"
+    depends="pub-install, analyze, generate-JS, generate-docs"
     description="Analyze, generate JS and library's DartDoc." />
 
-  <target name="pub-update">
+  <target name="pub-install">
+    <exec executable="${pub.dart}" failonerror="true">
+      <arg line="install"/>
+    </exec>
     <exec executable="${pub.dart}" failonerror="true">
       <arg line="update"/>
     </exec>

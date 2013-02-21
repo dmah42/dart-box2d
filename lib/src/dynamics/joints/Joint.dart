@@ -55,8 +55,8 @@ class Joint {
     islandFlag = false,
     userData = def.userData,
 
-    localCenterA = new vec2(),
-    localCenterB = new vec2(),
+    localCenterA = new vec2.zero(),
+    localCenterB = new vec2.zero(),
     edgeA = new JointEdge(),
     edgeB = new JointEdge() { }
 

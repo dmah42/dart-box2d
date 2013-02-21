@@ -59,14 +59,14 @@ class Collision {
     results1 = new EdgeResults(),
     results2 = new EdgeResults(),
     incidentEdge = new List<ClipVertex>(2),
-    localTangent = new vec2(),
-    localNormal = new vec2(),
-    planePoint = new vec2(),
-    tangent = new vec2(),
-    normal = new vec2(),
-    normal1 = new vec2(),
-    v11 = new vec2(),
-    v12 = new vec2(),
+    localTangent = new vec2.zero(),
+    localNormal = new vec2.zero(),
+    planePoint = new vec2.zero(),
+    tangent = new vec2.zero(),
+    normal = new vec2.zero(),
+    normal1 = new vec2.zero(),
+    v11 = new vec2.zero(),
+    v12 = new vec2.zero(),
     clipPoints1 = new List<ClipVertex>(2),
     clipPoints2 = new List<ClipVertex>(2) {
     incidentEdge[0] = new ClipVertex();
@@ -570,7 +570,7 @@ class Collision {
     localTangent.normalize();
 
     // Vector localNormal = Cross(dv, 1.0);
-    cross(localTangent, 1, out: localNormal);
+    cross(localTangent, 1, localNormal);
 
     // Vector planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).add(v12).scale(.5);
@@ -579,7 +579,7 @@ class Collision {
     xf1.rotation.transformed(localTangent, tangent);
 
     // Vector frontNormal = Cross(sideNormal, 1.0);
-    cross(tangent, 1, out: normal);
+    cross(tangent, 1, normal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);
@@ -644,7 +644,7 @@ class ClipVertex {
   ContactID id;
 
   ClipVertex() :
-    v = new vec2(),
+    v = new vec2.zero(),
     id = new ContactID() { }
 
   void setFrom(ClipVertex cv){

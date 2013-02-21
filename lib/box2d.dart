@@ -15,8 +15,11 @@
 library box2d;
 
 import 'dart:collection';
-import 'dart:math' as Math;
-import 'package:vector_math/vector_math_console.dart';
+import 'dart:math' as math;
+import 'package:vector_math/vector_math.dart';
+import 'package:unittest/unittest.dart';
+
+export 'package:vector_math/vector_math.dart';
 
 part 'src/callbacks/PairCallback.dart';
 part 'src/callbacks/TreeCallback.dart';
