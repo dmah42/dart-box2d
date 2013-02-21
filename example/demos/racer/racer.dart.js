@@ -6080,9 +6080,9 @@ $$.AxisAlignedBox = {"": "Object;lowerBound>,upperBound>",
   },
   AxisAlignedBox$2: function(lowerBound, upperBound) {
     if (this.lowerBound == null)
-      this.lowerBound = $.vec2$(null, null);
+      this.lowerBound = $.vec2$zero();
     if (this.upperBound == null)
-      this.upperBound = $.vec2$(null, null);
+      this.upperBound = $.vec2$zero();
   }
 };
 
@@ -7512,7 +7512,7 @@ $$.DistanceProxy = {"": "Object;vertices>,count=,radius=",
   DistanceProxy$0: function() {
     var t1, i, t2;
     for (t1 = this.vertices, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9118,7 +9118,7 @@ $$.WorldManifold = {"": "Object;normal>,points>,pool3,pool4",
   WorldManifold$0: function() {
     var t1, i, t2;
     for (t1 = this.points, i = 0; i < 2; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9634,7 +9634,7 @@ $$.DynamicTree = {"": "Object;_root,_nodeCount,_lastLeaf,_insertionCount,_path,_
   DynamicTree$0: function() {
     var t1, i, t2;
     for (t1 = this._drawVectors, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9761,7 +9761,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
         throw $.ioore(i);
       t2.copyFrom$1(otherVertices[i]);
     }
-    edge = $.vec2$(null, null);
+    edge = $.vec2$zero();
     t2 = this.normals;
     if (typeof t2 !== "string" && (typeof t2 !== "object" || t2 === null || t2.constructor !== Array && !t2.$isJavaScriptIndexingBehavior()))
       return this.setFrom$2$bailout(2, 0, t1, t2, t3, edge);
@@ -9799,7 +9799,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
             throw $.ioore(i);
           t2.copyFrom$1(otherVertices[i]);
         }
-        edge = $.vec2$(null, null);
+        edge = $.vec2$zero();
         t2 = this.normals;
       case 2:
         var i, t5, i2;
@@ -9902,12 +9902,12 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
   },
   computeAxisAlignedBox$2: function(argAabb, argXf) {
     var lower, upper, v, t1, i;
-    lower = $.vec2$(null, null);
-    upper = $.vec2$(null, null);
-    v = $.vec2$(null, null);
+    lower = $.vec2$zero();
+    upper = $.vec2$zero();
+    v = $.vec2$zero();
     t1 = this.vertices;
     if (typeof t1 !== "string" && (typeof t1 !== "object" || t1 === null || t1.constructor !== Array && !t1.$isJavaScriptIndexingBehavior()))
-      return this.computeAxisAlignedBox$2$bailout1(1, argAabb, argXf, v, upper, lower, t1);
+      return this.computeAxisAlignedBox$2$bailout1(1, argAabb, argXf, v, lower, t1, upper);
     if (0 >= t1.length)
       throw $.ioore(0);
     $.Transform_mulToOut(argXf, t1[0], lower);
@@ -9928,7 +9928,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
     t1 = $.$$add(upper.y, this.radius);
     argAabb.get$upperBound().set$y(t1);
   },
-  computeAxisAlignedBox$2$bailout1: function(state0, argAabb, argXf, v, upper, lower, t1) {
+  computeAxisAlignedBox$2$bailout1: function(state0, argAabb, argXf, v, lower, t1, upper) {
     var t3, i;
     t3 = $.getInterceptor$JSArrayJSString(t1);
     $.Transform_mulToOut(argXf, t3.$index(t1, 0), lower);
@@ -9964,8 +9964,8 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return;
     }
     pRef = $.vec2$zero();
-    e1 = $.vec2$(null, null);
-    e2 = $.vec2$(null, null);
+    e1 = $.vec2$zero();
+    e2 = $.vec2$zero();
     for (t1 = $.getInterceptor$JSArray(out), area = 0, i = 0; i < count;) {
       t2 = vs.length;
       if (i >= t2)
@@ -10001,8 +10001,8 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return;
     }
     pRef = $.vec2$zero();
-    e1 = $.vec2$(null, null);
-    e2 = $.vec2$(null, null);
+    e1 = $.vec2$zero();
+    e2 = $.vec2$zero();
     for (t1 = $.getInterceptor$JSArray(out), t2 = $.getInterceptor$JSArrayJSString(vs), area = 0, i = 0; $.CONSTANT9.$lt(i, count);) {
       p2 = t2.$index(vs, i);
       ++i;
@@ -10031,8 +10031,8 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
     }
     center = $.vec2$zero();
     pRef = $.vec2$zero();
-    e1 = $.vec2$(null, null);
-    e2 = $.vec2$(null, null);
+    e1 = $.vec2$zero();
+    e2 = $.vec2$zero();
     t1 = this.vertices;
     if (typeof t1 !== "string" && (typeof t1 !== "object" || t1 === null || t1.constructor !== Array && !t1.$isJavaScriptIndexingBehavior()))
       return this.computeMass$2$bailout1(1, massData, pRef, density, e1, e2, t1, center);
@@ -10221,7 +10221,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return this.PolygonShape$0$bailout(1, t1);
     i = 0;
     for (; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -10231,7 +10231,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return this.PolygonShape$0$bailout(2, t1);
     i = 0;
     for (; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -10246,7 +10246,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
         t3 = $.getInterceptor$JSArray(t1);
         i = 0;
         for (; $.CONSTANT9.$lt(i, $.length(t1)); ++i)
-          t3.$indexSet(t1, i, $.vec2$(null, null));
+          t3.$indexSet(t1, i, $.vec2$zero());
         t1 = this.normals;
       case 2:
         var t3, i;
@@ -10254,7 +10254,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
         t3 = $.getInterceptor$JSArray(t1);
         i = 0;
         for (; $.CONSTANT9.$lt(i, $.length(t1)); ++i)
-          t3.$indexSet(t1, i, $.vec2$(null, null));
+          t3.$indexSet(t1, i, $.vec2$zero());
     }
   }
 };
@@ -10706,7 +10706,7 @@ $$.Body = {"": "Object;world,flags=,contactList=,sleepTime=,userData=,_linearVel
     this._linearVelocity.add$1($.cross(this._angularVelocity, temp, null));
   },
   getWorldPoint$1: function(localPoint) {
-    var v = $.vec2$(null, null);
+    var v = $.vec2$zero();
     $.Transform_mulToOut(this.originTransform, localPoint, v);
     return v;
   },
@@ -10714,7 +10714,7 @@ $$.Body = {"": "Object;world,flags=,contactList=,sleepTime=,userData=,_linearVel
     $.Transform_mulToOut(this.originTransform, localPoint, out);
   },
   getWorldVector$1: function(localVector) {
-    var out = $.vec2$(null, null);
+    var out = $.vec2$zero();
     this.originTransform.rotation.transformed$2(localVector, out);
     return out;
   },
@@ -10725,7 +10725,7 @@ $$.Body = {"": "Object;world,flags=,contactList=,sleepTime=,userData=,_linearVel
     $.Transform_mulTransToOut(this.originTransform, worldPoint, out);
   },
   getLocalPoint$1: function(worldPoint) {
-    var out = $.vec2$(null, null);
+    var out = $.vec2$zero();
     $.Transform_mulTransToOut(this.originTransform, worldPoint, out);
     return out;
   },
@@ -11690,7 +11690,7 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints>,positions,velocities,
       ++i;
     }
     t2.storeImpulses$0();
-    temp = $.vec2$(null, null);
+    temp = $.vec2$zero();
     t1 = this._translation;
     i = 0;
     while (true) {
@@ -12097,7 +12097,7 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints>,positions,velocities,
                 ++i;
             }
         t1.storeImpulses$0();
-        temp = $.vec2$(null, null);
+        temp = $.vec2$zero();
         t2 = this._translation;
         i = 0;
       case 34:
@@ -12485,14 +12485,14 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints>,positions,velocities,
 
 $$.Position = {"": "Object;x=,a=",
   Position$0: function() {
-    this.x = $.vec2$(null, null);
+    this.x = $.vec2$zero();
     this.a = 0;
   }
 };
 
 $$.Velocity = {"": "Object;v>,a=",
   Velocity$0: function() {
-    this.v = $.vec2$(null, null);
+    this.v = $.vec2$zero();
     this.a = 0;
   }
 };
@@ -13478,7 +13478,7 @@ $$.World = {"": "Object;_flags,_contactManager,_bodyList,_jointList,_bodyCount,_
         vertices = $.List_List(vertexCount, $.vec2);
         $.setRuntimeTypeInfo(vertices, [$.vec2]);
         for (i = 0; $.CONSTANT9.$lt(i, vertexCount); ++i) {
-          t1 = $.vec2$(null, null);
+          t1 = $.vec2$zero();
           if (i >= vertices.length)
             throw $.ioore(i);
           vertices[i] = t1;
@@ -13510,8 +13510,8 @@ $$.World = {"": "Object;_flags,_contactManager,_bodyList,_jointList,_bodyCount,_
     xf2 = bodyB.get$originTransform();
     x1 = $.vec2$copy(xf1.get$position());
     x2 = $.vec2$copy(xf2.get$position());
-    p1 = $.vec2$(null, null);
-    p2 = $.vec2$(null, null);
+    p1 = $.vec2$zero();
+    p2 = $.vec2$zero();
     joint.getAnchorA$1(p1);
     joint.getAnchorB$1(p2);
     color = $.Color3$fromRGBF(0.5, 0.3, 0.3);
@@ -16604,7 +16604,7 @@ $$.TimeOfImpactConstraint = {"": "Object;localPoints>,localNormal>,localPoint>,t
   TimeOfImpactConstraint$0: function() {
     var t1, i, t2;
     for (t1 = this.localPoints, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -16677,7 +16677,7 @@ $$.ConstantVolumeJoint = {"": "Joint;bodies>,targetLengths,targetVolume,normals>
       $.$$index(this.normals, i).set$y(t2);
       perimeter += dist;
     }
-    delta = $.vec2$(null, null);
+    delta = $.vec2$zero();
     deltaArea = $.$$sub(this.targetVolume, this.get$area());
     if (typeof deltaArea !== "number")
       throw $.iae(deltaArea);
@@ -16711,7 +16711,7 @@ $$.ConstantVolumeJoint = {"": "Joint;bodies>,targetLengths,targetVolume,normals>
         return this.initVelocityConstraints$1$bailout1(1, d, i, t1);
       if (!(i < t1))
         break;
-      t1 = $.vec2$(null, null);
+      t1 = $.vec2$zero();
       if (i >= d.length)
         throw $.ioore(i);
       d[i] = t1;
@@ -16841,7 +16841,7 @@ $$.ConstantVolumeJoint = {"": "Joint;bodies>,targetLengths,targetVolume,normals>
                 state0 = 0;
                 if (!$.CONSTANT9.$lt(i, t1))
                   break L0;
-                t1 = $.vec2$(null, null);
+                t1 = $.vec2$zero();
                 if (i >= d.length)
                   throw $.ioore(i);
                 d[i] = t1;
@@ -16973,7 +16973,7 @@ $$.ConstantVolumeJoint = {"": "Joint;bodies>,targetLengths,targetVolume,normals>
     d = $.List_List($.length(this.bodies), $.vec2);
     $.setRuntimeTypeInfo(d, [$.vec2]);
     for (i = 0; $.CONSTANT9.$lt(i, $.length(this.bodies)); ++i) {
-      t1 = $.vec2$(null, null);
+      t1 = $.vec2$zero();
       if (i >= d.length)
         throw $.ioore(i);
       d[i] = t1;
@@ -17068,7 +17068,7 @@ $$.ConstantVolumeJoint = {"": "Joint;bodies>,targetLengths,targetVolume,normals>
     $.setRuntimeTypeInfo(t1, [$.vec2]);
     this.normals = t1;
     for (i = 0; $.CONSTANT9.$lt(i, $.length(this.normals)); ++i)
-      $.$$indexSet(this.normals, i, $.vec2$(null, null));
+      $.$$indexSet(this.normals, i, $.vec2$zero());
     this.bodyA = $.$$index(this.bodies, 0);
     this.bodyB = $.$$index(this.bodies, 1);
     this.collideConnected = false;
@@ -17086,8 +17086,8 @@ $$.DistanceJoint = {"": "Joint;localAnchor1,localAnchor2,u,impulse,mass>,length>
     var b1, b2, r1, r2, t1, len, cr1u, cr2u, t4, t6, t8, invMass, t2, t3, C, omega, d, k, t5, t7, P, t9, t11, t13, t15, t18, t20, t22, t23, t25, t27, t29, t31, t33, t36, t38;
     b1 = this.bodyA;
     b2 = this.bodyB;
-    r1 = $.vec2$(null, null);
-    r2 = $.vec2$(null, null);
+    r1 = $.vec2$zero();
+    r2 = $.vec2$zero();
     r1.copyFrom$1(this.localAnchor1).sub$1(b1.get$localCenter());
     r2.copyFrom$1(this.localAnchor2).sub$1(b2.get$localCenter());
     b1.get$originTransform().get$rotation().transform$1(r1);
@@ -17142,15 +17142,15 @@ $$.DistanceJoint = {"": "Joint;localAnchor1,localAnchor2,u,impulse,mass>,length>
       k = t2 * omega * omega;
       t5 = time_step.get$dt();
       if (typeof t5 !== "number")
-        return this.initVelocityConstraints$1$bailout1(10, time_step, t1, 0, r1, r2, b1, b2, 0, 0, 0, t5, 0, 0, invMass, 0, k, d, C);
+        return this.initVelocityConstraints$1$bailout1(10, time_step, t1, 0, r1, r2, b1, b2, 0, 0, 0, t5, 0, 0, invMass, 0, d, k, C);
       this.gamma = t5 * (d + t5 * k);
       t2 = this.gamma;
       if (typeof t2 !== "number")
-        return this.initVelocityConstraints$1$bailout1(11, time_step, t1, 0, r1, r2, b1, b2, t2, 0, 0, 0, 0, 0, invMass, 0, k, 0, C);
+        return this.initVelocityConstraints$1$bailout1(11, time_step, t1, 0, r1, r2, b1, b2, t2, 0, 0, 0, 0, 0, invMass, 0, 0, k, C);
       this.gamma = !(t2 === 0) ? 1 / t2 : 0;
       t2 = time_step.get$dt();
       if (typeof t2 !== "number")
-        return this.initVelocityConstraints$1$bailout1(12, time_step, t1, 0, r1, r2, b1, b2, t2, 0, 0, 0, 0, 0, invMass, 0, k, 0, C);
+        return this.initVelocityConstraints$1$bailout1(12, time_step, t1, 0, r1, r2, b1, b2, t2, 0, 0, 0, 0, 0, invMass, 0, 0, k, C);
       t4 = C * t2 * k;
       t5 = this.gamma;
       if (typeof t5 !== "number")
@@ -17175,7 +17175,7 @@ $$.DistanceJoint = {"": "Joint;localAnchor1,localAnchor2,u,impulse,mass>,length>
       if (typeof t3 !== "number")
         throw $.iae(t3);
       this.impulse = t2 * t3;
-      P = $.vec2$(null, null);
+      P = $.vec2$zero();
       P.copyFrom$1(t1).scale$1(this.impulse);
       t4 = b1.get$linearVelocity();
       t5 = t4.get$x();
@@ -17244,13 +17244,13 @@ $$.DistanceJoint = {"": "Joint;localAnchor1,localAnchor2,u,impulse,mass>,length>
     } else
       this.impulse = 0;
   },
-  initVelocityConstraints$1$bailout1: function(state0, time_step, t1, len, r1, r2, b1, b2, t2, cr1u, cr2u, t5, t7, t9, invMass, t3, k, d, C, t4, P, t11, t13, t15, t18, t20, t23, t22, t25, t27, t29, t31, t33, t36, t38) {
+  initVelocityConstraints$1$bailout1: function(state0, time_step, t1, len, r1, r2, b1, b2, t2, cr1u, cr2u, t5, t7, t9, invMass, t3, d, k, C, t4, P, t11, t13, t15, t18, t20, t23, t22, t25, t27, t29, t31, t33, t36, t38) {
     switch (state0) {
       case 0:
         b1 = this.bodyA;
         b2 = this.bodyB;
-        r1 = $.vec2$(null, null);
-        r2 = $.vec2$(null, null);
+        r1 = $.vec2$zero();
+        r2 = $.vec2$zero();
         r1.copyFrom$1(this.localAnchor1).sub$1(b1.get$localCenter());
         r2.copyFrom$1(this.localAnchor2).sub$1(b2.get$localCenter());
         b1.get$originTransform().get$rotation().transform$1(r1);
@@ -17381,7 +17381,7 @@ $$.DistanceJoint = {"": "Joint;localAnchor1,localAnchor2,u,impulse,mass>,length>
               if (typeof t3 !== "number")
                 throw $.iae(t3);
               this.impulse = t2 * t3;
-              P = $.vec2$(null, null);
+              P = $.vec2$zero();
               P.copyFrom$1(t1).scale$1(this.impulse);
               t4 = b1.get$linearVelocity();
               t5 = t4.get$x();
@@ -17754,52 +17754,52 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
     r2 = this._localAnchorB.$sub(this.bodyB.get$localCenter());
     this.bodyA.get$originTransform().get$rotation().transform$1(r1);
     this.bodyB.get$originTransform().get$rotation().transform$1(r2);
-    K = $.mat2$(null, null, null, null);
+    K = $.mat2$zero();
     t1 = this.bodyA;
     t2 = t1.get$invMass();
     t4 = this.bodyB;
     t5 = t4.get$invMass();
     if (typeof t2 !== "number")
-      return this.initVelocityConstraints$1$bailout1(1, time_step, t2, r2, r1, K);
+      return this.initVelocityConstraints$1$bailout1(1, time_step, t2, r2, K, r1);
     if (typeof t5 !== "number")
-      return this.initVelocityConstraints$1$bailout1(2, time_step, t2, r2, r1, K, t5);
+      return this.initVelocityConstraints$1$bailout1(2, time_step, t2, r2, K, r1, t5);
     t5 = t2 + t5;
     t1 = t1.get$invInertia();
     t7 = r1.get$y();
     if (typeof t1 !== "number")
-      return this.initVelocityConstraints$1$bailout1(3, time_step, t1, r2, r1, K, t5);
+      return this.initVelocityConstraints$1$bailout1(3, time_step, t1, r2, K, r1, t5);
     if (typeof t7 !== "number")
-      return this.initVelocityConstraints$1$bailout1(4, time_step, t1, r2, r1, K, t5, t7);
+      return this.initVelocityConstraints$1$bailout1(4, time_step, t1, r2, K, r1, t5, t7);
     t5 += t1 * t7 * t7;
     t4 = t4.get$invInertia();
     t10 = r2.get$y();
     if (typeof t4 !== "number")
-      return this.initVelocityConstraints$1$bailout1(6, time_step, 0, r2, r1, K, t5, 0, t4);
+      return this.initVelocityConstraints$1$bailout1(6, time_step, 0, r2, K, r1, t5, 0, t4);
     if (typeof t10 !== "number")
-      return this.initVelocityConstraints$1$bailout1(7, time_step, 0, r2, r1, K, t5, 0, t4, t10);
+      return this.initVelocityConstraints$1$bailout1(7, time_step, 0, r2, K, r1, t5, 0, t4, t10);
     K.col0.set$x(t5 + t4 * t10 * t10);
     t12 = this.bodyA.get$invInertia();
     if (typeof t12 !== "number")
-      return this.initVelocityConstraints$1$bailout1(9, time_step, 0, r2, r1, K, t12);
+      return this.initVelocityConstraints$1$bailout1(9, time_step, 0, r2, K, r1, t12);
     t12 = -t12;
     t14 = r1.get$x();
     if (typeof t14 !== "number")
-      return this.initVelocityConstraints$1$bailout1(10, time_step, 0, r2, r1, K, t12, 0, 0, 0, t14);
+      return this.initVelocityConstraints$1$bailout1(10, time_step, 0, r2, K, r1, t12, 0, 0, 0, t14);
     t14 = t12 * t14;
     t12 = r1.get$y();
     if (typeof t12 !== "number")
-      return this.initVelocityConstraints$1$bailout1(11, time_step, 0, r2, r1, K, t12, 0, 0, 0, t14);
+      return this.initVelocityConstraints$1$bailout1(11, time_step, 0, r2, K, r1, t12, 0, 0, 0, t14);
     t12 = t14 * t12;
     t14 = this.bodyB.get$invInertia();
     t18 = r2.get$x();
     if (typeof t14 !== "number")
-      return this.initVelocityConstraints$1$bailout1(12, time_step, 0, r2, r1, K, t12, 0, 0, 0, t14);
+      return this.initVelocityConstraints$1$bailout1(12, time_step, 0, r2, K, r1, t12, 0, 0, 0, t14);
     if (typeof t18 !== "number")
-      return this.initVelocityConstraints$1$bailout1(13, time_step, 0, r2, r1, K, t12, 0, 0, 0, t14, t18);
+      return this.initVelocityConstraints$1$bailout1(13, time_step, 0, r2, K, r1, t12, 0, 0, 0, t14, t18);
     t18 = t14 * t18;
     t14 = r2.get$y();
     if (typeof t14 !== "number")
-      return this.initVelocityConstraints$1$bailout1(14, time_step, 0, r2, r1, K, t12, 0, 0, 0, t14, t18);
+      return this.initVelocityConstraints$1$bailout1(14, time_step, 0, r2, K, r1, t12, 0, 0, 0, t14, t18);
     K.col0.set$y(t12 - t18 * t14);
     t21 = K.col0.get$y();
     K.col1.set$x(t21);
@@ -17808,31 +17808,31 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
     t24 = this.bodyB;
     t25 = t24.get$invMass();
     if (typeof t22 !== "number")
-      return this.initVelocityConstraints$1$bailout1(15, time_step, 0, r2, r1, K, t22);
+      return this.initVelocityConstraints$1$bailout1(15, time_step, 0, r2, K, r1, t22);
     if (typeof t25 !== "number")
-      return this.initVelocityConstraints$1$bailout1(16, time_step, 0, r2, r1, K, t22, 0, 0, 0, 0, 0, t25);
+      return this.initVelocityConstraints$1$bailout1(16, time_step, 0, r2, K, r1, t22, 0, 0, 0, 0, 0, t25);
     t25 = t22 + t25;
     t21 = t21.get$invInertia();
     t27 = r1.get$x();
     if (typeof t21 !== "number")
-      return this.initVelocityConstraints$1$bailout1(17, time_step, 0, r2, r1, K, t21, 0, 0, 0, 0, 0, t25);
+      return this.initVelocityConstraints$1$bailout1(17, time_step, 0, r2, K, r1, t21, 0, 0, 0, 0, 0, t25);
     if (typeof t27 !== "number")
-      return this.initVelocityConstraints$1$bailout1(18, time_step, 0, r2, r1, K, t21, 0, 0, 0, 0, 0, t25, t27);
+      return this.initVelocityConstraints$1$bailout1(18, time_step, 0, r2, K, r1, t21, 0, 0, 0, 0, 0, t25, t27);
     t25 += t21 * t27 * t27;
     t24 = t24.get$invInertia();
     t30 = r2.get$x();
     if (typeof t24 !== "number")
-      return this.initVelocityConstraints$1$bailout1(20, time_step, 0, r2, r1, K, 0, 0, 0, 0, 0, 0, t25, 0, t24);
+      return this.initVelocityConstraints$1$bailout1(20, time_step, 0, r2, K, r1, 0, 0, 0, 0, 0, 0, t25, 0, t24);
     if (typeof t30 !== "number")
-      return this.initVelocityConstraints$1$bailout1(21, time_step, 0, r2, r1, K, 0, 0, 0, 0, 0, 0, t25, 0, t24, t30);
+      return this.initVelocityConstraints$1$bailout1(21, time_step, 0, r2, K, r1, 0, 0, 0, 0, 0, 0, t25, 0, t24, t30);
     K.col1.set$y(t25 + t24 * t30 * t30);
     $.mat2$copy(K).invert$0();
     t32 = this.bodyA.get$invInertia();
     t34 = this.bodyB.get$invInertia();
     if (typeof t32 !== "number")
-      return this.initVelocityConstraints$1$bailout1(23, time_step, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, t32);
+      return this.initVelocityConstraints$1$bailout1(23, time_step, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, t32);
     if (typeof t34 !== "number")
-      return this.initVelocityConstraints$1$bailout1(24, time_step, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, t32, 0, 0, 0, t34);
+      return this.initVelocityConstraints$1$bailout1(24, time_step, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, t32, 0, 0, 0, t34);
     if (t32 + t34 > 0)
       ;
     t1 = time_step.get$warmStarting();
@@ -17842,9 +17842,9 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
       t1 = this._angularImpulse;
       t4 = time_step.get$dtRatio();
       if (typeof t1 !== "number")
-        return this.initVelocityConstraints$1$bailout1(25, time_step, t1, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2);
+        return this.initVelocityConstraints$1$bailout1(25, time_step, t1, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2);
       if (typeof t4 !== "number")
-        return this.initVelocityConstraints$1$bailout1(26, 0, t1, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, t4);
+        return this.initVelocityConstraints$1$bailout1(26, 0, t1, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, t4);
       this._angularImpulse = t1 * t4;
       P = $.vec2$copy(t2);
       t2 = this.bodyA.get$linearVelocity();
@@ -17852,22 +17852,22 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
       t8 = this.bodyA.get$invMass();
       t10 = P.x;
       if (typeof t8 !== "number")
-        return this.initVelocityConstraints$1$bailout1(28, 0, 0, r2, r1, 0, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, t8);
+        return this.initVelocityConstraints$1$bailout1(28, 0, 0, r2, 0, r1, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, t8);
       if (typeof t10 !== "number")
-        return this.initVelocityConstraints$1$bailout1(29, 0, 0, r2, r1, 0, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, t8, t10);
+        return this.initVelocityConstraints$1$bailout1(29, 0, 0, r2, 0, r1, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, t8, t10);
       if (typeof t6 !== "number")
-        return this.initVelocityConstraints$1$bailout1(27, 0, 0, r2, r1, 0, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P);
+        return this.initVelocityConstraints$1$bailout1(27, 0, 0, r2, 0, r1, 0, t6, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P);
       t2.set$x(t6 - t8 * t10);
       t2 = this.bodyA.get$linearVelocity();
       t12 = t2.get$y();
       t14 = this.bodyA.get$invMass();
       t16 = P.y;
       if (typeof t14 !== "number")
-        return this.initVelocityConstraints$1$bailout1(31, 0, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12, t14);
+        return this.initVelocityConstraints$1$bailout1(31, 0, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12, t14);
       if (typeof t16 !== "number")
-        return this.initVelocityConstraints$1$bailout1(32, 0, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12, t14, t16);
+        return this.initVelocityConstraints$1$bailout1(32, 0, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12, t14, t16);
       if (typeof t12 !== "number")
-        return this.initVelocityConstraints$1$bailout1(30, 0, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12);
+        return this.initVelocityConstraints$1$bailout1(30, 0, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, t12);
       t2.set$y(t12 - t14 * t16);
       t2 = this.bodyA;
       t18 = t2.get$angularVelocity();
@@ -17879,9 +17879,9 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
       if (typeof t24 !== "number")
         return this.initVelocityConstraints$1$bailout1(36, 0, 0, r2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, 0, 0, 0, t18, t20, t22, t24);
       if (typeof t20 !== "number")
-        return this.initVelocityConstraints$1$bailout1(34, 0, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, 0, 0, 0, t18, t20);
+        return this.initVelocityConstraints$1$bailout1(34, 0, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, 0, 0, 0, t18, t20);
       if (typeof t18 !== "number")
-        return this.initVelocityConstraints$1$bailout1(33, 0, 0, r2, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, 0, 0, 0, t18);
+        return this.initVelocityConstraints$1$bailout1(33, 0, 0, r2, 0, r1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, t2, 0, P, 0, 0, 0, 0, 0, t18);
       t2.set$angularVelocity(t18 - t20 * (t22 + t24));
       t2 = this.bodyB.get$linearVelocity();
       t26 = t2.get$x();
@@ -17924,14 +17924,14 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
       this._angularImpulse = 0;
     }
   },
-  initVelocityConstraints$1$bailout1: function(state0, time_step, t1, r2, r1, K, t3, t6, t9, t11, t15, t19, t23, t26, t29, t31, t35, t2, t4, P, t8, t10, t12, t14, t16, t18, t20, t22, t24, t28, t30, t32, t34, t36, t38, t40, t42, t44) {
+  initVelocityConstraints$1$bailout1: function(state0, time_step, t1, r2, K, r1, t3, t6, t9, t11, t15, t19, t23, t26, t29, t31, t35, t2, t4, P, t8, t10, t12, t14, t16, t18, t20, t22, t24, t28, t30, t32, t34, t36, t38, t40, t42, t44) {
     switch (state0) {
       case 0:
         r1 = this._localAnchorA.$sub(this.bodyA.get$localCenter());
         r2 = this._localAnchorB.$sub(this.bodyB.get$localCenter());
         this.bodyA.get$originTransform().get$rotation().transform$1(r1);
         this.bodyB.get$originTransform().get$rotation().transform$1(r2);
-        K = $.mat2$(null, null, null, null);
+        K = $.mat2$zero();
         t1 = this.bodyA.get$invMass();
       case 1:
         state0 = 0;
@@ -18149,7 +18149,7 @@ $$.FrictionJoint = {"": "Joint;_localAnchorA,_localAnchorB,_linearImpulse,_angul
     temp = $.cross(this.bodyA.get$angularVelocity(), r1, null);
     Cdot = $.cross(this.bodyB.get$angularVelocity(), r2, null);
     $.add(Cdot, this.bodyB.get$linearVelocity()).sub$1(this.bodyA.get$linearVelocity()).sub$1(temp);
-    K = $.mat2$(null, null, null, null);
+    K = $.mat2$zero();
     t1 = $.$$add($.$$add($.$$add(this.bodyA.get$invMass(), this.bodyB.get$invMass()), $.$$mul($.$$mul(this.bodyA.get$invInertia(), r1.get$y()), r1.get$y())), $.$$mul($.$$mul(this.bodyB.get$invInertia(), r2.get$y()), r2.get$y()));
     K.col0.set$x(t1);
     t1 = $.$$sub($.$$mul($.$$mul($.$$negate(this.bodyA.get$invInertia()), r1.get$x()), r1.get$y()), $.$$mul($.$$mul(this.bodyB.get$invInertia(), r2.get$x()), r2.get$y()));
@@ -18621,7 +18621,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
       w1 = $.$$sub(w1, $.$$mul(i1, imp0));
       w2 = t1.$add(w2, $.$$mul(i2, imp0));
     }
-    temp = $.vec2$(null, null);
+    temp = $.vec2$zero();
     t1 = this._enableLimit === true && !(this.limitState === 0);
     t2 = $.getInterceptor$JSNumber(w2);
     t3 = this.localAnchor1;
@@ -18771,7 +18771,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
       b2.synchronizeTransform$0();
     } else
       angularError = 0;
-    imp = $.vec2$(null, null);
+    imp = $.vec2$zero();
     r1 = this.localAnchor1.$sub(b1.get$localCenter());
     r2 = this.localAnchor2.$sub(b2.get$localCenter());
     b1.get$originTransform().get$rotation().transform$1(r1);
@@ -18805,7 +18805,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
     if (typeof t2 !== "number")
       return this.solvePositionConstraints$1$bailout1(24, 0, b1, b2, 0, 0, C, 0, 0, angularError, t2, 0, 0, 0, r2, imp, r1, positionError, invMass1, invMass2, invI1, invI2);
     if (t2 > 0.0025000000000000005) {
-      u = $.vec2$(null, null);
+      u = $.vec2$zero();
       m = invMass1 + invMass2;
       if (m > 0)
         m = 1 / m;
@@ -18817,13 +18817,13 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
       $.add(C.copyFrom$1(b2.get$sweep().get$center()), r2);
       C.sub$1(b1.get$sweep().get$center()).sub$1(r1);
     }
-    K1 = $.mat2$(null, null, null, null);
+    K1 = $.mat2$zero();
     t2 = invMass1 + invMass2;
     K1.col0.set$x(t2);
     K1.col1.set$x(0);
     K1.col0.set$y(0);
     K1.col1.set$y(t2);
-    K2 = $.mat2$(null, null, null, null);
+    K2 = $.mat2$zero();
     t2 = r1.get$y();
     if (typeof t2 !== "number")
       return this.solvePositionConstraints$1$bailout1(25, 0, b1, b2, 0, 0, C, 0, 0, angularError, t2, 0, 0, 0, r2, 0, r1, positionError, 0, 0, invI1, invI2, K2, K1);
@@ -18849,7 +18849,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
     if (typeof t12 !== "number")
       return this.solvePositionConstraints$1$bailout1(31, 0, b1, b2, 0, 0, C, $.CONSTANT7, 0, angularError, 0, 0, 0, 0, r2, 0, r1, positionError, 0, 0, invI1, invI2, K2, K1, t12);
     K2.col1.set$y(invI1 * t12 * t12);
-    K3 = $.mat2$(null, null, null, null);
+    K3 = $.mat2$zero();
     t14 = r2.get$y();
     if (typeof t14 !== "number")
       return this.solvePositionConstraints$1$bailout1(33, 0, b1, b2, 0, 0, C, t14, 0, angularError, 0, 0, 0, 0, r2, 0, r1, positionError, 0, 0, 0, invI2, K2, K1, 0, K3);
@@ -19014,7 +19014,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
           }
         else
           angularError = 0;
-        imp = $.vec2$(null, null);
+        imp = $.vec2$zero();
         r1 = this.localAnchor1.$sub(b1.get$localCenter());
         r2 = this.localAnchor2.$sub(b2.get$localCenter());
         b1.get$originTransform().get$rotation().transform$1(r1);
@@ -19046,7 +19046,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
       case 24:
         state0 = 0;
         if ($.$$gt(t2, 0.0025000000000000005) === true) {
-          u = $.vec2$(null, null);
+          u = $.vec2$zero();
           m = $.$$add(invMass1, invMass2);
           if ($.$$gt(m, 0) === true) {
             if (typeof m !== "number")
@@ -19067,7 +19067,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
           $.add(C.copyFrom$1(b2.get$sweep().get$center()), r2);
           C.sub$1(b1.get$sweep().get$center()).sub$1(r1);
         }
-        K1 = $.mat2$(null, null, null, null);
+        K1 = $.mat2$zero();
         t2 = $.getInterceptor$JSNumber(invMass1);
         t3 = t2.$add(invMass1, invMass2);
         K1.col0.set$x(t3);
@@ -19075,7 +19075,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
         K1.col0.set$y(0);
         t2 = t2.$add(invMass1, invMass2);
         K1.col1.set$y(t2);
-        K2 = $.mat2$(null, null, null, null);
+        K2 = $.mat2$zero();
         t2 = r1.get$y();
       case 25:
         state0 = 0;
@@ -19115,7 +19115,7 @@ $$.RevoluteJoint = {"": "Joint;localAnchor1,localAnchor2,impulse,_motorImpulse,m
         state0 = 0;
         t4 = $.$$mul(t5, t4);
         K2.col1.set$y(t4);
-        K3 = $.mat2$(null, null, null, null);
+        K3 = $.mat2$zero();
         t4 = r2.get$y();
       case 33:
         state0 = 0;
@@ -22025,44 +22025,6 @@ $$.mat2 = {"": "Object;col0>,col1>",
     t1 = other.get$col1().get$y();
     this.col1.set$y(t1);
   },
-  mat2$4: function(arg0, arg1, arg2, arg3) {
-    var t1;
-    this.col0 = $.vec2$zero();
-    this.col1 = $.vec2$zero();
-    this.col0.set$x(1);
-    this.col1.set$y(1);
-    t1 = typeof arg0 === "number";
-    if (t1 && typeof arg1 === "number" && typeof arg2 === "number" && typeof arg3 === "number") {
-      this.col0.set$x(arg0);
-      this.col0.set$y(arg1);
-      this.col1.set$x(arg2);
-      this.col1.set$y(arg3);
-      return;
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null) {
-      this.col0.set$x(arg0);
-      this.col1.set$y(arg0);
-      return;
-    }
-    t1 = typeof arg0 === "object" && arg0 !== null && !!arg0.$isvec2;
-    if (t1 && typeof arg1 === "object" && arg1 !== null && !!arg1.$isvec2) {
-      this.col0 = arg0;
-      this.col1 = arg1;
-      return;
-    }
-    if (typeof arg0 === "object" && arg0 !== null && !!arg0.$ismat2) {
-      this.col0 = arg0.col0;
-      this.col1 = arg0.col1;
-      return;
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null) {
-      t1 = arg0.get$x();
-      this.col0.set$x(t1);
-      t1 = arg0.get$y();
-      this.col1.set$y(t1);
-    }
-    throw $.$$throw($.ArgumentError$("Invalid arguments"));
-  },
   mat2$zero$0: function() {
     this.col0 = $.vec2$zero();
     this.col1 = $.vec2$zero();
@@ -22070,8 +22032,7 @@ $$.mat2 = {"": "Object;col0>,col1>",
     this.col0.set$y(0);
     this.col1.set$x(0);
     this.col1.set$y(0);
-  },
-  $ismat2: true
+  }
 };
 
 $$.mat3 = {"": "Object;col0>,col1>,col2>",
@@ -24104,73 +24065,6 @@ $$.mat3 = {"": "Object;col0>,col1>,col2>",
       out.copyFrom$1(arg);
     return this.transform$1(out);
   },
-  mat3$9: function(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) {
-    var t1, t2;
-    this.col0 = $.vec3$zero();
-    this.col1 = $.vec3$zero();
-    this.col2 = $.vec3$zero();
-    this.col0.set$x(1);
-    this.col1.set$y(1);
-    this.col2.set$z(1);
-    t1 = typeof arg0 === "number";
-    if (t1 && typeof arg1 === "number" && typeof arg2 === "number" && typeof arg3 === "number" && typeof arg4 === "number" && typeof arg5 === "number" && typeof arg6 === "number" && typeof arg7 === "number" && typeof arg8 === "number") {
-      this.col0.set$x(arg0);
-      this.col0.set$y(arg1);
-      this.col0.set$z(arg2);
-      this.col1.set$x(arg3);
-      this.col1.set$y(arg4);
-      this.col1.set$z(arg5);
-      this.col2.set$x(arg6);
-      this.col2.set$y(arg7);
-      this.col2.set$z(arg8);
-      return;
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null && arg4 == null && arg5 == null && arg6 == null && arg7 == null && arg8 == null) {
-      this.col0.set$x(arg0);
-      this.col1.set$y(arg0);
-      this.col2.set$z(arg0);
-      return;
-    }
-    t1 = typeof arg0 === "object" && arg0 !== null && !!arg0.$isvec3;
-    if (t1 && typeof arg1 === "object" && arg1 !== null && !!arg1.$isvec3 && typeof arg2 === "object" && arg2 !== null && !!arg2.$isvec3) {
-      this.col0 = arg0;
-      this.col1 = arg1;
-      this.col2 = arg2;
-      return;
-    }
-    if (typeof arg0 === "object" && arg0 !== null && !!arg0.$ismat3) {
-      this.col0 = arg0.col0;
-      this.col1 = arg0.col1;
-      this.col2 = arg0.col2;
-      return;
-    }
-    if (typeof arg0 === "object" && arg0 !== null && !!arg0.$ismat2) {
-      t1 = arg0.col0.get$x();
-      this.col0.set$x(t1);
-      t1 = arg0.col0.get$y();
-      this.col0.set$y(t1);
-      t1 = arg0.col1.get$x();
-      this.col1.set$x(t1);
-      t1 = arg0.col1.get$y();
-      this.col1.set$y(t1);
-      return;
-    }
-    if (typeof arg0 === "object" && arg0 !== null && !!arg0.$isvec2 && arg1 == null && arg2 == null && arg3 == null && arg4 == null && arg5 == null && arg6 == null && arg7 == null && arg8 == null) {
-      t2 = arg0.get$x();
-      this.col0.set$x(t2);
-      t2 = arg0.get$y();
-      this.col1.set$y(t2);
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null && arg4 == null && arg5 == null && arg6 == null && arg7 == null && arg8 == null) {
-      t1 = arg0.get$x();
-      this.col0.set$x(t1);
-      t1 = arg0.get$y();
-      this.col1.set$y(t1);
-      t1 = arg0.get$z();
-      this.col2.set$z(t1);
-    }
-    throw $.$$throw($.ArgumentError$("Invalid arguments"));
-  },
   mat3$zero$0: function() {
     this.col0 = $.vec3$zero();
     this.col1 = $.vec3$zero();
@@ -24208,8 +24102,7 @@ $$.mat3 = {"": "Object;col0>,col1>,col2>",
     this.col2.set$y(t1);
     t1 = other.get$col2().get$z();
     this.col2.set$z(t1);
-  },
-  $ismat3: true
+  }
 };
 
 $$.MatchState = {"": "Object;state="};
@@ -28166,14 +28059,14 @@ $.Collision$_construct = function(pool) {
   t5 = $.EdgeResults$();
   t6 = $.List_List(2, $.ClipVertex);
   $.setRuntimeTypeInfo(t6, [$.ClipVertex]);
-  t7 = $.vec2$(null, null);
-  t8 = $.vec2$(null, null);
-  t9 = $.vec2$(null, null);
-  t10 = $.vec2$(null, null);
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
-  t13 = $.vec2$(null, null);
-  t14 = $.vec2$(null, null);
+  t7 = $.vec2$zero();
+  t8 = $.vec2$zero();
+  t9 = $.vec2$zero();
+  t10 = $.vec2$zero();
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
+  t13 = $.vec2$zero();
+  t14 = $.vec2$zero();
   t15 = $.List_List(2, $.ClipVertex);
   $.setRuntimeTypeInfo(t15, [$.ClipVertex]);
   t16 = $.List_List(2, $.ClipVertex);
@@ -28218,7 +28111,7 @@ $.Collision_clipSegmentToLine = function(vOut, vIn, norm, offset) {
 };
 
 $.ClipVertex$ = function() {
-  return new $.ClipVertex($.vec2$(null, null), $.ContactID$());
+  return new $.ClipVertex($.vec2$zero(), $.ContactID$());
 };
 
 $.EdgeResults$ = function() {
@@ -28236,7 +28129,7 @@ $.Distance$_construct = function() {
   $.setRuntimeTypeInfo(t2, [$.$int]);
   t3 = $.List_List(3, $.$int);
   $.setRuntimeTypeInfo(t3, [$.$int]);
-  return new $.Distance(0, 0, 20, t1, t2, t3, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.Distance(0, 0, 20, t1, t2, t3, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.DistanceInput$ = function() {
@@ -28244,7 +28137,7 @@ $.DistanceInput$ = function() {
 };
 
 $.DistanceOutput$ = function() {
-  return new $.DistanceOutput($.vec2$(null, null), $.vec2$(null, null), null, null);
+  return new $.DistanceOutput($.vec2$zero(), $.vec2$zero(), null, null);
 };
 
 $.DistanceProxy$ = function() {
@@ -28262,13 +28155,13 @@ $.Features$ = function() {
 $.Manifold$ = function() {
   var t1 = $.List_List(2, $.ManifoldPoint);
   $.setRuntimeTypeInfo(t1, [$.ManifoldPoint]);
-  t1 = new $.Manifold(t1, $.vec2$(null, null), $.vec2$(null, null), null, 0);
+  t1 = new $.Manifold(t1, $.vec2$zero(), $.vec2$zero(), null, 0);
   t1.Manifold$0();
   return t1;
 };
 
 $.ManifoldPoint$ = function() {
-  return new $.ManifoldPoint($.vec2$(null, null), 0, 0, $.ContactID$());
+  return new $.ManifoldPoint($.vec2$zero(), 0, 0, $.ContactID$());
 };
 
 $.Simplex$ = function() {
@@ -28278,9 +28171,9 @@ $.Simplex$ = function() {
   t3 = $.SimplexVertex$();
   t4 = $.List_List(3, $.SimplexVertex);
   $.setRuntimeTypeInfo(t4, [$.SimplexVertex]);
-  t5 = $.vec2$(null, null);
-  t6 = $.vec2$(null, null);
-  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.vec2$(null, null), t6, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t5 = $.vec2$zero();
+  t6 = $.vec2$zero();
+  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.vec2$zero(), t6, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t6.Simplex$0();
   return t6;
 };
@@ -28297,7 +28190,7 @@ $.SimplexCache$ = function() {
 };
 
 $.SimplexVertex$ = function() {
-  return new $.SimplexVertex($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0);
+  return new $.SimplexVertex($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0, 0);
 };
 
 $.TimeOfImpact$_construct = function(argPool) {
@@ -28319,23 +28212,23 @@ $.SeparationFunction$ = function() {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18;
   t1 = $.DistanceProxy$();
   t2 = $.DistanceProxy$();
-  t3 = $.vec2$(null, null);
-  t4 = $.vec2$(null, null);
+  t3 = $.vec2$zero();
+  t4 = $.vec2$zero();
   t5 = $.Sweep$();
   t6 = $.Sweep$();
-  t7 = $.vec2$(null, null);
-  t8 = $.vec2$(null, null);
-  t9 = $.vec2$(null, null);
-  t10 = $.vec2$(null, null);
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
-  t13 = $.vec2$(null, null);
-  t14 = $.vec2$(null, null);
-  t15 = $.vec2$(null, null);
-  t16 = $.vec2$(null, null);
+  t7 = $.vec2$zero();
+  t8 = $.vec2$zero();
+  t9 = $.vec2$zero();
+  t10 = $.vec2$zero();
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
+  t13 = $.vec2$zero();
+  t14 = $.vec2$zero();
+  t15 = $.vec2$zero();
+  t16 = $.vec2$zero();
   t17 = $.Transform$();
   t18 = $.Transform$();
-  return new $.SeparationFunction(t1, t2, 0, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, $.vec2$(null, null), $.vec2$(null, null), t16, t17, t18);
+  return new $.SeparationFunction(t1, t2, 0, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, $.vec2$zero(), $.vec2$zero(), t16, t17, t18);
 };
 
 $.TimeOfImpactInput$ = function() {
@@ -28348,9 +28241,9 @@ $.TimeOfImpactOutput$ = function() {
 
 $.WorldManifold$ = function() {
   var t1, t2, t3, t4;
-  t1 = $.vec2$(null, null);
-  t2 = $.vec2$(null, null);
-  t3 = $.vec2$(null, null);
+  t1 = $.vec2$zero();
+  t2 = $.vec2$zero();
+  t3 = $.vec2$zero();
   t4 = $.List_List(2, $.vec2);
   $.setRuntimeTypeInfo(t4, [$.vec2]);
   t3 = new $.WorldManifold(t1, t4, t2, t3);
@@ -28368,9 +28261,9 @@ $.DynamicTree$ = function() {
   var t1, t2, t3;
   t1 = $.List_List(4, $.vec2);
   $.setRuntimeTypeInfo(t1, [$.vec2]);
-  t2 = $.vec2$(null, null);
+  t2 = $.vec2$zero();
   t3 = $.AxisAlignedBox$(null, null);
-  t3 = new $.DynamicTree(null, 0, null, 0, 0, $.Queue_Queue($.DynamicTreeNode), t1, 0, t2, t3, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t3 = new $.DynamicTree(null, 0, null, 0, 0, $.Queue_Queue($.DynamicTreeNode), t1, 0, t2, t3, $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t3.DynamicTree$0();
   return t3;
 };
@@ -28384,7 +28277,7 @@ $.Pair$ = function() {
 };
 
 $.MassData$ = function() {
-  return new $.MassData(0, $.vec2$(null, null), 0);
+  return new $.MassData(0, $.vec2$zero(), 0);
 };
 
 $.PolygonShape$ = function() {
@@ -28393,7 +28286,7 @@ $.PolygonShape$ = function() {
   $.setRuntimeTypeInfo(t1, [$.vec2]);
   t2 = $.List_List(8, $.vec2);
   $.setRuntimeTypeInfo(t2, [$.vec2]);
-  t2 = new $.PolygonShape($.vec2$(null, null), t1, t2, 0, 1, 0.01);
+  t2 = new $.PolygonShape($.vec2$zero(), t1, t2, 0, 1, 0.01);
   t2.PolygonShape$0();
   return t2;
 };
@@ -28473,11 +28366,11 @@ $.Settings_mixRestitution = function(restitution1, restitution2) {
 };
 
 $.Sweep$ = function() {
-  return new $.Sweep($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0);
+  return new $.Sweep($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0);
 };
 
 $.Transform$ = function() {
-  return new $.Transform($.vec2$(null, null), $.mat2$(null, null, null, null));
+  return new $.Transform($.vec2$zero(), $.mat2$zero());
 };
 
 $.Transform_mulToOut = function(transform, vector, out) {
@@ -28504,20 +28397,20 @@ $.Body$ = function(bd, world) {
   t3 = $.vec2$copy(bd.linearVelocity);
   t4 = bd.linearDamping;
   t5 = bd.angularDamping;
-  t6 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
   t7 = bd.userData;
   t8 = $.FixtureDef$();
   t9 = $.MassData$();
   t10 = $.Transform$();
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
   t12 = new $.Body(world, 0, null, 0, t7, t3, 0, null, null, null, null, null, 0, null, t6, 0, 0, 0, t4, t5, bd.type, null, t1, t2, t8, t9, t10, t11, t12);
   t12.Body$2(bd, world);
   return t12;
 };
 
 $.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.vec2$(null, null), $.vec2$(null, null), 0, false, null, false, true, 0, 0, true, true);
+  return new $.BodyDef(0, 0, null, $.vec2$zero(), $.vec2$zero(), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.ContactManager$ = function(argPool) {
@@ -28540,7 +28433,7 @@ $.FixtureDef$ = function() {
 };
 
 $.Island$ = function() {
-  return new $.Island(null, null, null, null, null, null, null, null, null, null, null, null, null, $.ContactSolver$(), $.vec2$(null, null), $.ContactImpulse$());
+  return new $.Island(null, null, null, null, null, null, null, null, null, null, null, null, null, $.ContactSolver$(), $.vec2$zero(), $.ContactImpulse$());
 };
 
 $.Position$ = function() {
@@ -28563,11 +28456,11 @@ $.World$ = function(gravity, doSleep, argPool) {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14;
   t1 = $.List_List(2, [$.List, $.ContactRegister]);
   $.setRuntimeTypeInfo(t1, [[$.List, $.ContactRegister]]);
-  t2 = $.vec2$(null, null);
-  t3 = $.vec2$(null, null);
+  t2 = $.vec2$zero();
+  t3 = $.vec2$zero();
   t4 = $.TimeStep$();
-  t5 = $.vec2$(null, null);
-  t6 = $.vec2$(null, null);
+  t5 = $.vec2$zero();
+  t6 = $.vec2$zero();
   t7 = $.WorldQueryWrapper$();
   t8 = $.TimeOfImpactInput$();
   t9 = $.TimeOfImpactOutput$();
@@ -28595,13 +28488,13 @@ $.CircleContact$ = function(argPool) {
 $.ContactConstraint$ = function() {
   var t1 = $.List_List(2, $.ContactConstraintPoint);
   $.setRuntimeTypeInfo(t1, [$.ContactConstraintPoint]);
-  t1 = new $.ContactConstraint(t1, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.mat2$(null, null, null, null), $.mat2$(null, null, null, null), null, null, null, null, null, null, 0, null);
+  t1 = new $.ContactConstraint(t1, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.mat2$zero(), $.mat2$zero(), null, null, null, null, null, null, 0, null);
   t1.ContactConstraint$0();
   return t1;
 };
 
 $.ContactConstraintPoint$ = function() {
-  return new $.ContactConstraintPoint($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0, 0, 0);
+  return new $.ContactConstraintPoint($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0, 0, 0, 0);
 };
 
 $.ContactEdge$ = function() {
@@ -28615,13 +28508,13 @@ $.ContactRegister$ = function() {
 $.ContactSolver$ = function() {
   var t1 = $.List_List(256, $.ContactConstraint);
   $.setRuntimeTypeInfo(t1, [$.ContactConstraint]);
-  t1 = new $.ContactSolver(t1, null, $.WorldManifold$(), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.PositionSolverManifold$(), $.vec2$(null, null), $.vec2$(null, null));
+  t1 = new $.ContactSolver(t1, null, $.WorldManifold$(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.PositionSolverManifold$(), $.vec2$zero(), $.vec2$zero());
   t1.ContactSolver$0();
   return t1;
 };
 
 $.PositionSolverManifold$ = function() {
-  return new $.PositionSolverManifold($.vec2$(null, null), $.vec2$(null, null), 0, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.PositionSolverManifold($.vec2$zero(), $.vec2$zero(), 0, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.PolygonAndCircleContact$ = function(argPool) {
@@ -28637,7 +28530,7 @@ $.PolygonContact$ = function(argPool) {
 $.TimeOfImpactConstraint$ = function() {
   var t1 = $.List_List(2, $.vec2);
   $.setRuntimeTypeInfo(t1, [$.vec2]);
-  t1 = new $.TimeOfImpactConstraint(t1, $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0, null, null);
+  t1 = new $.TimeOfImpactConstraint(t1, $.vec2$zero(), $.vec2$zero(), 0, 0, 0, null, null);
   t1.TimeOfImpactConstraint$0();
   return t1;
 };
@@ -28645,13 +28538,13 @@ $.TimeOfImpactConstraint$ = function() {
 $.TimeOfImpactSolver$ = function() {
   var t1 = $.List_List(4, $.TimeOfImpactConstraint);
   $.setRuntimeTypeInfo(t1, [$.TimeOfImpactConstraint]);
-  t1 = new $.TimeOfImpactSolver(t1, 0, null, $.TimeOfImpactSolverManifold$(), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t1 = new $.TimeOfImpactSolver(t1, 0, null, $.TimeOfImpactSolverManifold$(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t1.TimeOfImpactSolver$0();
   return t1;
 };
 
 $.TimeOfImpactSolverManifold$ = function() {
-  return new $.TimeOfImpactSolverManifold($.vec2$(null, null), $.vec2$(null, null), 0, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.TimeOfImpactSolverManifold($.vec2$zero(), $.vec2$zero(), 0, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.ConstantVolumeJoint$ = function(_world, def) {
@@ -28661,8 +28554,8 @@ $.ConstantVolumeJoint$ = function(_world, def) {
   t3 = def.get$bodyB();
   t4 = def.get$collideConnected();
   t5 = def.get$userData();
-  t6 = $.vec2$(null, null);
-  t7 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
+  t7 = $.vec2$zero();
   t7 = new $.ConstantVolumeJoint(null, null, null, null, null, 0, _world, null, null, null, t1, null, null, $.JointEdge$(), $.JointEdge$(), t2, t3, false, t4, t5, t6, t7, null, null, null, null);
   t7.ConstantVolumeJoint$2(_world, def);
   return t7;
@@ -28675,14 +28568,14 @@ $.DistanceJoint$ = function(def) {
   t3 = def.get$bodyB();
   t4 = def.get$collideConnected();
   t5 = def.get$userData();
-  t6 = $.vec2$(null, null);
-  t7 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
+  t7 = $.vec2$zero();
   t8 = $.JointEdge$();
   t9 = $.JointEdge$();
   t10 = $.vec2$copy(def.get$localAnchorA());
   t11 = $.vec2$copy(def.get$localAnchorB());
   t12 = $.length(def);
-  return new $.DistanceJoint(t10, t11, $.vec2$(null, null), 0, null, t12, def.get$frequencyHz(), def.get$dampingRatio(), 0, 0, t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
+  return new $.DistanceJoint(t10, t11, $.vec2$zero(), 0, null, t12, def.get$frequencyHz(), def.get$dampingRatio(), 0, 0, t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
 };
 
 $.DistanceJointDef$ = function() {
@@ -28698,11 +28591,11 @@ $.FrictionJoint$ = function(def) {
   t3 = def.get$bodyB();
   t4 = def.get$collideConnected();
   t5 = def.get$userData();
-  t6 = $.vec2$(null, null);
-  t7 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
+  t7 = $.vec2$zero();
   t8 = $.JointEdge$();
   t9 = $.JointEdge$();
-  return new $.FrictionJoint($.vec2$copy(def.get$localAnchorA()), $.vec2$copy(def.get$localAnchorB()), $.vec2$(null, null), 0, def.get$maxForce(), def.get$maxTorque(), t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
+  return new $.FrictionJoint($.vec2$copy(def.get$localAnchorA()), $.vec2$copy(def.get$localAnchorB()), $.vec2$zero(), 0, def.get$maxForce(), def.get$maxTorque(), t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
 };
 
 $.Joint_Joint$create = function(argWorld, def) {
@@ -28742,11 +28635,11 @@ $.RevoluteJoint$ = function(def) {
   t3 = def.get$bodyB();
   t4 = def.get$collideConnected();
   t5 = def.get$userData();
-  t6 = $.vec2$(null, null);
-  t7 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
+  t7 = $.vec2$zero();
   t8 = $.JointEdge$();
   t9 = $.JointEdge$();
-  t7 = new $.RevoluteJoint($.vec2$(null, null), $.vec2$(null, null), $.vec3$(null, null, null), 0, $.mat3$(null, null, null, null, null, null, null, null, null), null, null, null, null, null, null, null, null, null, t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
+  t7 = new $.RevoluteJoint($.vec2$zero(), $.vec2$zero(), $.vec3$zero(), 0, $.mat3$zero(), null, null, null, null, null, null, null, null, null, t1, null, null, t8, t9, t2, t3, false, t4, t5, t6, t7, null, null, null, null);
   t7.RevoluteJoint$1(def);
   return t7;
 };
@@ -29045,12 +28938,6 @@ $.clamp = function(x, min_, max_, out) {
   throw $.$$throw($.ArgumentError$(x));
 };
 
-$.mat2$ = function(arg0, arg1, arg2, arg3) {
-  var t1 = new $.mat2(null, null);
-  t1.mat2$4(arg0, arg1, arg2, arg3);
-  return t1;
-};
-
 $.mat2$zero = function() {
   var t1 = new $.mat2(null, null);
   t1.mat2$zero$0();
@@ -29060,12 +28947,6 @@ $.mat2$zero = function() {
 $.mat2$copy = function(other) {
   var t1 = new $.mat2(null, null);
   t1.mat2$copy$1(other);
-  return t1;
-};
-
-$.mat3$ = function(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) {
-  var t1 = new $.mat3(null, null, null);
-  t1.mat3$9(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
   return t1;
 };
 

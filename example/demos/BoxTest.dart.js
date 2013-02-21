@@ -5350,9 +5350,9 @@ $$.AxisAlignedBox = {"": "Object;lowerBound>,upperBound>",
   },
   AxisAlignedBox$2: function(lowerBound, upperBound) {
     if (this.lowerBound == null)
-      this.lowerBound = $.vec2$(null, null);
+      this.lowerBound = $.vec2$zero();
     if (this.upperBound == null)
-      this.upperBound = $.vec2$(null, null);
+      this.upperBound = $.vec2$zero();
   }
 };
 
@@ -6782,7 +6782,7 @@ $$.DistanceProxy = {"": "Object;vertices>,count=,radius=",
   DistanceProxy$0: function() {
     var t1, i, t2;
     for (t1 = this.vertices, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -8388,7 +8388,7 @@ $$.WorldManifold = {"": "Object;normal>,points>,pool3,pool4",
   WorldManifold$0: function() {
     var t1, i, t2;
     for (t1 = this.points, i = 0; i < 2; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -8904,7 +8904,7 @@ $$.DynamicTree = {"": "Object;_root,_nodeCount,_lastLeaf,_insertionCount,_path,_
   DynamicTree$0: function() {
     var t1, i, t2;
     for (t1 = this._drawVectors, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9087,12 +9087,12 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
   },
   computeAxisAlignedBox$2: function(argAabb, argXf) {
     var lower, upper, v, t1, i;
-    lower = $.vec2$(null, null);
-    upper = $.vec2$(null, null);
-    v = $.vec2$(null, null);
+    lower = $.vec2$zero();
+    upper = $.vec2$zero();
+    v = $.vec2$zero();
     t1 = this.vertices;
     if (typeof t1 !== "string" && (typeof t1 !== "object" || t1 === null || t1.constructor !== Array && !t1.$isJavaScriptIndexingBehavior()))
-      return this.computeAxisAlignedBox$2$bailout1(1, argAabb, argXf, v, upper, lower, t1);
+      return this.computeAxisAlignedBox$2$bailout1(1, argAabb, argXf, v, lower, t1, upper);
     if (0 >= t1.length)
       throw $.ioore(0);
     $.Transform_mulToOut(argXf, t1[0], lower);
@@ -9113,7 +9113,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
     t1 = $.$$add(upper.y, this.radius);
     argAabb.get$upperBound().set$y(t1);
   },
-  computeAxisAlignedBox$2$bailout1: function(state0, argAabb, argXf, v, upper, lower, t1) {
+  computeAxisAlignedBox$2$bailout1: function(state0, argAabb, argXf, v, lower, t1, upper) {
     var t3, i;
     t3 = $.getInterceptor$JSArrayJSString(t1);
     $.Transform_mulToOut(argXf, t3.$index(t1, 0), lower);
@@ -9145,8 +9145,8 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
     }
     center = $.vec2$zero();
     pRef = $.vec2$zero();
-    e1 = $.vec2$(null, null);
-    e2 = $.vec2$(null, null);
+    e1 = $.vec2$zero();
+    e2 = $.vec2$zero();
     t1 = this.vertices;
     if (typeof t1 !== "string" && (typeof t1 !== "object" || t1 === null || t1.constructor !== Array && !t1.$isJavaScriptIndexingBehavior()))
       return this.computeMass$2$bailout1(1, massData, pRef, density, e1, e2, t1, center);
@@ -9335,7 +9335,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return this.PolygonShape$0$bailout(1, t1);
     i = 0;
     for (; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9345,7 +9345,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
       return this.PolygonShape$0$bailout(2, t1);
     i = 0;
     for (; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -9360,7 +9360,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
         t3 = $.getInterceptor$JSArray(t1);
         i = 0;
         for (; $.CONSTANT7.$lt(i, $.length(t1)); ++i)
-          t3.$indexSet(t1, i, $.vec2$(null, null));
+          t3.$indexSet(t1, i, $.vec2$zero());
         t1 = this.normals;
       case 2:
         var t3, i;
@@ -9368,7 +9368,7 @@ $$.PolygonShape = {"": "Shape;centroid>,vertices>,normals>,vertexCount>,type,rad
         t3 = $.getInterceptor$JSArray(t1);
         i = 0;
         for (; $.CONSTANT7.$lt(i, $.length(t1)); ++i)
-          t3.$indexSet(t1, i, $.vec2$(null, null));
+          t3.$indexSet(t1, i, $.vec2$zero());
     }
   }
 };
@@ -9760,7 +9760,7 @@ $$.Body = {"": "Object;world,flags=,contactList=,sleepTime=,userData=,_linearVel
     this._linearVelocity.add$1($.cross(this._angularVelocity, temp, null));
   },
   getWorldPoint$1: function(localPoint) {
-    var v = $.vec2$(null, null);
+    var v = $.vec2$zero();
     $.Transform_mulToOut(this.originTransform, localPoint, v);
     return v;
   },
@@ -9768,7 +9768,7 @@ $$.Body = {"": "Object;world,flags=,contactList=,sleepTime=,userData=,_linearVel
     $.Transform_mulToOut(this.originTransform, localPoint, out);
   },
   getWorldVector$1: function(localVector) {
-    var out = $.vec2$(null, null);
+    var out = $.vec2$zero();
     this.originTransform.rotation.transformed$2(localVector, out);
     return out;
   },
@@ -10737,7 +10737,7 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints,positions,velocities,b
       ++i;
     }
     t2.storeImpulses$0();
-    temp = $.vec2$(null, null);
+    temp = $.vec2$zero();
     t1 = this._translation;
     i = 0;
     while (true) {
@@ -11144,7 +11144,7 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints,positions,velocities,b
                 ++i;
             }
         t1.storeImpulses$0();
-        temp = $.vec2$(null, null);
+        temp = $.vec2$zero();
         t2 = this._translation;
         i = 0;
       case 34:
@@ -11528,14 +11528,14 @@ $$.Island = {"": "Object;listener,bodies>,contacts,joints,positions,velocities,b
 
 $$.Position = {"": "Object;x=,a=",
   Position$0: function() {
-    this.x = $.vec2$(null, null);
+    this.x = $.vec2$zero();
     this.a = 0;
   }
 };
 
 $$.Velocity = {"": "Object;v>,a=",
   Velocity$0: function() {
-    this.v = $.vec2$(null, null);
+    this.v = $.vec2$zero();
     this.a = 0;
   }
 };
@@ -12404,7 +12404,7 @@ $$.World = {"": "Object;_flags,_contactManager,_bodyList,_jointList,_bodyCount,_
         vertices = $.List_List(vertexCount, $.vec2);
         $.setRuntimeTypeInfo(vertices, [$.vec2]);
         for (i = 0; $.CONSTANT7.$lt(i, vertexCount); ++i) {
-          t1 = $.vec2$(null, null);
+          t1 = $.vec2$zero();
           if (i >= vertices.length)
             throw $.ioore(i);
           vertices[i] = t1;
@@ -12436,8 +12436,8 @@ $$.World = {"": "Object;_flags,_contactManager,_bodyList,_jointList,_bodyCount,_
     xf2 = bodyB.get$originTransform();
     x1 = $.vec2$copy(xf1.get$position());
     x2 = $.vec2$copy(xf2.get$position());
-    p1 = $.vec2$(null, null);
-    p2 = $.vec2$(null, null);
+    p1 = $.vec2$zero();
+    p2 = $.vec2$zero();
     joint.getAnchorA$1(p1);
     joint.getAnchorB$1(p2);
     color = $.Color3$fromRGBF(0.5, 0.3, 0.3);
@@ -15530,7 +15530,7 @@ $$.TimeOfImpactConstraint = {"": "Object;localPoints>,localNormal>,localPoint>,t
   TimeOfImpactConstraint$0: function() {
     var t1, i, t2;
     for (t1 = this.localPoints, i = 0; i < t1.length; ++i) {
-      t2 = $.vec2$(null, null);
+      t2 = $.vec2$zero();
       if (i >= t1.length)
         throw $.ioore(i);
       t1[i] = t2;
@@ -18280,44 +18280,6 @@ $$.mat2 = {"": "Object;col0>,col1>",
     t1 = other.get$col1().get$y();
     this.col1.set$y(t1);
   },
-  mat2$4: function(arg0, arg1, arg2, arg3) {
-    var t1;
-    this.col0 = $.vec2$zero();
-    this.col1 = $.vec2$zero();
-    this.col0.set$x(1);
-    this.col1.set$y(1);
-    t1 = typeof arg0 === "number";
-    if (t1 && typeof arg1 === "number" && typeof arg2 === "number" && typeof arg3 === "number") {
-      this.col0.set$x(arg0);
-      this.col0.set$y(arg1);
-      this.col1.set$x(arg2);
-      this.col1.set$y(arg3);
-      return;
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null) {
-      this.col0.set$x(arg0);
-      this.col1.set$y(arg0);
-      return;
-    }
-    t1 = typeof arg0 === "object" && arg0 !== null && !!arg0.$isvec2;
-    if (t1 && typeof arg1 === "object" && arg1 !== null && !!arg1.$isvec2) {
-      this.col0 = arg0;
-      this.col1 = arg1;
-      return;
-    }
-    if (typeof arg0 === "object" && arg0 !== null && !!arg0.$ismat2) {
-      this.col0 = arg0.col0;
-      this.col1 = arg0.col1;
-      return;
-    }
-    if (t1 && arg1 == null && arg2 == null && arg3 == null) {
-      t1 = arg0.get$x();
-      this.col0.set$x(t1);
-      t1 = arg0.get$y();
-      this.col1.set$y(t1);
-    }
-    throw $.$$throw($.ArgumentError$("Invalid arguments"));
-  },
   mat2$zero$0: function() {
     this.col0 = $.vec2$zero();
     this.col1 = $.vec2$zero();
@@ -18325,8 +18287,7 @@ $$.mat2 = {"": "Object;col0>,col1>",
     this.col0.set$y(0);
     this.col1.set$x(0);
     this.col1.set$y(0);
-  },
-  $ismat2: true
+  }
 };
 
 $$.MatchState = {"": "Object;state="};
@@ -21698,14 +21659,14 @@ $.Collision$_construct = function(pool) {
   t5 = $.EdgeResults$();
   t6 = $.List_List(2, $.ClipVertex);
   $.setRuntimeTypeInfo(t6, [$.ClipVertex]);
-  t7 = $.vec2$(null, null);
-  t8 = $.vec2$(null, null);
-  t9 = $.vec2$(null, null);
-  t10 = $.vec2$(null, null);
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
-  t13 = $.vec2$(null, null);
-  t14 = $.vec2$(null, null);
+  t7 = $.vec2$zero();
+  t8 = $.vec2$zero();
+  t9 = $.vec2$zero();
+  t10 = $.vec2$zero();
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
+  t13 = $.vec2$zero();
+  t14 = $.vec2$zero();
   t15 = $.List_List(2, $.ClipVertex);
   $.setRuntimeTypeInfo(t15, [$.ClipVertex]);
   t16 = $.List_List(2, $.ClipVertex);
@@ -21750,7 +21711,7 @@ $.Collision_clipSegmentToLine = function(vOut, vIn, norm, offset) {
 };
 
 $.ClipVertex$ = function() {
-  return new $.ClipVertex($.vec2$(null, null), $.ContactID$());
+  return new $.ClipVertex($.vec2$zero(), $.ContactID$());
 };
 
 $.EdgeResults$ = function() {
@@ -21768,7 +21729,7 @@ $.Distance$_construct = function() {
   $.setRuntimeTypeInfo(t2, [$.$int]);
   t3 = $.List_List(3, $.$int);
   $.setRuntimeTypeInfo(t3, [$.$int]);
-  return new $.Distance(0, 0, 20, t1, t2, t3, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.Distance(0, 0, 20, t1, t2, t3, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.DistanceInput$ = function() {
@@ -21776,7 +21737,7 @@ $.DistanceInput$ = function() {
 };
 
 $.DistanceOutput$ = function() {
-  return new $.DistanceOutput($.vec2$(null, null), $.vec2$(null, null), null, null);
+  return new $.DistanceOutput($.vec2$zero(), $.vec2$zero(), null, null);
 };
 
 $.DistanceProxy$ = function() {
@@ -21794,13 +21755,13 @@ $.Features$ = function() {
 $.Manifold$ = function() {
   var t1 = $.List_List(2, $.ManifoldPoint);
   $.setRuntimeTypeInfo(t1, [$.ManifoldPoint]);
-  t1 = new $.Manifold(t1, $.vec2$(null, null), $.vec2$(null, null), null, 0);
+  t1 = new $.Manifold(t1, $.vec2$zero(), $.vec2$zero(), null, 0);
   t1.Manifold$0();
   return t1;
 };
 
 $.ManifoldPoint$ = function() {
-  return new $.ManifoldPoint($.vec2$(null, null), 0, 0, $.ContactID$());
+  return new $.ManifoldPoint($.vec2$zero(), 0, 0, $.ContactID$());
 };
 
 $.Simplex$ = function() {
@@ -21810,9 +21771,9 @@ $.Simplex$ = function() {
   t3 = $.SimplexVertex$();
   t4 = $.List_List(3, $.SimplexVertex);
   $.setRuntimeTypeInfo(t4, [$.SimplexVertex]);
-  t5 = $.vec2$(null, null);
-  t6 = $.vec2$(null, null);
-  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.vec2$(null, null), t6, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t5 = $.vec2$zero();
+  t6 = $.vec2$zero();
+  t6 = new $.Simplex(t1, t2, t3, t4, 0, t5, $.vec2$zero(), t6, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t6.Simplex$0();
   return t6;
 };
@@ -21829,7 +21790,7 @@ $.SimplexCache$ = function() {
 };
 
 $.SimplexVertex$ = function() {
-  return new $.SimplexVertex($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0);
+  return new $.SimplexVertex($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0, 0);
 };
 
 $.TimeOfImpact$_construct = function(argPool) {
@@ -21851,23 +21812,23 @@ $.SeparationFunction$ = function() {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18;
   t1 = $.DistanceProxy$();
   t2 = $.DistanceProxy$();
-  t3 = $.vec2$(null, null);
-  t4 = $.vec2$(null, null);
+  t3 = $.vec2$zero();
+  t4 = $.vec2$zero();
   t5 = $.Sweep$();
   t6 = $.Sweep$();
-  t7 = $.vec2$(null, null);
-  t8 = $.vec2$(null, null);
-  t9 = $.vec2$(null, null);
-  t10 = $.vec2$(null, null);
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
-  t13 = $.vec2$(null, null);
-  t14 = $.vec2$(null, null);
-  t15 = $.vec2$(null, null);
-  t16 = $.vec2$(null, null);
+  t7 = $.vec2$zero();
+  t8 = $.vec2$zero();
+  t9 = $.vec2$zero();
+  t10 = $.vec2$zero();
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
+  t13 = $.vec2$zero();
+  t14 = $.vec2$zero();
+  t15 = $.vec2$zero();
+  t16 = $.vec2$zero();
   t17 = $.Transform$();
   t18 = $.Transform$();
-  return new $.SeparationFunction(t1, t2, 0, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, $.vec2$(null, null), $.vec2$(null, null), t16, t17, t18);
+  return new $.SeparationFunction(t1, t2, 0, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, $.vec2$zero(), $.vec2$zero(), t16, t17, t18);
 };
 
 $.TimeOfImpactInput$ = function() {
@@ -21880,9 +21841,9 @@ $.TimeOfImpactOutput$ = function() {
 
 $.WorldManifold$ = function() {
   var t1, t2, t3, t4;
-  t1 = $.vec2$(null, null);
-  t2 = $.vec2$(null, null);
-  t3 = $.vec2$(null, null);
+  t1 = $.vec2$zero();
+  t2 = $.vec2$zero();
+  t3 = $.vec2$zero();
   t4 = $.List_List(2, $.vec2);
   $.setRuntimeTypeInfo(t4, [$.vec2]);
   t3 = new $.WorldManifold(t1, t4, t2, t3);
@@ -21900,9 +21861,9 @@ $.DynamicTree$ = function() {
   var t1, t2, t3;
   t1 = $.List_List(4, $.vec2);
   $.setRuntimeTypeInfo(t1, [$.vec2]);
-  t2 = $.vec2$(null, null);
+  t2 = $.vec2$zero();
   t3 = $.AxisAlignedBox$(null, null);
-  t3 = new $.DynamicTree(null, 0, null, 0, 0, $.Queue_Queue($.DynamicTreeNode), t1, 0, t2, t3, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t3 = new $.DynamicTree(null, 0, null, 0, 0, $.Queue_Queue($.DynamicTreeNode), t1, 0, t2, t3, $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t3.DynamicTree$0();
   return t3;
 };
@@ -21916,7 +21877,7 @@ $.Pair$ = function() {
 };
 
 $.MassData$ = function() {
-  return new $.MassData(0, $.vec2$(null, null), 0);
+  return new $.MassData(0, $.vec2$zero(), 0);
 };
 
 $.PolygonShape$ = function() {
@@ -21925,7 +21886,7 @@ $.PolygonShape$ = function() {
   $.setRuntimeTypeInfo(t1, [$.vec2]);
   t2 = $.List_List(8, $.vec2);
   $.setRuntimeTypeInfo(t2, [$.vec2]);
-  t2 = new $.PolygonShape($.vec2$(null, null), t1, t2, 0, 1, 0.01);
+  t2 = new $.PolygonShape($.vec2$zero(), t1, t2, 0, 1, 0.01);
   t2.PolygonShape$0();
   return t2;
 };
@@ -21966,11 +21927,11 @@ $.Settings_mixRestitution = function(restitution1, restitution2) {
 };
 
 $.Sweep$ = function() {
-  return new $.Sweep($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0);
+  return new $.Sweep($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0);
 };
 
 $.Transform$ = function() {
-  return new $.Transform($.vec2$(null, null), $.mat2$(null, null, null, null));
+  return new $.Transform($.vec2$zero(), $.mat2$zero());
 };
 
 $.Transform_mulToOut = function(transform, vector, out) {
@@ -21997,20 +21958,20 @@ $.Body$ = function(bd, world) {
   t3 = $.vec2$copy(bd.linearVelocity);
   t4 = bd.linearDamping;
   t5 = bd.angularDamping;
-  t6 = $.vec2$(null, null);
+  t6 = $.vec2$zero();
   t7 = bd.userData;
   t8 = $.FixtureDef$();
   t9 = $.MassData$();
   t10 = $.Transform$();
-  t11 = $.vec2$(null, null);
-  t12 = $.vec2$(null, null);
+  t11 = $.vec2$zero();
+  t12 = $.vec2$zero();
   t12 = new $.Body(world, 0, null, 0, t7, t3, 0, null, null, null, null, null, 0, null, t6, 0, 0, 0, t4, t5, bd.type, null, t1, t2, t8, t9, t10, t11, t12);
   t12.Body$2(bd, world);
   return t12;
 };
 
 $.BodyDef$ = function() {
-  return new $.BodyDef(0, 0, null, $.vec2$(null, null), $.vec2$(null, null), 0, false, null, false, true, 0, 0, true, true);
+  return new $.BodyDef(0, 0, null, $.vec2$zero(), $.vec2$zero(), 0, false, null, false, true, 0, 0, true, true);
 };
 
 $.ContactManager$ = function(argPool) {
@@ -22033,7 +21994,7 @@ $.FixtureDef$ = function() {
 };
 
 $.Island$ = function() {
-  return new $.Island(null, null, null, null, null, null, null, null, null, null, null, null, null, $.ContactSolver$(), $.vec2$(null, null), $.ContactImpulse$());
+  return new $.Island(null, null, null, null, null, null, null, null, null, null, null, null, null, $.ContactSolver$(), $.vec2$zero(), $.ContactImpulse$());
 };
 
 $.Position$ = function() {
@@ -22056,11 +22017,11 @@ $.World$ = function(gravity, doSleep, argPool) {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14;
   t1 = $.List_List(2, [$.List, $.ContactRegister]);
   $.setRuntimeTypeInfo(t1, [[$.List, $.ContactRegister]]);
-  t2 = $.vec2$(null, null);
-  t3 = $.vec2$(null, null);
+  t2 = $.vec2$zero();
+  t3 = $.vec2$zero();
   t4 = $.TimeStep$();
-  t5 = $.vec2$(null, null);
-  t6 = $.vec2$(null, null);
+  t5 = $.vec2$zero();
+  t6 = $.vec2$zero();
   t7 = $.WorldQueryWrapper$();
   t8 = $.TimeOfImpactInput$();
   t9 = $.TimeOfImpactOutput$();
@@ -22088,13 +22049,13 @@ $.CircleContact$ = function(argPool) {
 $.ContactConstraint$ = function() {
   var t1 = $.List_List(2, $.ContactConstraintPoint);
   $.setRuntimeTypeInfo(t1, [$.ContactConstraintPoint]);
-  t1 = new $.ContactConstraint(t1, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.mat2$(null, null, null, null), $.mat2$(null, null, null, null), null, null, null, null, null, null, 0, null);
+  t1 = new $.ContactConstraint(t1, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.mat2$zero(), $.mat2$zero(), null, null, null, null, null, null, 0, null);
   t1.ContactConstraint$0();
   return t1;
 };
 
 $.ContactConstraintPoint$ = function() {
-  return new $.ContactConstraintPoint($.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0, 0, 0);
+  return new $.ContactConstraintPoint($.vec2$zero(), $.vec2$zero(), $.vec2$zero(), 0, 0, 0, 0, 0);
 };
 
 $.ContactEdge$ = function() {
@@ -22108,13 +22069,13 @@ $.ContactRegister$ = function() {
 $.ContactSolver$ = function() {
   var t1 = $.List_List(256, $.ContactConstraint);
   $.setRuntimeTypeInfo(t1, [$.ContactConstraint]);
-  t1 = new $.ContactSolver(t1, null, $.WorldManifold$(), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.PositionSolverManifold$(), $.vec2$(null, null), $.vec2$(null, null));
+  t1 = new $.ContactSolver(t1, null, $.WorldManifold$(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.PositionSolverManifold$(), $.vec2$zero(), $.vec2$zero());
   t1.ContactSolver$0();
   return t1;
 };
 
 $.PositionSolverManifold$ = function() {
-  return new $.PositionSolverManifold($.vec2$(null, null), $.vec2$(null, null), 0, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.PositionSolverManifold($.vec2$zero(), $.vec2$zero(), 0, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.PolygonAndCircleContact$ = function(argPool) {
@@ -22130,7 +22091,7 @@ $.PolygonContact$ = function(argPool) {
 $.TimeOfImpactConstraint$ = function() {
   var t1 = $.List_List(2, $.vec2);
   $.setRuntimeTypeInfo(t1, [$.vec2]);
-  t1 = new $.TimeOfImpactConstraint(t1, $.vec2$(null, null), $.vec2$(null, null), 0, 0, 0, null, null);
+  t1 = new $.TimeOfImpactConstraint(t1, $.vec2$zero(), $.vec2$zero(), 0, 0, 0, null, null);
   t1.TimeOfImpactConstraint$0();
   return t1;
 };
@@ -22138,13 +22099,13 @@ $.TimeOfImpactConstraint$ = function() {
 $.TimeOfImpactSolver$ = function() {
   var t1 = $.List_List(4, $.TimeOfImpactConstraint);
   $.setRuntimeTypeInfo(t1, [$.TimeOfImpactConstraint]);
-  t1 = new $.TimeOfImpactSolver(t1, 0, null, $.TimeOfImpactSolverManifold$(), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  t1 = new $.TimeOfImpactSolver(t1, 0, null, $.TimeOfImpactSolverManifold$(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
   t1.TimeOfImpactSolver$0();
   return t1;
 };
 
 $.TimeOfImpactSolverManifold$ = function() {
-  return new $.TimeOfImpactSolverManifold($.vec2$(null, null), $.vec2$(null, null), 0, $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null), $.vec2$(null, null));
+  return new $.TimeOfImpactSolverManifold($.vec2$zero(), $.vec2$zero(), 0, $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero(), $.vec2$zero());
 };
 
 $.DefaultWorldPool$ = function() {
@@ -22433,12 +22394,6 @@ $.clamp = function(x, min_, max_, out) {
     return out;
   }
   throw $.$$throw($.ArgumentError$(x));
-};
-
-$.mat2$ = function(arg0, arg1, arg2, arg3) {
-  var t1 = new $.mat2(null, null);
-  t1.mat2$4(arg0, arg1, arg2, arg3);
-  return t1;
 };
 
 $.mat2$zero = function() {
