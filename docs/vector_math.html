@@ -1726,7 +1726,7 @@ void buildPlaneVectors(final vec3 planeNormal, vec3 u, vec3 v) {
 <span class="param">x</span></p>
 <pre class="source">
 dynamic normalize(dynamic x, [dynamic out=null]) {
- if (x is num) {
+ if (x is double) {
    return 1.0 * sign(x);
  }
  if (x is vec2) {
@@ -1764,21 +1764,21 @@ dynamic normalize(dynamic x, [dynamic out=null]) {
 <span class="param">x</span> and 
 <span class="param">y</span>. 
 <span class="param">x</span> and 
-<span class="param">y</span> can be vec2, vec3 or num, but not all combinations are supported.</p>
+<span class="param">y</span> can be vec2, vec3 or double, but not all combinations are supported.</p>
 <pre class="source">
 dynamic cross(dynamic x, dynamic y, [dynamic out=null]) {
  if (x is vec3 &amp;&amp; y is vec3) {
    return x.cross(y, out);
  } else if (x is vec2 &amp;&amp; y is vec2) {
    return x.cross(y);
- } else if (x is num &amp;&amp; y is vec2) {
+ } else if (x is double &amp;&amp; y is vec2) {
    if (out == null) {
      out = new vec2.zero();
    }
    out.x = -x * y.y;
    out.y = x * y.x;
    return out;
- } else if (x is vec2 &amp;&amp; y is num) {
+ } else if (x is vec2 &amp;&amp; y is double) {
    if (out == null) {
      out = new vec2.zero();
    }
