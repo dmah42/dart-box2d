@@ -76,7 +76,6 @@ class vec4 {
      x = y = z = w = x_.toDouble();
      return;
    }
-   throw new ArgumentError('Invalid arguments');
  }
  /// Constructs a new [vec4] zero vector.
  vec4.zero() { makeZero(); }
@@ -2393,7 +2392,6 @@ vec4([dynamic x_, dynamic y_, dynamic z_, dynamic w_]) {
    x = y = z = w = x_.toDouble();
    return;
  }
- throw new ArgumentError('Invalid arguments');
 }
 </pre>
 </div>

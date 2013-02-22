@@ -58,14 +58,14 @@ bool pickRay(mat4 cameraMatrix, num viewportX, num viewportWidth,
 
  bool r;
 
- r = unproject(cameraMatrix, viewportX, viewportWidth,
-               viewportY, viewportHeight, pickX, viewportHeight-pickY, 0.0, rayNear);
+ r = unproject(cameraMatrix, viewportX, viewportWidth, viewportY,
+               viewportHeight, pickX, viewportHeight-pickY, 0.0, rayNear);
  if (!r) {
    return false;
  }
 
- r = unproject(cameraMatrix, viewportX, viewportWidth,
-               viewportY, viewportHeight, pickX, viewportHeight-pickY, 1.0, rayFar);
+ r = unproject(cameraMatrix, viewportX, viewportWidth, viewportY,
+               viewportHeight, pickX, viewportHeight-pickY, 1.0, rayFar);
 
  return r;
 }
@@ -99,6 +99,12 @@ bool unproject(mat4 cameraMatrix, num viewportX, num viewportWidth,
               num viewportY, num viewportHeight,
               num pickX, num pickY, num pickZ,
               vec3 pickWorld) {
+ viewportX = viewportX.toDouble();
+ viewportWidth = viewportWidth.toDouble();
+ viewportY = viewportY.toDouble();
+ viewportHeight = viewportHeight.toDouble();
+ pickX = pickX.toDouble();
+ pickY = pickY.toDouble();
  pickX = (pickX - viewportX);
  pickY = (pickY - viewportY);
  pickX = (2.0 * pickX / viewportWidth) - 1.0;
@@ -181,12 +187,19 @@ mat4 makePlaneProjection(vec3 planeNormal, vec3 planePoint) {
 </div>
 <div class="method"><h4 id="makeOrthographic">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographic</strong>(double left, double right, double bottom, double top, double znear, double zfar) <a class="anchor-link" href="#makeOrthographic"
+<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographic</strong>(num left, num right, num bottom, num top, num znear, num zfar) <a class="anchor-link" href="#makeOrthographic"
               title="Permalink to makeOrthographic">#</a></h4>
 <div class="doc">
 <p>Returns an OpenGL orthographic camera projection matrix</p>
 <pre class="source">
-mat4 makeOrthographic(double left, double right, double bottom, double top, double znear, double zfar) {
+mat4 makeOrthographic(num left, num right, num bottom, num top, num znear,
+                     num zfar) {
+ left = left.toDouble();
+ right = right.toDouble();
+ bottom = bottom.toDouble();
+ top = top.toDouble();
+ znear = znear.toDouble();
+ zfar = zfar.toDouble();
  double rml = right - left;
  double rpl = right + left;
  double tmb = top - bottom;
@@ -216,6 +229,12 @@ mat4 makeOrthographic(double left, double right, double bottom, double top, doub
 <p>Returns an OpenGL frustum camera projection matrix</p>
 <pre class="source">
 mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
+ left = left.toDouble();
+ right = right.toDouble();
+ bottom = bottom.toDouble();
+ top = top.toDouble();
+ near = near.toDouble();
+ far = far.toDouble();
  double two_near = 2.0 * near;
  double right_minus_left = right - left;
  double top_minus_bottom = top - bottom;
@@ -241,15 +260,14 @@ mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
 </div>
 <div class="method"><h4 id="makePerspective">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makePerspective</strong>(double fov_y_radians, double aspect_ratio, double znear, double zfar) <a class="anchor-link" href="#makePerspective"
+<a href="vector_math/mat4.html">mat4</a> <strong>makePerspective</strong>(num fov_y_radians, num aspect_ratio, num znear, num zfar) <a class="anchor-link" href="#makePerspective"
               title="Permalink to makePerspective">#</a></h4>
 <div class="doc">
 <p>Returns an OpenGL perspective camera projection matrix</p>
 <pre class="source">
-mat4 makePerspective(double fov_y_radians, double aspect_ratio, double znear, double zfar) {
- double height = tan(fov_y_radians * 0.5) * znear;
- double width = height * aspect_ratio;
-
+mat4 makePerspective(num fov_y_radians, num aspect_ratio, num znear, num zfar) {
+ double height = tan(fov_y_radians.toDouble() * 0.5) * znear.toDouble();
+ double width = height.toDouble() * aspect_ratio.toDouble();
  return makeFrustum(-width, width, -height, height, znear, zfar);
 }
 </pre>
@@ -267,7 +285,8 @@ on <code>cameraFocusPostion</code>.</p>
 <p>The 
 <span class="param">upDirection</span> is almost always (0, 1, 0).</p>
 <pre class="source">
-mat4 makeLookAt(vec3 cameraPosition, vec3 cameraFocusPosition, vec3 upDirection) {
+mat4 makeLookAt(vec3 cameraPosition, vec3 cameraFocusPosition,
+               vec3 upDirection) {
  vec3 z = cameraPosition - cameraFocusPosition;
  z.normalize();
 
@@ -347,8 +366,8 @@ Return type matches input argument type</p>
 <pre class="source">
 dynamic atan(dynamic arg, [dynamic arg2]) {
  if (arg2 == null) {
-   if (arg is double) {
-     return Math.atan(arg);
+   if (arg is num) {
+     return Math.atan(arg.toDouble());
    }
    if (arg is vec2) {
      return new vec2(Math.atan(arg.x), Math.atan(arg.y));
@@ -360,8 +379,8 @@ dynamic atan(dynamic arg, [dynamic arg2]) {
      return new vec4(Math.atan(arg.x), Math.atan(arg.y), Math.atan(arg.z), Math.atan(arg.w));
    }
  } else {
-   if (arg is double) {
-     return Math.atan2(arg, arg2);
+   if (arg is num) {
+     return Math.atan2(arg.toDouble(), arg2);
    }
    if (arg is vec2) {
      return new vec2(Math.atan2(arg.x, arg2.x), Math.atan2(arg.y, arg2.y));
@@ -482,8 +501,8 @@ dynamic step(dynamic x, dynamic y, [dynamic out=null]) {
 <span class="param">t</span> must be between 0.0 and 1.0.</p>
 <pre class="source">
 dynamic mix(dynamic x, dynamic y, dynamic t) {
- if (t is double) {
-     if (x is double) {
+ if (t is num) {
+     if (x is num) {
        return _ScalerHelpers.mix(x, y, t);
      }
      if (x is vec2) {
@@ -501,7 +520,7 @@ dynamic mix(dynamic x, dynamic y, dynamic t) {
      throw new ArgumentError(x);
 
  } else {
-     if (x is double) {
+     if (x is num) {
        return _ScalerHelpers.mix(x, y, t);
      }
      if (x is vec2) {
@@ -1722,12 +1741,12 @@ void buildPlaneVectors(final vec3 planeNormal, vec3 u, vec3 v) {
               title="Permalink to normalize">#</a></h4>
 <div class="doc">
 <p>Returns 
-<span class="param">x</span> normalized. Supports <code>double</code>, <a class="crossref" href="vector_math/vec2.html">vec2</a>, <a class="crossref" href="vector_math/vec3.html">vec3</a>, and <a class="crossref" href="vector_math/vec4.html">vec4</a> input types. The return type will match the type of 
+<span class="param">x</span> normalized. Supports <code>num</code>, <a class="crossref" href="vector_math/vec2.html">vec2</a>, <a class="crossref" href="vector_math/vec3.html">vec3</a>, and <a class="crossref" href="vector_math/vec4.html">vec4</a> input types. The return type will match the type of 
 <span class="param">x</span></p>
 <pre class="source">
 dynamic normalize(dynamic x, [dynamic out=null]) {
- if (x is double) {
-   return 1.0 * sign(x);
+ if (x is num) {
+   return 1.0 * sign(x.toDouble());
  }
  if (x is vec2) {
    if (out == null) {
@@ -1771,14 +1790,16 @@ dynamic cross(dynamic x, dynamic y, [dynamic out=null]) {
    return x.cross(y, out);
  } else if (x is vec2 &amp;&amp; y is vec2) {
    return x.cross(y);
- } else if (x is double &amp;&amp; y is vec2) {
+ } else if (x is num &amp;&amp; y is vec2) {
+   x = x.toDouble();
    if (out == null) {
      out = new vec2.zero();
    }
    out.x = -x * y.y;
    out.y = x * y.x;
    return out;
- } else if (x is vec2 &amp;&amp; y is double) {
+ } else if (x is vec2 &amp;&amp; y is num) {
+   y = y.toDouble();
    if (out == null) {
      out = new vec2.zero();
    }

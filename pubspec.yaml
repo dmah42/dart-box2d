@@ -6,4 +6,4 @@ homepage: http://code.google.com/p/dartbox2d
 dependencies:
   args: ">=0.3.7+6 <0.3.8"
   unittest: any
-  vector_math: ">=0.9.4 <0.9.5"
+  vector_math: ">=0.9.5 <0.9.6"

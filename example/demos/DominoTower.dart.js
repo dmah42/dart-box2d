@@ -16048,7 +16048,6 @@ $$.vec2 = {"": "Object;x=,y=",
       this.x = t1;
       return;
     }
-    throw $.$$throw($.ArgumentError$("Invalid arguments"));
   },
   vec2$copy$1: function(other) {
     this.makeCopy$1(other);
@@ -22654,6 +22653,7 @@ $.cross = function(x, y, out) {
     if (t1 && typeof y === "object" && y !== null && !!y.$isvec2)
       return x.cross$1(y);
     else if (typeof x === "number" && typeof y === "object" && y !== null && !!y.$isvec2) {
+      x = $.toDouble(x);
       if (out == null)
         out = $.vec2$zero();
       t1 = $.getInterceptor$JSNumber(x);
@@ -22661,6 +22661,7 @@ $.cross = function(x, y, out) {
       out.set$y(t1.$mul(x, y.get$x()));
       return out;
     } else if (t1 && typeof y === "number") {
+      y = $.toDouble(y);
       if (out == null)
         out = $.vec2$zero();
       t1 = $.getInterceptor$JSNumber(y);
