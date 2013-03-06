@@ -40,7 +40,7 @@ class DefaultFailureHandler implements FailureHandler {
    }
  }
  void fail(String reason) {
-   throw new ExpectException(reason);
+   throw new TestFailure(reason);
  }
  void failMatch(actual, Matcher matcher, String reason,
      MatchState matchState, bool verbose) {
@@ -81,7 +81,7 @@ void <strong>fail</strong>(String reason) <a class="anchor-link" href="#fail"
 <div class="docs-inherited-from">docs inherited from <a href="../matcher/FailureHandler.html">FailureHandler</a> </div></div>
 <pre class="source">
 void fail(String reason) {
- throw new ExpectException(reason);
+ throw new TestFailure(reason);
 }
 </pre>
 </div>
