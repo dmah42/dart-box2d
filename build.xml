@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DartBox2D" default="default">
   <!-- Expect ant-contrib 1.0b5 available -->
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
   <property environment="env" />
   <fail message="ERROR: Please set environmental variable DART_SDK">
