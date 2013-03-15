@@ -689,6 +689,8 @@ class World {
     }
   }
 
+  Body get bodyList => _bodyList;
+
   Joint get jointList => _jointList;
 
   int get jointCount => _jointCount;
