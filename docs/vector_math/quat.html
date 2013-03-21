@@ -5,7 +5,7 @@
         <title>quat class / vector_math Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -335,7 +335,7 @@ class quat {
    */
  quat operator*(dynamic other) {
    if (other is num) {
-     other = other.toDobule();
+     other = other.toDouble();
      return new quat(x * other, y * other, z * other, w * other);
    }
    if (other is quat) {
@@ -823,7 +823,7 @@ quat operator-(quat other) {
 <pre class="source">
 quat operator*(dynamic other) {
  if (other is num) {
-   other = other.toDobule();
+   other = other.toDouble();
    return new quat(x * other, y * other, z * other, w * other);
  }
  if (other is quat) {

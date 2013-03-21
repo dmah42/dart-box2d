@@ -5,7 +5,7 @@
         <title>BroadPhase class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -135,7 +135,7 @@ class BroadPhase implements TreeCallback {
    // We only want to sort the first _pairCount items of _pairBuffer,
    // so copy these to a temporary buffer where we do the sorting, then
    // copy back.
-   List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
+   List&lt;Pair&gt; pairBuffer = _pairBuffer.sublist(0, _pairCount);
    pairBuffer.sort((a, b) =&gt; a.compareTo(b));
    _pairBuffer.setRange(0, _pairCount, pairBuffer);
 
@@ -493,7 +493,7 @@ void updatePairs(PairCallback callback) {
  // We only want to sort the first _pairCount items of _pairBuffer,
  // so copy these to a temporary buffer where we do the sorting, then
  // copy back.
- List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
+ List&lt;Pair&gt; pairBuffer = _pairBuffer.sublist(0, _pairCount);
  pairBuffer.sort((a, b) =&gt; a.compareTo(b));
  _pairBuffer.setRange(0, _pairCount, pairBuffer);
 

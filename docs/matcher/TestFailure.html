@@ -2,19 +2,19 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>Velocity class / box2d Library / Dart Documentation</title>
+        <title>TestFailure class / matcher Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
-        <body data-library="box2d" data-type="Velocity">
+        <body data-library="matcher" data-type="TestFailure">
         <div class="page">
         <div class="header">
           <a href="../index.html"><div class="logo"></div></a>
           <a href="../index.html">Dart Documentation</a>
-         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Velocity.html">Velocity</a>        <div id="search-box">
+         &rsaquo; <a href="../matcher.html">matcher</a> &rsaquo; <a href="../matcher/TestFailure.html">TestFailure</a>        <div id="search-box">
           <input type="search" name="q" id="q" autocomplete="off"
               class="search-input" placeholder="Search API">
         </div>
@@ -26,64 +26,69 @@
         
 </div>
 <div class="content">
-        <h2><strong>Velocity</strong>
+        <h2><strong>TestFailure</strong>
           class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>This is an internal structure</p>
+<p>The objects thrown by the default failure handler. </p>
 <pre class="source">
-class Velocity {
- vec2 v;
- num a;
+class TestFailure {
+ String _message;
 
- Velocity() {
-   v = new vec2.zero();
-   a = 0;
- }
+ get message =&gt; _message;
+ set message(String value) =&gt; _message = value;
+
+ TestFailure(String message) : _message = message;
+
+ String toString() =&gt; _message;
 }
 </pre>
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Velocity">
+<div class="method"><h4 id="TestFailure">
 <button class="show-code">Code</button>
-new <strong>Velocity</strong>() <a class="anchor-link" href="#Velocity"
-              title="Permalink to Velocity.Velocity">#</a></h4>
+new <strong>TestFailure</strong>(String message) <a class="anchor-link" href="#TestFailure"
+              title="Permalink to TestFailure.TestFailure">#</a></h4>
 <div class="doc">
 <pre class="source">
-Velocity() {
- v = new vec2.zero();
- a = 0;
-}
+TestFailure(String message) : _message = message;
 </pre>
 </div>
 </div>
 </div>
 <div>
 <h3>Properties</h3>
-<div class="field"><h4 id="a">
+<div class="field"><h4 id="message">
 <button class="show-code">Code</button>
-num         <strong>a</strong> <a class="anchor-link"
-            href="#a"
-            title="Permalink to Velocity.a">#</a>
+var         <strong>message</strong> <a class="anchor-link"
+            href="#message"
+            title="Permalink to TestFailure.message">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-a
+get message =&gt; _message;
+</pre>
+<pre class="source">
+set message(String value) =&gt; _message = value;
 </pre>
 </div>
 </div>
-<div class="field"><h4 id="v">
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="toString">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>v</strong> <a class="anchor-link"
-            href="#v"
-            title="Permalink to Velocity.v">#</a>
-        </h4>
-        <div class="doc">
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to TestFailure.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
 <pre class="source">
-v
+String toString() =&gt; _message;
 </pre>
 </div>
 </div>

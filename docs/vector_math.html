@@ -5,7 +5,7 @@
         <title>vector_math Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="favicon.ico">
         
         </head>
@@ -185,29 +185,67 @@ mat4 makePlaneProjection(vec3 planeNormal, vec3 planePoint) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeOrthographic">
+<div class="method"><h4 id="makeOrthographicMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographic</strong>(num left, num right, num bottom, num top, num znear, num zfar) <a class="anchor-link" href="#makeOrthographic"
-              title="Permalink to makeOrthographic">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographicMatrix</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeOrthographicMatrix"
+              title="Permalink to makeOrthographicMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL orthographic camera projection matrix</p>
+<p>Constructs a new OpenGL orthographic projection matrix.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
 <pre class="source">
-mat4 makeOrthographic(num left, num right, num bottom, num top, num znear,
-                     num zfar) {
+mat4 makeOrthographicMatrix(num left, num right, num bottom, num top, num near,
+                     num far) {
+ mat4 r = new mat4.zero();
+ setOrthographicMatrix(r, left, right, bottom, top, near, far);
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setOrthographicMatrix">
+<button class="show-code">Code</button>
+void <strong>setOrthographicMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> orthographicMatrix, num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#setOrthographicMatrix"
+              title="Permalink to setOrthographicMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL orthographic projection matrix in 
+<span class="param">orthographicMatrix</span>.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
+<pre class="source">
+void setOrthographicMatrix(mat4 orthographicMatrix, num left, num right,
+                          num bottom, num top, num near, num far) {
  left = left.toDouble();
  right = right.toDouble();
  bottom = bottom.toDouble();
  top = top.toDouble();
- znear = znear.toDouble();
- zfar = zfar.toDouble();
+ near = near.toDouble();
+ far = far.toDouble();
  double rml = right - left;
  double rpl = right + left;
  double tmb = top - bottom;
  double tpb = top + bottom;
- double fmn = zfar - znear;
- double fpn = zfar + znear;
-
- mat4 r = new mat4.zero();
+ double fmn = far - near;
+ double fpn = far + near;
+ mat4 r = orthographicMatrix.setZero();
  r[0].x = 2.0/rml;
  r[1].y = 2.0/tmb;
  r[2].z = -2.0/fmn;
@@ -215,20 +253,58 @@ mat4 makeOrthographic(num left, num right, num bottom, num top, num znear,
  r[3].y = -tpb/tmb;
  r[3].z = -fpn/fmn;
  r[3].w = 1.0;
-
- return r;
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeFrustum">
+<div class="method"><h4 id="makeFrustumMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeFrustum</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeFrustum"
-              title="Permalink to makeFrustum">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeFrustumMatrix</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeFrustumMatrix"
+              title="Permalink to makeFrustumMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL frustum camera projection matrix</p>
+<p>Constructs a new OpenGL perspective projection matrix.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
 <pre class="source">
-mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
+mat4 makeFrustumMatrix(num left, num right, num bottom, num top, num near,
+                      num far) {
+ mat4 view = new mat4.zero();
+ setFrustumMatrix(view, left, right, bottom, top, near, far);
+ return view;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrustumMatrix">
+<button class="show-code">Code</button>
+void <strong>setFrustumMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> perspectiveMatrix, num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#setFrustumMatrix"
+              title="Permalink to setFrustumMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL perspective projection matrix in 
+<span class="param">perspectiveMatrix</span>.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
+<pre class="source">
+void setFrustumMatrix(mat4 perspectiveMatrix, num left, num right, num bottom,
+                     num top, num near, num far) {
  left = left.toDouble();
  right = right.toDouble();
  bottom = bottom.toDouble();
@@ -239,73 +315,127 @@ mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
  double right_minus_left = right - left;
  double top_minus_bottom = top - bottom;
  double far_minus_near = far - near;
-
- mat4 view = new mat4.zero();
+ mat4 view = perspectiveMatrix.setZero();
  view[0].x = two_near / right_minus_left;
-
  view[1].y = two_near / top_minus_bottom;
-
  view[2].x = (right + left) / right_minus_left;
  view[2].y = (top + bottom) / top_minus_bottom;
  view[2].z = -(far + near) / far_minus_near;
  view[2].w = -1.0;
-
  view[3].z = -(two_near * far) / far_minus_near;
  view[3].w = 0.0;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makePerspectiveMatrix">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makePerspectiveMatrix</strong>(num fovYRadians, num aspectRatio, num zNear, num zFar) <a class="anchor-link" href="#makePerspectiveMatrix"
+              title="Permalink to makePerspectiveMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs a new OpenGL perspective projection matrix.</p>
+<p>
+<span class="param">fovYRadians</span> specifies the field of view angle, in radians, in the y
+direction.
 
- return view;
+<span class="param">aspectRatio</span> specifies the aspect ratio that determines the field of view
+in the x direction. The aspect ratio of x (width) to y (height).
+
+<span class="param">zNear</span> specifies the distance from the viewer to the near plane
+(always positive).
+
+<span class="param">zFar</span> specifies the distance from the viewer to the far plane
+(always positive).</p>
+<pre class="source">
+mat4 makePerspectiveMatrix(num fovYRadians, num aspectRatio, num zNear,
+                          num zFar) {
+ double height = tan(fovYRadians.toDouble() * 0.5) * zNear.toDouble();
+ double width = height.toDouble() * aspectRatio.toDouble();
+ return makeFrustumMatrix(-width, width, -height, height, zNear, zFar);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makePerspective">
+<div class="method"><h4 id="setPerspectiveMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makePerspective</strong>(num fov_y_radians, num aspect_ratio, num znear, num zfar) <a class="anchor-link" href="#makePerspective"
-              title="Permalink to makePerspective">#</a></h4>
+void <strong>setPerspectiveMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> perspectiveMatrix, num fovYRadians, num aspectRatio, num zNear, num zFar) <a class="anchor-link" href="#setPerspectiveMatrix"
+              title="Permalink to setPerspectiveMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL perspective camera projection matrix</p>
+<p>Constructs an OpenGL perspective projection matrix in 
+<span class="param">perspectiveMatrix</span>.</p>
+<p>
+<span class="param">fovYRadians</span> specifies the field of view angle, in radians, in the y
+direction.
+
+<span class="param">aspectRatio</span> specifies the aspect ratio that determines the field of view
+in the x direction. The aspect ratio of x (width) to y (height).
+
+<span class="param">zNear</span> specifies the distance from the viewer to the near plane
+(always positive).
+
+<span class="param">zFar</span> specifies the distance from the viewer to the far plane
+(always positive).</p>
 <pre class="source">
-mat4 makePerspective(num fov_y_radians, num aspect_ratio, num znear, num zfar) {
- double height = tan(fov_y_radians.toDouble() * 0.5) * znear.toDouble();
- double width = height.toDouble() * aspect_ratio.toDouble();
- return makeFrustum(-width, width, -height, height, znear, zfar);
+void setPerspectiveMatrix(mat4 perspectiveMatrix, num fovYRadians,
+                         num aspectRatio, num zNear, num zFar) {
+ double height = tan(fovYRadians.toDouble() * 0.5) * zNear.toDouble();
+ double width = height.toDouble() * aspectRatio.toDouble();
+ setFrustumMatrix(perspectiveMatrix, -width, width, -height, height, zNear,
+                  zFar);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeLookAt">
+<div class="method"><h4 id="makeViewMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeLookAt</strong>(<a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#makeLookAt"
-              title="Permalink to makeLookAt">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeViewMatrix</strong>(<a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#makeViewMatrix"
+              title="Permalink to makeViewMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL look at matrix.
-The camera is located at 
-<span class="param">cameraPosition</span> and is focused
-on <code>cameraFocusPostion</code>.</p>
-<p>The 
-<span class="param">upDirection</span> is almost always (0, 1, 0).</p>
+<p>Constructs a new OpenGL view matrix.</p>
+<p>
+<span class="param">cameraPosition</span> specifies the position of the camera.
+<code>camearFocusPosition</code> specifies the position the camera is focused on.
+
+<span class="param">upDirection</span> specifies the direction of the up vector (usually, +Y).</p>
 <pre class="source">
-mat4 makeLookAt(vec3 cameraPosition, vec3 cameraFocusPosition,
+mat4 makeViewMatrix(vec3 cameraPosition, vec3 cameraFocusPosition,
                vec3 upDirection) {
+ mat4 r = new mat4.zero();
+ setViewMatrix(r, cameraPosition, cameraFocusPosition, upDirection);
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setViewMatrix">
+<button class="show-code">Code</button>
+void <strong>setViewMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> viewMatrix, <a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#setViewMatrix"
+              title="Permalink to setViewMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL view matrix in 
+<span class="param">viewMatrix</span>.</p>
+<p>
+<span class="param">cameraPosition</span> specifies the position of the camera.
+<code>camearFocusPosition</code> specifies the position the camera is focused on.
+
+<span class="param">upDirection</span> specifies the direction of the up vector (usually, +Y).</p>
+<pre class="source">
+void setViewMatrix(mat4 viewMatrix, vec3 cameraPosition,
+                  vec3 cameraFocusPosition, vec3 upDirection) {
  vec3 z = cameraPosition - cameraFocusPosition;
  z.normalize();
-
  vec3 x = upDirection.cross(z);
  x.normalize();
-
  vec3 y = z.cross(x);
  y.normalize();
-
- mat4 r = new mat4.zero();
- r[0].xyz = x;
- r[1].xyz = y;
- r[2].xyz = z;
- r[3].w = 1.0;
- r = r.transposed();
- vec3 rotatedEye = r * -cameraPosition;
- r[3].xyz = rotatedEye;
-
- return r;
+ viewMatrix.setZero();
+ viewMatrix[0].xyz = x;
+ viewMatrix[1].xyz = y;
+ viewMatrix[2].xyz = z;
+ viewMatrix[3].w = 1.0;
+ viewMatrix.transpose();
+ vec3 rotatedEye = viewMatrix * -cameraPosition;
+ viewMatrix[3].xyz = rotatedEye;
 }
 </pre>
 </div>
