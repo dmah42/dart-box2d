@@ -6,6 +6,7 @@ example/benchmarks/  Contains benchmark .dart files
 example/demos/       Contains demo .dart files
 lib/         	     Contains the DartBox2d library .dart files
 
+![drone.io status](https://drone.io/dominic/dartbox2d/status.png)
 
 /**
  * Copyright (c) 2011, Daniel Murphy
