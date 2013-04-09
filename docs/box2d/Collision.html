@@ -660,7 +660,7 @@ const int         <strong>NULL_FEATURE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-NULL_FEATURE = Settings.MAX_INTEGER
+static const int NULL_FEATURE = Settings.MAX_INTEGER
 </pre>
 </div>
 </div>
@@ -719,8 +719,9 @@ final <a href="../box2d/SimplexCache.html">SimplexCache</a>         <strong>cach
             title="Permalink to Collision.cache">#</a>
         </h4>
         <div class="doc">
+<p>Cache used to help warmstart distance. </p>
 <pre class="source">
-cache
+final SimplexCache cache
 </pre>
 </div>
 </div>
@@ -732,7 +733,7 @@ final List&lt;<a href="../box2d/ClipVertex.html">ClipVertex</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-clipPoints1
+final List&lt;ClipVertex&gt; clipPoints1
 </pre>
 </div>
 </div>
@@ -744,7 +745,7 @@ final List&lt;<a href="../box2d/ClipVertex.html">ClipVertex</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-clipPoints2
+final List&lt;ClipVertex&gt; clipPoints2
 </pre>
 </div>
 </div>
@@ -756,7 +757,7 @@ final List&lt;<a href="../box2d/ClipVertex.html">ClipVertex</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-incidentEdge
+final List&lt;ClipVertex&gt; incidentEdge
 </pre>
 </div>
 </div>
@@ -767,8 +768,9 @@ final <a href="../box2d/DistanceInput.html">DistanceInput</a>         <strong>in
             title="Permalink to Collision.input">#</a>
         </h4>
         <div class="doc">
+<p>Distance input and output. </p>
 <pre class="source">
-input
+final DistanceInput input
 </pre>
 </div>
 </div>
@@ -780,7 +782,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</s
         </h4>
         <div class="doc">
 <pre class="source">
-localNormal
+final vec2 localNormal
 </pre>
 </div>
 </div>
@@ -792,7 +794,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localTangent</
         </h4>
         <div class="doc">
 <pre class="source">
-localTangent
+final vec2 localTangent
 </pre>
 </div>
 </div>
@@ -804,7 +806,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong
         </h4>
         <div class="doc">
 <pre class="source">
-normal
+final vec2 normal
 </pre>
 </div>
 </div>
@@ -816,7 +818,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal1</stron
         </h4>
         <div class="doc">
 <pre class="source">
-normal1
+final vec2 normal1
 </pre>
 </div>
 </div>
@@ -828,7 +830,7 @@ final <a href="../box2d/DistanceOutput.html">DistanceOutput</a>         <strong>
         </h4>
         <div class="doc">
 <pre class="source">
-output
+final DistanceOutput output
 </pre>
 </div>
 </div>
@@ -840,7 +842,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>planePoint</st
         </h4>
         <div class="doc">
 <pre class="source">
-planePoint
+final vec2 planePoint
 </pre>
 </div>
 </div>
@@ -851,8 +853,9 @@ final <a href="../box2d/EdgeResults.html">EdgeResults</a>         <strong>result
             title="Permalink to Collision.results1">#</a>
         </h4>
         <div class="doc">
+<p>A pool of already constructed objects. </p>
 <pre class="source">
-results1
+final EdgeResults results1
 </pre>
 </div>
 </div>
@@ -864,7 +867,7 @@ final <a href="../box2d/EdgeResults.html">EdgeResults</a>         <strong>result
         </h4>
         <div class="doc">
 <pre class="source">
-results2
+final EdgeResults results2
 </pre>
 </div>
 </div>
@@ -876,7 +879,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>tangent</stron
         </h4>
         <div class="doc">
 <pre class="source">
-tangent
+final vec2 tangent
 </pre>
 </div>
 </div>
@@ -888,7 +891,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>v11</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-v11
+final vec2 v11
 </pre>
 </div>
 </div>
@@ -900,7 +903,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>v12</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-v12
+final vec2 v12
 </pre>
 </div>
 </div>

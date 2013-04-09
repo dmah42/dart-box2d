@@ -608,8 +608,10 @@ const int         <strong>INITIAL_NUM_CONSTRAINTS</strong> <a class="anchor-link
             title="Permalink to ContactSolver.INITIAL_NUM_CONSTRAINTS">#</a>
         </h4>
         <div class="doc">
+<p>For each solver, this is the initial number of constraints
+in the array, which expands as needed.</p>
 <pre class="source">
-INITIAL_NUM_CONSTRAINTS = 256
+static const int INITIAL_NUM_CONSTRAINTS = 256
 </pre>
 </div>
 </div>
@@ -620,8 +622,9 @@ const num         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
             title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
         </h4>
         <div class="doc">
+<p>Ensure a reasonable condition number. For the block solver</p>
 <pre class="source">
-K_MAX_CONDITION_NUMBER = 100.0
+static const num K_MAX_CONDITION_NUMBER = 100.0
 </pre>
 </div>
 </div>
@@ -672,7 +675,7 @@ int         <strong>constraintCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-constraintCount
+int constraintCount
 </pre>
 </div>
 </div>
@@ -684,7 +687,7 @@ List&lt;<a href="../box2d/ContactConstraint.html">ContactConstraint</a>&gt;     
         </h4>
         <div class="doc">
 <pre class="source">
-constraints
+List&lt;ContactConstraint&gt; constraints
 </pre>
 </div>
 </div>
@@ -696,7 +699,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>d</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-d
+final vec2 d
 </pre>
 </div>
 </div>
@@ -708,7 +711,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-dv
+final vec2 dv
 </pre>
 </div>
 </div>
@@ -720,7 +723,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv1</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-dv1
+final vec2 dv1
 </pre>
 </div>
 </div>
@@ -732,7 +735,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv2</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-dv2
+final vec2 dv2
 </pre>
 </div>
 </div>
@@ -744,7 +747,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-P
+final vec2 P
 </pre>
 </div>
 </div>
@@ -756,7 +759,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P1</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-P1
+final vec2 P1
 </pre>
 </div>
 </div>
@@ -768,7 +771,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P2</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-P2
+final vec2 P2
 </pre>
 </div>
 </div>
@@ -780,7 +783,7 @@ final <a href="../box2d/PositionSolverManifold.html">PositionSolverManifold</a> 
         </h4>
         <div class="doc">
 <pre class="source">
-psolver
+final PositionSolverManifold psolver
 </pre>
 </div>
 </div>
@@ -792,7 +795,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-rA
+final vec2 rA
 </pre>
 </div>
 </div>
@@ -804,7 +807,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-rB
+final vec2 rB
 </pre>
 </div>
 </div>
@@ -816,7 +819,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>tangent</stron
         </h4>
         <div class="doc">
 <pre class="source">
-tangent
+final vec2 tangent
 </pre>
 </div>
 </div>
@@ -828,7 +831,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp1</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-temp1
+final vec2 temp1
 </pre>
 </div>
 </div>
@@ -840,7 +843,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp2</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-temp2
+final vec2 temp2
 </pre>
 </div>
 </div>
@@ -851,8 +854,9 @@ final <a href="../box2d/WorldManifold.html">WorldManifold</a>         <strong>wo
             title="Permalink to ContactSolver.worldManifold">#</a>
         </h4>
         <div class="doc">
+<p>Pooling </p>
 <pre class="source">
-worldManifold
+final WorldManifold worldManifold
 </pre>
 </div>
 </div>
@@ -864,7 +868,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>x</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-x
+final vec2 x
 </pre>
 </div>
 </div>

@@ -110,7 +110,7 @@ List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>bodies</strong
         </h4>
         <div class="doc">
 <pre class="source">
-bodies
+List&lt;Body&gt; bodies
 </pre>
 </div>
 </div>
@@ -121,8 +121,9 @@ bodies
             title="Permalink to ConstantVolumeJointDef.bodyA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The first attached body.</p>
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -133,8 +134,9 @@ bodyA
             title="Permalink to ConstantVolumeJointDef.bodyB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The second attached body.</p>
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -145,8 +147,9 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
             title="Permalink to ConstantVolumeJointDef.collideConnected">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -158,7 +161,7 @@ num         <strong>dampingRatio</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-dampingRatio
+num dampingRatio
 </pre>
 </div>
 </div>
@@ -170,7 +173,7 @@ num         <strong>frequencyHz</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-frequencyHz
+num frequencyHz
 </pre>
 </div>
 </div>
@@ -182,7 +185,7 @@ List&lt;<a href="../box2d/DistanceJoint.html">DistanceJoint</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-joints
+List&lt;DistanceJoint&gt; joints
 </pre>
 </div>
 </div>
@@ -193,8 +196,9 @@ int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to ConstantVolumeJointDef.type">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -205,8 +209,9 @@ Object         <strong>userData</strong> <a class="anchor-link"
             title="Permalink to ConstantVolumeJointDef.userData">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Use this to attach application specific data to your joints.</p>
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>

@@ -152,8 +152,13 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</s
             title="Permalink to Manifold.localNormal">#</a>
         </h4>
         <div class="doc">
+<p>The meaning of the localNormal depends on the type of this manifold. The
+different meanings (or lack thereof) are outlined below.
+Circles: not used.
+faceA: The normal on polygonA.
+faceB: The normal on polygonB.</p>
 <pre class="source">
-localNormal
+final vec2 localNormal
 </pre>
 </div>
 </div>
@@ -164,8 +169,13 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</st
             title="Permalink to Manifold.localPoint">#</a>
         </h4>
         <div class="doc">
+<p>The meaning of the localPoint depends on the type of this manifold. The
+different meanings (or lack thereof) are outlined below.
+Circles: The local center of circleA.
+faceA: The center of faceA.
+faceB: The center of faceB.</p>
 <pre class="source">
-localPoint
+final vec2 localPoint
 </pre>
 </div>
 </div>
@@ -176,8 +186,9 @@ int         <strong>pointCount</strong> <a class="anchor-link"
             title="Permalink to Manifold.pointCount">#</a>
         </h4>
         <div class="doc">
+<p>The number of manifold points. </p>
 <pre class="source">
-pointCount
+int pointCount
 </pre>
 </div>
 </div>
@@ -188,8 +199,9 @@ final List&lt;<a href="../box2d/ManifoldPoint.html">ManifoldPoint</a>&gt;       
             title="Permalink to Manifold.points">#</a>
         </h4>
         <div class="doc">
+<p>The points of contact. </p>
 <pre class="source">
-points
+final List&lt;ManifoldPoint&gt; points
 </pre>
 </div>
 </div>
@@ -200,8 +212,9 @@ int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to Manifold.type">#</a>
         </h4>
         <div class="doc">
+<p>The type of manifold. See <a class="crossref" href="../box2d/ManifoldType.html">ManifoldType</a>. </p>
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
