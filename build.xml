@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DartBox2D" default="default">
   <!-- Expect ant-contrib 1.0b5 available -->
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
   <property environment="env" />
   <fail message="ERROR: Please set environmental variable DART_SDK">
@@ -23,6 +23,12 @@
     <isset property="env.DB2D_WITH_CHECKS"/>
   </condition>
   <property name="withChecks" value="false" />
+
+  <!-- Set envvar DB2D_NO_MINIFY to disable JS minification. -->
+  <condition property="minify" value="false">
+    <isset property="env.DB2D_NO_MINIFY"/>
+  </condition>
+  <property name="minify" value="true" />
 
   <!-- Set envvar DB2D_THREAD_COUNT to parallelize.
        May affect output readability. -->
@@ -52,22 +58,33 @@
   <macrodef name="dart2js">
     <attribute name="file" />
     <attribute name="withChecks" default="false" />
+    <attribute name="minify" default="true" />
 
     <sequential>
-      <local name="dart2js.args" />
+      <local name="dart2js.check_arg" />
       <if>
         <istrue value="@{withChecks}" />
         <then>
-          <property name="dart2js.args" value="-c" />
+          <property name="dart2js.check_arg" value="-c" />
         </then>
         <else>
-          <property name="dart2js.args" value="" />
+          <property name="dart2js.check_arg" value="" />
         </else>
       </if>
 
+      <local name="dart2js.min_arg" />
+      <if>
+        <istrue value="@{minify}" />
+        <then>
+          <property name="dart2js.min_arg" value="--minify" />
+        </then>
+        <else>
+          <property name="dart2js.min_arg" value="" />
+        </else>
+      </if>
       <echo>Generating JS "@{file}.js" from "@{file}"</echo>
       <exec executable="${dart.sdk.dir}/bin/dart2js" failonerror="true">
-        <arg line="${dart2js.args} -o@{file}.js @{file}"/>
+        <arg line="${dart2js.check_arg} ${dart2js.min_arg} -o@{file}.js @{file}"/>
       </exec>
     </sequential>
   </macrodef>
@@ -123,14 +140,14 @@
     <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
       <path refid="demos" />
       <sequential>
-        <dart2js file="@{file}" withChecks="${withChecks}" />
+        <dart2js file="@{file}" withChecks="${withChecks}" minify="${minify}"/>
       </sequential>
     </for>
   </target>
 
   <target name="generate-JS-benchmarks">
     <dart2js file="example/benchmarks/BenchmarkRunner.dart"
-      withChecks="${withChecks}" />
+      withChecks="${withChecks}" minify="${minify}"/>
   </target>
 
 </project>

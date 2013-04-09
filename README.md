@@ -2,10 +2,11 @@ This is a Dart port of Daniel Murphy's JBox2D, which is itself a port of Erin
 Catto's Box2D. The JBox2D copyright notice is reproduced below and is also
 present in the original source files.
 
-example/benchmarks/  Contains benchmark .dart files
-example/demos/       Contains demo .dart files
-lib/         	     Contains the DartBox2d library .dart files
+* example/benchmarks/  Contains benchmark .dart files
+* example/demos/       Contains demo .dart files
+* lib/         	       Contains the DartBox2d library .dart files
 
+![drone.io status](https://drone.io/dominic/dartbox2d/status.png)
 
 /**
  * Copyright (c) 2011, Daniel Murphy
