@@ -45,14 +45,11 @@ class PolygonShape extends Shape {
   PolygonShape() :
       super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
       vertexCount = 0,
-      vertices = new List<vec2>(Settings.MAX_POLYGON_VERTICES),
-      normals = new List<vec2>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new vec2.zero() {
-    for (int i = 0; i < vertices.length; ++i)
-      vertices[i] = new vec2.zero();
-    for (int i = 0; i < normals.length; ++i)
-      normals[i] = new vec2.zero();
-  }
+      vertices = new List<vec2>.generate(
+          Settings.MAX_POLYGON_VERTICES, (i) => new vec2.zero()),
+      normals = new List<vec2>.generate(
+          Settings.MAX_POLYGON_VERTICES, (i) => new vec2.zero()),
+      centroid = new vec2.zero();
 
   /**
    * Constructs a new PolygonShape equal to the given shape.
@@ -76,9 +73,9 @@ class PolygonShape extends Shape {
    */
   int getSupport(vec2 d) {
     int bestIndex = 0;
-    num bestValue = dot(vertices[0], d);
+    double bestValue = dot(vertices[0], d);
     for (int i = 1; i < vertexCount; ++i) {
-      num value = dot(vertices[i], d);
+      double value = dot(vertices[i], d);
       if (value > bestValue) {
         bestIndex = i;
         bestValue = value;
@@ -263,9 +260,7 @@ class PolygonShape extends Shape {
     out.scale(1.0 / area);
   }
 
-  /**
-   * See Shape.computeMass(MassData)
-   */
+  /** See Shape.computeMass(MassData) */
   void computeMass(MassData massData, num density) {
     // Polygon mass, centroid, and inertia.
     // Let rho be the polygon density in mass per unit area.

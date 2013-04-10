@@ -30,15 +30,14 @@ class CircleShape extends Shape {
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new vec2.zero() {
-  }
+    position = new vec2.zero();
 
   /**
    * Constructs a new CircleShape equal to the given CircleShape.
    */
   CircleShape.copy(CircleShape other) :
     super(other.type, other.radius),
-    position = new vec2.copy(other.position) { }
+    position = new vec2.copy(other.position);
 
 
   /**

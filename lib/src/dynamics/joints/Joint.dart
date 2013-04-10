@@ -58,7 +58,7 @@ class Joint {
     localCenterA = new vec2.zero(),
     localCenterB = new vec2.zero(),
     edgeA = new JointEdge(),
-    edgeB = new JointEdge() { }
+    edgeB = new JointEdge();
 
   // TODO(dominich): use 'is' to create the right type of Joint and remove the
   // *Def.type.

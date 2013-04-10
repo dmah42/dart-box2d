@@ -30,7 +30,7 @@ class SimplexVertex {
     w = new vec2.zero(),
     a = 0,
     indexA = 0,
-    indexB = 0 { }
+    indexB = 0;
 
   void setFrom(SimplexVertex sv) {
     wA.copyFrom(sv.wA);

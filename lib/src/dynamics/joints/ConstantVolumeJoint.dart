@@ -87,10 +87,7 @@ class ConstantVolumeJoint extends Joint {
     frequencyHz = def.frequencyHz;
     dampingRatio = def.dampingRatio;
 
-    normals = new List<vec2>(bodies.length);
-    for (int i = 0; i < normals.length; ++i) {
-      normals[i] = new vec2.zero();
-    }
+    normals = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
 
     this.bodyA = bodies[0];
     this.bodyB = bodies[1];
@@ -124,6 +121,7 @@ class ConstantVolumeJoint extends Joint {
     num perimeter = 0.0;
     for (int i = 0; i < bodies.length; ++i) {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
+      // TODO(dominic): vector cleanup
       num dx = bodies[next].worldCenter.x - bodies[i].worldCenter.x;
       num dy = bodies[next].worldCenter.y - bodies[i].worldCenter.y;
       num dist = math.sqrt(dx * dx + dy * dy);
@@ -160,10 +158,7 @@ class ConstantVolumeJoint extends Joint {
   void initVelocityConstraints(TimeStep argStep) {
     step = argStep;
 
-    final d = new List<vec2>(bodies.length);
-    for (int i = 0; i < bodies.length; i++) {
-      d[i] = new vec2.zero();
-    }
+    final d = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -201,10 +196,7 @@ class ConstantVolumeJoint extends Joint {
     num crossMassSum = 0.0;
     num dotMassSum = 0.0;
 
-    final d = new List<vec2>(bodies.length);
-    for (int i = 0; i < bodies.length; i++) {
-      d[i] = new vec2.zero();
-    }
+    final d = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;

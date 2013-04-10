@@ -29,7 +29,9 @@ class Transform {
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new vec2.zero(), rotation = new mat2.zero();
+  Transform()
+      : position = new vec2.zero(),
+        rotation = new mat2.zero();
 
   /**
    * Constructs a new transform equal to the given transform.
@@ -63,9 +65,8 @@ class Transform {
    * the result.
    */
   static vec2 mul(Transform T, vec2 v) {
-    return new vec2(T.position.x + T.rotation.col0.x * v.x +
-        T.rotation.col1.x * v.y, T.position.y + T.rotation.col0.y * v.x +
-        T.rotation.col1.y * v.y);
+    return new vec2(T.position.x + T.rotation.col0.x * v.x + T.rotation.col1.x * v.y,
+                    T.position.y + T.rotation.col0.y * v.x + T.rotation.col1.y * v.y);
   }
 
   /**
@@ -74,10 +75,12 @@ class Transform {
    */
   static void mulToOut(Transform transform, vec2 vector, vec2 out) {
     assert(out != null);
-    num tempY = transform.position.y + transform.rotation.col0.y *
-        vector.x + transform.rotation.col1.y * vector.y;
-    out.x = transform.position.x + transform.rotation.col0.x * vector.x +
-        transform.rotation.col1.x * vector.y;
+    num tempY = transform.position.y +
+                transform.rotation.col0.y * vector.x +
+                transform.rotation.col1.y * vector.y;
+    out.x = transform.position.x +
+            transform.rotation.col0.x * vector.x +
+            transform.rotation.col1.x * vector.y;
     out.y = tempY;
   }
 
@@ -85,7 +88,7 @@ class Transform {
     vec2 v1 = v - T.position;
     vec2 b = T.rotation.col0;
     vec2 b1 = T.rotation.col1;
-    num tempy = v1.x * b1.x + v1.y * b1.y;
+    double tempy = v1.x * b1.x + v1.y * b1.y;
     out.x = v1.x * b.x + v1.y * b.y;
     out.y = tempy;
   }

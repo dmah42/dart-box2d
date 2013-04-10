@@ -52,9 +52,11 @@ class Sweep {
    * if their fields are equal.
    */
   bool operator ==(other) {
-    return localCenter == other.localCenter && centerZero == other.centerZero
-        && center == other.center && angleZero == other.angleZero &&
-        angle == other.angle;
+    return localCenter == other.localCenter &&
+           centerZero == other.centerZero &&
+           center == other.center &&
+           angleZero == other.angleZero &&
+           angle == other.angle;
   }
 
   /**
@@ -79,7 +81,7 @@ class Sweep {
    * Time is the normalized time in [0,1].
    */
   void getTransform(Transform xf, num alpha) {
-    assert (xf != null);
+    assert(xf != null);
 
     xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
     xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;

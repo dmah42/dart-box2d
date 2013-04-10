@@ -145,7 +145,7 @@ class Bench2d {
       watch.start();
       bench2d.step();
       watch.stop();
-      times[i] = watch.elapsed / watch.frequency;
+      times[i] = watch.elapsedMilliseconds;
       print(times[i]);
     }
 

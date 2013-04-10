@@ -61,7 +61,7 @@ class DynamicTree {
     _insertionCount = 0,
     _path = 0,
     _lastLeaf = null,
-    _drawVectors = new List<vec2>(4),
+    _drawVectors = new List<vec2>.generate(4, (i) => new vec2.zero()),
     _nodeCounter = 0,
     _tempVector = new vec2.zero(),
     _tempBox = new AxisAlignedBox(),
@@ -69,12 +69,7 @@ class DynamicTree {
     // Pool objects.
     center = new vec2.zero(),
     deltaOne = new vec2.zero(),
-    deltaTwo = new vec2.zero() {
-
-    // Place new vectors in the draw vectors array.
-    for (int i = 0; i < _drawVectors.length; ++i)
-      _drawVectors[i] = new vec2.zero();
-  }
+    deltaTwo = new vec2.zero();
 
   /**
    * Create a proxy. Provides a tight fitting axis aligned box

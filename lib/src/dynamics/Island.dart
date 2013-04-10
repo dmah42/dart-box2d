@@ -110,6 +110,7 @@ class Island {
         continue;
       }
 
+      // TODO(dominic): vector cleanup
       final velocityDelta = new vec2(
           (b._force.x * b.invMass + gravity.x) * time_step.dt,
           (b._force.y * b.invMass + gravity.y) * time_step.dt);
@@ -308,10 +309,9 @@ class Position {
   vec2 x;
   num a;
 
-  Position() {
-    x = new vec2.zero();
-    a = 0;
-  }
+  Position()
+      : x = new vec2.zero(),
+        a = 0;
 }
 
 /**
@@ -321,8 +321,7 @@ class Velocity {
   vec2 v;
   num a;
 
-  Velocity() {
-    v = new vec2.zero();
-    a = 0;
-  }
+  Velocity()
+      : v = new vec2.zero(),
+        a = 0;
 }

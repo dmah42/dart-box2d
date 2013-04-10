@@ -39,14 +39,12 @@ class WorldManifold {
   /**
    * Constructs a new WorldManifold.
    */
-  WorldManifold() :
-    normal = new vec2.zero(),
-    pool3 = new vec2.zero(),
-    pool4 = new vec2.zero(),
-    points = new List<vec2>(Settings.MAX_MANIFOLD_POINTS) {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
-      points[i] = new vec2.zero();
-  }
+  WorldManifold()
+      : normal = new vec2.zero(),
+        pool3 = new vec2.zero(),
+        pool4 = new vec2.zero(),
+        points = new List<vec2>.generate(
+            Settings.MAX_MANIFOLD_POINTS, (i) => new vec2.zero());
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {
@@ -92,6 +90,7 @@ class WorldManifold {
 
         final vec2 clipPoint = pool4;
 
+        // TODO(dominic): Some vector cleanup here.
         for (int i = 0; i < manifold.pointCount; ++i) {
           clipPoint.x = xfB.position.x + xfB.rotation.col0.x *
               manifold.points[i].localPoint.x + xfB.rotation.col1.x *
@@ -130,8 +129,8 @@ class WorldManifold {
 
         final vec2 clipPoint = pool4;
 
+        // TODO(dominic): Some vector cleanup here.
         for (int i = 0; i < manifold.pointCount; ++i) {
-
           clipPoint.x = xfA.position.x + xfA.rotation.col0.x *
               manifold.points[i].localPoint.x + xfA.rotation.col1.x *
               manifold.points[i].localPoint.y;

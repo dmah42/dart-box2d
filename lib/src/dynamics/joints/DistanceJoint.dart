@@ -55,6 +55,7 @@ class DistanceJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
+    // TODO(dominic): vector cleanup
     argOut.x = impulse * u.x * inv_dt;
     argOut.y = impulse * u.y * inv_dt;
   }

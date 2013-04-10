@@ -228,7 +228,6 @@ class World {
    * remain in scope.
    */
   void set contactListener(ContactListener listener) {
-    print('Setting contactListener to $listener');
     _contactManager.contactListener = listener;
   }
 
@@ -516,14 +515,9 @@ class World {
     // positions.
     if (timestep.dt > 0.0) {
       solve(timestep);
-    }
-
-    // Handle TimeOfImpact events.
-    if (_continuousPhysics && timestep.dt > 0.0) {
-      solveTimeOfImpact();
-    }
-
-    if (timestep.dt > 0.0) {
+      if (_continuousPhysics) {
+        solveTimeOfImpact();
+      }
       _inverseTimestep = timestep.inv_dt;
     }
 
@@ -866,23 +860,19 @@ class World {
     for (Body body = _bodyList; body != null; body = body.next) {
       // Kinematic, and static bodies will not be affected by the TimeOfImpact
       // event.  If a body was not in an island then it did not move.
-      if ((body.flags & Body.ISLAND_FLAG) == 0 || body.type
-          == BodyType.KINEMATIC
-          || body.type == BodyType.STATIC) {
+      if ((body.flags & Body.ISLAND_FLAG) == 0 ||
+          body.type == BodyType.KINEMATIC ||
+          body.type == BodyType.STATIC) {
         body.flags |= Body.TO_I_FLAG;
-      }
-      else {
+      } else {
         body.flags &= ~Body.TO_I_FLAG;
       }
     }
 
     // Collide non-bullets.
     for (Body body = _bodyList; body != null; body = body.next) {
-      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-        continue;
-      }
-
-      if (body.bullet == true) {
+      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+          body.bullet) {
         continue;
       }
 
@@ -893,11 +883,8 @@ class World {
 
     // Collide bullets.
     for (Body body = _bodyList; body != null; body = body.next) {
-      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-        continue;
-      }
-
-      if (body.bullet == false) {
+      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+          !body.bullet) {
         continue;
       }
 
@@ -933,7 +920,7 @@ class World {
         int type = other.type;
 
         // Only bullets perform TimeOfImpact with dynamic bodies.
-        if (bullet == true) {
+        if (bullet) {
           // Bullets only perform TimeOfImpact with bodies that have their
           // TimeOfImpact resolved.
           if ((other.flags & Body.TO_I_FLAG) == 0) {
@@ -941,8 +928,8 @@ class World {
           }
 
           // No repeated hits on non-static bodies
-          if (type != BodyType.STATIC && (ce.contact.flags &
-                Contact.BULLET_HIT_FLAG) != 0) {
+          if (type != BodyType.STATIC &&
+              (ce.contact.flags & Contact.BULLET_HIT_FLAG) != 0) {
             continue;
           }
         } else if (type == BodyType.DYNAMIC) {
@@ -950,13 +937,9 @@ class World {
         }
 
         // Check for a disabled contact.
-        Contact contact = ce.contact;
-        if (contact.enabled == false) {
-          continue;
-        }
-
         // Prevent infinite looping.
-        if (contact.toiCount > 10) {
+        Contact contact = ce.contact;
+        if (!contact.enabled || contact.toiCount > 10) {
           continue;
         }
 
@@ -1011,14 +994,15 @@ class World {
     ++toiContact.toiCount;
 
     // Update all the valid contacts on this body and build a contact island.
-    if (contacts == null || contacts.length <
-        Settings.MAX_TIME_OF_IMPACT_CONTACTS){
+    if (contacts == null ||
+        contacts.length < Settings.MAX_TIME_OF_IMPACT_CONTACTS) {
       contacts = new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
     }
 
     count = 0;
-    for (ContactEdge ce = body.contactList; ce != null && count
-        < Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
+    for (ContactEdge ce = body.contactList; ce != null &&
+         count < Settings.MAX_TIME_OF_IMPACT_CONTACTS;
+         ce = ce.next) {
       Body other = ce.other;
       int type = other.type;
 
@@ -1030,7 +1014,7 @@ class World {
 
       // Check for a disabled contact.
       Contact contact = ce.contact;
-      if (contact.enabled == false) {
+      if (!contact.enabled) {
         continue;
       }
 
@@ -1049,12 +1033,7 @@ class World {
       }
 
       // Did the user disable the contact?
-      if (contact.enabled == false) {
-        // Skip this contact.
-        continue;
-      }
-
-      if (contact.touching == false) {
+      if (!contact.enabled || !contact.touching) {
         continue;
       }
 
@@ -1068,8 +1047,7 @@ class World {
     num k_toiBaumgarte = 0.75;
     // bool solved = false;
     for (int i = 0; i < 20; ++i) {
-      bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
-      if (contactsOkay) {
+      if (toiSolver.solve(k_toiBaumgarte)) {
         // solved = true;
         break;
       }
@@ -1115,12 +1093,10 @@ class World {
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawPolygon(vertices, vertexCount, color);
+        } else if (vertexCount > 2) {
+          _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
         } else {
-          if (vertexCount > 2) {
-            _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-          } else {
-            _debugDraw.drawPolygon(vertices, vertexCount, color);
-          }
+          _debugDraw.drawPolygon(vertices, vertexCount, color);
         }
         break;
     }

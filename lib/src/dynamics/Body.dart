@@ -866,8 +866,7 @@ class Body {
   void synchronizeFixtures() {
     final Transform xf1 = _pxf;
     xf1.rotation.setRotation(sweep.angleZero);
-    xf1.position.copyFrom(sweep.localCenter);
-    xf1.rotation.transform(xf1.position);
+    xf1.rotation.transformed(sweep.localCenter, xf1.position);
     xf1.position.negate().add(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;
@@ -880,6 +879,7 @@ class Body {
     final mat2 r = t.rotation;
     final vec2 p = t.position;
     r.setRotation(sweep.angle);
+    // TODO(dominic): vector cleanup
     p.x = (r.col0.x * sweep.localCenter.x + r.col1.x * sweep.localCenter.y) * -1 +
         sweep.center.x;
     p.y = (r.col0.y * sweep.localCenter.x + r.col1.y * sweep.localCenter.y) * -1 +

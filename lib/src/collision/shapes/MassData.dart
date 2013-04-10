@@ -32,7 +32,7 @@ class MassData {
   MassData() :
     mass = 0,
     inertia = 0,
-    center = new vec2.zero() { }
+    center = new vec2.zero();
 
   /**
    * Copies from the given mass data.
@@ -40,7 +40,7 @@ class MassData {
   MassData.copy(MassData md) :
     mass = md.mass,
     inertia = md.inertia,
-    center = new vec2.copy(md.center) { }
+    center = new vec2.copy(md.center);
 
   /**
    * Sets this mass data equal to the given mass data.

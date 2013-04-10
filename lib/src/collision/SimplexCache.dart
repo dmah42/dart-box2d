@@ -36,13 +36,8 @@ class SimplexCache {
   SimplexCache() :
     metric = 0,
     count = 0,
-    indexA = new List<int>(3),
-    indexB = new List<int>(3) {
-    for (int i = 0; i < 3; ++i) {
-      indexA[i] = Settings.MAX_INTEGER;
-      indexB[i] = Settings.MAX_INTEGER;
-    }
-  }
+    indexA = new List<int>.generate(3, (i) => Settings.MAX_INTEGER),
+    indexB = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
 
   /**
    * Sets this cache equal to the given cache.

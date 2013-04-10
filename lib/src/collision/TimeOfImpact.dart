@@ -73,7 +73,7 @@ class TimeOfImpact {
     // CCD via the local separating axis method. This seeks progression
     // by computing the largest time at which separation is maintained.
     ++toiCalls;
-
+    
     output.state = TimeOfImpactOutputState.UNKNOWN;
     output.t = input.tMax;
 
@@ -232,11 +232,13 @@ class TimeOfImpact {
       ++iter;
       ++toiIters;
 
-      if (done)
+      if (done) {
         break;
+      }
 
       if (iter == MAX_ITERATIONS) {
         // Root finder got stuck. Semi-victory.
+        print('root finder stuck');
         output.state = TimeOfImpactOutputState.FAILED;
         output.t = t1;
         break;
@@ -293,7 +295,7 @@ class SeparationFunction {
     xfa = new Transform(),
     xfb = new Transform(),
     axisA = new vec2.zero(),
-    axisB = new vec2.zero() { }
+    axisB = new vec2.zero();
 
   num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
       argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -457,8 +459,7 @@ class SeparationFunction {
         xfa.rotation.transformed(axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        normal.negate();
-        xfb.rotation.transposed().transformed(normal, axisB);
+        xfb.rotation.transposed().transformed(normal.negate(), axisB);
         normal.negate();
 
         localPointB.copyFrom(proxyB.vertices[indexB]);
@@ -476,8 +477,7 @@ class SeparationFunction {
         localPointA.copyFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = dot(pointA.sub(pointB), normal);
-        return separation;
+        return  dot(pointA.sub(pointB), normal);
 
       default:
         assert (false);
@@ -526,7 +526,7 @@ class TimeOfImpactOutput {
 
   TimeOfImpactOutput() :
     state = TimeOfImpactOutputState.UNKNOWN,
-    t = 0 { }
+    t = 0;
 }
 
 class SeparationType {

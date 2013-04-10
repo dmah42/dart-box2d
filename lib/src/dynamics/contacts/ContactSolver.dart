@@ -49,7 +49,8 @@ class ContactSolver {
 
   /** Constructs a new ContactSolver. */
   ContactSolver() :
-    constraints = new List<ContactConstraint>(INITIAL_NUM_CONSTRAINTS),
+    constraints = new List<ContactConstraint>.generate(
+        INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint()),
 
     // Setup pool variables.
     worldManifold = new WorldManifold(),
@@ -66,11 +67,7 @@ class ContactSolver {
     P2 = new vec2.zero(),
     psolver = new PositionSolverManifold(),
     rA = new vec2.zero(),
-    rB = new vec2.zero() {
-    for(int i=0; i < constraints.length; i++) {
-      constraints[i] = new ContactConstraint();
-    }
-  }
+    rB = new vec2.zero();
 
   void init(List<Contact> contacts, int contactCount, num impulseRatio){
     constraintCount = contactCount;
@@ -82,7 +79,7 @@ class ContactSolver {
       constraints = new List<ContactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
 
-      for(int i=old.length; i< constraints.length; i++){
+      for(int i=old.length; i < constraints.length; i++){
         constraints[i] = new ContactConstraint();
       }
     }
@@ -601,7 +598,7 @@ class PositionSolverManifold {
     pointB = new vec2.zero(),
     temp = new vec2.zero(),
     planePoint = new vec2.zero(),
-    clipPoint = new vec2.zero() { }
+    clipPoint = new vec2.zero();
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);

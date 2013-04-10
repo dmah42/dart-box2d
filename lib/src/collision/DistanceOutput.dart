@@ -32,5 +32,6 @@ class DistanceOutput {
 
   DistanceOutput() :
     pointA = new vec2.zero(),
-    pointB = new vec2.zero() { }
+    pointB = new vec2.zero(),
+    _distance = 0.0;
 }
