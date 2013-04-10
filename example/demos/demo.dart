@@ -124,11 +124,11 @@ abstract class Demo {
     frameCount = 0;
     fpsCounter = query("#fps-counter");
     worldStepTime = query("#world-step-time");
-    new Timer.repeating(new Duration(seconds:1), (Timer t) {
+    new Timer.periodic(new Duration(seconds: 1), (Timer t) {
       fpsCounter.innerHtml = frameCount.toString();
       frameCount = 0;
     });
-    new Timer.repeating(new Duration(milliseconds:200), (Timer t) {
+    new Timer.periodic(new Duration(milliseconds: 200), (Timer t) {
       worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
     });
   }

@@ -5,7 +5,7 @@
         <title>RevoluteJoint class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -523,7 +523,7 @@ bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -535,7 +535,7 @@ bodyA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -547,7 +547,7 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -559,7 +559,7 @@ collideConnected
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeA
+JointEdge edgeA
 </pre>
 </div>
 </div>
@@ -571,7 +571,7 @@ edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeB
+JointEdge edgeB
 </pre>
 </div>
 </div>
@@ -583,7 +583,7 @@ final <a href="../vector_math/vec3.html">vec3</a>         <strong>impulse</stron
         </h4>
         <div class="doc">
 <pre class="source">
-impulse
+final vec3 impulse
 </pre>
 </div>
 </div>
@@ -595,7 +595,7 @@ num         <strong>invIA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIA
+num invIA
 </pre>
 </div>
 </div>
@@ -607,7 +607,7 @@ num         <strong>invIB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIB
+num invIB
 </pre>
 </div>
 </div>
@@ -619,7 +619,7 @@ num         <strong>invMassA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassA
+num invMassA
 </pre>
 </div>
 </div>
@@ -631,7 +631,7 @@ num         <strong>invMassB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassB
+num invMassB
 </pre>
 </div>
 </div>
@@ -643,7 +643,7 @@ bool         <strong>islandFlag</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-islandFlag
+bool islandFlag
 </pre>
 </div>
 </div>
@@ -706,7 +706,7 @@ int         <strong>limitState</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-limitState
+int limitState
 </pre>
 </div>
 </div>
@@ -718,7 +718,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localAnchor1</
         </h4>
         <div class="doc">
 <pre class="source">
-localAnchor1
+final vec2 localAnchor1
 </pre>
 </div>
 </div>
@@ -730,7 +730,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localAnchor2</
         </h4>
         <div class="doc">
 <pre class="source">
-localAnchor2
+final vec2 localAnchor2
 </pre>
 </div>
 </div>
@@ -742,7 +742,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterA</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterA
+final vec2 localCenterA
 </pre>
 </div>
 </div>
@@ -754,7 +754,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterB</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterB
+final vec2 localCenterB
 </pre>
 </div>
 </div>
@@ -765,8 +765,9 @@ num         <strong>lowerAngle</strong> <a class="anchor-link"
             title="Permalink to RevoluteJoint.lowerAngle">#</a>
         </h4>
         <div class="doc">
+<p>Limits on the relative rotation of the joint. </p>
 <pre class="source">
-lowerAngle
+num lowerAngle
 </pre>
 </div>
 </div>
@@ -778,7 +779,7 @@ final <a href="../vector_math/mat3.html">mat3</a>         <strong>mass</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-mass
+final mat3 mass
 </pre>
 </div>
 </div>
@@ -828,7 +829,7 @@ num         <strong>motorMass</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-motorMass
+num motorMass
 </pre>
 </div>
 </div>
@@ -871,7 +872,7 @@ num         <strong>referenceAngle</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-referenceAngle
+num referenceAngle
 </pre>
 </div>
 </div>
@@ -883,7 +884,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -895,7 +896,7 @@ num         <strong>upperAngle</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-upperAngle
+num upperAngle
 </pre>
 </div>
 </div>
@@ -907,7 +908,7 @@ Object         <strong>userData</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>

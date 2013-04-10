@@ -5,7 +5,7 @@
         <title>vector_math Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="favicon.ico">
         
         </head>
@@ -185,29 +185,67 @@ mat4 makePlaneProjection(vec3 planeNormal, vec3 planePoint) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeOrthographic">
+<div class="method"><h4 id="makeOrthographicMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographic</strong>(num left, num right, num bottom, num top, num znear, num zfar) <a class="anchor-link" href="#makeOrthographic"
-              title="Permalink to makeOrthographic">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeOrthographicMatrix</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeOrthographicMatrix"
+              title="Permalink to makeOrthographicMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL orthographic camera projection matrix</p>
+<p>Constructs a new OpenGL orthographic projection matrix.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
 <pre class="source">
-mat4 makeOrthographic(num left, num right, num bottom, num top, num znear,
-                     num zfar) {
+mat4 makeOrthographicMatrix(num left, num right, num bottom, num top, num near,
+                     num far) {
+ mat4 r = new mat4.zero();
+ setOrthographicMatrix(r, left, right, bottom, top, near, far);
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setOrthographicMatrix">
+<button class="show-code">Code</button>
+void <strong>setOrthographicMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> orthographicMatrix, num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#setOrthographicMatrix"
+              title="Permalink to setOrthographicMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL orthographic projection matrix in 
+<span class="param">orthographicMatrix</span>.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
+<pre class="source">
+void setOrthographicMatrix(mat4 orthographicMatrix, num left, num right,
+                          num bottom, num top, num near, num far) {
  left = left.toDouble();
  right = right.toDouble();
  bottom = bottom.toDouble();
  top = top.toDouble();
- znear = znear.toDouble();
- zfar = zfar.toDouble();
+ near = near.toDouble();
+ far = far.toDouble();
  double rml = right - left;
  double rpl = right + left;
  double tmb = top - bottom;
  double tpb = top + bottom;
- double fmn = zfar - znear;
- double fpn = zfar + znear;
-
- mat4 r = new mat4.zero();
+ double fmn = far - near;
+ double fpn = far + near;
+ mat4 r = orthographicMatrix.setZero();
  r[0].x = 2.0/rml;
  r[1].y = 2.0/tmb;
  r[2].z = -2.0/fmn;
@@ -215,20 +253,58 @@ mat4 makeOrthographic(num left, num right, num bottom, num top, num znear,
  r[3].y = -tpb/tmb;
  r[3].z = -fpn/fmn;
  r[3].w = 1.0;
-
- return r;
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeFrustum">
+<div class="method"><h4 id="makeFrustumMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeFrustum</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeFrustum"
-              title="Permalink to makeFrustum">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeFrustumMatrix</strong>(num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#makeFrustumMatrix"
+              title="Permalink to makeFrustumMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL frustum camera projection matrix</p>
+<p>Constructs a new OpenGL perspective projection matrix.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
 <pre class="source">
-mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
+mat4 makeFrustumMatrix(num left, num right, num bottom, num top, num near,
+                      num far) {
+ mat4 view = new mat4.zero();
+ setFrustumMatrix(view, left, right, bottom, top, near, far);
+ return view;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrustumMatrix">
+<button class="show-code">Code</button>
+void <strong>setFrustumMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> perspectiveMatrix, num left, num right, num bottom, num top, num near, num far) <a class="anchor-link" href="#setFrustumMatrix"
+              title="Permalink to setFrustumMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL perspective projection matrix in 
+<span class="param">perspectiveMatrix</span>.</p>
+<p>
+<span class="param">left</span>, 
+<span class="param">right</span> specify the coordinates for the left and right vertical
+clipping planes.
+<code>bototm</code>, 
+<span class="param">top</span> specify the coordinates for the bottom and top horizontal
+clipping planes.
+
+<span class="param">near</span>, 
+<span class="param">far</span> specify the coordinates to the near and far depth clipping
+planes.</p>
+<pre class="source">
+void setFrustumMatrix(mat4 perspectiveMatrix, num left, num right, num bottom,
+                     num top, num near, num far) {
  left = left.toDouble();
  right = right.toDouble();
  bottom = bottom.toDouble();
@@ -239,73 +315,127 @@ mat4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
  double right_minus_left = right - left;
  double top_minus_bottom = top - bottom;
  double far_minus_near = far - near;
-
- mat4 view = new mat4.zero();
+ mat4 view = perspectiveMatrix.setZero();
  view[0].x = two_near / right_minus_left;
-
  view[1].y = two_near / top_minus_bottom;
-
  view[2].x = (right + left) / right_minus_left;
  view[2].y = (top + bottom) / top_minus_bottom;
  view[2].z = -(far + near) / far_minus_near;
  view[2].w = -1.0;
-
  view[3].z = -(two_near * far) / far_minus_near;
  view[3].w = 0.0;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makePerspectiveMatrix">
+<button class="show-code">Code</button>
+<a href="vector_math/mat4.html">mat4</a> <strong>makePerspectiveMatrix</strong>(num fovYRadians, num aspectRatio, num zNear, num zFar) <a class="anchor-link" href="#makePerspectiveMatrix"
+              title="Permalink to makePerspectiveMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs a new OpenGL perspective projection matrix.</p>
+<p>
+<span class="param">fovYRadians</span> specifies the field of view angle, in radians, in the y
+direction.
 
- return view;
+<span class="param">aspectRatio</span> specifies the aspect ratio that determines the field of view
+in the x direction. The aspect ratio of x (width) to y (height).
+
+<span class="param">zNear</span> specifies the distance from the viewer to the near plane
+(always positive).
+
+<span class="param">zFar</span> specifies the distance from the viewer to the far plane
+(always positive).</p>
+<pre class="source">
+mat4 makePerspectiveMatrix(num fovYRadians, num aspectRatio, num zNear,
+                          num zFar) {
+ double height = tan(fovYRadians.toDouble() * 0.5) * zNear.toDouble();
+ double width = height.toDouble() * aspectRatio.toDouble();
+ return makeFrustumMatrix(-width, width, -height, height, zNear, zFar);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makePerspective">
+<div class="method"><h4 id="setPerspectiveMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makePerspective</strong>(num fov_y_radians, num aspect_ratio, num znear, num zfar) <a class="anchor-link" href="#makePerspective"
-              title="Permalink to makePerspective">#</a></h4>
+void <strong>setPerspectiveMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> perspectiveMatrix, num fovYRadians, num aspectRatio, num zNear, num zFar) <a class="anchor-link" href="#setPerspectiveMatrix"
+              title="Permalink to setPerspectiveMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL perspective camera projection matrix</p>
+<p>Constructs an OpenGL perspective projection matrix in 
+<span class="param">perspectiveMatrix</span>.</p>
+<p>
+<span class="param">fovYRadians</span> specifies the field of view angle, in radians, in the y
+direction.
+
+<span class="param">aspectRatio</span> specifies the aspect ratio that determines the field of view
+in the x direction. The aspect ratio of x (width) to y (height).
+
+<span class="param">zNear</span> specifies the distance from the viewer to the near plane
+(always positive).
+
+<span class="param">zFar</span> specifies the distance from the viewer to the far plane
+(always positive).</p>
 <pre class="source">
-mat4 makePerspective(num fov_y_radians, num aspect_ratio, num znear, num zfar) {
- double height = tan(fov_y_radians.toDouble() * 0.5) * znear.toDouble();
- double width = height.toDouble() * aspect_ratio.toDouble();
- return makeFrustum(-width, width, -height, height, znear, zfar);
+void setPerspectiveMatrix(mat4 perspectiveMatrix, num fovYRadians,
+                         num aspectRatio, num zNear, num zFar) {
+ double height = tan(fovYRadians.toDouble() * 0.5) * zNear.toDouble();
+ double width = height.toDouble() * aspectRatio.toDouble();
+ setFrustumMatrix(perspectiveMatrix, -width, width, -height, height, zNear,
+                  zFar);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="makeLookAt">
+<div class="method"><h4 id="makeViewMatrix">
 <button class="show-code">Code</button>
-<a href="vector_math/mat4.html">mat4</a> <strong>makeLookAt</strong>(<a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#makeLookAt"
-              title="Permalink to makeLookAt">#</a></h4>
+<a href="vector_math/mat4.html">mat4</a> <strong>makeViewMatrix</strong>(<a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#makeViewMatrix"
+              title="Permalink to makeViewMatrix">#</a></h4>
 <div class="doc">
-<p>Returns an OpenGL look at matrix.
-The camera is located at 
-<span class="param">cameraPosition</span> and is focused
-on <code>cameraFocusPostion</code>.</p>
-<p>The 
-<span class="param">upDirection</span> is almost always (0, 1, 0).</p>
+<p>Constructs a new OpenGL view matrix.</p>
+<p>
+<span class="param">cameraPosition</span> specifies the position of the camera.
+<code>camearFocusPosition</code> specifies the position the camera is focused on.
+
+<span class="param">upDirection</span> specifies the direction of the up vector (usually, +Y).</p>
 <pre class="source">
-mat4 makeLookAt(vec3 cameraPosition, vec3 cameraFocusPosition,
+mat4 makeViewMatrix(vec3 cameraPosition, vec3 cameraFocusPosition,
                vec3 upDirection) {
+ mat4 r = new mat4.zero();
+ setViewMatrix(r, cameraPosition, cameraFocusPosition, upDirection);
+ return r;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setViewMatrix">
+<button class="show-code">Code</button>
+void <strong>setViewMatrix</strong>(<a href="vector_math/mat4.html">mat4</a> viewMatrix, <a href="vector_math/vec3.html">vec3</a> cameraPosition, <a href="vector_math/vec3.html">vec3</a> cameraFocusPosition, <a href="vector_math/vec3.html">vec3</a> upDirection) <a class="anchor-link" href="#setViewMatrix"
+              title="Permalink to setViewMatrix">#</a></h4>
+<div class="doc">
+<p>Constructs an OpenGL view matrix in 
+<span class="param">viewMatrix</span>.</p>
+<p>
+<span class="param">cameraPosition</span> specifies the position of the camera.
+<code>camearFocusPosition</code> specifies the position the camera is focused on.
+
+<span class="param">upDirection</span> specifies the direction of the up vector (usually, +Y).</p>
+<pre class="source">
+void setViewMatrix(mat4 viewMatrix, vec3 cameraPosition,
+                  vec3 cameraFocusPosition, vec3 upDirection) {
  vec3 z = cameraPosition - cameraFocusPosition;
  z.normalize();
-
  vec3 x = upDirection.cross(z);
  x.normalize();
-
  vec3 y = z.cross(x);
  y.normalize();
-
- mat4 r = new mat4.zero();
- r[0].xyz = x;
- r[1].xyz = y;
- r[2].xyz = z;
- r[3].w = 1.0;
- r = r.transposed();
- vec3 rotatedEye = r * -cameraPosition;
- r[3].xyz = rotatedEye;
-
- return r;
+ viewMatrix.setZero();
+ viewMatrix[0].xyz = x;
+ viewMatrix[1].xyz = y;
+ viewMatrix[2].xyz = z;
+ viewMatrix[3].w = 1.0;
+ viewMatrix.transpose();
+ vec3 rotatedEye = viewMatrix * -cameraPosition;
+ viewMatrix[3].xyz = rotatedEye;
 }
 </pre>
 </div>
@@ -354,7 +484,7 @@ double relativeError(dynamic calculated, dynamic correct) {
 </div>
 <div class="method"><h4 id="atan">
 <button class="show-code">Code</button>
-<strong>atan</strong>(arg, [arg2]) <a class="anchor-link" href="#atan"
+dynamic<strong>atan</strong>(arg, [arg2]) <a class="anchor-link" href="#atan"
               title="Permalink to atan">#</a></h4>
 <div class="doc">
 <p>Returns atan(
@@ -399,7 +529,7 @@ dynamic atan(dynamic arg, [dynamic arg2]) {
 </div>
 <div class="method"><h4 id="smoothstep">
 <button class="show-code">Code</button>
-<strong>smoothstep</strong>(edge0, edge1, x, [out = null]) <a class="anchor-link" href="#smoothstep"
+dynamic<strong>smoothstep</strong>(edge0, edge1, x, [out = null]) <a class="anchor-link" href="#smoothstep"
               title="Permalink to smoothstep">#</a></h4>
 <div class="doc">
 <p>Hermite intpolation between 
@@ -447,7 +577,7 @@ dynamic smoothstep(dynamic edge0, dynamic edge1, dynamic x, [dynamic out=null]) 
 </div>
 <div class="method"><h4 id="step">
 <button class="show-code">Code</button>
-<strong>step</strong>(x, y, [out = null]) <a class="anchor-link" href="#step"
+dynamic<strong>step</strong>(x, y, [out = null]) <a class="anchor-link" href="#step"
               title="Permalink to step">#</a></h4>
 <div class="doc">
 <p>Returns 0.0 if x &lt; 
@@ -491,7 +621,7 @@ dynamic step(dynamic x, dynamic y, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="mix">
 <button class="show-code">Code</button>
-<strong>mix</strong>(x, y, t) <a class="anchor-link" href="#mix"
+dynamic<strong>mix</strong>(x, y, t) <a class="anchor-link" href="#mix"
               title="Permalink to mix">#</a></h4>
 <div class="doc">
 <p>Linear interpolation between 
@@ -544,7 +674,7 @@ dynamic mix(dynamic x, dynamic y, dynamic t) {
 </div>
 <div class="method"><h4 id="clamp">
 <button class="show-code">Code</button>
-<strong>clamp</strong>(x, min_, max_, [out = null]) <a class="anchor-link" href="#clamp"
+dynamic<strong>clamp</strong>(x, min_, max_, [out = null]) <a class="anchor-link" href="#clamp"
               title="Permalink to clamp">#</a></h4>
 <div class="doc">
 <p>Component wise clamp of 
@@ -590,7 +720,7 @@ dynamic clamp(dynamic x, dynamic min_, dynamic max_, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="max">
 <button class="show-code">Code</button>
-<strong>max</strong>(x, y, [out = null]) <a class="anchor-link" href="#max"
+dynamic<strong>max</strong>(x, y, [out = null]) <a class="anchor-link" href="#max"
               title="Permalink to max">#</a></h4>
 <div class="doc">
 <p>Returns component wise maximum of 
@@ -635,7 +765,7 @@ dynamic max(dynamic x, dynamic y, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="min">
 <button class="show-code">Code</button>
-<strong>min</strong>(x, y, [out = null]) <a class="anchor-link" href="#min"
+dynamic<strong>min</strong>(x, y, [out = null]) <a class="anchor-link" href="#min"
               title="Permalink to min">#</a></h4>
 <div class="doc">
 <p>Returns component wise minimum of 
@@ -680,7 +810,7 @@ dynamic min(dynamic x, dynamic y, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="mod">
 <button class="show-code">Code</button>
-<strong>mod</strong>(x, y, [out = null]) <a class="anchor-link" href="#mod"
+dynamic<strong>mod</strong>(x, y, [out = null]) <a class="anchor-link" href="#mod"
               title="Permalink to mod">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -725,7 +855,7 @@ dynamic mod(dynamic x, dynamic y, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="fract">
 <button class="show-code">Code</button>
-<strong>fract</strong>(arg, [out = null]) <a class="anchor-link" href="#fract"
+dynamic<strong>fract</strong>(arg, [out = null]) <a class="anchor-link" href="#fract"
               title="Permalink to fract">#</a></h4>
 <div class="doc">
 <p>Returns fraction of 
@@ -769,7 +899,7 @@ dynamic fract(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="ceil">
 <button class="show-code">Code</button>
-<strong>ceil</strong>(arg, [out = null]) <a class="anchor-link" href="#ceil"
+dynamic<strong>ceil</strong>(arg, [out = null]) <a class="anchor-link" href="#ceil"
               title="Permalink to ceil">#</a></h4>
 <div class="doc">
 <p>Returns ceiling of 
@@ -813,7 +943,7 @@ dynamic ceil(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="roundEven">
 <button class="show-code">Code</button>
-<strong>roundEven</strong>(arg, [out = null]) <a class="anchor-link" href="#roundEven"
+dynamic<strong>roundEven</strong>(arg, [out = null]) <a class="anchor-link" href="#roundEven"
               title="Permalink to roundEven">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -857,7 +987,7 @@ dynamic roundEven(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="round">
 <button class="show-code">Code</button>
-<strong>round</strong>(arg, [out = null]) <a class="anchor-link" href="#round"
+dynamic<strong>round</strong>(arg, [out = null]) <a class="anchor-link" href="#round"
               title="Permalink to round">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -901,7 +1031,7 @@ dynamic round(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="trunc">
 <button class="show-code">Code</button>
-<strong>trunc</strong>(arg, [out = null]) <a class="anchor-link" href="#trunc"
+dynamic<strong>trunc</strong>(arg, [out = null]) <a class="anchor-link" href="#trunc"
               title="Permalink to trunc">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -945,7 +1075,7 @@ dynamic trunc(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="floor">
 <button class="show-code">Code</button>
-<strong>floor</strong>(arg, [out = null]) <a class="anchor-link" href="#floor"
+dynamic<strong>floor</strong>(arg, [out = null]) <a class="anchor-link" href="#floor"
               title="Permalink to floor">#</a></h4>
 <div class="doc">
 <p>Returns floor value of 
@@ -989,7 +1119,7 @@ dynamic floor(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="sign">
 <button class="show-code">Code</button>
-<strong>sign</strong>(arg, [out = null]) <a class="anchor-link" href="#sign"
+dynamic<strong>sign</strong>(arg, [out = null]) <a class="anchor-link" href="#sign"
               title="Permalink to sign">#</a></h4>
 <div class="doc">
 <p>Returns 1.0 or 0.0 or -1.0 depending on sign of 
@@ -1033,7 +1163,7 @@ dynamic sign(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="abs">
 <button class="show-code">Code</button>
-<strong>abs</strong>(arg, [out = null]) <a class="anchor-link" href="#abs"
+dynamic<strong>abs</strong>(arg, [out = null]) <a class="anchor-link" href="#abs"
               title="Permalink to abs">#</a></h4>
 <div class="doc">
 <p>Returns absolute value of 
@@ -1077,7 +1207,7 @@ dynamic abs(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="inversesqrt">
 <button class="show-code">Code</button>
-<strong>inversesqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#inversesqrt"
+dynamic<strong>inversesqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#inversesqrt"
               title="Permalink to inversesqrt">#</a></h4>
 <div class="doc">
 <p>Returns the inverse square root of 
@@ -1121,7 +1251,7 @@ dynamic inversesqrt(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="sqrt">
 <button class="show-code">Code</button>
-<strong>sqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#sqrt"
+dynamic<strong>sqrt</strong>(arg, [out = null]) <a class="anchor-link" href="#sqrt"
               title="Permalink to sqrt">#</a></h4>
 <div class="doc">
 <p>Returns the square root of 
@@ -1165,7 +1295,7 @@ dynamic sqrt(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="log2">
 <button class="show-code">Code</button>
-<strong>log2</strong>(arg, [out = null]) <a class="anchor-link" href="#log2"
+dynamic<strong>log2</strong>(arg, [out = null]) <a class="anchor-link" href="#log2"
               title="Permalink to log2">#</a></h4>
 <div class="doc">
 <p>Returns the logarithm of 
@@ -1209,7 +1339,7 @@ dynamic log2(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="exp2">
 <button class="show-code">Code</button>
-<strong>exp2</strong>(arg, [out = null]) <a class="anchor-link" href="#exp2"
+dynamic<strong>exp2</strong>(arg, [out = null]) <a class="anchor-link" href="#exp2"
               title="Permalink to exp2">#</a></h4>
 <div class="doc">
 <p>Returns <em>2</em> raised to the exponent 
@@ -1253,7 +1383,7 @@ dynamic exp2(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="log">
 <button class="show-code">Code</button>
-<strong>log</strong>(arg, [out = null]) <a class="anchor-link" href="#log"
+dynamic<strong>log</strong>(arg, [out = null]) <a class="anchor-link" href="#log"
               title="Permalink to log">#</a></h4>
 <div class="doc">
 <p>Returns the logarithm of 
@@ -1297,7 +1427,7 @@ dynamic log(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="exp">
 <button class="show-code">Code</button>
-<strong>exp</strong>(arg, [out = null]) <a class="anchor-link" href="#exp"
+dynamic<strong>exp</strong>(arg, [out = null]) <a class="anchor-link" href="#exp"
               title="Permalink to exp">#</a></h4>
 <div class="doc">
 <p>Returns <em>e</em> raised to the exponent 
@@ -1341,7 +1471,7 @@ dynamic exp(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="pow">
 <button class="show-code">Code</button>
-<strong>pow</strong>(x, y, [out = null]) <a class="anchor-link" href="#pow"
+dynamic<strong>pow</strong>(x, y, [out = null]) <a class="anchor-link" href="#pow"
               title="Permalink to pow">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -1386,7 +1516,7 @@ dynamic pow(dynamic x, dynamic y, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="degrees">
 <button class="show-code">Code</button>
-<strong>degrees</strong>(arg, [out = null]) <a class="anchor-link" href="#degrees"
+dynamic<strong>degrees</strong>(arg, [out = null]) <a class="anchor-link" href="#degrees"
               title="Permalink to degrees">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -1431,7 +1561,7 @@ dynamic degrees(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="radians">
 <button class="show-code">Code</button>
-<strong>radians</strong>(arg, [out = null]) <a class="anchor-link" href="#radians"
+dynamic<strong>radians</strong>(arg, [out = null]) <a class="anchor-link" href="#radians"
               title="Permalink to radians">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -1476,7 +1606,7 @@ dynamic radians(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="acos">
 <button class="show-code">Code</button>
-<strong>acos</strong>(arg, [out = null]) <a class="anchor-link" href="#acos"
+dynamic<strong>acos</strong>(arg, [out = null]) <a class="anchor-link" href="#acos"
               title="Permalink to acos">#</a></h4>
 <div class="doc">
 <p>Returns arc cosine of 
@@ -1521,7 +1651,7 @@ dynamic acos(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="asin">
 <button class="show-code">Code</button>
-<strong>asin</strong>(arg, [out = null]) <a class="anchor-link" href="#asin"
+dynamic<strong>asin</strong>(arg, [out = null]) <a class="anchor-link" href="#asin"
               title="Permalink to asin">#</a></h4>
 <div class="doc">
 <p>Returns arc sine of 
@@ -1566,7 +1696,7 @@ dynamic asin(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="tan">
 <button class="show-code">Code</button>
-<strong>tan</strong>(arg, [out = null]) <a class="anchor-link" href="#tan"
+dynamic<strong>tan</strong>(arg, [out = null]) <a class="anchor-link" href="#tan"
               title="Permalink to tan">#</a></h4>
 <div class="doc">
 <p>Returns tangent of 
@@ -1611,7 +1741,7 @@ dynamic tan(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="cos">
 <button class="show-code">Code</button>
-<strong>cos</strong>(arg, [out = null]) <a class="anchor-link" href="#cos"
+dynamic<strong>cos</strong>(arg, [out = null]) <a class="anchor-link" href="#cos"
               title="Permalink to cos">#</a></h4>
 <div class="doc">
 <p>Returns cosine of 
@@ -1656,7 +1786,7 @@ dynamic cos(dynamic arg, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="sin">
 <button class="show-code">Code</button>
-<strong>sin</strong>(arg, [out = null]) <a class="anchor-link" href="#sin"
+dynamic<strong>sin</strong>(arg, [out = null]) <a class="anchor-link" href="#sin"
               title="Permalink to sin">#</a></h4>
 <div class="doc">
 <p>Returns sine of 
@@ -1737,7 +1867,7 @@ void buildPlaneVectors(final vec3 planeNormal, vec3 u, vec3 v) {
 </div>
 <div class="method"><h4 id="normalize">
 <button class="show-code">Code</button>
-<strong>normalize</strong>(x, [out = null]) <a class="anchor-link" href="#normalize"
+dynamic<strong>normalize</strong>(x, [out = null]) <a class="anchor-link" href="#normalize"
               title="Permalink to normalize">#</a></h4>
 <div class="doc">
 <p>Returns 
@@ -1776,7 +1906,7 @@ dynamic normalize(dynamic x, [dynamic out=null]) {
 </div>
 <div class="method"><h4 id="cross">
 <button class="show-code">Code</button>
-<strong>cross</strong>(x, y, [out = null]) <a class="anchor-link" href="#cross"
+dynamic<strong>cross</strong>(x, y, [out = null]) <a class="anchor-link" href="#cross"
               title="Permalink to cross">#</a></h4>
 <div class="doc">
 <p>Returns the cross product between 

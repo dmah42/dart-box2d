@@ -5,7 +5,7 @@
         <title>unittest Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="favicon.ico">
         
         </head>
@@ -28,90 +28,91 @@
 <div class="content">
 <h2><strong>unittest</strong> library</h2>
 <div class="doc"><p>A library for writing dart unit tests.</p>
-<p>To import this library, use the pub package manager.
-Create a pubspec.yaml file in your project and add
-a dependency on unittest with the following lines:</p>
-<pre><span class="i ">dependencies</span><span class="p ">:</span>
-  <span class="i ">unittest</span><span class="p ">:</span> <span class="i ">any</span></pre>
-<p>Then run 'pub install' from your project directory or using
-the DartEditor.</p>
-<p>Please see <a href="http://pub.dartlang.org/doc">Pub Getting Started</a>
-for more details about the pub package manager.</p>
+<p>To import this library, install the
+<a href="http://pub.dartlang.org/packages/unittest">unittest package</a> via the pub
+package manager. See the <a href="http://pub.dartlang.org/doc">Getting Started</a>
+guide for more details.</p>
 <h2>Concepts</h2><ul><li>
-<p>Tests: Tests are specified via the top-level function <a class="crossref" href="unittest.html#test">test</a>, they can be
-   organized together using <a class="crossref" href="unittest.html#group">group</a>.</p></li><li>Checks: Test expectations can be specified via <code>expect</code></li><li>Matchers: <code>expect</code> assertions are written declaratively using <code>Matcher</code>s</li><li>
-<p>Configuration: The framework can be adapted by calling <a class="crossref" href="unittest.html#configure">configure</a> with a
-   <a class="crossref" href="unittest/Configuration.html">Configuration</a>.  Common configurations can be found in this package
-   under: 'dom\<em>config.dart' (deprecated), 'html\</em>config.dart' (for running
-   tests compiled to Javascript in a browser), and 'vm\_config.dart' (for
-   running native Dart tests on the VM).</p></li></ul>
+<p><strong>Tests</strong>: Tests are specified via the top-level function <a class="crossref" href="unittest.html#test">test</a>, they can be
+   organized together using <a class="crossref" href="unittest.html#group">group</a>.</p></li><li><strong>Checks</strong>: Test expectations can be specified via <code>expect</code></li><li>
+<p><strong>Matchers</strong>: <code>expect</code> assertions are written declaratively using the
+   <code>Matcher</code> class.</p></li><li>
+<p><strong>Configuration</strong>: The framework can be adapted by calling <code>configure</code> with a
+   <a class="crossref" href="unittest/Configuration.html">Configuration</a>. See the other libraries in the <code>unittest</code> package for
+   alternative implementations of <a class="crossref" href="unittest/Configuration.html">Configuration</a> including
+   <code>compact_vm_config.dart</code>, <code>html_config.dart</code> and
+   <code>html_enhanced_config.dart</code>.</p></li></ul>
 <h2>Examples</h2>
 <p>A trivial test:</p>
-<pre><span class="k ">import</span> <span class="s si">'package:unittest/unittest.dart'</span><span class="p ">;</span>
-<span class="i ">main</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'this is a test'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-    <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-<span class="p ">}</span></pre>
+<pre><code>import 'package:unittest/unittest.dart';
+main() {
+  test('this is a test', () {
+    int x = 2 + 3;
+    expect(x, equals(5));
+  });
+}
+</code></pre>
 <p>Multiple tests:</p>
-<pre><span class="k ">import</span> <span class="s si">'package:unittest/unittest.dart'</span><span class="p ">;</span>
-<span class="i ">main</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'this is a test'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-    <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'this is another test'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-    <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-<span class="p ">}</span></pre>
+<pre><code>import 'package:unittest/unittest.dart';
+main() {
+  test('this is a test', () {
+    int x = 2 + 3;
+    expect(x, equals(5));
+  });
+  test('this is another test', () {
+    int x = 2 + 3;
+    expect(x, equals(5));
+  });
+}
+</code></pre>
 <p>Multiple tests, grouped by category:</p>
-<pre><span class="k ">import</span> <span class="s si">'package:unittest/unittest.dart'</span><span class="p ">;</span>
-<span class="i ">main</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-  <span class="i ">group</span><span class="p ">(</span><span class="s si">'group A'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="i ">test</span><span class="p ">(</span><span class="s si">'test A.1'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-      <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="i ">test</span><span class="p ">(</span><span class="s si">'test A.2'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-      <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="i ">group</span><span class="p ">(</span><span class="s si">'group B'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="i ">test</span><span class="p ">(</span><span class="s si">'this B.1'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-      <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-<span class="p ">}</span></pre>
+<pre><code>import 'package:unittest/unittest.dart';
+main() {
+  group('group A', () {
+    test('test A.1', () {
+      int x = 2 + 3;
+      expect(x, equals(5));
+    });
+    test('test A.2', () {
+      int x = 2 + 3;
+      expect(x, equals(5));
+    });
+  });
+  group('group B', () {
+    test('this B.1', () {
+      int x = 2 + 3;
+      expect(x, equals(5));
+    });
+  });
+}
+</code></pre>
 <p>Asynchronous tests: if callbacks expect between 0 and 2 positional arguments,
 depending on the suffix of expectAsyncX(). expectAsyncX() will wrap a
 function into a new callback and will not consider the test complete until
 that callback is run. A count argument can be provided to specify the number
 of times the callback should be called (the default is 1).</p>
-<pre><span class="k ">import</span> <span class="s si">'package:unittest/unittest.dart'</span><span class="p ">;</span>
-<span class="k ">import</span> <span class="s si">'dart:isolate'</span><span class="p ">;</span>
-<span class="i ">main</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'callback is executed once'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="c ">// wrap the callback of an asynchronous call with [expectAsync0] if</span>
-    <span class="c ">// the callback takes 0 arguments...</span>
-    <span class="k ">var</span> <span class="i ">timer</span> <span class="o ">=</span> <span class="t ">Timer</span><span class="p ">.</span><span class="i ">run</span><span class="p ">(</span><span class="i ">expectAsync0</span><span class="p ">(</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-      <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
+<pre><code>import 'package:unittest/unittest.dart';
+import 'dart:isolate';
+main() {
+  test('callback is executed once', () {
+    // wrap the callback of an asynchronous call with [expectAsync0] if
+    // the callback takes 0 arguments...
+    var timer = Timer.run(expectAsync0(() {
+      int x = 2 + 3;
+      expect(x, equals(5));
+    }));
+  });
 
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'callback is executed twice'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="k ">var</span> <span class="i ">callback</span> <span class="o ">=</span> <span class="i ">expectAsync0</span><span class="p ">(</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-      <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">,</span> <span class="i ">count</span><span class="p ">:</span> <span class="n ">2</span><span class="p ">)</span><span class="p ">;</span> <span class="c ">// &lt;-- we can indicate multiplicity to [expectAsync0]</span>
-    <span class="t ">Timer</span><span class="p ">.</span><span class="i ">run</span><span class="p ">(</span><span class="i ">callback</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="t ">Timer</span><span class="p ">.</span><span class="i ">run</span><span class="p ">(</span><span class="i ">callback</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-<span class="p ">}</span></pre>
+  test('callback is executed twice', () {
+    var callback = expectAsync0(() {
+      int x = 2 + 3;
+      expect(x, equals(5));
+    }, count: 2); // &lt;-- we can indicate multiplicity to [expectAsync0]
+    Timer.run(callback);
+    Timer.run(callback);
+  });
+}
+</code></pre>
 <p>expectAsyncX() will wrap the callback code in a try/catch handler to handle
 exceptions (treated as test failures). There may be times when the number of
 times a callback should be called is non-deterministic. In this case a dummy
@@ -139,38 +140,27 @@ features or fixes to the current spec (e.g. see
 <p>Meanwhile, we plan to add this alternative API for callbacks of more than 2
 arguments or that take named parameters. (this is not implemented yet,
 but will be coming here soon).</p>
-<pre><span class="k ">import</span> <span class="s si">'package:unittest/unittest.dart'</span><span class="p ">;</span>
-<span class="k ">import</span> <span class="s si">'dart:isolate'</span><span class="p ">;</span>
-<span class="i ">main</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-  <span class="i ">test</span><span class="p ">(</span><span class="s si">'callback is executed'</span><span class="p ">,</span> <span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-    <span class="c ">// indicate ahead of time that an async callback is expected.</span>
-    <span class="k ">var</span> <span class="i ">async</span> <span class="o ">=</span> <span class="i ">startAsync</span><span class="p ">(</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="t ">Timer</span><span class="p ">.</span><span class="i ">run</span><span class="p ">(</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-      <span class="c ">// Guard the body of the callback, so errors are propagated</span>
-      <span class="c ">// correctly.</span>
-      <span class="i ">guardAsync</span><span class="p ">(</span><span class="p ">(</span><span class="p ">)</span> <span class="p ">{</span>
-        <span class="t ">int</span> <span class="i ">x</span> <span class="o ">=</span> <span class="n ">2</span> <span class="o ">+</span> <span class="n ">3</span><span class="p ">;</span>
-        <span class="i ">expect</span><span class="p ">(</span><span class="i ">x</span><span class="p ">,</span> <span class="i ">equals</span><span class="p ">(</span><span class="n ">5</span><span class="p ">)</span><span class="p ">)</span><span class="p ">;</span>
-      <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-      <span class="c ">// indicate that the asynchronous callback was invoked.</span>
-      <span class="i ">async</span><span class="p ">.</span><span class="i ">complete</span><span class="p ">(</span><span class="p ">)</span><span class="p ">;</span>
-    <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-  <span class="p ">}</span><span class="p ">)</span><span class="p ">;</span>
-<span class="p ">}</span></pre></div>
+<pre><code>import 'package:unittest/unittest.dart';
+import 'dart:isolate';
+main() {
+  test('callback is executed', () {
+    // indicate ahead of time that an async callback is expected.
+    var async = startAsync();
+    Timer.run(() {
+      // Guard the body of the callback, so errors are propagated
+      // correctly.
+      guardAsync(() {
+        int x = 2 + 3;
+        expect(x, equals(5));
+      });
+      // indicate that the asynchronous callback was invoked.
+      async.complete();
+    });
+  });
+}
+</code></pre></div>
 <div>
 <h3>Properties</h3>
-<div class="field"><h4 id="config">
-<button class="show-code">Code</button>
-final <a href="unittest/Configuration.html">Configuration</a>         <strong>config</strong> <a class="anchor-link"
-            href="#config"
-            title="Permalink to config">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-Configuration get config =&gt; _config;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="currentTestCase">
 <button class="show-code">Code</button>
 final <a href="unittest/TestCase.html">TestCase</a>         <strong>currentTestCase</strong> <a class="anchor-link"
@@ -178,10 +168,11 @@ final <a href="unittest/TestCase.html">TestCase</a>         <strong>currentTestC
             title="Permalink to currentTestCase">#</a>
         </h4>
         <div class="doc">
+<p><a class="crossref" href="unittest/TestCase.html">TestCase</a> currently being executed. </p>
 <pre class="source">
 TestCase get currentTestCase =&gt;
-   (_currentTest &gt;= 0 &amp;&amp; _currentTest &lt; _tests.length)
-       ? _tests[_currentTest]
+   (_currentTestCaseIndex &gt;= 0 &amp;&amp; _currentTestCaseIndex &lt; _testCases.length)
+       ? _testCases[_currentTestCaseIndex]
        : null;
 </pre>
 </div>
@@ -194,7 +185,7 @@ const         <strong>ERROR</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-ERROR = 'error'
+const ERROR = 'error'
 </pre>
 </div>
 </div>
@@ -206,7 +197,7 @@ const         <strong>FAIL</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-FAIL  = 'fail'
+const FAIL  = 'fail'
 </pre>
 </div>
 </div>
@@ -217,8 +208,9 @@ String         <strong>groupSep</strong> <a class="anchor-link"
             title="Permalink to groupSep">#</a>
         </h4>
         <div class="doc">
+<p>Separator used between group names and test names. </p>
 <pre class="source">
-groupSep = ' '
+String groupSep = ' '
 </pre>
 </div>
 </div>
@@ -229,8 +221,9 @@ const         <strong>PASS</strong> <a class="anchor-link"
             title="Permalink to PASS">#</a>
         </h4>
         <div class="doc">
+<p>Test case result strings. </p>
 <pre class="source">
-PASS  = 'pass'
+const PASS  = 'pass'
 </pre>
 </div>
 </div>
@@ -243,7 +236,7 @@ final List&lt;<a href="unittest/TestCase.html">TestCase</a>&gt;         <strong>
         <div class="doc">
 <p>Get the list of tests. </p>
 <pre class="source">
-List&lt;TestCase&gt; get testCases =&gt; _tests;
+final List&lt;TestCase&gt; testCases = new UnmodifiableListView(_testCases)
 </pre>
 </div>
 </div>
@@ -254,8 +247,43 @@ Map         <strong>testState</strong> <a class="anchor-link"
             title="Permalink to testState">#</a>
         </h4>
         <div class="doc">
+<p>A map that can be used to communicate state between a test driver
+or main() function and the tests, particularly when these two
+are otherwise independent. For example, a test driver that starts
+an HTTP server and then runs tests that access that server could use
+this as a way of communicating the server port to the tests.</p>
 <pre class="source">
-testState = {}
+Map testState = {}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="unittestConfiguration">
+<button class="show-code">Code</button>
+<a href="unittest/Configuration.html">Configuration</a> <strong>get unittestConfiguration</strong> <a class="anchor-link" href="#unittestConfiguration"
+              title="Permalink to get unittestConfiguration">#</a></h4>
+<div class="doc">
+<p><a class="crossref" href="unittest/Configuration.html">Configuration</a> used by the unittest library. </p>
+<pre class="source">
+Configuration get unittestConfiguration =&gt; _config;
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="unittestConfiguration=">
+<button class="show-code">Code</button>
+void <strong>set unittestConfiguration</strong>(<a href="unittest/Configuration.html">Configuration</a> value) <a class="anchor-link" href="#unittestConfiguration="
+              title="Permalink to set unittestConfiguration">#</a></h4>
+<div class="doc">
+<p>Sets the <a class="crossref" href="unittest/Configuration.html">Configuration</a> used by the unittest library.</p>
+<p>Throws a <code>StateError</code> if there is an existing, incompatible value.</p>
+<pre class="source">
+void set unittestConfiguration(Configuration value) {
+ if(!identical(_config, value)) {
+   if(_config != null) {
+     throw new StateError('unittestConfiguration has already been set');
+   }
+   _config = value;
+ }
+}
 </pre>
 </div>
 </div>
@@ -292,9 +320,9 @@ void <strong>setSoloTest</strong>(int id) <a class="anchor-link" href="#setSoloT
 <p>Select a solo test by ID. </p>
 <pre class="source">
 void setSoloTest(int id) {
- for (var i = 0; i &lt; _tests.length; i++) {
-   if (_tests[i].id == id) {
-     _soloTest = _tests[i];
+ for (var i = 0; i &lt; _testCases.length; i++) {
+   if (_testCases[i].id == id) {
+     _soloTest = _testCases[i];
      break;
    }
  }
@@ -310,27 +338,7 @@ void <strong>ensureInitialized</strong>() <a class="anchor-link" href="#ensureIn
 <p>Lazily initializes the test library if not already initialized.</p>
 <pre class="source">
 void ensureInitialized() {
- if (_initialized) {
-   return;
- }
- _initialized = true;
- // Hook our async guard into the matcher library.
- wrapAsync = (f, [id]) =&gt; expectAsync1(f, id: id);
-
- _tests = &lt;TestCase&gt;[];
- _testRunner = _nextBatch;
- _uncaughtErrorMessage = null;
-
- if (_config == null) {
-   _config = new Configuration();
- }
- _config.onInit();
-
- if (_config.autoStart) {
-   // Immediately queue the suite up. It will run after a timeout (i.e. after
-   // main() has returned).
-   _defer(runTests);
- }
+ _ensureInitialized(true);
 }
 </pre>
 </div>
@@ -343,14 +351,14 @@ void <strong>registerException</strong>(e, [trace]) <a class="anchor-link" href=
 <p>Registers that an exception was caught for the current test.</p>
 <pre class="source">
 void registerException(e, [trace]) {
- _registerException(_currentTest, e, trace);
+ _registerException(_currentTestCaseIndex, e, trace);
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="guardAsync">
 <button class="show-code">Code</button>
-<strong>guardAsync</strong>(Function tryBody) <a class="anchor-link" href="#guardAsync"
+dynamic<strong>guardAsync</strong>(Function tryBody) <a class="anchor-link" href="#guardAsync"
               title="Permalink to guardAsync">#</a></h4>
 <div class="doc">
 <p>Run 
@@ -360,7 +368,7 @@ passed to the corresponding test.</p>
 <span class="param">tryBody</span> (if any) is returned by <a class="crossref" href="unittest.html#guardAsync">guardAsync</a>.</p>
 <pre class="source">
 guardAsync(Function tryBody) {
- return _guardAsync(tryBody, null, _currentTest);
+ return _guardAsync(tryBody, null, _currentTestCaseIndex);
 }
 </pre>
 </div>
@@ -373,7 +381,8 @@ void <strong>runTests</strong>() <a class="anchor-link" href="#runTests"
 <p>Runs all queued tests, one at a time. </p>
 <pre class="source">
 void runTests() {
- _currentTest = 0;
+ _ensureInitialized(false);
+ _currentTestCaseIndex = 0;
  _currentGroup = '';
 
  // If we are soloing a test, remove all the others.
@@ -384,7 +393,7 @@ void runTests() {
  _config.onStart();
 
  _defer(() {
-   _testRunner();
+   _nextBatch();
  });
 }
 </pre>
@@ -410,7 +419,7 @@ void filterTests(testFilter) {
  } else if (testFilter is Function) {
    filterFunction = testFilter;
  }
- _tests.retainMatching(filterFunction);
+ _testCases.retainWhere(filterFunction);
 }
 </pre>
 </div>
@@ -703,8 +712,8 @@ void solo_test(String spec, TestFunction body) {
 
  ensureInitialized();
 
- _soloTest = new TestCase(_tests.length + 1, _fullSpec(spec), body, 0);
- _tests.add(_soloTest);
+ _soloTest = new TestCase._internal(_testCases.length + 1, _fullSpec(spec), body);
+ _testCases.add(_soloTest);
 }
 </pre>
 </div>
@@ -720,7 +729,8 @@ calls.</p>
 <pre class="source">
 void test(String spec, TestFunction body) {
  ensureInitialized();
- _tests.add(new TestCase(_tests.length + 1, _fullSpec(spec), body, 0));
+ _testCases.add(new TestCase._internal(_testCases.length + 1, _fullSpec(spec),
+                                       body));
 }
 </pre>
 </div>
@@ -730,25 +740,11 @@ void test(String spec, TestFunction body) {
 void <strong>logMessage</strong>(String message) <a class="anchor-link" href="#logMessage"
               title="Permalink to logMessage">#</a></h4>
 <div class="doc">
+<p>Can be called by tests to log status. Tests should use this
+instead of <code>print</code>.</p>
 <pre class="source">
-void logMessage(String message) =&gt; _config.logMessage(message);
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="configure">
-<button class="show-code">Code</button>
-<a href="unittest/Configuration.html">Configuration</a> <strong>configure</strong>(<a href="unittest/Configuration.html">Configuration</a> config) <a class="anchor-link" href="#configure"
-              title="Permalink to configure">#</a></h4>
-<div class="doc">
-<p>Set the <a class="crossref" href="unittest/Configuration.html">Configuration</a> used by the unittest library. Returns any
-previous configuration.
-TODO: consider deprecating in favor of a setter now we have a getter.</p>
-<pre class="source">
-Configuration configure(Configuration config) {
- Configuration _oldConfig = _config;
- _config = config;
- return _oldConfig;
-}
+void logMessage(String message) =&gt;
+   _config.onLogMessage(currentTestCase, message);
 </pre>
 </div>
 </div>

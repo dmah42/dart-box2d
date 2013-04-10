@@ -5,7 +5,7 @@
         <title>CanvasViewportTransform class / box2d_browser Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -78,7 +78,7 @@ const int         <strong>DEFAULT_DRAWING_SCALE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-DEFAULT_DRAWING_SCALE = 20
+static const int DEFAULT_DRAWING_SCALE = 20
 </pre>
 </div>
 </div>
@@ -109,8 +109,9 @@ CanvasViewportTransform(vec2 _extents, vec2 _center) :
             title="Permalink to CanvasViewportTransform.center">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
+<p>center of the viewport.</p>
 <pre class="source">
-center
+vec2 center
 </pre>
 </div>
 </div>
@@ -121,8 +122,11 @@ center
             title="Permalink to CanvasViewportTransform.extents">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
+<p>This is the half-width and half-height.
+This should be the actual half-width and 
+half-height, not anything transformed or scaled.</p>
 <pre class="source">
-extents
+vec2 extents
 </pre>
 </div>
 </div>
@@ -133,8 +137,10 @@ num         <strong>scale</strong> <a class="anchor-link"
             title="Permalink to CanvasViewportTransform.scale">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
+<p>Returns the scaling factor used in converting from world sizes to rendering
+sizes.</p>
 <pre class="source">
-scale
+num scale
 </pre>
 </div>
 </div>
@@ -166,8 +172,9 @@ bool         <strong>yFlip</strong> <a class="anchor-link"
             title="Permalink to CanvasViewportTransform.yFlip">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
+<p>if we flip the y axis when transforming.</p>
 <pre class="source">
-yFlip
+bool yFlip
 </pre>
 </div>
 </div>

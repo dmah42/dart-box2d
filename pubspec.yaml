@@ -1,10 +1,10 @@
 name: box2d
-version: 0.1.3
+version: 0.1.4
 description: A port of the popular Box2D physics engine to Dart.
 author: Dominic Hamon <dominic@google.com>
-homepage: http://code.google.com/p/dartbox2d
+homepage: http://github.com/google/dartbox2d
 dependencies:
-  vector_math: ">=0.9.5 <0.9.6"
+  vector_math: ">=0.9.7 <0.9.8"
 dev_dependencies:
-  args: ">=0.4.4 <0.4.5"
-  unittest: ">=0.4.4 <0.4.5"
+  args: ">=0.4.5 <0.4.6"
+  unittest: ">=0.4.5 <0.4.6"
