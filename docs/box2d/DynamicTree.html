@@ -90,7 +90,7 @@ class DynamicTree {
   * Create a proxy. Provides a tight fitting axis aligned box
   * and a userData pointer.
   */
- DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
+ DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
    DynamicTreeNode proxy = _allocateNode();
 
    // Fatten the bounding box.
@@ -528,13 +528,13 @@ int computeHeightFromRoot() =&gt; _computeHeight(_root);
 </div>
 <div class="method"><h4 id="createProxy">
 <button class="show-code">Code</button>
-<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, Object userData) <a class="anchor-link" href="#createProxy"
+<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, dynamic userData) <a class="anchor-link" href="#createProxy"
               title="Permalink to DynamicTree.createProxy">#</a></h4>
 <div class="doc">
 <p>Create a proxy. Provides a tight fitting axis aligned box
 and a userData pointer.</p>
 <pre class="source">
-DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
+DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
  DynamicTreeNode proxy = _allocateNode();
 
  // Fatten the bounding box.

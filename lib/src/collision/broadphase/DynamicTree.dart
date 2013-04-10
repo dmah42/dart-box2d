@@ -80,7 +80,7 @@ class DynamicTree {
    * Create a proxy. Provides a tight fitting axis aligned box
    * and a userData pointer.
    */
-  DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
+  DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
     DynamicTreeNode proxy = _allocateNode();
 
     // Fatten the bounding box.

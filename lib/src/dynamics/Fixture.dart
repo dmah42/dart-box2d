@@ -40,7 +40,7 @@ class Fixture {
 
   bool isSensor;
 
-  Object userData;
+  dynamic userData;
 
   final AxisAlignedBox _poolOne;
   final AxisAlignedBox _poolTwo;

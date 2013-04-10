@@ -37,7 +37,7 @@ class Body {
   num sleepTime;
 
   /** User can store what they want in here. */
-  Object userData;
+  dynamic userData;
 
   /** The linear velocity of this body. */
   final vec2 _linearVelocity;

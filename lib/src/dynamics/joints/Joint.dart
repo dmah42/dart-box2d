@@ -34,7 +34,7 @@ class Joint {
 
   bool collideConnected;
 
-  Object userData;
+  dynamic userData;
 
   // Cache here per time step to reduce cache misses.
   final vec2 localCenterA;
