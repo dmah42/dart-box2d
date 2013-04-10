@@ -168,9 +168,8 @@ const num         <strong>ANGULAR_SLEEP_TOLERANCE</strong> <a class="anchor-link
             title="Permalink to Settings.ANGULAR_SLEEP_TOLERANCE">#</a>
         </h4>
         <div class="doc">
-<p>A body cannot sleep if its angular velocity is above this tolerance.</p>
 <pre class="source">
-static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * math.PI
+ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * math.PI
 </pre>
 </div>
 </div>
@@ -181,10 +180,8 @@ const num         <strong>ANGULAR_SLOP</strong> <a class="anchor-link"
             title="Permalink to Settings.ANGULAR_SLOP">#</a>
         </h4>
         <div class="doc">
-<p>A small angle used as a collision and constraint tolerance. Usually it is
-chosen to be numerically significant, but visually insignificant.</p>
 <pre class="source">
-static const num ANGULAR_SLOP = (2.0 / 180.0 * math.PI)
+ANGULAR_SLOP = (2.0 / 180.0 * math.PI)
 </pre>
 </div>
 </div>
@@ -196,7 +193,7 @@ const num         <strong>BIG_NUMBER</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const num BIG_NUMBER = 99999999999999.0
+BIG_NUMBER = 99999999999999.0
 </pre>
 </div>
 </div>
@@ -207,11 +204,8 @@ const num         <strong>BOUNDING_BOX_EXTENSION</strong> <a class="anchor-link"
             title="Permalink to Settings.BOUNDING_BOX_EXTENSION">#</a>
         </h4>
         <div class="doc">
-<p>Fattens bounding boxes in the dynamic tree by this amount. Allows proxies
-to move by small amounts without needing to adjust the tree. This value is
-in meters.</p>
 <pre class="source">
-static const num BOUNDING_BOX_EXTENSION = .1
+BOUNDING_BOX_EXTENSION = .1
 </pre>
 </div>
 </div>
@@ -222,11 +216,8 @@ const num         <strong>BOUNDING_BOX_MULTIPLIER</strong> <a class="anchor-link
             title="Permalink to Settings.BOUNDING_BOX_MULTIPLIER">#</a>
         </h4>
         <div class="doc">
-<p>This is used to fatten AABBs in the dynamic tree. This is used to predict
-the future position based on the current displacement.
-This is a dimensionless multiplier.</p>
 <pre class="source">
-static const num BOUNDING_BOX_MULTIPLIER = 2
+BOUNDING_BOX_MULTIPLIER = 2
 </pre>
 </div>
 </div>
@@ -237,11 +228,8 @@ const num         <strong>CONTACT_BAUMGARTE</strong> <a class="anchor-link"
             title="Permalink to Settings.CONTACT_BAUMGARTE">#</a>
         </h4>
         <div class="doc">
-<p>This scale factor controls how fast overlap is resolved. Ideally this
-would be 1 so that overlap is removed in one time step. However using
-values close to 1 often lead to overshoot.</p>
 <pre class="source">
-static const num CONTACT_BAUMGARTE = 0.2
+CONTACT_BAUMGARTE = 0.2
 </pre>
 </div>
 </div>
@@ -252,9 +240,8 @@ const int         <strong>CONTACT_STACK_INIT_SIZE</strong> <a class="anchor-link
             title="Permalink to Settings.CONTACT_STACK_INIT_SIZE">#</a>
         </h4>
         <div class="doc">
-<p>Size that pool stacks are initialized to. </p>
 <pre class="source">
-static const int CONTACT_STACK_INIT_SIZE = 10
+CONTACT_STACK_INIT_SIZE = 10
 </pre>
 </div>
 </div>
@@ -265,9 +252,8 @@ const num         <strong>EPSILON</strong> <a class="anchor-link"
             title="Permalink to Settings.EPSILON">#</a>
         </h4>
         <div class="doc">
-<p>A "close to Zero" num epsilon value for use </p>
 <pre class="source">
-static const num EPSILON = .0000001192
+EPSILON = .0000001192
 </pre>
 </div>
 </div>
@@ -278,9 +264,8 @@ const num         <strong>LINEAR_SLEEP_TOLERANCE</strong> <a class="anchor-link"
             title="Permalink to Settings.LINEAR_SLEEP_TOLERANCE">#</a>
         </h4>
         <div class="doc">
-<p>A body cannot sleep if its linear velocity is above this tolerance.</p>
 <pre class="source">
-static const num LINEAR_SLEEP_TOLERANCE = 0.01
+LINEAR_SLEEP_TOLERANCE = 0.01
 </pre>
 </div>
 </div>
@@ -291,10 +276,8 @@ const num         <strong>LINEAR_SLOP</strong> <a class="anchor-link"
             title="Permalink to Settings.LINEAR_SLOP">#</a>
         </h4>
         <div class="doc">
-<p>A small length used as a collision and constant tolerance. Usually it
-is chosen to be numerically significant, but visually insignificant.</p>
 <pre class="source">
-static const num LINEAR_SLOP = 0.005
+LINEAR_SLOP = 0.005
 </pre>
 </div>
 </div>
@@ -305,10 +288,8 @@ const num         <strong>MAX_ANGULAR_CORRECTION</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_ANGULAR_CORRECTION">#</a>
         </h4>
         <div class="doc">
-<p>The maximum angular position correction used when solving constraints.
-This helps to prevent overshoot.</p>
 <pre class="source">
-static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * math.PI)
+MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * math.PI)
 </pre>
 </div>
 </div>
@@ -320,7 +301,7 @@ const int         <strong>MAX_INTEGER</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const int MAX_INTEGER = 2147483647
+MAX_INTEGER = 2147483647
 </pre>
 </div>
 </div>
@@ -331,10 +312,8 @@ const num         <strong>MAX_LINEAR_CORRECTION</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_LINEAR_CORRECTION">#</a>
         </h4>
         <div class="doc">
-<p>The maximum linear position correction used when solving constraints.
-This helps to prevent overshoot.</p>
 <pre class="source">
-static const num MAX_LINEAR_CORRECTION = 0.2
+MAX_LINEAR_CORRECTION = 0.2
 </pre>
 </div>
 </div>
@@ -345,9 +324,8 @@ const int         <strong>MAX_MANIFOLD_POINTS</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_MANIFOLD_POINTS">#</a>
         </h4>
         <div class="doc">
-<p>The maximum number of contact points between two convex shapes.</p>
 <pre class="source">
-static const int MAX_MANIFOLD_POINTS = 2
+MAX_MANIFOLD_POINTS = 2
 </pre>
 </div>
 </div>
@@ -358,9 +336,8 @@ const int         <strong>MAX_POLYGON_VERTICES</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_POLYGON_VERTICES">#</a>
         </h4>
         <div class="doc">
-<p>The maximum number of vertices on a convex polygon.</p>
 <pre class="source">
-static const int MAX_POLYGON_VERTICES = 8
+MAX_POLYGON_VERTICES = 8
 </pre>
 </div>
 </div>
@@ -371,10 +348,8 @@ const num         <strong>MAX_ROTATION</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_ROTATION">#</a>
         </h4>
         <div class="doc">
-<p>The maximum angular velocity of a body. This limit is very large and is
-used to prevent numerical problems. You shouldn't need to adjust this.</p>
 <pre class="source">
-static const num MAX_ROTATION = 0.5 * math.PI
+MAX_ROTATION = 0.5 * math.PI
 </pre>
 </div>
 </div>
@@ -386,7 +361,7 @@ const num         <strong>MAX_ROTATION_SQUARED</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const num MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION
+MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION
 </pre>
 </div>
 </div>
@@ -397,9 +372,8 @@ const int         <strong>MAX_TIME_OF_IMPACT_CONTACTS</strong> <a class="anchor-
             title="Permalink to Settings.MAX_TIME_OF_IMPACT_CONTACTS">#</a>
         </h4>
         <div class="doc">
-<p>Maximum number of contacts to be handled to solve a TimeOfImpact island.</p>
 <pre class="source">
-static const int MAX_TIME_OF_IMPACT_CONTACTS = 32
+MAX_TIME_OF_IMPACT_CONTACTS = 32
 </pre>
 </div>
 </div>
@@ -410,10 +384,8 @@ const num         <strong>MAX_TRANSLATION</strong> <a class="anchor-link"
             title="Permalink to Settings.MAX_TRANSLATION">#</a>
         </h4>
         <div class="doc">
-<p>The maximum linear velocity of a body. This limit is very large and is
-used to prevent numerical problems. You shouldn't need to adjust this.</p>
 <pre class="source">
-static const num MAX_TRANSLATION = 2.0
+MAX_TRANSLATION = 2.0
 </pre>
 </div>
 </div>
@@ -425,7 +397,7 @@ const num         <strong>MAX_TRANSLATION_SQUARED</strong> <a class="anchor-link
         </h4>
         <div class="doc">
 <pre class="source">
-static const num MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION
+MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION
 </pre>
 </div>
 </div>
@@ -436,12 +408,8 @@ const num         <strong>POLYGON_RADIUS</strong> <a class="anchor-link"
             title="Permalink to Settings.POLYGON_RADIUS">#</a>
         </h4>
         <div class="doc">
-<p>The radius of the polygon/edge shape skin. This should not be modified.
-Making this smaller means polygons will have and insufficient for
-continuous collision. Making it larger may create artifacts for vertex
-collision.</p>
 <pre class="source">
-static const num POLYGON_RADIUS = 2.0 * LINEAR_SLOP
+POLYGON_RADIUS = 2.0 * LINEAR_SLOP
 </pre>
 </div>
 </div>
@@ -453,7 +421,7 @@ const num         <strong>SMALL_NUMBER</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const num SMALL_NUMBER = .000000000001
+SMALL_NUMBER = .000000000001
 </pre>
 </div>
 </div>
@@ -465,7 +433,7 @@ const num         <strong>TIME_TO_SLEEP</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const num TIME_TO_SLEEP = 0.5
+TIME_TO_SLEEP = 0.5
 </pre>
 </div>
 </div>
@@ -477,7 +445,7 @@ const int         <strong>TREE_REBALANCE_STEPS</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const int TREE_REBALANCE_STEPS = 4
+TREE_REBALANCE_STEPS = 4
 </pre>
 </div>
 </div>
@@ -489,7 +457,7 @@ const num         <strong>VELOCITY_THRESHOLD</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const num VELOCITY_THRESHOLD = 1
+VELOCITY_THRESHOLD = 1
 </pre>
 </div>
 </div>

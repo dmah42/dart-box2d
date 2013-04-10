@@ -71,9 +71,11 @@ class Sweep {
   * if their fields are equal.
   */
  bool operator ==(other) {
-   return localCenter == other.localCenter &amp;&amp; centerZero == other.centerZero
-       &amp;&amp; center == other.center &amp;&amp; angleZero == other.angleZero &amp;&amp;
-       angle == other.angle;
+   return localCenter == other.localCenter &amp;&amp;
+          centerZero == other.centerZero &amp;&amp;
+          center == other.center &amp;&amp;
+          angleZero == other.angleZero &amp;&amp;
+          angle == other.angle;
  }
 
  /**
@@ -98,7 +100,7 @@ class Sweep {
   * Time is the normalized time in [0,1].
   */
  void getTransform(Transform xf, num alpha) {
-   assert (xf != null);
+   assert(xf != null);
 
    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
    xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
@@ -169,7 +171,7 @@ num         <strong>angle</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num angle
+angle
 </pre>
 </div>
 </div>
@@ -180,9 +182,8 @@ num         <strong>angleZero</strong> <a class="anchor-link"
             title="Permalink to Sweep.angleZero">#</a>
         </h4>
         <div class="doc">
-<p>World angles. </p>
 <pre class="source">
-num angleZero
+angleZero
 </pre>
 </div>
 </div>
@@ -194,7 +195,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>center</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 center
+center
 </pre>
 </div>
 </div>
@@ -205,9 +206,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>centerZero</st
             title="Permalink to Sweep.centerZero">#</a>
         </h4>
         <div class="doc">
-<p>Center world positions. </p>
 <pre class="source">
-final vec2 centerZero
+centerZero
 </pre>
 </div>
 </div>
@@ -218,9 +218,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenter</s
             title="Permalink to Sweep.localCenter">#</a>
         </h4>
         <div class="doc">
-<p>Local center of mass position. </p>
 <pre class="source">
-final vec2 localCenter
+localCenter
 </pre>
 </div>
 </div>
@@ -236,9 +235,11 @@ bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
 if their fields are equal.</p>
 <pre class="source">
 bool operator ==(other) {
- return localCenter == other.localCenter &amp;&amp; centerZero == other.centerZero
-     &amp;&amp; center == other.center &amp;&amp; angleZero == other.angleZero &amp;&amp;
-     angle == other.angle;
+ return localCenter == other.localCenter &amp;&amp;
+        centerZero == other.centerZero &amp;&amp;
+        center == other.center &amp;&amp;
+        angleZero == other.angleZero &amp;&amp;
+        angle == other.angle;
 }
 </pre>
 </div>
@@ -271,7 +272,7 @@ void <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</
 Time is the normalized time in <code>0,1</code>.</p>
 <pre class="source">
 void getTransform(Transform xf, num alpha) {
- assert (xf != null);
+ assert(xf != null);
 
  xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
  xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;

@@ -71,7 +71,7 @@ class DynamicTree {
    _insertionCount = 0,
    _path = 0,
    _lastLeaf = null,
-   _drawVectors = new List&lt;vec2&gt;(4),
+   _drawVectors = new List&lt;vec2&gt;.generate(4, (i) =&gt; new vec2.zero()),
    _nodeCounter = 0,
    _tempVector = new vec2.zero(),
    _tempBox = new AxisAlignedBox(),
@@ -79,12 +79,7 @@ class DynamicTree {
    // Pool objects.
    center = new vec2.zero(),
    deltaOne = new vec2.zero(),
-   deltaTwo = new vec2.zero() {
-
-   // Place new vectors in the draw vectors array.
-   for (int i = 0; i &lt; _drawVectors.length; ++i)
-     _drawVectors[i] = new vec2.zero();
- }
+   deltaTwo = new vec2.zero();
 
  /**
   * Create a proxy. Provides a tight fitting axis aligned box
@@ -436,7 +431,7 @@ const int         <strong>MAX_STACK_SIZE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const int MAX_STACK_SIZE = 64
+MAX_STACK_SIZE = 64
 </pre>
 </div>
 </div>
@@ -456,7 +451,7 @@ DynamicTree() :
  _insertionCount = 0,
  _path = 0,
  _lastLeaf = null,
- _drawVectors = new List&lt;vec2&gt;(4),
+ _drawVectors = new List&lt;vec2&gt;.generate(4, (i) =&gt; new vec2.zero()),
  _nodeCounter = 0,
  _tempVector = new vec2.zero(),
  _tempBox = new AxisAlignedBox(),
@@ -464,12 +459,7 @@ DynamicTree() :
  // Pool objects.
  center = new vec2.zero(),
  deltaOne = new vec2.zero(),
- deltaTwo = new vec2.zero() {
-
- // Place new vectors in the draw vectors array.
- for (int i = 0; i &lt; _drawVectors.length; ++i)
-   _drawVectors[i] = new vec2.zero();
-}
+ deltaTwo = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -484,7 +474,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>center</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 center
+center
 </pre>
 </div>
 </div>
@@ -496,7 +486,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>deltaOne</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 deltaOne
+deltaOne
 </pre>
 </div>
 </div>
@@ -508,7 +498,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>deltaTwo</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 deltaTwo
+deltaTwo
 </pre>
 </div>
 </div>

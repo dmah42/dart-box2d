@@ -59,14 +59,11 @@ class PolygonShape extends Shape {
  PolygonShape() :
      super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
      vertexCount = 0,
-     vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
-     normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
-     centroid = new vec2.zero() {
-   for (int i = 0; i &lt; vertices.length; ++i)
-     vertices[i] = new vec2.zero();
-   for (int i = 0; i &lt; normals.length; ++i)
-     normals[i] = new vec2.zero();
- }
+     vertices = new List&lt;vec2&gt;.generate(
+         Settings.MAX_POLYGON_VERTICES, (i) =&gt; new vec2.zero()),
+     normals = new List&lt;vec2&gt;.generate(
+         Settings.MAX_POLYGON_VERTICES, (i) =&gt; new vec2.zero()),
+     centroid = new vec2.zero();
 
  /**
   * Constructs a new PolygonShape equal to the given shape.
@@ -90,9 +87,9 @@ class PolygonShape extends Shape {
   */
  int getSupport(vec2 d) {
    int bestIndex = 0;
-   num bestValue = dot(vertices[0], d);
+   double bestValue = dot(vertices[0], d);
    for (int i = 1; i &lt; vertexCount; ++i) {
-     num value = dot(vertices[i], d);
+     double value = dot(vertices[i], d);
      if (value &gt; bestValue) {
        bestIndex = i;
        bestValue = value;
@@ -277,9 +274,7 @@ class PolygonShape extends Shape {
    out.scale(1.0 / area);
  }
 
- /**
-  * See Shape.computeMass(MassData)
-  */
+ /** See Shape.computeMass(MassData) */
  void computeMass(MassData massData, num density) {
    // Polygon mass, centroid, and inertia.
    // Let rho be the polygon density in mass per unit area.
@@ -404,14 +399,11 @@ new <strong>PolygonShape</strong>() <a class="anchor-link" href="#PolygonShape"
 PolygonShape() :
    super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
    vertexCount = 0,
-   vertices = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
-   normals = new List&lt;vec2&gt;(Settings.MAX_POLYGON_VERTICES),
-   centroid = new vec2.zero() {
- for (int i = 0; i &lt; vertices.length; ++i)
-   vertices[i] = new vec2.zero();
- for (int i = 0; i &lt; normals.length; ++i)
-   normals[i] = new vec2.zero();
-}
+   vertices = new List&lt;vec2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES, (i) =&gt; new vec2.zero()),
+   normals = new List&lt;vec2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES, (i) =&gt; new vec2.zero()),
+   centroid = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -448,9 +440,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>centroid</stro
             title="Permalink to PolygonShape.centroid">#</a>
         </h4>
         <div class="doc">
-<p>Local position of the shape centroid in parent body frame.</p>
 <pre class="source">
-final vec2 centroid
+centroid
 </pre>
 </div>
 </div>
@@ -461,10 +452,8 @@ final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>no
             title="Permalink to PolygonShape.normals">#</a>
         </h4>
         <div class="doc">
-<p>The normals of the shape. Note: Use getVertexCount() rather than
-normals.length to get the number of active normals.</p>
 <pre class="source">
-final List&lt;vec2&gt; normals
+normals
 </pre>
 </div>
 </div>
@@ -475,9 +464,8 @@ num         <strong>radius</strong> <a class="anchor-link"
             title="Permalink to PolygonShape.radius">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
-<p>Shape radius. </p>
 <pre class="source">
-num radius
+radius
 </pre>
 </div>
 </div>
@@ -488,9 +476,8 @@ int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to PolygonShape.type">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
-<p>The type of shape. Either circle or polygon. </p>
 <pre class="source">
-int type
+type
 </pre>
 </div>
 </div>
@@ -502,7 +489,7 @@ int         <strong>vertexCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int vertexCount
+vertexCount
 </pre>
 </div>
 </div>
@@ -513,10 +500,8 @@ final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>ve
             title="Permalink to PolygonShape.vertices">#</a>
         </h4>
         <div class="doc">
-<p>The vertices of the shape. Note: Use getVertexCount() rather than
-vertices.length to get the number of active vertices.</p>
 <pre class="source">
-final List&lt;vec2&gt; vertices
+vertices
 </pre>
 </div>
 </div>
@@ -646,7 +631,7 @@ void computeCentroidToOut(List&lt;vec2&gt; vs, int count, vec2 out) {
 void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, num density) <a class="anchor-link" href="#computeMass"
               title="Permalink to PolygonShape.computeMass">#</a></h4>
 <div class="doc">
-<p>See Shape.computeMass(MassData)</p>
+<p>See Shape.computeMass(MassData) </p>
 <pre class="source">
 void computeMass(MassData massData, num density) {
  // Polygon mass, centroid, and inertia.
@@ -752,9 +737,9 @@ int <strong>getSupport</strong>(<a href="../vector_math/vec2.html">vec2</a> d) <
 <pre class="source">
 int getSupport(vec2 d) {
  int bestIndex = 0;
- num bestValue = dot(vertices[0], d);
+ double bestValue = dot(vertices[0], d);
  for (int i = 1; i &lt; vertexCount; ++i) {
-   num value = dot(vertices[i], d);
+   double value = dot(vertices[i], d);
    if (value &gt; bestValue) {
      bestIndex = i;
      bestValue = value;

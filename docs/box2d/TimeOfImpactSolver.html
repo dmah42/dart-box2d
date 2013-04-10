@@ -48,18 +48,15 @@ class TimeOfImpactSolver {
  TimeOfImpactSolver() :
    count = 0,
    toiBody = null,
-   constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+   constraints = new List&lt;TimeOfImpactConstraint&gt;.generate(
+       4, (i) =&gt; new TimeOfImpactConstraint()),
 
    // Initialize pool variables.
    psm = new TimeOfImpactSolverManifold(),
    rA = new vec2.zero(),
    rB = new vec2.zero(),
    P = new vec2.zero(),
-   temp = new vec2.zero() {
-   for (int i = 0; i&lt;constraints.length; i++){
-     constraints[i] = new TimeOfImpactConstraint();
-   }
- }
+   temp = new vec2.zero();
 
  void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
    count = argCount;
@@ -190,18 +187,15 @@ new <strong>TimeOfImpactSolver</strong>() <a class="anchor-link" href="#TimeOfIm
 TimeOfImpactSolver() :
  count = 0,
  toiBody = null,
- constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+ constraints = new List&lt;TimeOfImpactConstraint&gt;.generate(
+     4, (i) =&gt; new TimeOfImpactConstraint()),
 
  // Initialize pool variables.
  psm = new TimeOfImpactSolverManifold(),
  rA = new vec2.zero(),
  rB = new vec2.zero(),
  P = new vec2.zero(),
- temp = new vec2.zero() {
- for (int i = 0; i&lt;constraints.length; i++){
-   constraints[i] = new TimeOfImpactConstraint();
- }
-}
+ temp = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -216,7 +210,7 @@ List&lt;<a href="../box2d/TimeOfImpactConstraint.html">TimeOfImpactConstraint</a
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;TimeOfImpactConstraint&gt; constraints
+constraints
 </pre>
 </div>
 </div>
@@ -228,7 +222,7 @@ int         <strong>count</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int count
+count
 </pre>
 </div>
 </div>
@@ -240,7 +234,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 P
+P
 </pre>
 </div>
 </div>
@@ -251,9 +245,8 @@ final <a href="../box2d/TimeOfImpactSolverManifold.html">TimeOfImpactSolverManif
             title="Permalink to TimeOfImpactSolver.psm">#</a>
         </h4>
         <div class="doc">
-<p>Pooling. </p>
 <pre class="source">
-final TimeOfImpactSolverManifold psm
+psm
 </pre>
 </div>
 </div>
@@ -265,7 +258,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rA
+rA
 </pre>
 </div>
 </div>
@@ -277,7 +270,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rB
+rB
 </pre>
 </div>
 </div>
@@ -289,7 +282,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp
+temp
 </pre>
 </div>
 </div>
@@ -301,7 +294,7 @@ final vec2 temp
         </h4>
         <div class="doc">
 <pre class="source">
-Body toiBody
+toiBody
 </pre>
 </div>
 </div>

@@ -51,13 +51,8 @@ class SimplexCache {
  SimplexCache() :
    metric = 0,
    count = 0,
-   indexA = new List&lt;int&gt;(3),
-   indexB = new List&lt;int&gt;(3) {
-   for (int i = 0; i &lt; 3; ++i) {
-     indexA[i] = Settings.MAX_INTEGER;
-     indexB[i] = Settings.MAX_INTEGER;
-   }
- }
+   indexA = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER),
+   indexB = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
 
  /**
   * Sets this cache equal to the given cache.
@@ -83,13 +78,8 @@ new <strong>SimplexCache</strong>() <a class="anchor-link" href="#SimplexCache"
 SimplexCache() :
  metric = 0,
  count = 0,
- indexA = new List&lt;int&gt;(3),
- indexB = new List&lt;int&gt;(3) {
- for (int i = 0; i &lt; 3; ++i) {
-   indexA[i] = Settings.MAX_INTEGER;
-   indexB[i] = Settings.MAX_INTEGER;
- }
-}
+ indexA = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER),
+ indexB = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
 </pre>
 </div>
 </div>
@@ -104,7 +94,7 @@ int         <strong>count</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int count
+count
 </pre>
 </div>
 </div>
@@ -115,9 +105,8 @@ final List&lt;int&gt;         <strong>indexA</strong> <a class="anchor-link"
             title="Permalink to SimplexCache.indexA">#</a>
         </h4>
         <div class="doc">
-<p>vertices on shape A </p>
 <pre class="source">
-final List&lt;int&gt; indexA
+indexA
 </pre>
 </div>
 </div>
@@ -128,9 +117,8 @@ final List&lt;int&gt;         <strong>indexB</strong> <a class="anchor-link"
             title="Permalink to SimplexCache.indexB">#</a>
         </h4>
         <div class="doc">
-<p>vertices on shape B </p>
 <pre class="source">
-final List&lt;int&gt; indexB
+indexB
 </pre>
 </div>
 </div>
@@ -141,9 +129,8 @@ num         <strong>metric</strong> <a class="anchor-link"
             title="Permalink to SimplexCache.metric">#</a>
         </h4>
         <div class="doc">
-<p>length or area </p>
 <pre class="source">
-num metric
+metric
 </pre>
 </div>
 </div>

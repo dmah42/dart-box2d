@@ -57,18 +57,15 @@ class ContactConstraint {
  Manifold manifold;
 
  ContactConstraint() :
-   points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+   points = new List&lt;ContactConstraintPoint&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
    pointCount = 0,
    manifold = null,
    localNormal = new vec2.zero(),
    localPoint = new vec2.zero(),
    normal = new vec2.zero(),
    normalMass = new mat2.zero(),
-   K = new mat2.zero() {
-   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-       points[i] = new ContactConstraintPoint();
-   }
- }
+   K = new mat2.zero();
 
  void setFrom(ContactConstraint cp) {
    pointCount = cp.pointCount;
@@ -107,18 +104,15 @@ new <strong>ContactConstraint</strong>() <a class="anchor-link" href="#ContactCo
 <div class="doc">
 <pre class="source">
 ContactConstraint() :
- points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+ points = new List&lt;ContactConstraintPoint&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
  pointCount = 0,
  manifold = null,
  localNormal = new vec2.zero(),
  localPoint = new vec2.zero(),
  normal = new vec2.zero(),
  normalMass = new mat2.zero(),
- K = new mat2.zero() {
- for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-     points[i] = new ContactConstraintPoint();
- }
-}
+ K = new mat2.zero();
 </pre>
 </div>
 </div>
@@ -133,7 +127,7 @@ ContactConstraint() :
         </h4>
         <div class="doc">
 <pre class="source">
-Body bodyA
+bodyA
 </pre>
 </div>
 </div>
@@ -145,7 +139,7 @@ Body bodyA
         </h4>
         <div class="doc">
 <pre class="source">
-Body bodyB
+bodyB
 </pre>
 </div>
 </div>
@@ -157,7 +151,7 @@ num         <strong>friction</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num friction
+friction
 </pre>
 </div>
 </div>
@@ -169,7 +163,7 @@ final <a href="../vector_math/mat2.html">mat2</a>         <strong>K</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-final mat2 K
+K
 </pre>
 </div>
 </div>
@@ -181,7 +175,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</s
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localNormal
+localNormal
 </pre>
 </div>
 </div>
@@ -193,7 +187,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</st
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+localPoint
 </pre>
 </div>
 </div>
@@ -205,7 +199,7 @@ final vec2 localPoint
         </h4>
         <div class="doc">
 <pre class="source">
-Manifold manifold
+manifold
 </pre>
 </div>
 </div>
@@ -217,7 +211,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 normal
+normal
 </pre>
 </div>
 </div>
@@ -229,7 +223,7 @@ final <a href="../vector_math/mat2.html">mat2</a>         <strong>normalMass</st
         </h4>
         <div class="doc">
 <pre class="source">
-final mat2 normalMass
+normalMass
 </pre>
 </div>
 </div>
@@ -241,7 +235,7 @@ int         <strong>pointCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int pointCount
+pointCount
 </pre>
 </div>
 </div>
@@ -253,7 +247,7 @@ List&lt;<a href="../box2d/ContactConstraintPoint.html">ContactConstraintPoint</a
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;ContactConstraintPoint&gt; points
+points
 </pre>
 </div>
 </div>
@@ -265,7 +259,7 @@ num         <strong>radius</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num radius
+radius
 </pre>
 </div>
 </div>
@@ -277,7 +271,7 @@ num         <strong>restitution</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num restitution
+restitution
 </pre>
 </div>
 </div>
@@ -289,7 +283,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int type
+type
 </pre>
 </div>
 </div>

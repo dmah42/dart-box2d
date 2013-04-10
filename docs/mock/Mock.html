@@ -366,9 +366,8 @@ Mock.custom({this.name,
             title="Permalink to Mock.log">#</a>
         </h4>
         <div class="doc">
-<p>The <a class="crossref" href="../mock/Mock.html#log">log</a> of calls made. Only used if <a class="crossref" href="../mock/Mock.html#name">name</a> is null. </p>
 <pre class="source">
-LogEntryList log
+log
 </pre>
 </div>
 </div>
@@ -399,9 +398,8 @@ final String         <strong>name</strong> <a class="anchor-link"
             title="Permalink to Mock.name">#</a>
         </h4>
         <div class="doc">
-<p>The mock name. Needed if the log is shared; optional otherwise. </p>
 <pre class="source">
-final String name
+name
 </pre>
 </div>
 </div>
@@ -490,7 +488,7 @@ LogEntryList getLogs([CallMatcher logFilter,
 </div>
 <div class="method"><h4 id="noSuchMethod">
 <button class="show-code">Code</button>
-dynamic<strong>noSuchMethod</strong>(InvocationMirror invocation) <a class="anchor-link" href="#noSuchMethod"
+<strong>noSuchMethod</strong>(InvocationMirror invocation) <a class="anchor-link" href="#noSuchMethod"
               title="Permalink to Mock.noSuchMethod">#</a></h4>
 <div class="doc">
 <p>This is the handler for method calls. We loop through the list

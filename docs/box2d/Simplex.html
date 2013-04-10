@@ -34,30 +34,19 @@
 <div class="doc">
 <pre class="source">
 class Simplex {
- final SimplexVertex v1;
- final SimplexVertex v2;
- final SimplexVertex v3;
  final List&lt;SimplexVertex&gt; vertices;
  int count;
 
  Simplex() :
    count = 0,
-   v1 = new SimplexVertex(),
-   v2 = new SimplexVertex(),
-   v3 = new SimplexVertex(),
-   vertices = new List&lt;SimplexVertex&gt;(3),
+   vertices = new List&lt;SimplexVertex&gt;.generate(3, (i) =&gt; new SimplexVertex()),
    e13 = new vec2.zero(),
    e12 = new vec2.zero(),
    e23 = new vec2.zero(),
    case2 = new vec2.zero(),
    case22 = new vec2.zero(),
    case3 = new vec2.zero(),
-   case33 = new vec2.zero() {
-
-   vertices[0] = v1;
-   vertices[1] = v2;
-   vertices[2] = v3;
- }
+   case33 = new vec2.zero();
 
  /** Pooling. */
  final vec2 e13;
@@ -69,9 +58,9 @@ class Simplex {
  final vec2 case33;
 
  void readCache(SimplexCache cache, DistanceProxy proxyA,
-     Transform transformA, DistanceProxy proxyB,
-     Transform transformB) {
-   assert (cache.count &lt;= 3);
+                 Transform transformA, DistanceProxy proxyB,
+                 Transform transformB) {
+   assert(cache.count &lt;= 3);
 
    // Copy data from cache.
    count = cache.count;
@@ -93,8 +82,9 @@ class Simplex {
    if (count &gt; 1) {
      num metric1 = cache.metric;
      num metric2 = getMetric();
-     if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
-         Settings.EPSILON) {
+     if (metric2 &lt; 0.5 * metric1 ||
+         2.0 * metric1 &lt; metric2 ||
+         metric2 &lt; Settings.EPSILON) {
        // Reset the simplex.
        count = 0;
      }
@@ -119,35 +109,33 @@ class Simplex {
    cache.count = count;
 
    for (int i = 0; i &lt; count; ++i) {
-     cache.indexA[i] = (vertices[i].indexA);
-     cache.indexB[i] = (vertices[i].indexB);
+     cache.indexA[i] = vertices[i].indexA;
+     cache.indexB[i] = vertices[i].indexB;
    }
  }
 
  void getSearchDirection(vec2 out) {
    switch (count) {
-     case 1 :
-       out.copyFrom(v1.w).negate();
-       return;
-     case 2 :
-       e12.copyFrom(v2.w).sub(v1.w);
+     case 1:
+       out.copyFrom(vertices[0].w).negate();
+       break;
+     case 2:
+       e12.copyFrom(vertices[1].w).sub(vertices[0].w);
        // use out for a temp variable real quick
-       out.copyFrom(v1.w).negate();
+       out.copyFrom(vertices[0].w).negate();
        num sgn = cross(e12, out);
 
        if (sgn &gt; 0) {
          // Origin is left of e12.
          out = cross(1, e12);
-       }
-       else {
+       } else {
          // Origin is right of e12.
          out = cross(e12, 1);
        }
        break;
-     default :
-       assert (false);
-       out.splat(0.0);
-       return;
+     default:
+       assert(false);
+       break;
    }
  }
 
@@ -157,98 +145,91 @@ class Simplex {
   */
  void getClosestPoint(vec2 out) {
    switch (count) {
-     case 0 :
-       assert (false);
-       out.splat(0.0);
-       return;
-     case 1 :
-       out.copyFrom(v1.w);
-       return;
-     case 2 :
-       case22.copyFrom(v2.w).scale(v2.a);
-       case2.copyFrom(v1.w).scale(v1.a).add(case22);
+     case 0:
+       assert(false);
+       break;
+     case 1:
+       out.copyFrom(vertices[0].w);
+       break;
+     case 2:
+       case22.copyFrom(vertices[1].w).scale(vertices[1].a);
+       case2.copyFrom(vertices[0].w).scale(vertices[0].a).add(case22);
        out.copyFrom(case2);
-       return;
-     case 3 :
+       break;
+     case 3:
        out.splat(0.0);
-       return;
+       break;
      default :
-       assert (false);
-       out.splat(0.0);
-       return;
+       assert(false);
+       break;
    }
  }
 
 
  void getWitnessPoints(vec2 pA, vec2 pB) {
    switch (count) {
-     case 0 :
-       assert (false);
+     case 0:
+       assert(false);
        break;
-
-     case 1 :
-       pA.copyFrom(v1.wA);
-       pB.copyFrom(v1.wB);
+     case 1:
+       pA.copyFrom(vertices[0].wA);
+       pB.copyFrom(vertices[0].wB);
        break;
-
      case 2 :
-       case2.copyFrom(v1.wA).scale(v1.a);
-       pA.copyFrom(v2.wA).scale(v2.a).add(case2);
-       case2.copyFrom(v1.wB).scale(v1.a);
-       pB.copyFrom(v2.wB).scale(v2.a).add(case2);
-
+       case2.copyFrom(vertices[0].wA).scale(vertices[0].a);
+       pA.copyFrom(vertices[1].wA).scale(vertices[1].a).add(case2);
+       case2.copyFrom(vertices[0].wB).scale(vertices[0].a);
+       pB.copyFrom(vertices[1].wB).scale(vertices[1].a).add(case2);
        break;
 
      case 3 :
-       pA.copyFrom(v1.wA).scale(v1.a);
-       case3.copyFrom(v2.wA).scale(v2.a);
-       case33.copyFrom(v3.wA).scale(v3.a);
+       pA.copyFrom(vertices[0].wA).scale(vertices[0].a);
+       case3.copyFrom(vertices[1].wA).scale(vertices[1].a);
+       case33.copyFrom(vertices[2].wA).scale(vertices[2].a);
        pA.add(case3).add(case33);
        pB.copyFrom(pA);
        break;
 
      default :
-       assert (false);
+       assert(false);
        break;
    }
  }
 
  num getMetric() {
    switch (count) {
-     case 0 :
-       assert (false);
+     case 0:
+       assert(false);
+       break;
+
+     case 1:
        return 0.0;
 
-     case 1 :
-       return 0.0;
+     case 2:
+       return distance(vertices[0].w, vertices[1].w);
 
-     case 2 :
-       return distance(v1.w, v2.w);
-
-     case 3 :
-       case3.copyFrom(v2.w).sub(v1.w);
-       case33.copyFrom(v3.w).sub(v1.w);
+     case 3:
+       case3.copyFrom(vertices[1].w).sub(vertices[0].w);
+       case33.copyFrom(vertices[2].w).sub(vertices[0].w);
        return cross(case3, case33);
 
-     default :
-       assert (false);
-       return 0.0;
+     default:
+       assert(false);
+       break;
    }
  }
 
- /**
-  * Solve a line segment using barycentric coordinates.
-  */
+ /** Solve a line segment using barycentric coordinates. */
  void solve2() {
-   vec2 w1 = v1.w;
-   vec2 w2 = v2.w;
+   vec2 w1 = vertices[0].w;
+   vec2 w2 = vertices[1].w;
    e12.copyFrom(w2).sub(w1);
 
    // w1 region
    num d12_2 = -dot(w1, e12);
    if (d12_2 &lt;= 0.0) {
      // a2 &lt;= 0, so we clamp it to 0
-     v1.a = 1.0;
+     vertices[0].a = 1.0;
      count = 1;
      return;
    }
@@ -257,16 +238,16 @@ class Simplex {
    num d12_1 = dot(w2, e12);
    if (d12_1 &lt;= 0.0) {
      // a1 &lt;= 0, so we clamp it to 0
-     v2.a = 1.0;
+     vertices[1].a = 1.0;
      count = 1;
-     v1.setFrom(v2);
+     vertices[0].setFrom(vertices[1]);
      return;
    }
 
    // Must be in e12 region.
    num inv_d12 = 1.0 / (d12_1 + d12_2);
-   v1.a = d12_1 * inv_d12;
-   v2.a = d12_2 * inv_d12;
+   vertices[0].a = d12_1 * inv_d12;
+   vertices[1].a = d12_2 * inv_d12;
    count = 2;
  }
 
@@ -279,9 +260,9 @@ class Simplex {
   * - inside the triangle
   */
  void solve3() {
-   vec2 w1 = v1.w;
-   vec2 w2 = v2.w;
-   vec2 w3 = v3.w;
+   vec2 w1 = vertices[0].w;
+   vec2 w2 = vertices[1].w;
+   vec2 w3 = vertices[2].w;
 
    // Edge12
    e12.copyFrom(w2).sub(w1);
@@ -313,7 +294,7 @@ class Simplex {
 
    // w1 region
    if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
-     v1.a = 1.0;
+     vertices[0].a = 1.0;
      count = 1;
      return;
    }
@@ -321,8 +302,8 @@ class Simplex {
    // e12
    if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
      num inv_d12 = 1.0 / (d12_1 + d12_2);
-     v1.a = d12_1 * inv_d12;
-     v2.a = d12_2 * inv_d12;
+     vertices[0].a = d12_1 * inv_d12;
+     vertices[1].a = d12_2 * inv_d12;
      count = 2;
      return;
    }
@@ -330,44 +311,44 @@ class Simplex {
    // e13
    if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
      num inv_d13 = 1.0 / (d13_1 + d13_2);
-     v1.a = d13_1 * inv_d13;
-     v3.a = d13_2 * inv_d13;
+     vertices[0].a = d13_1 * inv_d13;
+     vertices[2].a = d13_2 * inv_d13;
      count = 2;
-     v2.setFrom(v3);
+     vertices[1].setFrom(vertices[2]);
      return;
    }
 
    // w2 region
    if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
-     v2.a = 1.0;
+     vertices[1].a = 1.0;
      count = 1;
-     v1.setFrom(v2);
+     vertices[0].setFrom(vertices[1]);
      return;
    }
 
    // w3 region
    if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
-     v3.a = 1.0;
+     vertices[2].a = 1.0;
      count = 1;
-     v1.setFrom(v3);
+     vertices[0].setFrom(vertices[2]);
      return;
    }
 
    // e23
    if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
      num inv_d23 = 1.0 / (d23_1 + d23_2);
-     v2.a = d23_1 * inv_d23;
-     v3.a = d23_2 * inv_d23;
+     vertices[1].a = d23_1 * inv_d23;
+     vertices[2].a = d23_2 * inv_d23;
      count = 2;
-     v1.setFrom(v3);
+     vertices[0].setFrom(vertices[2]);
      return;
    }
 
    // Must be in triangle123
    num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
-   v1.a = d123_1 * inv_d123;
-   v2.a = d123_2 * inv_d123;
-   v3.a = d123_3 * inv_d123;
+   vertices[0].a = d123_1 * inv_d123;
+   vertices[1].a = d123_2 * inv_d123;
+   vertices[2].a = d123_3 * inv_d123;
    count = 3;
  }
 }
@@ -383,22 +364,14 @@ new <strong>Simplex</strong>() <a class="anchor-link" href="#Simplex"
 <pre class="source">
 Simplex() :
  count = 0,
- v1 = new SimplexVertex(),
- v2 = new SimplexVertex(),
- v3 = new SimplexVertex(),
- vertices = new List&lt;SimplexVertex&gt;(3),
+ vertices = new List&lt;SimplexVertex&gt;.generate(3, (i) =&gt; new SimplexVertex()),
  e13 = new vec2.zero(),
  e12 = new vec2.zero(),
  e23 = new vec2.zero(),
  case2 = new vec2.zero(),
  case22 = new vec2.zero(),
  case3 = new vec2.zero(),
- case33 = new vec2.zero() {
-
- vertices[0] = v1;
- vertices[1] = v2;
- vertices[2] = v3;
-}
+ case33 = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -413,7 +386,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>case2</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 case2
+case2
 </pre>
 </div>
 </div>
@@ -425,7 +398,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>case22</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 case22
+case22
 </pre>
 </div>
 </div>
@@ -437,7 +410,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>case3</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 case3
+case3
 </pre>
 </div>
 </div>
@@ -449,7 +422,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>case33</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 case33
+case33
 </pre>
 </div>
 </div>
@@ -461,7 +434,7 @@ int         <strong>count</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int count
+count
 </pre>
 </div>
 </div>
@@ -473,7 +446,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>e12</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 e12
+e12
 </pre>
 </div>
 </div>
@@ -484,9 +457,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>e13</strong> <
             title="Permalink to Simplex.e13">#</a>
         </h4>
         <div class="doc">
-<p>Pooling. </p>
 <pre class="source">
-final vec2 e13
+e13
 </pre>
 </div>
 </div>
@@ -498,43 +470,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>e23</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 e23
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="v1">
-<button class="show-code">Code</button>
-final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v1</strong> <a class="anchor-link"
-            href="#v1"
-            title="Permalink to Simplex.v1">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-final SimplexVertex v1
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="v2">
-<button class="show-code">Code</button>
-final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v2</strong> <a class="anchor-link"
-            href="#v2"
-            title="Permalink to Simplex.v2">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-final SimplexVertex v2
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="v3">
-<button class="show-code">Code</button>
-final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v3</strong> <a class="anchor-link"
-            href="#v3"
-            title="Permalink to Simplex.v3">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-final SimplexVertex v3
+e23
 </pre>
 </div>
 </div>
@@ -546,7 +482,7 @@ final List&lt;<a href="../box2d/SimplexVertex.html">SimplexVertex</a>&gt;       
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;SimplexVertex&gt; vertices
+vertices
 </pre>
 </div>
 </div>
@@ -562,25 +498,23 @@ void <strong>getClosestPoint</strong>(<a href="../vector_math/vec2.html">vec2</a
 <pre class="source">
 void getClosestPoint(vec2 out) {
  switch (count) {
-   case 0 :
-     assert (false);
-     out.splat(0.0);
-     return;
-   case 1 :
-     out.copyFrom(v1.w);
-     return;
-   case 2 :
-     case22.copyFrom(v2.w).scale(v2.a);
-     case2.copyFrom(v1.w).scale(v1.a).add(case22);
+   case 0:
+     assert(false);
+     break;
+   case 1:
+     out.copyFrom(vertices[0].w);
+     break;
+   case 2:
+     case22.copyFrom(vertices[1].w).scale(vertices[1].a);
+     case2.copyFrom(vertices[0].w).scale(vertices[0].a).add(case22);
      out.copyFrom(case2);
-     return;
-   case 3 :
+     break;
+   case 3:
      out.splat(0.0);
-     return;
+     break;
    default :
-     assert (false);
-     out.splat(0.0);
-     return;
+     assert(false);
+     break;
  }
 }
 </pre>
@@ -594,24 +528,24 @@ num <strong>getMetric</strong>() <a class="anchor-link" href="#getMetric"
 <pre class="source">
 num getMetric() {
  switch (count) {
-   case 0 :
-     assert (false);
+   case 0:
+     assert(false);
+     break;
+
+   case 1:
      return 0.0;
 
-   case 1 :
-     return 0.0;
+   case 2:
+     return distance(vertices[0].w, vertices[1].w);
 
-   case 2 :
-     return distance(v1.w, v2.w);
-
-   case 3 :
-     case3.copyFrom(v2.w).sub(v1.w);
-     case33.copyFrom(v3.w).sub(v1.w);
+   case 3:
+     case3.copyFrom(vertices[1].w).sub(vertices[0].w);
+     case33.copyFrom(vertices[2].w).sub(vertices[0].w);
      return cross(case3, case33);
 
-   default :
-     assert (false);
-     return 0.0;
+   default:
+     assert(false);
+     break;
  }
 }
 </pre>
@@ -625,28 +559,26 @@ void <strong>getSearchDirection</strong>(<a href="../vector_math/vec2.html">vec2
 <pre class="source">
 void getSearchDirection(vec2 out) {
  switch (count) {
-   case 1 :
-     out.copyFrom(v1.w).negate();
-     return;
-   case 2 :
-     e12.copyFrom(v2.w).sub(v1.w);
+   case 1:
+     out.copyFrom(vertices[0].w).negate();
+     break;
+   case 2:
+     e12.copyFrom(vertices[1].w).sub(vertices[0].w);
      // use out for a temp variable real quick
-     out.copyFrom(v1.w).negate();
+     out.copyFrom(vertices[0].w).negate();
      num sgn = cross(e12, out);
 
      if (sgn &gt; 0) {
        // Origin is left of e12.
        out = cross(1, e12);
-     }
-     else {
+     } else {
        // Origin is right of e12.
        out = cross(e12, 1);
      }
      break;
-   default :
-     assert (false);
-     out.splat(0.0);
-     return;
+   default:
+     assert(false);
+     break;
  }
 }
 </pre>
@@ -660,33 +592,30 @@ void <strong>getWitnessPoints</strong>(<a href="../vector_math/vec2.html">vec2</
 <pre class="source">
 void getWitnessPoints(vec2 pA, vec2 pB) {
  switch (count) {
-   case 0 :
-     assert (false);
+   case 0:
+     assert(false);
      break;
-
-   case 1 :
-     pA.copyFrom(v1.wA);
-     pB.copyFrom(v1.wB);
+   case 1:
+     pA.copyFrom(vertices[0].wA);
+     pB.copyFrom(vertices[0].wB);
      break;
-
    case 2 :
-     case2.copyFrom(v1.wA).scale(v1.a);
-     pA.copyFrom(v2.wA).scale(v2.a).add(case2);
-     case2.copyFrom(v1.wB).scale(v1.a);
-     pB.copyFrom(v2.wB).scale(v2.a).add(case2);
-
+     case2.copyFrom(vertices[0].wA).scale(vertices[0].a);
+     pA.copyFrom(vertices[1].wA).scale(vertices[1].a).add(case2);
+     case2.copyFrom(vertices[0].wB).scale(vertices[0].a);
+     pB.copyFrom(vertices[1].wB).scale(vertices[1].a).add(case2);
      break;
 
    case 3 :
-     pA.copyFrom(v1.wA).scale(v1.a);
-     case3.copyFrom(v2.wA).scale(v2.a);
-     case33.copyFrom(v3.wA).scale(v3.a);
+     pA.copyFrom(vertices[0].wA).scale(vertices[0].a);
+     case3.copyFrom(vertices[1].wA).scale(vertices[1].a);
+     case33.copyFrom(vertices[2].wA).scale(vertices[2].a);
      pA.add(case3).add(case33);
      pB.copyFrom(pA);
      break;
 
    default :
-     assert (false);
+     assert(false);
      break;
  }
 }
@@ -700,9 +629,9 @@ void <strong>readCache</strong>(<a href="../box2d/SimplexCache.html">SimplexCach
 <div class="doc">
 <pre class="source">
 void readCache(SimplexCache cache, DistanceProxy proxyA,
-   Transform transformA, DistanceProxy proxyB,
-   Transform transformB) {
- assert (cache.count &lt;= 3);
+               Transform transformA, DistanceProxy proxyB,
+               Transform transformB) {
+ assert(cache.count &lt;= 3);
 
  // Copy data from cache.
  count = cache.count;
@@ -724,8 +653,9 @@ void readCache(SimplexCache cache, DistanceProxy proxyA,
  if (count &gt; 1) {
    num metric1 = cache.metric;
    num metric2 = getMetric();
-   if (metric2 &lt; 0.5 * metric1 || 2.0 * metric1 &lt; metric2 || metric2 &lt;
-       Settings.EPSILON) {
+   if (metric2 &lt; 0.5 * metric1 ||
+       2.0 * metric1 &lt; metric2 ||
+       metric2 &lt; Settings.EPSILON) {
      // Reset the simplex.
      count = 0;
    }
@@ -752,18 +682,18 @@ void readCache(SimplexCache cache, DistanceProxy proxyA,
 void <strong>solve2</strong>() <a class="anchor-link" href="#solve2"
               title="Permalink to Simplex.solve2">#</a></h4>
 <div class="doc">
-<p>Solve a line segment using barycentric coordinates.</p>
+<p>Solve a line segment using barycentric coordinates. </p>
 <pre class="source">
 void solve2() {
- vec2 w1 = v1.w;
- vec2 w2 = v2.w;
+ vec2 w1 = vertices[0].w;
+ vec2 w2 = vertices[1].w;
  e12.copyFrom(w2).sub(w1);
 
  // w1 region
  num d12_2 = -dot(w1, e12);
  if (d12_2 &lt;= 0.0) {
    // a2 &lt;= 0, so we clamp it to 0
-   v1.a = 1.0;
+   vertices[0].a = 1.0;
    count = 1;
    return;
  }
@@ -772,16 +702,16 @@ void solve2() {
  num d12_1 = dot(w2, e12);
  if (d12_1 &lt;= 0.0) {
    // a1 &lt;= 0, so we clamp it to 0
-   v2.a = 1.0;
+   vertices[1].a = 1.0;
    count = 1;
-   v1.setFrom(v2);
+   vertices[0].setFrom(vertices[1]);
    return;
  }
 
  // Must be in e12 region.
  num inv_d12 = 1.0 / (d12_1 + d12_2);
- v1.a = d12_1 * inv_d12;
- v2.a = d12_2 * inv_d12;
+ vertices[0].a = d12_1 * inv_d12;
+ vertices[1].a = d12_2 * inv_d12;
  count = 2;
 }
 </pre>
@@ -800,9 +730,9 @@ Possible regions:&lt;br/>
 - inside the triangle</p>
 <pre class="source">
 void solve3() {
- vec2 w1 = v1.w;
- vec2 w2 = v2.w;
- vec2 w3 = v3.w;
+ vec2 w1 = vertices[0].w;
+ vec2 w2 = vertices[1].w;
+ vec2 w3 = vertices[2].w;
 
  // Edge12
  e12.copyFrom(w2).sub(w1);
@@ -834,7 +764,7 @@ void solve3() {
 
  // w1 region
  if (d12_2 &lt;= 0.0 &amp;&amp; d13_2 &lt;= 0.0) {
-   v1.a = 1.0;
+   vertices[0].a = 1.0;
    count = 1;
    return;
  }
@@ -842,8 +772,8 @@ void solve3() {
  // e12
  if (d12_1 &gt; 0.0 &amp;&amp; d12_2 &gt; 0.0 &amp;&amp; d123_3 &lt;= 0.0) {
    num inv_d12 = 1.0 / (d12_1 + d12_2);
-   v1.a = d12_1 * inv_d12;
-   v2.a = d12_2 * inv_d12;
+   vertices[0].a = d12_1 * inv_d12;
+   vertices[1].a = d12_2 * inv_d12;
    count = 2;
    return;
  }
@@ -851,44 +781,44 @@ void solve3() {
  // e13
  if (d13_1 &gt; 0.0 &amp;&amp; d13_2 &gt; 0.0 &amp;&amp; d123_2 &lt;= 0.0) {
    num inv_d13 = 1.0 / (d13_1 + d13_2);
-   v1.a = d13_1 * inv_d13;
-   v3.a = d13_2 * inv_d13;
+   vertices[0].a = d13_1 * inv_d13;
+   vertices[2].a = d13_2 * inv_d13;
    count = 2;
-   v2.setFrom(v3);
+   vertices[1].setFrom(vertices[2]);
    return;
  }
 
  // w2 region
  if (d12_1 &lt;= 0.0 &amp;&amp; d23_2 &lt;= 0.0) {
-   v2.a = 1.0;
+   vertices[1].a = 1.0;
    count = 1;
-   v1.setFrom(v2);
+   vertices[0].setFrom(vertices[1]);
    return;
  }
 
  // w3 region
  if (d13_1 &lt;= 0.0 &amp;&amp; d23_1 &lt;= 0.0) {
-   v3.a = 1.0;
+   vertices[2].a = 1.0;
    count = 1;
-   v1.setFrom(v3);
+   vertices[0].setFrom(vertices[2]);
    return;
  }
 
  // e23
  if (d23_1 &gt; 0.0 &amp;&amp; d23_2 &gt; 0.0 &amp;&amp; d123_1 &lt;= 0.0) {
    num inv_d23 = 1.0 / (d23_1 + d23_2);
-   v2.a = d23_1 * inv_d23;
-   v3.a = d23_2 * inv_d23;
+   vertices[1].a = d23_1 * inv_d23;
+   vertices[2].a = d23_2 * inv_d23;
    count = 2;
-   v1.setFrom(v3);
+   vertices[0].setFrom(vertices[2]);
    return;
  }
 
  // Must be in triangle123
  num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
- v1.a = d123_1 * inv_d123;
- v2.a = d123_2 * inv_d123;
- v3.a = d123_3 * inv_d123;
+ vertices[0].a = d123_1 * inv_d123;
+ vertices[1].a = d123_2 * inv_d123;
+ vertices[2].a = d123_3 * inv_d123;
  count = 3;
 }
 </pre>
@@ -905,8 +835,8 @@ void writeCache(SimplexCache cache) {
  cache.count = count;
 
  for (int i = 0; i &lt; count; ++i) {
-   cache.indexA[i] = (vertices[i].indexA);
-   cache.indexB[i] = (vertices[i].indexB);
+   cache.indexA[i] = vertices[i].indexA;
+   cache.indexB[i] = vertices[i].indexB;
  }
 }
 </pre>

@@ -68,7 +68,8 @@ class ContactSolver {
 
  /** Constructs a new ContactSolver. */
  ContactSolver() :
-   constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
+   constraints = new List&lt;ContactConstraint&gt;.generate(
+       INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
 
    // Setup pool variables.
    worldManifold = new WorldManifold(),
@@ -85,11 +86,7 @@ class ContactSolver {
    P2 = new vec2.zero(),
    psolver = new PositionSolverManifold(),
    rA = new vec2.zero(),
-   rB = new vec2.zero() {
-   for(int i=0; i &lt; constraints.length; i++) {
-     constraints[i] = new ContactConstraint();
-   }
- }
+   rB = new vec2.zero();
 
  void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraintCount = contactCount;
@@ -101,7 +98,7 @@ class ContactSolver {
      constraints = new List&lt;ContactConstraint&gt;(newLen);
      constraints.setRange(0, old.length, old);
 
-     for(int i=old.length; i&lt; constraints.length; i++){
+     for(int i=old.length; i &lt; constraints.length; i++){
        constraints[i] = new ContactConstraint();
      }
    }
@@ -608,10 +605,8 @@ const int         <strong>INITIAL_NUM_CONSTRAINTS</strong> <a class="anchor-link
             title="Permalink to ContactSolver.INITIAL_NUM_CONSTRAINTS">#</a>
         </h4>
         <div class="doc">
-<p>For each solver, this is the initial number of constraints
-in the array, which expands as needed.</p>
 <pre class="source">
-static const int INITIAL_NUM_CONSTRAINTS = 256
+INITIAL_NUM_CONSTRAINTS = 256
 </pre>
 </div>
 </div>
@@ -622,9 +617,8 @@ const num         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
             title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
         </h4>
         <div class="doc">
-<p>Ensure a reasonable condition number. For the block solver</p>
 <pre class="source">
-static const num K_MAX_CONDITION_NUMBER = 100.0
+K_MAX_CONDITION_NUMBER = 100.0
 </pre>
 </div>
 </div>
@@ -639,7 +633,8 @@ new <strong>ContactSolver</strong>() <a class="anchor-link" href="#ContactSolver
 <p>Constructs a new ContactSolver. </p>
 <pre class="source">
 ContactSolver() :
- constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
+ constraints = new List&lt;ContactConstraint&gt;.generate(
+     INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
 
  // Setup pool variables.
  worldManifold = new WorldManifold(),
@@ -656,11 +651,7 @@ ContactSolver() :
  P2 = new vec2.zero(),
  psolver = new PositionSolverManifold(),
  rA = new vec2.zero(),
- rB = new vec2.zero() {
- for(int i=0; i &lt; constraints.length; i++) {
-   constraints[i] = new ContactConstraint();
- }
-}
+ rB = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -675,7 +666,7 @@ int         <strong>constraintCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int constraintCount
+constraintCount
 </pre>
 </div>
 </div>
@@ -687,7 +678,7 @@ List&lt;<a href="../box2d/ContactConstraint.html">ContactConstraint</a>&gt;     
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;ContactConstraint&gt; constraints
+constraints
 </pre>
 </div>
 </div>
@@ -699,7 +690,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>d</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 d
+d
 </pre>
 </div>
 </div>
@@ -711,7 +702,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 dv
+dv
 </pre>
 </div>
 </div>
@@ -723,7 +714,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv1</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 dv1
+dv1
 </pre>
 </div>
 </div>
@@ -735,7 +726,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>dv2</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 dv2
+dv2
 </pre>
 </div>
 </div>
@@ -747,7 +738,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 P
+P
 </pre>
 </div>
 </div>
@@ -759,7 +750,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P1</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 P1
+P1
 </pre>
 </div>
 </div>
@@ -771,7 +762,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>P2</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 P2
+P2
 </pre>
 </div>
 </div>
@@ -783,7 +774,7 @@ final <a href="../box2d/PositionSolverManifold.html">PositionSolverManifold</a> 
         </h4>
         <div class="doc">
 <pre class="source">
-final PositionSolverManifold psolver
+psolver
 </pre>
 </div>
 </div>
@@ -795,7 +786,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rA
+rA
 </pre>
 </div>
 </div>
@@ -807,7 +798,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rB
+rB
 </pre>
 </div>
 </div>
@@ -819,7 +810,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>tangent</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 tangent
+tangent
 </pre>
 </div>
 </div>
@@ -831,7 +822,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp1</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp1
+temp1
 </pre>
 </div>
 </div>
@@ -843,7 +834,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp2</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp2
+temp2
 </pre>
 </div>
 </div>
@@ -854,9 +845,8 @@ final <a href="../box2d/WorldManifold.html">WorldManifold</a>         <strong>wo
             title="Permalink to ContactSolver.worldManifold">#</a>
         </h4>
         <div class="doc">
-<p>Pooling </p>
 <pre class="source">
-final WorldManifold worldManifold
+worldManifold
 </pre>
 </div>
 </div>
@@ -868,7 +858,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>x</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 x
+x
 </pre>
 </div>
 </div>
@@ -891,7 +881,7 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraints = new List&lt;ContactConstraint&gt;(newLen);
    constraints.setRange(0, old.length, old);
 
-   for(int i=old.length; i&lt; constraints.length; i++){
+   for(int i=old.length; i &lt; constraints.length; i++){
      constraints[i] = new ContactConstraint();
    }
  }

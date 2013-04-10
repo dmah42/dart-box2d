@@ -54,14 +54,12 @@ class WorldManifold {
  /**
   * Constructs a new WorldManifold.
   */
- WorldManifold() :
-   normal = new vec2.zero(),
-   pool3 = new vec2.zero(),
-   pool4 = new vec2.zero(),
-   points = new List&lt;vec2&gt;(Settings.MAX_MANIFOLD_POINTS) {
-   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-     points[i] = new vec2.zero();
- }
+ WorldManifold()
+     : normal = new vec2.zero(),
+       pool3 = new vec2.zero(),
+       pool4 = new vec2.zero(),
+       points = new List&lt;vec2&gt;.generate(
+           Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero());
 
  void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
      num radiusB) {
@@ -107,6 +105,7 @@ class WorldManifold {
 
        final vec2 clipPoint = pool4;
 
+       // TODO(dominic): Some vector cleanup here.
        for (int i = 0; i &lt; manifold.pointCount; ++i) {
          clipPoint.x = xfB.position.x + xfB.rotation.col0.x *
              manifold.points[i].localPoint.x + xfB.rotation.col1.x *
@@ -145,8 +144,8 @@ class WorldManifold {
 
        final vec2 clipPoint = pool4;
 
+       // TODO(dominic): Some vector cleanup here.
        for (int i = 0; i &lt; manifold.pointCount; ++i) {
-
          clipPoint.x = xfA.position.x + xfA.rotation.col0.x *
              manifold.points[i].localPoint.x + xfA.rotation.col1.x *
              manifold.points[i].localPoint.y;
@@ -184,14 +183,12 @@ new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold
 <div class="doc">
 <p>Constructs a new WorldManifold.</p>
 <pre class="source">
-WorldManifold() :
- normal = new vec2.zero(),
- pool3 = new vec2.zero(),
- pool4 = new vec2.zero(),
- points = new List&lt;vec2&gt;(Settings.MAX_MANIFOLD_POINTS) {
- for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-   points[i] = new vec2.zero();
-}
+WorldManifold()
+   : normal = new vec2.zero(),
+     pool3 = new vec2.zero(),
+     pool4 = new vec2.zero(),
+     points = new List&lt;vec2&gt;.generate(
+         Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero());
 </pre>
 </div>
 </div>
@@ -205,9 +202,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong
             title="Permalink to WorldManifold.normal">#</a>
         </h4>
         <div class="doc">
-<p>World vector pointing from A to B</p>
 <pre class="source">
-final vec2 normal
+normal
 </pre>
 </div>
 </div>
@@ -218,9 +214,8 @@ final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>po
             title="Permalink to WorldManifold.points">#</a>
         </h4>
         <div class="doc">
-<p>World contact points (points of intersection)</p>
 <pre class="source">
-final List&lt;vec2&gt; points
+points
 </pre>
 </div>
 </div>
@@ -231,10 +226,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>pool3</strong>
             title="Permalink to WorldManifold.pool3">#</a>
         </h4>
         <div class="doc">
-<p>Temporary Vectors that are constructed on construction. Used to prevent
-object construction while stepping.</p>
 <pre class="source">
-final vec2 pool3
+pool3
 </pre>
 </div>
 </div>
@@ -246,7 +239,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>pool4</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 pool4
+pool4
 </pre>
 </div>
 </div>
@@ -303,6 +296,7 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
 
      final vec2 clipPoint = pool4;
 
+     // TODO(dominic): Some vector cleanup here.
      for (int i = 0; i &lt; manifold.pointCount; ++i) {
        clipPoint.x = xfB.position.x + xfB.rotation.col0.x *
            manifold.points[i].localPoint.x + xfB.rotation.col1.x *
@@ -341,8 +335,8 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
 
      final vec2 clipPoint = pool4;
 
+     // TODO(dominic): Some vector cleanup here.
      for (int i = 0; i &lt; manifold.pointCount; ++i) {
-
        clipPoint.x = xfA.position.x + xfA.rotation.col0.x *
            manifold.points[i].localPoint.x + xfA.rotation.col1.x *
            manifold.points[i].localPoint.y;

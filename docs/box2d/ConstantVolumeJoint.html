@@ -99,10 +99,7 @@ class ConstantVolumeJoint extends Joint {
    frequencyHz = def.frequencyHz;
    dampingRatio = def.dampingRatio;
 
-   normals = new List&lt;vec2&gt;(bodies.length);
-   for (int i = 0; i &lt; normals.length; ++i) {
-     normals[i] = new vec2.zero();
-   }
+   normals = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
    this.bodyA = bodies[0];
    this.bodyB = bodies[1];
@@ -136,6 +133,7 @@ class ConstantVolumeJoint extends Joint {
    num perimeter = 0.0;
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int next = (i == bodies.length - 1) ? 0 : i + 1;
+     // TODO(dominic): vector cleanup
      num dx = bodies[next].worldCenter.x - bodies[i].worldCenter.x;
      num dy = bodies[next].worldCenter.y - bodies[i].worldCenter.y;
      num dist = math.sqrt(dx * dx + dy * dy);
@@ -172,10 +170,7 @@ class ConstantVolumeJoint extends Joint {
  void initVelocityConstraints(TimeStep argStep) {
    step = argStep;
 
-   final d = new List&lt;vec2&gt;(bodies.length);
-   for (int i = 0; i &lt; bodies.length; i++) {
-     d[i] = new vec2.zero();
-   }
+   final d = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -213,10 +208,7 @@ class ConstantVolumeJoint extends Joint {
    num crossMassSum = 0.0;
    num dotMassSum = 0.0;
 
-   final d = new List&lt;vec2&gt;(bodies.length);
-   for (int i = 0; i &lt; bodies.length; i++) {
-     d[i] = new vec2.zero();
-   }
+   final d = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -303,10 +295,7 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  frequencyHz = def.frequencyHz;
  dampingRatio = def.dampingRatio;
 
- normals = new List&lt;vec2&gt;(bodies.length);
- for (int i = 0; i &lt; normals.length; ++i) {
-   normals[i] = new vec2.zero();
- }
+ normals = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
  this.bodyA = bodies[0];
  this.bodyB = bodies[1];
@@ -361,7 +350,7 @@ List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>bodies</strong
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;Body&gt; bodies
+bodies
 </pre>
 </div>
 </div>
@@ -373,7 +362,7 @@ List&lt;Body&gt; bodies
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-Body bodyA
+bodyA
 </pre>
 </div>
 </div>
@@ -385,7 +374,7 @@ Body bodyA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-Body bodyB
+bodyB
 </pre>
 </div>
 </div>
@@ -397,7 +386,7 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool collideConnected
+collideConnected
 </pre>
 </div>
 </div>
@@ -409,7 +398,7 @@ num         <strong>dampingRatio</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num dampingRatio
+dampingRatio
 </pre>
 </div>
 </div>
@@ -421,7 +410,7 @@ List&lt;<a href="../box2d/DistanceJoint.html">DistanceJoint</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;DistanceJoint&gt; distanceJoints
+distanceJoints
 </pre>
 </div>
 </div>
@@ -433,7 +422,7 @@ List&lt;DistanceJoint&gt; distanceJoints
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeA
+edgeA
 </pre>
 </div>
 </div>
@@ -445,7 +434,7 @@ JointEdge edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeB
+edgeB
 </pre>
 </div>
 </div>
@@ -457,7 +446,7 @@ num         <strong>frequencyHz</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num frequencyHz
+frequencyHz
 </pre>
 </div>
 </div>
@@ -469,7 +458,7 @@ num         <strong>invIA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIA
+invIA
 </pre>
 </div>
 </div>
@@ -481,7 +470,7 @@ num         <strong>invIB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIB
+invIB
 </pre>
 </div>
 </div>
@@ -493,7 +482,7 @@ num         <strong>invMassA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassA
+invMassA
 </pre>
 </div>
 </div>
@@ -505,7 +494,7 @@ num         <strong>invMassB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassB
+invMassB
 </pre>
 </div>
 </div>
@@ -517,7 +506,7 @@ bool         <strong>islandFlag</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool islandFlag
+islandFlag
 </pre>
 </div>
 </div>
@@ -529,7 +518,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterA</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final vec2 localCenterA
+localCenterA
 </pre>
 </div>
 </div>
@@ -541,7 +530,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterB</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final vec2 localCenterB
+localCenterB
 </pre>
 </div>
 </div>
@@ -553,7 +542,7 @@ List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>normals<
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;vec2&gt; normals
+normals
 </pre>
 </div>
 </div>
@@ -565,7 +554,7 @@ List&lt;vec2&gt; normals
         </h4>
         <div class="doc">
 <pre class="source">
-TimeStep step
+step
 </pre>
 </div>
 </div>
@@ -577,7 +566,7 @@ List&lt;num&gt;         <strong>targetLengths</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;num&gt; targetLengths
+targetLengths
 </pre>
 </div>
 </div>
@@ -589,7 +578,7 @@ num         <strong>targetVolume</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num targetVolume
+targetVolume
 </pre>
 </div>
 </div>
@@ -601,7 +590,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-int type
+type
 </pre>
 </div>
 </div>
@@ -613,7 +602,7 @@ Object         <strong>userData</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-Object userData
+userData
 </pre>
 </div>
 </div>
@@ -631,6 +620,7 @@ bool constrainEdges(TimeStep argStep) {
  num perimeter = 0.0;
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int next = (i == bodies.length - 1) ? 0 : i + 1;
+   // TODO(dominic): vector cleanup
    num dx = bodies[next].worldCenter.x - bodies[i].worldCenter.x;
    num dy = bodies[next].worldCenter.y - bodies[i].worldCenter.y;
    num dist = math.sqrt(dx * dx + dy * dy);
@@ -756,10 +746,7 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 void initVelocityConstraints(TimeStep argStep) {
  step = argStep;
 
- final d = new List&lt;vec2&gt;(bodies.length);
- for (int i = 0; i &lt; bodies.length; i++) {
-   d[i] = new vec2.zero();
- }
+ final d = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -809,10 +796,7 @@ void solveVelocityConstraints(TimeStep argStep) {
  num crossMassSum = 0.0;
  num dotMassSum = 0.0;
 
- final d = new List&lt;vec2&gt;(bodies.length);
- for (int i = 0; i &lt; bodies.length; i++) {
-   d[i] = new vec2.zero();
- }
+ final d = new List&lt;vec2&gt;.generate(bodies.length, (i) =&gt; new vec2.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;

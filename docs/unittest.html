@@ -185,7 +185,7 @@ const         <strong>ERROR</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-const ERROR = 'error'
+ERROR = 'error'
 </pre>
 </div>
 </div>
@@ -197,7 +197,7 @@ const         <strong>FAIL</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-const FAIL  = 'fail'
+FAIL  = 'fail'
 </pre>
 </div>
 </div>
@@ -208,9 +208,8 @@ String         <strong>groupSep</strong> <a class="anchor-link"
             title="Permalink to groupSep">#</a>
         </h4>
         <div class="doc">
-<p>Separator used between group names and test names. </p>
 <pre class="source">
-String groupSep = ' '
+groupSep = ' '
 </pre>
 </div>
 </div>
@@ -221,9 +220,8 @@ const         <strong>PASS</strong> <a class="anchor-link"
             title="Permalink to PASS">#</a>
         </h4>
         <div class="doc">
-<p>Test case result strings. </p>
 <pre class="source">
-const PASS  = 'pass'
+PASS  = 'pass'
 </pre>
 </div>
 </div>
@@ -234,9 +232,8 @@ final List&lt;<a href="unittest/TestCase.html">TestCase</a>&gt;         <strong>
             title="Permalink to testCases">#</a>
         </h4>
         <div class="doc">
-<p>Get the list of tests. </p>
 <pre class="source">
-final List&lt;TestCase&gt; testCases = new UnmodifiableListView(_testCases)
+testCases = new UnmodifiableListView(_testCases)
 </pre>
 </div>
 </div>
@@ -247,13 +244,8 @@ Map         <strong>testState</strong> <a class="anchor-link"
             title="Permalink to testState">#</a>
         </h4>
         <div class="doc">
-<p>A map that can be used to communicate state between a test driver
-or main() function and the tests, particularly when these two
-are otherwise independent. For example, a test driver that starts
-an HTTP server and then runs tests that access that server could use
-this as a way of communicating the server port to the tests.</p>
 <pre class="source">
-Map testState = {}
+testState = {}
 </pre>
 </div>
 </div>
@@ -358,7 +350,7 @@ void registerException(e, [trace]) {
 </div>
 <div class="method"><h4 id="guardAsync">
 <button class="show-code">Code</button>
-dynamic<strong>guardAsync</strong>(Function tryBody) <a class="anchor-link" href="#guardAsync"
+<strong>guardAsync</strong>(Function tryBody) <a class="anchor-link" href="#guardAsync"
               title="Permalink to guardAsync">#</a></h4>
 <div class="doc">
 <p>Run 

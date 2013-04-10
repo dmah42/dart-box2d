@@ -145,7 +145,6 @@ class ContactManager implements PairCallback {
    Body bodyB = fixtureB.body;
 
    if (contactListener != null &amp;&amp; c.touching) {
-     print('touching - end contact');
      contactListener.endContact(c);
    }
 
@@ -280,7 +279,7 @@ ContactManager(World argPool) :
         </h4>
         <div class="doc">
 <pre class="source">
-BroadPhase broadPhase
+broadPhase
 </pre>
 </div>
 </div>
@@ -292,7 +291,7 @@ int         <strong>contactCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int contactCount
+contactCount
 </pre>
 </div>
 </div>
@@ -304,7 +303,7 @@ int contactCount
         </h4>
         <div class="doc">
 <pre class="source">
-ContactFilter contactFilter
+contactFilter
 </pre>
 </div>
 </div>
@@ -316,7 +315,7 @@ ContactFilter contactFilter
         </h4>
         <div class="doc">
 <pre class="source">
-Contact contactList
+contactList
 </pre>
 </div>
 </div>
@@ -328,7 +327,7 @@ Contact contactList
         </h4>
         <div class="doc">
 <pre class="source">
-ContactListener contactListener
+contactListener
 </pre>
 </div>
 </div>
@@ -340,7 +339,7 @@ final <a href="../box2d/World.html">World</a>         <strong>pool</strong> <a c
         </h4>
         <div class="doc">
 <pre class="source">
-final World pool
+pool
 </pre>
 </div>
 </div>
@@ -520,7 +519,6 @@ void destroy(Contact c) {
  Body bodyB = fixtureB.body;
 
  if (contactListener != null &amp;&amp; c.touching) {
-   print('touching - end contact');
    contactListener.endContact(c);
  }
 

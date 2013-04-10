@@ -79,7 +79,7 @@ class SeparationFunction {
    xfa = new Transform(),
    xfb = new Transform(),
    axisA = new vec2.zero(),
-   axisB = new vec2.zero() { }
+   axisB = new vec2.zero();
 
  num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
      argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -243,8 +243,7 @@ class SeparationFunction {
        xfa.rotation.transformed(axis, normal);
        Transform.mulToOut(xfa, localPoint, pointA);
 
-       normal.negate();
-       xfb.rotation.transposed().transformed(normal, axisB);
+       xfb.rotation.transposed().transformed(normal.negate(), axisB);
        normal.negate();
 
        localPointB.copyFrom(proxyB.vertices[indexB]);
@@ -262,8 +261,7 @@ class SeparationFunction {
        localPointA.copyFrom(proxyA.vertices[indexA]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
-       num separation = dot(pointA.sub(pointB), normal);
-       return separation;
+       return  dot(pointA.sub(pointB), normal);
 
      default:
        assert (false);
@@ -302,7 +300,7 @@ SeparationFunction() :
  xfa = new Transform(),
  xfb = new Transform(),
  axisA = new vec2.zero(),
- axisB = new vec2.zero() { }
+ axisB = new vec2.zero();
 </pre>
 </div>
 </div>
@@ -317,7 +315,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>axis</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 axis
+axis
 </pre>
 </div>
 </div>
@@ -329,7 +327,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>axisA</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 axisA
+axisA
 </pre>
 </div>
 </div>
@@ -341,7 +339,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>axisB</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 axisB
+axisB
 </pre>
 </div>
 </div>
@@ -353,7 +351,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</st
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+localPoint
 </pre>
 </div>
 </div>
@@ -364,9 +362,8 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA</s
             title="Permalink to SeparationFunction.localPointA">#</a>
         </h4>
         <div class="doc">
-<p>Pooling </p>
 <pre class="source">
-final vec2 localPointA
+localPointA
 </pre>
 </div>
 </div>
@@ -378,7 +375,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA1</
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPointA1
+localPointA1
 </pre>
 </div>
 </div>
@@ -390,7 +387,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointA2</
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPointA2
+localPointA2
 </pre>
 </div>
 </div>
@@ -402,7 +399,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB</s
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPointB
+localPointB
 </pre>
 </div>
 </div>
@@ -414,7 +411,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB1</
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPointB1
+localPointB1
 </pre>
 </div>
 </div>
@@ -426,7 +423,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPointB2</
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPointB2
+localPointB2
 </pre>
 </div>
 </div>
@@ -438,7 +435,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 normal
+normal
 </pre>
 </div>
 </div>
@@ -450,7 +447,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 pointA
+pointA
 </pre>
 </div>
 </div>
@@ -462,7 +459,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 pointB
+pointB
 </pre>
 </div>
 </div>
@@ -474,7 +471,7 @@ final vec2 pointB
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyA
+proxyA
 </pre>
 </div>
 </div>
@@ -486,7 +483,7 @@ DistanceProxy proxyA
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyB
+proxyB
 </pre>
 </div>
 </div>
@@ -498,7 +495,7 @@ DistanceProxy proxyB
         </h4>
         <div class="doc">
 <pre class="source">
-Sweep sweepA
+sweepA
 </pre>
 </div>
 </div>
@@ -510,7 +507,7 @@ Sweep sweepA
         </h4>
         <div class="doc">
 <pre class="source">
-Sweep sweepB
+sweepB
 </pre>
 </div>
 </div>
@@ -522,7 +519,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp
+temp
 </pre>
 </div>
 </div>
@@ -534,7 +531,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int type
+type
 </pre>
 </div>
 </div>
@@ -546,7 +543,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfa</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfa
+xfa
 </pre>
 </div>
 </div>
@@ -558,7 +555,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfb</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfb
+xfb
 </pre>
 </div>
 </div>
@@ -593,8 +590,7 @@ num evaluate(int indexA, int indexB, num t) {
      xfa.rotation.transformed(axis, normal);
      Transform.mulToOut(xfa, localPoint, pointA);
 
-     normal.negate();
-     xfb.rotation.transposed().transformed(normal, axisB);
+     xfb.rotation.transposed().transformed(normal.negate(), axisB);
      normal.negate();
 
      localPointB.copyFrom(proxyB.vertices[indexB]);
@@ -612,8 +608,7 @@ num evaluate(int indexA, int indexB, num t) {
      localPointA.copyFrom(proxyA.vertices[indexA]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     num separation = dot(pointA.sub(pointB), normal);
-     return separation;
+     return  dot(pointA.sub(pointB), normal);
 
    default:
      assert (false);

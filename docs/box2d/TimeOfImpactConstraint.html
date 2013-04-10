@@ -44,21 +44,19 @@ class TimeOfImpactConstraint {
  Body bodyB;
 
  TimeOfImpactConstraint() :
-   localPoints = new List&lt;vec2&gt;(Settings.MAX_MANIFOLD_POINTS),
+   localPoints = new List&lt;vec2&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero()),
    localNormal = new vec2.zero(),
    localPoint = new vec2.zero(),
    type = 0,
    radius = 0,
    pointCount = 0,
    bodyA = null,
-   bodyB = null {
-   for (int i = 0; i &lt; localPoints.length; i++) {
-     localPoints[i] = new vec2.zero();
-   }
- }
+   bodyB = null;
 
  void setFrom(TimeOfImpactConstraint argOther){
-   for(int i=0; i&lt;localPoints.length; i++){
+   expect(argOther.localPoints.length, localPoints.length);
+   for(int i=0; i&lt;localPoints.length; i++) {
      localPoints[i].copyFrom(argOther.localPoints[i]);
    }
    localNormal.copyFrom(argOther.localNormal);
@@ -81,18 +79,15 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
 <div class="doc">
 <pre class="source">
 TimeOfImpactConstraint() :
- localPoints = new List&lt;vec2&gt;(Settings.MAX_MANIFOLD_POINTS),
+ localPoints = new List&lt;vec2&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero()),
  localNormal = new vec2.zero(),
  localPoint = new vec2.zero(),
  type = 0,
  radius = 0,
  pointCount = 0,
  bodyA = null,
- bodyB = null {
- for (int i = 0; i &lt; localPoints.length; i++) {
-   localPoints[i] = new vec2.zero();
- }
-}
+ bodyB = null;
 </pre>
 </div>
 </div>
@@ -107,7 +102,7 @@ TimeOfImpactConstraint() :
         </h4>
         <div class="doc">
 <pre class="source">
-Body bodyA
+bodyA
 </pre>
 </div>
 </div>
@@ -119,7 +114,7 @@ Body bodyA
         </h4>
         <div class="doc">
 <pre class="source">
-Body bodyB
+bodyB
 </pre>
 </div>
 </div>
@@ -131,7 +126,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</s
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localNormal
+localNormal
 </pre>
 </div>
 </div>
@@ -143,7 +138,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</st
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+localPoint
 </pre>
 </div>
 </div>
@@ -155,7 +150,7 @@ final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>lo
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;vec2&gt; localPoints
+localPoints
 </pre>
 </div>
 </div>
@@ -167,7 +162,7 @@ int         <strong>pointCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int pointCount
+pointCount
 </pre>
 </div>
 </div>
@@ -179,7 +174,7 @@ num         <strong>radius</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-num radius
+radius
 </pre>
 </div>
 </div>
@@ -191,7 +186,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-int type
+type
 </pre>
 </div>
 </div>
@@ -205,7 +200,8 @@ void <strong>setFrom</strong>(<a href="../box2d/TimeOfImpactConstraint.html">Tim
 <div class="doc">
 <pre class="source">
 void setFrom(TimeOfImpactConstraint argOther){
- for(int i=0; i&lt;localPoints.length; i++){
+ expect(argOther.localPoints.length, localPoints.length);
+ for(int i=0; i&lt;localPoints.length; i++) {
    localPoints[i].copyFrom(argOther.localPoints[i]);
  }
  localNormal.copyFrom(argOther.localNormal);
