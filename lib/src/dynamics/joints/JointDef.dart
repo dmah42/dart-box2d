@@ -34,7 +34,7 @@ class JointDef {
   /**
    * Use this to attach application specific data to your joints.
    */
-  Object userData;
+  dynamic userData;
 
   /**
    * The first attached body.
