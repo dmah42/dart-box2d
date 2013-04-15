@@ -4,6 +4,7 @@ description: A port of the popular Box2D physics engine to Dart.
 author: Dominic Hamon <dominic@google.com>
 homepage: http://github.com/google/dartbox2d
 dependencies:
-  args: ">=0.4.5 <0.4.6"
-  unittest: ">=0.4.5 <0.4.6"
   vector_math: ">=0.9.7 <0.9.8"
+  unittest: ">=0.4.5 <0.4.6"
+dev_dependencies:
+  args: ">=0.4.5 <0.4.6"
