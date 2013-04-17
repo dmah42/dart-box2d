@@ -85,7 +85,7 @@ class DynamicTree {
   * Create a proxy. Provides a tight fitting axis aligned box
   * and a userData pointer.
   */
- DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
+ DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
    DynamicTreeNode proxy = _allocateNode();
 
    // Fatten the bounding box.
@@ -431,7 +431,7 @@ const int         <strong>MAX_STACK_SIZE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-MAX_STACK_SIZE = 64
+static const int MAX_STACK_SIZE = 64
 </pre>
 </div>
 </div>
@@ -474,7 +474,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>center</strong
         </h4>
         <div class="doc">
 <pre class="source">
-center
+final vec2 center
 </pre>
 </div>
 </div>
@@ -486,7 +486,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>deltaOne</stro
         </h4>
         <div class="doc">
 <pre class="source">
-deltaOne
+final vec2 deltaOne
 </pre>
 </div>
 </div>
@@ -498,7 +498,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>deltaTwo</stro
         </h4>
         <div class="doc">
 <pre class="source">
-deltaTwo
+final vec2 deltaTwo
 </pre>
 </div>
 </div>
@@ -518,13 +518,13 @@ int computeHeightFromRoot() =&gt; _computeHeight(_root);
 </div>
 <div class="method"><h4 id="createProxy">
 <button class="show-code">Code</button>
-<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, Object userData) <a class="anchor-link" href="#createProxy"
+<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, userData) <a class="anchor-link" href="#createProxy"
               title="Permalink to DynamicTree.createProxy">#</a></h4>
 <div class="doc">
 <p>Create a proxy. Provides a tight fitting axis aligned box
 and a userData pointer.</p>
 <pre class="source">
-DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
+DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
  DynamicTreeNode proxy = _allocateNode();
 
  // Fatten the bounding box.

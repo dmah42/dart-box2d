@@ -109,7 +109,7 @@ class TestCase {
    --_callbackFunctionsOutstanding;
    if (f is Future) {
      return f.then((_) =&gt; _finishTest())
-      .catchError((e) =&gt; fail("${e.error}"));
+      .catchError((error) =&gt; fail("${error}"));
    } else {
      _finishTest();
      return null;
@@ -144,7 +144,7 @@ class TestCase {
          // a failed setUp. There is no right answer, but doing it
          // seems to be the more conservative approach, because
          // unittest will not stop at a test failure.
-         error("$description: Test setup failed: ${e.error}");
+         error("$description: Test setup failed: $e");
        });
    } else {
      var f = _runTest();
@@ -184,7 +184,13 @@ class TestCase {
                [String messageText = '',
                 String stack = '']) {
    if (runningTime == null) {
-     _runningTime = new DateTime.now().difference(startTime);
+     // The startTime can be `null` if an error happened during setup. In this
+     // case we simply report a running time of 0.
+     if (startTime != null) {
+       _runningTime = new DateTime.now().difference(startTime);
+     } else {
+       _runningTime = const Duration(seconds: 0);
+     }
    }
    _setResult(testResult, messageText, stack);
    if (!_doneTeardown) {
@@ -195,11 +201,12 @@ class TestCase {
          rtn.then((_) {
            _notifyComplete();
          })
-         .catchError((e) {
+         .catchError((error) {
+           var trace = getAttachedStackTrace(error);
            // We don't call fail() as that will potentially result in
            // spurious messages like 'test failed more than once'.
-           _setResult(ERROR, "$description: Test teardown failed: ${e.error}",
-               e.stackTrace.toString());
+           _setResult(ERROR, "$description: Test teardown failed: ${error}",
+               trace == null ? "" : trace.toString());
            _notifyComplete();
          });
          return;
@@ -246,8 +253,9 @@ final String         <strong>currentGroup</strong> <a class="anchor-link"
             title="Permalink to TestCase.currentGroup">#</a>
         </h4>
         <div class="doc">
+<p>The group (or groups) under which this test is running. </p>
 <pre class="source">
-currentGroup
+final String currentGroup
 </pre>
 </div>
 </div>
@@ -258,8 +266,9 @@ final String         <strong>description</strong> <a class="anchor-link"
             title="Permalink to TestCase.description">#</a>
         </h4>
         <div class="doc">
+<p>A description of what the test is specifying. </p>
 <pre class="source">
-description
+final String description
 </pre>
 </div>
 </div>
@@ -271,7 +280,7 @@ bool         <strong>enabled</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-enabled = true
+bool enabled = true
 </pre>
 </div>
 </div>
@@ -282,8 +291,9 @@ final int         <strong>id</strong> <a class="anchor-link"
             title="Permalink to TestCase.id">#</a>
         </h4>
         <div class="doc">
+<p>Identifier for this test. </p>
 <pre class="source">
-id
+final int id
 </pre>
 </div>
 </div>
@@ -344,8 +354,9 @@ Function         <strong>setUp</strong> <a class="anchor-link"
             title="Permalink to TestCase.setUp">#</a>
         </h4>
         <div class="doc">
+<p>The setup function to call before the test, if any. </p>
 <pre class="source">
-setUp
+Function setUp
 </pre>
 </div>
 </div>
@@ -381,8 +392,9 @@ Function         <strong>tearDown</strong> <a class="anchor-link"
             title="Permalink to TestCase.tearDown">#</a>
         </h4>
         <div class="doc">
+<p>The teardown function to call after the test, if any. </p>
 <pre class="source">
-tearDown
+Function tearDown
 </pre>
 </div>
 </div>
@@ -393,8 +405,9 @@ tearDown
             title="Permalink to TestCase.testFunction">#</a>
         </h4>
         <div class="doc">
+<p>The body of the test case. </p>
 <pre class="source">
-testFunction
+TestFunction testFunction
 </pre>
 </div>
 </div>

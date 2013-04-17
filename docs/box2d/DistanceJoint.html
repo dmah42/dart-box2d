@@ -269,7 +269,7 @@ num         <strong>bias</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-bias
+num bias
 </pre>
 </div>
 </div>
@@ -281,7 +281,7 @@ bias
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -293,7 +293,7 @@ bodyA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -305,7 +305,7 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -317,7 +317,7 @@ num         <strong>dampingRatio</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-dampingRatio
+num dampingRatio
 </pre>
 </div>
 </div>
@@ -329,7 +329,7 @@ dampingRatio
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeA
+JointEdge edgeA
 </pre>
 </div>
 </div>
@@ -341,7 +341,7 @@ edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeB
+JointEdge edgeB
 </pre>
 </div>
 </div>
@@ -353,7 +353,7 @@ num         <strong>frequencyHz</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-frequencyHz
+num frequencyHz
 </pre>
 </div>
 </div>
@@ -365,7 +365,7 @@ num         <strong>gamma</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-gamma
+num gamma
 </pre>
 </div>
 </div>
@@ -377,7 +377,7 @@ num         <strong>impulse</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-impulse
+num impulse
 </pre>
 </div>
 </div>
@@ -389,7 +389,7 @@ num         <strong>invIA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIA
+num invIA
 </pre>
 </div>
 </div>
@@ -401,7 +401,7 @@ num         <strong>invIB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIB
+num invIB
 </pre>
 </div>
 </div>
@@ -413,7 +413,7 @@ num         <strong>invMassA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassA
+num invMassA
 </pre>
 </div>
 </div>
@@ -425,7 +425,7 @@ num         <strong>invMassB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassB
+num invMassB
 </pre>
 </div>
 </div>
@@ -437,7 +437,7 @@ bool         <strong>islandFlag</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-islandFlag
+bool islandFlag
 </pre>
 </div>
 </div>
@@ -449,7 +449,7 @@ num         <strong>length</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-length
+num length
 </pre>
 </div>
 </div>
@@ -461,7 +461,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localAnchor1</
         </h4>
         <div class="doc">
 <pre class="source">
-localAnchor1
+final vec2 localAnchor1
 </pre>
 </div>
 </div>
@@ -473,7 +473,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localAnchor2</
         </h4>
         <div class="doc">
 <pre class="source">
-localAnchor2
+final vec2 localAnchor2
 </pre>
 </div>
 </div>
@@ -485,7 +485,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterA</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterA
+final vec2 localCenterA
 </pre>
 </div>
 </div>
@@ -497,7 +497,7 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterB</
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterB
+final vec2 localCenterB
 </pre>
 </div>
 </div>
@@ -508,8 +508,9 @@ num         <strong>mass</strong> <a class="anchor-link"
             title="Permalink to DistanceJoint.mass">#</a>
         </h4>
         <div class="doc">
+<p>Effective mass for the constraint. </p>
 <pre class="source">
-mass
+num mass
 </pre>
 </div>
 </div>
@@ -521,7 +522,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -533,19 +534,19 @@ final <a href="../vector_math/vec2.html">vec2</a>         <strong>u</strong> <a 
         </h4>
         <div class="doc">
 <pre class="source">
-u
+final vec2 u
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="userData">
 <button class="show-code">Code</button>
-Object         <strong>userData</strong> <a class="anchor-link"
+var         <strong>userData</strong> <a class="anchor-link"
             href="#userData"
             title="Permalink to DistanceJoint.userData">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-userData
+dynamic userData
 </pre>
 </div>
 </div>

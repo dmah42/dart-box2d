@@ -274,7 +274,7 @@ const int         <strong>MAX_ITERATIONS</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-MAX_ITERATIONS = 1000
+static const int MAX_ITERATIONS = 1000
 </pre>
 </div>
 </div>
@@ -286,7 +286,7 @@ int         <strong>toiCalls</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiCalls
+static int toiCalls
 </pre>
 </div>
 </div>
@@ -298,7 +298,7 @@ int         <strong>toiIters</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiIters
+static int toiIters
 </pre>
 </div>
 </div>
@@ -310,7 +310,7 @@ int         <strong>toiMaxIters</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiMaxIters
+static int toiMaxIters
 </pre>
 </div>
 </div>
@@ -322,7 +322,7 @@ int         <strong>toiMaxRootIters</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiMaxRootIters
+static int toiMaxRootIters
 </pre>
 </div>
 </div>
@@ -334,7 +334,7 @@ int         <strong>toiRootIters</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiRootIters
+static int toiRootIters
 </pre>
 </div>
 </div>
@@ -348,8 +348,9 @@ final <a href="../box2d/SimplexCache.html">SimplexCache</a>         <strong>cach
             title="Permalink to TimeOfImpact.cache">#</a>
         </h4>
         <div class="doc">
+<p>Pool variables </p>
 <pre class="source">
-cache
+final SimplexCache cache
 </pre>
 </div>
 </div>
@@ -361,7 +362,7 @@ final <a href="../box2d/DistanceInput.html">DistanceInput</a>         <strong>di
         </h4>
         <div class="doc">
 <pre class="source">
-distanceInput
+final DistanceInput distanceInput
 </pre>
 </div>
 </div>
@@ -373,7 +374,7 @@ final <a href="../box2d/DistanceOutput.html">DistanceOutput</a>         <strong>
         </h4>
         <div class="doc">
 <pre class="source">
-distanceOutput
+final DistanceOutput distanceOutput
 </pre>
 </div>
 </div>
@@ -385,7 +386,7 @@ final <a href="../box2d/SeparationFunction.html">SeparationFunction</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-fcn
+final SeparationFunction fcn
 </pre>
 </div>
 </div>
@@ -397,7 +398,7 @@ final List&lt;int&gt;         <strong>indexes</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-indexes
+final List&lt;int&gt; indexes
 </pre>
 </div>
 </div>
@@ -409,7 +410,7 @@ indexes
         </h4>
         <div class="doc">
 <pre class="source">
-pool
+DefaultWorldPool pool
 </pre>
 </div>
 </div>
@@ -421,7 +422,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepA</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-sweepA
+final Sweep sweepA
 </pre>
 </div>
 </div>
@@ -433,7 +434,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepB</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-sweepB
+final Sweep sweepB
 </pre>
 </div>
 </div>
@@ -445,7 +446,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfA</stron
         </h4>
         <div class="doc">
 <pre class="source">
-xfA
+final Transform xfA
 </pre>
 </div>
 </div>
@@ -457,7 +458,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfB</stron
         </h4>
         <div class="doc">
 <pre class="source">
-xfB
+final Transform xfB
 </pre>
 </div>
 </div>
