@@ -32,7 +32,7 @@ class BodyDef {
   num angle;
 
   /** User can store whatever they wish in here. */
-  Object userData;
+  dynamic userData;
 
   /** The world position of the body. */
   vec2 position;

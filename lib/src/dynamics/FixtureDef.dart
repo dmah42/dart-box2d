@@ -28,7 +28,7 @@ class FixtureDef {
   /**
    * Use this to store application specific fixture data.
    */
-  Object userData;
+  dynamic userData;
 
   /**
    * The friction coefficient, usually in the range [0,1].
