@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,12 @@ import 'dart:math' as math;
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
 
-part 'Benchmark.dart';
-part 'BallCageBench.dart';
-part 'BallDropBench.dart';
-part 'CircleStressBench.dart';
-part 'DominoPlatformBench.dart';
-part 'DominoTowerBench.dart';
+part 'benchmark.dart';
+part 'ball_cage_bench.dart';
+part 'ball_drop_bench.dart';
+part 'circle_stress_bench.dart';
+part 'domino_platform_bench.dart';
+part 'domino_tower_bench.dart';
 
 /** Runs the Dart Box2D benchmarks. Outputs results to console. */
 class BenchmarkRunner {
