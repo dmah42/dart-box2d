@@ -18,5 +18,5 @@ import 'dart:html';
 
 export 'package:box2d/box2d.dart';
 
-part 'src/callbacks/CanvasDraw.dart';
-part 'src/common/CanvasViewportTransform.dart';
+part 'src/callbacks/canvas_draw.dart';
+part 'src/common/canvas_viewport_transform.dart';
