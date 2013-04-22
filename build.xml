@@ -122,7 +122,7 @@
   </target>
 
   <target name="analyze-benchmarks">
-    <dart_analyze file="example/benchmarks/BenchmarkRunner.dart" />
+    <dart_analyze file="example/benchmarks/benchmark_runner.dart" />
   </target>
 
   <target name="generate-docs" description="Generate DartDoc for library.">
