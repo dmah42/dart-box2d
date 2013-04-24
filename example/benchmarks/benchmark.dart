@@ -23,7 +23,7 @@ abstract class Benchmark {
   List<Body> bodies = new List<Body>();
 
   /** The gravity vector's y value. */
-  static const num GRAVITY = -10;
+  static const double GRAVITY = -10.0;
 
   /** The timestep and iteration values. */
   static const num TIME_STEP = 1/60;
