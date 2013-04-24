@@ -94,8 +94,8 @@ class BallCage extends Demo {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new vec2(0, -20);
-    activeBodyDef.position = new vec2(15, 15);
+    activeBodyDef.linearVelocity = new vec2(0.0, -20.0);
+    activeBodyDef.position = new vec2(15.0, 15.0);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);
