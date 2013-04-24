@@ -877,13 +877,14 @@ class Body {
   void synchronizeTransform() {
     final Transform t = originTransform;
     final mat2 r = t.rotation;
-    final vec2 p = t.position;
+    vec2 p = t.position;
     r.setRotation(sweep.angle);
     // TODO(dominic): vector cleanup
-    p.x = (r.col0.x * sweep.localCenter.x + r.col1.x * sweep.localCenter.y) * -1 +
-        sweep.center.x;
-    p.y = (r.col0.y * sweep.localCenter.x + r.col1.y * sweep.localCenter.y) * -1 +
-        sweep.center.y;
+    p.x = (r.entry(0, 0) * sweep.localCenter.x + r.entry(0, 1) * sweep.localCenter.y);
+    p.y = (r.entry(1, 0) * sweep.localCenter.x + r.entry(1, 1) * sweep.localCenter.y);
+    p.negate();
+    p += sweep.center;
+    t.position.makeCopy(p);
   }
 
   /**

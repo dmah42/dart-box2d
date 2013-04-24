@@ -77,13 +77,10 @@ class FrictionJoint extends Joint {
     // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
     // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
 
-    mat2 K = new mat2.zero();
-    K.col0.x = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-    K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-    K.col1.x = K.col0.y;
-    K.col1.y = bodyA.invMass + bodyB.invMass +
-               bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+    mat2 K = new mat2( bodyA.invMass + bodyB.invMass + bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+                      -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+                      -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+                       bodyA.invMass + bodyB.invMass + bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x);
 
     mat2 linearMass = new mat2.copy(K);
     linearMass.invert();
@@ -145,13 +142,11 @@ class FrictionJoint extends Joint {
 
       Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 
-      mat2 K = new mat2.zero();
-      K.col0.x = bodyA.invMass + bodyB.invMass +
-                 bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y;
-      K.col0.y = -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y;
-      K.col1.x = K.col0.y;
-      K.col1.y = bodyA.invMass + bodyB.invMass +
-                 bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x;
+      // TODO: uninline this mess.
+      mat2 K = new mat2( bodyA.invMass + bodyB.invMass + bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+                        -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+                        -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+                         bodyA.invMass + bodyB.invMass + bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x);
 
       mat2 linearMass = new mat2.copy(K);
       linearMass.invert();
