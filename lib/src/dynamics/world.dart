@@ -1066,7 +1066,8 @@ class World {
         // vec2 center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
         num radius = circle.radius;
-        axis.copyFrom(xf.rotation.col0);
+        axis.x = xf.rotation.entry(0, 0);
+        axis.y = xf.rotation.entry(1, 0);
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);

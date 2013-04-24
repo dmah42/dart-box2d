@@ -19,7 +19,7 @@ class Sweep {
   final vec2 localCenter;
 
   /** Center world positions. */
-  final vec2 centerZero;
+  vec2 centerZero;
   final vec2 center;
 
   /** World angles. */
@@ -83,15 +83,12 @@ class Sweep {
   void getTransform(Transform xf, num alpha) {
     assert(xf != null);
 
-    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
-    xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
-    xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
+    xf.position = mix(centerZero, center, alpha);
+    xf.rotation.setRotation(mix(angleZero, angle, alpha));
 
     // Shift to origin
-    xf.position.x -= xf.rotation.col0.x * localCenter.x + xf.rotation.col1.x
-        * localCenter.y;
-    xf.position.y -= xf.rotation.col0.y * localCenter.x + xf.rotation.col1.y
-        * localCenter.y;
+    vec2 position_delta = xf.rotation * localCenter;
+    xf.position.makeCopy(xf.position - position_delta);
   }
 
   /**
@@ -99,8 +96,7 @@ class Sweep {
    * Time is the new initial time.
    */
   void advance(num time) {
-    centerZero.x = (1 - time) * centerZero.x + time * center.x;
-    centerZero.y = (1 - time) * centerZero.y + time * center.y;
-    angleZero = (1 - time) * angleZero + time * angle;
+    centerZero = mix(centerZero, center, time);
+    angleZero = mix(angleZero, angle, time);
   }
 }

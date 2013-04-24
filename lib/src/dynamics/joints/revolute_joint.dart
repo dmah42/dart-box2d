@@ -93,15 +93,16 @@ class RevoluteJoint extends Joint {
     num m1 = b1.invMass, m2 = b2.invMass;
     num i1 = b1.invInertia, i2 = b2.invInertia;
 
-    mass.col0.x = m1 + m2 + r1.y * r1.y * i1 + r2.y * r2.y * i2;
-    mass.col1.x = -r1.y * r1.x * i1 - r2.y * r2.x * i2;
-    mass.col2.x = -r1.y * i1 - r2.y * i2;
-    mass.col0.y = mass.col1.x;
-    mass.col1.y = m1 + m2 + r1.x * r1.x * i1 + r2.x * r2.x * i2;
-    mass.col2.y = r1.x * i1 + r2.x * i2;
-    mass.col0.z = mass.col2.x;
-    mass.col1.z = mass.col2.y;
-    mass.col2.z = i1 + i2;
+    // TODO: uninline this mess.
+    mass.setRaw(m1 + m2 + r1.y * r1.y * i1 + r2.y * r2.y * i2,
+                -r1.y * r1.x * i1 - r2.y * r2.x * i2,
+                -r1.y * i1 - r2.y * i2,
+                -r1.y * r1.x * i1 - r2.y * r2.x * i2,
+                m1 + m2 + r1.x * r1.x * i1 + r2.x * r2.x * i2,
+                r1.x * i1 + r2.x * i2,
+                -r1.y * i1 - r2.y * i2,
+                r1.x * i1 + r2.x * i2,
+                i1 + i2);
 
     motorMass = i1 + i2;
     if (motorMass > 0.0) {
@@ -345,23 +346,20 @@ class RevoluteJoint extends Joint {
         C.sub(b1.sweep.center).sub(r1);
       }
 
-      mat2 K1 = new mat2.zero();
-      K1.col0.x = invMass1 + invMass2;
-      K1.col1.x = 0.0;
-      K1.col0.y = 0.0;
-      K1.col1.y = invMass1 + invMass2;
+      mat2 K1 = new mat2(invMass1 + invMass2,
+                         0.0,
+                         0.0,
+                         invMass1 + invMass2);
 
-      mat2 K2 = new mat2.zero();
-      K2.col0.x = invI1 * r1.y * r1.y;
-      K2.col1.x = -invI1 * r1.x * r1.y;
-      K2.col0.y = -invI1 * r1.x * r1.y;
-      K2.col1.y = invI1 * r1.x * r1.x;
+      mat2 K2 = new mat2( invI1 * r1.y * r1.y,
+                         -invI1 * r1.x * r1.y,
+                         -invI1 * r1.x * r1.y,
+                          invI1 * r1.x * r1.x);
 
-      mat2 K3 = new mat2.zero();
-      K3.col0.x = invI2 * r2.y * r2.y;
-      K3.col1.x = -invI2 * r2.x * r2.y;
-      K3.col0.y = -invI2 * r2.x * r2.y;
-      K3.col1.y = invI2 * r2.x * r2.x;
+      mat2 K3 = new mat2( invI2 * r2.y * r2.y,
+                         -invI2 * r2.x * r2.y,
+                         -invI2 * r2.x * r2.y,
+                          invI2 * r2.x * r2.x);
 
       K1.add(K2).add(K3);
       imp = MathBox.solve22(K1, C.negate()); // just leave c negated

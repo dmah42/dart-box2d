@@ -40,7 +40,7 @@ class Manifold {
    * faceA: The center of faceA.
    * faceB: The center of faceB.
    */
-  final vec2 localPoint;
+  vec2 localPoint;
 
   /** The type of manifold. See [ManifoldType]. */
   int type;
