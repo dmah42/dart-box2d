@@ -61,7 +61,7 @@ abstract class Benchmark {
     bodies = new List<Body>();
 
     // Setup the World.
-    world = new World(new vec2(0, GRAVITY), true, new DefaultWorldPool());
+    world = new World(new vec2(0.0, GRAVITY), true, new DefaultWorldPool());
   }
 
   /**
