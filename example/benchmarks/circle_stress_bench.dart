@@ -77,13 +77,13 @@ class CircleStressBench extends Benchmark {
       final cornerDef = new BodyDef();
       sd.setAsBox(20.0, 3.0);
       cornerDef.angle = (-math.PI / 4.0);
-      cornerDef.position = new vec2(-35, 8.0);
+      cornerDef.position = new vec2(-35.0, 8.0);
       
       Body myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
       cornerDef.angle = (math.PI / 4.0);
-      cornerDef.position = new vec2(35, 8.0);
+      cornerDef.position = new vec2(35.0, 8.0);
       myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
