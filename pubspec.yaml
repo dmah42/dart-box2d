@@ -5,7 +5,7 @@ author: Dominic Hamon <dominic@google.com>
 homepage: http://github.com/google/dartbox2d
 dependencies:
   vector_math:
-    path: /home/dominich/git/vector_math
+    git: https://github.com/johnmccutchan/vector_math
   unittest: any
 dev_dependencies:
   args: any
