@@ -231,7 +231,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final vec2 normal = c.normal;
-      cross(normal, 1, tangent);
+      cross(normal, 1.0, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
@@ -261,12 +261,12 @@ class ContactSolver {
       double wB = bodyB.angularVelocity;
       vec2 vA = bodyA.linearVelocity;
       vec2 vB = bodyB.linearVelocity;
-      final num invMassA = bodyA.invMass;
-      final num invIA = bodyA.invInertia;
-      final num invMassB = bodyB.invMass;
-      final num invIB = bodyB.invInertia;
+      final double invMassA = bodyA.invMass;
+      final double invIA = bodyA.invInertia;
+      final double invMassB = bodyB.invMass;
+      final double invIB = bodyB.invInertia;
       tangent.makeRaw(c.normal.y, -1.0 * c.normal.x);
-      final num friction = c.friction;
+      final double friction = c.friction;
 
       assert(c.pointCount == 1 || c.pointCount == 2);
 
@@ -280,13 +280,13 @@ class ContactSolver {
                     wB * ccp.rB.x + vB.y - vA.y - wA * a.x);
 
         // Compute tangent force
-        num vt = dv.x * tangent.x + dv.y * tangent.y;
-        num lambda = ccp.tangentMass * (-vt);
+        double vt = dv.x * tangent.x + dv.y * tangent.y;
+        double lambda = ccp.tangentMass * (-vt);
 
         // Clamp the accumulated force
-        num maxFriction = friction * ccp.normalImpulse;
-        num newImpulse = clamp(ccp.tangentImpulse + lambda,
-                               -maxFriction, maxFriction);
+        double maxFriction = friction * ccp.normalImpulse;
+        double newImpulse = clamp(ccp.tangentImpulse + lambda,
+                                   -maxFriction, maxFriction);
         lambda = newImpulse - ccp.tangentImpulse;
 
         // Apply contact impulse
@@ -311,12 +311,12 @@ class ContactSolver {
         vec2 b = c.normal;
 
         // Compute normal impulse
-        num vn = dv.dot(b);
-        num lambda = -ccp.normalMass * (vn - ccp.velocityBias);
+        double vn = dv.dot(b);
+        double lambda = -ccp.normalMass * (vn - ccp.velocityBias);
 
         // Clamp the accumulated impulse
-        num a = ccp.normalImpulse + lambda;
-        num newImpulse = (a > 0.0 ? a : 0.0);
+        double a = ccp.normalImpulse + lambda;
+        double newImpulse = (a > 0.0 ? a : 0.0);
         lambda = newImpulse - ccp.normalImpulse;
 
         // Apply contact impulse
@@ -511,7 +511,7 @@ class ContactSolver {
         vec2 normal = psm.normal;
 
         vec2 point = psm.point;
-        num separation = psm.separation;
+        double separation = psm.separation;
 
         rA.copyFrom(point).sub(bodyA.sweep.center);
         rB.copyFrom(point).sub(bodyB.sweep.center);
@@ -554,19 +554,19 @@ class ContactSolver {
 class PositionSolverManifold {
   vec2 normal;
   vec2 point;
-  num separation;
+  double separation;
 
   /** Pooling */
-  vec2 pointA;
-  vec2 pointB;
-  vec2 temp;
-  vec2 planePoint;
-  vec2 clipPoint;
+  final vec2 pointA;
+  final vec2 pointB;
+  final vec2 temp;
+  final vec2 planePoint;
+  final vec2 clipPoint;
 
   PositionSolverManifold() :
     normal = new vec2.zero(),
     point = new vec2.zero(),
-    separation = 0,
+    separation = 0.0,
 
     // Initialize pool variables.
     pointA = new vec2.zero(),

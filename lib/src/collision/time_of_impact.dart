@@ -97,7 +97,7 @@ class TimeOfImpact {
 
     assert (target > tolerance);
 
-    num t1 = 0;
+    double t1 = 0.0;
     int iter = 0;
 
     cache.count = 0;
@@ -328,7 +328,7 @@ class SeparationFunction {
       localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.copyFrom(localPointB2).sub(localPointB1);
-      cross(temp, 1, axis);
+      cross(temp, 1.0, axis);
       axis.normalize();
 
       xfb.rotation.transformed(axis, normal);
@@ -355,7 +355,7 @@ class SeparationFunction {
       localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
 
       temp.copyFrom(localPointA2).sub(localPointA1);
-      cross(temp, 1, axis);
+      cross(temp, 1.0, axis);
       axis.normalize();
 
       xfa.rotation.transformed(axis, normal);

@@ -29,7 +29,7 @@ class BodyDef {
   /**
    * The world angle of the body in radians.
    */
-  num angle;
+  double angle;
 
   /** User can store whatever they wish in here. */
   dynamic userData;
@@ -41,7 +41,7 @@ class BodyDef {
   vec2 linearVelocity;
 
   /** Angular velocity of the body. */
-  num angularVelocity;
+  double angularVelocity;
 
   /**
    * If true, the body will be allowed to rotate. Otherwise, its rotation will
@@ -93,7 +93,7 @@ class BodyDef {
     bullet = false,
     type = BodyType.STATIC,
     position = new vec2.zero(),
-    angle = 0,
+    angle = 0.0,
     linearDamping = 0,
     angularDamping = 0,
     allowSleep = true,
@@ -101,5 +101,5 @@ class BodyDef {
     fixedRotation = false,
     active = true,
     linearVelocity = new vec2.zero(),
-    angularVelocity = 0;
+    angularVelocity = 0.0;
 }

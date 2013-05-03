@@ -142,7 +142,7 @@ class DynamicTree {
     argBox.upperBound.y += Settings.BOUNDING_BOX_EXTENSION;
 
     // Predict bounding box displacement.
-    _tempVector.copyFrom(displacement).scale(Settings.BOUNDING_BOX_MULTIPLIER);
+    _tempVector.copyFrom(displacement).scale(Settings.BOUNDING_BOX_MULTIPLIER.toDouble());
     if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
     else

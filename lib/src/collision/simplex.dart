@@ -110,10 +110,10 @@ class Simplex {
 
         if (sgn > 0) {
           // Origin is left of e12.
-          out = cross(1, e12);
+          out = cross(1.0, e12);
         } else {
           // Origin is right of e12.
-          out = cross(e12, 1);
+          out = cross(e12, 1.0);
         }
         break;
       default:

@@ -113,12 +113,12 @@ class FrictionJoint extends Joint {
   void solveVelocityConstraints(TimeStep time_step) {
     // Solve angular friction
     {
-      final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
+      final num Cdelta = bodyB.angularVelocity - bodyA.angularVelocity;
       num angularMass = bodyA.invInertia + bodyB.invInertia;
       if (angularMass > 0.0) {
         angularMass = 1.0 / angularMass;
       }
-      num impulse = -angularMass * Cdot;
+      num impulse = -angularMass * Cdelta;
 
       final num oldImpulse = _angularImpulse;
       final num maxImpulse = time_step.dt * _maxTorque;

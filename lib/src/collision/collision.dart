@@ -15,7 +15,7 @@
 /**
  * Functions used for computing contact points, distance
  * queries, and time of impact (TimeOfImpact) queries. Collision methods are non-static
- * for pooling speed, retrieve a collision object from the [SingletonPool].
+ * for pooling speed, retrieve a collision object from the SingletonPool.
  */
 
 part of box2d;
@@ -532,7 +532,7 @@ class Collision {
     localTangent.normalize();
 
     // Vector localNormal = Cross(dv, 1.0);
-    cross(localTangent, 1, localNormal);
+    cross(localTangent, 1.0, localNormal);
 
     // Vector planePoint = 0.5 * (v11 + v12)
     planePoint.copyFrom(v11).add(v12).scale(.5);
@@ -541,7 +541,7 @@ class Collision {
     xf1.rotation.transformed(localTangent, tangent);
 
     // Vector frontNormal = Cross(sideNormal, 1.0);
-    cross(tangent, 1, normal);
+    cross(tangent, 1.0, normal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);

@@ -54,7 +54,7 @@ class DominoTower extends Demo {
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
     bd.position = new vec2(x, y);
-    bd.angle = horizontal ? (math.PI / 2.0) : 0;
+    bd.angle = horizontal ? (math.PI / 2.0) : 0.0;
     Body myBody = world.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);
@@ -89,19 +89,19 @@ class DominoTower extends Demo {
       fd.friction = 0;
       fd.restitution = 0.85;
       bd.bullet = true;
-      bd.position = new vec2(30, 50);
+      bd.position = new vec2(30.0, 50.0);
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(-25, -25);
+      b.linearVelocity = new vec2(-25.0, -25.0);
       b.angularVelocity = 6.7;
 
       fd.density = 25;
-      bd.position = new vec2(-30, 25);
+      bd.position = new vec2(-30.0, 25.0);
       b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(35, -10);
+      b.linearVelocity = new vec2(35.0, -10.0);
       b.angularVelocity = -8.3;
     }
 
