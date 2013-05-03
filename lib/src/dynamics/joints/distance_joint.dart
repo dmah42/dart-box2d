@@ -72,12 +72,12 @@ class DistanceJoint extends Joint {
     vec2 r2 = new vec2.zero();
 
     // Compute the effective mass matrix.
-    r1.copyFrom(localAnchor1).sub(b1.localCenter);
-    r2.copyFrom(localAnchor2).sub(b2.localCenter);
+    r1.setFrom(localAnchor1).sub(b1.localCenter);
+    r2.setFrom(localAnchor2).sub(b2.localCenter);
     b1.originTransform.rotation.transform(r1);
     b2.originTransform.rotation.transform(r2);
 
-    u.copyFrom(b2.sweep.center).add(r2).sub(b1.sweep.center).sub(r1);
+    u.setFrom(b2.sweep.center).add(r2).sub(b1.sweep.center).sub(r1);
 
     // Handle singularity.
     num len = u.length;
@@ -121,7 +121,7 @@ class DistanceJoint extends Joint {
       impulse *= time_step.dtRatio;
 
       vec2 P = new vec2.zero();
-      P.copyFrom(u).scale(impulse);
+      P.setFrom(u).scale(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
@@ -187,7 +187,7 @@ class DistanceJoint extends Joint {
     C = clamp(C, -Settings.MAX_LINEAR_CORRECTION, Settings.MAX_LINEAR_CORRECTION);
 
     num imp = -mass * C;
-    u.copyFrom(d);
+    u.setFrom(d);
     num Px = imp * u.x;
     num Py = imp * u.y;
 

@@ -38,10 +38,10 @@ class TimeOfImpactConstraint {
   void setFrom(TimeOfImpactConstraint argOther){
     expect(argOther.localPoints.length, localPoints.length);
     for(int i=0; i<localPoints.length; i++) {
-      localPoints[i].copyFrom(argOther.localPoints[i]);
+      localPoints[i].setFrom(argOther.localPoints[i]);
     }
-    localNormal.copyFrom(argOther.localNormal);
-    localPoint.copyFrom(argOther.localPoint);
+    localNormal.setFrom(argOther.localNormal);
+    localPoint.setFrom(argOther.localPoint);
     type = argOther.type;
     radius = argOther.radius;
     pointCount = argOther.pointCount;

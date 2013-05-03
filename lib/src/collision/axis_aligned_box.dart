@@ -48,8 +48,8 @@ class AxisAlignedBox {
 
   /** Sets the bounds to the given values. */
   AxisAlignedBox setBounds(vec2 lower, vec2 upper) {
-    lowerBound.copyFrom(lower);
-    upperBound.copyFrom(upper);
+    lowerBound.setFrom(lower);
+    upperBound.setFrom(upper);
     return this;
   }
 
@@ -76,8 +76,8 @@ class AxisAlignedBox {
 
   /** Sets this box to be a copy of the given box. */
   void setFrom(AxisAlignedBox other) {
-    lowerBound.copyFrom(other.lowerBound);
-    upperBound.copyFrom(other.upperBound);
+    lowerBound.setFrom(other.lowerBound);
+    upperBound.setFrom(other.upperBound);
   }
 
   String toString() => "$lowerBound, $upperBound";

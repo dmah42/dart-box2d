@@ -48,7 +48,7 @@ class MathBox {
     num y = det * dot(col0, out);
     out = cross(col1, b);
     num z = det * dot(col0, out);
-    out.makeRaw(x, y, z);
+    out.setValues(x, y, z);
     return out;
   }
 

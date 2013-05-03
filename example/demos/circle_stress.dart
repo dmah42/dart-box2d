@@ -129,7 +129,7 @@ class CircleStress extends Demo {
         fd.friction = .1;
         fd.restitution = .9;
         double angle = MathBox.TWO_PI * (i / numPieces);
-        cd.position.setComponents(radius * math.cos(angle),
+        cd.position.setValues(radius * math.cos(angle),
                                   radius * math.sin(angle));
         body.createFixture(fd);
       }

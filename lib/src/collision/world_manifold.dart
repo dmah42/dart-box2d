@@ -43,19 +43,19 @@ class WorldManifold {
     radiusB = radiusB.toDouble();
     switch (manifold.type) {
       case ManifoldType.CIRCLES:
-        normal.makeRaw(1.0, 0.0);
+        normal.setValues(1.0, 0.0);
         final vec2 pointA = xfA.position + xfA.rotation * manifold.localPoint;
         final vec2 pointB = xfB.position + xfB.rotation * manifold.points[0].localPoint;
 
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.copyFrom(pointB).sub(pointA);
+          normal.setFrom(pointB).sub(pointA);
           normal.normalize();
         }
 
         final vec2 cA = normal * radiusA + pointA;
         final vec2 cB = -normal * radiusB + pointB;
 
-        points[0].copyFrom(cA).add(cB).scale(0.5);
+        points[0].setFrom(cA).add(cB).scale(0.5);
         return;
       case ManifoldType.FACE_A:
         normal = xfA.rotation * manifold.localNormal;
