@@ -63,8 +63,8 @@ class CircleShape extends Shape {
     argTransform.rotation.transform(p);
     p.add(argTransform.position);
 
-    argBox.lowerBound.setComponents(p.x - radius, p.y - radius);
-    argBox.upperBound.setComponents(p.x + radius, p.y + radius);
+    argBox.lowerBound.setValues(p.x - radius, p.y - radius);
+    argBox.upperBound.setValues(p.x + radius, p.y + radius);
   }
 
   /** Returns a clone of this circle. */
@@ -76,7 +76,7 @@ class CircleShape extends Shape {
    */
   void computeMass(MassData massData, num density) {
     massData.mass = density * math.PI * radius * radius;
-    massData.center.copyFrom(position);
+    massData.center.setFrom(position);
 
     // Store inertia above the local origin.
     massData.inertia = massData.mass * (.5 * radius * radius +

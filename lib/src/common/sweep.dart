@@ -63,9 +63,9 @@ class Sweep {
    * Sets this Sweep equal to the given Sweep.
    */
   void setFrom(Sweep other) {
-    localCenter.copyFrom(other.localCenter);
-    centerZero.copyFrom(other.centerZero);
-    center.copyFrom(other.center);
+    localCenter.setFrom(other.localCenter);
+    centerZero.setFrom(other.centerZero);
+    center.setFrom(other.center);
     angleZero = other.angleZero;
     angle = other.angle;
   }
@@ -88,7 +88,7 @@ class Sweep {
 
     // Shift to origin
     vec2 position_delta = xf.rotation * localCenter;
-    xf.position.makeCopy(xf.position - position_delta);
+    xf.position.setFrom(xf.position - position_delta);
   }
 
   /**

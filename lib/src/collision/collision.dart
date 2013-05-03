@@ -161,7 +161,7 @@ class Collision {
       // Find intersection point of edge and plane
       num interp = distance0 / (distance0 - distance1);
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-      vOut[numOut].v.copyFrom(vIn[1].v).
+      vOut[numOut].v.setFrom(vIn[1].v).
           sub(vIn[0].v).scale(interp).add(vIn[0].v);
       final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
       vOut[numOut].id.setFrom(vin.id);
@@ -189,11 +189,11 @@ class Collision {
       return;
 
     manifold.type = ManifoldType.CIRCLES;
-    manifold.localPoint.copyFrom(circle1.position);
+    manifold.localPoint.setFrom(circle1.position);
     manifold.localNormal.splat(0.0);
     manifold.pointCount = 1;
 
-    manifold.points[0].localPoint.copyFrom(circle2.position);
+    manifold.points[0].localPoint.setFrom(circle2.position);
     manifold.points[0].id.zero();
   }
 
@@ -248,11 +248,11 @@ class Collision {
       manifold.type = ManifoldType.FACE_A;
 
       vec2 norm = normals[normalIndex];
-      manifold.localNormal.makeCopy(norm);
-      manifold.localNormal.makeCopy(norm);
+      manifold.localNormal.setFrom(norm);
+      manifold.localNormal.setFrom(norm);
       manifold.localPoint = (v1 + v2).scale(0.5);
       ManifoldPoint mpoint = manifold.points[0];
-      mpoint.localPoint.makeCopy(circle.position);
+      mpoint.localPoint.setFrom(circle.position);
       mpoint.id.zero();
       return;
     }
@@ -273,10 +273,10 @@ class Collision {
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
-      manifold.localNormal.makeCopy(d);
+      manifold.localNormal.setFrom(d);
       manifold.localNormal.normalize();
-      manifold.localPoint.copyFrom(v1);
-      manifold.points[0].localPoint.copyFrom(circle.position);
+      manifold.localPoint.setFrom(v1);
+      manifold.points[0].localPoint.setFrom(circle.position);
       manifold.points[0].id.zero();
     } else if (u2 <= 0.0) {
       final vec2 d = cLocal - v2;
@@ -285,10 +285,10 @@ class Collision {
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
-      manifold.localNormal.makeCopy(d);
+      manifold.localNormal.setFrom(d);
       manifold.localNormal.normalize();
-      manifold.localPoint.copyFrom(v2);
-      manifold.points[0].localPoint.copyFrom(circle.position);
+      manifold.localPoint.setFrom(v2);
+      manifold.points[0].localPoint.setFrom(circle.position);
       manifold.points[0].id.zero();
     } else {
       // vec2 faceCenter = 0.5 * (v1 + v2);
@@ -302,9 +302,9 @@ class Collision {
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
-      manifold.localNormal.copyFrom(normals[vertIndex1]);
-      manifold.localPoint.makeCopy(fc);
-      manifold.points[0].localPoint.copyFrom(circle.position);
+      manifold.localNormal.setFrom(normals[vertIndex1]);
+      manifold.localPoint.setFrom(fc);
+      manifold.points[0].localPoint.setFrom(circle.position);
       manifold.points[0].id.zero();
     }
   }
@@ -525,17 +525,17 @@ class Collision {
     int count1 = poly1.vertexCount;
     List<vec2> vertices1 = poly1.vertices;
 
-    v11.copyFrom(vertices1[edge1]);
-    v12.copyFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
+    v11.setFrom(vertices1[edge1]);
+    v12.setFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
 
-    localTangent.copyFrom(v12).sub(v11);
+    localTangent.setFrom(v12).sub(v11);
     localTangent.normalize();
 
     // Vector localNormal = Cross(dv, 1.0);
     cross(localTangent, 1.0, localNormal);
 
     // Vector planePoint = 0.5 * (v11 + v12)
-    planePoint.copyFrom(v11).add(v12).scale(.5);
+    planePoint.setFrom(v11).add(v12).scale(.5);
 
     // Vector sideNormal = Mul(xf1.rotation, v12 - v11);
     xf1.rotation.transformed(localTangent, tangent);
@@ -577,8 +577,8 @@ class Collision {
       return;
 
     // Now clipPoints2 contains the clipped points.
-    manifold.localNormal.copyFrom(localNormal);
-    manifold.localPoint.copyFrom(planePoint);
+    manifold.localNormal.setFrom(localNormal);
+    manifold.localPoint.setFrom(planePoint);
 
     int pointCount = 0;
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
@@ -610,7 +610,7 @@ class ClipVertex {
     id = new ContactID() { }
 
   void setFrom(ClipVertex cv){
-    v.copyFrom(cv.v);
+    v.setFrom(cv.v);
     id.setFrom(cv.id);
   }
 }

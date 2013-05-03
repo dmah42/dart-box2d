@@ -48,16 +48,16 @@ class Transform {
    * Sets this transform with the given position and rotation.
    */
   void setFromPositionAndRotation(vec2 argPosition, mat2 argRotation) {
-    position.copyFrom(argPosition);
-    rotation.copyFrom(argRotation);
+    position.setFrom(argPosition);
+    rotation.setFrom(argRotation);
   }
 
   /**
    * Sets this transform equal to the given transform.
    */
   void setFrom(Transform other) {
-    position.copyFrom(other.position);
-    rotation.copyFrom(other.rotation);
+    position.setFrom(other.position);
+    rotation.setFrom(other.rotation);
   }
 
   /**
@@ -76,11 +76,11 @@ class Transform {
    */
   static void mulToOut(Transform transform, vec2 vector, vec2 out) {
     // NOTE: This still creates a new vector.
-    out.makeCopy(mul(transform, vector));
+    out.setFrom(mul(transform, vector));
   }
 
   static void mulTransToOut(Transform T, vec2 v, vec2 out) {
     // NOTE: This still creates a new vector.
-    out.makeCopy(T.rotation * (v - T.position));
+    out.setFrom(T.rotation * (v - T.position));
   }
 }

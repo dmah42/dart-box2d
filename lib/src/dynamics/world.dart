@@ -587,8 +587,8 @@ class World {
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
       Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
       for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-        cA.copyFrom(c.fixtureA.box.center);
-        cB.copyFrom(c.fixtureB.box.center);
+        cA.setFrom(c.fixtureA.box.center);
+        cB.setFrom(c.fixtureB.box.center);
 
         _debugDraw.drawSegment(cA, cB, color);
       }
@@ -626,7 +626,7 @@ class World {
       final Color3 color = new Color3.fromRGB(1, 0, 0);
       for (Body b = _bodyList; b != null; b = b.next) {
         xf.setFrom(b.originTransform);
-        xf.position.copyFrom(b.worldCenter);
+        xf.position.setFrom(b.worldCenter);
         _debugDraw.drawTransform(xf, color);
       }
     }

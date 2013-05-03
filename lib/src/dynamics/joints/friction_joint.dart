@@ -41,7 +41,7 @@ class FrictionJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
-    argOut.copyFrom(_linearImpulse).scale(inv_dt);
+    argOut.setFrom(_linearImpulse).scale(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;
@@ -164,7 +164,7 @@ class FrictionJoint extends Joint {
         _linearImpulse.scale(maxImpulse);
       }
 
-      impulse.copyFrom(_linearImpulse).sub(oldImpulse);
+      impulse.setFrom(_linearImpulse).sub(oldImpulse);
 
       bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
       bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;

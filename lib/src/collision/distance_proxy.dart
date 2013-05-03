@@ -39,7 +39,7 @@ class DistanceProxy {
     // If the shape is a circle...
     switch (shape.type) {
       case ShapeType.CIRCLE:
-        vertices[0].copyFrom(shape.position);
+        vertices[0].setFrom(shape.position);
         count = 1;
         radius = shape.radius;
         break;
@@ -47,7 +47,7 @@ class DistanceProxy {
         count = shape.vertexCount;
         radius = shape.radius;
         for(int i = 0; i < count; i++) {
-          vertices[i].copyFrom(shape.vertices[i]);
+          vertices[i].setFrom(shape.vertices[i]);
         }
         break;
       default:

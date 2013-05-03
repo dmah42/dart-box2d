@@ -62,7 +62,7 @@ class BlobTest extends Demo {
       num angle = MathBox.translateAndScale(i, 0, nBodies, 0, math.PI * 2);
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true;
-      bd.position.setComponents(cx + rx * math.sin(angle),
+      bd.position.setValues(cx + rx * math.sin(angle),
                                 cy + ry * math.cos(angle));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);

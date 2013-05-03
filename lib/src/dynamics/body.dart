@@ -152,11 +152,11 @@ class Body {
       flags |= ACTIVE_FLAG;
     }
 
-    originTransform.position.copyFrom(bd.position);
+    originTransform.position.setFrom(bd.position);
     originTransform.rotation.setRotation(bd.angle);
     sweep.localCenter.splat(0.0);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFrom(sweep.centerZero);
+    sweep.center.setFrom(sweep.centerZero);
     sweep.angle = bd.angle;
     sweep.angleZero = bd.angle;
 
@@ -307,10 +307,10 @@ class Body {
     }
 
     originTransform.rotation.setRotation(argAngle);
-    originTransform.position.copyFrom(argPosition);
+    originTransform.position.setFrom(argPosition);
 
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFrom(sweep.centerZero);
+    sweep.center.setFrom(sweep.centerZero);
 
     sweep.angleZero = argAngle;
     sweep.angle = argAngle;
@@ -346,7 +346,7 @@ class Body {
       awake = true;
     }
 
-    _linearVelocity.copyFrom(v);
+    _linearVelocity.setFrom(v);
   }
 
   num get angularVelocity => _angularVelocity; 
@@ -503,10 +503,10 @@ class Body {
     }
 
     // Move center of mass.
-    oldCenter.copyFrom(sweep.center);
-    sweep.localCenter.copyFrom(data.center);
+    oldCenter.setFrom(sweep.center);
+    sweep.localCenter.setFrom(data.center);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFrom(sweep.centerZero);
+    sweep.center.setFrom(sweep.centerZero);
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
@@ -530,8 +530,8 @@ class Body {
 
     // Static and kinematic bodies have zero mass.
     if (_type == BodyType.STATIC || _type == BodyType.KINEMATIC) {
-      sweep.center.copyFrom(originTransform.position);
-      sweep.centerZero.copyFrom(originTransform.position);
+      sweep.center.setFrom(originTransform.position);
+      sweep.centerZero.setFrom(originTransform.position);
       return;
     }
 
@@ -573,10 +573,10 @@ class Body {
     }
 
     // Move center of mass.
-    oldCenter.copyFrom(sweep.center);
-    sweep.localCenter.copyFrom(tempCenter);
+    oldCenter.setFrom(sweep.center);
+    sweep.localCenter.setFrom(tempCenter);
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
-    sweep.center.copyFrom(sweep.centerZero);
+    sweep.center.setFrom(sweep.centerZero);
 
     // Update center of mass velocity.
     final vec2 temp = sweep.center - oldCenter;
@@ -677,7 +677,7 @@ class Body {
   }
 
   void getLinearVelocityFromWorldPointToOut(vec2 worldPoint, vec2 out) {
-    out.copyFrom(worldPoint).sub(sweep.center);
+    out.setFrom(worldPoint).sub(sweep.center);
     out = cross(_angularVelocity, out);
     out.add(_linearVelocity);
   }
@@ -884,7 +884,7 @@ class Body {
     p.y = (r.entry(1, 0) * sweep.localCenter.x + r.entry(1, 1) * sweep.localCenter.y);
     p.negate();
     p += sweep.center;
-    t.position.makeCopy(p);
+    t.position.setFrom(p);
   }
 
   /**
@@ -898,7 +898,7 @@ class Body {
 
   void advance(double t) {
     sweep.advance(t);
-    sweep.center.copyFrom(sweep.centerZero);
+    sweep.center.setFrom(sweep.centerZero);
     sweep.angle = sweep.angleZero;
     synchronizeTransform();
   }

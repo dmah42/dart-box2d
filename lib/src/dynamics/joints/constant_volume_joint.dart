@@ -140,7 +140,7 @@ class ConstantVolumeJoint extends Joint {
     bool done = true;
     for (int i = 0; i < bodies.length; ++i) {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      delta.copyFrom(normals[i]).add(normals[next]).scale(toExtrude);
+      delta.setFrom(normals[i]).add(normals[next]).scale(toExtrude);
       num norm = delta.length;
       if (norm > Settings.MAX_LINEAR_CORRECTION) {
         delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);
@@ -163,7 +163,7 @@ class ConstantVolumeJoint extends Joint {
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      d[i].copyFrom(bodies[next].worldCenter);
+      d[i].setFrom(bodies[next].worldCenter);
       d[i].sub(bodies[prev].worldCenter);
     }
 
@@ -201,7 +201,7 @@ class ConstantVolumeJoint extends Joint {
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      d[i].copyFrom(bodies[next].worldCenter);
+      d[i].setFrom(bodies[next].worldCenter);
       d[i].sub(bodies[prev].worldCenter);
       dotMassSum += d[i].length2 / bodies[i].mass;
       crossMassSum += cross(bodies[i].linearVelocity, d[i]);
