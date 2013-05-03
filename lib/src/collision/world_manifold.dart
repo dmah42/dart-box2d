@@ -39,6 +39,8 @@ class WorldManifold {
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {
+    radiusA = radiusA.toDouble();
+    radiusB = radiusB.toDouble();
     switch (manifold.type) {
       case ManifoldType.CIRCLES:
         normal.makeRaw(1.0, 0.0);

@@ -43,13 +43,13 @@ class Body {
   final vec2 _linearVelocity;
 
   /** The angular velocity of this body. */
-  num _angularVelocity;
+  double _angularVelocity;
 
   /** This body's mass. */
-  num mass;
+  double mass;
 
   /** The inverse of the body mass. */
-  num invMass;
+  double invMass;
 
   /** For mantaining the linked list of bodies. */
   Body next;
@@ -69,7 +69,7 @@ class Body {
   num _inertia;
 
   /** The inverse of the intertia about the center of mass. */
-  num invInertia;
+  double invInertia;
 
   num linearDamping;
 
@@ -90,8 +90,8 @@ class Body {
   FixtureDef _fixDef;
   MassData _pmd;
   Transform _pxf;
-  vec2 oldCenter;
-  vec2 tempCenter;
+  final vec2 oldCenter;
+  final vec2 tempCenter;
 
   Body(BodyDef bd, this.world)
       : flags = 0,
@@ -108,7 +108,7 @@ class Body {
 
         // Set the linear and angular velocities.
         _linearVelocity = new vec2.copy(bd.linearVelocity),
-        _angularVelocity = 0,
+        _angularVelocity = 0.0,
 
         // Set the linear and angular damping.
         linearDamping = bd.linearDamping,
@@ -118,8 +118,8 @@ class Body {
         _force = new vec2.zero(),
         _torque = 0,
 
-        _inertia = 0,
-        invInertia = 0,
+        _inertia = 0.0,
+        invInertia = 0.0,
 
         userData = bd.userData,
 
@@ -161,11 +161,11 @@ class Body {
     sweep.angleZero = bd.angle;
 
     if (_type == BodyType.DYNAMIC) {
-      mass = 1;
-      invMass = 1;
+      mass = 1.0;
+      invMass = 1.0;
     } else {
-      mass = 0;
-      invMass = 0;
+      mass = 0.0;
+      invMass = 0.0;
     }
   }
 
@@ -492,7 +492,7 @@ class Body {
 
     mass = data.mass;
     if (mass <= 0.0)
-      mass = 1;
+      mass = 1.0;
 
     invMass = 1.0 / mass;
 
@@ -896,7 +896,7 @@ class Body {
     return !(_type != BodyType.DYNAMIC && other._type != BodyType.DYNAMIC);
   }
 
-  void advance(num t) {
+  void advance(double t) {
     sweep.advance(t);
     sweep.center.copyFrom(sweep.centerZero);
     sweep.angle = sweep.angleZero;

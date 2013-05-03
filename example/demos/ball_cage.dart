@@ -19,8 +19,8 @@ import 'demo.dart';
 
 class BallCage extends Demo {
   /** Starting position of ball cage in the world. */
-  static const num START_X = -20;
-  static const num START_Y = -20;
+  static const double START_X = -20.0;
+  static const double START_Y = -20.0;
 
   /** The radius of the balls forming the arena. */
   static const num WALL_BALL_RADIUS = 2;
@@ -58,8 +58,8 @@ class BallCage extends Demo {
     final num borderLimitY = START_Y + maxShapeinRow * 2 * circleShape.radius;
 
     for (int i = 0; i < maxShapeinRow; i++) {
-      final num shiftX = START_X + circleShape.radius * 2 * i;
-      final num shiftY = START_Y + circleShape.radius * 2 * i;
+      final double shiftX = START_X + circleShape.radius * 2 * i;
+      final double shiftY = START_Y + circleShape.radius * 2 * i;
 
       circleBodyDef.position = new vec2(shiftX, START_Y);
       Body circleBody = world.createBody(circleBodyDef);

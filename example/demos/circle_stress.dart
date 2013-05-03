@@ -88,12 +88,12 @@ class CircleStress extends Demo {
       final cornerDef = new BodyDef();
       sd.setAsBox(20.0, 3.0);
       cornerDef.angle = (-math.PI / 4.0);
-      cornerDef.position = new vec2(-35, 8.0);
+      cornerDef.position = new vec2(-35.0, 8.0);
       Body myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
       cornerDef.angle = (math.PI / 4.0);
-      cornerDef.position = new vec2(35, 8.0);
+      cornerDef.position = new vec2(35.0, 8.0);
       myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
@@ -102,7 +102,7 @@ class CircleStress extends Demo {
       sd.setAsBox(50.0, 10.0);
       final topDef = new BodyDef();
       topDef.type = BodyType.STATIC;
-      topDef.angle = 0;
+      topDef.angle = 0.0;
       topDef.position = new vec2(0.0, 75.0);
       final topBody = world.createBody(topDef);
       bodies.add(topBody);
@@ -128,7 +128,7 @@ class CircleStress extends Demo {
         fd.density = 25;
         fd.friction = .1;
         fd.restitution = .9;
-        num angle = MathBox.TWO_PI * (i / numPieces);
+        double angle = MathBox.TWO_PI * (i / numPieces);
         cd.position.setComponents(radius * math.cos(angle),
                                   radius * math.sin(angle));
         body.createFixture(fd);
@@ -159,8 +159,8 @@ class CircleStress extends Demo {
             fd2.density = circ.radius * 1.5;
             fd2.friction = 0.5;
             fd2.restitution = 0.7;
-            num xPos = -39 + 2 * i;
-            num yPos = 50 + j;
+            double xPos = -39.0 + 2 * i;
+            double yPos = 50.0 + j;
             bod.position = new vec2(xPos, yPos);
             Body myBody = world.createBody(bod);
             bodies.add(myBody);
@@ -172,6 +172,4 @@ class CircleStress extends Demo {
   }
 }
 
-void main() {
-  CircleStress.main();
-}
+void main() => CircleStress.main();

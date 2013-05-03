@@ -16,8 +16,8 @@ part of BenchmarkRunner;
 
 class BallCageBench extends Benchmark {
   /** Starting position of ball cage in the world. */
-  static const num START_X = -20;
-  static const num START_Y = -20;
+  static const double START_X = -20.0;
+  static const double START_Y = -20.0;
 
   /** The radius of the balls forming the arena. */
   static const num WALL_BALL_RADIUS = 2;

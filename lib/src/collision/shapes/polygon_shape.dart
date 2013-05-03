@@ -115,7 +115,7 @@ class PolygonShape extends Shape {
       edge.copyFrom(vertices[i2]).sub(vertices[i1]);
 
       assert (edge.length2 > Settings.EPSILON * Settings.EPSILON);
-      cross(edge, 1, normals[i]);
+      cross(edge, 1.0, normals[i]);
       normals[i].normalize();
     }
 
@@ -127,7 +127,7 @@ class PolygonShape extends Shape {
    * Build vertices to represent an axis-aligned box.
    * hx is the half-width of the body and hy is the half height.
    */
-  void setAsBox(num hx, num hy) {
+  void setAsBox(double hx, double hy) {
     vertexCount = 4;
     vertices[0].setComponents(-hx, -hy);
     vertices[1].setComponents(hx, -hy);
@@ -145,7 +145,7 @@ class PolygonShape extends Shape {
    * half-height, center is the center of the box in local coordinates and angle
    * is the rotation of the box in local coordinates.
    */
-  void setAsBoxWithCenterAndAngle(num hx, num hy, vec2 center, num angle) {
+  void setAsBoxWithCenterAndAngle(double hx, double hy, vec2 center, double angle) {
     setAsBox(hx, hy);
     centroid.copyFrom(center);
 
@@ -167,7 +167,7 @@ class PolygonShape extends Shape {
     vertices[1].copyFrom(v2);
     centroid.copyFrom(v1).add(v2).scale(0.5);
     normals[0].copyFrom(v2).sub(v1);
-    cross(normals[0], 1, normals[0]);
+    cross(normals[0], 1.0, normals[0]);
     normals[0].normalize();
     normals[1].copyFrom(normals[0]).negate();
   }
