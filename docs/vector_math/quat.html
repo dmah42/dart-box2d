@@ -34,99 +34,73 @@
 <div class="doc">
 <pre class="source">
 class quat {
- double x;
- double y;
- double z;
- double w;
+ final Float32List _storage = new Float32List(4);
+ Float32List get storage =&gt; _storage;
+ double get x =&gt; _storage[0];
+ double get y =&gt; _storage[0];
+ double get z =&gt; _storage[0];
+ double get w =&gt; _storage[0];
+ set x(double x) { _storage[0] = x; }
+ set y(double y) { _storage[1] = y; }
+ set z(double z) { _storage[2] = z; }
+ set w(double w) { _storage[3] = w; }
 
  /// Constructs a quaternion using the raw values [x], [y], [z], and [w]
- quat.raw(this.x, this.y, this.z, this.w);
- /**
-  *  Constructs a new quaternion. Behaviour depends on the types of arguments:
-  *
-  *  +  *([double] x,[double] y,[double] z,[double] w)* Raw values
-  *  +  *([vec3] axis,[double] angle)* Rotation of [angle] degrees around [axis]
-  *  +  *([quat] other)* Copy of other
-  *  +  *([mat3])* Convert rotation matrix into quaternion
-  *
-  *
-  */
- quat([dynamic a, dynamic b, dynamic c, dynamic d]) {
-   x = 0.0;
-   y = 0.0;
-   z = 0.0;
-   w = 1.0;
+ quat(double x, double y, double z, double w) {
+   _storage[0] = x;
+   _storage[1] = y;
+   _storage[2] = z;
+   _storage[3] = w;
+ }
 
-   if (a is num &amp;&amp; b is num &amp;&amp; c is num &amp;&amp; d is num) {
-     x = a.toDouble();
-     y = b.toDouble();
-     z = c.toDouble();
-     w = d.toDouble();
-     return;
-   }
-
-   if (a is vec3 &amp;&amp; b is num) {
-     setAxisAngle(a, b);
-     return;
-   }
-
-   if (a is vec3) {
-     x = a.x;
-     y = a.y;
-     z = a.z;
-     w = 0.0;
-     return;
-   }
-
-   if (a is quat) {
-     x = a.x;
-     y = a.y;
-     z = a.z;
-     w = a.w;
-     return;
-   }
-
-   if (a is mat3) {
-     double trace = a.trace();
-     if (trace &gt; 0.0) {
-       double s = Math.sqrt(trace + 1.0);
-       w = s * 0.5;
-       s = 0.5 / s;
-       x = (a.col1.z - a.col2.y) * s;
-       y = (a.col2.x - a.col0.z) * s;
-       z = (a.col0.y - a.col1.x) * s;
-     } else {
-       int i = a.col0.x &lt; a.col1.y ? (a.col1.y &lt; a.col2.z ? 2 : 1) :
-           (a.col0.x &lt; a.col2.z ? 2 : 0);
-       int j = (i + 1) % 3;
-       int k = (i + 2) % 3;
-       double s = Math.sqrt(a[i][i] - a[j][j] - a[k][k] + 1.0);
-       this[i] = s * 0.5;
-       s = 0.5 / s;
-       this[3] = (a[j][k] - a[k][j]) * s;
-       this[j] = (a[i][j] + a[j][i]) * s;
-       this[k] = (a[i][k] + a[k][i]) * s;
-     }
+ /// From a rotation matrix [rotationMatrix].
+ quat.fromRotation(mat3 rotationMatrix) {
+   double trace = rotationMatrix.trace();
+   if (trace &gt; 0.0) {
+     double s = Math.sqrt(trace + 1.0);
+     _storage[3] = s * 0.5;
+     s = 0.5 / s;
+     _storage[0] = (rotationMatrix._storage[5] -
+                    rotationMatrix._storage[7]) * s;
+     _storage[1] = (rotationMatrix._storage[6] -
+                    rotationMatrix._storage[2]) * s;
+     _storage[2] = (rotationMatrix._storage[1] -
+                    rotationMatrix._storage[3]) * s;
+   } else {
+     int i = rotationMatrix._storage[0] &lt; rotationMatrix._storage[4] ?
+             (rotationMatrix._storage[4] &lt; rotationMatrix._storage[8] ? 2 : 1)
+             :
+             (rotationMatrix._storage[0] &lt; rotationMatrix._storage[8] ? 2 : 0);
+     int j = (i + 1) % 3;
+     int k = (i + 2) % 3;
+     double s = Math.sqrt(rotationMatrix.entry(i,i) -
+                          rotationMatrix.entry(j,j) -
+                          rotationMatrix.entry(k,k) + 1.0);
+     _storage[i] = s * 0.5;
+     s = 0.5 / s;
+     _storage[3] = (rotationMatrix.entry(k,j) - rotationMatrix.entry(j,k)) * s;
+     _storage[j] = (rotationMatrix.entry(j,i) + rotationMatrix.entry(i,j)) * s;
+     _storage[k] = (rotationMatrix.entry(k,i) + rotationMatrix.entry(i,k)) * s;
    }
  }
 
- /// Constructs a new quaternion representing a rotation of [angle] around [axis]
- quat.axisAngle(vec3 axis, num angle) {
+ /// Rotation of [angle] around [axis].
+ quat.axisAngle(vec3 axis, double angle) {
    setAxisAngle(axis, angle);
  }
 
- /// Constructs a new quaternion which is a copy of [original]
+ /// Copies [original].
  quat.copy(quat original) {
-   x = original.x;
-   y = original.y;
-   z = original.z;
-   w = original.w;
+   _storage[0] = original._storage[0];
+   _storage[1] = original._storage[1];
+   _storage[2] = original._storage[2];
+   _storage[3] = original._storage[3];
  }
 
- /** Constructs a random rotation */
+ /// Random rotation.
  quat.random(Math.Random rn) {
- // From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
- //       pg. 124-132
+   // From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
+   // pg. 124-132.
    double x0 = rn.nextDouble();
    double r1 = Math.sqrt(1.0 - x0);
    double r2 = Math.sqrt(x0);
@@ -136,30 +110,34 @@ class quat {
    double s1 = Math.sin(t1);
    double c2 = Math.cos(t2);
    double s2 = Math.sin(t2);
-   x = s1 * r1;
-   y = c1 * r1;
-   z = s2 * r2;
-   w = c2 * r2;
+   _storage[0] = s1 * r1;
+   _storage[1] = c1 * r1;
+   _storage[2] = s2 * r2;
+   _storage[3] = c2 * r2;
  }
 
  /// Constructs the identity quaternion
  quat.identity() {
-   x = 0.0;
-   y = 0.0;
-   z = 0.0;
-   w = 1.0;
+   _storage[3] = 1.0;
  }
 
- /** Constructs the time derivative of [q] with angular velocity [omega] */
+ /// Time derivative of [q] with angular velocity [omega].
  quat.dq(quat q, vec3 omega) {
-   x = omega.x * q.w + omega.y * q.z - omega.z * q.y;
-   y = omega.y * q.w + omega.z * q.x - omega.x * q.z;
-   z = omega.z * q.w + omega.x * q.y - omega.y * q.x;
-   w = -omega.x * q.x - omega.y * q.y - omega.z * q.z;
-   x *= 0.5;
-   y *= 0.5;
-   z *= 0.5;
-   w *= 0.5;
+   double qx = q._storage[0];
+   double qy = q._storage[1];
+   double qz = q._storage[2];
+   double qw = q._storage[3];
+   double ox = omega._storage[0];
+   double oy = omega._storage[1];
+   double oz = omega._storage[2];
+   double _x = ox * qw + oy * qz - oz * qy;
+   double _y = oy * qw + oz * qx - ox * qz;
+   double _z = oz * qw + ox * qy - oy * qx;
+   double _w = -ox * qx - oy * qy - oz * qz;
+   _storage[0] = _x * 0.5;
+   _storage[1] = _y * 0.5;
+   _storage[2] = _z * 0.5;
+   _storage[3] = _w * 0.5;
  }
 
  /// Returns a new copy of this
@@ -169,39 +147,35 @@ class quat {
 
  /// Copy [source] into [this]
  void copyFrom(quat source) {
-   x = source.x;
-   y = source.y;
-   z = source.z;
-   w = source.w;
+   _storage[0] = source._storage[0];
+   _storage[1] = source._storage[1];
+   _storage[2] = source._storage[2];
+   _storage[3] = source._storage[3];
  }
 
  /// Copy [this] into [target].
  void copyTo(quat target) {
-   target.x = x;
-   target.y = y;
-   target.z = z;
-   target.w = w;
+   target._storage[0] = _storage[0];
+   target._storage[1] = _storage[1];
+   target._storage[2] = _storage[2];
+   target._storage[3] = _storage[3];
  }
 
  /// Set quaternion with rotation of [radians] around [axis].
- void setAxisAngle(vec3 axis, num radians) {
-   radians = radians.toDouble();
+ void setAxisAngle(vec3 axis, double radians) {
    double len = axis.length;
    if (len == 0.0) {
      return;
    }
    double halfSin = sin(radians * 0.5) / len;
-   x = axis.x * halfSin;
-   y = axis.y * halfSin;
-   z = axis.z * halfSin;
-   w = cos(radians * 0.5);
+   _storage[0] = axis._storage[0] * halfSin;
+   _storage[1] = axis._storage[1] * halfSin;
+   _storage[2] = axis._storage[2] * halfSin;
+   _storage[3] = cos(radians * 0.5);
  }
 
- /** Set quaternion with rotation of [yaw], [pitch] and [roll] */
- void setEuler(num yaw, num pitch, num roll) {
-   yaw = yaw.toDouble();
-   pitch = pitch.toDouble();
-   roll = roll.toDouble();
+ /// Set quaternion with rotation of [yaw], [pitch] and [roll].
+ void setEuler(double yaw, double pitch, double roll) {
    double halfYaw = yaw * 0.5;
    double halfPitch = pitch * 0.5;
    double halfRoll = roll * 0.5;
@@ -211,213 +185,209 @@ class quat {
    double sinPitch = Math.sin(halfPitch);
    double cosRoll = Math.cos(halfRoll);
    double sinRoll = Math.sin(halfRoll);
-   x = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
-   y = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
-   z = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
-   w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
+   _storage[0] = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
+   _storage[1] = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
+   _storage[2] = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
+   _storage[3] = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
  }
 
- /** Normalize [this] */
+ /// Normalize [this].
  quat normalize() {
    double l = length;
    if (l == 0.0) {
      return this;
    }
-   x /= l;
-   y /= l;
-   z /= l;
-   w /= l;
+   l = 1.0 / l;
+   _storage[3] = _storage[3] * l;
+   _storage[2] = _storage[2] * l;
+   _storage[1] = _storage[1] * l;
+   _storage[0] = _storage[0] * l;
    return this;
  }
 
- /** Conjugate [this] */
+ /// Conjugate [this].
  quat conjugate() {
-   x = -x;
-   y = -y;
-   z = -z;
-   w = w;
+   _storage[2] = -_storage[2];
+   _storage[1] = -_storage[1];
+   _storage[0] = -_storage[0];
    return this;
  }
 
- /** Invert [this]  */
+ /// Invert [this].
  quat inverse() {
    double l = 1.0 / length2;
-   x = -x * l;
-   y = -y * l;
-   z = -z * l;
-   w = w * l;
+   _storage[3] = _storage[3] * l;
+   _storage[2] = -_storage[2] * l;
+   _storage[1] = -_storage[1] * l;
+   _storage[0] = -_storage[0] * l;
    return this;
  }
 
- /** Normalized copy of [this]. Optionally stored in [out]*/
- quat normalized([quat out=null]) {
-   if (out == null) {
-     out = new quat.copy(this);
-   }
-   return out.normalize();
+ /// Normalized copy of [this].
+ quat normalized() {
+   return new quat.copy(this).normalize();
  }
 
- /** Conjugated copy of [this]. Optionally stored in [out] */
- quat conjugated([quat out=null]) {
-   if (out == null) {
-     out = new quat.copy(this);
-   }
-   return out.conjugate();
+ /// Conjugated copy of [this].
+ quat conjugated() {
+   return new quat.copy(this).conjugate();
  }
 
- /** Inverted copy of [this]. Optionally stored in [out] */
- quat inverted([quat out=null]) {
-   if (out == null) {
-     out = new quat.copy(this);
-   }
-   return out.inverse();
+ /// Inverted copy of [this].
+ quat inverted() {
+   return new quat.copy(this).inverse();
  }
 
- /** Radians of rotation */
- double get radians {
-   return 2.0 * acos(w);
- }
+ /// Radians of rotation.
+ double get radians =&gt; 2.0 * acos(_storage[3]);
 
- /** Axis of rotation */
+ /// Axis of rotation.
  vec3 get axis {
-     double divisor = 1.0 - (w*w);
-     return new vec3(x / divisor, y / divisor, z / divisor);
+     double scale = 1.0 / (1.0 - (_storage[3] * _storage[3]));
+     return new vec3(_storage[0] * scale,
+                     _storage[1] * scale,
+                     _storage[2] * scale);
  }
 
- /** Squared length */
+ /// Length squared.
  double get length2 {
-   return (x*x) + (y*y) + (z*z) + (w*w);
+   double _x = _storage[0];
+   double _y = _storage[1];
+   double _z = _storage[2];
+   double _w = _storage[3];
+   return (_x * _x) + (_y * _y) + (_z * _z) + (_w * _w);
  }
 
- /** Length */
+ /// Length.
  double get length {
    return Math.sqrt(length2);
  }
 
- /** Returns a copy of [v] rotated by quaternion. Copy optionally stored in [out] */
- vec3 rotated(vec3 v, [vec3 out=null]) {
-   if (out == null) {
-     out = new vec3.copy(v);
-   } else {
-     out.copyFrom(v);
-   }
+ /// Returns a copy of [v] rotated by quaternion.
+ vec3 rotated(vec3 v) {
+   vec3 out = new vec3.copy(v);
    return rotate(out);
  }
 
- /** Rotates [v] by [this]. Returns [v]. */
+ /// Rotates [v] by [this].
  vec3 rotate(vec3 v) {
    // conjugate(this) * [v,0] * this
-   double tix = -x;
-   double tiy = -y;
-   double tiz = -z;
-   double tiw = w;
+   double _w = _storage[3];
+   double _z = _storage[2];
+   double _y = _storage[1];
+   double _x = _storage[0];
+   double tiw = _w;
+   double tiz = -_z;
+   double tiy = -_y;
+   double tix = -_x;
    double tx = tiw * v.x + tix * 0.0 + tiy * v.z - tiz * v.y;
    double ty = tiw * v.y + tiy * 0.0 + tiz * v.x - tix * v.z;
    double tz = tiw * v.z + tiz * 0.0 + tix * v.y - tiy * v.x;
    double tw = tiw * 0.0 - tix * v.x - tiy * v.y - tiz * v.z;
-   double result_x = tw * x + tx * w + ty * z - tz * y;
-   double result_y = tw * y + ty * w + tz * x - tx * z;
-   double result_z = tw * z + tz * w + tx * y - ty * x;
-   v.x = result_x;
-   v.y = result_y;
-   v.z = result_z;
+   double result_x = tw * _x + tx * _w + ty * _z - tz * _y;
+   double result_y = tw * _y + ty * _w + tz * _x - tx * _z;
+   double result_z = tw * _z + tz * _w + tx * _y - ty * _x;
+   v._storage[2] = result_z;
+   v._storage[1] = result_y;
+   v._storage[0] = result_x;
    return v;
  }
 
- /** Return a copy of [this] divided by [scale] */
- quat operator/(num scale) {
-   scale = scale.toDouble();
-   return new quat(x / scale, y / scale, z / scale, w / scale);
+ /// Scales [this] by [scale].
+ quat scaled(double scale) {
+   _storage[3] = _storage[3] * scale;
+   _storage[2] = _storage[2] * scale;
+   _storage[1] = _storage[1] * scale;
+   _storage[0] = _storage[0] * scale;
+   return this;
  }
 
- /**  Returns copy of [this] multiplied by [scale]
-   *  Returns copy of [this] rotated by [otherQuat]
-   */
- quat operator*(dynamic other) {
-   if (other is num) {
-     other = other.toDouble();
-     return new quat(x * other, y * other, z * other, w * other);
-   }
-   if (other is quat) {
-     return new quat(w * other.x + x * other.w + y * other.z - z * other.y,
-                     w * other.y + y * other.w + z * other.x - x * other.z,
-                     w * other.z + z * other.w + x * other.y - y * other.x,
-                     w * other.w - x * other.x - y * other.y - z * other.z);
-   }
+ quat scale(double scale) {
+   quat q = new quat.copy(this);
+   return q.scaled(scale);
  }
 
- /** Returns copy of [this] - [other] */
+ /// [this] rotated by [other].
+ quat operator*(quat other) {
+   double _w = _storage[3];
+   double _z = _storage[2];
+   double _y = _storage[1];
+   double _x = _storage[0];
+   double ow = other._storage[3];
+   double oz = other._storage[2];
+   double oy = other._storage[1];
+   double ox = other._storage[0];
+   return new quat(_w * ox + _x * ow + _y * oz - _z * oy,
+                   _w * oy + _y * ow + _z * ox - _x * oz,
+                   _w * oz + _z * ow + _x * oy - _y * ox,
+                   _w * ow - _x * ox - _y * oy - _z * oz);
+ }
+
+ /// Returns copy of [this] + [other].
  quat operator+(quat other) {
-   return new quat(x + other.x, y + other.y, z + other.z, w + other.w);
+   return new quat(_storage[0] + other._storage[0],
+                   _storage[1] + other._storage[1],
+                   _storage[2] + other._storage[2],
+                   _storage[3] + other._storage[3]);
  }
 
- /** Returns copy of [this] + [other] */
+ /// Returns copy of [this] - [other].
  quat operator-(quat other) {
-   return new quat(x - other.x, y - other.y, z - other.z, w - other.w);
+   return new quat(_storage[0] - other._storage[0],
+                   _storage[1] - other._storage[1],
+                   _storage[2] - other._storage[2],
+                   _storage[3] - other._storage[3]);
  }
 
- /** Returns negated copy of [this] */
+ /// Returns negated copy of [this].
  quat operator-() {
-   return new quat(-x, -y, -z, -w);
+   return new quat(-_storage[0], -_storage[1], -_storage[2], -_storage[3]);
  }
 
- /** Treats [this] as an array and returns [x],[y],[z], or [w] */
- double operator[](int i) {
-   assert(i &gt;= 0 &amp;&amp; i &lt; 4);
-   switch (i) {
-   case 0: return x;
-   case 1: return y;
-   case 2: return z;
-   case 3: return w;
-   }
-   return 0.0;
- }
+ double operator[](int i) =&gt; _storage[i];
 
- /** Treats [this] as an array and assigns [x],[y],[z], or [w] the value of [arg]*/
  void operator[]=(int i, double arg) {
-   assert(i &gt;= 0 &amp;&amp; i &lt; 4);
-   switch (i) {
-   case 0: x = arg; break;
-   case 1: y = arg; break;
-   case 2: z = arg; break;
-   case 3: w = arg; break;
-   }
+   _storage[i] = arg;
  }
 
- /** Returns a rotation matrix containing the same rotation as [this] */
+ /// Returns a rotation matrix containing the same rotation as [this].
  mat3 asRotationMatrix() {
    double d = length2;
    assert(d != 0.0);
    double s = 2.0 / d;
 
-   double xs = x * s;
-   double ys = y * s;
-   double zs = z * s;
+   double _x = _storage[0];
+   double _y = _storage[1];
+   double _z = _storage[2];
+   double _w = _storage[3];
 
-   double wx = w * xs;
-   double wy = w * ys;
-   double wz = w * zs;
+   double xs = _x * s;
+   double ys = _y * s;
+   double zs = _z * s;
 
-   double xx = x * xs;
-   double xy = x * ys;
-   double xz = x * zs;
+   double wx = _w * xs;
+   double wy = _w * ys;
+   double wz = _w * zs;
 
-   double yy = y * ys;
-   double yz = y * zs;
-   double zz = z * zs;
+   double xx = _x * xs;
+   double xy = _x * ys;
+   double xz = _x * zs;
 
-   return new mat3.raw(1.0 - (yy + zz), xy + wz, xz - wy, // column 0
-     xy - wz, 1.0 - (xx + zz), yz + wx, // column 1
-     xz + wy, yz - wx, 1.0 - (xx + yy) // column 2
-     );
+   double yy = _y * ys;
+   double yz = _y * zs;
+   double zz = _z * zs;
+
+   return new mat3(1.0 - (yy + zz), xy + wz, xz - wy, // column 0
+                   xy - wz, 1.0 - (xx + zz), yz + wx, // column 1
+                   xz + wy, yz - wx, 1.0 - (xx + yy)); // column 2
  }
 
- /** Returns a printable string */
+ /// Printable string.
  String toString() {
-   return '$x, $y, $z @ $w';
+   return '${_storage[0]}, ${_storage[1]}, ${_storage[2]} @ ${_storage[3]}';
  }
 
- /** Returns relative error between [this]  and [correct] */
+ /// Relative error between [this] and [correct].
  double relativeError(quat correct) {
    quat diff = correct - this;
    double norm_diff = diff.length;
@@ -425,7 +395,7 @@ class quat {
    return norm_diff/correct_norm;
  }
 
- /** Returns absolute error between [this] and [correct] */
+ /// Absolute error between [this] and [correct].
  double absoluteError(quat correct) {
    double this_norm = length;
    double correct_norm = correct.length;
@@ -439,82 +409,34 @@ class quat {
 <h3>Constructors</h3>
 <div class="method"><h4 id="quat">
 <button class="show-code">Code</button>
-new <strong>quat</strong>([a, b, c, d]) <a class="anchor-link" href="#quat"
+new <strong>quat</strong>(double x, double y, double z, double w) <a class="anchor-link" href="#quat"
               title="Permalink to quat.quat">#</a></h4>
 <div class="doc">
-<p> Constructs a new quaternion. Behaviour depends on the types of arguments:</p><ul><li><em>(<code>double</code> x,<code>double</code> y,<code>double</code> z,<code>double</code> w)</em> Raw values</li><li><em>(<a class="crossref" href="../vector_math/vec3.html">vec3</a> axis,<code>double</code> angle)</em> Rotation of <code>angle</code> degrees around <a class="crossref" href="../vector_math/quat.html#axis">axis</a></li><li><em>(<a class="crossref" href="../vector_math/quat.html#quat">quat</a> other)</em> Copy of other</li><li><em>(<a class="crossref" href="../vector_math/mat3.html">mat3</a>)</em> Convert rotation matrix into quaternion</li></ul>
+<p>Constructs a quaternion using the raw values 
+<span class="param">x</span>, 
+<span class="param">y</span>, 
+<span class="param">z</span>, and 
+<span class="param">w</span></p>
 <pre class="source">
-quat([dynamic a, dynamic b, dynamic c, dynamic d]) {
- x = 0.0;
- y = 0.0;
- z = 0.0;
- w = 1.0;
-
- if (a is num &amp;&amp; b is num &amp;&amp; c is num &amp;&amp; d is num) {
-   x = a.toDouble();
-   y = b.toDouble();
-   z = c.toDouble();
-   w = d.toDouble();
-   return;
- }
-
- if (a is vec3 &amp;&amp; b is num) {
-   setAxisAngle(a, b);
-   return;
- }
-
- if (a is vec3) {
-   x = a.x;
-   y = a.y;
-   z = a.z;
-   w = 0.0;
-   return;
- }
-
- if (a is quat) {
-   x = a.x;
-   y = a.y;
-   z = a.z;
-   w = a.w;
-   return;
- }
-
- if (a is mat3) {
-   double trace = a.trace();
-   if (trace &gt; 0.0) {
-     double s = Math.sqrt(trace + 1.0);
-     w = s * 0.5;
-     s = 0.5 / s;
-     x = (a.col1.z - a.col2.y) * s;
-     y = (a.col2.x - a.col0.z) * s;
-     z = (a.col0.y - a.col1.x) * s;
-   } else {
-     int i = a.col0.x &lt; a.col1.y ? (a.col1.y &lt; a.col2.z ? 2 : 1) :
-         (a.col0.x &lt; a.col2.z ? 2 : 0);
-     int j = (i + 1) % 3;
-     int k = (i + 2) % 3;
-     double s = Math.sqrt(a[i][i] - a[j][j] - a[k][k] + 1.0);
-     this[i] = s * 0.5;
-     s = 0.5 / s;
-     this[3] = (a[j][k] - a[k][j]) * s;
-     this[j] = (a[i][j] + a[j][i]) * s;
-     this[k] = (a[i][k] + a[k][i]) * s;
-   }
- }
+quat(double x, double y, double z, double w) {
+ _storage[0] = x;
+ _storage[1] = y;
+ _storage[2] = z;
+ _storage[3] = w;
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="quat.axisAngle">
 <button class="show-code">Code</button>
-new <strong>quat.axisAngle</strong>(<a href="../vector_math/vec3.html">vec3</a> axis, num angle) <a class="anchor-link" href="#quat.axisAngle"
+new <strong>quat.axisAngle</strong>(<a href="../vector_math/vec3.html">vec3</a> axis, double angle) <a class="anchor-link" href="#quat.axisAngle"
               title="Permalink to quat.quat.axisAngle">#</a></h4>
 <div class="doc">
-<p>Constructs a new quaternion representing a rotation of 
+<p>Rotation of 
 <span class="param">angle</span> around 
-<span class="param">axis</span></p>
+<span class="param">axis</span>.</p>
 <pre class="source">
-quat.axisAngle(vec3 axis, num angle) {
+quat.axisAngle(vec3 axis, double angle) {
  setAxisAngle(axis, angle);
 }
 </pre>
@@ -525,14 +447,14 @@ quat.axisAngle(vec3 axis, num angle) {
 new <strong>quat.copy</strong>(<a href="../vector_math/quat.html">quat</a> original) <a class="anchor-link" href="#quat.copy"
               title="Permalink to quat.quat.copy">#</a></h4>
 <div class="doc">
-<p>Constructs a new quaternion which is a copy of 
-<span class="param">original</span></p>
+<p>Copies 
+<span class="param">original</span>.</p>
 <pre class="source">
 quat.copy(quat original) {
- x = original.x;
- y = original.y;
- z = original.z;
- w = original.w;
+ _storage[0] = original._storage[0];
+ _storage[1] = original._storage[1];
+ _storage[2] = original._storage[2];
+ _storage[3] = original._storage[3];
 }
 </pre>
 </div>
@@ -542,19 +464,66 @@ quat.copy(quat original) {
 new <strong>quat.dq</strong>(<a href="../vector_math/quat.html">quat</a> q, <a href="../vector_math/vec3.html">vec3</a> omega) <a class="anchor-link" href="#quat.dq"
               title="Permalink to quat.quat.dq">#</a></h4>
 <div class="doc">
-<p>Constructs the time derivative of 
+<p>Time derivative of 
 <span class="param">q</span> with angular velocity 
-<span class="param">omega</span> </p>
+<span class="param">omega</span>.</p>
 <pre class="source">
 quat.dq(quat q, vec3 omega) {
- x = omega.x * q.w + omega.y * q.z - omega.z * q.y;
- y = omega.y * q.w + omega.z * q.x - omega.x * q.z;
- z = omega.z * q.w + omega.x * q.y - omega.y * q.x;
- w = -omega.x * q.x - omega.y * q.y - omega.z * q.z;
- x *= 0.5;
- y *= 0.5;
- z *= 0.5;
- w *= 0.5;
+ double qx = q._storage[0];
+ double qy = q._storage[1];
+ double qz = q._storage[2];
+ double qw = q._storage[3];
+ double ox = omega._storage[0];
+ double oy = omega._storage[1];
+ double oz = omega._storage[2];
+ double _x = ox * qw + oy * qz - oz * qy;
+ double _y = oy * qw + oz * qx - ox * qz;
+ double _z = oz * qw + ox * qy - oy * qx;
+ double _w = -ox * qx - oy * qy - oz * qz;
+ _storage[0] = _x * 0.5;
+ _storage[1] = _y * 0.5;
+ _storage[2] = _z * 0.5;
+ _storage[3] = _w * 0.5;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="quat.fromRotation">
+<button class="show-code">Code</button>
+new <strong>quat.fromRotation</strong>(<a href="../vector_math/mat3.html">mat3</a> rotationMatrix) <a class="anchor-link" href="#quat.fromRotation"
+              title="Permalink to quat.quat.fromRotation">#</a></h4>
+<div class="doc">
+<p>From a rotation matrix 
+<span class="param">rotationMatrix</span>.</p>
+<pre class="source">
+quat.fromRotation(mat3 rotationMatrix) {
+ double trace = rotationMatrix.trace();
+ if (trace &gt; 0.0) {
+   double s = Math.sqrt(trace + 1.0);
+   _storage[3] = s * 0.5;
+   s = 0.5 / s;
+   _storage[0] = (rotationMatrix._storage[5] -
+                  rotationMatrix._storage[7]) * s;
+   _storage[1] = (rotationMatrix._storage[6] -
+                  rotationMatrix._storage[2]) * s;
+   _storage[2] = (rotationMatrix._storage[1] -
+                  rotationMatrix._storage[3]) * s;
+ } else {
+   int i = rotationMatrix._storage[0] &lt; rotationMatrix._storage[4] ?
+           (rotationMatrix._storage[4] &lt; rotationMatrix._storage[8] ? 2 : 1)
+           :
+           (rotationMatrix._storage[0] &lt; rotationMatrix._storage[8] ? 2 : 0);
+   int j = (i + 1) % 3;
+   int k = (i + 2) % 3;
+   double s = Math.sqrt(rotationMatrix.entry(i,i) -
+                        rotationMatrix.entry(j,j) -
+                        rotationMatrix.entry(k,k) + 1.0);
+   _storage[i] = s * 0.5;
+   s = 0.5 / s;
+   _storage[3] = (rotationMatrix.entry(k,j) - rotationMatrix.entry(j,k)) * s;
+   _storage[j] = (rotationMatrix.entry(j,i) + rotationMatrix.entry(i,j)) * s;
+   _storage[k] = (rotationMatrix.entry(k,i) + rotationMatrix.entry(i,k)) * s;
+ }
 }
 </pre>
 </div>
@@ -567,10 +536,7 @@ new <strong>quat.identity</strong>() <a class="anchor-link" href="#quat.identity
 <p>Constructs the identity quaternion</p>
 <pre class="source">
 quat.identity() {
- x = 0.0;
- y = 0.0;
- z = 0.0;
- w = 1.0;
+ _storage[3] = 1.0;
 }
 </pre>
 </div>
@@ -580,11 +546,11 @@ quat.identity() {
 new <strong>quat.random</strong>(Random rn) <a class="anchor-link" href="#quat.random"
               title="Permalink to quat.quat.random">#</a></h4>
 <div class="doc">
-<p>Constructs a random rotation </p>
+<p>Random rotation.</p>
 <pre class="source">
 quat.random(Math.Random rn) {
-// From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
-//       pg. 124-132
+ // From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
+ // pg. 124-132.
  double x0 = rn.nextDouble();
  double r1 = Math.sqrt(1.0 - x0);
  double r2 = Math.sqrt(x0);
@@ -594,26 +560,11 @@ quat.random(Math.Random rn) {
  double s1 = Math.sin(t1);
  double c2 = Math.cos(t2);
  double s2 = Math.sin(t2);
- x = s1 * r1;
- y = c1 * r1;
- z = s2 * r2;
- w = c2 * r2;
+ _storage[0] = s1 * r1;
+ _storage[1] = c1 * r1;
+ _storage[2] = s2 * r2;
+ _storage[3] = c2 * r2;
 }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="quat.raw">
-<button class="show-code">Code</button>
-new <strong>quat.raw</strong>(double x, double y, double z, double w) <a class="anchor-link" href="#quat.raw"
-              title="Permalink to quat.quat.raw">#</a></h4>
-<div class="doc">
-<p>Constructs a quaternion using the raw values 
-<span class="param">x</span>, 
-<span class="param">y</span>, 
-<span class="param">z</span>, and 
-<span class="param">w</span></p>
-<pre class="source">
-quat.raw(this.x, this.y, this.z, this.w);
 </pre>
 </div>
 </div>
@@ -627,11 +578,13 @@ final <a href="../vector_math/vec3.html">vec3</a>         <strong>axis</strong> 
             title="Permalink to quat.axis">#</a>
         </h4>
         <div class="doc">
-<p>Axis of rotation </p>
+<p>Axis of rotation.</p>
 <pre class="source">
 vec3 get axis {
-   double divisor = 1.0 - (w*w);
-   return new vec3(x / divisor, y / divisor, z / divisor);
+   double scale = 1.0 / (1.0 - (_storage[3] * _storage[3]));
+   return new vec3(_storage[0] * scale,
+                   _storage[1] * scale,
+                   _storage[2] * scale);
 }
 </pre>
 </div>
@@ -643,7 +596,7 @@ final double         <strong>length</strong> <a class="anchor-link"
             title="Permalink to quat.length">#</a>
         </h4>
         <div class="doc">
-<p>Length </p>
+<p>Length.</p>
 <pre class="source">
 double get length {
  return Math.sqrt(length2);
@@ -658,10 +611,14 @@ final double         <strong>length2</strong> <a class="anchor-link"
             title="Permalink to quat.length2">#</a>
         </h4>
         <div class="doc">
-<p>Squared length </p>
+<p>Length squared.</p>
 <pre class="source">
 double get length2 {
- return (x*x) + (y*y) + (z*z) + (w*w);
+ double _x = _storage[0];
+ double _y = _storage[1];
+ double _z = _storage[2];
+ double _w = _storage[3];
+ return (_x * _x) + (_y * _y) + (_z * _z) + (_w * _w);
 }
 </pre>
 </div>
@@ -673,11 +630,21 @@ final double         <strong>radians</strong> <a class="anchor-link"
             title="Permalink to quat.radians">#</a>
         </h4>
         <div class="doc">
-<p>Radians of rotation </p>
+<p>Radians of rotation.</p>
 <pre class="source">
-double get radians {
- return 2.0 * acos(w);
-}
+double get radians =&gt; 2.0 * acos(_storage[3]);
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="storage">
+<button class="show-code">Code</button>
+final Float32List         <strong>storage</strong> <a class="anchor-link"
+            href="#storage"
+            title="Permalink to quat.storage">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Float32List get storage =&gt; _storage;
 </pre>
 </div>
 </div>
@@ -689,7 +656,10 @@ double         <strong>w</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-double w
+double get w =&gt; _storage[0];
+</pre>
+<pre class="source">
+set w(double w) { _storage[3] = w; }
 </pre>
 </div>
 </div>
@@ -701,7 +671,10 @@ double         <strong>x</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-double x
+double get x =&gt; _storage[0];
+</pre>
+<pre class="source">
+set x(double x) { _storage[0] = x; }
 </pre>
 </div>
 </div>
@@ -713,7 +686,10 @@ double         <strong>y</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-double y
+double get y =&gt; _storage[0];
+</pre>
+<pre class="source">
+set y(double y) { _storage[1] = y; }
 </pre>
 </div>
 </div>
@@ -725,7 +701,10 @@ double         <strong>z</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-double z
+double get z =&gt; _storage[0];
+</pre>
+<pre class="source">
+set z(double z) { _storage[2] = z; }
 </pre>
 </div>
 </div>
@@ -737,18 +716,8 @@ double z
 double <strong>operator []</strong>(int i) <a class="anchor-link" href="#[]"
               title="Permalink to quat.operator []">#</a></h4>
 <div class="doc">
-<p>Treats <code>this</code> as an array and returns <a class="crossref" href="../vector_math/quat.html#x">x</a>,<a class="crossref" href="../vector_math/quat.html#y">y</a>,<a class="crossref" href="../vector_math/quat.html#z">z</a>, or <a class="crossref" href="../vector_math/quat.html#w">w</a> </p>
 <pre class="source">
-double operator[](int i) {
- assert(i &gt;= 0 &amp;&amp; i &lt; 4);
- switch (i) {
- case 0: return x;
- case 1: return y;
- case 2: return z;
- case 3: return w;
- }
- return 0.0;
-}
+double operator[](int i) =&gt; _storage[i];
 </pre>
 </div>
 </div>
@@ -757,17 +726,9 @@ double operator[](int i) {
 void <strong>operator []=</strong>(int i, double arg) <a class="anchor-link" href="#[]="
               title="Permalink to quat.operator []=">#</a></h4>
 <div class="doc">
-<p>Treats <code>this</code> as an array and assigns <a class="crossref" href="../vector_math/quat.html#x">x</a>,<a class="crossref" href="../vector_math/quat.html#y">y</a>,<a class="crossref" href="../vector_math/quat.html#z">z</a>, or <a class="crossref" href="../vector_math/quat.html#w">w</a> the value of 
-<span class="param">arg</span></p>
 <pre class="source">
 void operator[]=(int i, double arg) {
- assert(i &gt;= 0 &amp;&amp; i &lt; 4);
- switch (i) {
- case 0: x = arg; break;
- case 1: y = arg; break;
- case 2: z = arg; break;
- case 3: w = arg; break;
- }
+ _storage[i] = arg;
 }
 </pre>
 </div>
@@ -777,11 +738,14 @@ void operator[]=(int i, double arg) {
 <a href="../vector_math/quat.html">quat</a> <strong>operator +</strong>(<a href="../vector_math/quat.html">quat</a> other) <a class="anchor-link" href="#+"
               title="Permalink to quat.operator +">#</a></h4>
 <div class="doc">
-<p>Returns copy of <code>this</code> - 
-<span class="param">other</span> </p>
+<p>Returns copy of <code>this</code> + 
+<span class="param">other</span>.</p>
 <pre class="source">
 quat operator+(quat other) {
- return new quat(x + other.x, y + other.y, z + other.z, w + other.w);
+ return new quat(_storage[0] + other._storage[0],
+                 _storage[1] + other._storage[1],
+                 _storage[2] + other._storage[2],
+                 _storage[3] + other._storage[3]);
 }
 </pre>
 </div>
@@ -791,10 +755,10 @@ quat operator+(quat other) {
 <a href="../vector_math/quat.html">quat</a> <strong>operator -</strong>() <a class="anchor-link" href="#unary-"
               title="Permalink to quat.operator -">#</a></h4>
 <div class="doc">
-<p>Returns negated copy of <code>this</code> </p>
+<p>Returns negated copy of <code>this</code>.</p>
 <pre class="source">
 quat operator-() {
- return new quat(-x, -y, -z, -w);
+ return new quat(-_storage[0], -_storage[1], -_storage[2], -_storage[3]);
 }
 </pre>
 </div>
@@ -804,49 +768,39 @@ quat operator-() {
 <a href="../vector_math/quat.html">quat</a> <strong>operator -</strong>(<a href="../vector_math/quat.html">quat</a> other) <a class="anchor-link" href="#-"
               title="Permalink to quat.operator -">#</a></h4>
 <div class="doc">
-<p>Returns copy of <code>this</code> + 
-<span class="param">other</span> </p>
+<p>Returns copy of <code>this</code> - 
+<span class="param">other</span>.</p>
 <pre class="source">
 quat operator-(quat other) {
- return new quat(x - other.x, y - other.y, z - other.z, w - other.w);
+ return new quat(_storage[0] - other._storage[0],
+                 _storage[1] - other._storage[1],
+                 _storage[2] - other._storage[2],
+                 _storage[3] - other._storage[3]);
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="*">
 <button class="show-code">Code</button>
-<a href="../vector_math/quat.html">quat</a> <strong>operator *</strong>(other) <a class="anchor-link" href="#*"
+<a href="../vector_math/quat.html">quat</a> <strong>operator *</strong>(<a href="../vector_math/quat.html">quat</a> other) <a class="anchor-link" href="#*"
               title="Permalink to quat.operator *">#</a></h4>
 <div class="doc">
-<p> Returns copy of <code>this</code> multiplied by <code>scale</code>
- Returns copy of <code>this</code> rotated by <code>otherQuat</code></p>
+<p><code>this</code> rotated by 
+<span class="param">other</span>.</p>
 <pre class="source">
-quat operator*(dynamic other) {
- if (other is num) {
-   other = other.toDouble();
-   return new quat(x * other, y * other, z * other, w * other);
- }
- if (other is quat) {
-   return new quat(w * other.x + x * other.w + y * other.z - z * other.y,
-                   w * other.y + y * other.w + z * other.x - x * other.z,
-                   w * other.z + z * other.w + x * other.y - y * other.x,
-                   w * other.w - x * other.x - y * other.y - z * other.z);
- }
-}
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="/">
-<button class="show-code">Code</button>
-<a href="../vector_math/quat.html">quat</a> <strong>operator /</strong>(num scale) <a class="anchor-link" href="#/"
-              title="Permalink to quat.operator /">#</a></h4>
-<div class="doc">
-<p>Return a copy of <code>this</code> divided by 
-<span class="param">scale</span> </p>
-<pre class="source">
-quat operator/(num scale) {
- scale = scale.toDouble();
- return new quat(x / scale, y / scale, z / scale, w / scale);
+quat operator*(quat other) {
+ double _w = _storage[3];
+ double _z = _storage[2];
+ double _y = _storage[1];
+ double _x = _storage[0];
+ double ow = other._storage[3];
+ double oz = other._storage[2];
+ double oy = other._storage[1];
+ double ox = other._storage[0];
+ return new quat(_w * ox + _x * ow + _y * oz - _z * oy,
+                 _w * oy + _y * ow + _z * ox - _x * oz,
+                 _w * oz + _z * ow + _x * oy - _y * ox,
+                 _w * ow - _x * ox - _y * oy - _z * oz);
 }
 </pre>
 </div>
@@ -859,8 +813,8 @@ quat operator/(num scale) {
 double <strong>absoluteError</strong>(<a href="../vector_math/quat.html">quat</a> correct) <a class="anchor-link" href="#absoluteError"
               title="Permalink to quat.absoluteError">#</a></h4>
 <div class="doc">
-<p>Returns absolute error between <code>this</code> and 
-<span class="param">correct</span> </p>
+<p>Absolute error between <code>this</code> and 
+<span class="param">correct</span>.</p>
 <pre class="source">
 double absoluteError(quat correct) {
  double this_norm = length;
@@ -876,33 +830,37 @@ double absoluteError(quat correct) {
 <a href="../vector_math/mat3.html">mat3</a> <strong>asRotationMatrix</strong>() <a class="anchor-link" href="#asRotationMatrix"
               title="Permalink to quat.asRotationMatrix">#</a></h4>
 <div class="doc">
-<p>Returns a rotation matrix containing the same rotation as <code>this</code> </p>
+<p>Returns a rotation matrix containing the same rotation as <code>this</code>.</p>
 <pre class="source">
 mat3 asRotationMatrix() {
  double d = length2;
  assert(d != 0.0);
  double s = 2.0 / d;
 
- double xs = x * s;
- double ys = y * s;
- double zs = z * s;
+ double _x = _storage[0];
+ double _y = _storage[1];
+ double _z = _storage[2];
+ double _w = _storage[3];
 
- double wx = w * xs;
- double wy = w * ys;
- double wz = w * zs;
+ double xs = _x * s;
+ double ys = _y * s;
+ double zs = _z * s;
 
- double xx = x * xs;
- double xy = x * ys;
- double xz = x * zs;
+ double wx = _w * xs;
+ double wy = _w * ys;
+ double wz = _w * zs;
 
- double yy = y * ys;
- double yz = y * zs;
- double zz = z * zs;
+ double xx = _x * xs;
+ double xy = _x * ys;
+ double xz = _x * zs;
 
- return new mat3.raw(1.0 - (yy + zz), xy + wz, xz - wy, // column 0
-   xy - wz, 1.0 - (xx + zz), yz + wx, // column 1
-   xz + wy, yz - wx, 1.0 - (xx + yy) // column 2
-   );
+ double yy = _y * ys;
+ double yz = _y * zs;
+ double zz = _z * zs;
+
+ return new mat3(1.0 - (yy + zz), xy + wz, xz - wy, // column 0
+                 xy - wz, 1.0 - (xx + zz), yz + wx, // column 1
+                 xz + wy, yz - wx, 1.0 - (xx + yy)); // column 2
 }
 </pre>
 </div>
@@ -925,13 +883,12 @@ quat clone() {
 <a href="../vector_math/quat.html">quat</a> <strong>conjugate</strong>() <a class="anchor-link" href="#conjugate"
               title="Permalink to quat.conjugate">#</a></h4>
 <div class="doc">
-<p>Conjugate <code>this</code> </p>
+<p>Conjugate <code>this</code>.</p>
 <pre class="source">
 quat conjugate() {
- x = -x;
- y = -y;
- z = -z;
- w = w;
+ _storage[2] = -_storage[2];
+ _storage[1] = -_storage[1];
+ _storage[0] = -_storage[0];
  return this;
 }
 </pre>
@@ -939,17 +896,13 @@ quat conjugate() {
 </div>
 <div class="method"><h4 id="conjugated">
 <button class="show-code">Code</button>
-<a href="../vector_math/quat.html">quat</a> <strong>conjugated</strong>([<a href="../vector_math/quat.html">quat</a> out = null]) <a class="anchor-link" href="#conjugated"
+<a href="../vector_math/quat.html">quat</a> <strong>conjugated</strong>() <a class="anchor-link" href="#conjugated"
               title="Permalink to quat.conjugated">#</a></h4>
 <div class="doc">
-<p>Conjugated copy of <code>this</code>. Optionally stored in 
-<span class="param">out</span> </p>
+<p>Conjugated copy of <code>this</code>.</p>
 <pre class="source">
-quat conjugated([quat out=null]) {
- if (out == null) {
-   out = new quat.copy(this);
- }
- return out.conjugate();
+quat conjugated() {
+ return new quat.copy(this).conjugate();
 }
 </pre>
 </div>
@@ -963,10 +916,10 @@ void <strong>copyFrom</strong>(<a href="../vector_math/quat.html">quat</a> sourc
 <span class="param">source</span> into <code>this</code></p>
 <pre class="source">
 void copyFrom(quat source) {
- x = source.x;
- y = source.y;
- z = source.z;
- w = source.w;
+ _storage[0] = source._storage[0];
+ _storage[1] = source._storage[1];
+ _storage[2] = source._storage[2];
+ _storage[3] = source._storage[3];
 }
 </pre>
 </div>
@@ -980,10 +933,10 @@ void <strong>copyTo</strong>(<a href="../vector_math/quat.html">quat</a> target)
 <span class="param">target</span>.</p>
 <pre class="source">
 void copyTo(quat target) {
- target.x = x;
- target.y = y;
- target.z = z;
- target.w = w;
+ target._storage[0] = _storage[0];
+ target._storage[1] = _storage[1];
+ target._storage[2] = _storage[2];
+ target._storage[3] = _storage[3];
 }
 </pre>
 </div>
@@ -993,14 +946,14 @@ void copyTo(quat target) {
 <a href="../vector_math/quat.html">quat</a> <strong>inverse</strong>() <a class="anchor-link" href="#inverse"
               title="Permalink to quat.inverse">#</a></h4>
 <div class="doc">
-<p>Invert <code>this</code>  </p>
+<p>Invert <code>this</code>.</p>
 <pre class="source">
 quat inverse() {
  double l = 1.0 / length2;
- x = -x * l;
- y = -y * l;
- z = -z * l;
- w = w * l;
+ _storage[3] = _storage[3] * l;
+ _storage[2] = -_storage[2] * l;
+ _storage[1] = -_storage[1] * l;
+ _storage[0] = -_storage[0] * l;
  return this;
 }
 </pre>
@@ -1008,17 +961,13 @@ quat inverse() {
 </div>
 <div class="method"><h4 id="inverted">
 <button class="show-code">Code</button>
-<a href="../vector_math/quat.html">quat</a> <strong>inverted</strong>([<a href="../vector_math/quat.html">quat</a> out = null]) <a class="anchor-link" href="#inverted"
+<a href="../vector_math/quat.html">quat</a> <strong>inverted</strong>() <a class="anchor-link" href="#inverted"
               title="Permalink to quat.inverted">#</a></h4>
 <div class="doc">
-<p>Inverted copy of <code>this</code>. Optionally stored in 
-<span class="param">out</span> </p>
+<p>Inverted copy of <code>this</code>.</p>
 <pre class="source">
-quat inverted([quat out=null]) {
- if (out == null) {
-   out = new quat.copy(this);
- }
- return out.inverse();
+quat inverted() {
+ return new quat.copy(this).inverse();
 }
 </pre>
 </div>
@@ -1028,17 +977,18 @@ quat inverted([quat out=null]) {
 <a href="../vector_math/quat.html">quat</a> <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
               title="Permalink to quat.normalize">#</a></h4>
 <div class="doc">
-<p>Normalize <code>this</code> </p>
+<p>Normalize <code>this</code>.</p>
 <pre class="source">
 quat normalize() {
  double l = length;
  if (l == 0.0) {
    return this;
  }
- x /= l;
- y /= l;
- z /= l;
- w /= l;
+ l = 1.0 / l;
+ _storage[3] = _storage[3] * l;
+ _storage[2] = _storage[2] * l;
+ _storage[1] = _storage[1] * l;
+ _storage[0] = _storage[0] * l;
  return this;
 }
 </pre>
@@ -1046,17 +996,13 @@ quat normalize() {
 </div>
 <div class="method"><h4 id="normalized">
 <button class="show-code">Code</button>
-<a href="../vector_math/quat.html">quat</a> <strong>normalized</strong>([<a href="../vector_math/quat.html">quat</a> out = null]) <a class="anchor-link" href="#normalized"
+<a href="../vector_math/quat.html">quat</a> <strong>normalized</strong>() <a class="anchor-link" href="#normalized"
               title="Permalink to quat.normalized">#</a></h4>
 <div class="doc">
-<p>Normalized copy of <code>this</code>. Optionally stored in 
-<span class="param">out</span></p>
+<p>Normalized copy of <code>this</code>.</p>
 <pre class="source">
-quat normalized([quat out=null]) {
- if (out == null) {
-   out = new quat.copy(this);
- }
- return out.normalize();
+quat normalized() {
+ return new quat.copy(this).normalize();
 }
 </pre>
 </div>
@@ -1066,8 +1012,8 @@ quat normalized([quat out=null]) {
 double <strong>relativeError</strong>(<a href="../vector_math/quat.html">quat</a> correct) <a class="anchor-link" href="#relativeError"
               title="Permalink to quat.relativeError">#</a></h4>
 <div class="doc">
-<p>Returns relative error between <code>this</code>  and 
-<span class="param">correct</span> </p>
+<p>Relative error between <code>this</code> and 
+<span class="param">correct</span>.</p>
 <pre class="source">
 double relativeError(quat correct) {
  quat diff = correct - this;
@@ -1084,25 +1030,28 @@ double relativeError(quat correct) {
               title="Permalink to quat.rotate">#</a></h4>
 <div class="doc">
 <p>Rotates 
-<span class="param">v</span> by <code>this</code>. Returns 
-<span class="param">v</span>. </p>
+<span class="param">v</span> by <code>this</code>.</p>
 <pre class="source">
 vec3 rotate(vec3 v) {
  // conjugate(this) * [v,0] * this
- double tix = -x;
- double tiy = -y;
- double tiz = -z;
- double tiw = w;
+ double _w = _storage[3];
+ double _z = _storage[2];
+ double _y = _storage[1];
+ double _x = _storage[0];
+ double tiw = _w;
+ double tiz = -_z;
+ double tiy = -_y;
+ double tix = -_x;
  double tx = tiw * v.x + tix * 0.0 + tiy * v.z - tiz * v.y;
  double ty = tiw * v.y + tiy * 0.0 + tiz * v.x - tix * v.z;
  double tz = tiw * v.z + tiz * 0.0 + tix * v.y - tiy * v.x;
  double tw = tiw * 0.0 - tix * v.x - tiy * v.y - tiz * v.z;
- double result_x = tw * x + tx * w + ty * z - tz * y;
- double result_y = tw * y + ty * w + tz * x - tx * z;
- double result_z = tw * z + tz * w + tx * y - ty * x;
- v.x = result_x;
- v.y = result_y;
- v.z = result_z;
+ double result_x = tw * _x + tx * _w + ty * _z - tz * _y;
+ double result_y = tw * _y + ty * _w + tz * _x - tx * _z;
+ double result_z = tw * _z + tz * _w + tx * _y - ty * _x;
+ v._storage[2] = result_z;
+ v._storage[1] = result_y;
+ v._storage[0] = result_x;
  return v;
 }
 </pre>
@@ -1110,62 +1059,84 @@ vec3 rotate(vec3 v) {
 </div>
 <div class="method"><h4 id="rotated">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec3.html">vec3</a> <strong>rotated</strong>(<a href="../vector_math/vec3.html">vec3</a> v, [<a href="../vector_math/vec3.html">vec3</a> out = null]) <a class="anchor-link" href="#rotated"
+<a href="../vector_math/vec3.html">vec3</a> <strong>rotated</strong>(<a href="../vector_math/vec3.html">vec3</a> v) <a class="anchor-link" href="#rotated"
               title="Permalink to quat.rotated">#</a></h4>
 <div class="doc">
 <p>Returns a copy of 
-<span class="param">v</span> rotated by quaternion. Copy optionally stored in 
-<span class="param">out</span> </p>
+<span class="param">v</span> rotated by quaternion.</p>
 <pre class="source">
-vec3 rotated(vec3 v, [vec3 out=null]) {
- if (out == null) {
-   out = new vec3.copy(v);
- } else {
-   out.copyFrom(v);
- }
+vec3 rotated(vec3 v) {
+ vec3 out = new vec3.copy(v);
  return rotate(out);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="scale">
+<button class="show-code">Code</button>
+<a href="../vector_math/quat.html">quat</a> <strong>scale</strong>(double scale) <a class="anchor-link" href="#scale"
+              title="Permalink to quat.scale">#</a></h4>
+<div class="doc">
+<pre class="source">
+quat scale(double scale) {
+ quat q = new quat.copy(this);
+ return q.scaled(scale);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="scaled">
+<button class="show-code">Code</button>
+<a href="../vector_math/quat.html">quat</a> <strong>scaled</strong>(double scale) <a class="anchor-link" href="#scaled"
+              title="Permalink to quat.scaled">#</a></h4>
+<div class="doc">
+<p>Scales <code>this</code> by 
+<span class="param">scale</span>.</p>
+<pre class="source">
+quat scaled(double scale) {
+ _storage[3] = _storage[3] * scale;
+ _storage[2] = _storage[2] * scale;
+ _storage[1] = _storage[1] * scale;
+ _storage[0] = _storage[0] * scale;
+ return this;
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="setAxisAngle">
 <button class="show-code">Code</button>
-void <strong>setAxisAngle</strong>(<a href="../vector_math/vec3.html">vec3</a> axis, num radians) <a class="anchor-link" href="#setAxisAngle"
+void <strong>setAxisAngle</strong>(<a href="../vector_math/vec3.html">vec3</a> axis, double radians) <a class="anchor-link" href="#setAxisAngle"
               title="Permalink to quat.setAxisAngle">#</a></h4>
 <div class="doc">
 <p>Set quaternion with rotation of 
 <span class="param">radians</span> around 
 <span class="param">axis</span>.</p>
 <pre class="source">
-void setAxisAngle(vec3 axis, num radians) {
- radians = radians.toDouble();
+void setAxisAngle(vec3 axis, double radians) {
  double len = axis.length;
  if (len == 0.0) {
    return;
  }
  double halfSin = sin(radians * 0.5) / len;
- x = axis.x * halfSin;
- y = axis.y * halfSin;
- z = axis.z * halfSin;
- w = cos(radians * 0.5);
+ _storage[0] = axis._storage[0] * halfSin;
+ _storage[1] = axis._storage[1] * halfSin;
+ _storage[2] = axis._storage[2] * halfSin;
+ _storage[3] = cos(radians * 0.5);
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="setEuler">
 <button class="show-code">Code</button>
-void <strong>setEuler</strong>(num yaw, num pitch, num roll) <a class="anchor-link" href="#setEuler"
+void <strong>setEuler</strong>(double yaw, double pitch, double roll) <a class="anchor-link" href="#setEuler"
               title="Permalink to quat.setEuler">#</a></h4>
 <div class="doc">
 <p>Set quaternion with rotation of 
 <span class="param">yaw</span>, 
 <span class="param">pitch</span> and 
-<span class="param">roll</span> </p>
+<span class="param">roll</span>.</p>
 <pre class="source">
-void setEuler(num yaw, num pitch, num roll) {
- yaw = yaw.toDouble();
- pitch = pitch.toDouble();
- roll = roll.toDouble();
+void setEuler(double yaw, double pitch, double roll) {
  double halfYaw = yaw * 0.5;
  double halfPitch = pitch * 0.5;
  double halfRoll = roll * 0.5;
@@ -1175,10 +1146,10 @@ void setEuler(num yaw, num pitch, num roll) {
  double sinPitch = Math.sin(halfPitch);
  double cosRoll = Math.cos(halfRoll);
  double sinRoll = Math.sin(halfRoll);
- x = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
- y = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
- z = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
- w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
+ _storage[0] = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
+ _storage[1] = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
+ _storage[2] = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
+ _storage[3] = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
 }
 </pre>
 </div>
@@ -1188,10 +1159,10 @@ void setEuler(num yaw, num pitch, num roll) {
 String <strong>toString</strong>() <a class="anchor-link" href="#toString"
               title="Permalink to quat.toString">#</a></h4>
 <div class="doc">
-<p>Returns a printable string </p>
+<p>Printable string.</p>
 <pre class="source">
 String toString() {
- return '$x, $y, $z @ $w';
+ return '${_storage[0]}, ${_storage[1]}, ${_storage[2]} @ ${_storage[3]}';
 }
 </pre>
 </div>

@@ -153,7 +153,7 @@ class Distance {
      transformB.rotation.transposed().transformed(searchDirection.negate(), temp);
      vertex.indexB = proxyB.getSupport(temp);
      Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB], vertex.wB);
-     vertex.w.copyFrom(vertex.wB).sub(vertex.wA);
+     vertex.w.setFrom(vertex.wB).sub(vertex.wA);
 
      // Iteration count is equated to the number of support point calls.
      ++iter;
@@ -196,17 +196,17 @@ class Distance {
        // Shapes are still no overlapped.
        // Move the witness points to the outer surface.
        output._distance -= rA + rB;
-       normal.copyFrom(output.pointB).sub(output.pointA);
+       normal.setFrom(output.pointB).sub(output.pointA);
        normal.normalize();
-       temp.copyFrom(normal).scale(rA);
+       temp.setFrom(normal).scale(rA);
        output.pointA.add(temp);
-       temp.copyFrom(normal).scale(rB);
+       temp.setFrom(normal).scale(rB);
        output.pointB.sub(temp);
      } else {
        // Shapes are overlapped when radii are considered.
        // Move the witness points to the middle.
        output.pointA.add(output.pointB).scale(.5);
-       output.pointB.copyFrom(output.pointA);
+       output.pointB.setFrom(output.pointA);
        output._distance = 0.0;
      }
    }
@@ -434,7 +434,7 @@ void computeDistance(DistanceOutput output, SimplexCache cache,
    transformB.rotation.transposed().transformed(searchDirection.negate(), temp);
    vertex.indexB = proxyB.getSupport(temp);
    Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB], vertex.wB);
-   vertex.w.copyFrom(vertex.wB).sub(vertex.wA);
+   vertex.w.setFrom(vertex.wB).sub(vertex.wA);
 
    // Iteration count is equated to the number of support point calls.
    ++iter;
@@ -477,17 +477,17 @@ void computeDistance(DistanceOutput output, SimplexCache cache,
      // Shapes are still no overlapped.
      // Move the witness points to the outer surface.
      output._distance -= rA + rB;
-     normal.copyFrom(output.pointB).sub(output.pointA);
+     normal.setFrom(output.pointB).sub(output.pointA);
      normal.normalize();
-     temp.copyFrom(normal).scale(rA);
+     temp.setFrom(normal).scale(rA);
      output.pointA.add(temp);
-     temp.copyFrom(normal).scale(rB);
+     temp.setFrom(normal).scale(rB);
      output.pointB.sub(temp);
    } else {
      // Shapes are overlapped when radii are considered.
      // Move the witness points to the middle.
      output.pointA.add(output.pointB).scale(.5);
-     output.pointB.copyFrom(output.pointA);
+     output.pointB.setFrom(output.pointA);
      output._distance = 0.0;
    }
  }

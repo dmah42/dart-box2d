@@ -53,7 +53,7 @@ class Manifold {
   * faceA: The center of faceA.
   * faceB: The center of faceB.
   */
- final vec2 localPoint;
+ vec2 localPoint;
 
  /** The type of manifold. See [ManifoldType]. */
  int type;
@@ -95,8 +95,8 @@ class Manifold {
      points[i].setFrom(other.points[i]);
 
    type = other.type;
-   localNormal.copyFrom(other.localNormal);
-   localPoint.copyFrom(other.localPoint);
+   localNormal.setFrom(other.localNormal);
+   localPoint.setFrom(other.localPoint);
    pointCount = other.pointCount;
  }
 }
@@ -164,7 +164,7 @@ final vec2 localNormal
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
+<a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to Manifold.localPoint">#</a>
         </h4>
@@ -175,7 +175,7 @@ Circles: The local center of circleA.
 faceA: The center of faceA.
 faceB: The center of faceB.</p>
 <pre class="source">
-final vec2 localPoint
+vec2 localPoint
 </pre>
 </div>
 </div>
@@ -233,8 +233,8 @@ void setFrom(Manifold other) {
    points[i].setFrom(other.points[i]);
 
  type = other.type;
- localNormal.copyFrom(other.localNormal);
- localPoint.copyFrom(other.localPoint);
+ localNormal.setFrom(other.localNormal);
+ localPoint.setFrom(other.localPoint);
  pointCount = other.pointCount;
 }
 </pre>

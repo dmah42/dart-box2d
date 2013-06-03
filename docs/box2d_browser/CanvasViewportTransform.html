@@ -160,7 +160,7 @@ vec2 get translation =&gt; extents - center;
 </pre>
 <pre class="source">
 void set translation(vec2 translation) {
- center.copyFrom(extents).sub(translation);
+ center.setFrom(extents).sub(translation);
 }
 </pre>
 </div>
@@ -232,7 +232,7 @@ void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href
 and using the given scale.</p>
 <pre class="source">
 void setCamera(num x, num y, num s) {
- center.setComponents(x,y);
+ center.setValues(x,y);
  scale = s;
 }
 </pre>

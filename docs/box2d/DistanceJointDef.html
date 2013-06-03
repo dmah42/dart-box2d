@@ -74,8 +74,8 @@ class DistanceJointDef extends JointDef {
  void initialize(Body b1, Body b2, vec2 anchor1, vec2 anchor2) {
    bodyA = b1;
    bodyB = b2;
-   localAnchorA.copyFrom(bodyA.getLocalPoint(anchor1));
-   localAnchorB.copyFrom(bodyB.getLocalPoint(anchor2));
+   localAnchorA.setFrom(bodyA.getLocalPoint(anchor1));
+   localAnchorB.setFrom(bodyB.getLocalPoint(anchor2));
    length = (anchor2 - anchor1).length;
  }
 }
@@ -255,8 +255,8 @@ anchor2: World anchor on second body</p>
 void initialize(Body b1, Body b2, vec2 anchor1, vec2 anchor2) {
  bodyA = b1;
  bodyB = b2;
- localAnchorA.copyFrom(bodyA.getLocalPoint(anchor1));
- localAnchorB.copyFrom(bodyB.getLocalPoint(anchor2));
+ localAnchorA.setFrom(bodyA.getLocalPoint(anchor1));
+ localAnchorB.setFrom(bodyB.getLocalPoint(anchor2));
  length = (anchor2 - anchor1).length;
 }
 </pre>

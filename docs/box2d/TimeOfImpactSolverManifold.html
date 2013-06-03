@@ -61,38 +61,38 @@ class TimeOfImpactSolverManifold {
 
    switch (cc.type) {
      case ManifoldType.CIRCLES:
-       pointA.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-       pointB.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+       pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+       pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
        if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-         normal.copyFrom(pointB).sub(pointA);
+         normal.setFrom(pointB).sub(pointA);
          normal.normalize();
        } else {
          normal.splat(0.0);
        }
 
-       point.copyFrom(pointA).add(pointB).scale(.5);
-       temp.copyFrom(pointB).sub(pointA);
+       point.setFrom(pointA).add(pointB).scale(.5);
+       temp.setFrom(pointB).sub(pointA);
        separation = dot(temp, normal) - cc.radius;
        break;
 
      case ManifoldType.FACE_A:
-       normal.copyFrom(cc.bodyA.getWorldVector(cc.localNormal));
-       planePoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+       normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
+       planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
-       clipPoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-       temp.copyFrom(clipPoint).sub(planePoint);
+       clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+       temp.setFrom(clipPoint).sub(planePoint);
        separation = dot(temp, normal) - cc.radius;
-       point.copyFrom(clipPoint);
+       point.setFrom(clipPoint);
        break;
 
      case ManifoldType.FACE_B:
-       normal.copyFrom(cc.bodyB.getWorldVector(cc.localNormal));
-       planePoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+       normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
+       planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
-       clipPoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-       temp.copyFrom(clipPoint).sub(planePoint);
+       clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+       temp.setFrom(clipPoint).sub(planePoint);
        separation = dot(temp, normal) - cc.radius;
-       point.copyFrom(clipPoint);
+       point.setFrom(clipPoint);
 
        // Ensure normal points from A to B
        normal.negate();
@@ -237,38 +237,38 @@ void initialize(TimeOfImpactConstraint cc, int index) {
 
  switch (cc.type) {
    case ManifoldType.CIRCLES:
-     pointA.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
-     pointB.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
+     pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+     pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
      if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-       normal.copyFrom(pointB).sub(pointA);
+       normal.setFrom(pointB).sub(pointA);
        normal.normalize();
      } else {
        normal.splat(0.0);
      }
 
-     point.copyFrom(pointA).add(pointB).scale(.5);
-     temp.copyFrom(pointB).sub(pointA);
+     point.setFrom(pointA).add(pointB).scale(.5);
+     temp.setFrom(pointB).sub(pointA);
      separation = dot(temp, normal) - cc.radius;
      break;
 
    case ManifoldType.FACE_A:
-     normal.copyFrom(cc.bodyA.getWorldVector(cc.localNormal));
-     planePoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoint));
+     normal.setFrom(cc.bodyA.getWorldVector(cc.localNormal));
+     planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
-     clipPoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-     temp.copyFrom(clipPoint).sub(planePoint);
+     clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
+     temp.setFrom(clipPoint).sub(planePoint);
      separation = dot(temp, normal) - cc.radius;
-     point.copyFrom(clipPoint);
+     point.setFrom(clipPoint);
      break;
 
    case ManifoldType.FACE_B:
-     normal.copyFrom(cc.bodyB.getWorldVector(cc.localNormal));
-     planePoint.copyFrom(cc.bodyB.getWorldPoint(cc.localPoint));
+     normal.setFrom(cc.bodyB.getWorldVector(cc.localNormal));
+     planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
-     clipPoint.copyFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-     temp.copyFrom(clipPoint).sub(planePoint);
+     clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
+     temp.setFrom(clipPoint).sub(planePoint);
      separation = dot(temp, normal) - cc.radius;
-     point.copyFrom(clipPoint);
+     point.setFrom(clipPoint);
 
      // Ensure normal points from A to B
      normal.negate();
