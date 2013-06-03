@@ -22,7 +22,7 @@ class WorldManifold {
   /**
    * World vector pointing from A to B
    */
-  final vec2 normal;
+  vec2 normal;
 
   /**
    * World contact points (points of intersection)
@@ -30,129 +30,71 @@ class WorldManifold {
   final List<vec2> points;
 
   /**
-   * Temporary Vectors that are constructed on construction. Used to prevent
-   * object construction while stepping.
-   */
-  final vec2 pool3;
-  final vec2 pool4;
-
-  /**
    * Constructs a new WorldManifold.
    */
   WorldManifold()
       : normal = new vec2.zero(),
-        pool3 = new vec2.zero(),
-        pool4 = new vec2.zero(),
         points = new List<vec2>.generate(
             Settings.MAX_MANIFOLD_POINTS, (i) => new vec2.zero());
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {
+    radiusA = radiusA.toDouble();
+    radiusB = radiusB.toDouble();
     switch (manifold.type) {
       case ManifoldType.CIRCLES:
-        final vec2 pointA = pool3;
-        final vec2 pointB = pool4;
-
-        normal.x = 1.0;
-        normal.y = 0.0;
-        pointA.x = xfA.position.x + xfA.rotation.col0.x *
-            manifold.localPoint.x + xfA.rotation.col1.x * manifold.localPoint.y;
-        pointA.y = xfA.position.y + xfA.rotation.col0.y *
-            manifold.localPoint.x + xfA.rotation.col1.y * manifold.localPoint.y;
-        pointB.x = xfB.position.x + xfB.rotation.col0.x *
-            manifold.points[0].localPoint.x + xfB.rotation.col1.x *
-            manifold.points[0].localPoint.y;
-        pointB.y = xfB.position.y + xfB.rotation.col0.y *
-            manifold.points[0].localPoint.x + xfB.rotation.col1.y *
-            manifold.points[0].localPoint.y;
+        normal.setValues(1.0, 0.0);
+        final vec2 pointA = xfA.position + xfA.rotation * manifold.localPoint;
+        final vec2 pointB = xfB.position + xfB.rotation * manifold.points[0].localPoint;
 
         if (distance2(pointA, pointB) > Settings.EPSILON * Settings.EPSILON) {
-          normal.copyFrom(pointB).sub(pointA);
+          normal.setFrom(pointB).sub(pointA);
           normal.normalize();
         }
 
         final vec2 cA = normal * radiusA + pointA;
         final vec2 cB = -normal * radiusB + pointB;
 
-        points[0].copyFrom(cA).add(cB).scale(0.5);
+        points[0].setFrom(cA).add(cB).scale(0.5);
         return;
       case ManifoldType.FACE_A:
-        final vec2 planePoint = pool3;
+        normal = xfA.rotation * manifold.localNormal;
+        final vec2 planePoint = xfA.position + xfA.rotation * manifold.localPoint;
 
-        normal.x = xfA.rotation.col0.x * manifold.localNormal.x +
-            xfA.rotation.col1.x * manifold.localNormal.y;
-        normal.y = xfA.rotation.col0.y * manifold.localNormal.x +
-            xfA.rotation.col1.y * manifold.localNormal.y;
-        planePoint.x = xfA.position.x + xfA.rotation.col0.x *
-            manifold.localPoint.x + xfA.rotation.col1.x * manifold.localPoint.y;
-        planePoint.y = xfA.position.y + xfA.rotation.col0.y *
-            manifold.localPoint.x + xfA.rotation.col1.y * manifold.localPoint.y;
-
-        final vec2 clipPoint = pool4;
-
-        // TODO(dominic): Some vector cleanup here.
+        // NOTE: the below still creates new vectors.
         for (int i = 0; i < manifold.pointCount; ++i) {
-          clipPoint.x = xfB.position.x + xfB.rotation.col0.x *
-              manifold.points[i].localPoint.x + xfB.rotation.col1.x *
-              manifold.points[i].localPoint.y;
-          clipPoint.y = xfB.position.y + xfB.rotation.col0.y *
-              manifold.points[i].localPoint.x + xfB.rotation.col1.y *
-              manifold.points[i].localPoint.y;
+          final vec2 clipPoint = xfB.position + xfB.rotation * manifold.points[i].localPoint;
 
           num scalar = radiusA - ((clipPoint.x - planePoint.x) *
               normal.x + (clipPoint.y - planePoint.y) * normal.y);
 
-          num cAx = normal.x * scalar + clipPoint.x;
-          num cAy = normal.y * scalar + clipPoint.y;
+          vec2 cA = normal * scalar + clipPoint;
+          vec2 cB = normal * (-radiusB) + clipPoint;
 
-          num cBx = - normal.x * radiusB + clipPoint.x;
-          num cBy = - normal.y * radiusB + clipPoint.y;
-
-          points[i].x = (cAx + cBx)*.5;
-          points[i].y = (cAy + cBy)*.5;
+          points[i] = (cA + cB).scale(0.5);
         }
 
         return;
       case ManifoldType.FACE_B :
-        final vec2 planePoint = pool3;
-
         final mat2 R = xfB.rotation;
-        normal.x = R.col0.x * manifold.localNormal.x + R.col1.x *
-            manifold.localNormal.y;
-        normal.y = R.col0.y * manifold.localNormal.x + R.col1.y *
-            manifold.localNormal.y;
+        normal = R * manifold.localNormal;
         final vec2 v = manifold.localPoint;
-        planePoint.x = xfB.position.x + xfB.rotation.col0.x * v.x +
-            xfB.rotation.col1.x * v.y;
-        planePoint.y = xfB.position.y + xfB.rotation.col0.y * v.x +
-            xfB.rotation.col1.y * v.y;
-
-        final vec2 clipPoint = pool4;
+        final vec2 planePoint = xfB.position + xfB.rotation * v;
 
         // TODO(dominic): Some vector cleanup here.
         for (int i = 0; i < manifold.pointCount; ++i) {
-          clipPoint.x = xfA.position.x + xfA.rotation.col0.x *
-              manifold.points[i].localPoint.x + xfA.rotation.col1.x *
-              manifold.points[i].localPoint.y;
-          clipPoint.y = xfA.position.y + xfA.rotation.col0.y *
-              manifold.points[i].localPoint.x + xfA.rotation.col1.y *
-              manifold.points[i].localPoint.y;
+          vec2 clipPoint = xfA.position + xfA.rotation * manifold.points[i].localPoint;
 
           num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
               (clipPoint.y - planePoint.y) * normal.y);
 
-          num cBx =  normal.x * scalar + clipPoint.x;
-          num cBy =  normal.y * scalar + clipPoint.y;
+          vec2 cB = normal * scalar + clipPoint;
+          vec2 cA = normal * (-radiusA) + clipPoint;
 
-          num cAx = - normal.x * radiusA + clipPoint.x;
-          num cAy = - normal.y * radiusA + clipPoint.y;
-
-          points[i].x = (cAx + cBx) *.5;
-          points[i].y = (cAy + cBy) *.5;
+          points[i] = (cA + cB).scale(0.5);
         }
         // Ensure normal points from A to B.
-        normal.x = -normal.x;
-        normal.y = -normal.y;
+        normal.negate();
         break;
      }
   }

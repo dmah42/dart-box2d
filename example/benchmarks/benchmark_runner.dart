@@ -70,7 +70,7 @@ class BenchmarkRunner {
       _benchmarks = benchmarks;
       print(_benchmarks.length);
     } else {
-      List<String> filterList = filter.split(",").map((e) => e.trim());
+      List<String> filterList = filter.split(",").map((e) => e.trim()).toList();
       for (Benchmark benchmark in benchmarks) {
         if (filterList.indexOf(benchmark.name) != -1)
           _benchmarks.add(benchmark);

@@ -36,19 +36,19 @@
 class PositionSolverManifold {
  vec2 normal;
  vec2 point;
- num separation;
+ double separation;
 
  /** Pooling */
- vec2 pointA;
- vec2 pointB;
- vec2 temp;
- vec2 planePoint;
- vec2 clipPoint;
+ final vec2 pointA;
+ final vec2 pointB;
+ final vec2 temp;
+ final vec2 planePoint;
+ final vec2 clipPoint;
 
  PositionSolverManifold() :
    normal = new vec2.zero(),
    point = new vec2.zero(),
-   separation = 0,
+   separation = 0.0,
 
    // Initialize pool variables.
    pointA = new vec2.zero(),
@@ -65,14 +65,14 @@ class PositionSolverManifold {
        cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
        cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
        if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-         normal.copyFrom(pointB).sub(pointA);
+         normal.setFrom(pointB).sub(pointA);
          normal.normalize();
        } else {
          normal.splat(0.0);
        }
 
-       point.copyFrom(pointA).add(pointB).scale(.5);
-       temp.copyFrom(pointB).sub(pointA);
+       point.setFrom(pointA).add(pointB).scale(.5);
+       temp.setFrom(pointB).sub(pointA);
        separation = dot(temp, normal) - cc.radius;
        break;
 
@@ -82,9 +82,9 @@ class PositionSolverManifold {
 
        cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
            clipPoint);
-       temp.copyFrom(clipPoint).sub(planePoint);
+       temp.setFrom(clipPoint).sub(planePoint);
        separation = dot(temp, normal) - cc.radius;
-       point.copyFrom(clipPoint);
+       point.setFrom(clipPoint);
        break;
 
      case ManifoldType.FACE_B:
@@ -92,9 +92,9 @@ class PositionSolverManifold {
        cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
        cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-       temp.copyFrom(clipPoint).sub(planePoint);
+       temp.setFrom(clipPoint).sub(planePoint);
        separation = dot(temp, normal) - cc.radius;
-       point.copyFrom(clipPoint);
+       point.setFrom(clipPoint);
 
        // Ensure normal points from A to B
        normal.negate();
@@ -115,7 +115,7 @@ new <strong>PositionSolverManifold</strong>() <a class="anchor-link" href="#Posi
 PositionSolverManifold() :
  normal = new vec2.zero(),
  point = new vec2.zero(),
- separation = 0,
+ separation = 0.0,
 
  // Initialize pool variables.
  pointA = new vec2.zero(),
@@ -131,13 +131,13 @@ PositionSolverManifold() :
 <h3>Properties</h3>
 <div class="field"><h4 id="clipPoint">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>clipPoint</strong> <a class="anchor-link"
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>clipPoint</strong> <a class="anchor-link"
             href="#clipPoint"
             title="Permalink to PositionSolverManifold.clipPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 clipPoint
+final vec2 clipPoint
 </pre>
 </div>
 </div>
@@ -155,13 +155,13 @@ vec2 normal
 </div>
 <div class="field"><h4 id="planePoint">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>planePoint</strong> <a class="anchor-link"
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>planePoint</strong> <a class="anchor-link"
             href="#planePoint"
             title="Permalink to PositionSolverManifold.planePoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 planePoint
+final vec2 planePoint
 </pre>
 </div>
 </div>
@@ -179,50 +179,50 @@ vec2 point
 </div>
 <div class="field"><h4 id="pointA">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong> <a class="anchor-link"
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong> <a class="anchor-link"
             href="#pointA"
             title="Permalink to PositionSolverManifold.pointA">#</a>
         </h4>
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-vec2 pointA
+final vec2 pointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointB">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong> <a class="anchor-link"
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong> <a class="anchor-link"
             href="#pointB"
             title="Permalink to PositionSolverManifold.pointB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 pointB
+final vec2 pointB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="separation">
 <button class="show-code">Code</button>
-num         <strong>separation</strong> <a class="anchor-link"
+double         <strong>separation</strong> <a class="anchor-link"
             href="#separation"
             title="Permalink to PositionSolverManifold.separation">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num separation
+double separation
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
+final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to PositionSolverManifold.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 temp
+final vec2 temp
 </pre>
 </div>
 </div>
@@ -243,14 +243,14 @@ void initialize(ContactConstraint cc, int index) {
      cc.bodyA.getWorldPointToOut(cc.localPoint, pointA);
      cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
      if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-       normal.copyFrom(pointB).sub(pointA);
+       normal.setFrom(pointB).sub(pointA);
        normal.normalize();
      } else {
        normal.splat(0.0);
      }
 
-     point.copyFrom(pointA).add(pointB).scale(.5);
-     temp.copyFrom(pointB).sub(pointA);
+     point.setFrom(pointA).add(pointB).scale(.5);
+     temp.setFrom(pointB).sub(pointA);
      separation = dot(temp, normal) - cc.radius;
      break;
 
@@ -260,9 +260,9 @@ void initialize(ContactConstraint cc, int index) {
 
      cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
          clipPoint);
-     temp.copyFrom(clipPoint).sub(planePoint);
+     temp.setFrom(clipPoint).sub(planePoint);
      separation = dot(temp, normal) - cc.radius;
-     point.copyFrom(clipPoint);
+     point.setFrom(clipPoint);
      break;
 
    case ManifoldType.FACE_B:
@@ -270,9 +270,9 @@ void initialize(ContactConstraint cc, int index) {
      cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
      cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-     temp.copyFrom(clipPoint).sub(planePoint);
+     temp.setFrom(clipPoint).sub(planePoint);
      separation = dot(temp, normal) - cc.radius;
-     point.copyFrom(clipPoint);
+     point.setFrom(clipPoint);
 
      // Ensure normal points from A to B
      normal.negate();

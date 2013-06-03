@@ -16,8 +16,8 @@ part of BenchmarkRunner;
 
 class BallCageBench extends Benchmark {
   /** Starting position of ball cage in the world. */
-  static const num START_X = -20;
-  static const num START_Y = -20;
+  static const double START_X = -20.0;
+  static const double START_Y = -20.0;
 
   /** The radius of the balls forming the arena. */
   static const num WALL_BALL_RADIUS = 2;
@@ -88,8 +88,8 @@ class BallCageBench extends Benchmark {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new vec2(0, -20);
-    activeBodyDef.position = new vec2(15, 15);
+    activeBodyDef.linearVelocity = new vec2(0.0, -20.0);
+    activeBodyDef.position = new vec2(15.0, 15.0);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);

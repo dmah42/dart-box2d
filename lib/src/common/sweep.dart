@@ -19,12 +19,12 @@ class Sweep {
   final vec2 localCenter;
 
   /** Center world positions. */
-  final vec2 centerZero;
+  vec2 centerZero;
   final vec2 center;
 
   /** World angles. */
-  num angleZero;
-  num angle;
+  double angleZero;
+  double angle;
 
   /**
    * Constructs a new Sweep with centers initialized to the origin and angles
@@ -34,8 +34,8 @@ class Sweep {
     localCenter = new vec2.zero(),
     centerZero = new vec2.zero(),
     center = new vec2.zero(),
-    angleZero = 0,
-    angle = 0;
+    angleZero = 0.0,
+    angle = 0.0;
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
@@ -63,15 +63,15 @@ class Sweep {
    * Sets this Sweep equal to the given Sweep.
    */
   void setFrom(Sweep other) {
-    localCenter.copyFrom(other.localCenter);
-    centerZero.copyFrom(other.centerZero);
-    center.copyFrom(other.center);
+    localCenter.setFrom(other.localCenter);
+    centerZero.setFrom(other.centerZero);
+    center.setFrom(other.center);
     angleZero = other.angleZero;
     angle = other.angle;
   }
 
   void normalize() {
-    num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+    double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
     angleZero -= d;
     angle -= d;
   }
@@ -80,27 +80,23 @@ class Sweep {
    * Computes the interpolated transform at a specific time.
    * Time is the normalized time in [0,1].
    */
-  void getTransform(Transform xf, num alpha) {
+  void getTransform(Transform xf, double alpha) {
     assert(xf != null);
 
-    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
-    xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
-    xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
+    xf.position = mix(centerZero, center, alpha);
+    xf.rotation.setRotation(mix(angleZero, angle, alpha));
 
     // Shift to origin
-    xf.position.x -= xf.rotation.col0.x * localCenter.x + xf.rotation.col1.x
-        * localCenter.y;
-    xf.position.y -= xf.rotation.col0.y * localCenter.x + xf.rotation.col1.y
-        * localCenter.y;
+    vec2 position_delta = xf.rotation * localCenter;
+    xf.position.setFrom(xf.position - position_delta);
   }
 
   /**
    * Advances the sweep forward, resulting in a new initial state.
    * Time is the new initial time.
    */
-  void advance(num time) {
-    centerZero.x = (1 - time) * centerZero.x + time * center.x;
-    centerZero.y = (1 - time) * centerZero.y + time * center.y;
-    angleZero = (1 - time) * angleZero + time * angle;
+  void advance(double time) {
+    centerZero = mix(centerZero, center, time);
+    angleZero = mix(angleZero, angle, time);
   }
 }

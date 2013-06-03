@@ -97,8 +97,8 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draws the given point with the given *unscaled* radius, in the given color.
-   * WARNING: This mutates [center].
+   * Draws the given point with the given *unscaled* radius, in the given [color].
+   * WARNING: This mutates [point].
    */
   void drawPoint(vec2 point, num radiusOnScreen, Color3 color) {
     _pathCircle(point, radiusOnScreen, color);

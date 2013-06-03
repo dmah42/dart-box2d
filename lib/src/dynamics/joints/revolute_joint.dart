@@ -60,8 +60,8 @@ class RevoluteJoint extends Joint {
     impulse = new vec3.zero(),
     _motorImpulse = 0,
     mass = new mat3.zero() {
-    localAnchor1.copyFrom(def.localAnchorA);
-    localAnchor2.copyFrom(def.localAnchorB);
+    localAnchor1.setFrom(def.localAnchorA);
+    localAnchor2.setFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
 
     _motorImpulse = 0;
@@ -93,15 +93,16 @@ class RevoluteJoint extends Joint {
     num m1 = b1.invMass, m2 = b2.invMass;
     num i1 = b1.invInertia, i2 = b2.invInertia;
 
-    mass.col0.x = m1 + m2 + r1.y * r1.y * i1 + r2.y * r2.y * i2;
-    mass.col1.x = -r1.y * r1.x * i1 - r2.y * r2.x * i2;
-    mass.col2.x = -r1.y * i1 - r2.y * i2;
-    mass.col0.y = mass.col1.x;
-    mass.col1.y = m1 + m2 + r1.x * r1.x * i1 + r2.x * r2.x * i2;
-    mass.col2.y = r1.x * i1 + r2.x * i2;
-    mass.col0.z = mass.col2.x;
-    mass.col1.z = mass.col2.y;
-    mass.col2.z = i1 + i2;
+    // TODO: uninline this mess.
+    mass.setValues(m1 + m2 + r1.y * r1.y * i1 + r2.y * r2.y * i2,
+                   -r1.y * r1.x * i1 - r2.y * r2.x * i2,
+                   -r1.y * i1 - r2.y * i2,
+                   -r1.y * r1.x * i1 - r2.y * r2.x * i2,
+                   m1 + m2 + r1.x * r1.x * i1 + r2.x * r2.x * i2,
+                   r1.x * i1 + r2.x * i2,
+                   -r1.y * i1 - r2.y * i2,
+                   r1.x * i1 + r2.x * i2,
+                   i1 + i2);
 
     motorMass = i1 + i2;
     if (motorMass > 0.0) {
@@ -150,7 +151,7 @@ class RevoluteJoint extends Joint {
       b1.linearVelocity.sub(temp);
       b1.angularVelocity -= i1 * (cross(r1, P) + _motorImpulse + impulse.z);
 
-      temp.copyFrom(P).scale(m2);
+      temp.setFrom(P).scale(m2);
       b2.linearVelocity.add(temp);
       b2.angularVelocity += i2 * (cross(r2, P) + _motorImpulse + impulse.z);
 
@@ -232,11 +233,11 @@ class RevoluteJoint extends Joint {
       }
       final vec2 P = new vec2.copy(imp.xy);
 
-      temp.copyFrom(P).scale(m1);
+      temp.setFrom(P).scale(m1);
       v1.sub(temp);
       w1 -= i1 * (cross(r1, P) + imp.z);
 
-      temp.copyFrom(P).scale(m2);
+      temp.setFrom(P).scale(m2);
       v2.add(temp);
       w2 += i2 * (cross(r2, P) + imp.z);
 
@@ -255,11 +256,11 @@ class RevoluteJoint extends Joint {
       impulse.x += imp.x;
       impulse.y += imp.y;
 
-      temp.copyFrom(imp).scale(m1);
+      temp.setFrom(imp).scale(m1);
       v1.sub(temp);
       w1 -= i1 * cross(r1, imp);
 
-      temp.copyFrom(imp).scale(m2);
+      temp.setFrom(imp).scale(m2);
       v2.add(temp);
       w2 += i2 * cross(r2, imp);
     }
@@ -333,45 +334,42 @@ class RevoluteJoint extends Joint {
         if (m > 0.0) {
           m = 1.0 / m;
         }
-        imp.copyFrom(C).negate().scale(m);
+        imp.setFrom(C).negate().scale(m);
         final num k_beta = 0.5;
         // using u as temp variable
-        u.copyFrom(imp).scale(k_beta * invMass1);
+        u.setFrom(imp).scale(k_beta * invMass1);
         b1.sweep.center.sub(u);
-        u.copyFrom(imp).scale(k_beta * invMass2);
+        u.setFrom(imp).scale(k_beta * invMass2);
         b2.sweep.center.add(u);
 
-        C.copyFrom(b2.sweep.center).add(r2);
+        C.setFrom(b2.sweep.center).add(r2);
         C.sub(b1.sweep.center).sub(r1);
       }
 
-      mat2 K1 = new mat2.zero();
-      K1.col0.x = invMass1 + invMass2;
-      K1.col1.x = 0.0;
-      K1.col0.y = 0.0;
-      K1.col1.y = invMass1 + invMass2;
+      mat2 K1 = new mat2(invMass1 + invMass2,
+                         0.0,
+                         0.0,
+                         invMass1 + invMass2);
 
-      mat2 K2 = new mat2.zero();
-      K2.col0.x = invI1 * r1.y * r1.y;
-      K2.col1.x = -invI1 * r1.x * r1.y;
-      K2.col0.y = -invI1 * r1.x * r1.y;
-      K2.col1.y = invI1 * r1.x * r1.x;
+      mat2 K2 = new mat2( invI1 * r1.y * r1.y,
+                         -invI1 * r1.x * r1.y,
+                         -invI1 * r1.x * r1.y,
+                          invI1 * r1.x * r1.x);
 
-      mat2 K3 = new mat2.zero();
-      K3.col0.x = invI2 * r2.y * r2.y;
-      K3.col1.x = -invI2 * r2.x * r2.y;
-      K3.col0.y = -invI2 * r2.x * r2.y;
-      K3.col1.y = invI2 * r2.x * r2.x;
+      mat2 K3 = new mat2( invI2 * r2.y * r2.y,
+                         -invI2 * r2.x * r2.y,
+                         -invI2 * r2.x * r2.y,
+                          invI2 * r2.x * r2.x);
 
       K1.add(K2).add(K3);
       imp = MathBox.solve22(K1, C.negate()); // just leave c negated
 
       // using C as temp variable
-      C.copyFrom(imp).scale(b1.invMass);
+      C.setFrom(imp).scale(b1.invMass);
       b1.sweep.center.sub(C);
       b1.sweep.angle -= b1.invInertia * cross(r1, imp);
 
-      C.copyFrom(imp).scale(b2.invMass);
+      C.setFrom(imp).scale(b2.invMass);
       b2.sweep.center.add(C);
       b2.sweep.angle += b2.invInertia * cross(r2, imp);
 
@@ -392,7 +390,7 @@ class RevoluteJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, vec2 argOut) {
-    argOut.setComponents(impulse.x, impulse.y).scale(inv_dt);
+    argOut.setValues(impulse.x, impulse.y).scale(inv_dt);
   }
 
   num getReactionTorque(num inv_dt) {

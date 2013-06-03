@@ -56,7 +56,7 @@ class Simplex {
       vec2 wBLocal = proxyB.vertices[v.indexB];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.copyFrom(v.wB).sub(v.wA);
+      v.w.setFrom(v.wB).sub(v.wA);
       v.a = 0.0;
     }
 
@@ -82,7 +82,7 @@ class Simplex {
       vec2 wBLocal = proxyB.vertices[0];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.copyFrom(v.wB).sub(v.wA);
+      v.w.setFrom(v.wB).sub(v.wA);
       count = 1;
     }
   }
@@ -100,20 +100,20 @@ class Simplex {
   void getSearchDirection(vec2 out) {
     switch (count) {
       case 1:
-        out.copyFrom(vertices[0].w).negate();
+        out.setFrom(vertices[0].w).negate();
         break;
       case 2:
-        e12.copyFrom(vertices[1].w).sub(vertices[0].w);
+        e12.setFrom(vertices[1].w).sub(vertices[0].w);
         // use out for a temp variable real quick
-        out.copyFrom(vertices[0].w).negate();
+        out.setFrom(vertices[0].w).negate();
         num sgn = cross(e12, out);
 
         if (sgn > 0) {
           // Origin is left of e12.
-          out = cross(1, e12);
+          out = cross(1.0, e12);
         } else {
           // Origin is right of e12.
-          out = cross(e12, 1);
+          out = cross(e12, 1.0);
         }
         break;
       default:
@@ -132,12 +132,12 @@ class Simplex {
         assert(false);
         break;
       case 1:
-        out.copyFrom(vertices[0].w);
+        out.setFrom(vertices[0].w);
         break;
       case 2:
-        case22.copyFrom(vertices[1].w).scale(vertices[1].a);
-        case2.copyFrom(vertices[0].w).scale(vertices[0].a).add(case22);
-        out.copyFrom(case2);
+        case22.setFrom(vertices[1].w).scale(vertices[1].a);
+        case2.setFrom(vertices[0].w).scale(vertices[0].a).add(case22);
+        out.setFrom(case2);
         break;
       case 3:
         out.splat(0.0);
@@ -155,22 +155,22 @@ class Simplex {
         assert(false);
         break;
       case 1:
-        pA.copyFrom(vertices[0].wA);
-        pB.copyFrom(vertices[0].wB);
+        pA.setFrom(vertices[0].wA);
+        pB.setFrom(vertices[0].wB);
         break;
       case 2 :
-        case2.copyFrom(vertices[0].wA).scale(vertices[0].a);
-        pA.copyFrom(vertices[1].wA).scale(vertices[1].a).add(case2);
-        case2.copyFrom(vertices[0].wB).scale(vertices[0].a);
-        pB.copyFrom(vertices[1].wB).scale(vertices[1].a).add(case2);
+        case2.setFrom(vertices[0].wA).scale(vertices[0].a);
+        pA.setFrom(vertices[1].wA).scale(vertices[1].a).add(case2);
+        case2.setFrom(vertices[0].wB).scale(vertices[0].a);
+        pB.setFrom(vertices[1].wB).scale(vertices[1].a).add(case2);
         break;
 
       case 3 :
-        pA.copyFrom(vertices[0].wA).scale(vertices[0].a);
-        case3.copyFrom(vertices[1].wA).scale(vertices[1].a);
-        case33.copyFrom(vertices[2].wA).scale(vertices[2].a);
+        pA.setFrom(vertices[0].wA).scale(vertices[0].a);
+        case3.setFrom(vertices[1].wA).scale(vertices[1].a);
+        case33.setFrom(vertices[2].wA).scale(vertices[2].a);
         pA.add(case3).add(case33);
-        pB.copyFrom(pA);
+        pB.setFrom(pA);
         break;
 
       default :
@@ -192,8 +192,8 @@ class Simplex {
         return distance(vertices[0].w, vertices[1].w);
 
       case 3:
-        case3.copyFrom(vertices[1].w).sub(vertices[0].w);
-        case33.copyFrom(vertices[2].w).sub(vertices[0].w);
+        case3.setFrom(vertices[1].w).sub(vertices[0].w);
+        case33.setFrom(vertices[2].w).sub(vertices[0].w);
         return cross(case3, case33);
 
       default:
@@ -206,7 +206,7 @@ class Simplex {
   void solve2() {
     vec2 w1 = vertices[0].w;
     vec2 w2 = vertices[1].w;
-    e12.copyFrom(w2).sub(w1);
+    e12.setFrom(w2).sub(w1);
 
     // w1 region
     num d12_2 = -dot(w1, e12);
@@ -248,21 +248,21 @@ class Simplex {
     vec2 w3 = vertices[2].w;
 
     // Edge12
-    e12.copyFrom(w2).sub(w1);
+    e12.setFrom(w2).sub(w1);
     num w1e12 = dot(w1, e12);
     num w2e12 = dot(w2, e12);
     num d12_1 = w2e12;
     num d12_2 = -w1e12;
 
     // Edge13
-    e13.copyFrom(w3).sub(w1);
+    e13.setFrom(w3).sub(w1);
     num w1e13 = dot(w1, e13);
     num w3e13 = dot(w3, e13);
     num d13_1 = w3e13;
     num d13_2 = -w1e13;
 
     // Edge23
-    e23.copyFrom(w3).sub(w2);
+    e23.setFrom(w3).sub(w2);
     num w2e23 = dot(w2, e23);
     num w3e23 = dot(w3, e23);
     num d23_1 = w3e23;

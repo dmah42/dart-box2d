@@ -53,11 +53,11 @@ class ContactConstraint {
 
   void setFrom(ContactConstraint cp) {
     pointCount = cp.pointCount;
-    localNormal.copyFrom(cp.localNormal);
-    localPoint.copyFrom(cp.localPoint);
-    normal.copyFrom(cp.normal);
-    normalMass.copyFrom(cp.normalMass);
-    K.copyFrom(cp.K);
+    localNormal.setFrom(cp.localNormal);
+    localPoint.setFrom(cp.localPoint);
+    normal.setFrom(cp.normal);
+    normalMass.setFrom(cp.normalMass);
+    K.setFrom(cp.K);
     bodyA = cp.bodyA;
     bodyB = cp.bodyB;
     type = cp.type;

@@ -33,7 +33,7 @@ abstract class Demo {
   static const num _VIEWPORT_SCALE = 10;
 
   /** The gravity vector's y value. */
-  static const num GRAVITY = -10;
+  static const double GRAVITY = -10.0;
 
   /** The timestep and iteration numbers. */
   static const num TIME_STEP = 1/60;
@@ -80,7 +80,7 @@ abstract class Demo {
     _stopwatch = new Stopwatch()..start();
     query("#title").innerHtml = name;
     bool doSleep = true;
-    if (null == gravity) gravity = new vec2(0, GRAVITY);
+    if (null == gravity) gravity = new vec2(0.0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 

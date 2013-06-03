@@ -43,7 +43,7 @@ class ClipVertex {
    id = new ContactID() { }
 
  void setFrom(ClipVertex cv){
-   v.copyFrom(cv.v);
+   v.setFrom(cv.v);
    id.setFrom(cv.id);
  }
 }
@@ -100,7 +100,7 @@ void <strong>setFrom</strong>(<a href="../box2d/ClipVertex.html">ClipVertex</a> 
 <div class="doc">
 <pre class="source">
 void setFrom(ClipVertex cv){
- v.copyFrom(cv.v);
+ v.setFrom(cv.v);
  id.setFrom(cv.id);
 }
 </pre>

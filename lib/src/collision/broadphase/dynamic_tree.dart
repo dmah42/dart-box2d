@@ -142,7 +142,7 @@ class DynamicTree {
     argBox.upperBound.y += Settings.BOUNDING_BOX_EXTENSION;
 
     // Predict bounding box displacement.
-    _tempVector.copyFrom(displacement).scale(Settings.BOUNDING_BOX_MULTIPLIER);
+    _tempVector.setFrom(displacement).scale(Settings.BOUNDING_BOX_MULTIPLIER.toDouble());
     if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
     else
@@ -229,7 +229,7 @@ class DynamicTree {
     }
 
     // Find the best sibling for the given node. Start looking at the root.
-    center.copyFrom(node.box.center);
+    center.setFrom(node.box.center);
     DynamicTreeNode sibling = _root;
 
     DynamicTreeNode childOne, childTwo;
@@ -244,8 +244,8 @@ class DynamicTree {
         // Find the absolute difference between the center of the bounding box for
         // the node we are inserting and the center's of the bounding boxes of the
         // two children.
-        deltaOne.copyFrom(childOne.box.center).sub(center).absolute();
-        deltaTwo.copyFrom(childTwo.box.center).sub(center).absolute();
+        deltaOne.setFrom(childOne.box.center).sub(center).absolute();
+        deltaTwo.setFrom(childTwo.box.center).sub(center).absolute();
 
         num normOne = deltaOne.x + deltaOne.y;
         num normTwo = deltaTwo.x + deltaTwo.y;

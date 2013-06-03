@@ -96,11 +96,11 @@ class SeparationFunction {
 
    if (count == 1) {
      type = SeparationType.POINTS;
-     localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
-     localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+     localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
+     localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
-     axis.copyFrom(pointB).sub(pointA);
+     axis.setFrom(pointB).sub(pointA);
      num s = axis.length;
      axis.normalize();
      return s;
@@ -108,22 +108,22 @@ class SeparationFunction {
      // Two points on B and one on A.
      type = SeparationType.FACE_B;
 
-     localPointB1.copyFrom(proxyB.vertices[cache.indexB[0]]);
-     localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
+     localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
+     localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
-     temp.copyFrom(localPointB2).sub(localPointB1);
-     cross(temp, 1, axis);
+     temp.setFrom(localPointB2).sub(localPointB1);
+     cross(temp, 1.0, axis);
      axis.normalize();
 
      xfb.rotation.transformed(axis, normal);
 
-     localPoint.copyFrom(localPointB1).add(localPointB2).scale(0.5);
+     localPoint.setFrom(localPointB1).add(localPointB2).scale(0.5);
      Transform.mulToOut(xfb, localPoint, pointB);
 
-     localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+     localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     temp.copyFrom(pointA).sub(pointB);
+     temp.setFrom(pointA).sub(pointB);
      num s = dot(temp, normal);
      if (s &lt; 0.0) {
        axis.negate();
@@ -135,22 +135,22 @@ class SeparationFunction {
      // Two points on A and one or two points on B.
      type = SeparationType.FACE_A;
 
-     localPointA1.copyFrom(proxyA.vertices[cache.indexA[0]]);
-     localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
+     localPointA1.setFrom(proxyA.vertices[cache.indexA[0]]);
+     localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
 
-     temp.copyFrom(localPointA2).sub(localPointA1);
-     cross(temp, 1, axis);
+     temp.setFrom(localPointA2).sub(localPointA1);
+     cross(temp, 1.0, axis);
      axis.normalize();
 
      xfa.rotation.transformed(axis, normal);
 
-     localPoint.copyFrom(localPointA1).add(localPointA2).scale(0.5);
+     localPoint.setFrom(localPointA1).add(localPointA2).scale(0.5);
      Transform.mulToOut(xfa, localPoint, pointA);
 
-     localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+     localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     temp.copyFrom(pointB).sub(pointA);
+     temp.setFrom(pointB).sub(pointA);
      num s = dot(temp, normal);
      if (s &lt; 0.0) {
        axis.negate();
@@ -173,8 +173,8 @@ class SeparationFunction {
        indexes[0] = proxyA.getSupport(axisA);
        indexes[1] = proxyB.getSupport(axisB);
 
-       localPointA.copyFrom(proxyA.vertices[indexes[0]]);
-       localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+       localPointA.setFrom(proxyA.vertices[indexes[0]]);
+       localPointB.setFrom(proxyB.vertices[indexes[1]]);
 
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
@@ -192,7 +192,7 @@ class SeparationFunction {
        indexes[0] = -1;
        indexes[1] = proxyB.getSupport(axisB);
 
-       localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+       localPointB.setFrom(proxyB.vertices[indexes[1]]);
        Transform.mulToOut(xfb, localPointB, pointB);
 
        return dot(pointB.sub(pointA), normal);
@@ -207,7 +207,7 @@ class SeparationFunction {
        indexes[1] = -1;
        indexes[0] = proxyA.getSupport(axisA);
 
-       localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+       localPointA.setFrom(proxyA.vertices[indexes[0]]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
        num separation = dot(pointA.sub(pointB), normal);
@@ -231,8 +231,8 @@ class SeparationFunction {
        xfb.rotation.transposed().transformed(axis.negate(), axisB);
        axis.negate();
 
-       localPointA.copyFrom(proxyA.vertices[indexA]);
-       localPointB.copyFrom(proxyB.vertices[indexB]);
+       localPointA.setFrom(proxyA.vertices[indexA]);
+       localPointB.setFrom(proxyB.vertices[indexB]);
 
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
@@ -246,7 +246,7 @@ class SeparationFunction {
        xfb.rotation.transposed().transformed(normal.negate(), axisB);
        normal.negate();
 
-       localPointB.copyFrom(proxyB.vertices[indexB]);
+       localPointB.setFrom(proxyB.vertices[indexB]);
        Transform.mulToOut(xfb, localPointB, pointB);
        num separation = dot(pointB.sub(pointA), normal);
        return separation;
@@ -258,7 +258,7 @@ class SeparationFunction {
        xfa.rotation.transposed().transformed(normal.negate(), axisA);
        normal.negate();
 
-       localPointA.copyFrom(proxyA.vertices[indexA]);
+       localPointA.setFrom(proxyA.vertices[indexA]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
        return  dot(pointA.sub(pointB), normal);
@@ -579,8 +579,8 @@ num evaluate(int indexA, int indexB, num t) {
      xfb.rotation.transposed().transformed(axis.negate(), axisB);
      axis.negate();
 
-     localPointA.copyFrom(proxyA.vertices[indexA]);
-     localPointB.copyFrom(proxyB.vertices[indexB]);
+     localPointA.setFrom(proxyA.vertices[indexA]);
+     localPointB.setFrom(proxyB.vertices[indexB]);
 
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
@@ -594,7 +594,7 @@ num evaluate(int indexA, int indexB, num t) {
      xfb.rotation.transposed().transformed(normal.negate(), axisB);
      normal.negate();
 
-     localPointB.copyFrom(proxyB.vertices[indexB]);
+     localPointB.setFrom(proxyB.vertices[indexB]);
      Transform.mulToOut(xfb, localPointB, pointB);
      num separation = dot(pointB.sub(pointA), normal);
      return separation;
@@ -606,7 +606,7 @@ num evaluate(int indexA, int indexB, num t) {
      xfa.rotation.transposed().transformed(normal.negate(), axisA);
      normal.negate();
 
-     localPointA.copyFrom(proxyA.vertices[indexA]);
+     localPointA.setFrom(proxyA.vertices[indexA]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
      return  dot(pointA.sub(pointB), normal);
@@ -638,8 +638,8 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      indexes[0] = proxyA.getSupport(axisA);
      indexes[1] = proxyB.getSupport(axisB);
 
-     localPointA.copyFrom(proxyA.vertices[indexes[0]]);
-     localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+     localPointA.setFrom(proxyA.vertices[indexes[0]]);
+     localPointB.setFrom(proxyB.vertices[indexes[1]]);
 
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
@@ -657,7 +657,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      indexes[0] = -1;
      indexes[1] = proxyB.getSupport(axisB);
 
-     localPointB.copyFrom(proxyB.vertices[indexes[1]]);
+     localPointB.setFrom(proxyB.vertices[indexes[1]]);
      Transform.mulToOut(xfb, localPointB, pointB);
 
      return dot(pointB.sub(pointA), normal);
@@ -672,7 +672,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      indexes[1] = -1;
      indexes[0] = proxyA.getSupport(axisA);
 
-     localPointA.copyFrom(proxyA.vertices[indexes[0]]);
+     localPointA.setFrom(proxyA.vertices[indexes[0]]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
      num separation = dot(pointA.sub(pointB), normal);
@@ -709,11 +709,11 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
  if (count == 1) {
    type = SeparationType.POINTS;
-   localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
-   localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+   localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
+   localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
    Transform.mulToOut(xfa, localPointA, pointA);
    Transform.mulToOut(xfb, localPointB, pointB);
-   axis.copyFrom(pointB).sub(pointA);
+   axis.setFrom(pointB).sub(pointA);
    num s = axis.length;
    axis.normalize();
    return s;
@@ -721,22 +721,22 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    // Two points on B and one on A.
    type = SeparationType.FACE_B;
 
-   localPointB1.copyFrom(proxyB.vertices[cache.indexB[0]]);
-   localPointB2.copyFrom(proxyB.vertices[cache.indexB[1]]);
+   localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
+   localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
-   temp.copyFrom(localPointB2).sub(localPointB1);
-   cross(temp, 1, axis);
+   temp.setFrom(localPointB2).sub(localPointB1);
+   cross(temp, 1.0, axis);
    axis.normalize();
 
    xfb.rotation.transformed(axis, normal);
 
-   localPoint.copyFrom(localPointB1).add(localPointB2).scale(0.5);
+   localPoint.setFrom(localPointB1).add(localPointB2).scale(0.5);
    Transform.mulToOut(xfb, localPoint, pointB);
 
-   localPointA.copyFrom(proxyA.vertices[cache.indexA[0]]);
+   localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
    Transform.mulToOut(xfa, localPointA, pointA);
 
-   temp.copyFrom(pointA).sub(pointB);
+   temp.setFrom(pointA).sub(pointB);
    num s = dot(temp, normal);
    if (s &lt; 0.0) {
      axis.negate();
@@ -748,22 +748,22 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    // Two points on A and one or two points on B.
    type = SeparationType.FACE_A;
 
-   localPointA1.copyFrom(proxyA.vertices[cache.indexA[0]]);
-   localPointA2.copyFrom(proxyA.vertices[cache.indexA[1]]);
+   localPointA1.setFrom(proxyA.vertices[cache.indexA[0]]);
+   localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
 
-   temp.copyFrom(localPointA2).sub(localPointA1);
-   cross(temp, 1, axis);
+   temp.setFrom(localPointA2).sub(localPointA1);
+   cross(temp, 1.0, axis);
    axis.normalize();
 
    xfa.rotation.transformed(axis, normal);
 
-   localPoint.copyFrom(localPointA1).add(localPointA2).scale(0.5);
+   localPoint.setFrom(localPointA1).add(localPointA2).scale(0.5);
    Transform.mulToOut(xfa, localPoint, pointA);
 
-   localPointB.copyFrom(proxyB.vertices[cache.indexB[0]]);
+   localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
    Transform.mulToOut(xfb, localPointB, pointB);
 
-   temp.copyFrom(pointB).sub(pointA);
+   temp.setFrom(pointB).sub(pointA);
    num s = dot(temp, normal);
    if (s &lt; 0.0) {
      axis.negate();

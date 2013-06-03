@@ -21,7 +21,7 @@ part of box2d;
 
 class Transform {
   /** The translation caused by a transform. */
-  final vec2 position;
+  vec2 position;
 
   /** A matrix representing a rotation. */
   final mat2 rotation;
@@ -48,48 +48,39 @@ class Transform {
    * Sets this transform with the given position and rotation.
    */
   void setFromPositionAndRotation(vec2 argPosition, mat2 argRotation) {
-    position.copyFrom(argPosition);
-    rotation.copyFrom(argRotation);
+    position.setFrom(argPosition);
+    rotation.setFrom(argRotation);
   }
 
   /**
    * Sets this transform equal to the given transform.
    */
   void setFrom(Transform other) {
-    position.copyFrom(other.position);
-    rotation.copyFrom(other.rotation);
+    position.setFrom(other.position);
+    rotation.setFrom(other.rotation);
   }
 
   /**
-   * Multiply the given transform and given vector and return a new vec2 with
-   * the result.
+   * Multiply the given transform [T] and given vector [v] and return a new vec2
+   * with the result.
    */
   static vec2 mul(Transform T, vec2 v) {
-    return new vec2(T.position.x + T.rotation.col0.x * v.x + T.rotation.col1.x * v.y,
-                    T.position.y + T.rotation.col0.y * v.x + T.rotation.col1.y * v.y);
+    vec2 out = T.rotation * v;
+    out += T.position;
+    return out;
   }
 
   /**
-   * Multiplies the given transform and the given vector and places the result
-   * in the given out parameter.
+   * Multiplies the given [transform] and the [vector] and places the result
+   * in the [out] parameter.
    */
   static void mulToOut(Transform transform, vec2 vector, vec2 out) {
-    assert(out != null);
-    num tempY = transform.position.y +
-                transform.rotation.col0.y * vector.x +
-                transform.rotation.col1.y * vector.y;
-    out.x = transform.position.x +
-            transform.rotation.col0.x * vector.x +
-            transform.rotation.col1.x * vector.y;
-    out.y = tempY;
+    // NOTE: This still creates a new vector.
+    out.setFrom(mul(transform, vector));
   }
 
   static void mulTransToOut(Transform T, vec2 v, vec2 out) {
-    vec2 v1 = v - T.position;
-    vec2 b = T.rotation.col0;
-    vec2 b1 = T.rotation.col1;
-    double tempy = v1.x * b1.x + v1.y * b1.y;
-    out.x = v1.x * b.x + v1.y * b.y;
-    out.y = tempy;
+    // NOTE: This still creates a new vector.
+    out.setFrom(T.rotation * (v - T.position));
   }
 }

@@ -51,20 +51,23 @@ class MathBox {
    return res;
  }
 
- /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
-  *  [matrix] must be a 3x3 matrix and [b] must be a vec3. */
+ /** Solve [matrix]x = [b] without calculating the inverse of [matrix]. */
  static vec3 solve33(mat3 matrix, vec3 b) {
-   vec3 out = cross(matrix.col1, matrix.col2);
-   num det = dot(matrix.col0, out);
+   vec3 col0 = matrix.getColumn(0);
+   vec3 col1 = matrix.getColumn(1);
+   vec3 col2 = matrix.getColumn(2);
+
+   vec3 out = cross(col1, col2);
+   num det = dot(col0, out);
    if (det != 0.0) det = 1.0 / det;
 
-   out = cross(matrix.col1, matrix.col2);
+   out = cross(col1, col2);
    num x = det * dot(b, out);
-   out = cross(b, matrix.col2);
-   num y = det * dot(matrix.col0, out);
-   out = cross(matrix.col1, b);
-   num z = det * dot(matrix.col0, out);
-   out.setComponents(x, y, z);
+   out = cross(b, col2);
+   num y = det * dot(col0, out);
+   out = cross(col1, b);
+   num z = det * dot(col0, out);
+   out.setValues(x, y, z);
    return out;
  }
 
@@ -73,9 +76,11 @@ class MathBox {
   *  2x2 elements will be used. [b] must be a vec2. */
  static vec2 solve22(dynamic matrix, vec2 b) {
    assert(matrix is mat2 || matrix is mat3);
-   num a11 = matrix.col0.x, a12 = matrix.col1.x,
-       a21 = matrix.col0.y, a22 = matrix.col1.y;
-   num det = a11 * a22 - a12 * a21;
+   double a11 = matrix.entry(0, 0);
+   double a12 = matrix.entry(0, 1);
+   double a21 = matrix.entry(1, 0);
+   double a22 = matrix.entry(1, 1);
+   double det = a11 * a22 - a12 * a21;
    if (det != 0.0) det = 1.0 / det;
    final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
    out.scale(det);
@@ -133,23 +138,24 @@ static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
 <p>Solve 
 <span class="param">matrix</span>x = 
 <span class="param">b</span> without calculating the inverse of 
-<span class="param">matrix</span>.
- 
-<span class="param">matrix</span> must be a 3x3 matrix and 
-<span class="param">b</span> must be a vec3. </p>
+<span class="param">matrix</span>. </p>
 <pre class="source">
 static vec3 solve33(mat3 matrix, vec3 b) {
- vec3 out = cross(matrix.col1, matrix.col2);
- num det = dot(matrix.col0, out);
+ vec3 col0 = matrix.getColumn(0);
+ vec3 col1 = matrix.getColumn(1);
+ vec3 col2 = matrix.getColumn(2);
+
+ vec3 out = cross(col1, col2);
+ num det = dot(col0, out);
  if (det != 0.0) det = 1.0 / det;
 
- out = cross(matrix.col1, matrix.col2);
+ out = cross(col1, col2);
  num x = det * dot(b, out);
- out = cross(b, matrix.col2);
- num y = det * dot(matrix.col0, out);
- out = cross(matrix.col1, b);
- num z = det * dot(matrix.col0, out);
- out.setComponents(x, y, z);
+ out = cross(b, col2);
+ num y = det * dot(col0, out);
+ out = cross(col1, b);
+ num z = det * dot(col0, out);
+ out.setValues(x, y, z);
  return out;
 }
 </pre>
@@ -171,9 +177,11 @@ static vec3 solve33(mat3 matrix, vec3 b) {
 <pre class="source">
 static vec2 solve22(dynamic matrix, vec2 b) {
  assert(matrix is mat2 || matrix is mat3);
- num a11 = matrix.col0.x, a12 = matrix.col1.x,
-     a21 = matrix.col0.y, a22 = matrix.col1.y;
- num det = a11 * a22 - a12 * a21;
+ double a11 = matrix.entry(0, 0);
+ double a12 = matrix.entry(0, 1);
+ double a21 = matrix.entry(1, 0);
+ double a22 = matrix.entry(1, 1);
+ double det = a11 * a22 - a12 * a21;
  if (det != 0.0) det = 1.0 / det;
  final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
  out.scale(det);

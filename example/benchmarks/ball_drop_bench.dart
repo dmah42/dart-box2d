@@ -21,8 +21,8 @@ part of BenchmarkRunner;
 
 class BallDropBench extends Benchmark {
   /** The starting position of the ball. */
-  static const num X_START = 0;
-  static const num Y_START = 0;
+  static const double X_START = 0.0;
+  static const double Y_START = 0.0;
 
   BallDropBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }

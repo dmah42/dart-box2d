@@ -40,7 +40,7 @@ class Manifold {
    * faceA: The center of faceA.
    * faceB: The center of faceB.
    */
-  final vec2 localPoint;
+  vec2 localPoint;
 
   /** The type of manifold. See [ManifoldType]. */
   int type;
@@ -82,8 +82,8 @@ class Manifold {
       points[i].setFrom(other.points[i]);
 
     type = other.type;
-    localNormal.copyFrom(other.localNormal);
-    localPoint.copyFrom(other.localPoint);
+    localNormal.setFrom(other.localNormal);
+    localPoint.setFrom(other.localPoint);
     pointCount = other.pointCount;
   }
 }

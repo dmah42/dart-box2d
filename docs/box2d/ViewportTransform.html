@@ -67,7 +67,7 @@ class ViewportTransform {
   * and using the given scale.
   */
  void setCamera(num x, num y, num s) {
-   center.setComponents(x,y);
+   center.setValues(x,y);
    scale = s;
  }
 
@@ -79,7 +79,7 @@ class ViewportTransform {
   */
  vec2 get translation =&gt; extents - center;
  void set translation(vec2 translation) {
-   center.copyFrom(extents).sub(translation);
+   center.setFrom(extents).sub(translation);
  }
 
  /**
@@ -114,9 +114,6 @@ class ViewportTransform {
 }
 </pre>
 </div>
-<h3>Subclasses</h3>
-<p>
-<span class="type-box"><span class="icon-class"></span><a href="../box2d_browser/CanvasViewportTransform.html">CanvasViewportTransform</a></span></p>
 <div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="ViewportTransform">
@@ -193,7 +190,7 @@ vec2 get translation =&gt; extents - center;
 </pre>
 <pre class="source">
 void set translation(vec2 translation) {
- center.copyFrom(extents).sub(translation);
+ center.setFrom(extents).sub(translation);
 }
 </pre>
 </div>
@@ -265,7 +262,7 @@ void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href
 and using the given scale.</p>
 <pre class="source">
 void setCamera(num x, num y, num s) {
- center.setComponents(x,y);
+ center.setValues(x,y);
  scale = s;
 }
 </pre>
