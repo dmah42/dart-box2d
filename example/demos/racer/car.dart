@@ -20,7 +20,7 @@ class Car {
     def.type = BodyType.DYNAMIC;
     _body = world.createBody(def);
     _body.userData = "Car";
-    _body.angularDamping = 3;
+    _body.angularDamping = 3.0;
 
     final List<Vector> vertices = new List<Vector>(8);
     vertices[0] = new Vector( 1.5, 0.0);

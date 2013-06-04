@@ -59,14 +59,14 @@ class Collision {
     results1 = new EdgeResults(),
     results2 = new EdgeResults(),
     incidentEdge = new List<ClipVertex>(2),
-    localTangent = new Vector(),
-    localNormal = new Vector(),
-    planePoint = new Vector(),
-    tangent = new Vector(),
-    normal = new Vector(),
-    normal1 = new Vector(),
-    v11 = new Vector(),
-    v12 = new Vector(),
+    localTangent = new Vector.zero(),
+    localNormal = new Vector.zero(),
+    planePoint = new Vector.zero(),
+    tangent = new Vector.zero(),
+    normal = new Vector.zero(),
+    normal1 = new Vector.zero(),
+    v11 = new Vector.zero(),
+    v12 = new Vector.zero(),
     clipPoints1 = new List<ClipVertex>(2),
     clipPoints2 = new List<ClipVertex>(2) {
     incidentEdge[0] = new ClipVertex();
@@ -646,7 +646,7 @@ class ClipVertex {
   ContactID id;
 
   ClipVertex() :
-    v = new Vector(),
+    v = new Vector.zero(),
     id = new ContactID() { }
 
   void setFrom(ClipVertex cv){

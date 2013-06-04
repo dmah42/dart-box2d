@@ -112,8 +112,8 @@ abstract class Benchmark {
    * producing the same output across different box2D implementations.
    */
   num get checksum {
-    final positionSum = new Vector();
-    final velocitySum = new Vector();
+    final positionSum = new Vector.zero();
+    final velocitySum = new Vector.zero();
     for (Body b in bodies) {
       positionSum.addLocal(b.position);
       velocitySum.addLocal(b.linearVelocity);

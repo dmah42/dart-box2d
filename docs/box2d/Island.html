@@ -60,7 +60,7 @@ class Island {
 
  Island() :
    _contactSolver = new ContactSolver(),
-   _translation = new Vector(),
+   _translation = new Vector.zero(),
    impulse = new ContactImpulse() { }
 
  //TODO(gregbglw): No need to keep capacity, count and array for these items as
@@ -178,7 +178,7 @@ class Island {
    _contactSolver.storeImpulses();
 
    // Integrate positions.
-   Vector temp = new Vector();
+   Vector temp = new Vector.zero();
    for (int i = 0; i &lt; bodyCount; ++i){
      Body b = bodies[i];
 
@@ -329,7 +329,7 @@ new <strong>Island</strong>() <a class="anchor-link" href="#Island"
 <pre class="source">
 Island() :
  _contactSolver = new ContactSolver(),
- _translation = new Vector(),
+ _translation = new Vector.zero(),
  impulse = new ContactImpulse() { }
 </pre>
 </div>
@@ -712,7 +712,7 @@ void solve(TimeStep step, Vector gravity, bool allowSleep){
  _contactSolver.storeImpulses();
 
  // Integrate positions.
- Vector temp = new Vector();
+ Vector temp = new Vector.zero();
  for (int i = 0; i &lt; bodyCount; ++i){
    Body b = bodies[i];
 

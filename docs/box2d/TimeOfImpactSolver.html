@@ -53,10 +53,10 @@ class TimeOfImpactSolver {
 
    // Initialize pool variables.
    psm = new TimeOfImpactSolverManifold(),
-   rA = new Vector(),
-   rB = new Vector(),
-   P = new Vector(),
-   temp = new Vector();
+   rA = new Vector.zero(),
+   rB = new Vector.zero(),
+   P = new Vector.zero(),
+   temp = new Vector.zero();
 
  void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
    count = argCount;
@@ -192,10 +192,10 @@ TimeOfImpactSolver() :
 
  // Initialize pool variables.
  psm = new TimeOfImpactSolverManifold(),
- rA = new Vector(),
- rB = new Vector(),
- P = new Vector(),
- temp = new Vector();
+ rA = new Vector.zero(),
+ rB = new Vector.zero(),
+ P = new Vector.zero(),
+ temp = new Vector.zero();
 </pre>
 </div>
 </div>

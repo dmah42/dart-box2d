@@ -92,7 +92,7 @@ class BodyDef {
     userData = null,
     bullet = false,
     type = BodyType.STATIC,
-    position = new Vector(),
+    position = new Vector.zero(),
     angle = 0,
     linearDamping = 0,
     angularDamping = 0,
@@ -100,6 +100,6 @@ class BodyDef {
     awake = true,
     fixedRotation = false,
     active = true,
-    linearVelocity = new Vector(),
+    linearVelocity = new Vector.zero(),
     angularVelocity = 0;
 }

@@ -31,6 +31,6 @@ class DistanceOutput {
   int iterations;
 
   DistanceOutput() :
-    pointA = new Vector(),
-    pointB = new Vector() { }
+    pointA = new Vector.zero(),
+    pointB = new Vector.zero() { }
 }

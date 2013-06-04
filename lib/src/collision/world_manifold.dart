@@ -40,11 +40,11 @@ class WorldManifold {
    * Constructs a new WorldManifold.
    */
   WorldManifold() :
-    normal = new Vector(),
-    pool3 = new Vector(),
-    pool4 = new Vector(),
+    normal = new Vector.zero(),
+    pool3 = new Vector.zero(),
+    pool4 = new Vector.zero(),
     points = new List<Vector>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector());
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector.zero());
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {

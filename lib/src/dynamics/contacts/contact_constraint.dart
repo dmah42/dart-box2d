@@ -45,9 +45,9 @@ class ContactConstraint {
         Settings.MAX_MANIFOLD_POINTS, (i) => new ContactConstraintPoint()),
     pointCount = 0,
     manifold = null,
-    localNormal = new Vector(),
-    localPoint = new Vector(),
-    normal = new Vector(),
+    localNormal = new Vector.zero(),
+    localPoint = new Vector.zero(),
+    normal = new Vector.zero(),
     normalMass = new Matrix22(),
     K = new Matrix22();
 

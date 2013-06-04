@@ -34,22 +34,17 @@
 <div class="doc">
 <pre class="source">
 class Matrix22 {
- Vector col1;
- Vector col2;
+ final Vector col1;
+ final Vector col2;
 
  /**
   * Constructs a new Matrix. Defaults to both columns being default vectors.
   */
- Matrix22([Vector c1 = null, Vector c2 = null]) {
-   if (c1 == null) c1 = new Vector();
-   if (c2 == null) c2 = new Vector();
-   col1 = c1;
-   col2 = c2;
- }
+ Matrix22() : col1 = new Vector.zero(), col2 = new Vector.zero();
 
  /** Constructs a new Matrix22 representing an angle. */
  Matrix22.fromAngle(double angle)
-     : col1 = new Vector(), col2 = new Vector() {
+     : col1 = new Vector.zero(), col2 = new Vector.zero() {
    setAngle(angle);
  }
 
@@ -206,17 +201,12 @@ static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
 <h3>Constructors</h3>
 <div class="method"><h4 id="Matrix22">
 <button class="show-code">Code</button>
-new <strong>Matrix22</strong>([<a href="../box2d/Vector.html">Vector</a> c1 = null, <a href="../box2d/Vector.html">Vector</a> c2 = null]) <a class="anchor-link" href="#Matrix22"
+new <strong>Matrix22</strong>() <a class="anchor-link" href="#Matrix22"
               title="Permalink to Matrix22.Matrix22">#</a></h4>
 <div class="doc">
 <p>Constructs a new Matrix. Defaults to both columns being default vectors.</p>
 <pre class="source">
-Matrix22([Vector c1 = null, Vector c2 = null]) {
- if (c1 == null) c1 = new Vector();
- if (c2 == null) c2 = new Vector();
- col1 = c1;
- col2 = c2;
-}
+Matrix22() : col1 = new Vector.zero(), col2 = new Vector.zero();
 </pre>
 </div>
 </div>
@@ -241,7 +231,7 @@ new <strong>Matrix22.fromAngle</strong>(double angle) <a class="anchor-link" hre
 <p>Constructs a new Matrix22 representing an angle. </p>
 <pre class="source">
 Matrix22.fromAngle(double angle)
-   : col1 = new Vector(), col2 = new Vector() {
+   : col1 = new Vector.zero(), col2 = new Vector.zero() {
  setAngle(angle);
 }
 </pre>
@@ -252,25 +242,25 @@ Matrix22.fromAngle(double angle)
 <h3>Properties</h3>
 <div class="field"><h4 id="col1">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>col1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>col1</strong> <a class="anchor-link"
             href="#col1"
             title="Permalink to Matrix22.col1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector col1
+final Vector col1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="col2">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>col2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>col2</strong> <a class="anchor-link"
             href="#col2"
             title="Permalink to Matrix22.col2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector col2
+final Vector col2
 </pre>
 </div>
 </div>

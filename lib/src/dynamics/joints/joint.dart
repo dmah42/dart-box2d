@@ -55,10 +55,10 @@ class Joint {
     islandFlag = false,
     userData = def.userData,
 
-    localCenterA = new Vector(),
-    localCenterB = new Vector(),
+    localCenterA = new Vector.zero(),
+    localCenterB = new Vector.zero(),
     edgeA = new JointEdge(),
-    edgeB = new JointEdge() { }
+    edgeB = new JointEdge();
 
   // TODO(dominich): use 'is' to create the right type of Joint and remove the
   // *Def.type.

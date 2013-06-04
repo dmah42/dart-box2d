@@ -39,10 +39,10 @@ class TimeOfImpactSolver {
 
     // Initialize pool variables.
     psm = new TimeOfImpactSolverManifold(),
-    rA = new Vector(),
-    rB = new Vector(),
-    P = new Vector(),
-    temp = new Vector();
+    rA = new Vector.zero(),
+    rB = new Vector.zero(),
+    P = new Vector.zero(),
+    temp = new Vector.zero();
 
   void initialize(List<Contact> contacts, int argCount, Body argToiBody) {
     count = argCount;
@@ -175,14 +175,14 @@ class TimeOfImpactSolverManifold {
 
   /** constructor that initiliazes everything. */
   TimeOfImpactSolverManifold() :
-    normal = new Vector(),
-    point = new Vector(),
+    normal = new Vector.zero(),
+    point = new Vector.zero(),
     separation = 0,
-    pointA = new Vector(),
-    pointB = new Vector(),
-    temp = new Vector(),
-    planePoint = new Vector(),
-    clipPoint = new Vector() { }
+    pointA = new Vector.zero(),
+    pointB = new Vector.zero(),
+    temp = new Vector.zero(),
+    planePoint = new Vector.zero(),
+    clipPoint = new Vector.zero();
 
   void initialize(TimeOfImpactConstraint cc, int index) {
     assert(cc.pointCount > 0);

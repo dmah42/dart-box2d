@@ -29,7 +29,7 @@ class Transform {
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new Vector(), rotation = new Matrix22();
+  Transform() : position = new Vector.zero(), rotation = new Matrix22();
 
   /**
    * Constructs a new transform equal to the given transform.

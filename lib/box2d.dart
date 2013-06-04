@@ -16,6 +16,7 @@ library box2d;
 
 import 'dart:collection';
 import 'dart:math' as Math;
+import 'dart:typed_data';
 
 part 'src/callbacks/debug_draw.dart';
 part 'src/callbacks/destruction_listener.dart';

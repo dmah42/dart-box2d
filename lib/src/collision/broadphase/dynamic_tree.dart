@@ -63,17 +63,17 @@ class DynamicTree {
     _lastLeaf = null,
     _drawVectors = new List<Vector>(4),
     _nodeCounter = 0,
-    _tempVector = new Vector(),
+    _tempVector = new Vector.zero(),
     _tempBox = new AxisAlignedBox(),
     _nodeStack = new Queue<DynamicTreeNode>(),
     // Pool objects.
-    center = new Vector(),
-    deltaOne = new Vector(),
-    deltaTwo = new Vector() {
+    center = new Vector.zero(),
+    deltaOne = new Vector.zero(),
+    deltaTwo = new Vector.zero() {
 
     // Place new vectors in the draw vectors array.
     for (int i = 0; i < _drawVectors.length; ++i)
-      _drawVectors[i] = new Vector();
+      _drawVectors[i] = new Vector.zero();
   }
 
   /**

@@ -17,79 +17,94 @@
 part of box2d;
 
 class Vector3 {
-  // Each vector is defined as the vector originating from (0,0) to the point
-  // defined by these values.
-  double x;
-  double y;
-  double z;
+  final _f = new Float64List(3);
+  static const int X = 0;
+  static const int Y = 1;
+  static const int Z = 2;
 
-  Vector3([this.x = 0.0, this.y = 0.0, this.z = 0.0]);
+  Vector3(double x, double y, double z) {
+    _f[X] = x;
+    _f[Y] = y;
+    _f[Z] = z;
+  }
+
+  Vector3.zero() {
+    _f[X] = _f[Y] = _f[Z] = 0.0;
+  }
 
   Vector3.copy(Vector3 argCopy) {
-    x = argCopy.x;
-    y = argCopy.y;
+    _f[X] = argCopy.x;
+    _f[Y] = argCopy.y;
     z = argCopy.z;
   }
 
+  double get x => _f[X];
+  double get y => _f[Y];
+  double get z => _f[Z];
+
+  set x(double v) { _f[X] = v; }
+  set y(double v) { _f[Y] = v; }
+  set z(double v) { _f[Z] = v; }
+
   bool operator ==(other) {
-    return other is Vector3 && x == other.x && y == other.y && z == other.z;
+    return other is Vector3 && x == other.x && _f[Y] == other.y && _f[Z] == other.z;
   }
 
   /** Sets this vector equal to the given vector. */
   Vector3 setFrom(Vector3 argVec) {
-    x = argVec.x;
-    y = argVec.y;
-    z = argVec.z;
+    _f[X] = argVec._f[X];
+    _f[Y] = argVec._f[Y];
+    _f[Z] = argVec._f[Z];
     return this;
   }
 
   /** Sets the vectors coordinate values to those given. */
   Vector3 setCoords(double argX, double argY, double argZ) {
-    x = argX;
-    y = argY;
-    z = argZ;
+    _f[X] = argX;
+    _f[Y] = argY;
+    _f[Z] = argZ;
     return this;
   }
 
   Vector3 addLocal(Vector3 argVec) {
-    x += argVec.x;
-    y += argVec.y;
-    z += argVec.z;
+    _f[X] += argVec._f[X];
+    _f[Y] += argVec._f[Y];
+    _f[Z] += argVec._f[Z];
     return this;
   }
 
   Vector3 add(Vector3 argVec) =>
-      new Vector3(x + argVec.x, y + argVec.y, z + argVec.z);
+      new Vector3(_f[X] + argVec._f[X], _f[Y] + argVec._f[Y], _f[Z] + argVec._f[Z]);
 
   Vector3 subLocal(Vector3 argVec) {
-    x -= argVec.x;
-    y -= argVec.y;
-    z -= argVec.z;
+    _f[X] -= argVec._f[X];
+    _f[Y] -= argVec._f[Y];
+    _f[Z] -= argVec._f[Z];
     return this;
   }
 
   Vector3 sub(Vector3 argVec) =>
-      new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
+      new Vector3(_f[X] - argVec._f[X], _f[Y] - argVec._f[Y], _f[Z] - argVec._f[Z]);
 
   Vector3 mulLocal(double argScalar) {
-    x *= argScalar;
-    y *= argScalar;
-    z *= argScalar;
+    _f[X] *= argScalar;
+    _f[Y] *= argScalar;
+    _f[Z] *= argScalar;
     return this;
   }
 
   Vector3 mul(double argScalar) =>
-      new Vector3(x * argScalar, y * argScalar, z * argScalar);
+      new Vector3(_f[X] * argScalar, _f[Y] * argScalar, _f[Z] * argScalar);
 
   Vector3 negateLocal() {
-    x = -x;
-    y = -y;
-    z = -z;
+    _f[X] = -_f[X];
+    _f[Y] = -_f[Y];
+    _f[Z] = -_f[Z];
     return this;
   }
 
   void setZero() {
-    x = y = z = 0.0;
+    _f[X] = _f[Y] = _f[Z] = 0.0;
   }
 
   String toString() => "($x, $y, $z)";
@@ -104,8 +119,8 @@ class Vector3 {
   static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
     final double tempy = a.z * b.x - a.x * b.z;
     final double tempz = a.x * b.y - a.y * b.x;
-    out.x = a.y * b.z - a.z * b.y;
-    out.y = tempy;
-    out.z = tempz;
+    out._f[X] = a.y * b.z - a.z * b.y;
+    out._f[Y] = tempy;
+    out._f[Z] = tempz;
   }
 }

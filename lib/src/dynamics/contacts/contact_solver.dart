@@ -54,20 +54,20 @@ class ContactSolver {
 
     // Setup pool variables.
     worldManifold = new WorldManifold(),
-    tangent = new Vector(),
-    temp1 = new Vector(),
-    temp2 = new Vector(),
-    P = new Vector(),
-    dv = new Vector(),
-    dv1 = new Vector(),
-    dv2 = new Vector(),
-    x = new Vector(),
-    d = new Vector(),
-    P1 = new Vector(),
-    P2 = new Vector(),
+    tangent = new Vector.zero(),
+    temp1 = new Vector.zero(),
+    temp2 = new Vector.zero(),
+    P = new Vector.zero(),
+    dv = new Vector.zero(),
+    dv1 = new Vector.zero(),
+    dv2 = new Vector.zero(),
+    x = new Vector.zero(),
+    d = new Vector.zero(),
+    P1 = new Vector.zero(),
+    P2 = new Vector.zero(),
     psolver = new PositionSolverManifold(),
-    rA = new Vector(),
-    rB = new Vector();
+    rA = new Vector.zero(),
+    rB = new Vector.zero();
 
   void init(List<Contact> contacts, int contactCount, num impulseRatio){
     constraintCount = contactCount;
@@ -598,16 +598,16 @@ class PositionSolverManifold {
   Vector clipPoint;
 
   PositionSolverManifold() :
-    normal = new Vector(),
-    point = new Vector(),
+    normal = new Vector.zero(),
+    point = new Vector.zero(),
     separation = 0,
 
     // Initialize pool variables.
-    pointA = new Vector(),
-    pointB = new Vector(),
-    temp = new Vector(),
-    planePoint = new Vector(),
-    clipPoint = new Vector();
+    pointA = new Vector.zero(),
+    pointB = new Vector.zero(),
+    temp = new Vector.zero(),
+    planePoint = new Vector.zero(),
+    clipPoint = new Vector.zero();
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);

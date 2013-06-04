@@ -31,7 +31,7 @@ class DistanceProxy {
     radius = 0 {
 
       for(int i = 0; i < vertices.length; ++i)
-        vertices[i] = new Vector();
+        vertices[i] = new Vector.zero();
     }
 
   /**

@@ -55,9 +55,9 @@ class RevoluteJoint extends Joint {
 
   RevoluteJoint(RevoluteJointDef def) :
       super(def),
-      localAnchor1 = new Vector(),
-      localAnchor2 = new Vector(),
-      impulse = new Vector3(),
+      localAnchor1 = new Vector.zero(),
+      localAnchor2 = new Vector.zero(),
+      impulse = new Vector3.zero(),
       _motorImpulse = 0,
       mass = new Matrix33() {
     localAnchor1.setFrom(def.localAnchorA);
@@ -84,8 +84,8 @@ class RevoluteJoint extends Joint {
       assert (b1.invInertia > 0.0 || b2.invInertia > 0.0);
     }
 
-    final Vector r1 = new Vector();
-    final Vector r2 = new Vector();
+    final Vector r1 = new Vector.zero();
+    final Vector r2 = new Vector.zero();
 
     // Compute the effective mass matrix.
     r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -146,8 +146,8 @@ class RevoluteJoint extends Joint {
       impulse.mulLocal(step.dtRatio);
       _motorImpulse *= step.dtRatio;
 
-      Vector temp = new Vector();
-      Vector P = new Vector();
+      Vector temp = new Vector.zero();
+      Vector P = new Vector.zero();
       P.setCoords(impulse.x, impulse.y);
 
       temp.setFrom(P).mulLocal(m1);
@@ -192,9 +192,9 @@ class RevoluteJoint extends Joint {
       w2 += i2 * imp;
     }
 
-    final Vector temp = new Vector();
-    final Vector r1 = new Vector();
-    final Vector r2 = new Vector();
+    final Vector temp = new Vector.zero();
+    final Vector r1 = new Vector.zero();
+    final Vector r2 = new Vector.zero();
 
     // Solve limit constraint.
     if (_enableLimit && limitState != LimitState.INACTIVE) {
@@ -204,8 +204,8 @@ class RevoluteJoint extends Joint {
       Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
       Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-      final Vector Cdot1 = new Vector();
-      final Vector3 Cdot = new Vector3();
+      final Vector Cdot1 = new Vector.zero();
+      final Vector3 Cdot = new Vector3.zero();
 
       // Solve point-to-point constraint
       Vector.crossNumAndVectorToOut(w1, r1, temp);
@@ -214,7 +214,7 @@ class RevoluteJoint extends Joint {
       num Cdot2 = w2 - w1;
       Cdot.setCoords(Cdot1.x, Cdot1.y, Cdot2);
 
-      Vector3 imp = new Vector3();
+      Vector3 imp = new Vector3.zero();
       mass.solve33ToOut(Cdot.negateLocal(), imp);
 
       if (limitState == LimitState.EQUAL) {
@@ -242,7 +242,7 @@ class RevoluteJoint extends Joint {
           impulse.z = 0.0;
         }
       }
-      final Vector P = new Vector();
+      final Vector P = new Vector.zero();
 
       P.setCoords(imp.x, imp.y);
 
@@ -261,8 +261,8 @@ class RevoluteJoint extends Joint {
       Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
       // Solve point-to-point constraint
-      Vector Cdot = new Vector();
-      Vector imp = new Vector();
+      Vector Cdot = new Vector.zero();
+      Vector imp = new Vector.zero();
 
       Vector.crossNumAndVectorToOut(w1, r1, temp);
       Vector.crossNumAndVectorToOut(w2, r2, Cdot);
@@ -330,11 +330,11 @@ class RevoluteJoint extends Joint {
 
     // Solve point-to-point constraint.
     {
-      Vector imp = new Vector();
+      Vector imp = new Vector.zero();
 
-      Vector r1 = new Vector();
-      Vector r2 = new Vector();
-      Vector C = new Vector();
+      Vector r1 = new Vector.zero();
+      Vector r2 = new Vector.zero();
+      Vector C = new Vector.zero();
 
       r1.setFrom(localAnchor1).subLocal(b1.localCenter);
       r2.setFrom(localAnchor2).subLocal(b2.localCenter);
@@ -351,7 +351,7 @@ class RevoluteJoint extends Joint {
       // Handle large detachment.
       final num k_allowedStretch = 10.0 * Settings.LINEAR_SLOP;
       if (C.lengthSquared > k_allowedStretch * k_allowedStretch) {
-        Vector u = new Vector();
+        Vector u = new Vector.zero();
 
         // Use a particle solution (no rotation).
         num m = invMass1 + invMass2;
