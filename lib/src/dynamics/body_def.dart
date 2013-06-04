@@ -29,19 +29,19 @@ class BodyDef {
   /**
    * The world angle of the body in radians.
    */
-  double angle;
+  num angle;
 
   /** User can store whatever they wish in here. */
-  dynamic userData;
+  Object userData;
 
   /** The world position of the body. */
-  vec2 position;
+  Vector position;
 
   /** Linear velocity of the body in world coordinates. */
-  vec2 linearVelocity;
+  Vector linearVelocity;
 
   /** Angular velocity of the body. */
-  double angularVelocity;
+  num angularVelocity;
 
   /**
    * If true, the body will be allowed to rotate. Otherwise, its rotation will
@@ -92,14 +92,14 @@ class BodyDef {
     userData = null,
     bullet = false,
     type = BodyType.STATIC,
-    position = new vec2.zero(),
-    angle = 0.0,
+    position = new Vector(),
+    angle = 0,
     linearDamping = 0,
     angularDamping = 0,
     allowSleep = true,
     awake = true,
     fixedRotation = false,
     active = true,
-    linearVelocity = new vec2.zero(),
-    angularVelocity = 0.0;
+    linearVelocity = new Vector(),
+    angularVelocity = 0;
 }

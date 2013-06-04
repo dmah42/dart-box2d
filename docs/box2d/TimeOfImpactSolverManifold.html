@@ -34,27 +34,27 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactSolverManifold {
- final vec2 normal;
- final vec2 point;
+ final Vector normal;
+ final Vector point;
  num separation;
 
  /** Pooling */
- final vec2 pointA;
- final vec2 pointB;
- final vec2 temp;
- final vec2 planePoint;
- final vec2 clipPoint;
+ final Vector pointA;
+ final Vector pointB;
+ final Vector temp;
+ final Vector planePoint;
+ final Vector clipPoint;
 
  /** constructor that initiliazes everything. */
  TimeOfImpactSolverManifold() :
-   normal = new vec2.zero(),
-   point = new vec2.zero(),
+   normal = new Vector(),
+   point = new Vector(),
    separation = 0,
-   pointA = new vec2.zero(),
-   pointB = new vec2.zero(),
-   temp = new vec2.zero(),
-   planePoint = new vec2.zero(),
-   clipPoint = new vec2.zero();
+   pointA = new Vector(),
+   pointB = new Vector(),
+   temp = new Vector(),
+   planePoint = new Vector(),
+   clipPoint = new Vector() { }
 
  void initialize(TimeOfImpactConstraint cc, int index) {
    assert(cc.pointCount &gt; 0);
@@ -63,16 +63,17 @@ class TimeOfImpactSolverManifold {
      case ManifoldType.CIRCLES:
        pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
        pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
-       if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-         normal.setFrom(pointB).sub(pointA);
+       if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
+           * Settings.EPSILON) {
+         normal.setFrom(pointB).subLocal(pointA);
          normal.normalize();
        } else {
-         normal.splat(0.0);
+         normal.setCoords(1, 0);
        }
 
-       point.setFrom(pointA).add(pointB).scale(.5);
-       temp.setFrom(pointB).sub(pointA);
-       separation = dot(temp, normal) - cc.radius;
+       point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+       temp.setFrom(pointB).subLocal(pointA);
+       separation = Vector.dot(temp, normal) - cc.radius;
        break;
 
      case ManifoldType.FACE_A:
@@ -80,8 +81,8 @@ class TimeOfImpactSolverManifold {
        planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
        clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-       temp.setFrom(clipPoint).sub(planePoint);
-       separation = dot(temp, normal) - cc.radius;
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
        point.setFrom(clipPoint);
        break;
 
@@ -90,12 +91,12 @@ class TimeOfImpactSolverManifold {
        planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
        clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-       temp.setFrom(clipPoint).sub(planePoint);
-       separation = dot(temp, normal) - cc.radius;
+       temp.setFrom(clipPoint).subLocal(planePoint);
+       separation = Vector.dot(temp, normal) - cc.radius;
        point.setFrom(clipPoint);
 
        // Ensure normal points from A to B
-       normal.negate();
+       normal.negateLocal();
        break;
    }
  }
@@ -112,14 +113,14 @@ new <strong>TimeOfImpactSolverManifold</strong>() <a class="anchor-link" href="#
 <p>constructor that initiliazes everything. </p>
 <pre class="source">
 TimeOfImpactSolverManifold() :
- normal = new vec2.zero(),
- point = new vec2.zero(),
+ normal = new Vector(),
+ point = new Vector(),
  separation = 0,
- pointA = new vec2.zero(),
- pointB = new vec2.zero(),
- temp = new vec2.zero(),
- planePoint = new vec2.zero(),
- clipPoint = new vec2.zero();
+ pointA = new Vector(),
+ pointB = new Vector(),
+ temp = new Vector(),
+ planePoint = new Vector(),
+ clipPoint = new Vector() { }
 </pre>
 </div>
 </div>
@@ -128,74 +129,74 @@ TimeOfImpactSolverManifold() :
 <h3>Properties</h3>
 <div class="field"><h4 id="clipPoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>clipPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>clipPoint</strong> <a class="anchor-link"
             href="#clipPoint"
             title="Permalink to TimeOfImpactSolverManifold.clipPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 clipPoint
+final Vector clipPoint
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to TimeOfImpactSolverManifold.normal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 normal
+final Vector normal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="planePoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>planePoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>planePoint</strong> <a class="anchor-link"
             href="#planePoint"
             title="Permalink to TimeOfImpactSolverManifold.planePoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 planePoint
+final Vector planePoint
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="point">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>point</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>point</strong> <a class="anchor-link"
             href="#point"
             title="Permalink to TimeOfImpactSolverManifold.point">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 point
+final Vector point
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> <a class="anchor-link"
             href="#pointA"
             title="Permalink to TimeOfImpactSolverManifold.pointA">#</a>
         </h4>
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final vec2 pointA
+final Vector pointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> <a class="anchor-link"
             href="#pointB"
             title="Permalink to TimeOfImpactSolverManifold.pointB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 pointB
+final Vector pointB
 </pre>
 </div>
 </div>
@@ -213,13 +214,13 @@ num separation
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to TimeOfImpactSolverManifold.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp
+final Vector temp
 </pre>
 </div>
 </div>
@@ -239,16 +240,17 @@ void initialize(TimeOfImpactConstraint cc, int index) {
    case ManifoldType.CIRCLES:
      pointA.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
      pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
-     if (distance2(pointA, pointB) &gt; Settings.EPSILON * Settings.EPSILON) {
-       normal.setFrom(pointB).sub(pointA);
+     if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON
+         * Settings.EPSILON) {
+       normal.setFrom(pointB).subLocal(pointA);
        normal.normalize();
      } else {
-       normal.splat(0.0);
+       normal.setCoords(1, 0);
      }
 
-     point.setFrom(pointA).add(pointB).scale(.5);
-     temp.setFrom(pointB).sub(pointA);
-     separation = dot(temp, normal) - cc.radius;
+     point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
+     temp.setFrom(pointB).subLocal(pointA);
+     separation = Vector.dot(temp, normal) - cc.radius;
      break;
 
    case ManifoldType.FACE_A:
@@ -256,8 +258,8 @@ void initialize(TimeOfImpactConstraint cc, int index) {
      planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
      clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-     temp.setFrom(clipPoint).sub(planePoint);
-     separation = dot(temp, normal) - cc.radius;
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
      point.setFrom(clipPoint);
      break;
 
@@ -266,12 +268,12 @@ void initialize(TimeOfImpactConstraint cc, int index) {
      planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
      clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-     temp.setFrom(clipPoint).sub(planePoint);
-     separation = dot(temp, normal) - cc.radius;
+     temp.setFrom(clipPoint).subLocal(planePoint);
+     separation = Vector.dot(temp, normal) - cc.radius;
      point.setFrom(clipPoint);
 
      // Ensure normal points from A to B
-     normal.negate();
+     normal.negateLocal();
      break;
  }
 }

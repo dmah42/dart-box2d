@@ -26,7 +26,7 @@ class ConstantVolumeJoint extends Joint {
   List<num> targetLengths;
   num targetVolume;
 
-  List<vec2> normals;
+  List<Vector> normals;
 
   TimeStep step;
 
@@ -55,8 +55,8 @@ class ConstantVolumeJoint extends Joint {
     targetLengths = new List<num>(bodies.length);
     for (int i = 0; i < targetLengths.length; ++i) {
       final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-      vec2 temp = new vec2.copy(bodies[i].worldCenter);
-      temp.sub(bodies[next].worldCenter);
+      Vector temp = new Vector.copy(bodies[i].worldCenter);
+      temp.subLocal(bodies[next].worldCenter);
       num dist = temp.length;
       targetLengths[i] = dist;
     }
@@ -87,7 +87,7 @@ class ConstantVolumeJoint extends Joint {
     frequencyHz = def.frequencyHz;
     dampingRatio = def.dampingRatio;
 
-    normals = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
+    normals = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     this.bodyA = bodies[0];
     this.bodyB = bodies[1];
@@ -121,10 +121,9 @@ class ConstantVolumeJoint extends Joint {
     num perimeter = 0.0;
     for (int i = 0; i < bodies.length; ++i) {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      // TODO(dominic): vector cleanup
       num dx = bodies[next].worldCenter.x - bodies[i].worldCenter.x;
       num dy = bodies[next].worldCenter.y - bodies[i].worldCenter.y;
-      num dist = math.sqrt(dx * dx + dy * dy);
+      num dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < Settings.EPSILON) {
         dist = 1.0;
       }
@@ -133,22 +132,24 @@ class ConstantVolumeJoint extends Joint {
       perimeter += dist;
     }
 
-    final delta = new vec2.zero();
+    final delta = new Vector();
 
     num deltaArea = targetVolume - area;
     num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
     bool done = true;
     for (int i = 0; i < bodies.length; ++i) {
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
-      delta.setFrom(normals[i]).add(normals[next]).scale(toExtrude);
+      delta.setCoords(toExtrude * (normals[i].x + normals[next].x), toExtrude
+          * (normals[i].y + normals[next].y));
       num norm = delta.length;
       if (norm > Settings.MAX_LINEAR_CORRECTION) {
-        delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);
+        delta.mulLocal(Settings.MAX_LINEAR_CORRECTION / norm);
       }
       if (norm > Settings.LINEAR_SLOP) {
         done = false;
       }
-      bodies[next].sweep.center.add(delta);
+      bodies[next].sweep.center.x += delta.x;
+      bodies[next].sweep.center.y += delta.y;
       bodies[next].synchronizeTransform();
     }
 
@@ -158,13 +159,13 @@ class ConstantVolumeJoint extends Joint {
   void initVelocityConstraints(TimeStep argStep) {
     step = argStep;
 
-    final d = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
       d[i].setFrom(bodies[next].worldCenter);
-      d[i].sub(bodies[prev].worldCenter);
+      d[i].subLocal(bodies[prev].worldCenter);
     }
 
     if (step.warmStarting) {
@@ -196,15 +197,15 @@ class ConstantVolumeJoint extends Joint {
     num crossMassSum = 0.0;
     num dotMassSum = 0.0;
 
-    final d = new List<vec2>.generate(bodies.length, (i) => new vec2.zero());
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
       final int next = (i == bodies.length - 1) ? 0 : i + 1;
       d[i].setFrom(bodies[next].worldCenter);
-      d[i].sub(bodies[prev].worldCenter);
-      dotMassSum += d[i].length2 / bodies[i].mass;
-      crossMassSum += cross(bodies[i].linearVelocity, d[i]);
+      d[i].subLocal(bodies[prev].worldCenter);
+      dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
+      crossMassSum += Vector.crossVectors(bodies[i].linearVelocity, d[i]);
     }
     num lambda = -2.0 * crossMassSum / dotMassSum;
     _impulse += lambda;
@@ -214,11 +215,11 @@ class ConstantVolumeJoint extends Joint {
     }
   }
 
-  void getAnchorA(vec2 argOut) { throw new UnimplementedError(); }
+  void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
 
-  void getAnchorB(vec2 argOut) { throw new UnimplementedError(); }
+  void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
 
-  void getReactionForce(num inv_dt, vec2 argOut) { throw new UnimplementedError(); }
+  void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
 
   num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 }

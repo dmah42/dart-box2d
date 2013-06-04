@@ -15,6 +15,8 @@
 part of BenchmarkRunner;
 
 class CircleStressBench extends Benchmark {
+  static const String NAME = "Circle Stress";
+
   /** The joint used to churn the balls around. */
   RevoluteJoint _joint;
 
@@ -28,7 +30,7 @@ class CircleStressBench extends Benchmark {
   CircleStressBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name => "CircleStressBench";
+  String get name => NAME;
 
   /** Creates all bodies. */
   void initialize() {
@@ -40,7 +42,7 @@ class CircleStressBench extends Benchmark {
       bodies.add(ground);
 
       PolygonShape shape = new PolygonShape();
-      shape.setAsEdge(new vec2(-40.0, 0.0), new vec2(40.0, 0.0));
+      shape.setAsEdge(new Vector(-40.0, 0.0), new Vector(40.0, 0.0));
       ground.createFixtureFromShape(shape);
     }
 
@@ -53,7 +55,7 @@ class CircleStressBench extends Benchmark {
       sd.setAsBox(50.0, 10.0);
       final bd = new BodyDef();
       bd.type = BodyType.STATIC;
-      bd.position = new vec2(0.0, -10.0);
+      bd.position = new Vector(0.0, -10.0);
       final b = world.createBody(bd);
       bodies.add(b);
       final fd = new FixtureDef();
@@ -64,11 +66,11 @@ class CircleStressBench extends Benchmark {
       // Walls
       sd.setAsBox(3.0, 50.0);
       final wallDef = new BodyDef();
-      wallDef.position = new vec2(45.0, 25.0);
+      wallDef.position = new Vector(45.0, 25.0);
       rightWall = world.createBody(wallDef);
       bodies.add(rightWall);
       rightWall.createFixtureFromShape(sd);
-      wallDef.position = new vec2(-45.0, 25.0);
+      wallDef.position = new Vector(-45.0, 25.0);
       leftWall = world.createBody(wallDef);
       bodies.add(leftWall);
       leftWall.createFixtureFromShape(sd);
@@ -76,14 +78,13 @@ class CircleStressBench extends Benchmark {
       // Corners
       final cornerDef = new BodyDef();
       sd.setAsBox(20.0, 3.0);
-      cornerDef.angle = (-math.PI / 4.0);
-      cornerDef.position = new vec2(-35.0, 8.0);
-      
+      cornerDef.angle = (-PI / 4.0);
+      cornerDef.position = new Vector(-35, 8.0);
       Body myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
-      cornerDef.angle = (math.PI / 4.0);
-      cornerDef.position = new vec2(35.0, 8.0);
+      cornerDef.angle = (PI / 4.0);
+      cornerDef.position = new Vector(35, 8.0);
       myBod = world.createBody(cornerDef);
       bodies.add(myBod);
       myBod.createFixtureFromShape(sd);
@@ -92,8 +93,8 @@ class CircleStressBench extends Benchmark {
       sd.setAsBox(50.0, 10.0);
       final topDef = new BodyDef();
       topDef.type = BodyType.STATIC;
-      topDef.angle = 0.0;
-      topDef.position = new vec2(0.0, 75.0);
+      topDef.angle = 0;
+      topDef.position = new Vector(0.0, 75.0);
       final topBody = world.createBody(topDef);
       bodies.add(topBody);
       fd.shape = sd;
@@ -106,7 +107,7 @@ class CircleStressBench extends Benchmark {
       bd.type = BodyType.DYNAMIC;
       int numPieces = 5;
       num radius = 6;
-      bd.position = new vec2(0.0, 10.0);
+      bd.position = new Vector(0.0, 10.0);
       final body = world.createBody(bd);
       bodies.add(body);
 
@@ -118,10 +119,10 @@ class CircleStressBench extends Benchmark {
         fd.density = 25;
         fd.friction = .1;
         fd.restitution = .9;
+        num xPos = radius * cos(2 * PI * (i / numPieces.toDouble()));
+        num yPos = radius * sin(2 * PI * (i / numPieces.toDouble()));
+        cd.position.setCoords(xPos, yPos);
 
-        cd.position.x = radius * math.cos(2 * math.PI * (i / numPieces)); 
-        cd.position.y = radius * math.sin(2 * math.PI * (i / numPieces));
-        
         body.createFixture(fd);
       }
 
@@ -133,7 +134,7 @@ class CircleStressBench extends Benchmark {
 
       RevoluteJointDef rjd = new RevoluteJointDef();
       rjd.initialize(body, groundBody, body.position);
-      rjd.motorSpeed = math.PI;
+      rjd.motorSpeed = PI;
       rjd.maxMotorTorque = 1000000.0;
       rjd.enableMotor = true;
       _joint = world.createJoint(rjd);
@@ -150,9 +151,9 @@ class CircleStressBench extends Benchmark {
             fd2.density = circ.radius * 1.5;
             fd2.friction = 0.5;
             fd2.restitution = 0.7;
-            double xPos = -39.0 + 2 * i;
-            double yPos = 50.0 + j;
-            bod.position = new vec2(xPos, yPos);
+            num xPos = -39 + 2 * i;
+            num yPos = 50 + j;
+            bod.position = new Vector(xPos, yPos);
             Body myBody = world.createBody(bod);
             bodies.add(myBody);
             myBody.createFixture(fd2);

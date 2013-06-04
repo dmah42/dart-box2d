@@ -19,6 +19,7 @@ class DominoTowerBench extends Benchmark {
   static const num DOMINO_FRICTION = 0.1;
   static const num DOMINO_HEIGHT = 1;
   static const num BASE_COUNT = 25;
+  static const String NAME = "Domino Tower";
 
   /**
    * The density of the dominos under construction. Varies for different parts
@@ -27,10 +28,10 @@ class DominoTowerBench extends Benchmark {
   num dominoDensity;
 
   /** Construct a new DominoTower. */
-  DominoTowerBench(List<int> solveLoops, List<int> steps)
-      : super(solveLoops, steps);
+  DominoTowerBench(List<int> solveLoops, List<int> steps) :
+    super(solveLoops, steps) { }
 
-  String get name => "DominoTowerBench";
+  String get name => NAME;
 
   void makeDomino(num x, num y, bool horizontal, World world_) {
     PolygonShape sd = new PolygonShape();
@@ -42,8 +43,8 @@ class DominoTowerBench extends Benchmark {
     bd.type = BodyType.DYNAMIC;
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
-    bd.position = new vec2(x, y);
-    bd.angle = horizontal ? (math.PI / 2.0) : 0.0;
+    bd.position = new Vector(x, y);
+    bd.angle = horizontal ? (PI / 2.0) : 0;
     Body myBody = world_.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);
@@ -61,7 +62,7 @@ class DominoTowerBench extends Benchmark {
       sd.setAsBox(50.0, 10.0);
 
       BodyDef bd = new BodyDef();
-      bd.position = new vec2(0.0, -10.0);
+      bd.position = new Vector(0.0, -10.0);
       final body = world.createBody(bd);
       body.createFixtureFromShape(sd);
       bodies.add(body);
@@ -80,19 +81,19 @@ class DominoTowerBench extends Benchmark {
       fd.friction = 0;
       fd.restitution = 0.85;
       bd.bullet = true;
-      bd.position = new vec2(30.0, 50.0);
+      bd.position = new Vector(30, 50);
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(-25.0, -25.0);
+      b.linearVelocity = new Vector(-25, -25);
       b.angularVelocity = 6.7;
 
       fd.density = 25;
-      bd.position = new vec2(-30.0, 25.0);
+      bd.position = new Vector(-30, 25);
       b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(35.0, -10.0);
+      b.linearVelocity = new Vector(35, -10);
       b.angularVelocity = -8.3;
     }
 

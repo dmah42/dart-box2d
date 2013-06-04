@@ -45,21 +45,21 @@ class Tire {
   }
 
   void updateFriction() {
-    final vec2 impulse = _lateralVelocity * -_body.mass;
+    final Vector impulse = _lateralVelocity.mulLocal(-_body.mass);
     if (impulse.length > _maxLateralImpulse) {
-      impulse.scale(_maxLateralImpulse / impulse.length);
+      impulse.mulLocal(_maxLateralImpulse / impulse.length);
     }
-    _body.applyLinearImpulse(impulse.scale(_currentTraction),
+    _body.applyLinearImpulse(impulse.mulLocal(_currentTraction),
                              _body.worldCenter);
     _body.applyAngularImpulse(
         0.1 * _currentTraction * _body.inertia * (-_body.angularVelocity));
 
-    vec2 currentForwardNormal = _forwardVelocity;
+    Vector currentForwardNormal = _forwardVelocity;
     final double currentForwardSpeed = currentForwardNormal.length;
     currentForwardNormal.normalize();
     final double dragForceMagnitude = -2 * currentForwardSpeed;
     _body.applyForce(
-        currentForwardNormal.scale(_currentTraction * dragForceMagnitude),
+        currentForwardNormal.mulLocal(_currentTraction * dragForceMagnitude),
         _body.worldCenter);
   }
 
@@ -71,8 +71,9 @@ class Tire {
       default: return;
     }
 
-    vec2 currentForwardNormal = _body.getWorldVector(new vec2(0.0, 1.0));
-    final double currentSpeed = dot(_forwardVelocity, currentForwardNormal);
+    Vector currentForwardNormal = _body.getWorldVector(new Vector(0.0, 1.0));
+    final double currentSpeed =
+        Vector.dot(_forwardVelocity, currentForwardNormal);
     double force = 0.0;
     if (desiredSpeed < currentSpeed) {
       force = -_maxDriveForce;
@@ -81,7 +82,7 @@ class Tire {
     }
 
     if (force.abs() > 0) {
-      _body.applyForce(currentForwardNormal.scale(_currentTraction * force),
+      _body.applyForce(currentForwardNormal.mulLocal(_currentTraction * force),
                        _body.worldCenter);
     }
   }
@@ -101,21 +102,21 @@ class Tire {
     } else {
       _currentTraction = 0.0;
       _groundAreas.forEach((element) {
-        _currentTraction = math.max(_currentTraction, element.frictionModifier);
+        _currentTraction = max(_currentTraction, element.frictionModifier);
       });
     }
   }
 
-  vec2 get _lateralVelocity {
-    final vec2 currentRightNormal = _body.getWorldVector(_worldLeft);
-    return currentRightNormal.scale(
-        dot(currentRightNormal, _body.linearVelocity));
+  Vector get _lateralVelocity {
+    final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
+    return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
+                                                  _body.linearVelocity));
   }
 
-  vec2 get _forwardVelocity {
-    final vec2 currentForwardNormal = _body.getWorldVector(_worldUp);
-    return currentForwardNormal.scale(
-        dot(currentForwardNormal, _body.linearVelocity));
+  Vector get _forwardVelocity {
+    final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
+    return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
+                                                    _body.linearVelocity));
   }
 
   Body _body;
@@ -127,6 +128,6 @@ class Tire {
   final Set<GroundArea> _groundAreas;
 
   // Cached Vectors to reduce unnecessary object creation.
-  final vec2 _worldLeft = new vec2(1.0, 0.0);
-  final vec2 _worldUp = new vec2(0.0, 1.0);
+  final Vector _worldLeft = new Vector(1.0, 0.0);
+  final Vector _worldUp = new Vector(0.0, 1.0);
 }

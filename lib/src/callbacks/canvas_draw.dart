@@ -14,7 +14,7 @@
 
 /**
  * Draws using the given canvas context for debugging purposes.
- * WARNING: This implementation modifies its arguments (e.g. vec2s) to save
+ * WARNING: This implementation modifies its arguments (e.g. Vectors) to save
  * garbage.
  */
 // TODO(gregbglw): Test all of these methods to make sure that they draw the
@@ -34,7 +34,7 @@ class CanvasDraw extends DebugDraw {
    * Draw a closed polygon provided in CCW order. WARNING: This mutates
    * [vertices].
    */
-  void drawPolygon(List<vec2> vertices, int vertexCount, Color3 color) {
+  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     _pathPolygon(vertices, vertexCount, color);
     ctx.stroke();
   }
@@ -43,12 +43,12 @@ class CanvasDraw extends DebugDraw {
    * Draw a solid closed polygon provided in CCW order. WARNING: This mutates
    * [vertices].
    */
-  void drawSolidPolygon(List<vec2> vertices, int vertexCount, Color3 color) {
+  void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     _pathPolygon(vertices, vertexCount, color);
     ctx.fill();
   }
 
-  void _pathPolygon(List<vec2> vertices, int vertexCount, Color3 color) {
+  void _pathPolygon(List<Vector> vertices, int vertexCount, Color3 color) {
     // Set the color and convert to screen coordinates.
     _color = color;
     // TODO(gregbglw): Do a single ctx transform rather than convert all of
@@ -71,7 +71,7 @@ class CanvasDraw extends DebugDraw {
   }
 
   /** Draw a line segment. WARNING: This mutates [p1] and [p2]. */
-  void drawSegment(vec2 p1, vec2 p2, Color3 color) {
+  void drawSegment(Vector p1, Vector p2, Color3 color) {
     _color = color;
     getWorldToScreenToOut(p1, p1);
     getWorldToScreenToOut(p2, p2);
@@ -84,14 +84,14 @@ class CanvasDraw extends DebugDraw {
   }
 
   /** Draw a circle. WARNING: This mutates [center]. */
-  void drawCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+  void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
     radius *= viewportTransform.scale;
     _pathCircle(center, radius, color);
     ctx.stroke();
   }
 
   /** Draw a solid circle. WARNING: This mutates [center]. */
-  void drawSolidCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+  void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
     radius *= viewportTransform.scale;
     drawPoint(center, radius, color);
   }
@@ -100,12 +100,12 @@ class CanvasDraw extends DebugDraw {
    * Draws the given point with the given *unscaled* radius, in the given [color].
    * WARNING: This mutates [point].
    */
-  void drawPoint(vec2 point, num radiusOnScreen, Color3 color) {
+  void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
     _pathCircle(point, radiusOnScreen, color);
     ctx.fill();
   }
 
-  void _pathCircle(vec2 center, num radius, Color3 color) {
+  void _pathCircle(Vector center, num radius, Color3 color) {
     _color = color;
     getWorldToScreenToOut(center, center);
 

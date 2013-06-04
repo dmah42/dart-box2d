@@ -40,7 +40,7 @@ class World {
   int _bodyCount;
   int _jointCount;
 
-  final vec2 _gravity;
+  final Vector _gravity;
   bool _allowSleep;
 
   DebugDraw _debugDraw;
@@ -69,12 +69,12 @@ class World {
   List<List<ContactRegister>> _contactStacks;
 
   /** Pooling */
-  final vec2 center;
-  final vec2 axis;
+  final Vector center;
+  final Vector axis;
 
   final TimeStep timestep;
-  final vec2 cA;
-  final vec2 cB;
+  final Vector cA;
+  final Vector cB;
   final WorldQueryWrapper wqwrapper;
 
   final TimeOfImpactInput toiInput;
@@ -93,7 +93,7 @@ class World {
    * doSleep
    *   improve performance by not simulating inactive bodies.
    */
-  World(vec2 gravity, bool doSleep, DefaultWorldPool argPool) :
+  World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
     _pool = argPool,
     _jointDestructionListener = null,
     _fixtureDestructionListener = null,
@@ -118,11 +118,11 @@ class World {
     _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
 
     // Initialize Pool Objects.
-    center = new vec2.zero(),
-    axis = new vec2.zero(),
+    center = new Vector(),
+    axis = new Vector(),
     timestep = new TimeStep(),
-    cA = new vec2.zero(),
-    cB = new vec2.zero(),
+    cA = new Vector(),
+    cB = new Vector(),
     wqwrapper = new WorldQueryWrapper(),
     toiInput = new TimeOfImpactInput(),
     toiOutput = new TimeOfImpactOutput(),
@@ -538,7 +538,7 @@ class World {
    */
   void clearForces() {
     for (Body body = _bodyList; body != null; body = body.next) {
-      body._force.splat(0.0);
+      body._force.setZero();
       body._torque = 0.0;
     }
   }
@@ -587,8 +587,11 @@ class World {
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
       Color3 color = new Color3.fromRGBF(0.3, 0.9, 0.9);
       for (Contact c = _contactManager.contactList; c != null; c = c.next) {
-        cA.setFrom(c.fixtureA.box.center);
-        cB.setFrom(c.fixtureB.box.center);
+        Fixture fixtureA = c.fixtureA;
+        Fixture fixtureB = c.fixtureB;
+
+        cA.setFrom(fixtureA.box.center);
+        cB.setFrom(fixtureB.box.center);
 
         _debugDraw.drawSegment(cA, cB, color);
       }
@@ -605,11 +608,15 @@ class World {
         for (Fixture f = b.fixtureList; f != null; f = f.next) {
           AxisAlignedBox aabb = f.proxy.box;
 
-          List<vec2> vs = new List<vec2>(4);
-          vs[0] = new vec2(aabb.lowerBound.x, aabb.lowerBound.y);
-          vs[1] = new vec2(aabb.upperBound.x, aabb.lowerBound.y);
-          vs[2] = new vec2(aabb.upperBound.x, aabb.upperBound.y);
-          vs[3] = new vec2(aabb.lowerBound.x, aabb.upperBound.y);
+          List<Vector> vs = new List<Vector>(4);
+          for (int i = 0; i < vs.length; i++) {
+            vs[i] = new Vector();
+          }
+
+          vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
+          vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
+          vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
+          vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
 
           if (0 != (drawFlags & DebugDraw.e_lineDrawingBit)) {
             _debugDraw.drawPolygon(vs, 4, color);
@@ -872,7 +879,7 @@ class World {
     // Collide non-bullets.
     for (Body body = _bodyList; body != null; body = body.next) {
       if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG ||
-          body.bullet) {
+          body.bullet == true) {
         continue;
       }
 
@@ -1063,11 +1070,10 @@ class World {
       case ShapeType.CIRCLE:
         final CircleShape circle = fixture.shape;
 
-        // vec2 center = Mul(xf, circle.p);
+        // Vector center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
         num radius = circle.radius;
-        axis.x = xf.rotation.entry(0, 0);
-        axis.y = xf.rotation.entry(1, 0);
+        axis.setFrom(xf.rotation.col1);
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);
@@ -1080,11 +1086,8 @@ class World {
         final PolygonShape poly = fixture.shape;
         int vertexCount = poly.vertexCount;
         assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
-        List<vec2> vertices =
-            new List<vec2>(vertexCount);
-        for (int i = 0; i < vertexCount; i++) {
-          vertices[i] = new vec2.zero();
-        }
+        List<Vector> vertices = new List<Vector>.generate(
+            vertexCount, (i) => new Vector());
 
         for (int i = 0; i < vertexCount; ++i) {
           assert(poly.vertices[i] != null);
@@ -1110,10 +1113,10 @@ class World {
     Body bodyB = joint.bodyB;
     Transform xf1 = bodyA.originTransform;
     Transform xf2 = bodyB.originTransform;
-    vec2 x1 = new vec2.copy(xf1.position);
-    vec2 x2 = new vec2.copy(xf2.position);
-    vec2 p1 = new vec2.zero();
-    vec2 p2 = new vec2.zero();
+    Vector x1 = new Vector.copy(xf1.position);
+    Vector x2 = new Vector.copy(xf2.position);
+    Vector p1 = new Vector();
+    Vector p2 = new Vector();
     joint.getAnchorA(p1);
     joint.getAnchorB(p2);
 
@@ -1127,8 +1130,8 @@ class World {
 
       case JointType.PULLEY :
         throw new UnimplementedError();
-        //vec2 s1 = pulley.getGroundAnchorA();
-        //vec2 s2 = pulley.getGroundAnchorB();
+        //Vector s1 = pulley.getGroundAnchorA();
+        //Vector s2 = pulley.getGroundAnchorB();
         //_debugDraw.drawSegment(s1, p1, color);
         //_debugDraw.drawSegment(s2, p2, color);
         //_debugDraw.drawSegment(s1, s2, color);
@@ -1144,8 +1147,8 @@ class World {
         // Don't draw anything for mouse. Already have cursor!
         break;
       default :
-        vec2 p1t = new vec2.copy(p1); // copies since drawSegment modifies
-        vec2 p2t = new vec2.copy(p2);
+        Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
+        Vector p2t = new Vector.copy(p2);
         _debugDraw.drawSegment(x1, p1, color);
         _debugDraw.drawSegment(p1t, p2, color);
         _debugDraw.drawSegment(x2, p2t, color);

@@ -40,10 +40,10 @@ class TimeOfImpactSolver {
 
  /** Pooling. */
  final TimeOfImpactSolverManifold psm;
- final vec2 rA;
- final vec2 rB;
- final vec2 P;
- final vec2 temp;
+ final Vector rA;
+ final Vector rB;
+ final Vector P;
+ final Vector temp;
 
  TimeOfImpactSolver() :
    count = 0,
@@ -53,10 +53,10 @@ class TimeOfImpactSolver {
 
    // Initialize pool variables.
    psm = new TimeOfImpactSolverManifold(),
-   rA = new vec2.zero(),
-   rB = new vec2.zero(),
-   P = new vec2.zero(),
-   temp = new vec2.zero();
+   rA = new Vector(),
+   rB = new Vector(),
+   P = new Vector(),
+   temp = new Vector();
 
  void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
    count = argCount;
@@ -64,7 +64,7 @@ class TimeOfImpactSolver {
 
    if(count &gt;= constraints.length){
      List&lt;TimeOfImpactConstraint&gt; old = constraints;
-     int newLen = math.max(count, old.length*2);
+     int newLen = Math.max(count, old.length*2);
      constraints = new List&lt;TimeOfImpactConstraint&gt;(newLen);
      constraints.setRange(0, old.length, old);
      for(int i=old.length; i&lt;constraints.length; i++){
@@ -132,39 +132,39 @@ class TimeOfImpactSolver {
      // Solve normal constraints
      for (int j = 0; j &lt; c.pointCount; ++j){
        psm.initialize(c, j);
-       vec2 normal = psm.normal;
+       Vector normal = psm.normal;
 
-       vec2 point = psm.point;
+       Vector point = psm.point;
        num separation = psm.separation;
 
-       rA.setFrom(point).sub(bodyA.sweep.center);
-       rB.setFrom(point).sub(bodyB.sweep.center);
+       rA.setFrom(point).subLocal(bodyA.sweep.center);
+       rB.setFrom(point).subLocal(bodyB.sweep.center);
 
        // Track max constraint error.
-       minSeparation = math.min(minSeparation, separation);
+       minSeparation = Math.min(minSeparation, separation);
 
        // Prevent large corrections and allow slop.
-       num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
-                     -Settings.MAX_LINEAR_CORRECTION, 0.0);
+       num C = MathBox.clamp(baumgarte * (separation +
+           Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
        // Compute the effective mass.
-       num rnA = cross(rA, normal);
-       num rnB = cross(rB, normal);
+       num rnA = Vector.crossVectors(rA, normal);
+       num rnB = Vector.crossVectors(rB, normal);
        num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
        // Compute normal impulse
        num impulse = K &gt; 0.0 ? - C / K : 0.0;
 
-       P.setFrom(normal).scale(impulse);
+       P.setFrom(normal).mulLocal(impulse);
 
-       temp.setFrom(P).scale(invMassA);
-       bodyA.sweep.center.sub(temp);
-       bodyA.sweep.angle -= invIA * cross(rA, P);
+       temp.setFrom(P).mulLocal(invMassA);
+       bodyA.sweep.center.subLocal(temp);
+       bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
        bodyA.synchronizeTransform();
 
-       temp.setFrom(P).scale(invMassB);
-       bodyB.sweep.center.add(temp);
-       bodyB.sweep.angle += invIB * cross(rB, P);
+       temp.setFrom(P).mulLocal(invMassB);
+       bodyB.sweep.center.addLocal(temp);
+       bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
        bodyB.synchronizeTransform();
      }
    }
@@ -192,10 +192,10 @@ TimeOfImpactSolver() :
 
  // Initialize pool variables.
  psm = new TimeOfImpactSolverManifold(),
- rA = new vec2.zero(),
- rB = new vec2.zero(),
- P = new vec2.zero(),
- temp = new vec2.zero();
+ rA = new Vector(),
+ rB = new Vector(),
+ P = new Vector(),
+ temp = new Vector();
 </pre>
 </div>
 </div>
@@ -228,13 +228,13 @@ int count
 </div>
 <div class="field"><h4 id="P">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>P</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>P</strong> <a class="anchor-link"
             href="#P"
             title="Permalink to TimeOfImpactSolver.P">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 P
+final Vector P
 </pre>
 </div>
 </div>
@@ -253,37 +253,37 @@ final TimeOfImpactSolverManifold psm
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to TimeOfImpactSolver.rA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rA
+final Vector rA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to TimeOfImpactSolver.rB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rB
+final Vector rB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>temp</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to TimeOfImpactSolver.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 temp
+final Vector temp
 </pre>
 </div>
 </div>
@@ -314,7 +314,7 @@ void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
 
  if(count &gt;= constraints.length){
    List&lt;TimeOfImpactConstraint&gt; old = constraints;
-   int newLen = math.max(count, old.length*2);
+   int newLen = Math.max(count, old.length*2);
    constraints = new List&lt;TimeOfImpactConstraint&gt;(newLen);
    constraints.setRange(0, old.length, old);
    for(int i=old.length; i&lt;constraints.length; i++){
@@ -388,39 +388,39 @@ bool solve(num baumgarte){
    // Solve normal constraints
    for (int j = 0; j &lt; c.pointCount; ++j){
      psm.initialize(c, j);
-     vec2 normal = psm.normal;
+     Vector normal = psm.normal;
 
-     vec2 point = psm.point;
+     Vector point = psm.point;
      num separation = psm.separation;
 
-     rA.setFrom(point).sub(bodyA.sweep.center);
-     rB.setFrom(point).sub(bodyB.sweep.center);
+     rA.setFrom(point).subLocal(bodyA.sweep.center);
+     rB.setFrom(point).subLocal(bodyB.sweep.center);
 
      // Track max constraint error.
-     minSeparation = math.min(minSeparation, separation);
+     minSeparation = Math.min(minSeparation, separation);
 
      // Prevent large corrections and allow slop.
-     num C = clamp(baumgarte * (separation + Settings.LINEAR_SLOP),
-                   -Settings.MAX_LINEAR_CORRECTION, 0.0);
+     num C = MathBox.clamp(baumgarte * (separation +
+         Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
      // Compute the effective mass.
-     num rnA = cross(rA, normal);
-     num rnB = cross(rB, normal);
+     num rnA = Vector.crossVectors(rA, normal);
+     num rnB = Vector.crossVectors(rB, normal);
      num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
      // Compute normal impulse
      num impulse = K &gt; 0.0 ? - C / K : 0.0;
 
-     P.setFrom(normal).scale(impulse);
+     P.setFrom(normal).mulLocal(impulse);
 
-     temp.setFrom(P).scale(invMassA);
-     bodyA.sweep.center.sub(temp);
-     bodyA.sweep.angle -= invIA * cross(rA, P);
+     temp.setFrom(P).mulLocal(invMassA);
+     bodyA.sweep.center.subLocal(temp);
+     bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
      bodyA.synchronizeTransform();
 
-     temp.setFrom(P).scale(invMassB);
-     bodyB.sweep.center.add(temp);
-     bodyB.sweep.angle += invIB * cross(rB, P);
+     temp.setFrom(P).mulLocal(invMassB);
+     bodyB.sweep.center.addLocal(temp);
+     bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
      bodyB.synchronizeTransform();
    }
  }

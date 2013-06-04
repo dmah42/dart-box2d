@@ -34,9 +34,9 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactConstraint {
- final List&lt;vec2&gt; localPoints;
- final vec2 localNormal;
- final vec2 localPoint;
+ final List&lt;Vector&gt; localPoints;
+ final Vector localNormal;
+ final Vector localPoint;
  int type;
  num radius;
  int pointCount;
@@ -44,10 +44,10 @@ class TimeOfImpactConstraint {
  Body bodyB;
 
  TimeOfImpactConstraint() :
-   localPoints = new List&lt;vec2&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero()),
-   localNormal = new vec2.zero(),
-   localPoint = new vec2.zero(),
+   localPoints = new List&lt;Vector&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
+   localNormal = new Vector(),
+   localPoint = new Vector(),
    type = 0,
    radius = 0,
    pointCount = 0,
@@ -55,7 +55,7 @@ class TimeOfImpactConstraint {
    bodyB = null;
 
  void setFrom(TimeOfImpactConstraint argOther){
-   expect(argOther.localPoints.length, localPoints.length);
+   assert(argOther.localPoints.length == localPoints.length);
    for(int i=0; i&lt;localPoints.length; i++) {
      localPoints[i].setFrom(argOther.localPoints[i]);
    }
@@ -79,10 +79,10 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
 <div class="doc">
 <pre class="source">
 TimeOfImpactConstraint() :
- localPoints = new List&lt;vec2&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new vec2.zero()),
- localNormal = new vec2.zero(),
- localPoint = new vec2.zero(),
+ localPoints = new List&lt;Vector&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
+ localNormal = new Vector(),
+ localPoint = new Vector(),
  type = 0,
  radius = 0,
  pointCount = 0,
@@ -120,37 +120,37 @@ Body bodyB
 </div>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to TimeOfImpactConstraint.localNormal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localNormal
+final Vector localNormal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to TimeOfImpactConstraint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+final Vector localPoint
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoints">
 <button class="show-code">Code</button>
-final List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
+final List&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
             href="#localPoints"
             title="Permalink to TimeOfImpactConstraint.localPoints">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;vec2&gt; localPoints
+final List&lt;Vector&gt; localPoints
 </pre>
 </div>
 </div>
@@ -200,7 +200,7 @@ void <strong>setFrom</strong>(<a href="../box2d/TimeOfImpactConstraint.html">Tim
 <div class="doc">
 <pre class="source">
 void setFrom(TimeOfImpactConstraint argOther){
- expect(argOther.localPoints.length, localPoints.length);
+ assert(argOther.localPoints.length == localPoints.length);
  for(int i=0; i&lt;localPoints.length; i++) {
    localPoints[i].setFrom(argOther.localPoints[i]);
  }

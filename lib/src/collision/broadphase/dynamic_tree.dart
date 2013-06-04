@@ -37,7 +37,7 @@ class DynamicTree {
   int _path;
 
   final Queue<DynamicTreeNode> _nodeStack;
-  final List<vec2> _drawVectors;
+  final List<Vector> _drawVectors;
   /** Monotonically increasing count used to uniquely identify nodes. */
   int _nodeCounter;
 
@@ -46,11 +46,11 @@ class DynamicTree {
    *  construction. These are used instead of creating new objects during tree
    *  operation.
    */
-  final vec2 _tempVector;
+  final Vector _tempVector;
   final AxisAlignedBox _tempBox;
-  final vec2 center;
-  final vec2 deltaOne;
-  final vec2 deltaTwo;
+  final Vector center;
+  final Vector deltaOne;
+  final Vector deltaTwo;
 
   /**
    * Constructs a new DynamicTree.
@@ -61,15 +61,20 @@ class DynamicTree {
     _insertionCount = 0,
     _path = 0,
     _lastLeaf = null,
-    _drawVectors = new List<vec2>.generate(4, (i) => new vec2.zero()),
+    _drawVectors = new List<Vector>(4),
     _nodeCounter = 0,
-    _tempVector = new vec2.zero(),
+    _tempVector = new Vector(),
     _tempBox = new AxisAlignedBox(),
     _nodeStack = new Queue<DynamicTreeNode>(),
     // Pool objects.
-    center = new vec2.zero(),
-    deltaOne = new vec2.zero(),
-    deltaTwo = new vec2.zero();
+    center = new Vector(),
+    deltaOne = new Vector(),
+    deltaTwo = new Vector() {
+
+    // Place new vectors in the draw vectors array.
+    for (int i = 0; i < _drawVectors.length; ++i)
+      _drawVectors[i] = new Vector();
+  }
 
   /**
    * Create a proxy. Provides a tight fitting axis aligned box
@@ -123,7 +128,7 @@ class DynamicTree {
    * Returns true if the given proxy was re-inserted.
    */
   bool moveProxy(DynamicTreeNode argProxy, AxisAlignedBox argBox,
-      vec2 displacement) {
+      Vector displacement) {
     // The given proxy must not be null and must be a leaf.
     assert (argProxy != null);
     assert (argProxy.isLeaf);
@@ -142,7 +147,8 @@ class DynamicTree {
     argBox.upperBound.y += Settings.BOUNDING_BOX_EXTENSION;
 
     // Predict bounding box displacement.
-    _tempVector.setFrom(displacement).scale(Settings.BOUNDING_BOX_MULTIPLIER.toDouble());
+    _tempVector.setFrom(displacement);
+    _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
     if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
     else
@@ -244,8 +250,10 @@ class DynamicTree {
         // Find the absolute difference between the center of the bounding box for
         // the node we are inserting and the center's of the bounding boxes of the
         // two children.
-        deltaOne.setFrom(childOne.box.center).sub(center).absolute();
-        deltaTwo.setFrom(childTwo.box.center).sub(center).absolute();
+        deltaOne.setFrom(childOne.box.center);
+        deltaTwo.setFrom(childTwo.box.center);
+        deltaOne.subLocal(center).absLocal();
+        deltaTwo.subLocal(center).absLocal();
 
         num normOne = deltaOne.x + deltaOne.y;
         num normTwo = deltaTwo.x + deltaTwo.y;
@@ -369,7 +377,7 @@ class DynamicTree {
 
     int heightOne = _computeHeight(node.childOne);
     int heightTwo = _computeHeight(node.childTwo);
-    return 1 + math.max(heightOne, heightTwo);
+    return 1 + Math.max(heightOne, heightTwo);
   }
 
 

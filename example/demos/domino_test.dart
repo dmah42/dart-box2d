@@ -30,7 +30,7 @@ class DominoTest extends Demo {
       fd.shape = sd;
 
       BodyDef bd = new BodyDef();
-      bd.position = new vec2(0.0, -10.0);
+      bd.position = new Vector(0.0, -10.0);
       final body = world.createBody(bd);
       body.createFixture(fd);
       bodies.add(body);
@@ -44,7 +44,7 @@ class DominoTest extends Demo {
         fd.shape = sd;
 
         BodyDef bd = new BodyDef();
-        bd.position = new vec2(0.0, 5.0 + 5 * i);
+        bd.position = new Vector(0.0, 5 + 5 * i);
         final body = world.createBody(bd);
         body.createFixture(fd);
         bodies.add(body);
@@ -55,7 +55,7 @@ class DominoTest extends Demo {
     {
       FixtureDef fd = new FixtureDef();
       PolygonShape sd = new PolygonShape();
-      sd.setAsBox(0.125, 2.0);
+      sd.setAsBox(0.125, 2);
       fd.shape = sd;
       fd.density = 25.0;
 
@@ -68,7 +68,7 @@ class DominoTest extends Demo {
       for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < numPerRow; j++) {
           fd.friction = friction;
-          bd.position = new vec2(-14.75 + j * (29.5 / (numPerRow - 1)),
+          bd.position = new Vector(-14.75 + j * (29.5 / (numPerRow - 1)),
               7.3 + 5 * i);
           if (i == 2 && j == 0) {
             bd.angle = -.1;
@@ -77,7 +77,7 @@ class DominoTest extends Demo {
             bd.angle = .1;
             bd.position.x -= .1;
           } else {
-            bd.angle = 0.0;
+            bd.angle = 0;
           }
           Body myBody = world.createBody(bd);
           myBody.createFixture(fd);

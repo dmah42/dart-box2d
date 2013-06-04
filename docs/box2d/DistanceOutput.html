@@ -35,20 +35,19 @@
 <pre class="source">
 class DistanceOutput {
  /** Closest point on shapeA */
- final vec2 pointA;
+ final Vector pointA;
 
  /** Closest point on shapeB */
- final vec2 pointB;
+ final Vector pointB;
 
- num _distance;
+ num distance;
 
  /** number of gjk iterations used */
  int iterations;
 
  DistanceOutput() :
-   pointA = new vec2.zero(),
-   pointB = new vec2.zero(),
-   _distance = 0.0;
+   pointA = new Vector(),
+   pointB = new Vector() { }
 }
 </pre>
 </div>
@@ -61,15 +60,26 @@ new <strong>DistanceOutput</strong>() <a class="anchor-link" href="#DistanceOutp
 <div class="doc">
 <pre class="source">
 DistanceOutput() :
- pointA = new vec2.zero(),
- pointB = new vec2.zero(),
- _distance = 0.0;
+ pointA = new Vector(),
+ pointB = new Vector() { }
 </pre>
 </div>
 </div>
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="distance">
+<button class="show-code">Code</button>
+num         <strong>distance</strong> <a class="anchor-link"
+            href="#distance"
+            title="Permalink to DistanceOutput.distance">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+num distance
+</pre>
+</div>
+</div>
 <div class="field"><h4 id="iterations">
 <button class="show-code">Code</button>
 int         <strong>iterations</strong> <a class="anchor-link"
@@ -85,27 +95,27 @@ int iterations
 </div>
 <div class="field"><h4 id="pointA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> <a class="anchor-link"
             href="#pointA"
             title="Permalink to DistanceOutput.pointA">#</a>
         </h4>
         <div class="doc">
 <p>Closest point on shapeA </p>
 <pre class="source">
-final vec2 pointA
+final Vector pointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>pointB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> <a class="anchor-link"
             href="#pointB"
             title="Permalink to DistanceOutput.pointB">#</a>
         </h4>
         <div class="doc">
 <p>Closest point on shapeB </p>
 <pre class="source">
-final vec2 pointB
+final Vector pointB
 </pre>
 </div>
 </div>

@@ -13,9 +13,8 @@
 // limitations under the License.
 
 library BlobTest;
-
 import 'dart:html';
-import 'dart:math' as math;
+import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 import 'demo.dart';
 
@@ -38,15 +37,15 @@ class BlobTest extends Demo {
       sd.setAsBox(50.0, 0.4);
 
       BodyDef bd = new BodyDef();
-      bd.position.splat(0.0);
+      bd.position.setCoords(0.0, 0.0);
       assert(world != null);
       ground = world.createBody(bd);
       bodies.add(ground);
       ground.createFixtureFromShape(sd);
 
-      sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new vec2(-10.0, 0.0), 0.0);
+      sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector(-10.0, 0.0), 0.0);
       ground.createFixtureFromShape(sd);
-      sd.setAsBoxWithCenterAndAngle(0.4,50.0,new vec2(10.0,0.0), 0.0);
+      sd.setAsBoxWithCenterAndAngle(0.4,50.0,new Vector(10.0,0.0), 0.0);
       ground.createFixtureFromShape(sd);
     }
 
@@ -59,11 +58,13 @@ class BlobTest extends Demo {
     int nBodies = 20;
     num bodyRadius = 0.5;
     for (int i = 0; i < nBodies; ++i) {
-      num angle = MathBox.translateAndScale(i, 0, nBodies, 0, math.PI * 2);
+      num angle = MathBox.translateAndScale(i, 0, nBodies, 0, Math.PI * 2);
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true;
-      bd.position.setValues(cx + rx * math.sin(angle),
-                                cy + ry * math.cos(angle));
+
+      num x = cx + rx * Math.sin(angle);
+      num y = cy + ry * Math.cos(angle);
+      bd.position.setFrom(new Vector(x,y));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);
       bodies.add(body);
@@ -85,8 +86,8 @@ class BlobTest extends Demo {
     BodyDef bd2 = new BodyDef();
     bd2.type = BodyType.DYNAMIC;
     PolygonShape psd = new PolygonShape();
-    psd.setAsBoxWithCenterAndAngle(3.0,1.5,new vec2(cx,cy+15.0),0.0);
-    bd2.position = new vec2(cx,cy+15.0);
+    psd.setAsBoxWithCenterAndAngle(3.0,1.5,new Vector(cx,cy+15.0),0.0);
+    bd2.position = new Vector(cx,cy+15.0);
     Body fallingBox = world.createBody(bd2);
     bodies.add(fallingBox);
     fallingBox.createFixtureFromShape(psd, 1.0);

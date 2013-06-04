@@ -20,10 +20,10 @@ part of BenchmarkRunner;
 
 abstract class Benchmark {
   /** All of the bodies in a simulation. */
-  List<Body> bodies = new List<Body>();
+  List<Body> bodies;
 
   /** The gravity vector's y value. */
-  static const double GRAVITY = -10.0;
+  static const num GRAVITY = -10;
 
   /** The timestep and iteration values. */
   static const num TIME_STEP = 1/60;
@@ -46,7 +46,7 @@ abstract class Benchmark {
    * Constructs a new Benchmark that will run a loop for the given number of
    * iterations.
    */
-  Benchmark(List<int> this.solveLoops, List<int> this._steps);
+  Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
 
   /** Sets up the physics world. */
   void initialize();
@@ -61,32 +61,32 @@ abstract class Benchmark {
     bodies = new List<Body>();
 
     // Setup the World.
-    world = new World(new vec2(0.0, GRAVITY), true, new DefaultWorldPool());
+    world = new World(new Vector(0, GRAVITY), true, new DefaultWorldPool());
   }
 
   /**
    * Writes the results from the last time runBenchmark was called to the given
    * StringBuffer.
    */
-  void _recordResults(int time, int benchmarkIterations, int steps) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.write("$name ($steps steps, $benchmarkIterations solve loops) : $time ms");
+  void _recordResults(int time, StringBuffer resultsWriter, benchmarkIterations,
+      steps) {
+    resultsWriter.write(name);
+    resultsWriter.write(" ($steps steps, $benchmarkIterations solve loops) : $time ms");
 
     // Calculate and write-out steps/second.
     num stepsPerSecond = (steps / (time / 1000));
-    buffer.write('  ($stepsPerSecond steps/second)');
+    resultsWriter.writeln('  ($stepsPerSecond steps/second)');
 
     // Write out the checksum. This should be compared manually to other
     // implementations of the Box2D benchmarks.
-    buffer.write("\nChecksum: $checksum\n");
-    print(buffer);
+    resultsWriter.writeln("Checksum: $checksum\n");
   }
 
   /**
    * Runs the benchmark and records the results. Benchmark is run for all
    * different combinations of solveLoops and steps.
    */
-  void runBenchmark() {
+  void runBenchmark(StringBuffer resultsWriter) {
     for (int stepCount in _steps) {
       for (int solveCount in solveLoops) {
         // Initialize the world to start fresh.
@@ -99,7 +99,7 @@ abstract class Benchmark {
         watch.stop();
 
         // Record the running time.
-        _recordResults(watch.elapsedMilliseconds, solveCount,
+        _recordResults(watch.elapsedInMs(), resultsWriter, solveCount,
             stepCount);
       }
     }
@@ -112,12 +112,12 @@ abstract class Benchmark {
    * producing the same output across different box2D implementations.
    */
   num get checksum {
-    final positionSum = new vec2.zero();
-    final velocitySum = new vec2.zero();
-    bodies.forEach((b) {
-      positionSum.add(b.position);
-      velocitySum.add(b.linearVelocity);
-    });
+    final positionSum = new Vector();
+    final velocitySum = new Vector();
+    for (Body b in bodies) {
+      positionSum.addLocal(b.position);
+      velocitySum.addLocal(b.linearVelocity);
+    }
 
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;
   }

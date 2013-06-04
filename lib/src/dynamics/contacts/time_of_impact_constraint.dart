@@ -15,9 +15,9 @@
 part of box2d;
 
 class TimeOfImpactConstraint {
-  final List<vec2> localPoints;
-  final vec2 localNormal;
-  final vec2 localPoint;
+  final List<Vector> localPoints;
+  final Vector localNormal;
+  final Vector localPoint;
   int type;
   num radius;
   int pointCount;
@@ -25,10 +25,10 @@ class TimeOfImpactConstraint {
   Body bodyB;
 
   TimeOfImpactConstraint() :
-    localPoints = new List<vec2>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new vec2.zero()),
-    localNormal = new vec2.zero(),
-    localPoint = new vec2.zero(),
+    localPoints = new List<Vector>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector()),
+    localNormal = new Vector(),
+    localPoint = new Vector(),
     type = 0,
     radius = 0,
     pointCount = 0,
@@ -36,7 +36,7 @@ class TimeOfImpactConstraint {
     bodyB = null;
 
   void setFrom(TimeOfImpactConstraint argOther){
-    expect(argOther.localPoints.length, localPoints.length);
+    assert(argOther.localPoints.length == localPoints.length);
     for(int i=0; i<localPoints.length; i++) {
       localPoints[i].setFrom(argOther.localPoints[i]);
     }

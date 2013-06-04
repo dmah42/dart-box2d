@@ -45,7 +45,7 @@ class CanvasDraw extends DebugDraw {
   * Draw a closed polygon provided in CCW order. WARNING: This mutates
   * [vertices].
   */
- void drawPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
+ void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
    _pathPolygon(vertices, vertexCount, color);
    ctx.stroke();
  }
@@ -54,12 +54,12 @@ class CanvasDraw extends DebugDraw {
   * Draw a solid closed polygon provided in CCW order. WARNING: This mutates
   * [vertices].
   */
- void drawSolidPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
+ void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
    _pathPolygon(vertices, vertexCount, color);
    ctx.fill();
  }
 
- void _pathPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
+ void _pathPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
    // Set the color and convert to screen coordinates.
    _color = color;
    // TODO(gregbglw): Do a single ctx transform rather than convert all of
@@ -82,7 +82,7 @@ class CanvasDraw extends DebugDraw {
  }
 
  /** Draw a line segment. WARNING: This mutates [p1] and [p2]. */
- void drawSegment(vec2 p1, vec2 p2, Color3 color) {
+ void drawSegment(Vector p1, Vector p2, Color3 color) {
    _color = color;
    getWorldToScreenToOut(p1, p1);
    getWorldToScreenToOut(p2, p2);
@@ -95,14 +95,14 @@ class CanvasDraw extends DebugDraw {
  }
 
  /** Draw a circle. WARNING: This mutates [center]. */
- void drawCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+ void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
    radius *= viewportTransform.scale;
    _pathCircle(center, radius, color);
    ctx.stroke();
  }
 
  /** Draw a solid circle. WARNING: This mutates [center]. */
- void drawSolidCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+ void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
    radius *= viewportTransform.scale;
    drawPoint(center, radius, color);
  }
@@ -111,12 +111,12 @@ class CanvasDraw extends DebugDraw {
   * Draws the given point with the given *unscaled* radius, in the given [color].
   * WARNING: This mutates [point].
   */
- void drawPoint(vec2 point, num radiusOnScreen, Color3 color) {
+ void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
    _pathCircle(point, radiusOnScreen, color);
    ctx.fill();
  }
 
- void _pathCircle(vec2 center, num radius, Color3 color) {
+ void _pathCircle(Vector center, num radius, Color3 color) {
    _color = color;
    getWorldToScreenToOut(center, center);
 
@@ -230,13 +230,13 @@ void clearFlags(int value) { flags &amp;= ~value; }
 </div>
 <div class="method"><h4 id="drawCircle">
 <button class="show-code">Code</button>
-void <strong>drawCircle</strong>(<a href="../vector_math/vec2.html">vec2</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/vec2.html">vec2</a> axis]) <a class="anchor-link" href="#drawCircle"
+void <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to CanvasDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle. WARNING: This mutates 
 <span class="param">center</span>. </p>
 <pre class="source">
-void drawCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
  radius *= viewportTransform.scale;
  _pathCircle(center, radius, color);
  ctx.stroke();
@@ -246,7 +246,7 @@ void drawCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
 </div>
 <div class="method"><h4 id="drawPoint">
 <button class="show-code">Code</button>
-void <strong>drawPoint</strong>(<a href="../vector_math/vec2.html">vec2</a> point, num radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
+void <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point, num radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to CanvasDraw.drawPoint">#</a></h4>
 <div class="doc">
 <p>Draws the given point with the given <em>unscaled</em> radius, in the given 
@@ -254,7 +254,7 @@ void <strong>drawPoint</strong>(<a href="../vector_math/vec2.html">vec2</a> poin
 WARNING: This mutates 
 <span class="param">point</span>.</p>
 <pre class="source">
-void drawPoint(vec2 point, num radiusOnScreen, Color3 color) {
+void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
  _pathCircle(point, radiusOnScreen, color);
  ctx.fill();
 }
@@ -263,14 +263,14 @@ void drawPoint(vec2 point, num radiusOnScreen, Color3 color) {
 </div>
 <div class="method"><h4 id="drawPolygon">
 <button class="show-code">Code</button>
-void <strong>drawPolygon</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
+void <strong>drawPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
               title="Permalink to CanvasDraw.drawPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a closed polygon provided in CCW order. WARNING: This mutates
 
 <span class="param">vertices</span>.</p>
 <pre class="source">
-void drawPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
+void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
  _pathPolygon(vertices, vertexCount, color);
  ctx.stroke();
 }
@@ -279,14 +279,14 @@ void drawPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
 </div>
 <div class="method"><h4 id="drawSegment">
 <button class="show-code">Code</button>
-void <strong>drawSegment</strong>(<a href="../vector_math/vec2.html">vec2</a> p1, <a href="../vector_math/vec2.html">vec2</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
+void <strong>drawSegment</strong>(<a href="../box2d/Vector.html">Vector</a> p1, <a href="../box2d/Vector.html">Vector</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
               title="Permalink to CanvasDraw.drawSegment">#</a></h4>
 <div class="doc">
 <p>Draw a line segment. WARNING: This mutates 
 <span class="param">p1</span> and 
 <span class="param">p2</span>. </p>
 <pre class="source">
-void drawSegment(vec2 p1, vec2 p2, Color3 color) {
+void drawSegment(Vector p1, Vector p2, Color3 color) {
  _color = color;
  getWorldToScreenToOut(p1, p1);
  getWorldToScreenToOut(p2, p2);
@@ -302,13 +302,13 @@ void drawSegment(vec2 p1, vec2 p2, Color3 color) {
 </div>
 <div class="method"><h4 id="drawSolidCircle">
 <button class="show-code">Code</button>
-void <strong>drawSolidCircle</strong>(<a href="../vector_math/vec2.html">vec2</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/vec2.html">vec2</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
+void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to CanvasDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle. WARNING: This mutates 
 <span class="param">center</span>. </p>
 <pre class="source">
-void drawSolidCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
+void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
  radius *= viewportTransform.scale;
  drawPoint(center, radius, color);
 }
@@ -317,14 +317,14 @@ void drawSolidCircle(vec2 center, num radius, Color3 color, [vec2 axis]) {
 </div>
 <div class="method"><h4 id="drawSolidPolygon">
 <button class="show-code">Code</button>
-void <strong>drawSolidPolygon</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
+void <strong>drawSolidPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
               title="Permalink to CanvasDraw.drawSolidPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a solid closed polygon provided in CCW order. WARNING: This mutates
 
 <span class="param">vertices</span>.</p>
 <pre class="source">
-void drawSolidPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color) {
+void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color) {
  _pathPolygon(vertices, vertexCount, color);
  ctx.fill();
 }
@@ -362,13 +362,13 @@ void drawTransform(Transform xf, Color3 color) {
 </div>
 <div class="method inherited"><h4 id="getScreenToWorldToOut">
 <button class="show-code">Code</button>
-void <strong>getScreenToWorldToOut</strong>(<a href="../vector_math/vec2.html">vec2</a> argScreen, <a href="../vector_math/vec2.html">vec2</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
+void <strong>getScreenToWorldToOut</strong>(<a href="../box2d/Vector.html">Vector</a> argScreen, <a href="../box2d/Vector.html">Vector</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
               title="Permalink to CanvasDraw.getScreenToWorldToOut">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/DebugDraw.html">DebugDraw</a> </div><div class="doc">
 <p>Screen coordinates are specified in argScreen. These coordinates are
 converted to World coordinates and placed in the argWorld return vector.</p>
 <pre class="source">
-void getScreenToWorldToOut(vec2 argScreen, vec2 argWorld) {
+void getScreenToWorldToOut(Vector argScreen, Vector argWorld) {
  viewportTransform.getScreenToWorld(argScreen, argWorld);
 }
 </pre>
@@ -376,13 +376,13 @@ void getScreenToWorldToOut(vec2 argScreen, vec2 argWorld) {
 </div>
 <div class="method inherited"><h4 id="getWorldToScreenToOut">
 <button class="show-code">Code</button>
-void <strong>getWorldToScreenToOut</strong>(<a href="../vector_math/vec2.html">vec2</a> argWorld, <a href="../vector_math/vec2.html">vec2</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
+void <strong>getWorldToScreenToOut</strong>(<a href="../box2d/Vector.html">Vector</a> argWorld, <a href="../box2d/Vector.html">Vector</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
               title="Permalink to CanvasDraw.getWorldToScreenToOut">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/DebugDraw.html">DebugDraw</a> </div><div class="doc">
 <p>World coordinates are specified in argWorld. These coordinates are
 converted to screen coordinates and placed in the argScreen return vector.</p>
 <pre class="source">
-void getWorldToScreenToOut(vec2 argWorld, vec2 argScreen) {
+void getWorldToScreenToOut(Vector argWorld, Vector argScreen) {
  viewportTransform.getWorldToScreen(argWorld, argScreen);
 }
 </pre>

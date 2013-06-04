@@ -87,7 +87,7 @@ class BroadPhase implements TreeCallback {
    * Call MoveProxy as many times as you like, then when you are done
    * call UpdatePairs to constize the proxy pairs (for your time step).
    */
-  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, vec2 displacement) {
+  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
     if (_tree.moveProxy(proxy, box, displacement))
       _bufferMove(proxy);
   }
@@ -129,7 +129,7 @@ class BroadPhase implements TreeCallback {
     // We only want to sort the first _pairCount items of _pairBuffer,
     // so copy these to a temporary buffer where we do the sorting, then
     // copy back.
-    List<Pair> pairBuffer = _pairBuffer.sublist(0, _pairCount);
+    List<Pair> pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
     pairBuffer.sort((a, b) => a.compareTo(b));
     _pairBuffer.setRange(0, _pairCount, pairBuffer);
 

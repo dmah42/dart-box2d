@@ -22,15 +22,15 @@ class Car {
     _body.userData = "Car";
     _body.angularDamping = 3;
 
-    final List<vec2> vertices = new List<vec2>(8);
-    vertices[0] = new vec2( 1.5, 0.0);
-    vertices[1] = new vec2( 3.0, 2.5);
-    vertices[2] = new vec2( 2.8, 5.5);
-    vertices[3] = new vec2( 1.0, 10.0);
-    vertices[4] = new vec2(-1.0, 10.0);
-    vertices[5] = new vec2(-2.8, 5.5);
-    vertices[6] = new vec2(-3.0, 2.5);
-    vertices[7] = new vec2(-1.5, 0.0);
+    final List<Vector> vertices = new List<Vector>(8);
+    vertices[0] = new Vector( 1.5, 0.0);
+    vertices[1] = new Vector( 3.0, 2.5);
+    vertices[2] = new Vector( 2.8, 5.5);
+    vertices[3] = new Vector( 1.0, 10.0);
+    vertices[4] = new Vector(-1.0, 10.0);
+    vertices[5] = new Vector(-2.8, 5.5);
+    vertices[6] = new Vector(-3.0, 2.5);
+    vertices[7] = new Vector(-1.5, 0.0);
 
     final PolygonShape shape = new PolygonShape();
     shape.setFrom(vertices, vertices.length);
@@ -42,30 +42,30 @@ class Car {
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0.0;
     jointDef.upperAngle = 0.0;
-    jointDef.localAnchorB.splat(0.0);
+    jointDef.localAnchorB.setZero();
 
     _blTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _blTire._body;
-    jointDef.localAnchorA.setValues(-3.0, 0.75);
+    jointDef.localAnchorA.setCoords(-3.0, 0.75);
     world.createJoint(jointDef);
 
     _brTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _brTire._body;
-    jointDef.localAnchorA.setValues(3.0, 0.75);
+    jointDef.localAnchorA.setCoords(3.0, 0.75);
     world.createJoint(jointDef);
 
     _flTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _flTire._body;
-    jointDef.localAnchorA.setValues(-3.0, 8.5);
+    jointDef.localAnchorA.setCoords(-3.0, 8.5);
     _flJoint = world.createJoint(jointDef);
 
     _frTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _frTire._body;
-    jointDef.localAnchorA.setValues(3.0, 8.5);
+    jointDef.localAnchorA.setCoords(3.0, 8.5);
     _frJoint = world.createJoint(jointDef);
   }
 
@@ -96,7 +96,7 @@ class Car {
     final double turnPerTimeStep = _turnSpeedPerSec * 1000 / time;
     final double angleNow = _flJoint.jointAngle;
     double angleToTurn = desiredAngle - angleNow;
-    angleToTurn = clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
+    angleToTurn = MathBox.clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
     final double angle = angleNow + angleToTurn;
     _flJoint.setLimits(angle, angle);
     _frJoint.setLimits(angle, angle);
@@ -109,8 +109,8 @@ class Car {
   final double _backTireMaxLateralImpulse = 8.5;
   final double _frontTireMaxLateralImpulse = 7.5;
 
-  final double _lockAngle = (math.PI / 180) * 35;
-  final double _turnSpeedPerSec = (math.PI / 180) * 160;
+  final double _lockAngle = (PI / 180) * 35;
+  final double _turnSpeedPerSec = (PI / 180) * 160;
 
   Body _body;
   Tire _blTire, _brTire, _flTire, _frTire;

@@ -35,12 +35,13 @@
 <p>This is an internal structure</p>
 <pre class="source">
 class Velocity {
- vec2 v;
+ Vector v;
  num a;
 
- Velocity()
-     : v = new vec2.zero(),
-       a = 0;
+ Velocity() {
+   v = new Vector();
+   a = 0;
+ }
 }
 </pre>
 </div>
@@ -52,9 +53,10 @@ new <strong>Velocity</strong>() <a class="anchor-link" href="#Velocity"
               title="Permalink to Velocity.Velocity">#</a></h4>
 <div class="doc">
 <pre class="source">
-Velocity()
-   : v = new vec2.zero(),
-     a = 0;
+Velocity() {
+ v = new Vector();
+ a = 0;
+}
 </pre>
 </div>
 </div>
@@ -75,13 +77,13 @@ num a
 </div>
 <div class="field"><h4 id="v">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>v</strong> <a class="anchor-link"
+<a href="../box2d/Vector.html">Vector</a>         <strong>v</strong> <a class="anchor-link"
             href="#v"
             title="Permalink to Velocity.v">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 v
+Vector v
 </pre>
 </div>
 </div>

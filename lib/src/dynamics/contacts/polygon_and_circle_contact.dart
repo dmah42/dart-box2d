@@ -20,8 +20,8 @@ class PolygonAndCircleContact extends Contact {
     super(argPool) { }
 
   void init(Fixture fA, Fixture fB) {
-    expect(ShapeType.POLYGON, fA.type);
-    expect(ShapeType.CIRCLE, fB.type);
+    assert(ShapeType.POLYGON == fA.type);
+    assert(ShapeType.CIRCLE == fB.type);
     super.init(fA, fB);
   }
 

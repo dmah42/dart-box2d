@@ -21,7 +21,7 @@ class MassData {
   num mass;
 
   /** The position of the shape's centroid relative to the shape's origin. */
-  vec2 center;
+  Vector center;
 
   /** The rotational inertia of the shape about the local origin. */
   num inertia;
@@ -32,7 +32,7 @@ class MassData {
   MassData() :
     mass = 0,
     inertia = 0,
-    center = new vec2.zero();
+    center = new Vector() { }
 
   /**
    * Copies from the given mass data.
@@ -40,7 +40,7 @@ class MassData {
   MassData.copy(MassData md) :
     mass = md.mass,
     inertia = md.inertia,
-    center = new vec2.copy(md.center);
+    center = new Vector.copy(md.center) { }
 
   /**
    * Sets this mass data equal to the given mass data.

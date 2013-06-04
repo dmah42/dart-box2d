@@ -34,10 +34,10 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraintPoint {
- final vec2 localPoint;
+ final Vector localPoint;
  //TODO(gregbglw): Find out what rA and rB mean and change the names.
- final vec2 rA;
- final vec2 rB;
+ final Vector rA;
+ final Vector rB;
 
  num normalImpulse;
  num tangentImpulse;
@@ -47,14 +47,14 @@ class ContactConstraintPoint {
 
  /** Constructs a new ContactConstraintPoint. */
  ContactConstraintPoint()
-     : localPoint = new vec2.zero(),
-       rA = new vec2.zero(),
-       rB = new vec2.zero(),
-       normalImpulse = 0,
-       tangentImpulse = 0,
-       normalMass = 0,
-       tangentMass = 0,
-       velocityBias = 0 {}
+   : localPoint = new Vector(),
+   rA = new Vector(),
+   rB = new Vector(),
+   normalImpulse = 0,
+   tangentImpulse = 0,
+   normalMass = 0,
+   tangentMass = 0,
+   velocityBias = 0 {}
 
  /** Sets this point equal to the given point. */
  void setFrom(ContactConstraintPoint cp) {
@@ -87,14 +87,14 @@ new <strong>ContactConstraintPoint</strong>() <a class="anchor-link" href="#Cont
 <p>Constructs a new ContactConstraintPoint. </p>
 <pre class="source">
 ContactConstraintPoint()
-   : localPoint = new vec2.zero(),
-     rA = new vec2.zero(),
-     rB = new vec2.zero(),
-     normalImpulse = 0,
-     tangentImpulse = 0,
-     normalMass = 0,
-     tangentMass = 0,
-     velocityBias = 0 {}
+ : localPoint = new Vector(),
+ rA = new Vector(),
+ rB = new Vector(),
+ normalImpulse = 0,
+ tangentImpulse = 0,
+ normalMass = 0,
+ tangentMass = 0,
+ velocityBias = 0 {}
 </pre>
 </div>
 </div>
@@ -103,13 +103,13 @@ ContactConstraintPoint()
 <h3>Properties</h3>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ContactConstraintPoint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+final Vector localPoint
 </pre>
 </div>
 </div>
@@ -139,25 +139,25 @@ num normalMass
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to ContactConstraintPoint.rA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rA
+final Vector rA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to ContactConstraintPoint.rB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 rB
+final Vector rB
 </pre>
 </div>
 </div>

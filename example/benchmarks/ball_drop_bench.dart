@@ -20,9 +20,11 @@
 part of BenchmarkRunner;
 
 class BallDropBench extends Benchmark {
+  static const String NAME = "Ball Drop";
+
   /** The starting position of the ball. */
-  static const double X_START = 0.0;
-  static const double Y_START = 0.0;
+  static const num X_START = 0;
+  static const num Y_START = 0;
 
   BallDropBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
@@ -40,11 +42,12 @@ class BallDropBench extends Benchmark {
     // Define and create the ball body. Attach the fixture.
     final bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
-    bodyDef.position = new vec2(X_START, Y_START);
+    bodyDef.position = new Vector(X_START, Y_START);
     final ballBody = world.createBody(bodyDef);
     ballBody.createFixture(fd);
     bodies.add(ballBody);
   }
 
-  String get name => "BallDropBench";
+  String get name => NAME;
+
 }

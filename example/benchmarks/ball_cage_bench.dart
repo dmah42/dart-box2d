@@ -15,9 +15,11 @@
 part of BenchmarkRunner;
 
 class BallCageBench extends Benchmark {
+  static const String NAME = "Ball Cage";
+
   /** Starting position of ball cage in the world. */
-  static const double START_X = -20.0;
-  static const double START_Y = -20.0;
+  static const num START_X = -20;
+  static const num START_Y = -20;
 
   /** The radius of the balls forming the arena. */
   static const num WALL_BALL_RADIUS = 2;
@@ -29,7 +31,7 @@ class BallCageBench extends Benchmark {
   BallCageBench(List<int> solveLoops, List<int> steps) :
     super(solveLoops, steps) { }
 
-  String get name => "BallCageBench";
+  String get name => NAME;
 
   void initialize() {
     resetWorld();
@@ -55,22 +57,22 @@ class BallCageBench extends Benchmark {
       final num shiftX = START_X + circleShape.radius * 2 * i;
       final num shiftY = START_Y + circleShape.radius * 2 * i;
 
-      circleBodyDef.position = new vec2(shiftX, START_Y);
+      circleBodyDef.position = new Vector(shiftX, START_Y);
       Body circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(shiftX, borderLimitY);
+      circleBodyDef.position = new Vector(shiftX, borderLimitY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(START_X, shiftY);
+      circleBodyDef.position = new Vector(START_X, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(borderLimitX, shiftY);
+      circleBodyDef.position = new Vector(borderLimitX, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
@@ -88,8 +90,8 @@ class BallCageBench extends Benchmark {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new vec2(0.0, -20.0);
-    activeBodyDef.position = new vec2(15.0, 15.0);
+    activeBodyDef.linearVelocity = new Vector(0, -20);
+    activeBodyDef.position = new Vector(15, 15);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);

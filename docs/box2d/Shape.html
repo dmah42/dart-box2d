@@ -53,7 +53,7 @@ abstract class Shape {
   * transform:  the shape world transform.
   * point: a point in world coordinates.
   */
- bool testPoint(Transform transform, vec2 point);
+ bool testPoint(Transform transform, Vector point);
 
  /**
   * Computes the associated axis aligned bounding box for a child shape
@@ -148,7 +148,7 @@ given density. The inertia tensor is computed about the local origin.</p>
 </div>
 </div>
 <div class="method"><h4 id="testPoint">
-abstract bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../vector_math/vec2.html">vec2</a> point) <a class="anchor-link" href="#testPoint"
+abstract bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector.html">Vector</a> point) <a class="anchor-link" href="#testPoint"
               title="Permalink to Shape.testPoint">#</a></h4>
 <div class="doc">
 <p>Test a point for containment in this shape. This only works for convex

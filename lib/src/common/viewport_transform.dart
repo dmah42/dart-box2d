@@ -20,9 +20,9 @@
 part of box2d;
 
 class ViewportTransform {
-  ViewportTransform(vec2 e, vec2 c, num s) :
-    extents = new vec2.copy(e),
-    center = new vec2.copy(c),
+  ViewportTransform(Vector e, Vector c, num s) :
+    extents = new Vector.copy(e),
+    center = new Vector.copy(c),
     scale = s;
 
   /**
@@ -35,7 +35,7 @@ class ViewportTransform {
    * This should be the actual half-width and 
    * half-height, not anything transformed or scaled.
    */
-  vec2 extents;
+  Vector extents;
 
   /**
    * Returns the scaling factor used in converting from world sizes to rendering
@@ -46,41 +46,47 @@ class ViewportTransform {
   /**
    * center of the viewport.
    */
-  vec2 center;
+  Vector center;
 
   /**
    * Sets the transform's center to the given x and y coordinates,
    * and using the given scale.
    */
   void setCamera(num x, num y, num s) {
-    center.setValues(x,y);
+    center.setCoords(x, y);
     scale = s;
   }
-
   /**
    * The current translation is the difference in canvas units between the
    * actual center of the canvas and the currently specified center. For
    * example, if the actual canvas center is (5, 5) but the current center is
    * (6, 6), the translation is (1, 1).
    */
-  vec2 get translation => extents - center;
-  void set translation(vec2 translation) {
-    center.setFrom(extents).sub(translation);
+  Vector get translation {
+    Vector result = new Vector.copy(extents);
+    result.subLocal(center);
+    return result;
   }
+
+  void set translation(Vector translation) {
+    center.setFrom(extents);
+    center.subLocal(translation);
+  }
+
 
   /**
    * Takes the world coordinate (argWorld) puts the corresponding
    * screen coordinate in argScreen.  It should be safe to give the
    * same object as both parameters.
    */
-  void getWorldToScreen(vec2 argWorld, vec2 argScreen) {
+  void getWorldToScreen(Vector argWorld, Vector argScreen) {
     // Correct for canvas considering the upper-left corner, rather than the
     // center, to be the origin.
     num gridCorrectedX = (argWorld.x * scale) + extents.x;
     num gridCorrectedY = extents.y - (argWorld.y * scale);
 
-    argScreen.x = gridCorrectedX + translation.x;
-    argScreen.y = gridCorrectedY - translation.y;
+    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+        -translation.y);
   }
 
   /**
@@ -88,13 +94,12 @@ class ViewportTransform {
    * corresponding world coordinates in argWorld. It should be safe
    * to give the same object as both parameters.
    */
-  void getScreenToWorld(vec2 argScreen, vec2 argWorld) {
+  void getScreenToWorld(Vector argScreen, Vector argWorld) {
     num translationCorrectedX = argScreen.x - translation.x;
     num translationCorrectedY = argScreen.y + translation.y;
 
     num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
     num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-    argWorld.x = gridCorrectedX;
-    argWorld.y = gridCorrectedY;
+    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
   }
 }

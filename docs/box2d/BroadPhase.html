@@ -93,7 +93,7 @@ class BroadPhase implements TreeCallback {
   * Call MoveProxy as many times as you like, then when you are done
   * call UpdatePairs to constize the proxy pairs (for your time step).
   */
- void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, vec2 displacement) {
+ void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
    if (_tree.moveProxy(proxy, box, displacement))
      _bufferMove(proxy);
  }
@@ -135,7 +135,7 @@ class BroadPhase implements TreeCallback {
    // We only want to sort the first _pairCount items of _pairBuffer,
    // so copy these to a temporary buffer where we do the sorting, then
    // copy back.
-   List&lt;Pair&gt; pairBuffer = _pairBuffer.sublist(0, _pairCount);
+   List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
    pairBuffer.sort((a, b) =&gt; a.compareTo(b));
    _pairBuffer.setRange(0, _pairCount, pairBuffer);
 
@@ -374,13 +374,13 @@ void destroyProxy(DynamicTreeNode proxy) {
 </div>
 <div class="method"><h4 id="moveProxy">
 <button class="show-code">Code</button>
-void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../vector_math/vec2.html">vec2</a> displacement) <a class="anchor-link" href="#moveProxy"
+void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../box2d/Vector.html">Vector</a> displacement) <a class="anchor-link" href="#moveProxy"
               title="Permalink to BroadPhase.moveProxy">#</a></h4>
 <div class="doc">
 <p>Call MoveProxy as many times as you like, then when you are done
 call UpdatePairs to constize the proxy pairs (for your time step).</p>
 <pre class="source">
-void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, vec2 displacement) {
+void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
  if (_tree.moveProxy(proxy, box, displacement))
    _bufferMove(proxy);
 }
@@ -493,7 +493,7 @@ void updatePairs(PairCallback callback) {
  // We only want to sort the first _pairCount items of _pairBuffer,
  // so copy these to a temporary buffer where we do the sorting, then
  // copy back.
- List&lt;Pair&gt; pairBuffer = _pairBuffer.sublist(0, _pairCount);
+ List&lt;Pair&gt; pairBuffer = new List.from(_pairBuffer.getRange(0, _pairCount));
  pairBuffer.sort((a, b) =&gt; a.compareTo(b));
  _pairBuffer.setRange(0, _pairCount, pairBuffer);
 

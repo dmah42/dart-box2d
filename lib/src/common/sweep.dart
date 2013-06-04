@@ -16,34 +16,34 @@ part of box2d;
 
 class Sweep {
   /** Local center of mass position. */
-  final vec2 localCenter;
+  final Vector localCenter;
 
   /** Center world positions. */
-  vec2 centerZero;
-  final vec2 center;
+  final Vector centerZero;
+  final Vector center;
 
   /** World angles. */
-  double angleZero;
-  double angle;
+  num angleZero;
+  num angle;
 
   /**
    * Constructs a new Sweep with centers initialized to the origin and angles
    * set to zero.
    */
-  Sweep() :
-    localCenter = new vec2.zero(),
-    centerZero = new vec2.zero(),
-    center = new vec2.zero(),
-    angleZero = 0.0,
-    angle = 0.0;
+  Sweep()
+      : localCenter = new Vector(),
+        centerZero = new Vector(),
+        center = new Vector(),
+        angleZero = 0,
+        angle = 0;
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
    */
   Sweep.copy(Sweep other)
-      : localCenter = new vec2.copy(other.localCenter),
-        centerZero = new vec2.copy(other.centerZero),
-        center = new vec2.copy(other.center),
+      : localCenter = new Vector.copy(other.localCenter),
+        centerZero = new Vector.copy(other.centerZero),
+        center = new Vector.copy(other.center),
         angleZero = other.angleZero,
         angle = other.angle;
 
@@ -52,11 +52,9 @@ class Sweep {
    * if their fields are equal.
    */
   bool operator ==(other) {
-    return localCenter == other.localCenter &&
-           centerZero == other.centerZero &&
-           center == other.center &&
-           angleZero == other.angleZero &&
-           angle == other.angle;
+    return localCenter == other.localCenter && centerZero == other.centerZero
+        && center == other.center && angleZero == other.angleZero &&
+        angle == other.angle;
   }
 
   /**
@@ -71,7 +69,7 @@ class Sweep {
   }
 
   void normalize() {
-    double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+    num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
     angleZero -= d;
     angle -= d;
   }
@@ -80,23 +78,27 @@ class Sweep {
    * Computes the interpolated transform at a specific time.
    * Time is the normalized time in [0,1].
    */
-  void getTransform(Transform xf, double alpha) {
-    assert(xf != null);
+  void getTransform(Transform xf, num alpha) {
+    assert (xf != null);
 
-    xf.position = mix(centerZero, center, alpha);
-    xf.rotation.setRotation(mix(angleZero, angle, alpha));
+    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
+    xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
+    xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
 
     // Shift to origin
-    vec2 position_delta = xf.rotation * localCenter;
-    xf.position.setFrom(xf.position - position_delta);
+    xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+        * localCenter.y;
+    xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+        * localCenter.y;
   }
 
   /**
    * Advances the sweep forward, resulting in a new initial state.
    * Time is the new initial time.
    */
-  void advance(double time) {
-    centerZero = mix(centerZero, center, time);
-    angleZero = mix(angleZero, angle, time);
+  void advance(num time) {
+    centerZero.x = (1 - time) * centerZero.x + time * center.x;
+    centerZero.y = (1 - time) * centerZero.y + time * center.y;
+    angleZero = (1 - time) * angleZero + time * angle;
   }
 }

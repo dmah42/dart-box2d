@@ -25,7 +25,7 @@ class ManifoldPoint {
    * circleB. For faceA, is the local center of CircleB or the clip point of
    * polygonB. For faceB, is the clip point of polygonA.
    */
-  final vec2 localPoint;
+  final Vector localPoint;
 
   /** The non-penetration impulse. */
   num normalImpulse;
@@ -40,7 +40,7 @@ class ManifoldPoint {
    * Constructs a new ManifoldPoint.
    */
   ManifoldPoint() :
-    localPoint = new vec2.zero(),
+    localPoint = new Vector(),
     tangentImpulse = 0,
     normalImpulse = 0,
     id = new ContactID() { }
@@ -49,7 +49,7 @@ class ManifoldPoint {
    * Constructs a new ManifoldPoint that is a copy of the given point.
    */
   ManifoldPoint.copy(ManifoldPoint other) :
-    localPoint = new vec2.copy(other.localPoint),
+    localPoint = new Vector.copy(other.localPoint),
     normalImpulse = other.normalImpulse,
     tangentImpulse = other.tangentImpulse,
     id = new ContactID.copy(other.id) { }

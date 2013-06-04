@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,7 @@
 library BenchmarkRunner;
 
 import 'dart:io';
-import 'dart:math' as math;
+import 'dart:math';
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
 
@@ -67,14 +67,10 @@ class BenchmarkRunner {
     ];
 
     if (filter == null || filter.isEmpty) {
-      _benchmarks = benchmarks;
-      print(_benchmarks.length);
+      benchmarks.map(_addBenchmark);
     } else {
-      List<String> filterList = filter.split(",").map((e) => e.trim()).toList();
-      for (Benchmark benchmark in benchmarks) {
-        if (filterList.indexOf(benchmark.name) != -1)
-          _benchmarks.add(benchmark);
-      }
+      List<String> filterList = filter.split(",").map((e) => e.trim());
+      benchmarks.where((e) => filterList.indexOf(e.name) != -1).map(_addBenchmark);
     }
   }
 
@@ -84,10 +80,17 @@ class BenchmarkRunner {
   void runBenchmarks() {
     for (Benchmark benchmark in _benchmarks) {
       print('Running ${benchmark.name}');
-      benchmark.runBenchmark();
+      _resultsWriter.clear();
+      benchmark.runBenchmark(_resultsWriter);
       print("$_resultsWriter------------------------------------------------");
     }
   }
+
+  /**
+   * Initializes the given benchmark and adds to the end of the queue of
+   * benchmarks to run.
+   */
+  void _addBenchmark(Benchmark benchmark) => _benchmarks.add(benchmark);
 }
 
 void main() {
@@ -96,13 +99,7 @@ void main() {
 
   var parser = new ArgParser();
   parser.addOption('filter', abbr: 'f');
-  parser.addFlag('help', abbr: 'h');
-  var results = parser.parse(new Options().arguments);
-  if (results['help']) {
-    print('Usage: dart BenchmarkRunner.dart [--filter <tests-to-run>] [--help]');
-    print('  tests-to-run: comma separated list of tests to run');
-    return;
-  }
+  var results = parser.Parse(new Options().arguments);
   runner.setupBenchmarks(results['filter']);
   runner.runBenchmarks();
 }

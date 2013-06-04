@@ -39,8 +39,8 @@ class PolygonContact extends Contact {
    super(argPool) { }
 
  void init(Fixture fA, Fixture fB) {
-   expect(ShapeType.POLYGON, fA.type);
-   expect(ShapeType.POLYGON, fB.type);
+   assert(ShapeType.POLYGON == fA.type);
+   assert(ShapeType.POLYGON == fB.type);
    super.init(fA, fB);
  }
 
@@ -291,8 +291,8 @@ void <strong>init</strong>(<a href="../box2d/Fixture.html">Fixture</a> fA, <a hr
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Contact.html">Contact</a> </div></div>
 <pre class="source">
 void init(Fixture fA, Fixture fB) {
- expect(ShapeType.POLYGON, fA.type);
- expect(ShapeType.POLYGON, fB.type);
+ assert(ShapeType.POLYGON == fA.type);
+ assert(ShapeType.POLYGON == fB.type);
  super.init(fA, fB);
 }
 </pre>
@@ -310,7 +310,7 @@ void update(ContactListener listener) {
  // Re-enable this contact.
  flags |= ENABLED_FLAG;
 
- bool nowTouching = false;
+ bool touching = false;
  bool wasTouching = (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 
  bool sensorA = fixtureA.isSensor;
@@ -325,13 +325,13 @@ void update(ContactListener listener) {
  if (sensor) {
    Shape shapeA = fixtureA.shape;
    Shape shapeB = fixtureB.shape;
-   nowTouching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
+   touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
 
    // Sensors don't generate manifolds.
    manifold.pointCount = 0;
  } else {
    evaluate(manifold, xfA, xfB);
-   nowTouching = manifold.pointCount &gt; 0;
+   touching = manifold.pointCount &gt; 0;
 
    // Match old contact ids to new contact ids and copy the
    // stored impulses to warm start the solver.
@@ -352,13 +352,13 @@ void update(ContactListener listener) {
      }
    }
 
-   if (nowTouching != wasTouching) {
+   if (touching != wasTouching) {
      bodyA.awake = true;
      bodyB.awake = true;
    }
  }
 
- if (nowTouching) {
+ if (touching) {
    flags |= TOUCHING_FLAG;
  } else {
    flags &amp;= ~TOUCHING_FLAG;
@@ -368,15 +368,15 @@ void update(ContactListener listener) {
    return;
  }
 
- if (!wasTouching &amp;&amp; nowTouching) {
+ if (!wasTouching &amp;&amp; touching) {
    listener.beginContact(this);
  }
 
- if (wasTouching &amp;&amp; !nowTouching) {
+ if (wasTouching &amp;&amp; !touching) {
    listener.endContact(this);
  }
 
- if (sensor == false &amp;&amp; nowTouching) {
+ if (!sensor &amp;&amp; touching) {
    listener.preSolve(this, _oldManifold);
  }
 }

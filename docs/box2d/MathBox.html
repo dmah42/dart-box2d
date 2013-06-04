@@ -34,9 +34,30 @@
 <div class="doc">
 <pre class="source">
 class MathBox {
- static const double TWO_PI = math.PI * 2.0;
+ static const double TWO_PI = Math.PI * 2.0;
 
  MathBox();
+
+ /**
+  * Return the distance between the two given vectors, but squared.
+  */
+ static num distanceSquared(Vector v1, Vector v2) {
+   num dx = (v1.x - v2.x);
+   num dy = (v1.y - v2.y);
+   return dx * dx + dy * dy;
+ }
+
+ /**
+  * Return the distance between the two given vectors.
+  */
+ static num distance(Vector v1, Vector v2) {
+   return Math.sqrt(distanceSquared(v1, v2));
+ }
+
+ /** Returns the closest value to [a] that is in between [low] and [high] */
+ static num clamp(num a, num low, num high) {
+   return Math.max(low, Math.min(a, high));
+ }
 
  /**
   * Given a value within the range specified by [fromMin] and [fromMax],
@@ -51,41 +72,10 @@ class MathBox {
    return res;
  }
 
- /** Solve [matrix]x = [b] without calculating the inverse of [matrix]. */
- static vec3 solve33(mat3 matrix, vec3 b) {
-   vec3 col0 = matrix.getColumn(0);
-   vec3 col1 = matrix.getColumn(1);
-   vec3 col2 = matrix.getColumn(2);
-
-   vec3 out = cross(col1, col2);
-   num det = dot(col0, out);
-   if (det != 0.0) det = 1.0 / det;
-
-   out = cross(col1, col2);
-   num x = det * dot(b, out);
-   out = cross(b, col2);
-   num y = det * dot(col0, out);
-   out = cross(col1, b);
-   num z = det * dot(col0, out);
-   out.setValues(x, y, z);
-   return out;
- }
-
- /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
-  *  [matrix] must be a 2x2 or 3x3 matrix, and in the latter case the top-left
-  *  2x2 elements will be used. [b] must be a vec2. */
- static vec2 solve22(dynamic matrix, vec2 b) {
-   assert(matrix is mat2 || matrix is mat3);
-   double a11 = matrix.entry(0, 0);
-   double a12 = matrix.entry(0, 1);
-   double a21 = matrix.entry(1, 0);
-   double a22 = matrix.entry(1, 1);
-   double det = a11 * a22 - a12 * a21;
-   if (det != 0.0) det = 1.0 / det;
-   final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
-   out.scale(det);
-   return out;
- }
+ /** Convert from [deg] degrees to radians. */
+ static num degToRad(num deg) =&gt; (Math.PI / 180.0) * deg;
+ /** Convert from [rad] radians to degrees. */
+ static num radToDeg(num rad) =&gt; (180.0 / Math.PI) * rad;
 }
 </pre>
 </div>
@@ -99,13 +89,57 @@ const double         <strong>TWO_PI</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-static const double TWO_PI = math.PI * 2.0
+static const double TWO_PI = Math.PI * 2.0
 </pre>
 </div>
 </div>
 </div>
 <div>
 <h3>Static Methods</h3>
+<div class="method"><h4 id="distanceSquared">
+<button class="show-code">Code</button>
+num <strong>distanceSquared</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#distanceSquared"
+              title="Permalink to MathBox.distanceSquared">#</a></h4>
+<div class="doc">
+<p>Return the distance between the two given vectors, but squared.</p>
+<pre class="source">
+static num distanceSquared(Vector v1, Vector v2) {
+ num dx = (v1.x - v2.x);
+ num dy = (v1.y - v2.y);
+ return dx * dx + dy * dy;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distance">
+<button class="show-code">Code</button>
+num <strong>distance</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#distance"
+              title="Permalink to MathBox.distance">#</a></h4>
+<div class="doc">
+<p>Return the distance between the two given vectors.</p>
+<pre class="source">
+static num distance(Vector v1, Vector v2) {
+ return Math.sqrt(distanceSquared(v1, v2));
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="clamp">
+<button class="show-code">Code</button>
+num <strong>clamp</strong>(num a, num low, num high) <a class="anchor-link" href="#clamp"
+              title="Permalink to MathBox.clamp">#</a></h4>
+<div class="doc">
+<p>Returns the closest value to 
+<span class="param">a</span> that is in between 
+<span class="param">low</span> and 
+<span class="param">high</span> </p>
+<pre class="source">
+static num clamp(num a, num low, num high) {
+ return Math.max(low, Math.min(a, high));
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="translateAndScale">
 <button class="show-code">Code</button>
 num <strong>translateAndScale</strong>(num val, num fromMin, num fromMax, num toMin, num toMax) <a class="anchor-link" href="#translateAndScale"
@@ -130,63 +164,27 @@ static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="solve33">
+<div class="method"><h4 id="degToRad">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec3.html">vec3</a> <strong>solve33</strong>(<a href="../vector_math/mat3.html">mat3</a> matrix, <a href="../vector_math/vec3.html">vec3</a> b) <a class="anchor-link" href="#solve33"
-              title="Permalink to MathBox.solve33">#</a></h4>
+num <strong>degToRad</strong>(num deg) <a class="anchor-link" href="#degToRad"
+              title="Permalink to MathBox.degToRad">#</a></h4>
 <div class="doc">
-<p>Solve 
-<span class="param">matrix</span>x = 
-<span class="param">b</span> without calculating the inverse of 
-<span class="param">matrix</span>. </p>
+<p>Convert from 
+<span class="param">deg</span> degrees to radians. </p>
 <pre class="source">
-static vec3 solve33(mat3 matrix, vec3 b) {
- vec3 col0 = matrix.getColumn(0);
- vec3 col1 = matrix.getColumn(1);
- vec3 col2 = matrix.getColumn(2);
-
- vec3 out = cross(col1, col2);
- num det = dot(col0, out);
- if (det != 0.0) det = 1.0 / det;
-
- out = cross(col1, col2);
- num x = det * dot(b, out);
- out = cross(b, col2);
- num y = det * dot(col0, out);
- out = cross(col1, b);
- num z = det * dot(col0, out);
- out.setValues(x, y, z);
- return out;
-}
+static num degToRad(num deg) =&gt; (Math.PI / 180.0) * deg;
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="solve22">
+<div class="method"><h4 id="radToDeg">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a> <strong>solve22</strong>(matrix, <a href="../vector_math/vec2.html">vec2</a> b) <a class="anchor-link" href="#solve22"
-              title="Permalink to MathBox.solve22">#</a></h4>
+num <strong>radToDeg</strong>(num rad) <a class="anchor-link" href="#radToDeg"
+              title="Permalink to MathBox.radToDeg">#</a></h4>
 <div class="doc">
-<p>Solve 
-<span class="param">matrix</span>x = 
-<span class="param">b</span> without calculating the inverse of 
-<span class="param">matrix</span>.
- 
-<span class="param">matrix</span> must be a 2x2 or 3x3 matrix, and in the latter case the top-left
- 2x2 elements will be used. 
-<span class="param">b</span> must be a vec2. </p>
+<p>Convert from 
+<span class="param">rad</span> radians to degrees. </p>
 <pre class="source">
-static vec2 solve22(dynamic matrix, vec2 b) {
- assert(matrix is mat2 || matrix is mat3);
- double a11 = matrix.entry(0, 0);
- double a12 = matrix.entry(0, 1);
- double a21 = matrix.entry(1, 0);
- double a22 = matrix.entry(1, 1);
- double det = a11 * a22 - a12 * a21;
- if (det != 0.0) det = 1.0 / det;
- final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
- out.scale(det);
- return out;
-}
+static num radToDeg(num rad) =&gt; (180.0 / Math.PI) * rad;
 </pre>
 </div>
 </div>

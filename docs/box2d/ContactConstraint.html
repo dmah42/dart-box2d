@@ -36,13 +36,13 @@
 class ContactConstraint {
  List&lt;ContactConstraintPoint&gt; points;
 
- final vec2 localNormal;
- final vec2 localPoint;
- final vec2 normal;
+ final Vector localNormal;
+ final Vector localPoint;
+ final Vector normal;
 
- final mat2 normalMass;
+ final Matrix22 normalMass;
  //TODO(gregbglw): What does K mean? Find out and change the name.
- final mat2 K;
+ final Matrix22 K;
 
  Body bodyA;
  Body bodyB;
@@ -61,11 +61,11 @@ class ContactConstraint {
        Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
    pointCount = 0,
    manifold = null,
-   localNormal = new vec2.zero(),
-   localPoint = new vec2.zero(),
-   normal = new vec2.zero(),
-   normalMass = new mat2.zero(),
-   K = new mat2.zero();
+   localNormal = new Vector(),
+   localPoint = new Vector(),
+   normal = new Vector(),
+   normalMass = new Matrix22(),
+   K = new Matrix22();
 
  void setFrom(ContactConstraint cp) {
    pointCount = cp.pointCount;
@@ -108,11 +108,11 @@ ContactConstraint() :
      Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
  pointCount = 0,
  manifold = null,
- localNormal = new vec2.zero(),
- localPoint = new vec2.zero(),
- normal = new vec2.zero(),
- normalMass = new mat2.zero(),
- K = new mat2.zero();
+ localNormal = new Vector(),
+ localPoint = new Vector(),
+ normal = new Vector(),
+ normalMass = new Matrix22(),
+ K = new Matrix22();
 </pre>
 </div>
 </div>
@@ -157,37 +157,37 @@ num friction
 </div>
 <div class="field"><h4 id="K">
 <button class="show-code">Code</button>
-final <a href="../vector_math/mat2.html">mat2</a>         <strong>K</strong> <a class="anchor-link"
+final <a href="../box2d/Matrix22.html">Matrix22</a>         <strong>K</strong> <a class="anchor-link"
             href="#K"
             title="Permalink to ContactConstraint.K">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final mat2 K
+final Matrix22 K
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to ContactConstraint.localNormal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localNormal
+final Vector localNormal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ContactConstraint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localPoint
+final Vector localPoint
 </pre>
 </div>
 </div>
@@ -205,25 +205,25 @@ Manifold manifold
 </div>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>normal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to ContactConstraint.normal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 normal
+final Vector normal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="normalMass">
 <button class="show-code">Code</button>
-final <a href="../vector_math/mat2.html">mat2</a>         <strong>normalMass</strong> <a class="anchor-link"
+final <a href="../box2d/Matrix22.html">Matrix22</a>         <strong>normalMass</strong> <a class="anchor-link"
             href="#normalMass"
             title="Permalink to ContactConstraint.normalMass">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final mat2 normalMass
+final Matrix22 normalMass
 </pre>
 </div>
 </div>

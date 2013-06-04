@@ -15,10 +15,10 @@
 part of box2d;
 
 class ContactConstraintPoint {
-  final vec2 localPoint;
+  final Vector localPoint;
   //TODO(gregbglw): Find out what rA and rB mean and change the names.
-  final vec2 rA;
-  final vec2 rB;
+  final Vector rA;
+  final Vector rB;
 
   num normalImpulse;
   num tangentImpulse;
@@ -28,14 +28,14 @@ class ContactConstraintPoint {
 
   /** Constructs a new ContactConstraintPoint. */
   ContactConstraintPoint()
-      : localPoint = new vec2.zero(),
-        rA = new vec2.zero(),
-        rB = new vec2.zero(),
-        normalImpulse = 0,
-        tangentImpulse = 0,
-        normalMass = 0,
-        tangentMass = 0,
-        velocityBias = 0 {}
+    : localPoint = new Vector(),
+    rA = new Vector(),
+    rB = new Vector(),
+    normalImpulse = 0,
+    tangentImpulse = 0,
+    normalMass = 0,
+    tangentMass = 0,
+    velocityBias = 0 {}
 
   /** Sets this point equal to the given point. */
   void setFrom(ContactConstraintPoint cp) {

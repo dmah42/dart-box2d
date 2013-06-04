@@ -13,9 +13,8 @@
 // limitations under the License.
 
 library DominoTower;
-
 import 'dart:html';
-import 'dart:math' as math;
+import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 
 import 'demo.dart';
@@ -53,8 +52,8 @@ class DominoTower extends Demo {
     bd.type = BodyType.DYNAMIC;
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
-    bd.position = new vec2(x, y);
-    bd.angle = horizontal ? (math.PI / 2.0) : 0.0;
+    bd.position = new Vector(x, y);
+    bd.angle = horizontal ? (Math.PI / 2.0) : 0;
     Body myBody = world.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);
@@ -70,7 +69,7 @@ class DominoTower extends Demo {
       sd.setAsBox(50.0, 10.0);
 
       BodyDef bd = new BodyDef();
-      bd.position = new vec2(0.0, -10.0);
+      bd.position = new Vector(0.0, -10.0);
       final body = world.createBody(bd);
       body.createFixtureFromShape(sd);
       bodies.add(body);
@@ -89,19 +88,19 @@ class DominoTower extends Demo {
       fd.friction = 0;
       fd.restitution = 0.85;
       bd.bullet = true;
-      bd.position = new vec2(30.0, 50.0);
+      bd.position = new Vector(30, 50);
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(-25.0, -25.0);
+      b.linearVelocity = new Vector(-25, -25);
       b.angularVelocity = 6.7;
 
       fd.density = 25;
-      bd.position = new vec2(-30.0, 25.0);
+      bd.position = new Vector(-30, 25);
       b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new vec2(35.0, -10.0);
+      b.linearVelocity = new Vector(35, -10);
       b.angularVelocity = -8.3;
     }
 

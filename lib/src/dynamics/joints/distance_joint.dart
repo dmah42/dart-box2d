@@ -21,9 +21,9 @@
 part of box2d;
 
 class DistanceJoint extends Joint {
-  final vec2 localAnchor1;
-  final vec2 localAnchor2;
-  final vec2 u;
+  final Vector localAnchor1;
+  final Vector localAnchor2;
+  final Vector u;
   num impulse;
 
   /** Effective mass for the constraint. */
@@ -36,26 +36,25 @@ class DistanceJoint extends Joint {
 
   DistanceJoint(DistanceJointDef def) :
     super(def),
-    localAnchor1 = new vec2.copy(def.localAnchorA),
-    localAnchor2 = new vec2.copy(def.localAnchorB),
+    localAnchor1 = new Vector.copy(def.localAnchorA),
+    localAnchor2 = new Vector.copy(def.localAnchorB),
     length = def.length,
     impulse = 0.0,
-    u = new vec2.zero(),
+    u = new Vector(),
     frequencyHz = def.frequencyHz,
     dampingRatio = def.dampingRatio,
     gamma = 0.0,
     bias = 0.0 { }
 
-  void getAnchorA(vec2 argOut) {
+  void getAnchorA(Vector argOut) {
     bodyA.getWorldPointToOut(localAnchor1, argOut);
   }
 
-  void getAnchorB(vec2 argOut) {
+  void getAnchorB(Vector argOut) {
     bodyB.getWorldPointToOut(localAnchor2, argOut);
   }
 
-  void getReactionForce(num inv_dt, vec2 argOut) {
-    // TODO(dominic): vector cleanup
+  void getReactionForce(num inv_dt, Vector argOut) {
     argOut.x = impulse * u.x * inv_dt;
     argOut.y = impulse * u.y * inv_dt;
   }
@@ -64,31 +63,33 @@ class DistanceJoint extends Joint {
     return 0.0;
   }
 
-  void initVelocityConstraints(TimeStep time_step) {
+  void initVelocityConstraints(TimeStep step) {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    vec2 r1 = new vec2.zero();
-    vec2 r2 = new vec2.zero();
+    Vector r1 = new Vector();
+    Vector r2 = new Vector();
 
     // Compute the effective mass matrix.
-    r1.setFrom(localAnchor1).sub(b1.localCenter);
-    r2.setFrom(localAnchor2).sub(b2.localCenter);
-    b1.originTransform.rotation.transform(r1);
-    b2.originTransform.rotation.transform(r2);
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-    u.setFrom(b2.sweep.center).add(r2).sub(b1.sweep.center).sub(r1);
+    u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
+    u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
 
     // Handle singularity.
     num len = u.length;
     if (len > Settings.LINEAR_SLOP) {
-      u.scale(1.0 / len);
+      u.x *= 1.0 / len;
+      u.y *= 1.0 / len;
     } else {
-      u.splat(0.0);
+      u.setCoords(0.0, 0.0);
     }
 
-    num cr1u = cross(r1, u);
-    num cr2u = cross(r2, u);
+    num cr1u = Vector.crossVectors(r1, u);
+    num cr2u = Vector.crossVectors(r2, u);
 
     num invMass = b1.invMass + b1.invInertia * cr1u * cr1u + b2.invMass
         + b2.invInertia * cr2u * cr2u;
@@ -108,49 +109,54 @@ class DistanceJoint extends Joint {
       num k = mass * omega * omega;
 
       // magic formulas
-      gamma = time_step.dt * (d + time_step.dt * k);
+      gamma = step.dt * (d + step.dt * k);
       gamma = gamma != 0.0 ? 1.0 / gamma : 0.0;
-      bias = C * time_step.dt * k * gamma;
+      bias = C * step.dt * k * gamma;
 
       mass = invMass + gamma;
       mass = mass != 0.0 ? 1.0 / mass : 0.0;
     }
 
-    if (time_step.warmStarting) {
-      // Scale the impulse to support a variable time time_step.
-      impulse *= time_step.dtRatio;
+    if (step.warmStarting) {
+      // Scale the impulse to support a variable time step.
+      impulse *= step.dtRatio;
 
-      vec2 P = new vec2.zero();
-      P.setFrom(u).scale(impulse);
+      Vector P = new Vector();
+      P.setFrom(u).mulLocal(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
-      b1.angularVelocity -= b1.invInertia * cross(r1, P);
+      b1.angularVelocity -= b1.invInertia * Vector.crossVectors(r1, P);
 
       b2.linearVelocity.x += b2.invMass * P.x;
       b2.linearVelocity.y += b2.invMass * P.y;
-      b2.angularVelocity += b2.invInertia * cross(r2, P);
+      b2.angularVelocity += b2.invInertia * Vector.crossVectors(r2, P);
     } else {
       impulse = 0.0;
     }
   }
 
-  void solveVelocityConstraints(TimeStep time_step) {
+  void solveVelocityConstraints(TimeStep step) {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    final vec2 r1 = localAnchor1 - b1.localCenter;
-    final vec2 r2 = localAnchor2 - b2.localCenter;
+    final r1 = new Vector();
+    final r2 = new Vector();
 
-    b1.originTransform.rotation.transform(r1);
-    b2.originTransform.rotation.transform(r2);
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-    final v1 = cross(b1.angularVelocity, r1);
-    final v2 = cross(b2.angularVelocity, r2);
-    v1.add(b1.linearVelocity);
-    v2.add(b2.linearVelocity);
+    final v1 = new Vector();
+    final v2 = new Vector();
 
-    num Cdot = dot(u, v2.sub(v1));
+    Vector.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
+    Vector.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
+    v1.addLocal(b1.linearVelocity);
+    v2.addLocal(b2.linearVelocity);
+
+    num Cdot = Vector.dot(u, v2.subLocal(v1));
 
     num imp = -mass * (Cdot + bias + gamma * impulse);
     impulse += imp;
@@ -173,18 +179,22 @@ class DistanceJoint extends Joint {
     final b1 = bodyA;
     final b2 = bodyB;
 
-    final vec2 r1 = localAnchor1 - b1.localCenter;
-    final vec2 r2 = localAnchor2 - b2.localCenter;
+    final r1 = new Vector();
+    final r2 = new Vector();
+    final d = new Vector();
 
-    b1.originTransform.rotation.transform(r1);
-    b2.originTransform.rotation.transform(r2);
+    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
+    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
+    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-    final vec2 d = b2.sweep.center + r2 - (b1.sweep.center + r1);
+    d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
+    d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
 
-    num len = d.length;
-    d.normalize();
+    num len = d.normalize();
     num C = len - length;
-    C = clamp(C, -Settings.MAX_LINEAR_CORRECTION, Settings.MAX_LINEAR_CORRECTION);
+    C = MathBox.clamp(C, -Settings.MAX_LINEAR_CORRECTION,
+        Settings.MAX_LINEAR_CORRECTION);
 
     num imp = -mass * C;
     u.setFrom(d);

@@ -18,18 +18,18 @@ part of box2d;
 
 class AxisAlignedBox {
   /** Bottom left vertex of bounding box. */
-  vec2 lowerBound;
+  Vector lowerBound;
 
   /** Top right vertex of bounding box. */
-  vec2 upperBound;
+  Vector upperBound;
 
   /**
    * Constructs a new box with the given lower and upper bounds. If no bounds
    * are specified, constructs the box with both bounds at the origin.
    */
   AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound == null) lowerBound = new vec2.zero();
-    if (upperBound == null) upperBound = new vec2.zero();
+    if (lowerBound == null) lowerBound = new Vector();
+    if (upperBound == null) upperBound = new Vector();
   }
 
   /**
@@ -40,14 +40,14 @@ class AxisAlignedBox {
    * upperBound.
    */
   void setFromCombination(AxisAlignedBox boxOne, AxisAlignedBox boxTwo) {
-    lowerBound.x = math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
-    lowerBound.y = math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
-    upperBound.x = math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
-    upperBound.y = math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
+    lowerBound.x = Math.min(boxOne.lowerBound.x, boxTwo.lowerBound.x);
+    lowerBound.y = Math.min(boxOne.lowerBound.y, boxTwo.lowerBound.y);
+    upperBound.x = Math.max(boxOne.upperBound.x, boxTwo.upperBound.x);
+    upperBound.y = Math.max(boxOne.upperBound.y, boxTwo.upperBound.y);
   }
 
   /** Sets the bounds to the given values. */
-  AxisAlignedBox setBounds(vec2 lower, vec2 upper) {
+  AxisAlignedBox setBounds(Vector lower, Vector upper) {
     lowerBound.setFrom(lower);
     upperBound.setFrom(upper);
     return this;
@@ -62,12 +62,16 @@ class AxisAlignedBox {
    * Returns true if the lower bound is strictly less than the upper bound and
    * both bounds are themselves valid (Vector.isValid() returns true).
    */
-  bool isValid() => !lowerBound.isInfinite && !upperBound.isInfinite &&
-                    !lowerBound.isNaN && !upperBound.isNaN &&
+  bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */
-  vec2 get center => (lowerBound + upperBound).scale(0.5);
+  Vector get center {
+    Vector c = new Vector.copy(lowerBound);
+    c.addLocal(upperBound);
+    c.mulLocal(.5);
+    return c;
+  }
 
   /** Returns true if this box contains the given box. */
   bool contains(AxisAlignedBox aabb) =>

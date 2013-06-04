@@ -37,7 +37,7 @@ class CircleShape extends Shape {
  /**
   * The current position of the center of this circle.
   */
- final vec2 position;
+ final Vector position;
 
  /**
   * A constructor for internal use only. Instead use Body.createShape with a
@@ -45,14 +45,15 @@ class CircleShape extends Shape {
   */
  CircleShape() :
    super(ShapeType.CIRCLE, 0),
-   position = new vec2.zero();
+   position = new Vector() {
+ }
 
  /**
   * Constructs a new CircleShape equal to the given CircleShape.
   */
  CircleShape.copy(CircleShape other) :
    super(other.type, other.radius),
-   position = new vec2.copy(other.position);
+   position = new Vector.copy(other.position) { }
 
 
  /**
@@ -60,13 +61,13 @@ class CircleShape extends Shape {
   * rotation transform is applied. Implements superclass abstract method of
   * the same name.
   */
- bool testPoint(Transform transform, vec2 point) {
-   vec2 center = new vec2.copy(position);
-   transform.rotation.transform(center);
-   center.add(transform.position);
+ bool testPoint(Transform transform, Vector point) {
+   Vector center = new Vector();
+   transform.rotation.multiplyVectorToOut(position, center);
+   center.addLocal(transform.position);
 
-   vec2 d = center.sub(point).negate();
-   return dot(d, d) &lt;= radius * radius;
+   Vector d = center.subLocal(point).negateLocal();
+   return Vector.dot(d, d) &lt;= radius * radius;
  }
 
  /**
@@ -74,12 +75,12 @@ class CircleShape extends Shape {
   * applied. Stores the result in the given box.
   */
  void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-   vec2 p = new vec2.copy(position);
-   argTransform.rotation.transform(p);
-   p.add(argTransform.position);
+   Vector p = new Vector();
+   Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+   p.addLocal(argTransform.position);
 
-   argBox.lowerBound.setValues(p.x - radius, p.y - radius);
-   argBox.upperBound.setValues(p.x + radius, p.y + radius);
+   argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
+   argBox.upperBound.setCoords(p.x + radius, p.y + radius);
  }
 
  /** Returns a clone of this circle. */
@@ -90,12 +91,12 @@ class CircleShape extends Shape {
   * the result in the given MassData object.
   */
  void computeMass(MassData massData, num density) {
-   massData.mass = density * math.PI * radius * radius;
+   massData.mass = density * Math.PI * radius * radius;
    massData.center.setFrom(position);
 
    // Store inertia above the local origin.
    massData.inertia = massData.mass * (.5 * radius * radius +
-       dot(position, position));
+       Vector.dot(position, position));
  }
 }
 </pre>
@@ -115,7 +116,8 @@ CircleDef.</p>
 <pre class="source">
 CircleShape() :
  super(ShapeType.CIRCLE, 0),
- position = new vec2.zero();
+ position = new Vector() {
+}
 </pre>
 </div>
 </div>
@@ -128,7 +130,7 @@ new <strong>CircleShape.copy</strong>(<a href="../box2d/CircleShape.html">Circle
 <pre class="source">
 CircleShape.copy(CircleShape other) :
  super(other.type, other.radius),
- position = new vec2.copy(other.position);
+ position = new Vector.copy(other.position) { }
 </pre>
 </div>
 </div>
@@ -137,14 +139,14 @@ CircleShape.copy(CircleShape other) :
 <h3>Properties</h3>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>position</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to CircleShape.position">#</a>
         </h4>
         <div class="doc">
 <p>The current position of the center of this circle.</p>
 <pre class="source">
-final vec2 position
+final Vector position
 </pre>
 </div>
 </div>
@@ -197,12 +199,12 @@ void <strong>computeAxisAlignedBox</strong>(<a href="../box2d/AxisAlignedBox.htm
 applied. Stores the result in the given box.</p>
 <pre class="source">
 void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
- vec2 p = new vec2.copy(position);
- argTransform.rotation.transform(p);
- p.add(argTransform.position);
+ Vector p = new Vector();
+ Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+ p.addLocal(argTransform.position);
 
- argBox.lowerBound.setValues(p.x - radius, p.y - radius);
- argBox.upperBound.setValues(p.x + radius, p.y + radius);
+ argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
+ argBox.upperBound.setCoords(p.x + radius, p.y + radius);
 }
 </pre>
 </div>
@@ -216,32 +218,32 @@ void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> 
 the result in the given MassData object.</p>
 <pre class="source">
 void computeMass(MassData massData, num density) {
- massData.mass = density * math.PI * radius * radius;
+ massData.mass = density * Math.PI * radius * radius;
  massData.center.setFrom(position);
 
  // Store inertia above the local origin.
  massData.inertia = massData.mass * (.5 * radius * radius +
-     dot(position, position));
+     Vector.dot(position, position));
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="testPoint">
 <button class="show-code">Code</button>
-bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../vector_math/vec2.html">vec2</a> point) <a class="anchor-link" href="#testPoint"
+bool <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector.html">Vector</a> point) <a class="anchor-link" href="#testPoint"
               title="Permalink to CircleShape.testPoint">#</a></h4>
 <div class="doc">
 <p>Returns true if the point is contained in the given shape when the given
 rotation transform is applied. Implements superclass abstract method of
 the same name.</p>
 <pre class="source">
-bool testPoint(Transform transform, vec2 point) {
- vec2 center = new vec2.copy(position);
- transform.rotation.transform(center);
- center.add(transform.position);
+bool testPoint(Transform transform, Vector point) {
+ Vector center = new Vector();
+ transform.rotation.multiplyVectorToOut(position, center);
+ center.addLocal(transform.position);
 
- vec2 d = center.sub(point).negate();
- return dot(d, d) &lt;= radius * radius;
+ Vector d = center.subLocal(point).negateLocal();
+ return Vector.dot(d, d) &lt;= radius * radius;
 }
 </pre>
 </div>

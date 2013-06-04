@@ -43,19 +43,19 @@ class BodyDef {
  /**
   * The world angle of the body in radians.
   */
- double angle;
+ num angle;
 
  /** User can store whatever they wish in here. */
- dynamic userData;
+ Object userData;
 
  /** The world position of the body. */
- vec2 position;
+ Vector position;
 
  /** Linear velocity of the body in world coordinates. */
- vec2 linearVelocity;
+ Vector linearVelocity;
 
  /** Angular velocity of the body. */
- double angularVelocity;
+ num angularVelocity;
 
  /**
   * If true, the body will be allowed to rotate. Otherwise, its rotation will
@@ -106,16 +106,16 @@ class BodyDef {
    userData = null,
    bullet = false,
    type = BodyType.STATIC,
-   position = new vec2.zero(),
-   angle = 0.0,
+   position = new Vector(),
+   angle = 0,
    linearDamping = 0,
    angularDamping = 0,
    allowSleep = true,
    awake = true,
    fixedRotation = false,
    active = true,
-   linearVelocity = new vec2.zero(),
-   angularVelocity = 0.0;
+   linearVelocity = new Vector(),
+   angularVelocity = 0;
 }
 </pre>
 </div>
@@ -132,16 +132,16 @@ BodyDef() :
  userData = null,
  bullet = false,
  type = BodyType.STATIC,
- position = new vec2.zero(),
- angle = 0.0,
+ position = new Vector(),
+ angle = 0,
  linearDamping = 0,
  angularDamping = 0,
  allowSleep = true,
  awake = true,
  fixedRotation = false,
  active = true,
- linearVelocity = new vec2.zero(),
- angularVelocity = 0.0;
+ linearVelocity = new Vector(),
+ angularVelocity = 0;
 </pre>
 </div>
 </div>
@@ -176,14 +176,14 @@ bool allowSleep
 </div>
 <div class="field"><h4 id="angle">
 <button class="show-code">Code</button>
-double         <strong>angle</strong> <a class="anchor-link"
+num         <strong>angle</strong> <a class="anchor-link"
             href="#angle"
             title="Permalink to BodyDef.angle">#</a>
         </h4>
         <div class="doc">
 <p>The world angle of the body in radians.</p>
 <pre class="source">
-double angle
+num angle
 </pre>
 </div>
 </div>
@@ -204,14 +204,14 @@ num angularDamping
 </div>
 <div class="field"><h4 id="angularVelocity">
 <button class="show-code">Code</button>
-double         <strong>angularVelocity</strong> <a class="anchor-link"
+num         <strong>angularVelocity</strong> <a class="anchor-link"
             href="#angularVelocity"
             title="Permalink to BodyDef.angularVelocity">#</a>
         </h4>
         <div class="doc">
 <p>Angular velocity of the body. </p>
 <pre class="source">
-double angularVelocity
+num angularVelocity
 </pre>
 </div>
 </div>
@@ -289,27 +289,27 @@ num linearDamping
 </div>
 <div class="field"><h4 id="linearVelocity">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>linearVelocity</strong> <a class="anchor-link"
+<a href="../box2d/Vector.html">Vector</a>         <strong>linearVelocity</strong> <a class="anchor-link"
             href="#linearVelocity"
             title="Permalink to BodyDef.linearVelocity">#</a>
         </h4>
         <div class="doc">
 <p>Linear velocity of the body in world coordinates. </p>
 <pre class="source">
-vec2 linearVelocity
+Vector linearVelocity
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>position</strong> <a class="anchor-link"
+<a href="../box2d/Vector.html">Vector</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to BodyDef.position">#</a>
         </h4>
         <div class="doc">
 <p>The world position of the body. </p>
 <pre class="source">
-vec2 position
+Vector position
 </pre>
 </div>
 </div>
@@ -329,14 +329,14 @@ int type
 </div>
 <div class="field"><h4 id="userData">
 <button class="show-code">Code</button>
-var         <strong>userData</strong> <a class="anchor-link"
+Object         <strong>userData</strong> <a class="anchor-link"
             href="#userData"
             title="Permalink to BodyDef.userData">#</a>
         </h4>
         <div class="doc">
 <p>User can store whatever they wish in here. </p>
 <pre class="source">
-dynamic userData
+Object userData
 </pre>
 </div>
 </div>

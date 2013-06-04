@@ -41,12 +41,12 @@ class Island {
 
   // Pool objects to cut down on object creation.
   ContactSolver _contactSolver;
-  vec2 _translation;
+  Vector _translation;
   ContactImpulse impulse;
 
   Island() :
     _contactSolver = new ContactSolver(),
-    _translation = new vec2.zero(),
+    _translation = new Vector(),
     impulse = new ContactImpulse() { }
 
   //TODO(gregbglw): No need to keep capacity, count and array for these items as
@@ -101,7 +101,7 @@ class Island {
     jointCount = 0;
   }
 
-  void solve(TimeStep time_step, vec2 gravity, bool allowSleep){
+  void solve(TimeStep step, Vector gravity, bool allowSleep){
     // Integrate velocities and apply damping.
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
@@ -110,20 +110,19 @@ class Island {
         continue;
       }
 
-      // TODO(dominic): vector cleanup
-      final velocityDelta = new vec2(
-          (b._force.x * b.invMass + gravity.x) * time_step.dt,
-          (b._force.y * b.invMass + gravity.y) * time_step.dt);
-      b.linearVelocity.add(velocityDelta);
+      final velocityDelta = new Vector(
+          (b._force.x * b.invMass + gravity.x) * step.dt,
+          (b._force.y * b.invMass + gravity.y) * step.dt);
+      b.linearVelocity.addLocal(velocityDelta);
       num newAngularVelocity = b.angularVelocity +
-          (time_step.dt * b.invInertia * b._torque);
+          (step.dt * b.invInertia * b._torque);
       b.angularVelocity = newAngularVelocity;
 
-      num a = (1.0 - time_step.dt * b.linearDamping);
+      num a = (1.0 - step.dt * b.linearDamping);
       num a1 = (0.0 > (a < 1.0 ? a : 1.0) ? 0.0 : (a < 1.0 ? a : 1.0));
-      b.linearVelocity.scale(a1);
+      b.linearVelocity.mulLocal(a1);
 
-      num a2 = (1.0 - time_step.dt * b.angularDamping);
+      num a2 = (1.0 - step.dt * b.angularDamping);
       num b1 = (a2 < 1.0 ? a2 : 1.0);
       b.angularVelocity *= 0.0 > b1 ? 0.0 : b1;
     }
@@ -147,16 +146,16 @@ class Island {
     }
 
     // Initialize velocity constraints.
-    _contactSolver.init(contacts, contactCount, time_step.dtRatio);
+    _contactSolver.init(contacts, contactCount, step.dtRatio);
     _contactSolver.warmStart();
 
     for (int i = 0; i < jointCount; ++i){
-      joints[i].initVelocityConstraints(time_step);
+      joints[i].initVelocityConstraints(step);
     }
 
-    for (int i = 0; i < time_step.velocityIterations; ++i) {
+    for (int i = 0; i < step.velocityIterations; ++i) {
       for (int j = 0; j < jointCount; ++j){
-        joints[j].solveVelocityConstraints(time_step);
+        joints[j].solveVelocityConstraints(step);
       }
       _contactSolver.solveVelocityConstraints();
     }
@@ -165,7 +164,7 @@ class Island {
     _contactSolver.storeImpulses();
 
     // Integrate positions.
-    vec2 temp = new vec2.zero();
+    Vector temp = new Vector();
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
 
@@ -174,13 +173,15 @@ class Island {
       }
 
       // Check for large velocities.
-      _translation.setFrom(b.linearVelocity).scale(time_step.dt);
-      if (dot(_translation, _translation) > Settings.MAX_TRANSLATION_SQUARED) {
+      _translation.setFrom(b.linearVelocity);
+      _translation.mulLocal(step.dt);
+      if (Vector.dot(_translation, _translation) >
+          Settings.MAX_TRANSLATION_SQUARED){
         num ratio = Settings.MAX_TRANSLATION / _translation.length;
-        b.linearVelocity.scale(ratio);
+        b.linearVelocity.mulLocal(ratio);
       }
 
-      num rotation = time_step.dt * b.angularVelocity;
+      num rotation = step.dt * b.angularVelocity;
       if (rotation * rotation > Settings.MAX_ROTATION_SQUARED) {
         num ratio = Settings.MAX_ROTATION / rotation.abs();
         b.angularVelocity *= ratio;
@@ -191,9 +192,10 @@ class Island {
       b.sweep.angleZero = b.sweep.angle;
 
       // Integrate
-      temp.setFrom(b.linearVelocity).scale(time_step.dt);
-      b.sweep.center.add(temp);
-      b.sweep.angle += time_step.dt * b.angularVelocity;
+      temp.setFrom(b.linearVelocity);
+      temp.mulLocal(step.dt);
+      b.sweep.center.addLocal(temp);
+      b.sweep.angle += step.dt * b.angularVelocity;
 
       // Compute new transform
       b.synchronizeTransform();
@@ -202,7 +204,7 @@ class Island {
     }
 
     // Iterate over constraints.
-    for (int i = 0; i < time_step.positionIterations; ++i){
+    for (int i = 0; i < step.positionIterations; ++i){
       bool contactsOkay =
           _contactSolver.solvePositionConstraints(Settings.CONTACT_BAUMGARTE);
 
@@ -243,13 +245,13 @@ class Island {
 
         if ((b.flags & Body.AUTO_SLEEP_FLAG) == 0 ||
             b.angularVelocity * b.angularVelocity > angTolSqr ||
-            dot(b.linearVelocity, b.linearVelocity) > linTolSqr) {
+            Vector.dot(b.linearVelocity, b.linearVelocity) > linTolSqr){
           b.sleepTime = 0.0;
           minSleepTime = 0.0;
         }
         else{
-          b.sleepTime += time_step.dt;
-          minSleepTime = math.min(minSleepTime, b.sleepTime);
+          b.sleepTime += step.dt;
+          minSleepTime = Math.min(minSleepTime, b.sleepTime);
         }
       }
 
@@ -306,22 +308,24 @@ class Island {
  * This is an internal structure
  */
 class Position {
-  vec2 x;
+  Vector x;
   num a;
 
-  Position()
-      : x = new vec2.zero(),
-        a = 0;
+  Position() {
+    x = new Vector();
+    a = 0;
+  }
 }
 
 /**
  * This is an internal structure
  */
 class Velocity {
-  vec2 v;
+  Vector v;
   num a;
 
-  Velocity()
-      : v = new vec2.zero(),
-        a = 0;
+  Velocity() {
+    v = new Vector();
+    a = 0;
+  }
 }

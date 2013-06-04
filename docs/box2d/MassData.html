@@ -38,7 +38,7 @@ class MassData {
  num mass;
 
  /** The position of the shape's centroid relative to the shape's origin. */
- vec2 center;
+ Vector center;
 
  /** The rotational inertia of the shape about the local origin. */
  num inertia;
@@ -49,7 +49,7 @@ class MassData {
  MassData() :
    mass = 0,
    inertia = 0,
-   center = new vec2.zero();
+   center = new Vector() { }
 
  /**
   * Copies from the given mass data.
@@ -57,7 +57,7 @@ class MassData {
  MassData.copy(MassData md) :
    mass = md.mass,
    inertia = md.inertia,
-   center = new vec2.copy(md.center);
+   center = new Vector.copy(md.center) { }
 
  /**
   * Sets this mass data equal to the given mass data.
@@ -82,7 +82,7 @@ new <strong>MassData</strong>() <a class="anchor-link" href="#MassData"
 MassData() :
  mass = 0,
  inertia = 0,
- center = new vec2.zero();
+ center = new Vector() { }
 </pre>
 </div>
 </div>
@@ -96,7 +96,7 @@ new <strong>MassData.copy</strong>(<a href="../box2d/MassData.html">MassData</a>
 MassData.copy(MassData md) :
  mass = md.mass,
  inertia = md.inertia,
- center = new vec2.copy(md.center);
+ center = new Vector.copy(md.center) { }
 </pre>
 </div>
 </div>
@@ -105,14 +105,14 @@ MassData.copy(MassData md) :
 <h3>Properties</h3>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>center</strong> <a class="anchor-link"
+<a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to MassData.center">#</a>
         </h4>
         <div class="doc">
 <p>The position of the shape's centroid relative to the shape's origin. </p>
 <pre class="source">
-vec2 center
+Vector center
 </pre>
 </div>
 </div>

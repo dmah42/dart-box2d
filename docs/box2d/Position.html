@@ -35,12 +35,13 @@
 <p>This is an internal structure</p>
 <pre class="source">
 class Position {
- vec2 x;
+ Vector x;
  num a;
 
- Position()
-     : x = new vec2.zero(),
-       a = 0;
+ Position() {
+   x = new Vector();
+   a = 0;
+ }
 }
 </pre>
 </div>
@@ -52,9 +53,10 @@ new <strong>Position</strong>() <a class="anchor-link" href="#Position"
               title="Permalink to Position.Position">#</a></h4>
 <div class="doc">
 <pre class="source">
-Position()
-   : x = new vec2.zero(),
-     a = 0;
+Position() {
+ x = new Vector();
+ a = 0;
+}
 </pre>
 </div>
 </div>
@@ -75,13 +77,13 @@ num a
 </div>
 <div class="field"><h4 id="x">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>x</strong> <a class="anchor-link"
+<a href="../box2d/Vector.html">Vector</a>         <strong>x</strong> <a class="anchor-link"
             href="#x"
             title="Permalink to Position.x">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-vec2 x
+Vector x
 </pre>
 </div>
 </div>

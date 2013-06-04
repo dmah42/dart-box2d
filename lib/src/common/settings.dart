@@ -45,7 +45,7 @@ class Settings {
   /**
    * A body cannot sleep if its angular velocity is above this tolerance.
    */
-  static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * math.PI;
+  static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI;
 
   static const num TIME_TO_SLEEP = 0.5;
 
@@ -104,7 +104,7 @@ class Settings {
    * The maximum angular velocity of a body. This limit is very large and is
    * used to prevent numerical problems. You shouldn't need to adjust this.
    */
-  static const num MAX_ROTATION = 0.5 * math.PI;
+  static const num MAX_ROTATION = 0.5 * Math.PI;
   static const num MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION;
 
   /**
@@ -116,13 +116,13 @@ class Settings {
    * A small angle used as a collision and constraint tolerance. Usually it is
    * chosen to be numerically significant, but visually insignificant.
    */
-  static const num ANGULAR_SLOP = (2.0 / 180.0 * math.PI);
+  static const num ANGULAR_SLOP = (2.0 / 180.0 * Math.PI);
 
   /**
    * The maximum angular position correction used when solving constraints.
    * This helps to prevent overshoot.
    */
-  static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * math.PI);
+  static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI);
 
   /**
    * The maximum number of vertices on a convex polygon.
@@ -133,7 +133,7 @@ class Settings {
    * Friction mixing law.
    */
   static num mixFriction(num friction1, num friction2) {
-    return math.sqrt(friction1 * friction2);
+    return Math.sqrt(friction1 * friction2);
   }
 
   /**

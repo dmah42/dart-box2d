@@ -34,11 +34,11 @@ class Joint {
 
   bool collideConnected;
 
-  dynamic userData;
+  Object userData;
 
   // Cache here per time step to reduce cache misses.
-  final vec2 localCenterA;
-  final vec2 localCenterB;
+  final Vector localCenterA;
+  final Vector localCenterB;
 
   num invMassA;
   num invIA;
@@ -55,10 +55,10 @@ class Joint {
     islandFlag = false,
     userData = def.userData,
 
-    localCenterA = new vec2.zero(),
-    localCenterB = new vec2.zero(),
+    localCenterA = new Vector(),
+    localCenterB = new Vector(),
     edgeA = new JointEdge(),
-    edgeB = new JointEdge();
+    edgeB = new JointEdge() { }
 
   // TODO(dominich): use 'is' to create the right type of Joint and remove the
   // *Def.type.
@@ -99,13 +99,13 @@ class Joint {
   }
 
   /** Get the anchor point on bodyA in world coordinates. */
-  void getAnchorA(vec2 argOut) { }
+  void getAnchorA(Vector argOut) { }
 
   /** Get the anchor point on bodyB in world coordinates. */
-  void getAnchorB(vec2 argOut) { }
+  void getAnchorB(Vector argOut) { }
 
   /** Get the reaction force on body2 at the joint anchor in Newtons. */
-  void getReactionForce(num inv_dt, vec2 argOut) { }
+  void getReactionForce(num inv_dt, Vector argOut) { }
 
   /** Get the reaction torque on body2 in N*m. */
   num getReactionTorque(num inv_dt) { }
@@ -113,9 +113,9 @@ class Joint {
   /** Short-cut function to determine if either body is inactive. */
   bool get active => bodyA.active && bodyB.active;
 
-  void initVelocityConstraints(TimeStep time_step) { }
+  void initVelocityConstraints(TimeStep step) { }
 
-  void solveVelocityConstraints(TimeStep time_step) { }
+  void solveVelocityConstraints(TimeStep step) { }
 
   /** This returns true if the position errors are within tolerance. */
   bool solvePositionConstraints(num baumgarte) { }

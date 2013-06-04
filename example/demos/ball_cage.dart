@@ -12,15 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 library BallCage;
+
 import 'dart:html';
 import 'package:box2d/box2d_browser.dart';
 
 import 'demo.dart';
 
+class CollisionListener implements ContactListener {
+  void beginContact(Contact contact) {
+    print("begin contact");
+  }
+  void endContact(Contact contact) {
+    print("end contact");
+  }
+}
+
 class BallCage extends Demo {
   /** Starting position of ball cage in the world. */
-  static const double START_X = -20.0;
-  static const double START_Y = -20.0;
+  static const num START_X = -20;
+  static const num START_Y = -20;
 
   /** The radius of the balls forming the arena. */
   static const num WALL_BALL_RADIUS = 2;
@@ -58,25 +68,25 @@ class BallCage extends Demo {
     final num borderLimitY = START_Y + maxShapeinRow * 2 * circleShape.radius;
 
     for (int i = 0; i < maxShapeinRow; i++) {
-      final double shiftX = START_X + circleShape.radius * 2 * i;
-      final double shiftY = START_Y + circleShape.radius * 2 * i;
+      final num shiftX = START_X + circleShape.radius * 2 * i;
+      final num shiftY = START_Y + circleShape.radius * 2 * i;
 
-      circleBodyDef.position = new vec2(shiftX, START_Y);
+      circleBodyDef.position = new Vector(shiftX, START_Y);
       Body circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(shiftX, borderLimitY);
+      circleBodyDef.position = new Vector(shiftX, borderLimitY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(START_X, shiftY);
+      circleBodyDef.position = new Vector(START_X, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new vec2(borderLimitX, shiftY);
+      circleBodyDef.position = new Vector(borderLimitX, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
@@ -94,8 +104,8 @@ class BallCage extends Demo {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new vec2(0.0, -20.0);
-    activeBodyDef.position = new vec2(15.0, 15.0);
+    activeBodyDef.linearVelocity = new Vector(0, -20);
+    activeBodyDef.position = new Vector(15, 15);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);

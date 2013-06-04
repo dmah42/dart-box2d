@@ -15,9 +15,30 @@
 part of box2d;
 
 class MathBox {
-  static const double TWO_PI = math.PI * 2.0;
+  static const double TWO_PI = Math.PI * 2.0;
 
   MathBox();
+
+  /**
+   * Return the distance between the two given vectors, but squared.
+   */
+  static num distanceSquared(Vector v1, Vector v2) {
+    num dx = (v1.x - v2.x);
+    num dy = (v1.y - v2.y);
+    return dx * dx + dy * dy;
+  }
+
+  /**
+   * Return the distance between the two given vectors.
+   */
+  static num distance(Vector v1, Vector v2) {
+    return Math.sqrt(distanceSquared(v1, v2));
+  }
+
+  /** Returns the closest value to [a] that is in between [low] and [high] */
+  static num clamp(num a, num low, num high) {
+    return Math.max(low, Math.min(a, high));
+  }
 
   /**
    * Given a value within the range specified by [fromMin] and [fromMax],
@@ -32,39 +53,8 @@ class MathBox {
     return res;
   }
 
-  /** Solve [matrix]x = [b] without calculating the inverse of [matrix]. */
-  static vec3 solve33(mat3 matrix, vec3 b) {
-    vec3 col0 = matrix.getColumn(0);
-    vec3 col1 = matrix.getColumn(1);
-    vec3 col2 = matrix.getColumn(2);
-
-    vec3 out = cross(col1, col2);
-    num det = dot(col0, out);
-    if (det != 0.0) det = 1.0 / det;
-
-    out = cross(col1, col2);
-    num x = det * dot(b, out);
-    out = cross(b, col2);
-    num y = det * dot(col0, out);
-    out = cross(col1, b);
-    num z = det * dot(col0, out);
-    out.setValues(x, y, z);
-    return out;
-  }
-
-  /** Solve [matrix]x = [b] without calculating the inverse of [matrix].
-   *  [matrix] must be a 2x2 or 3x3 matrix, and in the latter case the top-left
-   *  2x2 elements will be used. [b] must be a vec2. */
-  static vec2 solve22(dynamic matrix, vec2 b) {
-    assert(matrix is mat2 || matrix is mat3);
-    double a11 = matrix.entry(0, 0);
-    double a12 = matrix.entry(0, 1);
-    double a21 = matrix.entry(1, 0);
-    double a22 = matrix.entry(1, 1);
-    double det = a11 * a22 - a12 * a21;
-    if (det != 0.0) det = 1.0 / det;
-    final vec2 out = new vec2(a22 * b.x - a12 * b.y, a11 * b.y - a21 * b.x);
-    out.scale(det);
-    return out;
-  }
+  /** Convert from [deg] degrees to radians. */
+  static num degToRad(num deg) => (Math.PI / 180.0) * deg;
+  /** Convert from [rad] radians to degrees. */
+  static num radToDeg(num rad) => (180.0 / Math.PI) * rad;
 }

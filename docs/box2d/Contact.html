@@ -148,7 +148,7 @@ abstract class Contact {
    // Re-enable this contact.
    flags |= ENABLED_FLAG;
 
-   bool nowTouching = false;
+   bool touching = false;
    bool wasTouching = (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 
    bool sensorA = fixtureA.isSensor;
@@ -163,13 +163,13 @@ abstract class Contact {
    if (sensor) {
      Shape shapeA = fixtureA.shape;
      Shape shapeB = fixtureB.shape;
-     nowTouching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
+     touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
 
      // Sensors don't generate manifolds.
      manifold.pointCount = 0;
    } else {
      evaluate(manifold, xfA, xfB);
-     nowTouching = manifold.pointCount &gt; 0;
+     touching = manifold.pointCount &gt; 0;
 
      // Match old contact ids to new contact ids and copy the
      // stored impulses to warm start the solver.
@@ -190,13 +190,13 @@ abstract class Contact {
        }
      }
 
-     if (nowTouching != wasTouching) {
+     if (touching != wasTouching) {
        bodyA.awake = true;
        bodyB.awake = true;
      }
    }
 
-   if (nowTouching) {
+   if (touching) {
      flags |= TOUCHING_FLAG;
    } else {
      flags &amp;= ~TOUCHING_FLAG;
@@ -206,15 +206,15 @@ abstract class Contact {
      return;
    }
 
-   if (!wasTouching &amp;&amp; nowTouching) {
+   if (!wasTouching &amp;&amp; touching) {
      listener.beginContact(this);
    }
 
-   if (wasTouching &amp;&amp; !nowTouching) {
+   if (wasTouching &amp;&amp; !touching) {
      listener.endContact(this);
    }
 
-   if (sensor == false &amp;&amp; nowTouching) {
+   if (!sensor &amp;&amp; touching) {
      listener.preSolve(this, _oldManifold);
    }
  }
@@ -556,7 +556,7 @@ void update(ContactListener listener) {
  // Re-enable this contact.
  flags |= ENABLED_FLAG;
 
- bool nowTouching = false;
+ bool touching = false;
  bool wasTouching = (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 
  bool sensorA = fixtureA.isSensor;
@@ -571,13 +571,13 @@ void update(ContactListener listener) {
  if (sensor) {
    Shape shapeA = fixtureA.shape;
    Shape shapeB = fixtureB.shape;
-   nowTouching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
+   touching = pool.collision.testOverlap(shapeA, shapeB, xfA, xfB);
 
    // Sensors don't generate manifolds.
    manifold.pointCount = 0;
  } else {
    evaluate(manifold, xfA, xfB);
-   nowTouching = manifold.pointCount &gt; 0;
+   touching = manifold.pointCount &gt; 0;
 
    // Match old contact ids to new contact ids and copy the
    // stored impulses to warm start the solver.
@@ -598,13 +598,13 @@ void update(ContactListener listener) {
      }
    }
 
-   if (nowTouching != wasTouching) {
+   if (touching != wasTouching) {
      bodyA.awake = true;
      bodyB.awake = true;
    }
  }
 
- if (nowTouching) {
+ if (touching) {
    flags |= TOUCHING_FLAG;
  } else {
    flags &amp;= ~TOUCHING_FLAG;
@@ -614,15 +614,15 @@ void update(ContactListener listener) {
    return;
  }
 
- if (!wasTouching &amp;&amp; nowTouching) {
+ if (!wasTouching &amp;&amp; touching) {
    listener.beginContact(this);
  }
 
- if (wasTouching &amp;&amp; !nowTouching) {
+ if (wasTouching &amp;&amp; !touching) {
    listener.endContact(this);
  }
 
- if (sensor == false &amp;&amp; nowTouching) {
+ if (!sensor &amp;&amp; touching) {
    listener.preSolve(this, _oldManifold);
  }
 }

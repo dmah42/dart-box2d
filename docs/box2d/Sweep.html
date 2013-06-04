@@ -35,34 +35,34 @@
 <pre class="source">
 class Sweep {
  /** Local center of mass position. */
- final vec2 localCenter;
+ final Vector localCenter;
 
  /** Center world positions. */
- vec2 centerZero;
- final vec2 center;
+ final Vector centerZero;
+ final Vector center;
 
  /** World angles. */
- double angleZero;
- double angle;
+ num angleZero;
+ num angle;
 
  /**
   * Constructs a new Sweep with centers initialized to the origin and angles
   * set to zero.
   */
- Sweep() :
-   localCenter = new vec2.zero(),
-   centerZero = new vec2.zero(),
-   center = new vec2.zero(),
-   angleZero = 0.0,
-   angle = 0.0;
+ Sweep()
+     : localCenter = new Vector(),
+       centerZero = new Vector(),
+       center = new Vector(),
+       angleZero = 0,
+       angle = 0;
 
  /**
   * Constructs a new sweep that is a copy of the given Sweep.
   */
  Sweep.copy(Sweep other)
-     : localCenter = new vec2.copy(other.localCenter),
-       centerZero = new vec2.copy(other.centerZero),
-       center = new vec2.copy(other.center),
+     : localCenter = new Vector.copy(other.localCenter),
+       centerZero = new Vector.copy(other.centerZero),
+       center = new Vector.copy(other.center),
        angleZero = other.angleZero,
        angle = other.angle;
 
@@ -71,11 +71,9 @@ class Sweep {
   * if their fields are equal.
   */
  bool operator ==(other) {
-   return localCenter == other.localCenter &amp;&amp;
-          centerZero == other.centerZero &amp;&amp;
-          center == other.center &amp;&amp;
-          angleZero == other.angleZero &amp;&amp;
-          angle == other.angle;
+   return localCenter == other.localCenter &amp;&amp; centerZero == other.centerZero
+       &amp;&amp; center == other.center &amp;&amp; angleZero == other.angleZero &amp;&amp;
+       angle == other.angle;
  }
 
  /**
@@ -90,7 +88,7 @@ class Sweep {
  }
 
  void normalize() {
-   double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+   num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
    angleZero -= d;
    angle -= d;
  }
@@ -99,24 +97,28 @@ class Sweep {
   * Computes the interpolated transform at a specific time.
   * Time is the normalized time in [0,1].
   */
- void getTransform(Transform xf, double alpha) {
-   assert(xf != null);
+ void getTransform(Transform xf, num alpha) {
+   assert (xf != null);
 
-   xf.position = mix(centerZero, center, alpha);
-   xf.rotation.setRotation(mix(angleZero, angle, alpha));
+   xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
+   xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
+   xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
 
    // Shift to origin
-   vec2 position_delta = xf.rotation * localCenter;
-   xf.position.setFrom(xf.position - position_delta);
+   xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+       * localCenter.y;
+   xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+       * localCenter.y;
  }
 
  /**
   * Advances the sweep forward, resulting in a new initial state.
   * Time is the new initial time.
   */
- void advance(double time) {
-   centerZero = mix(centerZero, center, time);
-   angleZero = mix(angleZero, angle, time);
+ void advance(num time) {
+   centerZero.x = (1 - time) * centerZero.x + time * center.x;
+   centerZero.y = (1 - time) * centerZero.y + time * center.y;
+   angleZero = (1 - time) * angleZero + time * angle;
  }
 }
 </pre>
@@ -131,12 +133,12 @@ new <strong>Sweep</strong>() <a class="anchor-link" href="#Sweep"
 <p>Constructs a new Sweep with centers initialized to the origin and angles
 set to zero.</p>
 <pre class="source">
-Sweep() :
- localCenter = new vec2.zero(),
- centerZero = new vec2.zero(),
- center = new vec2.zero(),
- angleZero = 0.0,
- angle = 0.0;
+Sweep()
+   : localCenter = new Vector(),
+     centerZero = new Vector(),
+     center = new Vector(),
+     angleZero = 0,
+     angle = 0;
 </pre>
 </div>
 </div>
@@ -148,9 +150,9 @@ new <strong>Sweep.copy</strong>(<a href="../box2d/Sweep.html">Sweep</a> other) <
 <p>Constructs a new sweep that is a copy of the given Sweep.</p>
 <pre class="source">
 Sweep.copy(Sweep other)
-   : localCenter = new vec2.copy(other.localCenter),
-     centerZero = new vec2.copy(other.centerZero),
-     center = new vec2.copy(other.center),
+   : localCenter = new Vector.copy(other.localCenter),
+     centerZero = new Vector.copy(other.centerZero),
+     center = new Vector.copy(other.center),
      angleZero = other.angleZero,
      angle = other.angle;
 </pre>
@@ -161,64 +163,64 @@ Sweep.copy(Sweep other)
 <h3>Properties</h3>
 <div class="field"><h4 id="angle">
 <button class="show-code">Code</button>
-double         <strong>angle</strong> <a class="anchor-link"
+num         <strong>angle</strong> <a class="anchor-link"
             href="#angle"
             title="Permalink to Sweep.angle">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-double angle
+num angle
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angleZero">
 <button class="show-code">Code</button>
-double         <strong>angleZero</strong> <a class="anchor-link"
+num         <strong>angleZero</strong> <a class="anchor-link"
             href="#angleZero"
             title="Permalink to Sweep.angleZero">#</a>
         </h4>
         <div class="doc">
 <p>World angles. </p>
 <pre class="source">
-double angleZero
+num angleZero
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to Sweep.center">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 center
+final Vector center
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="centerZero">
 <button class="show-code">Code</button>
-<a href="../vector_math/vec2.html">vec2</a>         <strong>centerZero</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>centerZero</strong> <a class="anchor-link"
             href="#centerZero"
             title="Permalink to Sweep.centerZero">#</a>
         </h4>
         <div class="doc">
 <p>Center world positions. </p>
 <pre class="source">
-vec2 centerZero
+final Vector centerZero
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localCenter">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenter</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenter</strong> <a class="anchor-link"
             href="#localCenter"
             title="Permalink to Sweep.localCenter">#</a>
         </h4>
         <div class="doc">
 <p>Local center of mass position. </p>
 <pre class="source">
-final vec2 localCenter
+final Vector localCenter
 </pre>
 </div>
 </div>
@@ -234,11 +236,9 @@ bool <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
 if their fields are equal.</p>
 <pre class="source">
 bool operator ==(other) {
- return localCenter == other.localCenter &amp;&amp;
-        centerZero == other.centerZero &amp;&amp;
-        center == other.center &amp;&amp;
-        angleZero == other.angleZero &amp;&amp;
-        angle == other.angle;
+ return localCenter == other.localCenter &amp;&amp; centerZero == other.centerZero
+     &amp;&amp; center == other.center &amp;&amp; angleZero == other.angleZero &amp;&amp;
+     angle == other.angle;
 }
 </pre>
 </div>
@@ -248,36 +248,40 @@ bool operator ==(other) {
 <h3>Methods</h3>
 <div class="method"><h4 id="advance">
 <button class="show-code">Code</button>
-void <strong>advance</strong>(double time) <a class="anchor-link" href="#advance"
+void <strong>advance</strong>(num time) <a class="anchor-link" href="#advance"
               title="Permalink to Sweep.advance">#</a></h4>
 <div class="doc">
 <p>Advances the sweep forward, resulting in a new initial state.
 Time is the new initial time.</p>
 <pre class="source">
-void advance(double time) {
- centerZero = mix(centerZero, center, time);
- angleZero = mix(angleZero, angle, time);
+void advance(num time) {
+ centerZero.x = (1 - time) * centerZero.x + time * center.x;
+ centerZero.y = (1 - time) * centerZero.y + time * center.y;
+ angleZero = (1 - time) * angleZero + time * angle;
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getTransform">
 <button class="show-code">Code</button>
-void <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, double alpha) <a class="anchor-link" href="#getTransform"
+void <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, num alpha) <a class="anchor-link" href="#getTransform"
               title="Permalink to Sweep.getTransform">#</a></h4>
 <div class="doc">
 <p>Computes the interpolated transform at a specific time.
 Time is the normalized time in <code>0,1</code>.</p>
 <pre class="source">
-void getTransform(Transform xf, double alpha) {
- assert(xf != null);
+void getTransform(Transform xf, num alpha) {
+ assert (xf != null);
 
- xf.position = mix(centerZero, center, alpha);
- xf.rotation.setRotation(mix(angleZero, angle, alpha));
+ xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
+ xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
+ xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
 
  // Shift to origin
- vec2 position_delta = xf.rotation * localCenter;
- xf.position.setFrom(xf.position - position_delta);
+ xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+     * localCenter.y;
+ xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+     * localCenter.y;
 }
 </pre>
 </div>
@@ -289,7 +293,7 @@ void <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
 <div class="doc">
 <pre class="source">
 void normalize() {
- double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+ num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
  angleZero -= d;
  angle -= d;
 }

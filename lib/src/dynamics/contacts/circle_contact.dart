@@ -18,8 +18,8 @@ class CircleContact extends Contact {
   CircleContact(DefaultWorldPool argPool) : super(argPool) { }
 
   void init(Fixture fA, Fixture fB) {
-    expect(ShapeType.CIRCLE, fA.type);
-    expect(ShapeType.CIRCLE, fB.type);
+    assert(ShapeType.CIRCLE == fA.type);
+    assert(ShapeType.CIRCLE == fB.type);
     super.init(fA, fB);
   }
 

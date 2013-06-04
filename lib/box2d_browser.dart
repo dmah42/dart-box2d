@@ -13,8 +13,8 @@
 // limitations under the License.
 library box2d_browser;
 
-import 'package:box2d/box2d.dart';
 import 'dart:html';
+import 'package:box2d/box2d.dart';
 
 export 'package:box2d/box2d.dart';
 

@@ -34,20 +34,20 @@
 <div class="doc">
 <pre class="source">
 class SimplexVertex {
- final vec2 wA; // support point in shapeA
- final vec2 wB; // support point in shapeB
- final vec2 w; // wB - wA
+ final Vector wA; // support point in shapeA
+ final Vector wB; // support point in shapeB
+ final Vector w; // wB - wA
  num a; // barycentric coordinate for closest point
  int indexA; // wA index
  int indexB; // wB index
 
  SimplexVertex() :
-   wA = new vec2.zero(),
-   wB = new vec2.zero(),
-   w = new vec2.zero(),
+   wA = new Vector(),
+   wB = new Vector(),
+   w = new Vector(),
    a = 0,
    indexA = 0,
-   indexB = 0;
+   indexB = 0 { }
 
  void setFrom(SimplexVertex sv) {
    wA.setFrom(sv.wA);
@@ -71,12 +71,12 @@ new <strong>SimplexVertex</strong>() <a class="anchor-link" href="#SimplexVertex
 <div class="doc">
 <pre class="source">
 SimplexVertex() :
- wA = new vec2.zero(),
- wB = new vec2.zero(),
- w = new vec2.zero(),
+ wA = new Vector(),
+ wB = new Vector(),
+ w = new Vector(),
  a = 0,
  indexA = 0,
- indexB = 0;
+ indexB = 0 { }
 </pre>
 </div>
 </div>
@@ -121,37 +121,37 @@ int indexB
 </div>
 <div class="field"><h4 id="w">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>w</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>w</strong> <a class="anchor-link"
             href="#w"
             title="Permalink to SimplexVertex.w">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 w
+final Vector w
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="wA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>wA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>wA</strong> <a class="anchor-link"
             href="#wA"
             title="Permalink to SimplexVertex.wA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 wA
+final Vector wA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="wB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>wB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>wB</strong> <a class="anchor-link"
             href="#wB"
             title="Permalink to SimplexVertex.wB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 wB
+final Vector wB
 </pre>
 </div>
 </div>

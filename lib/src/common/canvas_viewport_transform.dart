@@ -25,7 +25,7 @@ class CanvasViewportTransform extends ViewportTransform {
   /**
    * Constructs a new viewport transform with the default scale.
    */
-  CanvasViewportTransform(vec2 _extents, vec2 _center) :
+  CanvasViewportTransform(Vector _extents, Vector _center) :
     super(_extents, _center, DEFAULT_DRAWING_SCALE) {
     yFlip = true;
   }

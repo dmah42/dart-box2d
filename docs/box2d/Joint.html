@@ -49,11 +49,11 @@ class Joint {
 
  bool collideConnected;
 
- dynamic userData;
+ Object userData;
 
  // Cache here per time step to reduce cache misses.
- final vec2 localCenterA;
- final vec2 localCenterB;
+ final Vector localCenterA;
+ final Vector localCenterB;
 
  num invMassA;
  num invIA;
@@ -70,10 +70,10 @@ class Joint {
    islandFlag = false,
    userData = def.userData,
 
-   localCenterA = new vec2.zero(),
-   localCenterB = new vec2.zero(),
+   localCenterA = new Vector(),
+   localCenterB = new Vector(),
    edgeA = new JointEdge(),
-   edgeB = new JointEdge();
+   edgeB = new JointEdge() { }
 
  // TODO(dominich): use 'is' to create the right type of Joint and remove the
  // *Def.type.
@@ -114,13 +114,13 @@ class Joint {
  }
 
  /** Get the anchor point on bodyA in world coordinates. */
- void getAnchorA(vec2 argOut) { }
+ void getAnchorA(Vector argOut) { }
 
  /** Get the anchor point on bodyB in world coordinates. */
- void getAnchorB(vec2 argOut) { }
+ void getAnchorB(Vector argOut) { }
 
  /** Get the reaction force on body2 at the joint anchor in Newtons. */
- void getReactionForce(num inv_dt, vec2 argOut) { }
+ void getReactionForce(num inv_dt, Vector argOut) { }
 
  /** Get the reaction torque on body2 in N*m. */
  num getReactionTorque(num inv_dt) { }
@@ -128,9 +128,9 @@ class Joint {
  /** Short-cut function to determine if either body is inactive. */
  bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 
- void initVelocityConstraints(TimeStep time_step) { }
+ void initVelocityConstraints(TimeStep step) { }
 
- void solveVelocityConstraints(TimeStep time_step) { }
+ void solveVelocityConstraints(TimeStep step) { }
 
  /** This returns true if the position errors are within tolerance. */
  bool solvePositionConstraints(num baumgarte) { }
@@ -176,10 +176,10 @@ Joint(JointDef def) :
  islandFlag = false,
  userData = def.userData,
 
- localCenterA = new vec2.zero(),
- localCenterB = new vec2.zero(),
+ localCenterA = new Vector(),
+ localCenterB = new Vector(),
  edgeA = new JointEdge(),
- edgeB = new JointEdge();
+ edgeB = new JointEdge() { }
 </pre>
 </div>
 </div>
@@ -361,25 +361,25 @@ bool islandFlag
 </div>
 <div class="field"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to Joint.localCenterA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localCenterA
+final Vector localCenterA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../vector_math/vec2.html">vec2</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to Joint.localCenterB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final vec2 localCenterB
+final Vector localCenterB
 </pre>
 </div>
 </div>
@@ -397,13 +397,13 @@ int type
 </div>
 <div class="field"><h4 id="userData">
 <button class="show-code">Code</button>
-var         <strong>userData</strong> <a class="anchor-link"
+Object         <strong>userData</strong> <a class="anchor-link"
             href="#userData"
             title="Permalink to Joint.userData">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-dynamic userData
+Object userData
 </pre>
 </div>
 </div>
@@ -423,34 +423,34 @@ void destructor() { }
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../vector_math/vec2.html">vec2</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to Joint.getAnchorA">#</a></h4>
 <div class="doc">
 <p>Get the anchor point on bodyA in world coordinates. </p>
 <pre class="source">
-void getAnchorA(vec2 argOut) { }
+void getAnchorA(Vector argOut) { }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../vector_math/vec2.html">vec2</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to Joint.getAnchorB">#</a></h4>
 <div class="doc">
 <p>Get the anchor point on bodyB in world coordinates. </p>
 <pre class="source">
-void getAnchorB(vec2 argOut) { }
+void getAnchorB(Vector argOut) { }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(num inv_dt, <a href="../vector_math/vec2.html">vec2</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(num inv_dt, <a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to Joint.getReactionForce">#</a></h4>
 <div class="doc">
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <pre class="source">
-void getReactionForce(num inv_dt, vec2 argOut) { }
+void getReactionForce(num inv_dt, Vector argOut) { }
 </pre>
 </div>
 </div>
@@ -467,11 +467,11 @@ num getReactionTorque(num inv_dt) { }
 </div>
 <div class="method"><h4 id="initVelocityConstraints">
 <button class="show-code">Code</button>
-void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> time_step) <a class="anchor-link" href="#initVelocityConstraints"
+void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#initVelocityConstraints"
               title="Permalink to Joint.initVelocityConstraints">#</a></h4>
 <div class="doc">
 <pre class="source">
-void initVelocityConstraints(TimeStep time_step) { }
+void initVelocityConstraints(TimeStep step) { }
 </pre>
 </div>
 </div>
@@ -488,11 +488,11 @@ bool solvePositionConstraints(num baumgarte) { }
 </div>
 <div class="method"><h4 id="solveVelocityConstraints">
 <button class="show-code">Code</button>
-void <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> time_step) <a class="anchor-link" href="#solveVelocityConstraints"
+void <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#solveVelocityConstraints"
               title="Permalink to Joint.solveVelocityConstraints">#</a></h4>
 <div class="doc">
 <pre class="source">
-void solveVelocityConstraints(TimeStep time_step) { }
+void solveVelocityConstraints(TimeStep step) { }
 </pre>
 </div>
 </div>

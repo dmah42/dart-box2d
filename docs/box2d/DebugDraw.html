@@ -63,22 +63,22 @@ abstract class DebugDraw {
  void clearFlags(int value) { flags &amp;= ~value; }
 
  /** Draw a closed polygon provided in CCW order. */
- void drawPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color);
+ void drawPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color);
 
  /** Draws the given point with the given radius and color.  */
- void drawPoint(vec2 point, num radiusOnScreen, Color3 color);
+ void drawPoint(Vector point, num radiusOnScreen, Color3 color);
 
  /** Draw a solid closed polygon provided in CCW order. */
- void drawSolidPolygon(List&lt;vec2&gt; vertices, int vertexCount, Color3 color);
+ void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color);
 
  /** Draw a circle. */
- void drawCircle(vec2 center, num radius, Color3 color, [vec2 axis]);
+ void drawCircle(Vector center, num radius, Color3 color, [Vector axis]);
 
  /** Draw a solid circle. */
- void drawSolidCircle(vec2 center, num radius, Color3 color, [vec2 axis]);
+ void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]);
 
  /** Draw a line segment. */
- void drawSegment(vec2 p1, vec2 p2, Color3 color);
+ void drawSegment(Vector p1, Vector p2, Color3 color);
 
  /** Draw a transform.  Choose your own length scale. */
  void drawTransform(Transform xf, Color3 color);
@@ -99,7 +99,7 @@ abstract class DebugDraw {
   * Screen coordinates are specified in argScreen. These coordinates are
   * converted to World coordinates and placed in the argWorld return vector.
   */
- void getScreenToWorldToOut(vec2 argScreen, vec2 argWorld) {
+ void getScreenToWorldToOut(Vector argScreen, Vector argWorld) {
    viewportTransform.getScreenToWorld(argScreen, argWorld);
  }
 
@@ -107,7 +107,7 @@ abstract class DebugDraw {
   * World coordinates are specified in argWorld. These coordinates are
   * converted to screen coordinates and placed in the argScreen return vector.
   */
- void getWorldToScreenToOut(vec2 argWorld, vec2 argScreen) {
+ void getWorldToScreenToOut(Vector argWorld, Vector argScreen) {
    viewportTransform.getWorldToScreen(argWorld, argScreen);
  }
 }
@@ -272,42 +272,42 @@ void clearFlags(int value) { flags &amp;= ~value; }
 </div>
 </div>
 <div class="method"><h4 id="drawCircle">
-abstract void <strong>drawCircle</strong>(<a href="../vector_math/vec2.html">vec2</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/vec2.html">vec2</a> axis]) <a class="anchor-link" href="#drawCircle"
+abstract void <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to DebugDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPoint">
-abstract void <strong>drawPoint</strong>(<a href="../vector_math/vec2.html">vec2</a> point, num radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
+abstract void <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point, num radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to DebugDraw.drawPoint">#</a></h4>
 <div class="doc">
 <p>Draws the given point with the given radius and color.  </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPolygon">
-abstract void <strong>drawPolygon</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
+abstract void <strong>drawPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
               title="Permalink to DebugDraw.drawPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a closed polygon provided in CCW order. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSegment">
-abstract void <strong>drawSegment</strong>(<a href="../vector_math/vec2.html">vec2</a> p1, <a href="../vector_math/vec2.html">vec2</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
+abstract void <strong>drawSegment</strong>(<a href="../box2d/Vector.html">Vector</a> p1, <a href="../box2d/Vector.html">Vector</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
               title="Permalink to DebugDraw.drawSegment">#</a></h4>
 <div class="doc">
 <p>Draw a line segment. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidCircle">
-abstract void <strong>drawSolidCircle</strong>(<a href="../vector_math/vec2.html">vec2</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/vec2.html">vec2</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
+abstract void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to DebugDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidPolygon">
-abstract void <strong>drawSolidPolygon</strong>(List&lt;<a href="../vector_math/vec2.html">vec2</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
+abstract void <strong>drawSolidPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
               title="Permalink to DebugDraw.drawSolidPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a solid closed polygon provided in CCW order. </p>
@@ -329,13 +329,13 @@ abstract void <strong>drawTransform</strong>(<a href="../box2d/Transform.html">T
 </div>
 <div class="method"><h4 id="getScreenToWorldToOut">
 <button class="show-code">Code</button>
-void <strong>getScreenToWorldToOut</strong>(<a href="../vector_math/vec2.html">vec2</a> argScreen, <a href="../vector_math/vec2.html">vec2</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
+void <strong>getScreenToWorldToOut</strong>(<a href="../box2d/Vector.html">Vector</a> argScreen, <a href="../box2d/Vector.html">Vector</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
               title="Permalink to DebugDraw.getScreenToWorldToOut">#</a></h4>
 <div class="doc">
 <p>Screen coordinates are specified in argScreen. These coordinates are
 converted to World coordinates and placed in the argWorld return vector.</p>
 <pre class="source">
-void getScreenToWorldToOut(vec2 argScreen, vec2 argWorld) {
+void getScreenToWorldToOut(Vector argScreen, Vector argWorld) {
  viewportTransform.getScreenToWorld(argScreen, argWorld);
 }
 </pre>
@@ -343,13 +343,13 @@ void getScreenToWorldToOut(vec2 argScreen, vec2 argWorld) {
 </div>
 <div class="method"><h4 id="getWorldToScreenToOut">
 <button class="show-code">Code</button>
-void <strong>getWorldToScreenToOut</strong>(<a href="../vector_math/vec2.html">vec2</a> argWorld, <a href="../vector_math/vec2.html">vec2</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
+void <strong>getWorldToScreenToOut</strong>(<a href="../box2d/Vector.html">Vector</a> argWorld, <a href="../box2d/Vector.html">Vector</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
               title="Permalink to DebugDraw.getWorldToScreenToOut">#</a></h4>
 <div class="doc">
 <p>World coordinates are specified in argWorld. These coordinates are
 converted to screen coordinates and placed in the argScreen return vector.</p>
 <pre class="source">
-void getWorldToScreenToOut(vec2 argWorld, vec2 argScreen) {
+void getWorldToScreenToOut(Vector argWorld, Vector argScreen) {
  viewportTransform.getWorldToScreen(argWorld, argScreen);
 }
 </pre>

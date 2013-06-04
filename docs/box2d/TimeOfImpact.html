@@ -87,7 +87,7 @@ class TimeOfImpact {
    // CCD via the local separating axis method. This seeks progression
    // by computing the largest time at which separation is maintained.
    ++toiCalls;
-   
+
    output.state = TimeOfImpactOutputState.UNKNOWN;
    output.t = input.tMax;
 
@@ -105,13 +105,13 @@ class TimeOfImpact {
    num tMax = input.tMax;
 
    num totalRadius = proxyA.radius + proxyB.radius;
-   num target = math.max(Settings.LINEAR_SLOP, totalRadius
+   num target = Math.max(Settings.LINEAR_SLOP, totalRadius
        - 3.0 * Settings.LINEAR_SLOP);
    num tolerance = 0.25 * Settings.LINEAR_SLOP;
 
    assert (target &gt; tolerance);
 
-   double t1 = 0.0;
+   num t1 = 0;
    int iter = 0;
 
    cache.count = 0;
@@ -128,17 +128,17 @@ class TimeOfImpact {
      // to get a separating axis
      distanceInput.transformA = xfA;
      distanceInput.transformB = xfB;
-     pool.distance.computeDistance(distanceOutput, cache, distanceInput);
+     pool.distance.distance(distanceOutput, cache, distanceInput);
 
      // If the shapes are overlapped, we give up on continuous collision.
-     if (distanceOutput._distance &lt;= 0) {
+     if (distanceOutput.distance &lt;= 0) {
        // Failure!
        output.state = TimeOfImpactOutputState.OVERLAPPED;
        output.t = 0;
        break;
      }
 
-     if (distanceOutput._distance &lt; target + tolerance) {
+     if (distanceOutput.distance &lt; target + tolerance) {
        // Victory!
        output.state = TimeOfImpactOutputState.TOUCHING;
        output.t = t1;
@@ -234,7 +234,7 @@ class TimeOfImpact {
          }
        }
 
-       toiMaxRootIters = math.max(toiMaxRootIters, rootIterCount);
+       toiMaxRootIters = Math.max(toiMaxRootIters, rootIterCount);
 
        ++pushBackIter;
 
@@ -246,20 +246,18 @@ class TimeOfImpact {
      ++iter;
      ++toiIters;
 
-     if (done) {
+     if (done)
        break;
-     }
 
      if (iter == MAX_ITERATIONS) {
        // Root finder got stuck. Semi-victory.
-       print('root finder stuck');
        output.state = TimeOfImpactOutputState.FAILED;
        output.t = t1;
        break;
      }
    }
 
-   toiMaxIters = math.max(toiMaxIters, iter);
+   toiMaxIters = Math.max(toiMaxIters, iter);
  }
 }
 </pre>
@@ -481,7 +479,7 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
  // CCD via the local separating axis method. This seeks progression
  // by computing the largest time at which separation is maintained.
  ++toiCalls;
- 
+
  output.state = TimeOfImpactOutputState.UNKNOWN;
  output.t = input.tMax;
 
@@ -499,13 +497,13 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
  num tMax = input.tMax;
 
  num totalRadius = proxyA.radius + proxyB.radius;
- num target = math.max(Settings.LINEAR_SLOP, totalRadius
+ num target = Math.max(Settings.LINEAR_SLOP, totalRadius
      - 3.0 * Settings.LINEAR_SLOP);
  num tolerance = 0.25 * Settings.LINEAR_SLOP;
 
  assert (target &gt; tolerance);
 
- double t1 = 0.0;
+ num t1 = 0;
  int iter = 0;
 
  cache.count = 0;
@@ -522,17 +520,17 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
    // to get a separating axis
    distanceInput.transformA = xfA;
    distanceInput.transformB = xfB;
-   pool.distance.computeDistance(distanceOutput, cache, distanceInput);
+   pool.distance.distance(distanceOutput, cache, distanceInput);
 
    // If the shapes are overlapped, we give up on continuous collision.
-   if (distanceOutput._distance &lt;= 0) {
+   if (distanceOutput.distance &lt;= 0) {
      // Failure!
      output.state = TimeOfImpactOutputState.OVERLAPPED;
      output.t = 0;
      break;
    }
 
-   if (distanceOutput._distance &lt; target + tolerance) {
+   if (distanceOutput.distance &lt; target + tolerance) {
      // Victory!
      output.state = TimeOfImpactOutputState.TOUCHING;
      output.t = t1;
@@ -628,7 +626,7 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
        }
      }
 
-     toiMaxRootIters = math.max(toiMaxRootIters, rootIterCount);
+     toiMaxRootIters = Math.max(toiMaxRootIters, rootIterCount);
 
      ++pushBackIter;
 
@@ -640,20 +638,18 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
    ++iter;
    ++toiIters;
 
-   if (done) {
+   if (done)
      break;
-   }
 
    if (iter == MAX_ITERATIONS) {
      // Root finder got stuck. Semi-victory.
-     print('root finder stuck');
      output.state = TimeOfImpactOutputState.FAILED;
      output.t = t1;
      break;
    }
  }
 
- toiMaxIters = math.max(toiMaxIters, iter);
+ toiMaxIters = Math.max(toiMaxIters, iter);
 }
 </pre>
 </div>

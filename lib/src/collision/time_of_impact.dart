@@ -73,7 +73,7 @@ class TimeOfImpact {
     // CCD via the local separating axis method. This seeks progression
     // by computing the largest time at which separation is maintained.
     ++toiCalls;
-    
+
     output.state = TimeOfImpactOutputState.UNKNOWN;
     output.t = input.tMax;
 
@@ -91,13 +91,13 @@ class TimeOfImpact {
     num tMax = input.tMax;
 
     num totalRadius = proxyA.radius + proxyB.radius;
-    num target = math.max(Settings.LINEAR_SLOP, totalRadius
+    num target = Math.max(Settings.LINEAR_SLOP, totalRadius
         - 3.0 * Settings.LINEAR_SLOP);
     num tolerance = 0.25 * Settings.LINEAR_SLOP;
 
     assert (target > tolerance);
 
-    double t1 = 0.0;
+    num t1 = 0;
     int iter = 0;
 
     cache.count = 0;
@@ -114,17 +114,17 @@ class TimeOfImpact {
       // to get a separating axis
       distanceInput.transformA = xfA;
       distanceInput.transformB = xfB;
-      pool.distance.computeDistance(distanceOutput, cache, distanceInput);
+      pool.distance.distance(distanceOutput, cache, distanceInput);
 
       // If the shapes are overlapped, we give up on continuous collision.
-      if (distanceOutput._distance <= 0) {
+      if (distanceOutput.distance <= 0) {
         // Failure!
         output.state = TimeOfImpactOutputState.OVERLAPPED;
         output.t = 0;
         break;
       }
 
-      if (distanceOutput._distance < target + tolerance) {
+      if (distanceOutput.distance < target + tolerance) {
         // Victory!
         output.state = TimeOfImpactOutputState.TOUCHING;
         output.t = t1;
@@ -220,7 +220,7 @@ class TimeOfImpact {
           }
         }
 
-        toiMaxRootIters = math.max(toiMaxRootIters, rootIterCount);
+        toiMaxRootIters = Math.max(toiMaxRootIters, rootIterCount);
 
         ++pushBackIter;
 
@@ -232,20 +232,18 @@ class TimeOfImpact {
       ++iter;
       ++toiIters;
 
-      if (done) {
+      if (done)
         break;
-      }
 
       if (iter == MAX_ITERATIONS) {
         // Root finder got stuck. Semi-victory.
-        print('root finder stuck');
         output.state = TimeOfImpactOutputState.FAILED;
         output.t = t1;
         break;
       }
     }
 
-    toiMaxIters = math.max(toiMaxIters, iter);
+    toiMaxIters = Math.max(toiMaxIters, iter);
   }
 }
 
@@ -253,24 +251,24 @@ class SeparationFunction {
   DistanceProxy proxyA;
   DistanceProxy proxyB;
   int type;
-  final vec2 localPoint;
-  final vec2 axis;
+  final Vector localPoint;
+  final Vector axis;
   Sweep sweepA;
   Sweep sweepB;
 
   /** Pooling */
-  final vec2 localPointA;
-  final vec2 localPointB;
-  final vec2 pointA;
-  final vec2 pointB;
-  final vec2 localPointA1;
-  final vec2 localPointA2;
-  final vec2 normal;
-  final vec2 localPointB1;
-  final vec2 localPointB2;
-  final vec2 axisA;
-  final vec2 axisB;
-  final vec2 temp;
+  final Vector localPointA;
+  final Vector localPointB;
+  final Vector pointA;
+  final Vector pointB;
+  final Vector localPointA1;
+  final Vector localPointA2;
+  final Vector normal;
+  final Vector localPointB1;
+  final Vector localPointB2;
+  final Vector axisA;
+  final Vector axisB;
+  final Vector temp;
   final Transform xfa;
   final Transform xfb;
 
@@ -278,24 +276,24 @@ class SeparationFunction {
     proxyA = new DistanceProxy(),
     proxyB = new DistanceProxy(),
     type = SeparationType.POINTS,
-    localPoint = new vec2.zero(),
-    axis = new vec2.zero(),
+    localPoint = new Vector(),
+    axis = new Vector(),
     sweepA = new Sweep(),
     sweepB = new Sweep(),
-    localPointA = new vec2.zero(),
-    localPointB = new vec2.zero(),
-    pointA = new vec2.zero(),
-    pointB = new vec2.zero(),
-    localPointA1 = new vec2.zero(),
-    localPointA2 = new vec2.zero(),
-    normal = new vec2.zero(),
-    localPointB1 = new vec2.zero(),
-    localPointB2 = new vec2.zero(),
-    temp = new vec2.zero(),
+    localPointA = new Vector(),
+    localPointB = new Vector(),
+    pointA = new Vector(),
+    pointB = new Vector(),
+    localPointA1 = new Vector(),
+    localPointA2 = new Vector(),
+    normal = new Vector(),
+    localPointB1 = new Vector(),
+    localPointB2 = new Vector(),
+    temp = new Vector(),
     xfa = new Transform(),
     xfb = new Transform(),
-    axisA = new vec2.zero(),
-    axisB = new vec2.zero();
+    axisA = new Vector(),
+    axisB = new Vector() { }
 
   num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
       argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -316,9 +314,8 @@ class SeparationFunction {
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
       Transform.mulToOut(xfb, localPointB, pointB);
-      axis.setFrom(pointB).sub(pointA);
-      num s = axis.length;
-      axis.normalize();
+      axis.setFrom(pointB).subLocal(pointA);
+      num s = axis.normalize();
       return s;
     } else if (cache.indexA[0] == cache.indexA[1]) {
       // Two points on B and one on A.
@@ -327,22 +324,25 @@ class SeparationFunction {
       localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
-      temp.setFrom(localPointB2).sub(localPointB1);
-      cross(temp, 1.0, axis);
+      temp.setFrom(localPointB2).subLocal(localPointB1);
+      Vector.crossVectorAndNumToOut(temp, 1, axis);
       axis.normalize();
 
-      xfb.rotation.transformed(axis, normal);
+      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
 
-      localPoint.setFrom(localPointB1).add(localPointB2).scale(0.5);
+      localPoint.setFrom(localPointB1);
+      localPoint.addLocal(localPointB2);
+      localPoint.mulLocal(.5);
       Transform.mulToOut(xfb, localPoint, pointB);
 
       localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
 
-      temp.setFrom(pointA).sub(pointB);
-      num s = dot(temp, normal);
+      temp.setFrom(pointA);
+      temp.subLocal(pointB);
+      num s = Vector.dot(temp, normal);
       if (s < 0.0) {
-        axis.negate();
+        axis.negateLocal();
         s = -s;
       }
 
@@ -354,22 +354,26 @@ class SeparationFunction {
       localPointA1.setFrom(proxyA.vertices[cache.indexA[0]]);
       localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
 
-      temp.setFrom(localPointA2).sub(localPointA1);
-      cross(temp, 1.0, axis);
+      temp.setFrom(localPointA2);
+      temp.subLocal(localPointA1);
+      Vector.crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
-      xfa.rotation.transformed(axis, normal);
+      Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
 
-      localPoint.setFrom(localPointA1).add(localPointA2).scale(0.5);
+      localPoint.setFrom(localPointA1);
+      localPoint.addLocal(localPointA2);
+      localPoint.mulLocal(.5);
       Transform.mulToOut(xfa, localPoint, pointA);
 
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfb, localPointB, pointB);
 
-      temp.setFrom(pointB).sub(pointA);
-      num s = dot(temp, normal);
+      temp.setFrom(pointB);
+      temp.subLocal(pointA);
+      num s = Vector.dot(temp, normal);
       if (s < 0.0) {
-        axis.negate();
+        axis.negateLocal();
         s = -s;
       }
       return s;
@@ -382,9 +386,10 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        xfa.rotation.transposed().transformed(axis, axisA);
-        xfb.rotation.transposed().transformed(axis.negate(), axisB);
-        axis.negate();
+        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+            axisB);
+        axis.negateLocal();
 
         indexes[0] = proxyA.getSupport(axisA);
         indexes[1] = proxyB.getSupport(axisB);
@@ -395,15 +400,16 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.sub(pointA), axis);
+        num separation = Vector.dot(pointB.subLocal(pointA), axis);
+        return separation;
 
       case SeparationType.FACE_A:
-        xfa.rotation.transformed(axis, normal);
+        Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        normal.negate();
-        xfb.rotation.transposed().transformed(normal, axisB);
-        normal.negate();
+        normal.negateLocal();
+        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        normal.negateLocal();
 
         indexes[0] = -1;
         indexes[1] = proxyB.getSupport(axisB);
@@ -411,14 +417,16 @@ class SeparationFunction {
         localPointB.setFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.sub(pointA), normal);
+        num separation = Vector.dot(pointB.subLocal(pointA), normal);
+        return separation;
 
       case SeparationType.FACE_B:
-        xfb.rotation.transformed(axis, normal);
+        Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        xfa.rotation.transposed().transformed(normal.negate(), axisA);
-        normal.negate();
+        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
+            normal.negateLocal(), axisA);
+        normal.negateLocal();
 
         indexes[1] = -1;
         indexes[0] = proxyA.getSupport(axisA);
@@ -426,7 +434,7 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = dot(pointA.sub(pointB), normal);
+        num separation = Vector.dot(pointA.subLocal(pointB), normal);
         return separation;
 
       default:
@@ -443,9 +451,10 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        xfa.rotation.transposed().transformed(axis, axisA);
-        xfb.rotation.transposed().transformed(axis.negate(), axisB);
-        axis.negate();
+        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+            axisB);
+        axis.negateLocal();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
         localPointB.setFrom(proxyB.vertices[indexB]);
@@ -453,31 +462,35 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        return dot(pointB.sub(pointA), axis);
+        num separation = Vector.dot(pointB.subLocal(pointA), axis);
+        return separation;
 
       case SeparationType.FACE_A:
-        xfa.rotation.transformed(axis, normal);
+        Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        xfb.rotation.transposed().transformed(normal.negate(), axisB);
-        normal.negate();
+        normal.negateLocal();
+        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        normal.negateLocal();
 
         localPointB.setFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        num separation = dot(pointB.sub(pointA), normal);
+        num separation = Vector.dot(pointB.subLocal(pointA), normal);
         return separation;
 
       case SeparationType.FACE_B:
-        xfb.rotation.transformed(axis, normal);
+        Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        xfa.rotation.transposed().transformed(normal.negate(), axisA);
-        normal.negate();
+        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
+            normal.negateLocal(), axisA);
+        normal.negateLocal();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        return  dot(pointA.sub(pointB), normal);
+        num separation = Vector.dot(pointA.subLocal(pointB), normal);
+        return separation;
 
       default:
         assert (false);
@@ -526,7 +539,7 @@ class TimeOfImpactOutput {
 
   TimeOfImpactOutput() :
     state = TimeOfImpactOutputState.UNKNOWN,
-    t = 0;
+    t = 0 { }
 }
 
 class SeparationType {

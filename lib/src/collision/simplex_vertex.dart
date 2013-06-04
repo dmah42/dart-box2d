@@ -17,20 +17,20 @@
 part of box2d;
 
 class SimplexVertex {
-  final vec2 wA; // support point in shapeA
-  final vec2 wB; // support point in shapeB
-  final vec2 w; // wB - wA
+  final Vector wA; // support point in shapeA
+  final Vector wB; // support point in shapeB
+  final Vector w; // wB - wA
   num a; // barycentric coordinate for closest point
   int indexA; // wA index
   int indexB; // wB index
 
   SimplexVertex() :
-    wA = new vec2.zero(),
-    wB = new vec2.zero(),
-    w = new vec2.zero(),
+    wA = new Vector(),
+    wB = new Vector(),
+    w = new Vector(),
     a = 0,
     indexA = 0,
-    indexB = 0;
+    indexB = 0 { }
 
   void setFrom(SimplexVertex sv) {
     wA.setFrom(sv.wA);

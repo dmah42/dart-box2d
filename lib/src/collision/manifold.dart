@@ -31,7 +31,7 @@ class Manifold {
    * faceA: The normal on polygonA.
    * faceB: The normal on polygonB.
    */
-  final vec2 localNormal;
+  final Vector localNormal;
 
   /**
    * The meaning of the localPoint depends on the type of this manifold. The
@@ -40,7 +40,7 @@ class Manifold {
    * faceA: The center of faceA.
    * faceB: The center of faceB.
    */
-  vec2 localPoint;
+  final Vector localPoint;
 
   /** The type of manifold. See [ManifoldType]. */
   int type;
@@ -54,8 +54,8 @@ class Manifold {
    */
   Manifold() :
       points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new vec2.zero(),
-      localPoint = new vec2.zero(),
+      localNormal = new Vector(),
+      localPoint = new Vector(),
       pointCount = 0 {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint();
@@ -66,8 +66,8 @@ class Manifold {
    */
   Manifold.copy(Manifold other) :
       points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new vec2.copy(other.localNormal),
-      localPoint = new vec2.copy(other.localPoint),
+      localNormal = new Vector.copy(other.localNormal),
+      localPoint = new Vector.copy(other.localPoint),
       pointCount = other.pointCount,
       type = other.type {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)

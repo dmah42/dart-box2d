@@ -28,10 +28,10 @@ class Distance {
   Simplex simplex;
   List<int> saveA;
   List<int> saveB;
-  vec2 closestPoint;
-  vec2 searchDirection;
-  vec2 temp;
-  vec2 normal;
+  Vector closestPoint;
+  Vector searchDirection;
+  Vector temp;
+  Vector normal;
 
   /**
    * Construct a new Distance object. For internal use only. Don't directly
@@ -41,10 +41,10 @@ class Distance {
     simplex = new Simplex(),
     saveA = new List<int>(3),
     saveB = new List<int>(3),
-    closestPoint = new vec2.zero(),
-    searchDirection = new vec2.zero(),
-    temp = new vec2.zero(),
-    normal = new vec2.zero(),
+    closestPoint = new Vector(),
+    searchDirection = new Vector(),
+    temp = new Vector(),
+    normal = new Vector(),
     calls = 0,
     iters = 0,
     maxIters = 20 { }
@@ -54,7 +54,7 @@ class Distance {
    * CircleShape and PolygonShape. The simplex cache is input/output.
    * On the first call set SimplexCache.count to zero.
    */
-  void computeDistance(DistanceOutput output, SimplexCache cache,
+  void distance(DistanceOutput output, SimplexCache cache,
       DistanceInput input) {
     calls++;
 
@@ -76,7 +76,7 @@ class Distance {
     int saveCount = 0;
 
     simplex.getClosestPoint(closestPoint);
-    num distanceSqr1 = closestPoint.length2;
+    num distanceSqr1 = closestPoint.lengthSquared;
     num distanceSqr2 = distanceSqr1;
 
     // Main iteration loop
@@ -110,7 +110,7 @@ class Distance {
 
       // Compute closest point.
       simplex.getClosestPoint(closestPoint);
-      distanceSqr2 = closestPoint.length2;
+      distanceSqr2 = closestPoint.lengthSquared;
 
       distanceSqr1 = distanceSqr2;
 
@@ -118,7 +118,7 @@ class Distance {
       simplex.getSearchDirection(searchDirection);
 
       // Ensure the search direction is numerically fit.
-      if (searchDirection.length2 < Settings.EPSILON * Settings.EPSILON) {
+      if (searchDirection.lengthSquared < Settings.EPSILON * Settings.EPSILON) {
         // The origin is probably contained by a line segment
         // or triangle. Thus the shapes are overlapped.
 
@@ -132,14 +132,18 @@ class Distance {
       // Compute a tentative new simplex vertex using support points.
       SimplexVertex vertex = vertices[simplex.count];
 
-      transformA.rotation.transposed().transformed(searchDirection.negate(), temp);
+      Matrix22.mulTransMatrixAndVectorToOut(transformA.rotation,
+          searchDirection.negateLocal(), temp);
       vertex.indexA = proxyA.getSupport(temp);
-      Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA], vertex.wA);
+      Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA],
+          vertex.wA);
       // Vec2 wBLocal;
-      transformB.rotation.transposed().transformed(searchDirection.negate(), temp);
+      Matrix22.mulTransMatrixAndVectorToOut(transformB.rotation,
+          searchDirection.negateLocal(), temp);
       vertex.indexB = proxyB.getSupport(temp);
-      Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB], vertex.wB);
-      vertex.w.setFrom(vertex.wB).sub(vertex.wA);
+      Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB],
+          vertex.wB);
+      vertex.w.setFrom(vertex.wB).subLocal(vertex.wA);
 
       // Iteration count is equated to the number of support point calls.
       ++iter;
@@ -163,11 +167,11 @@ class Distance {
       ++simplex.count;
     }
 
-    maxIters = math.max(maxIters, iter);
+    maxIters = Math.max(maxIters, iter);
 
     // Prepare output.
     simplex.getWitnessPoints(output.pointA, output.pointB);
-    output._distance = distance(output.pointA, output.pointB);
+    output.distance = MathBox.distance(output.pointA, output.pointB);
     output.iterations = iter;
 
     // Cache the simplex.
@@ -178,22 +182,22 @@ class Distance {
       num rA = proxyA.radius;
       num rB = proxyB.radius;
 
-      if (output._distance > rA + rB && output._distance > Settings.EPSILON) {
+      if (output.distance > rA + rB && output.distance > Settings.EPSILON) {
         // Shapes are still no overlapped.
         // Move the witness points to the outer surface.
-        output._distance -= rA + rB;
-        normal.setFrom(output.pointB).sub(output.pointA);
+        output.distance -= rA + rB;
+        normal.setFrom(output.pointB).subLocal(output.pointA);
         normal.normalize();
-        temp.setFrom(normal).scale(rA);
-        output.pointA.add(temp);
-        temp.setFrom(normal).scale(rB);
-        output.pointB.sub(temp);
+        temp.setFrom(normal).mulLocal(rA);
+        output.pointA.addLocal(temp);
+        temp.setFrom(normal).mulLocal(rB);
+        output.pointB.subLocal(temp);
       } else {
         // Shapes are overlapped when radii are considered.
         // Move the witness points to the middle.
-        output.pointA.add(output.pointB).scale(.5);
+        output.pointA.addLocal(output.pointB).mulLocal(.5);
         output.pointB.setFrom(output.pointA);
-        output._distance = 0.0;
+        output.distance = 0.0;
       }
     }
   }
