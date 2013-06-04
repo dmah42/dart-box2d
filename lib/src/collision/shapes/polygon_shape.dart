@@ -47,11 +47,11 @@ class PolygonShape extends Shape {
       vertexCount = 0,
       vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
       normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new Vector() {
+      centroid = new Vector.zero() {
     for (int i = 0; i < vertices.length; ++i)
-      vertices[i] = new Vector();
+      vertices[i] = new Vector.zero();
     for (int i = 0; i < normals.length; ++i)
-      normals[i] = new Vector();
+      normals[i] = new Vector.zero();
   }
 
   /**
@@ -109,7 +109,7 @@ class PolygonShape extends Shape {
       vertices[i].setFrom(otherVertices[i]);
     }
 
-    Vector edge = new Vector();
+    Vector edge = new Vector.zero();
 
     // Compute normals. Ensure the edges have non-zero length.
     for (int i = 0; i < vertexCount; ++i) {
@@ -130,7 +130,7 @@ class PolygonShape extends Shape {
    * Build vertices to represent an axis-aligned box.
    * hx is the half-width of the body and hy is the half height.
    */
-  void setAsBox(num hx, num hy) {
+  void setAsBox(double hx, double hy) {
     vertexCount = 4;
     vertices[0].setCoords(-hx, -hy);
     vertices[1].setCoords(hx, -hy);
@@ -148,7 +148,7 @@ class PolygonShape extends Shape {
    * half-height, center is the center of the box in local coordinates and angle
    * is the rotation of the box in local coordinates.
    */
-  void setAsBoxWithCenterAndAngle(num hx, num hy, Vector center, num angle) {
+  void setAsBoxWithCenterAndAngle(double hx, double hy, Vector center, double angle) {
     vertexCount = 4;
     vertices[0].setCoords(-hx, -hy);
     vertices[1].setCoords(hx, -hy);
@@ -189,12 +189,12 @@ class PolygonShape extends Shape {
    * See Shape.testPoint(Transform, Vector).
    */
   bool testPoint(Transform xf, Vector p) {
-    Vector pLocal = new Vector();
+    Vector pLocal = new Vector.zero();
 
     pLocal.setFrom(p).subLocal(xf.position);
     Matrix22.mulTransMatrixAndVectorToOut(xf.rotation, pLocal, pLocal);
 
-    Vector temp = new Vector();
+    Vector temp = new Vector.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       temp.setFrom(pLocal).subLocal(vertices[i]);
@@ -209,9 +209,9 @@ class PolygonShape extends Shape {
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */
   void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
-    final Vector lower = new Vector();
-    final Vector upper = new Vector();
-    final Vector v = new Vector();
+    final Vector lower = new Vector.zero();
+    final Vector upper = new Vector.zero();
+    final Vector v = new Vector.zero();
 
     Transform.mulToOut(argXf, vertices[0], lower);
     upper.setFrom(lower);
@@ -249,11 +249,11 @@ class PolygonShape extends Shape {
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = new Vector();
+    final Vector pRef = new Vector.zero();
     pRef.setZero();
 
-    final Vector e1 = new Vector();
-    final Vector e2 = new Vector();
+    final Vector e1 = new Vector.zero();
+    final Vector e2 = new Vector.zero();
 
     final num inv3 = 1.0 / 3.0;
 
@@ -319,20 +319,20 @@ class PolygonShape extends Shape {
       return;
     }
 
-    final Vector center = new Vector();
+    final Vector center = new Vector.zero();
     center.setZero();
     num area = 0.0;
     num I = 0.0;
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = new Vector();
+    final Vector pRef = new Vector.zero();
     pRef.setZero();
 
     final num k_inv3 = 1.0 / 3.0;
 
-    final Vector e1 = new Vector();
-    final Vector e2 = new Vector();
+    final Vector e1 = new Vector.zero();
+    final Vector e2 = new Vector.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       // Triangle vertices.

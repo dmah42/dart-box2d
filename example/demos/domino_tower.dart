@@ -92,7 +92,7 @@ class DominoTower extends Demo {
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new Vector(-25.0 -25.0);
+      b.linearVelocity = new Vector(-25.0, -25.0);
       b.angularVelocity = 6.7;
 
       fd.density = 25;

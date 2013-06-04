@@ -25,9 +25,9 @@ class SimplexVertex {
   int indexB; // wB index
 
   SimplexVertex() :
-    wA = new Vector(),
-    wB = new Vector(),
-    w = new Vector(),
+    wA = new Vector.zero(),
+    wB = new Vector.zero(),
+    w = new Vector.zero(),
     a = 0,
     indexA = 0,
     indexB = 0 { }

@@ -70,7 +70,7 @@ class Settings {
    */
   static const double POLYGON_RADIUS = 2.0 * LINEAR_SLOP;
 
-  static const num VELOCITY_THRESHOLD = 1;
+  static const int VELOCITY_THRESHOLD = 1;
 
   /**
    * Fattens bounding boxes in the dynamic tree by this amount. Allows proxies
@@ -84,7 +84,7 @@ class Settings {
    * the future position based on the current displacement.
    * This is a dimensionless multiplier.
    */
-  static const num BOUNDING_BOX_MULTIPLIER = 2;
+  static const double BOUNDING_BOX_MULTIPLIER = 2.0;
 
   /**
    * This scale factor controls how fast overlap is resolved. Ideally this

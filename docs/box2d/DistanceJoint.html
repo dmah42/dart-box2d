@@ -53,7 +53,7 @@ class DistanceJoint extends Joint {
    localAnchor2 = new Vector.copy(def.localAnchorB),
    length = def.length,
    impulse = 0.0,
-   u = new Vector(),
+   u = new Vector.zero(),
    frequencyHz = def.frequencyHz,
    dampingRatio = def.dampingRatio,
    gamma = 0.0,
@@ -80,8 +80,8 @@ class DistanceJoint extends Joint {
    final Body b1 = bodyA;
    final Body b2 = bodyB;
 
-   Vector r1 = new Vector();
-   Vector r2 = new Vector();
+   Vector r1 = new Vector.zero();
+   Vector r2 = new Vector.zero();
 
    // Compute the effective mass matrix.
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -134,7 +134,7 @@ class DistanceJoint extends Joint {
      // Scale the impulse to support a variable time step.
      impulse *= step.dtRatio;
 
-     Vector P = new Vector();
+     Vector P = new Vector.zero();
      P.setFrom(u).mulLocal(impulse);
 
      b1.linearVelocity.x -= b1.invMass * P.x;
@@ -153,16 +153,16 @@ class DistanceJoint extends Joint {
    final Body b1 = bodyA;
    final Body b2 = bodyB;
 
-   final r1 = new Vector();
-   final r2 = new Vector();
+   final r1 = new Vector.zero();
+   final r2 = new Vector.zero();
 
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-   final v1 = new Vector();
-   final v2 = new Vector();
+   final v1 = new Vector.zero();
+   final v2 = new Vector.zero();
 
    Vector.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
    Vector.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
@@ -192,9 +192,9 @@ class DistanceJoint extends Joint {
    final b1 = bodyA;
    final b2 = bodyB;
 
-   final r1 = new Vector();
-   final r2 = new Vector();
-   final d = new Vector();
+   final r1 = new Vector.zero();
+   final r2 = new Vector.zero();
+   final d = new Vector.zero();
 
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
@@ -247,7 +247,7 @@ DistanceJoint(DistanceJointDef def) :
  localAnchor2 = new Vector.copy(def.localAnchorB),
  length = def.length,
  impulse = 0.0,
- u = new Vector(),
+ u = new Vector.zero(),
  frequencyHz = def.frequencyHz,
  dampingRatio = def.dampingRatio,
  gamma = 0.0,
@@ -645,8 +645,8 @@ void initVelocityConstraints(TimeStep step) {
  final Body b1 = bodyA;
  final Body b2 = bodyB;
 
- Vector r1 = new Vector();
- Vector r2 = new Vector();
+ Vector r1 = new Vector.zero();
+ Vector r2 = new Vector.zero();
 
  // Compute the effective mass matrix.
  r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -699,7 +699,7 @@ void initVelocityConstraints(TimeStep step) {
    // Scale the impulse to support a variable time step.
    impulse *= step.dtRatio;
 
-   Vector P = new Vector();
+   Vector P = new Vector.zero();
    P.setFrom(u).mulLocal(impulse);
 
    b1.linearVelocity.x -= b1.invMass * P.x;
@@ -733,9 +733,9 @@ bool solvePositionConstraints(num baumgarte) {
  final b1 = bodyA;
  final b2 = bodyB;
 
- final r1 = new Vector();
- final r2 = new Vector();
- final d = new Vector();
+ final r1 = new Vector.zero();
+ final r2 = new Vector.zero();
+ final d = new Vector.zero();
 
  r1.setFrom(localAnchor1).subLocal(b1.localCenter);
  r2.setFrom(localAnchor2).subLocal(b2.localCenter);
@@ -781,16 +781,16 @@ void solveVelocityConstraints(TimeStep step) {
  final Body b1 = bodyA;
  final Body b2 = bodyB;
 
- final r1 = new Vector();
- final r2 = new Vector();
+ final r1 = new Vector.zero();
+ final r2 = new Vector.zero();
 
  r1.setFrom(localAnchor1).subLocal(b1.localCenter);
  r2.setFrom(localAnchor2).subLocal(b2.localCenter);
  Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
  Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
- final v1 = new Vector();
- final v2 = new Vector();
+ final v1 = new Vector.zero();
+ final v2 = new Vector.zero();
 
  Vector.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
  Vector.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);

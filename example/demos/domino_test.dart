@@ -55,7 +55,7 @@ class DominoTest extends Demo {
     {
       FixtureDef fd = new FixtureDef();
       PolygonShape sd = new PolygonShape();
-      sd.setAsBox(0.125, 2);
+      sd.setAsBox(0.125, 2.0);
       fd.shape = sd;
       fd.density = 25.0;
 

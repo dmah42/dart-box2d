@@ -99,7 +99,7 @@ class ConstantVolumeJoint extends Joint {
    frequencyHz = def.frequencyHz;
    dampingRatio = def.dampingRatio;
 
-   normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+   normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
    this.bodyA = bodies[0];
    this.bodyB = bodies[1];
@@ -144,7 +144,7 @@ class ConstantVolumeJoint extends Joint {
      perimeter += dist;
    }
 
-   final delta = new Vector();
+   final delta = new Vector.zero();
 
    num deltaArea = targetVolume - area;
    num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -171,7 +171,7 @@ class ConstantVolumeJoint extends Joint {
  void initVelocityConstraints(TimeStep argStep) {
    step = argStep;
 
-   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -209,7 +209,7 @@ class ConstantVolumeJoint extends Joint {
    num crossMassSum = 0.0;
    num dotMassSum = 0.0;
 
-   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -296,7 +296,7 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  frequencyHz = def.frequencyHz;
  dampingRatio = def.dampingRatio;
 
- normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+ normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
  this.bodyA = bodies[0];
  this.bodyB = bodies[1];
@@ -632,7 +632,7 @@ bool constrainEdges(TimeStep argStep) {
    perimeter += dist;
  }
 
- final delta = new Vector();
+ final delta = new Vector.zero();
 
  num deltaArea = targetVolume - area;
  num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -748,7 +748,7 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 void initVelocityConstraints(TimeStep argStep) {
  step = argStep;
 
- final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+ final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -798,7 +798,7 @@ void solveVelocityConstraints(TimeStep argStep) {
  num crossMassSum = 0.0;
  num dotMassSum = 0.0;
 
- final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
+ final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;

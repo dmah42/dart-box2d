@@ -129,11 +129,11 @@ class World {
    _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
    // Initialize Pool Objects.
-   center = new Vector(),
-   axis = new Vector(),
+   center = new Vector.zero(),
+   axis = new Vector.zero(),
    timestep = new TimeStep(),
-   cA = new Vector(),
-   cB = new Vector(),
+   cA = new Vector.zero(),
+   cB = new Vector.zero(),
    wqwrapper = new WorldQueryWrapper(),
    toiInput = new TimeOfImpactInput(),
    toiOutput = new TimeOfImpactOutput(),
@@ -621,7 +621,7 @@ class World {
 
          List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
          for (int i = 0; i &lt; vs.length; i++) {
-           vs[i] = new Vector();
+           vs[i] = new Vector.zero();
          }
 
          vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -1098,7 +1098,7 @@ class World {
        int vertexCount = poly.vertexCount;
        assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
        List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
-           vertexCount, (i) =&gt; new Vector());
+           vertexCount, (i) =&gt; new Vector.zero());
 
        for (int i = 0; i &lt; vertexCount; ++i) {
          assert(poly.vertices[i] != null);
@@ -1126,8 +1126,8 @@ class World {
    Transform xf2 = bodyB.originTransform;
    Vector x1 = new Vector.copy(xf1.position);
    Vector x2 = new Vector.copy(xf2.position);
-   Vector p1 = new Vector();
-   Vector p2 = new Vector();
+   Vector p1 = new Vector.zero();
+   Vector p2 = new Vector.zero();
    joint.getAnchorA(p1);
    joint.getAnchorB(p2);
 
@@ -1270,11 +1270,11 @@ World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
  _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
  // Initialize Pool Objects.
- center = new Vector(),
- axis = new Vector(),
+ center = new Vector.zero(),
+ axis = new Vector.zero(),
  timestep = new TimeStep(),
- cA = new Vector(),
- cB = new Vector(),
+ cA = new Vector.zero(),
+ cB = new Vector.zero(),
  wqwrapper = new WorldQueryWrapper(),
  toiInput = new TimeOfImpactInput(),
  toiOutput = new TimeOfImpactOutput(),
@@ -1973,7 +1973,7 @@ void drawDebugData() {
 
        List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
        for (int i = 0; i &lt; vs.length; i++) {
-         vs[i] = new Vector();
+         vs[i] = new Vector.zero();
        }
 
        vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -2018,8 +2018,8 @@ void drawJoint(Joint joint) {
  Transform xf2 = bodyB.originTransform;
  Vector x1 = new Vector.copy(xf1.position);
  Vector x2 = new Vector.copy(xf2.position);
- Vector p1 = new Vector();
- Vector p2 = new Vector();
+ Vector p1 = new Vector.zero();
+ Vector p2 = new Vector.zero();
  joint.getAnchorA(p1);
  joint.getAnchorB(p2);
 
@@ -2089,7 +2089,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
      int vertexCount = poly.vertexCount;
      assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
      List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
-         vertexCount, (i) =&gt; new Vector());
+         vertexCount, (i) =&gt; new Vector.zero());
 
      for (int i = 0; i &lt; vertexCount; ++i) {
        assert(poly.vertices[i] != null);

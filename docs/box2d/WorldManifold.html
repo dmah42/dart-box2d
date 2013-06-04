@@ -55,11 +55,11 @@ class WorldManifold {
   * Constructs a new WorldManifold.
   */
  WorldManifold() :
-   normal = new Vector(),
-   pool3 = new Vector(),
-   pool4 = new Vector(),
+   normal = new Vector.zero(),
+   pool3 = new Vector.zero(),
+   pool4 = new Vector.zero(),
    points = new List&lt;Vector&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector());
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero());
 
  void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
      num radiusB) {
@@ -189,11 +189,11 @@ new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold
 <p>Constructs a new WorldManifold.</p>
 <pre class="source">
 WorldManifold() :
- normal = new Vector(),
- pool3 = new Vector(),
- pool4 = new Vector(),
+ normal = new Vector.zero(),
+ pool3 = new Vector.zero(),
+ pool4 = new Vector.zero(),
  points = new List&lt;Vector&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector());
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero());
 </pre>
 </div>
 </div>

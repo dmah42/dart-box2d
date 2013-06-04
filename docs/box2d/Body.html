@@ -58,13 +58,13 @@ class Body {
  final Vector _linearVelocity;
 
  /** The angular velocity of this body. */
- num _angularVelocity;
+ double _angularVelocity;
 
  /** This body's mass. */
- num mass;
+ double mass;
 
  /** The inverse of the body mass. */
- num invMass;
+ double invMass;
 
  /** For mantaining the linked list of bodies. */
  Body next;
@@ -78,17 +78,17 @@ class Body {
  /** Forces applied on the body. */
  final Vector _force;
 
- num _torque;
+ double _torque;
 
  /** Rotational intertia about the center of mass. */
- num _inertia;
+ double _inertia;
 
  /** The inverse of the intertia about the center of mass. */
- num invInertia;
+ double invInertia;
 
- num linearDamping;
+ double linearDamping;
 
- num angularDamping;
+ double angularDamping;
 
  /** This body's type. See BodyType.dart. */
  int _type;
@@ -130,7 +130,7 @@ class Body {
        angularDamping = bd.angularDamping,
 
        // Set force and torque.
-       _force = new Vector(),
+       _force = new Vector.zero(),
        _torque = 0,
 
        _inertia = 0,
@@ -145,8 +145,8 @@ class Body {
        _fixDef = new FixtureDef(),
        _pmd = new MassData(),
        _pxf = new Transform(),
-       oldCenter = new Vector(),
-       tempCenter = new Vector(),
+       oldCenter = new Vector.zero(),
+       tempCenter = new Vector.zero(),
 
        sleepTime = 0,
 
@@ -176,11 +176,11 @@ class Body {
    sweep.angleZero = bd.angle;
 
    if (_type == BodyType.DYNAMIC) {
-     mass = 1;
-     invMass = 1;
+     mass = 1.0;
+     invMass = 1.0;
    } else {
-     mass = 0;
-     invMass = 0;
+     mass = 0.0;
+     invMass = 0.0;
    }
  }
 
@@ -315,7 +315,7 @@ class Body {
   * This breaks any contacts and wakes the other bodies.
   * Manipulating a body's transform may cause non-physical behavior.
   */
- void setTransform(Vector argPosition, num argAngle) {
+ void setTransform(Vector argPosition, double argAngle) {
    assert (world.locked == false);
    if (world.locked == true) {
      return;
@@ -346,7 +346,7 @@ class Body {
  /**
   * Get the angle in radians.
   */
- num get angle =&gt; sweep.angle;
+ double get angle =&gt; sweep.angle;
 
  /**
   * Get the world position of the center of mass. Do not modify.
@@ -372,11 +372,10 @@ class Body {
    _linearVelocity.setFrom(v);
  }
 
- num get angularVelocity =&gt; _angularVelocity; 
+ double get angularVelocity =&gt; _angularVelocity; 
 
- void set angularVelocity(num w) {
+ void set angularVelocity(double w) {
    if (_type != BodyType.STATIC) {
-
      // Set awake if want to set velocity to non-zero value.
      if (w * w &gt; 0) {
        awake = true;
@@ -418,7 +417,7 @@ class Body {
   * torque
   *   about the z-axis (out of the screen), usually in N-m.
   */
- void applyTorque(num torque) {
+ void applyTorque(double torque) {
    if (_type != BodyType.DYNAMIC) {
      return;
    }
@@ -458,7 +457,7 @@ class Body {
   * impulse
   *   the angular impulse in units of kg*m*m/s
   */
- void applyAngularImpulse(num impulse) {
+ void applyAngularImpulse(double impulse) {
    if (_type != BodyType.DYNAMIC) {
      return;
    }
@@ -472,7 +471,7 @@ class Body {
   *
   * returns the rotational inertia, usually in kg-m^2.
   */
- num get inertia {
+ double get inertia {
    return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
        sweep.localCenter.y * sweep.localCenter.y);
  }
@@ -515,7 +514,7 @@ class Body {
 
    mass = data.mass;
    if (mass &lt;= 0.0)
-     mass = 1;
+     mass = 1.0;
 
    invMass = 1.0 / mass;
 
@@ -618,7 +617,7 @@ class Body {
   * returns the same point expressed in world coordinates.
   */
  Vector getWorldPoint(Vector localPoint) {
-   Vector v = new Vector();
+   Vector v = new Vector.zero();
    getWorldPointToOut(localPoint, v);
    return v;
  }
@@ -638,7 +637,7 @@ class Body {
   * return the same vector expressed in world coordinates.
   */
  Vector getWorldVector(Vector localVector) {
-   Vector out = new Vector();
+   Vector out = new Vector.zero();
    getWorldVectorToOut(localVector, out);
    return out;
  }
@@ -667,7 +666,7 @@ class Body {
   * returns the corresponding local point relative to the body's origin.
   */
  Vector getLocalPoint(Vector worldPoint) {
-   Vector out = new Vector();
+   Vector out = new Vector.zero();
    getLocalPointToOut(worldPoint, out);
    return out;
  }
@@ -679,7 +678,7 @@ class Body {
   * returns the corresponding local vector.
   */
  Vector getLocalVector(Vector worldVector) {
-   Vector out = new Vector();
+   Vector out = new Vector.zero();
    getLocalVectorToOut(worldVector, out);
    return out;
  }
@@ -700,7 +699,7 @@ class Body {
   * returns the world velocity of a point.
   */
  Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
-   Vector out = new Vector();
+   Vector out = new Vector.zero();
    getLinearVelocityFromWorldPointToOut(worldPoint, out);
    return out;
  }
@@ -718,7 +717,7 @@ class Body {
   * returns the world velocity of a point.
   */
  Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
-   Vector out = new Vector();
+   Vector out = new Vector.zero();
    getLinearVelocityFromLocalPointToOut(localPoint, out);
    return out;
  }
@@ -908,8 +907,8 @@ class Body {
  }
 
  void synchronizeTransform() {
-   final num c = Math.cos(sweep.angle);
-   final num s = Math.sin(sweep.angle);
+   final double c = Math.cos(sweep.angle);
+   final double s = Math.sin(sweep.angle);
    final Transform t = originTransform;
    final Matrix22 r = t.rotation;
    final Vector p = t.position;
@@ -1060,7 +1059,7 @@ Body(BodyDef bd, this.world)
      angularDamping = bd.angularDamping,
 
      // Set force and torque.
-     _force = new Vector(),
+     _force = new Vector.zero(),
      _torque = 0,
 
      _inertia = 0,
@@ -1075,8 +1074,8 @@ Body(BodyDef bd, this.world)
      _fixDef = new FixtureDef(),
      _pmd = new MassData(),
      _pxf = new Transform(),
-     oldCenter = new Vector(),
-     tempCenter = new Vector(),
+     oldCenter = new Vector.zero(),
+     tempCenter = new Vector.zero(),
 
      sleepTime = 0,
 
@@ -1106,11 +1105,11 @@ Body(BodyDef bd, this.world)
  sweep.angleZero = bd.angle;
 
  if (_type == BodyType.DYNAMIC) {
-   mass = 1;
-   invMass = 1;
+   mass = 1.0;
+   invMass = 1.0;
  } else {
-   mass = 0;
-   invMass = 0;
+   mass = 0.0;
+   invMass = 0.0;
  }
 }
 </pre>
@@ -1188,43 +1187,42 @@ void set active(bool flag) {
 </div>
 <div class="field"><h4 id="angle">
 <button class="show-code">Code</button>
-final num         <strong>angle</strong> <a class="anchor-link"
+final double         <strong>angle</strong> <a class="anchor-link"
             href="#angle"
             title="Permalink to Body.angle">#</a>
         </h4>
         <div class="doc">
 <p>Get the angle in radians.</p>
 <pre class="source">
-num get angle =&gt; sweep.angle;
+double get angle =&gt; sweep.angle;
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angularDamping">
 <button class="show-code">Code</button>
-num         <strong>angularDamping</strong> <a class="anchor-link"
+double         <strong>angularDamping</strong> <a class="anchor-link"
             href="#angularDamping"
             title="Permalink to Body.angularDamping">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num angularDamping
+double angularDamping
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angularVelocity">
 <button class="show-code">Code</button>
-num         <strong>angularVelocity</strong> <a class="anchor-link"
+double         <strong>angularVelocity</strong> <a class="anchor-link"
             href="#angularVelocity"
             title="Permalink to Body.angularVelocity">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num get angularVelocity =&gt; _angularVelocity;
+double get angularVelocity =&gt; _angularVelocity;
 </pre>
 <pre class="source">
-void set angularVelocity(num w) {
+void set angularVelocity(double w) {
  if (_type != BodyType.STATIC) {
-
    // Set awake if want to set velocity to non-zero value.
    if (w * w &gt; 0) {
      awake = true;
@@ -1377,7 +1375,7 @@ int flags
 </div>
 <div class="field"><h4 id="inertia">
 <button class="show-code">Code</button>
-final num         <strong>inertia</strong> <a class="anchor-link"
+final double         <strong>inertia</strong> <a class="anchor-link"
             href="#inertia"
             title="Permalink to Body.inertia">#</a>
         </h4>
@@ -1385,7 +1383,7 @@ final num         <strong>inertia</strong> <a class="anchor-link"
 <p>Get the central rotational inertia of the body.</p>
 <p>returns the rotational inertia, usually in kg-m^2.</p>
 <pre class="source">
-num get inertia {
+double get inertia {
  return _inertia + mass * (sweep.localCenter.x * sweep.localCenter.x +
      sweep.localCenter.y * sweep.localCenter.y);
 }
@@ -1394,27 +1392,27 @@ num get inertia {
 </div>
 <div class="field"><h4 id="invInertia">
 <button class="show-code">Code</button>
-num         <strong>invInertia</strong> <a class="anchor-link"
+double         <strong>invInertia</strong> <a class="anchor-link"
             href="#invInertia"
             title="Permalink to Body.invInertia">#</a>
         </h4>
         <div class="doc">
 <p>The inverse of the intertia about the center of mass. </p>
 <pre class="source">
-num invInertia
+double invInertia
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="invMass">
 <button class="show-code">Code</button>
-num         <strong>invMass</strong> <a class="anchor-link"
+double         <strong>invMass</strong> <a class="anchor-link"
             href="#invMass"
             title="Permalink to Body.invMass">#</a>
         </h4>
         <div class="doc">
 <p>The inverse of the body mass. </p>
 <pre class="source">
-num invMass
+double invMass
 </pre>
 </div>
 </div>
@@ -1444,13 +1442,13 @@ JointEdge jointList
 </div>
 <div class="field"><h4 id="linearDamping">
 <button class="show-code">Code</button>
-num         <strong>linearDamping</strong> <a class="anchor-link"
+double         <strong>linearDamping</strong> <a class="anchor-link"
             href="#linearDamping"
             title="Permalink to Body.linearDamping">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num linearDamping
+double linearDamping
 </pre>
 </div>
 </div>
@@ -1494,14 +1492,14 @@ Vector get localCenter =&gt; sweep.localCenter;
 </div>
 <div class="field"><h4 id="mass">
 <button class="show-code">Code</button>
-num         <strong>mass</strong> <a class="anchor-link"
+double         <strong>mass</strong> <a class="anchor-link"
             href="#mass"
             title="Permalink to Body.mass">#</a>
         </h4>
         <div class="doc">
 <p>This body's mass. </p>
 <pre class="source">
-num mass
+double mass
 </pre>
 </div>
 </div>
@@ -1533,7 +1531,7 @@ void set massData(MassData data) {
 
  mass = data.mass;
  if (mass &lt;= 0.0)
-   mass = 1;
+   mass = 1.0;
 
  invMass = 1.0 / mass;
 
@@ -1792,14 +1790,14 @@ void advance(num t) {
 </div>
 <div class="method"><h4 id="applyAngularImpulse">
 <button class="show-code">Code</button>
-void <strong>applyAngularImpulse</strong>(num impulse) <a class="anchor-link" href="#applyAngularImpulse"
+void <strong>applyAngularImpulse</strong>(double impulse) <a class="anchor-link" href="#applyAngularImpulse"
               title="Permalink to Body.applyAngularImpulse">#</a></h4>
 <div class="doc">
 <p>Apply an angular impulse.</p>
 <p>impulse
   the angular impulse in units of kg<em>m</em>m/s</p>
 <pre class="source">
-void applyAngularImpulse(num impulse) {
+void applyAngularImpulse(double impulse) {
  if (_type != BodyType.DYNAMIC) {
    return;
  }
@@ -1870,7 +1868,7 @@ void applyLinearImpulse(Vector impulse, Vector point) {
 </div>
 <div class="method"><h4 id="applyTorque">
 <button class="show-code">Code</button>
-void <strong>applyTorque</strong>(num torque) <a class="anchor-link" href="#applyTorque"
+void <strong>applyTorque</strong>(double torque) <a class="anchor-link" href="#applyTorque"
               title="Permalink to Body.applyTorque">#</a></h4>
 <div class="doc">
 <p>Apply a torque. This affects the angular velocity
@@ -1879,7 +1877,7 @@ This wakes up the body.</p>
 <p>torque
   about the z-axis (out of the screen), usually in N-m.</p>
 <pre class="source">
-void applyTorque(num torque) {
+void applyTorque(double torque) {
  if (_type != BodyType.DYNAMIC) {
    return;
  }
@@ -2045,7 +2043,7 @@ void destroyFixture(Fixture fixture) {
 returns the world velocity of a point.</p>
 <pre class="source">
 Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
- Vector out = new Vector();
+ Vector out = new Vector.zero();
  getLinearVelocityFromLocalPointToOut(localPoint, out);
  return out;
 }
@@ -2077,7 +2075,7 @@ void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
 returns the world velocity of a point.</p>
 <pre class="source">
 Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
- Vector out = new Vector();
+ Vector out = new Vector.zero();
  getLinearVelocityFromWorldPointToOut(worldPoint, out);
  return out;
 }
@@ -2108,7 +2106,7 @@ void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
 returns the corresponding local point relative to the body's origin.</p>
 <pre class="source">
 Vector getLocalPoint(Vector worldPoint) {
- Vector out = new Vector();
+ Vector out = new Vector.zero();
  getLocalPointToOut(worldPoint, out);
  return out;
 }
@@ -2139,7 +2137,7 @@ void getLocalPointToOut(Vector worldPoint, Vector out) {
 returns the corresponding local vector.</p>
 <pre class="source">
 Vector getLocalVector(Vector worldVector) {
- Vector out = new Vector();
+ Vector out = new Vector.zero();
  getLocalVectorToOut(worldVector, out);
  return out;
 }
@@ -2191,7 +2189,7 @@ void getMassData(MassData data) {
 returns the same point expressed in world coordinates.</p>
 <pre class="source">
 Vector getWorldPoint(Vector localPoint) {
- Vector v = new Vector();
+ Vector v = new Vector.zero();
  getWorldPointToOut(localPoint, v);
  return v;
 }
@@ -2222,7 +2220,7 @@ void getWorldPointToOut(Vector localPoint, Vector out) {
 return the same vector expressed in world coordinates.</p>
 <pre class="source">
 Vector getWorldVector(Vector localVector) {
- Vector out = new Vector();
+ Vector out = new Vector.zero();
  getWorldVectorToOut(localVector, out);
  return out;
 }
@@ -2323,14 +2321,14 @@ void resetMassData() {
 </div>
 <div class="method"><h4 id="setTransform">
 <button class="show-code">Code</button>
-void <strong>setTransform</strong>(<a href="../box2d/Vector.html">Vector</a> argPosition, num argAngle) <a class="anchor-link" href="#setTransform"
+void <strong>setTransform</strong>(<a href="../box2d/Vector.html">Vector</a> argPosition, double argAngle) <a class="anchor-link" href="#setTransform"
               title="Permalink to Body.setTransform">#</a></h4>
 <div class="doc">
 <p>Set the position of the body's origin and rotation.
 This breaks any contacts and wakes the other bodies.
 Manipulating a body's transform may cause non-physical behavior.</p>
 <pre class="source">
-void setTransform(Vector argPosition, num argAngle) {
+void setTransform(Vector argPosition, double argAngle) {
  assert (world.locked == false);
  if (world.locked == true) {
    return;
@@ -2398,8 +2396,8 @@ void <strong>synchronizeTransform</strong>() <a class="anchor-link" href="#synch
 <div class="doc">
 <pre class="source">
 void synchronizeTransform() {
- final num c = Math.cos(sweep.angle);
- final num s = Math.sin(sweep.angle);
+ final double c = Math.cos(sweep.angle);
+ final double s = Math.sin(sweep.angle);
  final Transform t = originTransform;
  final Matrix22 r = t.rotation;
  final Vector p = t.position;

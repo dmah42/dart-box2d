@@ -32,7 +32,7 @@ class MassData {
   MassData() :
     mass = 0,
     inertia = 0,
-    center = new Vector() { }
+    center = new Vector.zero();
 
   /**
    * Copies from the given mass data.

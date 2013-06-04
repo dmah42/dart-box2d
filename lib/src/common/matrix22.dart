@@ -17,22 +17,17 @@
 part of box2d;
 
 class Matrix22 {
-  Vector col1;
-  Vector col2;
+  final Vector col1;
+  final Vector col2;
 
   /**
    * Constructs a new Matrix. Defaults to both columns being default vectors.
    */
-  Matrix22([Vector c1 = null, Vector c2 = null]) {
-    if (c1 == null) c1 = new Vector();
-    if (c2 == null) c2 = new Vector();
-    col1 = c1;
-    col2 = c2;
-  }
+  Matrix22() : col1 = new Vector.zero(), col2 = new Vector.zero();
 
   /** Constructs a new Matrix22 representing an angle. */
   Matrix22.fromAngle(double angle)
-      : col1 = new Vector(), col2 = new Vector() {
+      : col1 = new Vector.zero(), col2 = new Vector.zero() {
     setAngle(angle);
   }
 

@@ -23,14 +23,14 @@ class Matrix33 {
   final Vector3 col3;
 
   Matrix33() :
-    col1 = new Vector3(),
-    col2 = new Vector3(),
-    col3 = new Vector3() { }
+    col1 = new Vector3.zero(),
+    col2 = new Vector3.zero(),
+    col3 = new Vector3.zero();
 
   Matrix33.setCols(Vector3 argCol1, Vector3 argCol2, Vector3 argCol3) :
     col1 = new Vector3.copy(argCol1),
     col2 = new Vector3.copy(argCol2),
-    col3 = new Vector3.copy(argCol3) { }
+    col3 = new Vector3.copy(argCol3);
 
   void setZero() {
     col1.setZero();
@@ -58,7 +58,7 @@ class Matrix33 {
    * than computing the inverse in one-shot cases.
    */
   Vector solve22(Vector b) {
-    Vector x = new Vector();
+    Vector x = new Vector.zero();
     solve22ToOut(b, x);
     return x;
   }
@@ -82,7 +82,7 @@ class Matrix33 {
    * than computing the inverse in one-shot cases.
    */
   Vector3 solve33(Vector3 b) {
-    Vector3 x = new Vector3();
+    Vector3 x = new Vector3.zero();
     solve33ToOut(b, x);
     return x;
   }

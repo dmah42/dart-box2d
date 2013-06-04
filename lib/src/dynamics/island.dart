@@ -46,8 +46,8 @@ class Island {
 
   Island() :
     _contactSolver = new ContactSolver(),
-    _translation = new Vector(),
-    impulse = new ContactImpulse() { }
+    _translation = new Vector.zero(),
+    impulse = new ContactImpulse();
 
   //TODO(gregbglw): No need to keep capacity, count and array for these items as
   // in C. Simply measure the length of the array, for example, in order to
@@ -164,7 +164,7 @@ class Island {
     _contactSolver.storeImpulses();
 
     // Integrate positions.
-    Vector temp = new Vector();
+    Vector temp = new Vector.zero();
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
 
@@ -312,7 +312,7 @@ class Position {
   num a;
 
   Position() {
-    x = new Vector();
+    x = new Vector.zero();
     a = 0;
   }
 }
@@ -325,7 +325,7 @@ class Velocity {
   num a;
 
   Velocity() {
-    v = new Vector();
+    v = new Vector.zero();
     a = 0;
   }
 }

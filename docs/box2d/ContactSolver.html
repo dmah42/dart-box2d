@@ -73,20 +73,20 @@ class ContactSolver {
 
    // Setup pool variables.
    worldManifold = new WorldManifold(),
-   tangent = new Vector(),
-   temp1 = new Vector(),
-   temp2 = new Vector(),
-   P = new Vector(),
-   dv = new Vector(),
-   dv1 = new Vector(),
-   dv2 = new Vector(),
-   x = new Vector(),
-   d = new Vector(),
-   P1 = new Vector(),
-   P2 = new Vector(),
+   tangent = new Vector.zero(),
+   temp1 = new Vector.zero(),
+   temp2 = new Vector.zero(),
+   P = new Vector.zero(),
+   dv = new Vector.zero(),
+   dv1 = new Vector.zero(),
+   dv2 = new Vector.zero(),
+   x = new Vector.zero(),
+   d = new Vector.zero(),
+   P1 = new Vector.zero(),
+   P2 = new Vector.zero(),
    psolver = new PositionSolverManifold(),
-   rA = new Vector(),
-   rB = new Vector();
+   rA = new Vector.zero(),
+   rB = new Vector.zero();
 
  void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraintCount = contactCount;
@@ -650,20 +650,20 @@ ContactSolver() :
 
  // Setup pool variables.
  worldManifold = new WorldManifold(),
- tangent = new Vector(),
- temp1 = new Vector(),
- temp2 = new Vector(),
- P = new Vector(),
- dv = new Vector(),
- dv1 = new Vector(),
- dv2 = new Vector(),
- x = new Vector(),
- d = new Vector(),
- P1 = new Vector(),
- P2 = new Vector(),
+ tangent = new Vector.zero(),
+ temp1 = new Vector.zero(),
+ temp2 = new Vector.zero(),
+ P = new Vector.zero(),
+ dv = new Vector.zero(),
+ dv1 = new Vector.zero(),
+ dv2 = new Vector.zero(),
+ x = new Vector.zero(),
+ d = new Vector.zero(),
+ P1 = new Vector.zero(),
+ P2 = new Vector.zero(),
  psolver = new PositionSolverManifold(),
- rA = new Vector(),
- rB = new Vector();
+ rA = new Vector.zero(),
+ rB = new Vector.zero();
 </pre>
 </div>
 </div>

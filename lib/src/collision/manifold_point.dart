@@ -40,10 +40,10 @@ class ManifoldPoint {
    * Constructs a new ManifoldPoint.
    */
   ManifoldPoint() :
-    localPoint = new Vector(),
+    localPoint = new Vector.zero(),
     tangentImpulse = 0,
     normalImpulse = 0,
-    id = new ContactID() { }
+    id = new ContactID();
 
   /**
    * Constructs a new ManifoldPoint that is a copy of the given point.

@@ -26,9 +26,9 @@ class TimeOfImpactConstraint {
 
   TimeOfImpactConstraint() :
     localPoints = new List<Vector>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector()),
-    localNormal = new Vector(),
-    localPoint = new Vector(),
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector.zero()),
+    localNormal = new Vector.zero(),
+    localPoint = new Vector.zero(),
     type = 0,
     radius = 0,
     pointCount = 0,

@@ -93,7 +93,6 @@ class BenchmarkRunner {
    * Initializes the given benchmark and adds to the end of the queue of
    * benchmarks to run.
    */
-  void _addBenchmark(Benchmark benchmark) => _benchmarks.add(benchmark);
 }
 
 void main() {
