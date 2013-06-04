@@ -22,21 +22,21 @@ class MathBox {
   /**
    * Return the distance between the two given vectors, but squared.
    */
-  static num distanceSquared(Vector v1, Vector v2) {
-    num dx = (v1.x - v2.x);
-    num dy = (v1.y - v2.y);
+  static double distanceSquared(Vector v1, Vector v2) {
+    double dx = (v1.x - v2.x);
+    double dy = (v1.y - v2.y);
     return dx * dx + dy * dy;
   }
 
   /**
    * Return the distance between the two given vectors.
    */
-  static num distance(Vector v1, Vector v2) {
+  static double distance(Vector v1, Vector v2) {
     return Math.sqrt(distanceSquared(v1, v2));
   }
 
   /** Returns the closest value to [a] that is in between [low] and [high] */
-  static num clamp(num a, num low, num high) {
+  static double clamp(double a, double low, double high) {
     return Math.max(low, Math.min(a, high));
   }
 
@@ -46,15 +46,15 @@ class MathBox {
    * from [toMin] and [toMax]. For example, given a [val] of 2 in the
    * "from range" of 0-4, and a "to range" of 10-20, would return 15.
    */
-  static num translateAndScale(num val, num fromMin, num fromMax, num toMin,
-      num toMax) {
-    final num mult = (val - fromMin) / (fromMax - fromMin);
-    final num res = toMin + mult * (toMax - toMin);
+  static double translateAndScale(double val, double fromMin, double fromMax,
+                                  double toMin, double toMax) {
+    final double mult = (val - fromMin) / (fromMax - fromMin);
+    final double res = toMin + mult * (toMax - toMin);
     return res;
   }
 
   /** Convert from [deg] degrees to radians. */
-  static num degToRad(num deg) => (Math.PI / 180.0) * deg;
+  static double degToRad(double deg) => (Math.PI / 180.0) * deg;
   /** Convert from [rad] radians to degrees. */
-  static num radToDeg(num rad) => (180.0 / Math.PI) * rad;
+  static double radToDeg(double rad) => (180.0 / Math.PI) * rad;
 }

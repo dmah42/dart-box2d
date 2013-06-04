@@ -24,19 +24,18 @@ class Simplex {
   int count;
 
   Simplex() :
-    count = 0,
-    v1 = new SimplexVertex(),
-    v2 = new SimplexVertex(),
-    v3 = new SimplexVertex(),
-    vertices = new List<SimplexVertex>(3),
-    e13 = new Vector(),
-    e12 = new Vector(),
-    e23 = new Vector(),
-    case2 = new Vector(),
-    case22 = new Vector(),
-    case3 = new Vector(),
-    case33 = new Vector() {
-
+      count = 0,
+      v1 = new SimplexVertex(),
+      v2 = new SimplexVertex(),
+      v3 = new SimplexVertex(),
+      vertices = new List<SimplexVertex>(3),
+      e13 = new Vector(),
+      e12 = new Vector(),
+      e23 = new Vector(),
+      case2 = new Vector(),
+      case22 = new Vector(),
+      case3 = new Vector(),
+      case33 = new Vector() {
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
@@ -120,11 +119,11 @@ class Simplex {
 
         if (sgn > 0) {
           // Origin is left of e12.
-          Vector.crossNumAndVectorToOut(1, e12, out);
+          Vector.crossNumAndVectorToOut(1.0, e12, out);
         }
         else {
           // Origin is right of e12.
-          Vector.crossVectorAndNumToOut(e12, 1, out);
+          Vector.crossVectorAndNumToOut(e12, 1.0, out);
         }
         break;
       default :

@@ -102,16 +102,16 @@ class TimeOfImpact {
    sweepA.normalize();
    sweepB.normalize();
 
-   num tMax = input.tMax;
+   double tMax = input.tMax;
 
-   num totalRadius = proxyA.radius + proxyB.radius;
-   num target = Math.max(Settings.LINEAR_SLOP, totalRadius
-       - 3.0 * Settings.LINEAR_SLOP);
-   num tolerance = 0.25 * Settings.LINEAR_SLOP;
+   double totalRadius = proxyA.radius + proxyB.radius;
+   double target = Math.max(Settings.LINEAR_SLOP,
+       totalRadius - 3.0 * Settings.LINEAR_SLOP);
+   double tolerance = 0.25 * Settings.LINEAR_SLOP;
 
    assert (target &gt; tolerance);
 
-   num t1 = 0;
+   double t1 = 0.0;
    int iter = 0;
 
    cache.count = 0;
@@ -494,16 +494,16 @@ void timeOfImpact(TimeOfImpactOutput output, TimeOfImpactInput input) {
  sweepA.normalize();
  sweepB.normalize();
 
- num tMax = input.tMax;
+ double tMax = input.tMax;
 
- num totalRadius = proxyA.radius + proxyB.radius;
- num target = Math.max(Settings.LINEAR_SLOP, totalRadius
-     - 3.0 * Settings.LINEAR_SLOP);
- num tolerance = 0.25 * Settings.LINEAR_SLOP;
+ double totalRadius = proxyA.radius + proxyB.radius;
+ double target = Math.max(Settings.LINEAR_SLOP,
+     totalRadius - 3.0 * Settings.LINEAR_SLOP);
+ double tolerance = 0.25 * Settings.LINEAR_SLOP;
 
  assert (target &gt; tolerance);
 
- num t1 = 0;
+ double t1 = 0.0;
  int iter = 0;
 
  cache.count = 0;

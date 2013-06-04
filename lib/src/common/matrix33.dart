@@ -46,8 +46,8 @@ class Matrix33 {
   }
 
   static void mulToOut(Matrix33 A, Vector3 v, Vector3 out){
-    final num tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
-    final num tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
+    final double tempy = v.x * A.col1.y + v.y * A.col2.y + v.z * A.col3.y;
+    final double tempz = v.x * A.col1.z + v.y * A.col2.z + v.z * A.col3.z;
     out.x = v.x * A.col1.x + v.y * A.col2.x + v.z + A.col3.x;
     out.y = tempy;
     out.z = tempz;
@@ -68,8 +68,8 @@ class Matrix33 {
    * than computing the inverse in one-shot cases.
    */
   void solve22ToOut(Vector b, Vector out) {
-    final num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-    num det = a11 * a22 - a12 * a21;
+    final double a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+    double det = a11 * a22 - a12 * a21;
     if (det != 0.0){
       det = 1.0 / det;
     }
@@ -94,17 +94,17 @@ class Matrix33 {
    */
   void solve33ToOut(Vector3 b, Vector3 out) {
     Vector3.crossToOut(col2, col3, out);
-    num det = Vector3.dot(col1, out);
+    double det = Vector3.dot(col1, out);
     if (det != 0.0){
       det = 1.0 / det;
     }
 
     Vector3.crossToOut(col2, col3, out);
-    final num x = det * Vector3.dot(b, out);
+    final double x = det * Vector3.dot(b, out);
     Vector3.crossToOut(b, col3, out);
-    final num y = det * Vector3.dot(col1, out);
+    final double y = det * Vector3.dot(col1, out);
     Vector3.crossToOut(col2, b, out);
-    num z = det * Vector3.dot(col1, out);
+    double z = det * Vector3.dot(col1, out);
     out.x = x;
     out.y = y;
     out.z = z;

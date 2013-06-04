@@ -42,8 +42,8 @@ class Sweep {
  final Vector center;
 
  /** World angles. */
- num angleZero;
- num angle;
+ double angleZero;
+ double angle;
 
  /**
   * Constructs a new Sweep with centers initialized to the origin and angles
@@ -88,7 +88,7 @@ class Sweep {
  }
 
  void normalize() {
-   num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+   double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
    angleZero -= d;
    angle -= d;
  }
@@ -97,7 +97,7 @@ class Sweep {
   * Computes the interpolated transform at a specific time.
   * Time is the normalized time in [0,1].
   */
- void getTransform(Transform xf, num alpha) {
+ void getTransform(Transform xf, double alpha) {
    assert (xf != null);
 
    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
@@ -115,7 +115,7 @@ class Sweep {
   * Advances the sweep forward, resulting in a new initial state.
   * Time is the new initial time.
   */
- void advance(num time) {
+ void advance(double time) {
    centerZero.x = (1 - time) * centerZero.x + time * center.x;
    centerZero.y = (1 - time) * centerZero.y + time * center.y;
    angleZero = (1 - time) * angleZero + time * angle;
@@ -163,26 +163,26 @@ Sweep.copy(Sweep other)
 <h3>Properties</h3>
 <div class="field"><h4 id="angle">
 <button class="show-code">Code</button>
-num         <strong>angle</strong> <a class="anchor-link"
+double         <strong>angle</strong> <a class="anchor-link"
             href="#angle"
             title="Permalink to Sweep.angle">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num angle
+double angle
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angleZero">
 <button class="show-code">Code</button>
-num         <strong>angleZero</strong> <a class="anchor-link"
+double         <strong>angleZero</strong> <a class="anchor-link"
             href="#angleZero"
             title="Permalink to Sweep.angleZero">#</a>
         </h4>
         <div class="doc">
 <p>World angles. </p>
 <pre class="source">
-num angleZero
+double angleZero
 </pre>
 </div>
 </div>
@@ -248,13 +248,13 @@ bool operator ==(other) {
 <h3>Methods</h3>
 <div class="method"><h4 id="advance">
 <button class="show-code">Code</button>
-void <strong>advance</strong>(num time) <a class="anchor-link" href="#advance"
+void <strong>advance</strong>(double time) <a class="anchor-link" href="#advance"
               title="Permalink to Sweep.advance">#</a></h4>
 <div class="doc">
 <p>Advances the sweep forward, resulting in a new initial state.
 Time is the new initial time.</p>
 <pre class="source">
-void advance(num time) {
+void advance(double time) {
  centerZero.x = (1 - time) * centerZero.x + time * center.x;
  centerZero.y = (1 - time) * centerZero.y + time * center.y;
  angleZero = (1 - time) * angleZero + time * angle;
@@ -264,13 +264,13 @@ void advance(num time) {
 </div>
 <div class="method"><h4 id="getTransform">
 <button class="show-code">Code</button>
-void <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, num alpha) <a class="anchor-link" href="#getTransform"
+void <strong>getTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, double alpha) <a class="anchor-link" href="#getTransform"
               title="Permalink to Sweep.getTransform">#</a></h4>
 <div class="doc">
 <p>Computes the interpolated transform at a specific time.
 Time is the normalized time in <code>0,1</code>.</p>
 <pre class="source">
-void getTransform(Transform xf, num alpha) {
+void getTransform(Transform xf, double alpha) {
  assert (xf != null);
 
  xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
@@ -293,7 +293,7 @@ void <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
 <div class="doc">
 <pre class="source">
 void normalize() {
- num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+ double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
  angleZero -= d;
  angle -= d;
 }

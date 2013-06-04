@@ -406,11 +406,11 @@ v.v9=z
 v.f1=0
 v.wT=0.85
 y.UT=!0
-y.bM=new $.xy(30,50)
+y.bM=new $.xy(30,5)
 u=this.JK.HV(y)
 this.Ij.push(u)
 u.Ki(v)
-u.sXo(new $.xy(-25,-25))
+u.sXo(new $.xy(-50,0))
 u.sX7
 if(!$.xC(u.zv,0)){u.sC1(!0)
 u.m0=6.7}v.dn=25

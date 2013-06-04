@@ -20,7 +20,7 @@
 part of box2d;
 
 class ViewportTransform {
-  ViewportTransform(Vector e, Vector c, num s) :
+  ViewportTransform(Vector e, Vector c, double s) :
     extents = new Vector.copy(e),
     center = new Vector.copy(c),
     scale = s;
@@ -41,7 +41,7 @@ class ViewportTransform {
    * Returns the scaling factor used in converting from world sizes to rendering
    * sizes.
    */
-  num scale;
+  double scale;
   
   /**
    * center of the viewport.
@@ -52,7 +52,7 @@ class ViewportTransform {
    * Sets the transform's center to the given x and y coordinates,
    * and using the given scale.
    */
-  void setCamera(num x, num y, num s) {
+  void setCamera(double x, double y, double s) {
     center.setCoords(x, y);
     scale = s;
   }
@@ -82,8 +82,8 @@ class ViewportTransform {
   void getWorldToScreen(Vector argWorld, Vector argScreen) {
     // Correct for canvas considering the upper-left corner, rather than the
     // center, to be the origin.
-    num gridCorrectedX = (argWorld.x * scale) + extents.x;
-    num gridCorrectedY = extents.y - (argWorld.y * scale);
+    double gridCorrectedX = (argWorld.x * scale) + extents.x;
+    double gridCorrectedY = extents.y - (argWorld.y * scale);
 
     argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
         -translation.y);
@@ -95,11 +95,11 @@ class ViewportTransform {
    * to give the same object as both parameters.
    */
   void getScreenToWorld(Vector argScreen, Vector argWorld) {
-    num translationCorrectedX = argScreen.x - translation.x;
-    num translationCorrectedY = argScreen.y + translation.y;
+    double translationCorrectedX = argScreen.x - translation.x;
+    double translationCorrectedY = argScreen.y + translation.y;
 
-    num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
-    num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+    double gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+    double gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
     argWorld.setCoords(gridCorrectedX, gridCorrectedY);
   }
 }

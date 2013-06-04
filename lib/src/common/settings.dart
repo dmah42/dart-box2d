@@ -24,7 +24,7 @@ class Settings {
   static const int CONTACT_STACK_INIT_SIZE = 10;
 
   /** A "close to Zero" num epsilon value for use */
-  static const num EPSILON = .0000001192;
+  static const double EPSILON = .0000001192;
 
   /**
    * Maximum number of contacts to be handled to solve a TimeOfImpact island.
@@ -34,33 +34,33 @@ class Settings {
   /**
    * A body cannot sleep if its linear velocity is above this tolerance.
    */
-  static const num LINEAR_SLEEP_TOLERANCE = 0.01;
+  static const double LINEAR_SLEEP_TOLERANCE = 0.01;
 
   /**
    * The maximum linear position correction used when solving constraints.
    * This helps to prevent overshoot.
    */
-  static const num MAX_LINEAR_CORRECTION = 0.2;
+  static const double MAX_LINEAR_CORRECTION = 0.2;
 
   /**
    * A body cannot sleep if its angular velocity is above this tolerance.
    */
-  static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI;
+  static const double ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI;
 
-  static const num TIME_TO_SLEEP = 0.5;
+  static const double TIME_TO_SLEEP = 0.5;
 
   static const int TREE_REBALANCE_STEPS = 4;
 
   static const int MAX_INTEGER = 2147483647;
 
-  static const num SMALL_NUMBER = .000000000001;
-  static const num BIG_NUMBER = 99999999999999.0;
+  static const double SMALL_NUMBER = .000000000001;
+  static const double BIG_NUMBER = 99999999999999.0;
 
   /**
    * A small length used as a collision and constant tolerance. Usually it
    * is chosen to be numerically significant, but visually insignificant.
    */
-  static const num LINEAR_SLOP = 0.005;
+  static const double LINEAR_SLOP = 0.005;
 
   /**
    * The radius of the polygon/edge shape skin. This should not be modified.
@@ -68,7 +68,7 @@ class Settings {
    * continuous collision. Making it larger may create artifacts for vertex
    * collision.
    */
-  static const num POLYGON_RADIUS = 2.0 * LINEAR_SLOP;
+  static const double POLYGON_RADIUS = 2.0 * LINEAR_SLOP;
 
   static const num VELOCITY_THRESHOLD = 1;
 
@@ -77,7 +77,7 @@ class Settings {
    * to move by small amounts without needing to adjust the tree. This value is
    * in meters.
    */
-  static const num BOUNDING_BOX_EXTENSION = .1;
+  static const double BOUNDING_BOX_EXTENSION = .1;
 
   /**
    * This is used to fatten AABBs in the dynamic tree. This is used to predict
@@ -91,21 +91,21 @@ class Settings {
    * would be 1 so that overlap is removed in one time step. However using
    * values close to 1 often lead to overshoot.
    */
-  static const num CONTACT_BAUMGARTE = 0.2;
+  static const double CONTACT_BAUMGARTE = 0.2;
 
   /**
    * The maximum linear velocity of a body. This limit is very large and is
    * used to prevent numerical problems. You shouldn't need to adjust this.
    */
-  static const num MAX_TRANSLATION = 2.0;
-  static const num MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION;
+  static const double MAX_TRANSLATION = 2.0;
+  static const double MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION;
 
   /**
    * The maximum angular velocity of a body. This limit is very large and is
    * used to prevent numerical problems. You shouldn't need to adjust this.
    */
-  static const num MAX_ROTATION = 0.5 * Math.PI;
-  static const num MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION;
+  static const double MAX_ROTATION = 0.5 * Math.PI;
+  static const double MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION;
 
   /**
    * The maximum number of contact points between two convex shapes.
@@ -116,13 +116,13 @@ class Settings {
    * A small angle used as a collision and constraint tolerance. Usually it is
    * chosen to be numerically significant, but visually insignificant.
    */
-  static const num ANGULAR_SLOP = (2.0 / 180.0 * Math.PI);
+  static const double ANGULAR_SLOP = (2.0 / 180.0 * Math.PI);
 
   /**
    * The maximum angular position correction used when solving constraints.
    * This helps to prevent overshoot.
    */
-  static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI);
+  static const double MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI);
 
   /**
    * The maximum number of vertices on a convex polygon.
@@ -132,14 +132,14 @@ class Settings {
   /**
    * Friction mixing law.
    */
-  static num mixFriction(num friction1, num friction2) {
+  static double mixFriction(double friction1, double friction2) {
     return Math.sqrt(friction1 * friction2);
   }
 
   /**
    * Restitution mixing law.
    */
-  static num mixRestitution(num restitution1, num restitution2) {
+  static double mixRestitution(double restitution1, double restitution2) {
     return restitution1 > restitution2 ? restitution1 : restitution2;
   }
 }

@@ -256,7 +256,7 @@ class ContactSolver {
      final num invMassB = bodyB.invMass;
      final num invIB = bodyB.invInertia;
      final Vector normal = c.normal;
-     Vector.crossVectorAndNumToOut(normal, 1, tangent);
+     Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
 
      for (int j = 0; j &lt; c.pointCount; ++j){
        ContactConstraintPoint ccp = c.points[j];
@@ -391,7 +391,7 @@ class ContactSolver {
 
        while (true) {
          Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-         x.mulLocal(-1);
+         x.mulLocal(-1.0);
 
          if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
            // Resubstitute for the incremental impulse
@@ -1231,7 +1231,7 @@ void solveVelocityConstraints(){
 
      while (true) {
        Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-       x.mulLocal(-1);
+       x.mulLocal(-1.0);
 
        if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
          // Resubstitute for the incremental impulse
@@ -1408,7 +1408,7 @@ void warmStart(){
    final num invMassB = bodyB.invMass;
    final num invIB = bodyB.invInertia;
    final Vector normal = c.normal;
-   Vector.crossVectorAndNumToOut(normal, 1, tangent);
+   Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
 
    for (int j = 0; j &lt; c.pointCount; ++j){
      ContactConstraintPoint ccp = c.points[j];

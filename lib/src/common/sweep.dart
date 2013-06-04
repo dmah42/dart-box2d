@@ -23,8 +23,8 @@ class Sweep {
   final Vector center;
 
   /** World angles. */
-  num angleZero;
-  num angle;
+  double angleZero;
+  double angle;
 
   /**
    * Constructs a new Sweep with centers initialized to the origin and angles
@@ -69,7 +69,7 @@ class Sweep {
   }
 
   void normalize() {
-    num d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+    double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
     angleZero -= d;
     angle -= d;
   }
@@ -78,7 +78,7 @@ class Sweep {
    * Computes the interpolated transform at a specific time.
    * Time is the normalized time in [0,1].
    */
-  void getTransform(Transform xf, num alpha) {
+  void getTransform(Transform xf, double alpha) {
     assert (xf != null);
 
     xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
@@ -96,7 +96,7 @@ class Sweep {
    * Advances the sweep forward, resulting in a new initial state.
    * Time is the new initial time.
    */
-  void advance(num time) {
+  void advance(double time) {
     centerZero.x = (1 - time) * centerZero.x + time * center.x;
     centerZero.y = (1 - time) * centerZero.y + time * center.y;
     angleZero = (1 - time) * angleZero + time * angle;

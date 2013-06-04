@@ -11220,9 +11220,9 @@ u.y=$.WB(u.y,j.y)
 u=y.ghJ()
 v=$.WB($.WB($.xH($.p0(w.x,i.y),$.p0(w.y,i.x)),this.qx),v.z)
 if(typeof v!=="number")throw $.s(v)
-y.shJ($.WB(u,q*v))}else{v.x=0
+y.shJ($.WB(u,q*v))}else{v.z=0
 v.y=0
-v.z=0
+v.x=0
 this.qx=0}},
 EW:function(B){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,A
 z=this.q5

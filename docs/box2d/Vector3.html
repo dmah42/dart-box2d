@@ -36,11 +36,11 @@
 class Vector3 {
  // Each vector is defined as the vector originating from (0,0) to the point
  // defined by these values.
- num x;
- num y;
- num z;
+ double x;
+ double y;
+ double z;
 
- Vector3([this.x = 0, this.y = 0, this.z = 0]);
+ Vector3([this.x = 0.0, this.y = 0.0, this.z = 0.0]);
 
  Vector3.copy(Vector3 argCopy) {
    x = argCopy.x;
@@ -61,7 +61,7 @@ class Vector3 {
  }
 
  /** Sets the vectors coordinate values to those given. */
- Vector3 setCoords(num argX, num argY, num argZ) {
+ Vector3 setCoords(double argX, double argY, double argZ) {
    x = argX;
    y = argY;
    z = argZ;
@@ -88,14 +88,14 @@ class Vector3 {
  Vector3 sub(Vector3 argVec) =&gt;
      new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
 
- Vector3 mulLocal(num argScalar) {
+ Vector3 mulLocal(double argScalar) {
    x *= argScalar;
    y *= argScalar;
    z *= argScalar;
    return this;
  }
 
- Vector3 mul(num argScalar) =&gt;
+ Vector3 mul(double argScalar) =&gt;
      new Vector3(x * argScalar, y * argScalar, z * argScalar);
 
  Vector3 negateLocal() {
@@ -106,14 +106,12 @@ class Vector3 {
  }
 
  void setZero() {
-   x = 0;
-   y = 0;
-   z = 0;
+   x = y = z = 0.0;
  }
 
  String toString() =&gt; "($x, $y, $z)";
 
- static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+ static double dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
 
  static Vector3 cross(Vector3 a, Vector3 b) =&gt;
      new Vector3(a.y * b.z - a.z * b.y,
@@ -121,8 +119,8 @@ class Vector3 {
                  a.x * b.y - a.y * b.x);
 
  static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
-   final num tempy = a.z * b.x - a.x * b.z;
-   final num tempz = a.x * b.y - a.y * b.x;
+   final double tempy = a.z * b.x - a.x * b.z;
+   final double tempz = a.x * b.y - a.y * b.x;
    out.x = a.y * b.z - a.z * b.y;
    out.y = tempy;
    out.z = tempz;
@@ -134,11 +132,11 @@ class Vector3 {
 <h3>Static Methods</h3>
 <div class="method"><h4 id="dot">
 <button class="show-code">Code</button>
-num <strong>dot</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, <a href="../box2d/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#dot"
+double <strong>dot</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, <a href="../box2d/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#dot"
               title="Permalink to Vector3.dot">#</a></h4>
 <div class="doc">
 <pre class="source">
-static num dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
+static double dot(Vector3 a, Vector3 b) =&gt; a.x * b.x + a.y * b.y + a.z * b.z;
 </pre>
 </div>
 </div>
@@ -162,8 +160,8 @@ void <strong>crossToOut</strong>(<a href="../box2d/Vector3.html">Vector3</a> a, 
 <div class="doc">
 <pre class="source">
 static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
- final num tempy = a.z * b.x - a.x * b.z;
- final num tempz = a.x * b.y - a.y * b.x;
+ final double tempy = a.z * b.x - a.x * b.z;
+ final double tempz = a.x * b.y - a.y * b.x;
  out.x = a.y * b.z - a.z * b.y;
  out.y = tempy;
  out.z = tempz;
@@ -176,11 +174,11 @@ static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
 <h3>Constructors</h3>
 <div class="method"><h4 id="Vector3">
 <button class="show-code">Code</button>
-new <strong>Vector3</strong>([num x = 0, num y = 0, num z = 0]) <a class="anchor-link" href="#Vector3"
+new <strong>Vector3</strong>([double x = 0.0, double y = 0.0, double z = 0.0]) <a class="anchor-link" href="#Vector3"
               title="Permalink to Vector3.Vector3">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector3([this.x = 0, this.y = 0, this.z = 0]);
+Vector3([this.x = 0.0, this.y = 0.0, this.z = 0.0]);
 </pre>
 </div>
 </div>
@@ -203,37 +201,37 @@ Vector3.copy(Vector3 argCopy) {
 <h3>Properties</h3>
 <div class="field"><h4 id="x">
 <button class="show-code">Code</button>
-num         <strong>x</strong> <a class="anchor-link"
+double         <strong>x</strong> <a class="anchor-link"
             href="#x"
             title="Permalink to Vector3.x">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num x
+double x
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="y">
 <button class="show-code">Code</button>
-num         <strong>y</strong> <a class="anchor-link"
+double         <strong>y</strong> <a class="anchor-link"
             href="#y"
             title="Permalink to Vector3.y">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num y
+double y
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="z">
 <button class="show-code">Code</button>
-num         <strong>z</strong> <a class="anchor-link"
+double         <strong>z</strong> <a class="anchor-link"
             href="#z"
             title="Permalink to Vector3.z">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num z
+double z
 </pre>
 </div>
 </div>
@@ -291,22 +289,22 @@ Vector3 addLocal(Vector3 argVec) {
 </div>
 <div class="method"><h4 id="mul">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector3.html">Vector3</a> <strong>mul</strong>(num argScalar) <a class="anchor-link" href="#mul"
+<a href="../box2d/Vector3.html">Vector3</a> <strong>mul</strong>(double argScalar) <a class="anchor-link" href="#mul"
               title="Permalink to Vector3.mul">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector3 mul(num argScalar) =&gt;
+Vector3 mul(double argScalar) =&gt;
    new Vector3(x * argScalar, y * argScalar, z * argScalar);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="mulLocal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector3.html">Vector3</a> <strong>mulLocal</strong>(num argScalar) <a class="anchor-link" href="#mulLocal"
+<a href="../box2d/Vector3.html">Vector3</a> <strong>mulLocal</strong>(double argScalar) <a class="anchor-link" href="#mulLocal"
               title="Permalink to Vector3.mulLocal">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector3 mulLocal(num argScalar) {
+Vector3 mulLocal(double argScalar) {
  x *= argScalar;
  y *= argScalar;
  z *= argScalar;
@@ -332,12 +330,12 @@ Vector3 negateLocal() {
 </div>
 <div class="method"><h4 id="setCoords">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector3.html">Vector3</a> <strong>setCoords</strong>(num argX, num argY, num argZ) <a class="anchor-link" href="#setCoords"
+<a href="../box2d/Vector3.html">Vector3</a> <strong>setCoords</strong>(double argX, double argY, double argZ) <a class="anchor-link" href="#setCoords"
               title="Permalink to Vector3.setCoords">#</a></h4>
 <div class="doc">
 <p>Sets the vectors coordinate values to those given. </p>
 <pre class="source">
-Vector3 setCoords(num argX, num argY, num argZ) {
+Vector3 setCoords(double argX, double argY, double argZ) {
  x = argX;
  y = argY;
  z = argZ;
@@ -369,9 +367,7 @@ void <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
 <div class="doc">
 <pre class="source">
 void setZero() {
- x = 0;
- y = 0;
- z = 0;
+ x = y = z = 0.0;
 }
 </pre>
 </div>

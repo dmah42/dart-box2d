@@ -23,10 +23,10 @@ abstract class Benchmark {
   List<Body> bodies;
 
   /** The gravity vector's y value. */
-  static const num GRAVITY = -10;
+  static const double GRAVITY = -10.0;
 
   /** The timestep and iteration values. */
-  static const num TIME_STEP = 1/60;
+  static const double TIME_STEP = 1.0/60.0;
 
   /** The physics world. */
   World world;
@@ -61,7 +61,7 @@ abstract class Benchmark {
     bodies = new List<Body>();
 
     // Setup the World.
-    world = new World(new Vector(0, GRAVITY), true, new DefaultWorldPool());
+    world = new World(new Vector(0.0, GRAVITY), true, new DefaultWorldPool());
   }
 
   /**

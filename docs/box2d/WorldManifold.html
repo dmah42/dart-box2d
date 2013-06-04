@@ -68,8 +68,8 @@ class WorldManifold {
        final Vector pointA = pool3;
        final Vector pointB = pool4;
 
-       normal.x = 1;
-       normal.y = 0;
+       normal.x = 1.0;
+       normal.y = 0.0;
        pointA.x = xfA.position.x + xfA.rotation.col1.x *
            manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
        pointA.y = xfA.position.y + xfA.rotation.col1.y *
@@ -268,8 +268,8 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
      final Vector pointA = pool3;
      final Vector pointB = pool4;
 
-     normal.x = 1;
-     normal.y = 0;
+     normal.x = 1.0;
+     normal.y = 0.0;
      pointA.x = xfA.position.x + xfA.rotation.col1.x *
          manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
      pointA.y = xfA.position.y + xfA.rotation.col1.y *

@@ -38,7 +38,7 @@ class Settings {
  static const int CONTACT_STACK_INIT_SIZE = 10;
 
  /** A "close to Zero" num epsilon value for use */
- static const num EPSILON = .0000001192;
+ static const double EPSILON = .0000001192;
 
  /**
   * Maximum number of contacts to be handled to solve a TimeOfImpact island.
@@ -48,33 +48,33 @@ class Settings {
  /**
   * A body cannot sleep if its linear velocity is above this tolerance.
   */
- static const num LINEAR_SLEEP_TOLERANCE = 0.01;
+ static const double LINEAR_SLEEP_TOLERANCE = 0.01;
 
  /**
   * The maximum linear position correction used when solving constraints.
   * This helps to prevent overshoot.
   */
- static const num MAX_LINEAR_CORRECTION = 0.2;
+ static const double MAX_LINEAR_CORRECTION = 0.2;
 
  /**
   * A body cannot sleep if its angular velocity is above this tolerance.
   */
- static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI;
+ static const double ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI;
 
- static const num TIME_TO_SLEEP = 0.5;
+ static const double TIME_TO_SLEEP = 0.5;
 
  static const int TREE_REBALANCE_STEPS = 4;
 
  static const int MAX_INTEGER = 2147483647;
 
- static const num SMALL_NUMBER = .000000000001;
- static const num BIG_NUMBER = 99999999999999.0;
+ static const double SMALL_NUMBER = .000000000001;
+ static const double BIG_NUMBER = 99999999999999.0;
 
  /**
   * A small length used as a collision and constant tolerance. Usually it
   * is chosen to be numerically significant, but visually insignificant.
   */
- static const num LINEAR_SLOP = 0.005;
+ static const double LINEAR_SLOP = 0.005;
 
  /**
   * The radius of the polygon/edge shape skin. This should not be modified.
@@ -82,7 +82,7 @@ class Settings {
   * continuous collision. Making it larger may create artifacts for vertex
   * collision.
   */
- static const num POLYGON_RADIUS = 2.0 * LINEAR_SLOP;
+ static const double POLYGON_RADIUS = 2.0 * LINEAR_SLOP;
 
  static const num VELOCITY_THRESHOLD = 1;
 
@@ -91,7 +91,7 @@ class Settings {
   * to move by small amounts without needing to adjust the tree. This value is
   * in meters.
   */
- static const num BOUNDING_BOX_EXTENSION = .1;
+ static const double BOUNDING_BOX_EXTENSION = .1;
 
  /**
   * This is used to fatten AABBs in the dynamic tree. This is used to predict
@@ -105,21 +105,21 @@ class Settings {
   * would be 1 so that overlap is removed in one time step. However using
   * values close to 1 often lead to overshoot.
   */
- static const num CONTACT_BAUMGARTE = 0.2;
+ static const double CONTACT_BAUMGARTE = 0.2;
 
  /**
   * The maximum linear velocity of a body. This limit is very large and is
   * used to prevent numerical problems. You shouldn't need to adjust this.
   */
- static const num MAX_TRANSLATION = 2.0;
- static const num MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION;
+ static const double MAX_TRANSLATION = 2.0;
+ static const double MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION;
 
  /**
   * The maximum angular velocity of a body. This limit is very large and is
   * used to prevent numerical problems. You shouldn't need to adjust this.
   */
- static const num MAX_ROTATION = 0.5 * Math.PI;
- static const num MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION;
+ static const double MAX_ROTATION = 0.5 * Math.PI;
+ static const double MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION;
 
  /**
   * The maximum number of contact points between two convex shapes.
@@ -130,13 +130,13 @@ class Settings {
   * A small angle used as a collision and constraint tolerance. Usually it is
   * chosen to be numerically significant, but visually insignificant.
   */
- static const num ANGULAR_SLOP = (2.0 / 180.0 * Math.PI);
+ static const double ANGULAR_SLOP = (2.0 / 180.0 * Math.PI);
 
  /**
   * The maximum angular position correction used when solving constraints.
   * This helps to prevent overshoot.
   */
- static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI);
+ static const double MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI);
 
  /**
   * The maximum number of vertices on a convex polygon.
@@ -146,14 +146,14 @@ class Settings {
  /**
   * Friction mixing law.
   */
- static num mixFriction(num friction1, num friction2) {
+ static double mixFriction(double friction1, double friction2) {
    return Math.sqrt(friction1 * friction2);
  }
 
  /**
   * Restitution mixing law.
   */
- static num mixRestitution(num restitution1, num restitution2) {
+ static double mixRestitution(double restitution1, double restitution2) {
    return restitution1 &gt; restitution2 ? restitution1 : restitution2;
  }
 }
@@ -163,20 +163,20 @@ class Settings {
 <h3>Static Properties</h3>
 <div class="field"><h4 id="ANGULAR_SLEEP_TOLERANCE">
 <button class="show-code">Code</button>
-const num         <strong>ANGULAR_SLEEP_TOLERANCE</strong> <a class="anchor-link"
+const double         <strong>ANGULAR_SLEEP_TOLERANCE</strong> <a class="anchor-link"
             href="#ANGULAR_SLEEP_TOLERANCE"
             title="Permalink to Settings.ANGULAR_SLEEP_TOLERANCE">#</a>
         </h4>
         <div class="doc">
 <p>A body cannot sleep if its angular velocity is above this tolerance.</p>
 <pre class="source">
-static const num ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI
+static const double ANGULAR_SLEEP_TOLERANCE = 2.0 / 180.0 * Math.PI
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="ANGULAR_SLOP">
 <button class="show-code">Code</button>
-const num         <strong>ANGULAR_SLOP</strong> <a class="anchor-link"
+const double         <strong>ANGULAR_SLOP</strong> <a class="anchor-link"
             href="#ANGULAR_SLOP"
             title="Permalink to Settings.ANGULAR_SLOP">#</a>
         </h4>
@@ -184,25 +184,25 @@ const num         <strong>ANGULAR_SLOP</strong> <a class="anchor-link"
 <p>A small angle used as a collision and constraint tolerance. Usually it is
 chosen to be numerically significant, but visually insignificant.</p>
 <pre class="source">
-static const num ANGULAR_SLOP = (2.0 / 180.0 * Math.PI)
+static const double ANGULAR_SLOP = (2.0 / 180.0 * Math.PI)
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="BIG_NUMBER">
 <button class="show-code">Code</button>
-const num         <strong>BIG_NUMBER</strong> <a class="anchor-link"
+const double         <strong>BIG_NUMBER</strong> <a class="anchor-link"
             href="#BIG_NUMBER"
             title="Permalink to Settings.BIG_NUMBER">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const num BIG_NUMBER = 99999999999999.0
+static const double BIG_NUMBER = 99999999999999.0
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="BOUNDING_BOX_EXTENSION">
 <button class="show-code">Code</button>
-const num         <strong>BOUNDING_BOX_EXTENSION</strong> <a class="anchor-link"
+const double         <strong>BOUNDING_BOX_EXTENSION</strong> <a class="anchor-link"
             href="#BOUNDING_BOX_EXTENSION"
             title="Permalink to Settings.BOUNDING_BOX_EXTENSION">#</a>
         </h4>
@@ -211,7 +211,7 @@ const num         <strong>BOUNDING_BOX_EXTENSION</strong> <a class="anchor-link"
 to move by small amounts without needing to adjust the tree. This value is
 in meters.</p>
 <pre class="source">
-static const num BOUNDING_BOX_EXTENSION = .1
+static const double BOUNDING_BOX_EXTENSION = .1
 </pre>
 </div>
 </div>
@@ -232,7 +232,7 @@ static const num BOUNDING_BOX_MULTIPLIER = 2
 </div>
 <div class="field"><h4 id="CONTACT_BAUMGARTE">
 <button class="show-code">Code</button>
-const num         <strong>CONTACT_BAUMGARTE</strong> <a class="anchor-link"
+const double         <strong>CONTACT_BAUMGARTE</strong> <a class="anchor-link"
             href="#CONTACT_BAUMGARTE"
             title="Permalink to Settings.CONTACT_BAUMGARTE">#</a>
         </h4>
@@ -241,7 +241,7 @@ const num         <strong>CONTACT_BAUMGARTE</strong> <a class="anchor-link"
 would be 1 so that overlap is removed in one time step. However using
 values close to 1 often lead to overshoot.</p>
 <pre class="source">
-static const num CONTACT_BAUMGARTE = 0.2
+static const double CONTACT_BAUMGARTE = 0.2
 </pre>
 </div>
 </div>
@@ -260,33 +260,33 @@ static const int CONTACT_STACK_INIT_SIZE = 10
 </div>
 <div class="field"><h4 id="EPSILON">
 <button class="show-code">Code</button>
-const num         <strong>EPSILON</strong> <a class="anchor-link"
+const double         <strong>EPSILON</strong> <a class="anchor-link"
             href="#EPSILON"
             title="Permalink to Settings.EPSILON">#</a>
         </h4>
         <div class="doc">
 <p>A "close to Zero" num epsilon value for use </p>
 <pre class="source">
-static const num EPSILON = .0000001192
+static const double EPSILON = .0000001192
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="LINEAR_SLEEP_TOLERANCE">
 <button class="show-code">Code</button>
-const num         <strong>LINEAR_SLEEP_TOLERANCE</strong> <a class="anchor-link"
+const double         <strong>LINEAR_SLEEP_TOLERANCE</strong> <a class="anchor-link"
             href="#LINEAR_SLEEP_TOLERANCE"
             title="Permalink to Settings.LINEAR_SLEEP_TOLERANCE">#</a>
         </h4>
         <div class="doc">
 <p>A body cannot sleep if its linear velocity is above this tolerance.</p>
 <pre class="source">
-static const num LINEAR_SLEEP_TOLERANCE = 0.01
+static const double LINEAR_SLEEP_TOLERANCE = 0.01
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="LINEAR_SLOP">
 <button class="show-code">Code</button>
-const num         <strong>LINEAR_SLOP</strong> <a class="anchor-link"
+const double         <strong>LINEAR_SLOP</strong> <a class="anchor-link"
             href="#LINEAR_SLOP"
             title="Permalink to Settings.LINEAR_SLOP">#</a>
         </h4>
@@ -294,13 +294,13 @@ const num         <strong>LINEAR_SLOP</strong> <a class="anchor-link"
 <p>A small length used as a collision and constant tolerance. Usually it
 is chosen to be numerically significant, but visually insignificant.</p>
 <pre class="source">
-static const num LINEAR_SLOP = 0.005
+static const double LINEAR_SLOP = 0.005
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="MAX_ANGULAR_CORRECTION">
 <button class="show-code">Code</button>
-const num         <strong>MAX_ANGULAR_CORRECTION</strong> <a class="anchor-link"
+const double         <strong>MAX_ANGULAR_CORRECTION</strong> <a class="anchor-link"
             href="#MAX_ANGULAR_CORRECTION"
             title="Permalink to Settings.MAX_ANGULAR_CORRECTION">#</a>
         </h4>
@@ -308,7 +308,7 @@ const num         <strong>MAX_ANGULAR_CORRECTION</strong> <a class="anchor-link"
 <p>The maximum angular position correction used when solving constraints.
 This helps to prevent overshoot.</p>
 <pre class="source">
-static const num MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI)
+static const double MAX_ANGULAR_CORRECTION = (8.0 / 180.0 * Math.PI)
 </pre>
 </div>
 </div>
@@ -326,7 +326,7 @@ static const int MAX_INTEGER = 2147483647
 </div>
 <div class="field"><h4 id="MAX_LINEAR_CORRECTION">
 <button class="show-code">Code</button>
-const num         <strong>MAX_LINEAR_CORRECTION</strong> <a class="anchor-link"
+const double         <strong>MAX_LINEAR_CORRECTION</strong> <a class="anchor-link"
             href="#MAX_LINEAR_CORRECTION"
             title="Permalink to Settings.MAX_LINEAR_CORRECTION">#</a>
         </h4>
@@ -334,7 +334,7 @@ const num         <strong>MAX_LINEAR_CORRECTION</strong> <a class="anchor-link"
 <p>The maximum linear position correction used when solving constraints.
 This helps to prevent overshoot.</p>
 <pre class="source">
-static const num MAX_LINEAR_CORRECTION = 0.2
+static const double MAX_LINEAR_CORRECTION = 0.2
 </pre>
 </div>
 </div>
@@ -366,7 +366,7 @@ static const int MAX_POLYGON_VERTICES = 8
 </div>
 <div class="field"><h4 id="MAX_ROTATION">
 <button class="show-code">Code</button>
-const num         <strong>MAX_ROTATION</strong> <a class="anchor-link"
+const double         <strong>MAX_ROTATION</strong> <a class="anchor-link"
             href="#MAX_ROTATION"
             title="Permalink to Settings.MAX_ROTATION">#</a>
         </h4>
@@ -374,19 +374,19 @@ const num         <strong>MAX_ROTATION</strong> <a class="anchor-link"
 <p>The maximum angular velocity of a body. This limit is very large and is
 used to prevent numerical problems. You shouldn't need to adjust this.</p>
 <pre class="source">
-static const num MAX_ROTATION = 0.5 * Math.PI
+static const double MAX_ROTATION = 0.5 * Math.PI
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="MAX_ROTATION_SQUARED">
 <button class="show-code">Code</button>
-const num         <strong>MAX_ROTATION_SQUARED</strong> <a class="anchor-link"
+const double         <strong>MAX_ROTATION_SQUARED</strong> <a class="anchor-link"
             href="#MAX_ROTATION_SQUARED"
             title="Permalink to Settings.MAX_ROTATION_SQUARED">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const num MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION
+static const double MAX_ROTATION_SQUARED = MAX_ROTATION * MAX_ROTATION
 </pre>
 </div>
 </div>
@@ -405,7 +405,7 @@ static const int MAX_TIME_OF_IMPACT_CONTACTS = 32
 </div>
 <div class="field"><h4 id="MAX_TRANSLATION">
 <button class="show-code">Code</button>
-const num         <strong>MAX_TRANSLATION</strong> <a class="anchor-link"
+const double         <strong>MAX_TRANSLATION</strong> <a class="anchor-link"
             href="#MAX_TRANSLATION"
             title="Permalink to Settings.MAX_TRANSLATION">#</a>
         </h4>
@@ -413,25 +413,25 @@ const num         <strong>MAX_TRANSLATION</strong> <a class="anchor-link"
 <p>The maximum linear velocity of a body. This limit is very large and is
 used to prevent numerical problems. You shouldn't need to adjust this.</p>
 <pre class="source">
-static const num MAX_TRANSLATION = 2.0
+static const double MAX_TRANSLATION = 2.0
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="MAX_TRANSLATION_SQUARED">
 <button class="show-code">Code</button>
-const num         <strong>MAX_TRANSLATION_SQUARED</strong> <a class="anchor-link"
+const double         <strong>MAX_TRANSLATION_SQUARED</strong> <a class="anchor-link"
             href="#MAX_TRANSLATION_SQUARED"
             title="Permalink to Settings.MAX_TRANSLATION_SQUARED">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const num MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION
+static const double MAX_TRANSLATION_SQUARED = MAX_TRANSLATION * MAX_TRANSLATION
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="POLYGON_RADIUS">
 <button class="show-code">Code</button>
-const num         <strong>POLYGON_RADIUS</strong> <a class="anchor-link"
+const double         <strong>POLYGON_RADIUS</strong> <a class="anchor-link"
             href="#POLYGON_RADIUS"
             title="Permalink to Settings.POLYGON_RADIUS">#</a>
         </h4>
@@ -441,31 +441,31 @@ Making this smaller means polygons will have and insufficient for
 continuous collision. Making it larger may create artifacts for vertex
 collision.</p>
 <pre class="source">
-static const num POLYGON_RADIUS = 2.0 * LINEAR_SLOP
+static const double POLYGON_RADIUS = 2.0 * LINEAR_SLOP
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="SMALL_NUMBER">
 <button class="show-code">Code</button>
-const num         <strong>SMALL_NUMBER</strong> <a class="anchor-link"
+const double         <strong>SMALL_NUMBER</strong> <a class="anchor-link"
             href="#SMALL_NUMBER"
             title="Permalink to Settings.SMALL_NUMBER">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const num SMALL_NUMBER = .000000000001
+static const double SMALL_NUMBER = .000000000001
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="TIME_TO_SLEEP">
 <button class="show-code">Code</button>
-const num         <strong>TIME_TO_SLEEP</strong> <a class="anchor-link"
+const double         <strong>TIME_TO_SLEEP</strong> <a class="anchor-link"
             href="#TIME_TO_SLEEP"
             title="Permalink to Settings.TIME_TO_SLEEP">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const num TIME_TO_SLEEP = 0.5
+static const double TIME_TO_SLEEP = 0.5
 </pre>
 </div>
 </div>
@@ -498,12 +498,12 @@ static const num VELOCITY_THRESHOLD = 1
 <h3>Static Methods</h3>
 <div class="method"><h4 id="mixFriction">
 <button class="show-code">Code</button>
-num <strong>mixFriction</strong>(num friction1, num friction2) <a class="anchor-link" href="#mixFriction"
+double <strong>mixFriction</strong>(double friction1, double friction2) <a class="anchor-link" href="#mixFriction"
               title="Permalink to Settings.mixFriction">#</a></h4>
 <div class="doc">
 <p>Friction mixing law.</p>
 <pre class="source">
-static num mixFriction(num friction1, num friction2) {
+static double mixFriction(double friction1, double friction2) {
  return Math.sqrt(friction1 * friction2);
 }
 </pre>
@@ -511,12 +511,12 @@ static num mixFriction(num friction1, num friction2) {
 </div>
 <div class="method"><h4 id="mixRestitution">
 <button class="show-code">Code</button>
-num <strong>mixRestitution</strong>(num restitution1, num restitution2) <a class="anchor-link" href="#mixRestitution"
+double <strong>mixRestitution</strong>(double restitution1, double restitution2) <a class="anchor-link" href="#mixRestitution"
               title="Permalink to Settings.mixRestitution">#</a></h4>
 <div class="doc">
 <p>Restitution mixing law.</p>
 <pre class="source">
-static num mixRestitution(num restitution1, num restitution2) {
+static double mixRestitution(double restitution1, double restitution2) {
  return restitution1 &gt; restitution2 ? restitution1 : restitution2;
 }
 </pre>

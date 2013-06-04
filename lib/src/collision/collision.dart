@@ -572,7 +572,7 @@ class Collision {
     localTangent.normalize();
 
     // Vector localNormal = Cross(dv, 1.0);
-    Vector.crossVectorAndNumToOut(localTangent, 1, localNormal);
+    Vector.crossVectorAndNumToOut(localTangent, 1.0, localNormal);
 
     // Vector planePoint = 0.5 * (v11 + v12)
     planePoint.setFrom(v11).addLocal(v12).mulLocal(.5);
@@ -581,7 +581,7 @@ class Collision {
     Matrix22.mulMatrixAndVectorToOut(xf1.rotation, localTangent, tangent);
 
     // Vector frontNormal = Cross(sideNormal, 1.0);
-    Vector.crossVectorAndNumToOut(tangent, 1, normal);
+    Vector.crossVectorAndNumToOut(tangent, 1.0, normal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);

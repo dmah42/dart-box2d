@@ -49,7 +49,7 @@ class DominoPlatformBench extends Benchmark {
         fd.shape = sd;
 
         BodyDef bd = new BodyDef();
-        bd.position = new Vector(0.0, 5 + 5 * i);
+        bd.position = new Vector(0.0, 5.0 + 5 * i);
         final body = world.createBody(bd);
         body.createFixture(fd);
         bodies.add(body);

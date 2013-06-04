@@ -81,19 +81,19 @@ class DominoTowerBench extends Benchmark {
       fd.friction = 0;
       fd.restitution = 0.85;
       bd.bullet = true;
-      bd.position = new Vector(30, 50);
+      bd.position = new Vector(30.0, 50.0);
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new Vector(-25, -25);
+      b.linearVelocity = new Vector(-25.0, -25.0);
       b.angularVelocity = 6.7;
 
       fd.density = 25;
-      bd.position = new Vector(-30, 25);
+      bd.position = new Vector(-30.0, 25.0);
       b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new Vector(35, -10);
+      b.linearVelocity = new Vector(35.0, -10.0);
       b.angularVelocity = -8.3;
     }
 

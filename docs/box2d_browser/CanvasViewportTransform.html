@@ -34,7 +34,7 @@
 <div class="doc">
 <pre class="source">
 class CanvasViewportTransform extends ViewportTransform {
- static const int DEFAULT_DRAWING_SCALE = 20;
+ static const double DEFAULT_DRAWING_SCALE = 20.0;
 
  /**
   * Constructs a new viewport transform with the default scale.
@@ -72,13 +72,13 @@ class CanvasViewportTransform extends ViewportTransform {
 <h3>Static Properties</h3>
 <div class="field"><h4 id="DEFAULT_DRAWING_SCALE">
 <button class="show-code">Code</button>
-const int         <strong>DEFAULT_DRAWING_SCALE</strong> <a class="anchor-link"
+const double         <strong>DEFAULT_DRAWING_SCALE</strong> <a class="anchor-link"
             href="#DEFAULT_DRAWING_SCALE"
             title="Permalink to CanvasViewportTransform.DEFAULT_DRAWING_SCALE">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-static const int DEFAULT_DRAWING_SCALE = 20
+static const double DEFAULT_DRAWING_SCALE = 20.0
 </pre>
 </div>
 </div>
@@ -132,7 +132,7 @@ Vector extents
 </div>
 <div class="field inherited"><h4 id="scale">
 <button class="show-code">Code</button>
-num         <strong>scale</strong> <a class="anchor-link"
+double         <strong>scale</strong> <a class="anchor-link"
             href="#scale"
             title="Permalink to CanvasViewportTransform.scale">#</a>
         </h4>
@@ -140,7 +140,7 @@ num         <strong>scale</strong> <a class="anchor-link"
 <p>Returns the scaling factor used in converting from world sizes to rendering
 sizes.</p>
 <pre class="source">
-num scale
+double scale
 </pre>
 </div>
 </div>
@@ -196,11 +196,11 @@ corresponding world coordinates in argWorld. It should be safe
 to give the same object as both parameters.</p>
 <pre class="source">
 void getScreenToWorld(Vector argScreen, Vector argWorld) {
- num translationCorrectedX = argScreen.x - translation.x;
- num translationCorrectedY = argScreen.y + translation.y;
+ double translationCorrectedX = argScreen.x - translation.x;
+ double translationCorrectedY = argScreen.y + translation.y;
 
- num gridCorrectedX = (translationCorrectedX - extents.x) / scale;
- num gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
+ double gridCorrectedX = (translationCorrectedX - extents.x) / scale;
+ double gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
  argWorld.setCoords(gridCorrectedX, gridCorrectedY);
 }
 </pre>
@@ -218,8 +218,8 @@ same object as both parameters.</p>
 void getWorldToScreen(Vector argWorld, Vector argScreen) {
  // Correct for canvas considering the upper-left corner, rather than the
  // center, to be the origin.
- num gridCorrectedX = (argWorld.x * scale) + extents.x;
- num gridCorrectedY = extents.y - (argWorld.y * scale);
+ double gridCorrectedX = (argWorld.x * scale) + extents.x;
+ double gridCorrectedY = extents.y - (argWorld.y * scale);
 
  argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
      -translation.y);
@@ -229,13 +229,13 @@ void getWorldToScreen(Vector argWorld, Vector argScreen) {
 </div>
 <div class="method inherited"><h4 id="setCamera">
 <button class="show-code">Code</button>
-void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href="#setCamera"
+void <strong>setCamera</strong>(double x, double y, double s) <a class="anchor-link" href="#setCamera"
               title="Permalink to CanvasViewportTransform.setCamera">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Sets the transform's center to the given x and y coordinates,
 and using the given scale.</p>
 <pre class="source">
-void setCamera(num x, num y, num s) {
+void setCamera(double x, double y, double s) {
  center.setCoords(x, y);
  scale = s;
 }
