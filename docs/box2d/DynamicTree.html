@@ -5,7 +5,7 @@
         <title>DynamicTree class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -439,7 +439,7 @@ const int         <strong>MAX_STACK_SIZE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-MAX_STACK_SIZE = 64
+static const int MAX_STACK_SIZE = 64
 </pre>
 </div>
 </div>
@@ -487,7 +487,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-center
+final Vector center
 </pre>
 </div>
 </div>
@@ -499,7 +499,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>deltaOne</strong
         </h4>
         <div class="doc">
 <pre class="source">
-deltaOne
+final Vector deltaOne
 </pre>
 </div>
 </div>
@@ -511,7 +511,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>deltaTwo</strong
         </h4>
         <div class="doc">
 <pre class="source">
-deltaTwo
+final Vector deltaTwo
 </pre>
 </div>
 </div>
@@ -523,7 +523,7 @@ deltaTwo
 int <strong>computeHeightFromRoot</strong>() <a class="anchor-link" href="#computeHeightFromRoot"
               title="Permalink to DynamicTree.computeHeightFromRoot">#</a></h4>
 <div class="doc">
-<p>Computes the height of the overall tree.</p>
+<p>Computes the height of the overall tree. </p>
 <pre class="source">
 int computeHeightFromRoot() =&gt; _computeHeight(_root);
 </pre>
@@ -573,7 +573,7 @@ DynamicTreeNode createProxy(AxisAlignedBox box, Object userData) {
 void <strong>destroyProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> toDestroy) <a class="anchor-link" href="#destroyProxy"
               title="Permalink to DynamicTree.destroyProxy">#</a></h4>
 <div class="doc">
-<p>Destroys the given proxy.</p>
+<p>Destroys the given proxy. </p>
 <pre class="source">
 void destroyProxy(DynamicTreeNode toDestroy) {
  // The given proxy must not be null and must be a leaf.
@@ -690,7 +690,6 @@ void rebalance(int iterations) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

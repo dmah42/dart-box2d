@@ -5,7 +5,7 @@
         <title>Vector class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -219,7 +219,7 @@ class Vector {
 num <strong>crossVectors</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#crossVectors"
               title="Permalink to Vector.crossVectors">#</a></h4>
 <div class="doc">
-<p>Return the cross product of the twe given vectors.</p>
+<p>Return the cross product of the twe given vectors. </p>
 <pre class="source">
 static num crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
 </pre>
@@ -230,7 +230,7 @@ static num crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
 num <strong>dot</strong>(<a href="../box2d/Vector.html">Vector</a> one, <a href="../box2d/Vector.html">Vector</a> two) <a class="anchor-link" href="#dot"
               title="Permalink to Vector.dot">#</a></h4>
 <div class="doc">
-<p>Return the dot product of the two given vectors.</p>
+<p>Return the dot product of the two given vectors. </p>
 <pre class="source">
 static num dot(Vector one, Vector two) =&gt; (one.x * two.x + one.y * two.y);
 </pre>
@@ -360,7 +360,7 @@ num         <strong>x</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-x
+num x
 </pre>
 </div>
 </div>
@@ -372,7 +372,7 @@ num         <strong>y</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-y
+num y
 </pre>
 </div>
 </div>
@@ -444,7 +444,7 @@ num distanceBetween(Vector v) {
 bool <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
               title="Permalink to Vector.isValid">#</a></h4>
 <div class="doc">
-<p>Returns if the values of coordinates within the MAX_INTEGER.</p>
+<p>Returns if the values of coordinates within the MAX_INTEGER. </p>
 <pre class="source">
 bool isValid() =&gt;
    !x.isInfinite &amp;&amp; !x.isNaN &amp;&amp; !y.isInfinite &amp;&amp; !y.isNaN;
@@ -471,7 +471,7 @@ Vector mulLocal(num d) {
 <a href="../box2d/Vector.html">Vector</a> <strong>negateLocal</strong>() <a class="anchor-link" href="#negateLocal"
               title="Permalink to Vector.negateLocal">#</a></h4>
 <div class="doc">
-<p>Flips this vector such that the +/- of each x and y are reversed.</p>
+<p>Flips this vector such that the +/- of each x and y are reversed. </p>
 <pre class="source">
 Vector negateLocal() {
  x = -x;
@@ -581,7 +581,7 @@ Vector subLocal(Vector other) {
 String <strong>toString</strong>() <a class="anchor-link" href="#toString"
               title="Permalink to Vector.toString">#</a></h4>
 <div class="doc">
-<p>Returns a String representation of the given vector.</p>
+<p>Returns a String representation of the given vector. </p>
 <pre class="source">
 String toString() =&gt; "($x, $y)";
 </pre>
@@ -591,7 +591,6 @@ String toString() =&gt; "($x, $y)";
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

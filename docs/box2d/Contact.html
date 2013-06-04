@@ -5,7 +5,7 @@
         <title>Contact abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -236,7 +236,7 @@ const int         <strong>BULLET_HIT_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-BULLET_HIT_FLAG = 0x0010
+static const int BULLET_HIT_FLAG = 0x0010
 </pre>
 </div>
 </div>
@@ -248,7 +248,7 @@ const int         <strong>ENABLED_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-ENABLED_FLAG = 0x0004
+static const int ENABLED_FLAG = 0x0004
 </pre>
 </div>
 </div>
@@ -260,7 +260,7 @@ const int         <strong>FILTER_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-FILTER_FLAG = 0x0008
+static const int FILTER_FLAG = 0x0008
 </pre>
 </div>
 </div>
@@ -271,8 +271,9 @@ const int         <strong>ISLAND_FLAG</strong> <a class="anchor-link"
             title="Permalink to Contact.ISLAND_FLAG">#</a>
         </h4>
         <div class="doc">
+<p>Used when crawling contact graph when forming islands. </p>
 <pre class="source">
-ISLAND_FLAG = 0x0001
+static const int ISLAND_FLAG = 0x0001
 </pre>
 </div>
 </div>
@@ -284,7 +285,7 @@ const int         <strong>TOUCHING_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-TOUCHING_FLAG = 0x0002
+static const int TOUCHING_FLAG = 0x0002
 </pre>
 </div>
 </div>
@@ -318,8 +319,9 @@ Contact(DefaultWorldPool pool) :
             title="Permalink to Contact.edge1">#</a>
         </h4>
         <div class="doc">
+<p>Nodes for connecting bodies. </p>
 <pre class="source">
-edge1
+ContactEdge edge1
 </pre>
 </div>
 </div>
@@ -331,7 +333,7 @@ edge1
         </h4>
         <div class="doc">
 <pre class="source">
-edge2
+ContactEdge edge2
 </pre>
 </div>
 </div>
@@ -367,7 +369,7 @@ void set enabled(bool flag) {
         </h4>
         <div class="doc">
 <pre class="source">
-fixtureA
+Fixture fixtureA
 </pre>
 </div>
 </div>
@@ -379,7 +381,7 @@ fixtureA
         </h4>
         <div class="doc">
 <pre class="source">
-fixtureB
+Fixture fixtureB
 </pre>
 </div>
 </div>
@@ -390,8 +392,9 @@ int         <strong>flags</strong> <a class="anchor-link"
             title="Permalink to Contact.flags">#</a>
         </h4>
         <div class="doc">
+<p>The flags for this Contact. </p>
 <pre class="source">
-flags
+int flags
 </pre>
 </div>
 </div>
@@ -403,7 +406,7 @@ flags
         </h4>
         <div class="doc">
 <pre class="source">
-manifold
+Manifold manifold
 </pre>
 </div>
 </div>
@@ -415,7 +418,7 @@ manifold
         </h4>
         <div class="doc">
 <pre class="source">
-next
+Contact next
 </pre>
 </div>
 </div>
@@ -427,7 +430,7 @@ next
         </h4>
         <div class="doc">
 <pre class="source">
-pool
+DefaultWorldPool pool
 </pre>
 </div>
 </div>
@@ -438,8 +441,9 @@ pool
             title="Permalink to Contact.prev">#</a>
         </h4>
         <div class="doc">
+<p>World pool and list pointers. </p>
 <pre class="source">
-prev
+Contact prev
 </pre>
 </div>
 </div>
@@ -451,7 +455,7 @@ num         <strong>toiCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-toiCount
+num toiCount
 </pre>
 </div>
 </div>
@@ -475,7 +479,7 @@ bool get touching =&gt; (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 abstract void <strong>evaluate</strong>(<a href="../box2d/Manifold.html">Manifold</a> argManifold, <a href="../box2d/Transform.html">Transform</a> xfA, <a href="../box2d/Transform.html">Transform</a> xfB) <a class="anchor-link" href="#evaluate"
               title="Permalink to Contact.evaluate">#</a></h4>
 <div class="doc">
-<p>Abstract method.</p>
+<p>Abstract method. </p>
 </div>
 </div>
 <div class="method"><h4 id="flagForFiltering">
@@ -631,7 +635,6 @@ void update(ContactListener listener) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

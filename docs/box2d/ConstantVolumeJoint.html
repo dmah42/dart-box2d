@@ -5,7 +5,7 @@
         <title>ConstantVolumeJoint class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -335,7 +335,7 @@ final bool         <strong>active</strong> <a class="anchor-link"
             title="Permalink to ConstantVolumeJoint.active">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Short-cut function to determine if either body is inactive.</p>
+<p>Short-cut function to determine if either body is inactive. </p>
 <pre class="source">
 bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </pre>
@@ -371,7 +371,7 @@ List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>bodies</strong
         </h4>
         <div class="doc">
 <pre class="source">
-bodies
+List&lt;Body&gt; bodies
 </pre>
 </div>
 </div>
@@ -383,7 +383,7 @@ bodies
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -395,7 +395,7 @@ bodyA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -407,7 +407,7 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -419,7 +419,7 @@ num         <strong>dampingRatio</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-dampingRatio
+num dampingRatio
 </pre>
 </div>
 </div>
@@ -431,7 +431,7 @@ List&lt;<a href="../box2d/DistanceJoint.html">DistanceJoint</a>&gt;         <str
         </h4>
         <div class="doc">
 <pre class="source">
-distanceJoints
+List&lt;DistanceJoint&gt; distanceJoints
 </pre>
 </div>
 </div>
@@ -443,7 +443,7 @@ distanceJoints
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeA
+JointEdge edgeA
 </pre>
 </div>
 </div>
@@ -455,7 +455,7 @@ edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeB
+JointEdge edgeB
 </pre>
 </div>
 </div>
@@ -467,7 +467,7 @@ num         <strong>frequencyHz</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-frequencyHz
+num frequencyHz
 </pre>
 </div>
 </div>
@@ -479,7 +479,7 @@ num         <strong>invIA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIA
+num invIA
 </pre>
 </div>
 </div>
@@ -491,7 +491,7 @@ num         <strong>invIB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIB
+num invIB
 </pre>
 </div>
 </div>
@@ -503,7 +503,7 @@ num         <strong>invMassA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassA
+num invMassA
 </pre>
 </div>
 </div>
@@ -515,7 +515,7 @@ num         <strong>invMassB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassB
+num invMassB
 </pre>
 </div>
 </div>
@@ -527,7 +527,7 @@ bool         <strong>islandFlag</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-islandFlag
+bool islandFlag
 </pre>
 </div>
 </div>
@@ -539,7 +539,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</st
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterA
+final Vector localCenterA
 </pre>
 </div>
 </div>
@@ -551,7 +551,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</st
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterB
+final Vector localCenterB
 </pre>
 </div>
 </div>
@@ -563,7 +563,7 @@ List&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>normals</s
         </h4>
         <div class="doc">
 <pre class="source">
-normals
+List&lt;Vector&gt; normals
 </pre>
 </div>
 </div>
@@ -575,7 +575,7 @@ normals
         </h4>
         <div class="doc">
 <pre class="source">
-step
+TimeStep step
 </pre>
 </div>
 </div>
@@ -587,7 +587,7 @@ List&lt;num&gt;         <strong>targetLengths</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-targetLengths
+List&lt;num&gt; targetLengths
 </pre>
 </div>
 </div>
@@ -599,7 +599,7 @@ num         <strong>targetVolume</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-targetVolume
+num targetVolume
 </pre>
 </div>
 </div>
@@ -611,7 +611,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -623,7 +623,7 @@ Object         <strong>userData</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -635,7 +635,7 @@ userData
 bool <strong>constrainEdges</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> argStep) <a class="anchor-link" href="#constrainEdges"
               title="Permalink to ConstantVolumeJoint.constrainEdges">#</a></h4>
 <div class="doc">
-<p>Apply the position correction to the particles.</p>
+<p>Apply the position correction to the particles. </p>
 <pre class="source">
 bool constrainEdges(TimeStep argStep) {
  num perimeter = 0.0;
@@ -684,7 +684,7 @@ void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
               title="Permalink to ConstantVolumeJoint.destructor">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Override to handle destruction of joint.</p>
+<p>Override to handle destruction of joint. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void destructor() {
@@ -701,7 +701,7 @@ void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOu
               title="Permalink to ConstantVolumeJoint.getAnchorA">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the anchor point on bodyA in world coordinates.</p>
+<p>Get the anchor point on bodyA in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void getAnchorA(Vector argOut) {
@@ -716,7 +716,7 @@ void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOu
               title="Permalink to ConstantVolumeJoint.getAnchorB">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the anchor point on bodyB in world coordinates.</p>
+<p>Get the anchor point on bodyB in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void getAnchorB(Vector argOut) {
@@ -731,7 +731,7 @@ void <strong>getReactionForce</strong>(num inv_dt, <a href="../box2d/Vector.html
               title="Permalink to ConstantVolumeJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the reaction force on body2 at the joint anchor in Newtons.</p>
+<p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void getReactionForce(num inv_dt, Vector argOut) {
@@ -746,7 +746,7 @@ num <strong>getReactionTorque</strong>(num inv_dt) <a class="anchor-link" href="
               title="Permalink to ConstantVolumeJoint.getReactionTorque">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the reaction torque on body2 in N*m.</p>
+<p>Get the reaction torque on body2 in N*m. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 num getReactionTorque(num inv_dt) {
@@ -856,7 +856,6 @@ void solveVelocityConstraints(TimeStep argStep) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

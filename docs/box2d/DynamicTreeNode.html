@@ -5,7 +5,7 @@
         <title>DynamicTreeNode class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -75,7 +75,7 @@ class DynamicTreeNode {
         </h4>
         <div class="doc">
 <pre class="source">
-box
+AxisAlignedBox box
 </pre>
 </div>
 </div>
@@ -87,7 +87,7 @@ box
         </h4>
         <div class="doc">
 <pre class="source">
-childOne
+DynamicTreeNode childOne
 </pre>
 </div>
 </div>
@@ -99,7 +99,7 @@ childOne
         </h4>
         <div class="doc">
 <pre class="source">
-childTwo
+DynamicTreeNode childTwo
 </pre>
 </div>
 </div>
@@ -110,7 +110,7 @@ final bool         <strong>isLeaf</strong> <a class="anchor-link"
             title="Permalink to DynamicTreeNode.isLeaf">#</a>
         </h4>
         <div class="doc">
-<p>Returns true if this node is a leaf.</p>
+<p>Returns true if this node is a leaf. </p>
 <pre class="source">
 bool get isLeaf =&gt; childOne == null;
 </pre>
@@ -123,8 +123,9 @@ int         <strong>key</strong> <a class="anchor-link"
             title="Permalink to DynamicTreeNode.key">#</a>
         </h4>
         <div class="doc">
+<p>Used for sorting. </p>
 <pre class="source">
-key
+int key
 </pre>
 </div>
 </div>
@@ -136,7 +137,7 @@ key
         </h4>
         <div class="doc">
 <pre class="source">
-next
+DynamicTreeNode next
 </pre>
 </div>
 </div>
@@ -148,7 +149,7 @@ next
         </h4>
         <div class="doc">
 <pre class="source">
-parent
+DynamicTreeNode parent
 </pre>
 </div>
 </div>
@@ -159,8 +160,9 @@ var         <strong>userData</strong> <a class="anchor-link"
             title="Permalink to DynamicTreeNode.userData">#</a>
         </h4>
         <div class="doc">
+<p>Can contain whatever is useful to the user. </p>
 <pre class="source">
-userData
+var userData
 </pre>
 </div>
 </div>
@@ -184,7 +186,6 @@ String toString() =&gt; box.toString();
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

@@ -5,7 +5,7 @@
         <title>FrictionJoint class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -247,7 +247,7 @@ final bool         <strong>active</strong> <a class="anchor-link"
             title="Permalink to FrictionJoint.active">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Short-cut function to determine if either body is inactive.</p>
+<p>Short-cut function to determine if either body is inactive. </p>
 <pre class="source">
 bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </pre>
@@ -261,7 +261,7 @@ bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -273,7 +273,7 @@ bodyA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -285,7 +285,7 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -297,7 +297,7 @@ collideConnected
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeA
+JointEdge edgeA
 </pre>
 </div>
 </div>
@@ -309,7 +309,7 @@ edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-edgeB
+JointEdge edgeB
 </pre>
 </div>
 </div>
@@ -321,7 +321,7 @@ num         <strong>invIA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIA
+num invIA
 </pre>
 </div>
 </div>
@@ -333,7 +333,7 @@ num         <strong>invIB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invIB
+num invIB
 </pre>
 </div>
 </div>
@@ -345,7 +345,7 @@ num         <strong>invMassA</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassA
+num invMassA
 </pre>
 </div>
 </div>
@@ -357,7 +357,7 @@ num         <strong>invMassB</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-invMassB
+num invMassB
 </pre>
 </div>
 </div>
@@ -369,7 +369,7 @@ bool         <strong>islandFlag</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-islandFlag
+bool islandFlag
 </pre>
 </div>
 </div>
@@ -381,7 +381,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</st
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterA
+final Vector localCenterA
 </pre>
 </div>
 </div>
@@ -393,7 +393,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</st
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-localCenterB
+final Vector localCenterB
 </pre>
 </div>
 </div>
@@ -441,7 +441,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -453,7 +453,7 @@ Object         <strong>userData</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -465,7 +465,7 @@ userData
 void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
               title="Permalink to FrictionJoint.destructor">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Override to handle destruction of joint.</p>
+<p>Override to handle destruction of joint. </p>
 <pre class="source">
 void destructor() { }
 </pre>
@@ -476,7 +476,7 @@ void destructor() { }
 void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to FrictionJoint.getAnchorA">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Get the anchor point on bodyA in world coordinates.</p>
+<p>Get the anchor point on bodyA in world coordinates. </p>
 <pre class="source">
 void getAnchorA(Vector argOut) { }
 </pre>
@@ -487,7 +487,7 @@ void getAnchorA(Vector argOut) { }
 void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to FrictionJoint.getAnchorB">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
-<p>Get the anchor point on bodyB in world coordinates.</p>
+<p>Get the anchor point on bodyB in world coordinates. </p>
 <pre class="source">
 void getAnchorB(Vector argOut) { }
 </pre>
@@ -523,7 +523,7 @@ void <strong>getReactionForce</strong>(num inv_dt, <a href="../box2d/Vector.html
               title="Permalink to FrictionJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the reaction force on body2 at the joint anchor in Newtons.</p>
+<p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 void getReactionForce(num inv_dt, Vector argOut) {
@@ -538,7 +538,7 @@ num <strong>getReactionTorque</strong>(num inv_dt) <a class="anchor-link" href="
               title="Permalink to FrictionJoint.getReactionTorque">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Get the reaction torque on body2 in N*m.</p>
+<p>Get the reaction torque on body2 in N*m. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 num getReactionTorque(num inv_dt) =&gt; inv_dt * _angularImpulse;
@@ -616,7 +616,7 @@ bool <strong>solvePositionConstraints</strong>(num baumgarte) <a class="anchor-l
               title="Permalink to FrictionJoint.solvePositionConstraints">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>This returns true if the position errors are within tolerance.</p>
+<p>This returns true if the position errors are within tolerance. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
 bool solvePositionConstraints(num baumgarte) =&gt; true;
@@ -710,7 +710,6 @@ void solveVelocityConstraints(TimeStep step) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

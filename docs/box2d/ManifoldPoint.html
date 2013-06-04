@@ -5,7 +5,7 @@
         <title>ManifoldPoint class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -122,8 +122,9 @@ final <a href="../box2d/ContactID.html">ContactID</a>         <strong>id</strong
             title="Permalink to ManifoldPoint.id">#</a>
         </h4>
         <div class="doc">
+<p>Unique identifier for a contact point between two shapes. </p>
 <pre class="source">
-id
+final ContactID id
 </pre>
 </div>
 </div>
@@ -134,8 +135,11 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</stro
             title="Permalink to ManifoldPoint.localPoint">#</a>
         </h4>
         <div class="doc">
+<p>Usage depends on manifold type. For circles, is the local center of
+circleB. For faceA, is the local center of CircleB or the clip point of
+polygonB. For faceB, is the clip point of polygonA.</p>
 <pre class="source">
-localPoint
+final Vector localPoint
 </pre>
 </div>
 </div>
@@ -146,8 +150,9 @@ num         <strong>normalImpulse</strong> <a class="anchor-link"
             title="Permalink to ManifoldPoint.normalImpulse">#</a>
         </h4>
         <div class="doc">
+<p>The non-penetration impulse. </p>
 <pre class="source">
-normalImpulse
+num normalImpulse
 </pre>
 </div>
 </div>
@@ -158,8 +163,9 @@ num         <strong>tangentImpulse</strong> <a class="anchor-link"
             title="Permalink to ManifoldPoint.tangentImpulse">#</a>
         </h4>
         <div class="doc">
+<p>The friction impulse. </p>
 <pre class="source">
-tangentImpulse
+num tangentImpulse
 </pre>
 </div>
 </div>
@@ -186,7 +192,6 @@ void setFrom(ManifoldPoint other) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

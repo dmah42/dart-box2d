@@ -5,7 +5,7 @@
         <title>DebugDraw abstract class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -113,9 +113,6 @@ abstract class DebugDraw {
 }
 </pre>
 </div>
-<h3>Subclasses</h3>
-<p>
-<span class="type-box"><span class="icon-class"></span><a href="../box2d_browser/CanvasDraw.html">CanvasDraw</a></span></p>
 <div>
 <h3>Static Properties</h3>
 <div class="field"><h4 id="e_aabbBit">
@@ -125,8 +122,9 @@ const int         <strong>e_aabbBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_aabbBit">#</a>
         </h4>
         <div class="doc">
+<p>draw core (TimeOfImpact) shapes</p>
 <pre class="source">
-e_aabbBit = 0x0004
+static const int e_aabbBit = 0x0004
 </pre>
 </div>
 </div>
@@ -137,8 +135,9 @@ const int         <strong>e_centerOfMassBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_centerOfMassBit">#</a>
         </h4>
         <div class="doc">
+<p>draw center of mass </p>
 <pre class="source">
-e_centerOfMassBit = 0x0010
+static const int e_centerOfMassBit = 0x0010
 </pre>
 </div>
 </div>
@@ -149,8 +148,9 @@ const int         <strong>e_dynamicTreeBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_dynamicTreeBit">#</a>
         </h4>
         <div class="doc">
+<p>draw dynamic tree.</p>
 <pre class="source">
-e_dynamicTreeBit = 0x0020
+static const int e_dynamicTreeBit = 0x0020
 </pre>
 </div>
 </div>
@@ -161,8 +161,9 @@ const int         <strong>e_jointBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_jointBit">#</a>
         </h4>
         <div class="doc">
+<p>draw joint connections</p>
 <pre class="source">
-e_jointBit = 0x0002
+static const int e_jointBit = 0x0002
 </pre>
 </div>
 </div>
@@ -173,8 +174,9 @@ const int         <strong>e_lineDrawingBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_lineDrawingBit">#</a>
         </h4>
         <div class="doc">
+<p>draw with lines (vs. default filled polygons).</p>
 <pre class="source">
-e_lineDrawingBit = 0x0040
+static const int e_lineDrawingBit = 0x0040
 </pre>
 </div>
 </div>
@@ -185,8 +187,9 @@ const int         <strong>e_pairBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_pairBit">#</a>
         </h4>
         <div class="doc">
+<p>draw axis aligned boxes</p>
 <pre class="source">
-e_pairBit = 0x0008
+static const int e_pairBit = 0x0008
 </pre>
 </div>
 </div>
@@ -197,8 +200,9 @@ const int         <strong>e_shapeBit</strong> <a class="anchor-link"
             title="Permalink to DebugDraw.e_shapeBit">#</a>
         </h4>
         <div class="doc">
+<p>draw shapes</p>
 <pre class="source">
-e_shapeBit = 0x0001
+static const int e_shapeBit = 0x0001
 </pre>
 </div>
 </div>
@@ -228,7 +232,7 @@ int         <strong>flags</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-flags
+int flags
 </pre>
 </div>
 </div>
@@ -240,7 +244,7 @@ flags
         </h4>
         <div class="doc">
 <pre class="source">
-viewportTransform
+IViewportTransform viewportTransform
 </pre>
 </div>
 </div>
@@ -271,56 +275,56 @@ void clearFlags(int value) { flags &amp;= ~value; }
 abstract void <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to DebugDraw.drawCircle">#</a></h4>
 <div class="doc">
-<p>Draw a circle.</p>
+<p>Draw a circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPoint">
 abstract void <strong>drawPoint</strong>(<a href="../box2d/Vector.html">Vector</a> point, num radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to DebugDraw.drawPoint">#</a></h4>
 <div class="doc">
-<p>Draws the given point with the given radius and color.</p>
+<p>Draws the given point with the given radius and color.  </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPolygon">
 abstract void <strong>drawPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
               title="Permalink to DebugDraw.drawPolygon">#</a></h4>
 <div class="doc">
-<p>Draw a closed polygon provided in CCW order.</p>
+<p>Draw a closed polygon provided in CCW order. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSegment">
 abstract void <strong>drawSegment</strong>(<a href="../box2d/Vector.html">Vector</a> p1, <a href="../box2d/Vector.html">Vector</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
               title="Permalink to DebugDraw.drawSegment">#</a></h4>
 <div class="doc">
-<p>Draw a line segment.</p>
+<p>Draw a line segment. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidCircle">
 abstract void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> center, num radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector.html">Vector</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to DebugDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
-<p>Draw a solid circle.</p>
+<p>Draw a solid circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidPolygon">
 abstract void <strong>drawSolidPolygon</strong>(List&lt;<a href="../box2d/Vector.html">Vector</a>&gt; vertices, int vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
               title="Permalink to DebugDraw.drawSolidPolygon">#</a></h4>
 <div class="doc">
-<p>Draw a solid closed polygon provided in CCW order.</p>
+<p>Draw a solid closed polygon provided in CCW order. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawString">
 abstract void <strong>drawString</strong>(num x, num y, String s, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawString"
               title="Permalink to DebugDraw.drawString">#</a></h4>
 <div class="doc">
-<p>Draw a string.</p>
+<p>Draw a string. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawTransform">
 abstract void <strong>drawTransform</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawTransform"
               title="Permalink to DebugDraw.drawTransform">#</a></h4>
 <div class="doc">
-<p>Draw a transform.  Choose your own length scale.</p>
+<p>Draw a transform.  Choose your own length scale. </p>
 </div>
 </div>
 <div class="method"><h4 id="getScreenToWorldToOut">
@@ -369,7 +373,6 @@ void setCamera(num x, num y, num scale) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

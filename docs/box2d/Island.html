@@ -5,7 +5,7 @@
         <title>Island class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -345,7 +345,7 @@ List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>bodies</strong
         </h4>
         <div class="doc">
 <pre class="source">
-bodies
+List&lt;Body&gt; bodies
 </pre>
 </div>
 </div>
@@ -357,7 +357,7 @@ int         <strong>bodyCapacity</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-bodyCapacity
+int bodyCapacity
 </pre>
 </div>
 </div>
@@ -369,7 +369,7 @@ int         <strong>bodyCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-bodyCount
+int bodyCount
 </pre>
 </div>
 </div>
@@ -381,7 +381,7 @@ int         <strong>contactCapacity</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-contactCapacity
+int contactCapacity
 </pre>
 </div>
 </div>
@@ -393,7 +393,7 @@ int         <strong>contactCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-contactCount
+int contactCount
 </pre>
 </div>
 </div>
@@ -405,7 +405,7 @@ List&lt;<a href="../box2d/Contact.html">Contact</a>&gt;         <strong>contacts
         </h4>
         <div class="doc">
 <pre class="source">
-contacts
+List&lt;Contact&gt; contacts
 </pre>
 </div>
 </div>
@@ -417,7 +417,7 @@ contacts
         </h4>
         <div class="doc">
 <pre class="source">
-impulse
+ContactImpulse impulse
 </pre>
 </div>
 </div>
@@ -429,7 +429,7 @@ int         <strong>jointCapacity</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-jointCapacity
+int jointCapacity
 </pre>
 </div>
 </div>
@@ -441,7 +441,7 @@ int         <strong>jointCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-jointCount
+int jointCount
 </pre>
 </div>
 </div>
@@ -453,7 +453,7 @@ List&lt;<a href="../box2d/Joint.html">Joint</a>&gt;         <strong>joints</stro
         </h4>
         <div class="doc">
 <pre class="source">
-joints
+List&lt;Joint&gt; joints
 </pre>
 </div>
 </div>
@@ -465,7 +465,7 @@ joints
         </h4>
         <div class="doc">
 <pre class="source">
-listener
+ContactListener listener
 </pre>
 </div>
 </div>
@@ -477,7 +477,7 @@ int         <strong>positionIterationCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-positionIterationCount
+int positionIterationCount
 </pre>
 </div>
 </div>
@@ -489,7 +489,7 @@ List&lt;<a href="../box2d/Position.html">Position</a>&gt;         <strong>positi
         </h4>
         <div class="doc">
 <pre class="source">
-positions
+List&lt;Position&gt; positions
 </pre>
 </div>
 </div>
@@ -501,7 +501,7 @@ List&lt;<a href="../box2d/Velocity.html">Velocity</a>&gt;         <strong>veloci
         </h4>
         <div class="doc">
 <pre class="source">
-velocities
+List&lt;Velocity&gt; velocities
 </pre>
 </div>
 </div>
@@ -513,7 +513,7 @@ velocities
 void <strong>addBody</strong>(<a href="../box2d/Body.html">Body</a> body) <a class="anchor-link" href="#addBody"
               title="Permalink to Island.addBody">#</a></h4>
 <div class="doc">
-<p>Adds a body to the Island.</p>
+<p>Adds a body to the Island. </p>
 <pre class="source">
 void addBody(Body body){
  assert(bodyCount &lt; bodyCapacity);
@@ -528,7 +528,7 @@ void addBody(Body body){
 void <strong>addContact</strong>(<a href="../box2d/Contact.html">Contact</a> contact) <a class="anchor-link" href="#addContact"
               title="Permalink to Island.addContact">#</a></h4>
 <div class="doc">
-<p>Add a contact to the Island.</p>
+<p>Add a contact to the Island. </p>
 <pre class="source">
 void addContact(Contact contact) {
  assert(contactCount &lt; contactCapacity);
@@ -542,7 +542,7 @@ void addContact(Contact contact) {
 void <strong>addJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a class="anchor-link" href="#addJoint"
               title="Permalink to Island.addJoint">#</a></h4>
 <div class="doc">
-<p>Add a joint to the Island.</p>
+<p>Add a joint to the Island. </p>
 <pre class="source">
 void addJoint(Joint joint) {
  assert(jointCount &lt; jointCapacity);
@@ -819,7 +819,6 @@ void solve(TimeStep step, Vector gravity, bool allowSleep){
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

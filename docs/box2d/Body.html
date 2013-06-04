@@ -5,7 +5,7 @@
         <title>Body class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -952,7 +952,7 @@ const int         <strong>ACTIVE_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-ACTIVE_FLAG = 0x0020
+static const int ACTIVE_FLAG = 0x0020
 </pre>
 </div>
 </div>
@@ -964,7 +964,7 @@ const int         <strong>AUTO_SLEEP_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-AUTO_SLEEP_FLAG = 0x0004
+static const int AUTO_SLEEP_FLAG = 0x0004
 </pre>
 </div>
 </div>
@@ -976,7 +976,7 @@ const int         <strong>AWAKE_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-AWAKE_FLAG = 0x0002
+static const int AWAKE_FLAG = 0x0002
 </pre>
 </div>
 </div>
@@ -988,7 +988,7 @@ const int         <strong>BULLET_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-BULLET_FLAG = 0x0008
+static const int BULLET_FLAG = 0x0008
 </pre>
 </div>
 </div>
@@ -1000,7 +1000,7 @@ const int         <strong>FIXED_ROTATION_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-FIXED_ROTATION_FLAG = 0x0010
+static const int FIXED_ROTATION_FLAG = 0x0010
 </pre>
 </div>
 </div>
@@ -1011,8 +1011,9 @@ const int         <strong>ISLAND_FLAG</strong> <a class="anchor-link"
             title="Permalink to Body.ISLAND_FLAG">#</a>
         </h4>
         <div class="doc">
+<p>Flags for different states the body can take on. </p>
 <pre class="source">
-ISLAND_FLAG = 0x0001
+static const int ISLAND_FLAG = 0x0001
 </pre>
 </div>
 </div>
@@ -1024,7 +1025,7 @@ const int         <strong>TO_I_FLAG</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-TO_I_FLAG = 0x0040
+static const int TO_I_FLAG = 0x0040
 </pre>
 </div>
 </div>
@@ -1206,7 +1207,7 @@ num         <strong>angularDamping</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-angularDamping
+num angularDamping
 </pre>
 </div>
 </div>
@@ -1271,7 +1272,7 @@ void set awake(bool flag) {
 bool <strong>get bullet</strong> <a class="anchor-link" href="#bullet"
               title="Permalink to Body.get bullet">#</a></h4>
 <div class="doc">
-<p>Is this body treated like a bullet for continuous collision detection?</p>
+<p>Is this body treated like a bullet for continuous collision detection? </p>
 <pre class="source">
 bool get bullet =&gt; (flags &amp; BULLET_FLAG) == BULLET_FLAG;
 </pre>
@@ -1302,7 +1303,7 @@ void set bullet(bool flag) {
         </h4>
         <div class="doc">
 <pre class="source">
-contactList
+ContactEdge contactList
 </pre>
 </div>
 </div>
@@ -1346,7 +1347,7 @@ int         <strong>fixtureCount</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-fixtureCount
+int fixtureCount
 </pre>
 </div>
 </div>
@@ -1358,7 +1359,7 @@ fixtureCount
         </h4>
         <div class="doc">
 <pre class="source">
-fixtureList
+Fixture fixtureList
 </pre>
 </div>
 </div>
@@ -1370,7 +1371,7 @@ int         <strong>flags</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-flags
+int flags
 </pre>
 </div>
 </div>
@@ -1398,8 +1399,9 @@ num         <strong>invInertia</strong> <a class="anchor-link"
             title="Permalink to Body.invInertia">#</a>
         </h4>
         <div class="doc">
+<p>The inverse of the intertia about the center of mass. </p>
 <pre class="source">
-invInertia
+num invInertia
 </pre>
 </div>
 </div>
@@ -1410,8 +1412,9 @@ num         <strong>invMass</strong> <a class="anchor-link"
             title="Permalink to Body.invMass">#</a>
         </h4>
         <div class="doc">
+<p>The inverse of the body mass. </p>
 <pre class="source">
-invMass
+num invMass
 </pre>
 </div>
 </div>
@@ -1423,7 +1426,7 @@ int         <strong>islandIndex</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-islandIndex
+int islandIndex
 </pre>
 </div>
 </div>
@@ -1435,7 +1438,7 @@ islandIndex
         </h4>
         <div class="doc">
 <pre class="source">
-jointList
+JointEdge jointList
 </pre>
 </div>
 </div>
@@ -1447,7 +1450,7 @@ num         <strong>linearDamping</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-linearDamping
+num linearDamping
 </pre>
 </div>
 </div>
@@ -1496,8 +1499,9 @@ num         <strong>mass</strong> <a class="anchor-link"
             title="Permalink to Body.mass">#</a>
         </h4>
         <div class="doc">
+<p>This body's mass. </p>
 <pre class="source">
-mass
+num mass
 </pre>
 </div>
 </div>
@@ -1562,8 +1566,9 @@ void set massData(MassData data) {
             title="Permalink to Body.next">#</a>
         </h4>
         <div class="doc">
+<p>For mantaining the linked list of bodies. </p>
 <pre class="source">
-next
+Body next
 </pre>
 </div>
 </div>
@@ -1575,7 +1580,7 @@ next
         </h4>
         <div class="doc">
 <pre class="source">
-oldCenter
+Vector oldCenter
 </pre>
 </div>
 </div>
@@ -1586,8 +1591,9 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>originTran
             title="Permalink to Body.originTransform">#</a>
         </h4>
         <div class="doc">
+<p>The body origin transform. </p>
 <pre class="source">
-originTransform
+final Transform originTransform
 </pre>
 </div>
 </div>
@@ -1612,7 +1618,7 @@ Vector get position =&gt; originTransform.position;
         </h4>
         <div class="doc">
 <pre class="source">
-prev
+Body prev
 </pre>
 </div>
 </div>
@@ -1654,7 +1660,7 @@ num         <strong>sleepTime</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-sleepTime
+num sleepTime
 </pre>
 </div>
 </div>
@@ -1665,8 +1671,9 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>sweep</strong> <a 
             title="Permalink to Body.sweep">#</a>
         </h4>
         <div class="doc">
+<p>The swept motion for CCD. </p>
 <pre class="source">
-sweep
+final Sweep sweep
 </pre>
 </div>
 </div>
@@ -1678,7 +1685,7 @@ sweep
         </h4>
         <div class="doc">
 <pre class="source">
-tempCenter
+Vector tempCenter
 </pre>
 </div>
 </div>
@@ -1734,8 +1741,9 @@ Object         <strong>userData</strong> <a class="anchor-link"
             title="Permalink to Body.userData">#</a>
         </h4>
         <div class="doc">
+<p>User can store what they want in here. </p>
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -1747,7 +1755,7 @@ userData
         </h4>
         <div class="doc">
 <pre class="source">
-world
+World world
 </pre>
 </div>
 </div>
@@ -2412,7 +2420,6 @@ void synchronizeTransform() {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

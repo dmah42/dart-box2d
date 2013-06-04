@@ -5,7 +5,7 @@
         <title>RevoluteJointDef class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -145,8 +145,9 @@ RevoluteJointDef() :
             title="Permalink to RevoluteJointDef.bodyA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The first attached body.</p>
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -157,8 +158,9 @@ bodyA
             title="Permalink to RevoluteJointDef.bodyB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The second attached body.</p>
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -169,8 +171,9 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.collideConnected">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -181,8 +184,9 @@ bool         <strong>enableLimit</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.enableLimit">#</a>
         </h4>
         <div class="doc">
+<p> A flag to enable joint limits.</p>
 <pre class="source">
-enableLimit
+bool enableLimit
 </pre>
 </div>
 </div>
@@ -193,8 +197,9 @@ bool         <strong>enableMotor</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.enableMotor">#</a>
         </h4>
         <div class="doc">
+<p> A flag to enable the joint motor.</p>
 <pre class="source">
-enableMotor
+bool enableMotor
 </pre>
 </div>
 </div>
@@ -205,8 +210,9 @@ enableMotor
             title="Permalink to RevoluteJointDef.localAnchorA">#</a>
         </h4>
         <div class="doc">
+<p> The local anchor point relative to body1's origin.</p>
 <pre class="source">
-localAnchorA
+Vector localAnchorA
 </pre>
 </div>
 </div>
@@ -217,8 +223,9 @@ localAnchorA
             title="Permalink to RevoluteJointDef.localAnchorB">#</a>
         </h4>
         <div class="doc">
+<p> The local anchor point relative to body2's origin.</p>
 <pre class="source">
-localAnchorB
+Vector localAnchorB
 </pre>
 </div>
 </div>
@@ -229,8 +236,9 @@ num         <strong>lowerAngle</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.lowerAngle">#</a>
         </h4>
         <div class="doc">
+<p> The lower angle for the joint limit (radians).</p>
 <pre class="source">
-lowerAngle
+num lowerAngle
 </pre>
 </div>
 </div>
@@ -241,8 +249,10 @@ num         <strong>maxMotorTorque</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.maxMotorTorque">#</a>
         </h4>
         <div class="doc">
+<p> The maximum motor torque used to achieve the desired motor speed.
+ Usually in N-m.</p>
 <pre class="source">
-maxMotorTorque
+num maxMotorTorque
 </pre>
 </div>
 </div>
@@ -253,8 +263,9 @@ num         <strong>motorSpeed</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.motorSpeed">#</a>
         </h4>
         <div class="doc">
+<p> The desired motor speed. Usually in radians per second.</p>
 <pre class="source">
-motorSpeed
+num motorSpeed
 </pre>
 </div>
 </div>
@@ -265,8 +276,9 @@ num         <strong>referenceAngle</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.referenceAngle">#</a>
         </h4>
         <div class="doc">
+<p> The body2 angle minus body1 angle in the reference state (radians).</p>
 <pre class="source">
-referenceAngle
+num referenceAngle
 </pre>
 </div>
 </div>
@@ -277,8 +289,9 @@ int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.type">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -289,8 +302,9 @@ num         <strong>upperAngle</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.upperAngle">#</a>
         </h4>
         <div class="doc">
+<p> The upper angle for the joint limit (radians).</p>
 <pre class="source">
-upperAngle
+num upperAngle
 </pre>
 </div>
 </div>
@@ -301,8 +315,9 @@ Object         <strong>userData</strong> <a class="anchor-link"
             title="Permalink to RevoluteJointDef.userData">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Use this to attach application specific data to your joints.</p>
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -331,7 +346,6 @@ void initialize(Body b1, Body b2, Vector anchor) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

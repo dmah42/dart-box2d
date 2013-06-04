@@ -5,7 +5,7 @@
         <title>DistanceJointDef class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -116,8 +116,9 @@ DistanceJointDef() :
             title="Permalink to DistanceJointDef.bodyA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The first attached body.</p>
 <pre class="source">
-bodyA
+Body bodyA
 </pre>
 </div>
 </div>
@@ -128,8 +129,9 @@ bodyA
             title="Permalink to DistanceJointDef.bodyB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The second attached body.</p>
 <pre class="source">
-bodyB
+Body bodyB
 </pre>
 </div>
 </div>
@@ -140,8 +142,9 @@ bool         <strong>collideConnected</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.collideConnected">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-collideConnected
+bool collideConnected
 </pre>
 </div>
 </div>
@@ -152,8 +155,9 @@ num         <strong>dampingRatio</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.dampingRatio">#</a>
         </h4>
         <div class="doc">
+<p>The damping ratio. 0 = no damping, 1 = critical damping.</p>
 <pre class="source">
-dampingRatio
+num dampingRatio
 </pre>
 </div>
 </div>
@@ -164,8 +168,9 @@ num         <strong>frequencyHz</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.frequencyHz">#</a>
         </h4>
         <div class="doc">
+<p>The mass-spring-damper frequency in Hertz.</p>
 <pre class="source">
-frequencyHz
+num frequencyHz
 </pre>
 </div>
 </div>
@@ -176,8 +181,9 @@ num         <strong>length</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.length">#</a>
         </h4>
         <div class="doc">
+<p>The equilibrium length between the anchor points. </p>
 <pre class="source">
-length
+num length
 </pre>
 </div>
 </div>
@@ -188,8 +194,9 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorA</st
             title="Permalink to DistanceJointDef.localAnchorA">#</a>
         </h4>
         <div class="doc">
+<p>The local anchor point relative to body1's origin. </p>
 <pre class="source">
-localAnchorA
+final Vector localAnchorA
 </pre>
 </div>
 </div>
@@ -200,8 +207,9 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorB</st
             title="Permalink to DistanceJointDef.localAnchorB">#</a>
         </h4>
         <div class="doc">
+<p>The local anchor point relative to body2's origin. </p>
 <pre class="source">
-localAnchorB
+final Vector localAnchorB
 </pre>
 </div>
 </div>
@@ -212,8 +220,9 @@ int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.type">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -224,8 +233,9 @@ Object         <strong>userData</strong> <a class="anchor-link"
             title="Permalink to DistanceJointDef.userData">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
+<p>Use this to attach application specific data to your joints.</p>
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -260,7 +270,6 @@ void initialize(Body b1, Body b2, Vector anchor1, Vector anchor2) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

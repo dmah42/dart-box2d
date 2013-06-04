@@ -5,7 +5,7 @@
         <title>SeparationFunction class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -330,7 +330,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>axis</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-axis
+final Vector axis
 </pre>
 </div>
 </div>
@@ -342,7 +342,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>axisA</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-axisA
+final Vector axisA
 </pre>
 </div>
 </div>
@@ -354,7 +354,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>axisB</strong> <
         </h4>
         <div class="doc">
 <pre class="source">
-axisB
+final Vector axisB
 </pre>
 </div>
 </div>
@@ -366,7 +366,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</stro
         </h4>
         <div class="doc">
 <pre class="source">
-localPoint
+final Vector localPoint
 </pre>
 </div>
 </div>
@@ -377,8 +377,9 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA</str
             title="Permalink to SeparationFunction.localPointA">#</a>
         </h4>
         <div class="doc">
+<p>Pooling </p>
 <pre class="source">
-localPointA
+final Vector localPointA
 </pre>
 </div>
 </div>
@@ -390,7 +391,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA1</st
         </h4>
         <div class="doc">
 <pre class="source">
-localPointA1
+final Vector localPointA1
 </pre>
 </div>
 </div>
@@ -402,7 +403,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA2</st
         </h4>
         <div class="doc">
 <pre class="source">
-localPointA2
+final Vector localPointA2
 </pre>
 </div>
 </div>
@@ -414,7 +415,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB</str
         </h4>
         <div class="doc">
 <pre class="source">
-localPointB
+final Vector localPointB
 </pre>
 </div>
 </div>
@@ -426,7 +427,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB1</st
         </h4>
         <div class="doc">
 <pre class="source">
-localPointB1
+final Vector localPointB1
 </pre>
 </div>
 </div>
@@ -438,7 +439,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB2</st
         </h4>
         <div class="doc">
 <pre class="source">
-localPointB2
+final Vector localPointB2
 </pre>
 </div>
 </div>
@@ -450,7 +451,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-normal
+final Vector normal
 </pre>
 </div>
 </div>
@@ -462,7 +463,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-pointA
+final Vector pointA
 </pre>
 </div>
 </div>
@@ -474,7 +475,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-pointB
+final Vector pointB
 </pre>
 </div>
 </div>
@@ -486,7 +487,7 @@ pointB
         </h4>
         <div class="doc">
 <pre class="source">
-proxyA
+DistanceProxy proxyA
 </pre>
 </div>
 </div>
@@ -498,7 +499,7 @@ proxyA
         </h4>
         <div class="doc">
 <pre class="source">
-proxyB
+DistanceProxy proxyB
 </pre>
 </div>
 </div>
@@ -510,7 +511,7 @@ proxyB
         </h4>
         <div class="doc">
 <pre class="source">
-sweepA
+Sweep sweepA
 </pre>
 </div>
 </div>
@@ -522,7 +523,7 @@ sweepA
         </h4>
         <div class="doc">
 <pre class="source">
-sweepB
+Sweep sweepB
 </pre>
 </div>
 </div>
@@ -534,7 +535,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-temp
+final Vector temp
 </pre>
 </div>
 </div>
@@ -546,7 +547,7 @@ int         <strong>type</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-type
+int type
 </pre>
 </div>
 </div>
@@ -558,7 +559,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfa</stron
         </h4>
         <div class="doc">
 <pre class="source">
-xfa
+final Transform xfa
 </pre>
 </div>
 </div>
@@ -570,7 +571,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfb</stron
         </h4>
         <div class="doc">
 <pre class="source">
-xfb
+final Transform xfb
 </pre>
 </div>
 </div>
@@ -808,7 +809,6 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

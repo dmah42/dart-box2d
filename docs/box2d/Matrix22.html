@@ -5,7 +5,7 @@
         <title>Matrix22 class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -225,7 +225,7 @@ Matrix22([Vector c1 = null, Vector c2 = null]) {
 new <strong>Matrix22.copy</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> other) <a class="anchor-link" href="#Matrix22.copy"
               title="Permalink to Matrix22.Matrix22.copy">#</a></h4>
 <div class="doc">
-<p>Create a new Matrix equal to the given Matrix.</p>
+<p>Create a new Matrix equal to the given Matrix. </p>
 <pre class="source">
 Matrix22.copy(Matrix22 other)
    : col1 = new Vector.copy(other.col1),
@@ -238,7 +238,7 @@ Matrix22.copy(Matrix22 other)
 new <strong>Matrix22.fromAngle</strong>(num angle) <a class="anchor-link" href="#Matrix22.fromAngle"
               title="Permalink to Matrix22.Matrix22.fromAngle">#</a></h4>
 <div class="doc">
-<p>Constructs a new Matrix22 representing an angle.</p>
+<p>Constructs a new Matrix22 representing an angle. </p>
 <pre class="source">
 Matrix22.fromAngle(num angle)
    : col1 = new Vector(), col2 = new Vector() {
@@ -258,7 +258,7 @@ Matrix22.fromAngle(num angle)
         </h4>
         <div class="doc">
 <pre class="source">
-col1
+Vector col1
 </pre>
 </div>
 </div>
@@ -270,7 +270,7 @@ col1
         </h4>
         <div class="doc">
 <pre class="source">
-col2
+Vector col2
 </pre>
 </div>
 </div>
@@ -299,7 +299,7 @@ bool operator ==(other) {
 <a href="../box2d/Matrix22.html">Matrix22</a> <strong>addLocal</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> other) <a class="anchor-link" href="#addLocal"
               title="Permalink to Matrix22.addLocal">#</a></h4>
 <div class="doc">
-<p>Adds the given matrix to this matrix. Returns this matrix.</p>
+<p>Adds the given matrix to this matrix. Returns this matrix. </p>
 <pre class="source">
 Matrix22 addLocal(Matrix22 other) {
  col1.x += other.col1.x;
@@ -316,7 +316,7 @@ Matrix22 addLocal(Matrix22 other) {
 <a href="../box2d/Matrix22.html">Matrix22</a> <strong>invertLocal</strong>() <a class="anchor-link" href="#invertLocal"
               title="Permalink to Matrix22.invertLocal">#</a></h4>
 <div class="doc">
-<p>Inverts this Matrix.</p>
+<p>Inverts this Matrix. </p>
 <pre class="source">
 Matrix22 invertLocal() {
  num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
@@ -354,7 +354,7 @@ void multiplyVectorToOut(Vector v, Vector out) {
 void <strong>setAngle</strong>(num angle) <a class="anchor-link" href="#setAngle"
               title="Permalink to Matrix22.setAngle">#</a></h4>
 <div class="doc">
-<p>Set as a matrix representing a rotation.</p>
+<p>Set as a matrix representing a rotation. </p>
 <pre class="source">
 void setAngle(num angle) {
  num cosin = Math.cos(angle);
@@ -370,7 +370,7 @@ void setAngle(num angle) {
 void <strong>setFrom</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matrix) <a class="anchor-link" href="#setFrom"
               title="Permalink to Matrix22.setFrom">#</a></h4>
 <div class="doc">
-<p>Sets this matrix to be equal to the given matrix.</p>
+<p>Sets this matrix to be equal to the given matrix. </p>
 <pre class="source">
 void setFrom(Matrix22 matrix) {
  col1.setFrom(matrix.col1);
@@ -398,7 +398,7 @@ void setFromColumns(Vector v1, Vector v2) {
 void <strong>setIdentity</strong>() <a class="anchor-link" href="#setIdentity"
               title="Permalink to Matrix22.setIdentity">#</a></h4>
 <div class="doc">
-<p>Set as the identity matrix.</p>
+<p>Set as the identity matrix. </p>
 <pre class="source">
 void setIdentity() {
  col1.setCoords(1, 0);
@@ -431,7 +431,7 @@ void solveToOut(Vector b, Vector out) {
 String <strong>toString</strong>() <a class="anchor-link" href="#toString"
               title="Permalink to Matrix22.toString">#</a></h4>
 <div class="doc">
-<p>Returns a String showing this matrix values.</p>
+<p>Returns a String showing this matrix values. </p>
 <pre class="source">
 String toString() =&gt; "$col1, $col2";
 </pre>
@@ -441,7 +441,6 @@ String toString() =&gt; "$col1, $col2";
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

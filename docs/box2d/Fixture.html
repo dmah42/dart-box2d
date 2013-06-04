@@ -5,7 +5,7 @@
         <title>Fixture class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -167,7 +167,7 @@ class Fixture {
 new <strong>Fixture</strong>() <a class="anchor-link" href="#Fixture"
               title="Permalink to Fixture.Fixture">#</a></h4>
 <div class="doc">
-<p>Constructs a new Fixture with default values.</p>
+<p>Constructs a new Fixture with default values. </p>
 <pre class="source">
 Fixture()
    : box = new AxisAlignedBox(),
@@ -192,7 +192,7 @@ Fixture()
         </h4>
         <div class="doc">
 <pre class="source">
-body
+Body body
 </pre>
 </div>
 </div>
@@ -204,7 +204,7 @@ final <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a>         <strong>
         </h4>
         <div class="doc">
 <pre class="source">
-box
+final AxisAlignedBox box
 </pre>
 </div>
 </div>
@@ -216,7 +216,7 @@ num         <strong>density</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-density
+num density
 </pre>
 </div>
 </div>
@@ -228,7 +228,7 @@ final <a href="../box2d/Filter.html">Filter</a>         <strong>filter</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-filter
+final Filter filter
 </pre>
 </div>
 </div>
@@ -240,7 +240,7 @@ num         <strong>friction</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-friction
+num friction
 </pre>
 </div>
 </div>
@@ -252,7 +252,7 @@ bool         <strong>isSensor</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-isSensor
+bool isSensor
 </pre>
 </div>
 </div>
@@ -264,7 +264,7 @@ isSensor
         </h4>
         <div class="doc">
 <pre class="source">
-next
+Fixture next
 </pre>
 </div>
 </div>
@@ -276,7 +276,7 @@ next
         </h4>
         <div class="doc">
 <pre class="source">
-proxy
+DynamicTreeNode proxy
 </pre>
 </div>
 </div>
@@ -288,7 +288,7 @@ num         <strong>restitution</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-restitution
+num restitution
 </pre>
 </div>
 </div>
@@ -300,7 +300,7 @@ restitution
         </h4>
         <div class="doc">
 <pre class="source">
-shape
+Shape shape
 </pre>
 </div>
 </div>
@@ -311,7 +311,7 @@ final int         <strong>type</strong> <a class="anchor-link"
             title="Permalink to Fixture.type">#</a>
         </h4>
         <div class="doc">
-<p>Get the type of the child shape.</p>
+<p>Get the type of the child shape. </p>
 <pre class="source">
 int get type =&gt; shape.type;
 </pre>
@@ -325,7 +325,7 @@ Object         <strong>userData</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-userData
+Object userData
 </pre>
 </div>
 </div>
@@ -337,7 +337,7 @@ userData
 void <strong>create</strong>(<a href="../box2d/Body.html">Body</a> b, <a href="../box2d/FixtureDef.html">FixtureDef</a> def) <a class="anchor-link" href="#create"
               title="Permalink to Fixture.create">#</a></h4>
 <div class="doc">
-<p>Sets this fixture according to the given body and definition.</p>
+<p>Sets this fixture according to the given body and definition. </p>
 <pre class="source">
 void create(Body b, FixtureDef def) {
  userData = def.userData;
@@ -363,7 +363,7 @@ void create(Body b, FixtureDef def) {
 void <strong>createProxy</strong>(<a href="../box2d/BroadPhase.html">BroadPhase</a> broadPhase, <a href="../box2d/Transform.html">Transform</a> xf) <a class="anchor-link" href="#createProxy"
               title="Permalink to Fixture.createProxy">#</a></h4>
 <div class="doc">
-<p>These support body activation/deactivation.</p>
+<p>These support body activation/deactivation. </p>
 <pre class="source">
 void createProxy(BroadPhase broadPhase, Transform xf){
  assert(proxy == null);
@@ -398,7 +398,7 @@ void destroy() {
 void <strong>destroyProxy</strong>(<a href="../box2d/BroadPhase.html">BroadPhase</a> broadPhase) <a class="anchor-link" href="#destroyProxy"
               title="Permalink to Fixture.destroyProxy">#</a></h4>
 <div class="doc">
-<p>Destroys this Fixture's proxy.</p>
+<p>Destroys this Fixture's proxy. </p>
 <pre class="source">
 void destroyProxy(BroadPhase broadPhase) {
  // If proxy is already destroyed, do nothing.
@@ -464,7 +464,6 @@ void synchronize(BroadPhase broadPhase, Transform transformOne,
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

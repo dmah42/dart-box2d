@@ -14,8 +14,9 @@
 
 library racer;
 
+import 'dart:async';
 import 'dart:html';
-import 'dart:math' as Math;
+import 'dart:math';
 import 'package:box2d/box2d_browser.dart';
 import '../demo.dart';
 
@@ -44,8 +45,8 @@ class Racer extends Demo implements ContactListener {
     _controlState = 0;
 
     // Bind to keyboard events.
-    document.on.keyDown.add(_handleKeyDown);
-    document.on.keyUp.add(_handleKeyUp);
+    document.onKeyDown.listen(_handleKeyDown);
+    document.onKeyUp.listen(_handleKeyUp);
 
     // Add ourselves as a collision listener.
     world.contactListener = this;

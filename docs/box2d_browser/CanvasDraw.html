@@ -5,7 +5,7 @@
         <title>CanvasDraw class / box2d_browser Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -175,8 +175,9 @@ CanvasRenderingContext2D         <strong>ctx</strong> <a class="anchor-link"
             title="Permalink to CanvasDraw.ctx">#</a>
         </h4>
         <div class="doc">
+<p>The canvas rendering context with which to draw. </p>
 <pre class="source">
-ctx
+CanvasRenderingContext2D ctx
 </pre>
 </div>
 </div>
@@ -188,7 +189,7 @@ int         <strong>flags</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/DebugDraw.html">DebugDraw</a> </div><div class="doc">
 <pre class="source">
-flags
+int flags
 </pre>
 </div>
 </div>
@@ -200,7 +201,7 @@ flags
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/DebugDraw.html">DebugDraw</a> </div><div class="doc">
 <pre class="source">
-viewportTransform
+IViewportTransform viewportTransform
 </pre>
 </div>
 </div>
@@ -233,7 +234,7 @@ void <strong>drawCircle</strong>(<a href="../box2d/Vector.html">Vector</a> cente
               title="Permalink to CanvasDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle. WARNING: This mutates 
-<span class="param">center</span>.</p>
+<span class="param">center</span>. </p>
 <pre class="source">
 void drawCircle(Vector center, num radius, Color3 color, [Vector axis]) {
  radius *= viewportTransform.scale;
@@ -281,7 +282,7 @@ void <strong>drawSegment</strong>(<a href="../box2d/Vector.html">Vector</a> p1, 
 <div class="doc">
 <p>Draw a line segment. WARNING: This mutates 
 <span class="param">p1</span> and 
-<span class="param">p2</span>.</p>
+<span class="param">p2</span>. </p>
 <pre class="source">
 void drawSegment(Vector p1, Vector p2, Color3 color) {
  _color = color;
@@ -303,7 +304,7 @@ void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector.html">Vector</a> 
               title="Permalink to CanvasDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle. WARNING: This mutates 
-<span class="param">center</span>.</p>
+<span class="param">center</span>. </p>
 <pre class="source">
 void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]) {
  radius *= viewportTransform.scale;
@@ -333,7 +334,7 @@ void drawSolidPolygon(List&lt;Vector&gt; vertices, int vertexCount, Color3 color
 void <strong>drawString</strong>(num x, num y, String s, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawString"
               title="Permalink to CanvasDraw.drawString">#</a></h4>
 <div class="doc">
-<p>Draw a string.</p>
+<p>Draw a string. </p>
 <pre class="source">
 void drawString(num x, num y, String s, Color3 color) {
  _color = color;
@@ -403,7 +404,6 @@ void setCamera(num x, num y, num scale) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

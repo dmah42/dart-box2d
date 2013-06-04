@@ -109,8 +109,8 @@ class Car {
   final double _backTireMaxLateralImpulse = 8.5;
   final double _frontTireMaxLateralImpulse = 7.5;
 
-  final double _lockAngle = (Math.PI / 180) * 35;
-  final double _turnSpeedPerSec = (Math.PI / 180) * 160;
+  final double _lockAngle = (PI / 180) * 35;
+  final double _turnSpeedPerSec = (PI / 180) * 160;
 
   Body _body;
   Tire _blTire, _brTire, _flTire, _frTire;

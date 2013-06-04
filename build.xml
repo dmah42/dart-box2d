@@ -4,18 +4,18 @@
   <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
   <property environment="env" />
-  <fail message="ERROR: Please set environmental variable DART_SDK"> 
-    <condition> 
-      <not> 
-        <isset property="env.DART_SDK" /> 
-      </not> 
-    </condition> 
+  <fail message="ERROR: Please set environmental variable DART_SDK">
+    <condition>
+      <not>
+        <isset property="env.DART_SDK" />
+      </not>
+    </condition>
   </fail>
 
   <property name="dart.sdk.dir" value="${env.DART_SDK}" />
   <property name="dartdoc.dart" value="${dart.sdk.dir}/bin/dartdoc" />
-  <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dart_analyzer" />
-  <property name="dart_analyzer.args" value="--enable_type_checks" />
+  <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dartanalyzer" />
+  <property name="dart_analyzer.args" value="" />
 
   <!-- Set envvar DB2D_WITH_CHECKS to compile with checks. -->
   <condition property="withChecks" value="true">
@@ -41,10 +41,15 @@
   <macrodef name="dart_analyze">
     <attribute name="file" />
     <sequential>
-      <echo>Analyzing @{file}</echo>
-      <exec executable="${dart_analyzer}" failonerror="true">
+      <exec executable="${dart_analyzer}" failonerror="false" resultproperty="result">
         <arg line="${dart_analyzer.args} @{file}" />
       </exec>
+      <fail>
+        <condition>
+          <!-- only fail if errors are found -->
+          <equals arg1="2" arg2="${result}"/>
+        </condition>
+      </fail>
     </sequential>
   </macrodef>
 
@@ -105,22 +110,13 @@
     </exec>
   </target>
 
-  <target name="generate-JS"
-    depends="generate-JS-demos, generate-JS-benchmarks"
-    description="Run dart2js on all demos and benchmarks." />
-
-  <target name="generate-JS-demos">
+  <target name="generate-JS" description="Run dart2js on all demos.">
     <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
       <path refid="demos" />
       <sequential>
         <dart2js file="@{file}" withChecks="${withChecks}" />
       </sequential>
     </for>
-  </target>
-
-  <target name="generate-JS-benchmarks">
-    <dart2js file="example/benchmarks/BenchmarkRunner.dart"
-      withChecks="${withChecks}" />
   </target>
 
 </project>

@@ -5,7 +5,7 @@
         <title>World class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -1203,7 +1203,7 @@ const int         <strong>CLEAR_FORCES</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-CLEAR_FORCES = 0x0004
+static const int CLEAR_FORCES = 0x0004
 </pre>
 </div>
 </div>
@@ -1215,7 +1215,7 @@ const int         <strong>LOCKED</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-LOCKED = 0x0002
+static const int LOCKED = 0x0002
 </pre>
 </div>
 </div>
@@ -1227,7 +1227,7 @@ const int         <strong>NEW_FIXTURE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-NEW_FIXTURE = 0x0001
+static const int NEW_FIXTURE = 0x0001
 </pre>
 </div>
 </div>
@@ -1239,7 +1239,7 @@ const int         <strong>WORLD_POOL_CONTAINER_SIZE</strong> <a class="anchor-li
         </h4>
         <div class="doc">
 <pre class="source">
-WORLD_POOL_CONTAINER_SIZE = 10
+static const int WORLD_POOL_CONTAINER_SIZE = 10
 </pre>
 </div>
 </div>
@@ -1251,7 +1251,7 @@ const int         <strong>WORLD_POOL_SIZE</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-WORLD_POOL_SIZE = 100
+static const int WORLD_POOL_SIZE = 100
 </pre>
 </div>
 </div>
@@ -1359,7 +1359,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>axis</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-axis
+final Vector axis
 </pre>
 </div>
 </div>
@@ -1371,7 +1371,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>backup</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-backup
+final Sweep backup
 </pre>
 </div>
 </div>
@@ -1383,7 +1383,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>cA</strong> <a c
         </h4>
         <div class="doc">
 <pre class="source">
-cA
+final Vector cA
 </pre>
 </div>
 </div>
@@ -1395,7 +1395,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>cB</strong> <a c
         </h4>
         <div class="doc">
 <pre class="source">
-cB
+final Vector cB
 </pre>
 </div>
 </div>
@@ -1406,8 +1406,9 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> 
             title="Permalink to World.center">#</a>
         </h4>
         <div class="doc">
+<p>Pooling </p>
 <pre class="source">
-center
+final Vector center
 </pre>
 </div>
 </div>
@@ -1483,7 +1484,7 @@ List&lt;<a href="../box2d/Contact.html">Contact</a>&gt;         <strong>contacts
         </h4>
         <div class="doc">
 <pre class="source">
-contacts
+List&lt;Contact&gt; contacts
 </pre>
 </div>
 </div>
@@ -1510,7 +1511,7 @@ final <a href="../box2d/Island.html">Island</a>         <strong>island</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-island
+final Island island
 </pre>
 </div>
 </div>
@@ -1572,7 +1573,7 @@ List&lt;<a href="../box2d/Body.html">Body</a>&gt;         <strong>stack</strong>
         </h4>
         <div class="doc">
 <pre class="source">
-stack
+List&lt;Body&gt; stack
 </pre>
 </div>
 </div>
@@ -1584,7 +1585,7 @@ final <a href="../box2d/TimeStep.html">TimeStep</a>         <strong>timestep</st
         </h4>
         <div class="doc">
 <pre class="source">
-timestep
+final TimeStep timestep
 </pre>
 </div>
 </div>
@@ -1596,7 +1597,7 @@ final <a href="../box2d/TimeOfImpactInput.html">TimeOfImpactInput</a>         <s
         </h4>
         <div class="doc">
 <pre class="source">
-toiInput
+final TimeOfImpactInput toiInput
 </pre>
 </div>
 </div>
@@ -1608,7 +1609,7 @@ final <a href="../box2d/TimeOfImpactOutput.html">TimeOfImpactOutput</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-toiOutput
+final TimeOfImpactOutput toiOutput
 </pre>
 </div>
 </div>
@@ -1620,7 +1621,7 @@ final <a href="../box2d/TimeOfImpactSolver.html">TimeOfImpactSolver</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-toiSolver
+final TimeOfImpactSolver toiSolver
 </pre>
 </div>
 </div>
@@ -1632,7 +1633,7 @@ final <a href="../box2d/WorldQueryWrapper.html">WorldQueryWrapper</a>         <s
         </h4>
         <div class="doc">
 <pre class="source">
-wqwrapper
+final WorldQueryWrapper wqwrapper
 </pre>
 </div>
 </div>
@@ -2020,7 +2021,7 @@ void drawDebugData() {
 void <strong>drawJoint</strong>(<a href="../box2d/Joint.html">Joint</a> joint) <a class="anchor-link" href="#drawJoint"
               title="Permalink to World.drawJoint">#</a></h4>
 <div class="doc">
-<p>Draws a joint for debugging purposes.</p>
+<p>Draws a joint for debugging purposes. </p>
 <pre class="source">
 void drawJoint(Joint joint) {
  Body bodyA = joint.bodyA;
@@ -2672,7 +2673,6 @@ void step(num dt, int velocityIterations, int positionIterations) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>

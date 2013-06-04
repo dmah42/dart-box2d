@@ -5,7 +5,7 @@
         <title>PolygonAndCircleContact class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
@@ -39,8 +39,8 @@ class PolygonAndCircleContact extends Contact {
    super(argPool) { }
 
  void init(Fixture fA, Fixture fB) {
-   Expect.equals(ShapeType.POLYGON, fA.type);
-   Expect.equals(ShapeType.CIRCLE, fB.type);
+   assert(ShapeType.POLYGON == fA.type);
+   assert(ShapeType.CIRCLE == fB.type);
    super.init(fA, fB);
  }
 
@@ -77,8 +77,9 @@ PolygonAndCircleContact(DefaultWorldPool argPool) :
             title="Permalink to PolygonAndCircleContact.edge1">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
+<p>Nodes for connecting bodies. </p>
 <pre class="source">
-edge1
+ContactEdge edge1
 </pre>
 </div>
 </div>
@@ -90,7 +91,7 @@ edge1
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-edge2
+ContactEdge edge2
 </pre>
 </div>
 </div>
@@ -126,7 +127,7 @@ void set enabled(bool flag) {
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-fixtureA
+Fixture fixtureA
 </pre>
 </div>
 </div>
@@ -138,7 +139,7 @@ fixtureA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-fixtureB
+Fixture fixtureB
 </pre>
 </div>
 </div>
@@ -149,8 +150,9 @@ int         <strong>flags</strong> <a class="anchor-link"
             title="Permalink to PolygonAndCircleContact.flags">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
+<p>The flags for this Contact. </p>
 <pre class="source">
-flags
+int flags
 </pre>
 </div>
 </div>
@@ -162,7 +164,7 @@ flags
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-manifold
+Manifold manifold
 </pre>
 </div>
 </div>
@@ -174,7 +176,7 @@ manifold
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-next
+Contact next
 </pre>
 </div>
 </div>
@@ -186,7 +188,7 @@ next
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-pool
+DefaultWorldPool pool
 </pre>
 </div>
 </div>
@@ -197,8 +199,9 @@ pool
             title="Permalink to PolygonAndCircleContact.prev">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
+<p>World pool and list pointers. </p>
 <pre class="source">
-prev
+Contact prev
 </pre>
 </div>
 </div>
@@ -210,7 +213,7 @@ num         <strong>toiCount</strong> <a class="anchor-link"
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-toiCount
+num toiCount
 </pre>
 </div>
 </div>
@@ -236,7 +239,7 @@ void <strong>evaluate</strong>(<a href="../box2d/Manifold.html">Manifold</a> arg
               title="Permalink to PolygonAndCircleContact.evaluate">#</a></h4>
 <div class="doc">
 <div class="inherited">
-<p>Abstract method.</p>
+<p>Abstract method. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Contact.html">Contact</a> </div></div>
 <pre class="source">
 void evaluate(Manifold argManifold, Transform xfA, Transform xfB) {
@@ -288,8 +291,8 @@ void <strong>init</strong>(<a href="../box2d/Fixture.html">Fixture</a> fA, <a hr
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Contact.html">Contact</a> </div></div>
 <pre class="source">
 void init(Fixture fA, Fixture fB) {
- Expect.equals(ShapeType.POLYGON, fA.type);
- Expect.equals(ShapeType.CIRCLE, fB.type);
+ assert(ShapeType.POLYGON == fA.type);
+ assert(ShapeType.CIRCLE == fB.type);
  super.init(fA, fB);
 }
 </pre>
@@ -384,7 +387,6 @@ void update(ContactListener listener) {
         </div>
         <div class="clear"></div>
         </div>
-        
         <div class="footer">
           
         </div>
