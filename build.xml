@@ -48,15 +48,9 @@
   <macrodef name="dart_analyze">
     <attribute name="file" />
     <sequential>
-      <exec executable="${dart_analyzer}" failonerror="false" resultproperty="result">
+      <exec executable="${dart_analyzer}" failonerror="true">
         <arg line="${dart_analyzer.args} @{file}" />
       </exec>
-      <fail>
-        <condition>
-          <!-- only fail if errors are found -->
-          <equals arg1="2" arg2="${result}"/>
-        </condition>
-      </fail>
     </sequential>
   </macrodef>
 

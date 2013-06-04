@@ -18,15 +18,6 @@ import 'package:box2d/box2d_browser.dart';
 
 import 'demo.dart';
 
-class CollisionListener implements ContactListener {
-  void beginContact(Contact contact) {
-    print("begin contact");
-  }
-  void endContact(Contact contact) {
-    print("end contact");
-  }
-}
-
 class BallCage extends Demo {
   /** Starting position of ball cage in the world. */
   static const num START_X = -20;
