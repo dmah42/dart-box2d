@@ -151,7 +151,7 @@ class BroadPhase implements TreeCallback {
      var userDataB = primaryPair.proxyB.userData;
 
      // Call the callback and increment i.
-     callback.addPair(userDataA, userDataB);
+     callback(userDataA, userDataB);
      ++i;
 
      // Skip any duplicate pairs.
@@ -509,7 +509,7 @@ void updatePairs(PairCallback callback) {
    var userDataB = primaryPair.proxyB.userData;
 
    // Call the callback and increment i.
-   callback.addPair(userDataA, userDataB);
+   callback(userDataA, userDataB);
    ++i;
 
    // Skip any duplicate pairs.

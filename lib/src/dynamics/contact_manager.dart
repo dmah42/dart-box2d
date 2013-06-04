@@ -16,7 +16,7 @@
 
 part of box2d;
 
-class ContactManager implements PairCallback {
+class ContactManager {
   BroadPhase broadPhase;
   Contact contactList;
   int contactCount;
@@ -36,7 +36,7 @@ class ContactManager implements PairCallback {
   /**
    * Broad-phase callback.
    */
-  void addPair(Fixture fixtureA, Fixture fixtureB) {
+  void _addPair(Fixture fixtureA, Fixture fixtureB) {
     Body bodyA = fixtureA.body;
     Body bodyB = fixtureB.body;
 
@@ -119,7 +119,7 @@ class ContactManager implements PairCallback {
     ++contactCount;
   }
 
-  void findNewContacts() { broadPhase.updatePairs(this); }
+  void findNewContacts() => broadPhase.updatePairs(_addPair);
 
   void destroy(Contact c) {
     Fixture fixtureA = c.fixtureA;

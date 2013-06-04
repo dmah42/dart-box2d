@@ -22,7 +22,6 @@ part 'src/callbacks/destruction_listener.dart';
 part 'src/callbacks/contact_filter.dart';
 part 'src/callbacks/contact_impulse.dart';
 part 'src/callbacks/contact_listener.dart';
-part 'src/callbacks/pair_callback.dart';
 part 'src/callbacks/query_callback.dart';
 part 'src/callbacks/tree_callback.dart';
 part 'src/collision/axis_aligned_box.dart';

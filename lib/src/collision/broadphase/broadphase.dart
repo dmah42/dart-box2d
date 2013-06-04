@@ -27,6 +27,8 @@
 
 part of box2d;
 
+typedef void PairCallback(Fixture fixtureA, Fixture fixtureB);
+
 class BroadPhase implements TreeCallback {
   static const int NULL_PROXY = -1;
   static const int PAIR_CAPACITY = 16;
@@ -145,7 +147,7 @@ class BroadPhase implements TreeCallback {
       var userDataB = primaryPair.proxyB.userData;
 
       // Call the callback and increment i.
-      callback.addPair(userDataA, userDataB);
+      callback(userDataA, userDataB);
       ++i;
 
       // Skip any duplicate pairs.

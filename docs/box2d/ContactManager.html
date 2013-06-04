@@ -33,7 +33,7 @@
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
 <pre class="source">
-class ContactManager implements PairCallback {
+class ContactManager {
  BroadPhase broadPhase;
  Contact contactList;
  int contactCount;
@@ -53,7 +53,7 @@ class ContactManager implements PairCallback {
  /**
   * Broad-phase callback.
   */
- void addPair(Fixture fixtureA, Fixture fixtureB) {
+ void _addPair(Fixture fixtureA, Fixture fixtureB) {
    Body bodyA = fixtureA.body;
    Body bodyB = fixtureB.body;
 
@@ -136,7 +136,7 @@ class ContactManager implements PairCallback {
    ++contactCount;
  }
 
- void findNewContacts() { broadPhase.updatePairs(this); }
+ void findNewContacts() =&gt; broadPhase.updatePairs(_addPair);
 
  void destroy(Contact c) {
    Fixture fixtureA = c.fixtureA;
@@ -247,9 +247,6 @@ class ContactManager implements PairCallback {
 }
 </pre>
 </div>
-<h3>Implements</h3>
-<p>
-<span class="type-box"><span class="icon-class"></span><a href="../box2d/PairCallback.html">PairCallback</a></span></p>
 <div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="ContactManager">
@@ -346,98 +343,6 @@ final World pool
 </div>
 <div>
 <h3>Methods</h3>
-<div class="method"><h4 id="addPair">
-<button class="show-code">Code</button>
-void <strong>addPair</strong>(<a href="../box2d/Fixture.html">Fixture</a> fixtureA, <a href="../box2d/Fixture.html">Fixture</a> fixtureB) <a class="anchor-link" href="#addPair"
-              title="Permalink to ContactManager.addPair">#</a></h4>
-<div class="doc">
-<p>Broad-phase callback.</p>
-<pre class="source">
-void addPair(Fixture fixtureA, Fixture fixtureB) {
- Body bodyA = fixtureA.body;
- Body bodyB = fixtureB.body;
-
- // Are the fixtures on the same body?
- if (bodyA == bodyB) {
-   return;
- }
-
- // Does a contact already exist?
- ContactEdge edge = bodyB.contactList;
- while (edge != null) {
-   if (edge.other == bodyA) {
-     Fixture fA = edge.contact.fixtureA;
-     Fixture fB = edge.contact.fixtureB;
-     if (fA == fixtureA &amp;&amp; fB == fixtureB) {
-       // A contact already exists.
-       return;
-     }
-
-     if (fA == fixtureB &amp;&amp; fB == fixtureA) {
-       // A contact already exists.
-       return;
-     }
-   }
-
-   edge = edge.next;
- }
-
- // Does a joint override collision? is at least one body dynamic?
- if (bodyB.shouldCollide(bodyA) == false) {
-   return;
- }
-
- // Check user filtering.
- if (contactFilter != null &amp;&amp; 
-     contactFilter.shouldCollide(fixtureA, fixtureB) == false) {
-   return;
- }
-
- // Call the factory.
- Contact c = pool.popContact(fixtureA, fixtureB);
-
- // Contact creation may swap fixtures.
- fixtureA = c.fixtureA;
- fixtureB = c.fixtureB;
- bodyA = fixtureA.body;
- bodyB = fixtureB.body;
-
- // Insert into the world.
- c.prev = null;
- c.next = contactList;
- if (contactList != null) {
-   contactList.prev = c;
- }
- contactList = c;
-
- // Connect to island graph.
-
- // Connect to body A
- c.edge1.contact = c;
- c.edge1.other = bodyB;
-
- c.edge1.prev = null;
- c.edge1.next = bodyA.contactList;
- if (bodyA.contactList != null) {
-   bodyA.contactList.prev = c.edge1;
- }
- bodyA.contactList = c.edge1;
-
- // Connect to body B
- c.edge2.contact = c;
- c.edge2.other = bodyA;
-
- c.edge2.prev = null;
- c.edge2.next = bodyB.contactList;
- if (bodyB.contactList != null)
-   bodyB.contactList.prev = c.edge2;
- bodyB.contactList = c.edge2;
-
- ++contactCount;
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="collide">
 <button class="show-code">Code</button>
 void <strong>collide</strong>() <a class="anchor-link" href="#collide"
@@ -565,7 +470,7 @@ void <strong>findNewContacts</strong>() <a class="anchor-link" href="#findNewCon
               title="Permalink to ContactManager.findNewContacts">#</a></h4>
 <div class="doc">
 <pre class="source">
-void findNewContacts() { broadPhase.updatePairs(this); }
+void findNewContacts() =&gt; broadPhase.updatePairs(_addPair);
 </pre>
 </div>
 </div>
