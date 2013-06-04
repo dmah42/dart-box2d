@@ -25,21 +25,19 @@ class TimeOfImpactConstraint {
   Body bodyB;
 
   TimeOfImpactConstraint() :
-    localPoints = new List<Vector>(Settings.MAX_MANIFOLD_POINTS),
+    localPoints = new List<Vector>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector()),
     localNormal = new Vector(),
     localPoint = new Vector(),
     type = 0,
     radius = 0,
     pointCount = 0,
     bodyA = null,
-    bodyB = null {
-    for (int i = 0; i < localPoints.length; i++) {
-      localPoints[i] = new Vector();
-    }
-  }
+    bodyB = null;
 
   void setFrom(TimeOfImpactConstraint argOther){
-    for(int i=0; i<localPoints.length; i++){
+    assert(argOther.localPoints.length == localPoints.length);
+    for(int i=0; i<localPoints.length; i++) {
       localPoints[i].setFrom(argOther.localPoints[i]);
     }
     localNormal.setFrom(argOther.localNormal);

@@ -41,18 +41,15 @@ class ContactConstraint {
   Manifold manifold;
 
   ContactConstraint() :
-    points = new List<ContactConstraintPoint>(Settings.MAX_MANIFOLD_POINTS),
+    points = new List<ContactConstraintPoint>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new ContactConstraintPoint()),
     pointCount = 0,
     manifold = null,
     localNormal = new Vector(),
     localPoint = new Vector(),
     normal = new Vector(),
     normalMass = new Matrix22(),
-    K = new Matrix22() {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; i++) {
-        points[i] = new ContactConstraintPoint();
-    }
-  }
+    K = new Matrix22();
 
   void setFrom(ContactConstraint cp) {
     pointCount = cp.pointCount;

@@ -34,18 +34,15 @@ class TimeOfImpactSolver {
   TimeOfImpactSolver() :
     count = 0,
     toiBody = null,
-    constraints = new List<TimeOfImpactConstraint>(4),
+    constraints = new List<TimeOfImpactConstraint>.generate(
+        4, (i) => new TimeOfImpactConstraint()),
 
     // Initialize pool variables.
     psm = new TimeOfImpactSolverManifold(),
     rA = new Vector(),
     rB = new Vector(),
     P = new Vector(),
-    temp = new Vector() {
-    for (int i = 0; i<constraints.length; i++){
-      constraints[i] = new TimeOfImpactConstraint();
-    }
-  }
+    temp = new Vector();
 
   void initialize(List<Contact> contacts, int argCount, Body argToiBody) {
     count = argCount;

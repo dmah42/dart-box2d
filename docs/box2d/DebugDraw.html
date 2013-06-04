@@ -53,9 +53,9 @@ abstract class DebugDraw {
  static const int e_lineDrawingBit = 0x0040;
 
  int flags;
- IViewportTransform viewportTransform;
+ ViewportTransform viewportTransform;
 
- DebugDraw(IViewportTransform viewport)
+ DebugDraw(ViewportTransform viewport)
      : flags = e_shapeBit,
        viewportTransform = viewport;
 
@@ -211,11 +211,11 @@ static const int e_shapeBit = 0x0001
 <h3>Constructors</h3>
 <div class="method"><h4 id="DebugDraw">
 <button class="show-code">Code</button>
-new <strong>DebugDraw</strong>(<a href="../box2d/IViewportTransform.html">IViewportTransform</a> viewport) <a class="anchor-link" href="#DebugDraw"
+new <strong>DebugDraw</strong>(<a href="../box2d/ViewportTransform.html">ViewportTransform</a> viewport) <a class="anchor-link" href="#DebugDraw"
               title="Permalink to DebugDraw.DebugDraw">#</a></h4>
 <div class="doc">
 <pre class="source">
-DebugDraw(IViewportTransform viewport)
+DebugDraw(ViewportTransform viewport)
    : flags = e_shapeBit,
      viewportTransform = viewport;
 </pre>
@@ -238,13 +238,13 @@ int flags
 </div>
 <div class="field"><h4 id="viewportTransform">
 <button class="show-code">Code</button>
-<a href="../box2d/IViewportTransform.html">IViewportTransform</a>         <strong>viewportTransform</strong> <a class="anchor-link"
+<a href="../box2d/ViewportTransform.html">ViewportTransform</a>         <strong>viewportTransform</strong> <a class="anchor-link"
             href="#viewportTransform"
             title="Permalink to DebugDraw.viewportTransform">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-IViewportTransform viewportTransform
+ViewportTransform viewportTransform
 </pre>
 </div>
 </div>

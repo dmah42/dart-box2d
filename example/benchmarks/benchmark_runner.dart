@@ -13,15 +13,18 @@
 // limitations under the License.
 
 library BenchmarkRunner;
+
+import 'dart:io';
 import 'dart:math';
 import 'package:args/args.dart';
 import 'package:box2d/box2d.dart';
-part 'Benchmark.dart';
-part 'BallCageBench.dart';
-part 'BallDropBench.dart';
-part 'CircleStressBench.dart';
-part 'DominoPlatformBench.dart';
-part 'DominoTowerBench.dart';
+
+part 'benchmark.dart';
+part 'ball_cage_bench.dart';
+part 'ball_drop_bench.dart';
+part 'circle_stress_bench.dart';
+part 'domino_platform_bench.dart';
+part 'domino_tower_bench.dart';
 
 /** Runs the Dart Box2D benchmarks. Outputs results to console. */
 class BenchmarkRunner {
@@ -66,8 +69,8 @@ class BenchmarkRunner {
     if (filter == null || filter.isEmpty) {
       benchmarks.map(_addBenchmark);
     } else {
-      List<String> filterList = filter.split(",").mappedBy((e) => e.trim());
-      benchmarks.where((e) => filterList.indexOf(e.name) != -1).mappedBy(_addBenchmark);
+      List<String> filterList = filter.split(",").map((e) => e.trim());
+      benchmarks.where((e) => filterList.indexOf(e.name) != -1).map(_addBenchmark);
     }
   }
 

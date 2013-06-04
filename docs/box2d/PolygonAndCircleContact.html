@@ -224,7 +224,7 @@ final bool         <strong>touching</strong> <a class="anchor-link"
             title="Permalink to PolygonAndCircleContact.touching">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
-<p>Is this contact touching</p>
+<p>Is this contact touching </p>
 <pre class="source">
 bool get touching =&gt; (flags &amp; TOUCHING_FLAG) == TOUCHING_FLAG;
 </pre>
@@ -368,15 +368,15 @@ void update(ContactListener listener) {
    return;
  }
 
- if (wasTouching == false &amp;&amp; touching == true) {
+ if (!wasTouching &amp;&amp; touching) {
    listener.beginContact(this);
  }
 
- if (wasTouching == true &amp;&amp; touching == false) {
+ if (wasTouching &amp;&amp; !touching) {
    listener.endContact(this);
  }
 
- if (sensor == false &amp;&amp; touching) {
+ if (!sensor &amp;&amp; touching) {
    listener.preSolve(this, _oldManifold);
  }
 }

@@ -19,7 +19,7 @@
 
 part of box2d_browser;
 
-class CanvasViewportTransform extends IViewportTransform {
+class CanvasViewportTransform extends ViewportTransform {
   static const int DEFAULT_DRAWING_SCALE = 20;
 
   /**
@@ -48,5 +48,4 @@ class CanvasViewportTransform extends IViewportTransform {
     // Scale everything according to the current scale and mirror the y-axis.
     ctx.scale(scale, -scale);
   }
-
 }

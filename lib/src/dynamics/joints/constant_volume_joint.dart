@@ -87,10 +87,7 @@ class ConstantVolumeJoint extends Joint {
     frequencyHz = def.frequencyHz;
     dampingRatio = def.dampingRatio;
 
-    normals = new List<Vector>(bodies.length);
-    for (int i = 0; i < normals.length; ++i) {
-      normals[i] = new Vector();
-    }
+    normals = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     this.bodyA = bodies[0];
     this.bodyB = bodies[1];
@@ -162,10 +159,7 @@ class ConstantVolumeJoint extends Joint {
   void initVelocityConstraints(TimeStep argStep) {
     step = argStep;
 
-    final d = new List<Vector>(bodies.length);
-    for (int i = 0; i < bodies.length; i++) {
-      d[i] = new Vector();
-    }
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -203,10 +197,7 @@ class ConstantVolumeJoint extends Joint {
     num crossMassSum = 0.0;
     num dotMassSum = 0.0;
 
-    final d = new List<Vector>(bodies.length);
-    for (int i = 0; i < bodies.length; i++) {
-      d[i] = new Vector();
-    }
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -224,19 +215,11 @@ class ConstantVolumeJoint extends Joint {
     }
   }
 
-  void getAnchorA(Vector argOut) {
-    throw new UnimplementedError();
-  }
+  void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
 
-  void getAnchorB(Vector argOut) {
-    throw new UnimplementedError();
-  }
+  void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
 
-  void getReactionForce(num inv_dt, Vector argOut) {
-    throw new UnimplementedError();
-  }
+  void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
 
-  num getReactionTorque(num inv_dt) {
-    throw new UnimplementedError();
-  }
+  num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 }

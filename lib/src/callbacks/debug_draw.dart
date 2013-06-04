@@ -41,9 +41,9 @@ abstract class DebugDraw {
   static const int e_lineDrawingBit = 0x0040;
 
   int flags;
-  IViewportTransform viewportTransform;
+  ViewportTransform viewportTransform;
 
-  DebugDraw(IViewportTransform viewport)
+  DebugDraw(ViewportTransform viewport)
       : flags = e_shapeBit,
         viewportTransform = viewport;
 

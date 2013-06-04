@@ -54,12 +54,12 @@ class RevoluteJoint extends Joint {
   int limitState;
 
   RevoluteJoint(RevoluteJointDef def) :
-    super(def),
-    localAnchor1 = new Vector(),
-    localAnchor2 = new Vector(),
-    impulse = new Vector3(),
-    _motorImpulse = 0,
-    mass = new Matrix33() {
+      super(def),
+      localAnchor1 = new Vector(),
+      localAnchor2 = new Vector(),
+      impulse = new Vector3(),
+      _motorImpulse = 0,
+      mass = new Matrix33() {
     localAnchor1.setFrom(def.localAnchorA);
     localAnchor2.setFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;

@@ -26,7 +26,7 @@ class CanvasDraw extends DebugDraw {
   /** The canvas rendering context with which to draw. */
   CanvasRenderingContext2D ctx;
 
-  CanvasDraw(IViewportTransform viewport, this.ctx) : super(viewport) {
+  CanvasDraw(ViewportTransform viewport, this.ctx) : super(viewport) {
     assert (null != viewport && null != ctx);
   }
 
@@ -97,8 +97,8 @@ class CanvasDraw extends DebugDraw {
   }
 
   /**
-   * Draws the given point with the given *unscaled* radius, in the given color.
-   * WARNING: This mutates [center].
+   * Draws the given point with the given *unscaled* radius, in the given [color].
+   * WARNING: This mutates [point].
    */
   void drawPoint(Vector point, num radiusOnScreen, Color3 color) {
     _pathCircle(point, radiusOnScreen, color);

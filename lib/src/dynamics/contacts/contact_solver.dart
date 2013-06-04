@@ -49,7 +49,8 @@ class ContactSolver {
 
   /** Constructs a new ContactSolver. */
   ContactSolver() :
-    constraints = new List<ContactConstraint>(INITIAL_NUM_CONSTRAINTS),
+    constraints = new List<ContactConstraint>.generate(
+        INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint()),
 
     // Setup pool variables.
     worldManifold = new WorldManifold(),
@@ -66,11 +67,7 @@ class ContactSolver {
     P2 = new Vector(),
     psolver = new PositionSolverManifold(),
     rA = new Vector(),
-    rB = new Vector() {
-    for(int i=0; i < constraints.length; i++) {
-      constraints[i] = new ContactConstraint();
-    }
-  }
+    rB = new Vector();
 
   void init(List<Contact> contacts, int contactCount, num impulseRatio){
     constraintCount = contactCount;
@@ -82,7 +79,7 @@ class ContactSolver {
       constraints = new List<ContactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
 
-      for(int i=old.length; i< constraints.length; i++){
+      for(int i=old.length; i < constraints.length; ++i) {
         constraints[i] = new ContactConstraint();
       }
     }
@@ -262,7 +259,7 @@ class ContactSolver {
   }
 
   void solveVelocityConstraints(){
-    for (int i = 0; i < constraintCount; ++i){
+    for (int i = 0; i < constraintCount; ++i) {
       final ContactConstraint c = constraints[i];
       final Body bodyA = c.bodyA;
       final Body bodyB = c.bodyB;
@@ -281,7 +278,7 @@ class ContactSolver {
       assert(c.pointCount == 1 || c.pointCount == 2);
 
       // Solve tangent constraints
-      for (int j = 0; j < c.pointCount; ++j){
+      for (int j = 0; j < c.pointCount; ++j) {
         ContactConstraintPoint ccp = c.points[j];
         Vector a = ccp.rA;
 
@@ -316,7 +313,7 @@ class ContactSolver {
       }
 
       // Solve normal constraints
-      if (c.pointCount == 1){
+      if (c.pointCount == 1) {
         ContactConstraintPoint ccp = c.points[0];
         Vector a1 = ccp.rA;
 
@@ -512,12 +509,12 @@ class ContactSolver {
     }
   }
 
-  void storeImpulses(){
-    for( int i=0; i<constraintCount; i++){
+  void storeImpulses() {
+    for( int i=0; i<constraintCount; i++) {
       ContactConstraint c = constraints[i];
       Manifold m = c.manifold;
 
-      for(int j=0; j< c.pointCount; j++){
+      for(int j=0; j< c.pointCount; j++) {
         m.points[j].normalImpulse = c.points[j].normalImpulse;
         m.points[j].tangentImpulse = c.points[j].tangentImpulse;
       }
@@ -527,10 +524,10 @@ class ContactSolver {
   /**
    * Sequential solver.
    */
-  bool solvePositionConstraints(num baumgarte){
+  bool solvePositionConstraints(num baumgarte) {
     num minSeparation = 0.0;
 
-    for (int i = 0; i < constraintCount; ++i){
+    for (int i = 0; i < constraintCount; ++i) {
       final ContactConstraint c = constraints[i];
       final Body bodyA = c.bodyA;
       final Body bodyB = c.bodyB;
@@ -541,7 +538,7 @@ class ContactSolver {
       final num invIB = bodyB.mass * bodyB.invInertia;
 
       // Solve normal constraints
-      for (int j = 0; j < c.pointCount; ++j){
+      for (int j = 0; j < c.pointCount; ++j) {
         PositionSolverManifold psm = psolver;
         psm.initialize(c, j);
         Vector normal = psm.normal;
@@ -610,7 +607,7 @@ class PositionSolverManifold {
     pointB = new Vector(),
     temp = new Vector(),
     planePoint = new Vector(),
-    clipPoint = new Vector() { }
+    clipPoint = new Vector();
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);

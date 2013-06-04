@@ -43,10 +43,8 @@ class WorldManifold {
     normal = new Vector(),
     pool3 = new Vector(),
     pool4 = new Vector(),
-    points = new List<Vector>(Settings.MAX_MANIFOLD_POINTS) {
-    for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
-      points[i] = new Vector();
-  }
+    points = new List<Vector>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector());
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {

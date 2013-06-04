@@ -44,21 +44,19 @@ class TimeOfImpactConstraint {
  Body bodyB;
 
  TimeOfImpactConstraint() :
-   localPoints = new List&lt;Vector&gt;(Settings.MAX_MANIFOLD_POINTS),
+   localPoints = new List&lt;Vector&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
    localNormal = new Vector(),
    localPoint = new Vector(),
    type = 0,
    radius = 0,
    pointCount = 0,
    bodyA = null,
-   bodyB = null {
-   for (int i = 0; i &lt; localPoints.length; i++) {
-     localPoints[i] = new Vector();
-   }
- }
+   bodyB = null;
 
  void setFrom(TimeOfImpactConstraint argOther){
-   for(int i=0; i&lt;localPoints.length; i++){
+   assert(argOther.localPoints.length == localPoints.length);
+   for(int i=0; i&lt;localPoints.length; i++) {
      localPoints[i].setFrom(argOther.localPoints[i]);
    }
    localNormal.setFrom(argOther.localNormal);
@@ -81,18 +79,15 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
 <div class="doc">
 <pre class="source">
 TimeOfImpactConstraint() :
- localPoints = new List&lt;Vector&gt;(Settings.MAX_MANIFOLD_POINTS),
+ localPoints = new List&lt;Vector&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
  localNormal = new Vector(),
  localPoint = new Vector(),
  type = 0,
  radius = 0,
  pointCount = 0,
  bodyA = null,
- bodyB = null {
- for (int i = 0; i &lt; localPoints.length; i++) {
-   localPoints[i] = new Vector();
- }
-}
+ bodyB = null;
 </pre>
 </div>
 </div>
@@ -205,7 +200,8 @@ void <strong>setFrom</strong>(<a href="../box2d/TimeOfImpactConstraint.html">Tim
 <div class="doc">
 <pre class="source">
 void setFrom(TimeOfImpactConstraint argOther){
- for(int i=0; i&lt;localPoints.length; i++){
+ assert(argOther.localPoints.length == localPoints.length);
+ for(int i=0; i&lt;localPoints.length; i++) {
    localPoints[i].setFrom(argOther.localPoints[i]);
  }
  localNormal.setFrom(argOther.localNormal);

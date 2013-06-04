@@ -57,18 +57,15 @@ class ContactConstraint {
  Manifold manifold;
 
  ContactConstraint() :
-   points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+   points = new List&lt;ContactConstraintPoint&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
    pointCount = 0,
    manifold = null,
    localNormal = new Vector(),
    localPoint = new Vector(),
    normal = new Vector(),
    normalMass = new Matrix22(),
-   K = new Matrix22() {
-   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-       points[i] = new ContactConstraintPoint();
-   }
- }
+   K = new Matrix22();
 
  void setFrom(ContactConstraint cp) {
    pointCount = cp.pointCount;
@@ -107,18 +104,15 @@ new <strong>ContactConstraint</strong>() <a class="anchor-link" href="#ContactCo
 <div class="doc">
 <pre class="source">
 ContactConstraint() :
- points = new List&lt;ContactConstraintPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
+ points = new List&lt;ContactConstraintPoint&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
  pointCount = 0,
  manifold = null,
  localNormal = new Vector(),
  localPoint = new Vector(),
  normal = new Vector(),
  normalMass = new Matrix22(),
- K = new Matrix22() {
- for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; i++) {
-     points[i] = new ContactConstraintPoint();
- }
-}
+ K = new Matrix22();
 </pre>
 </div>
 </div>

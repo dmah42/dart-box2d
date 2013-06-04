@@ -48,18 +48,15 @@ class TimeOfImpactSolver {
  TimeOfImpactSolver() :
    count = 0,
    toiBody = null,
-   constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+   constraints = new List&lt;TimeOfImpactConstraint&gt;.generate(
+       4, (i) =&gt; new TimeOfImpactConstraint()),
 
    // Initialize pool variables.
    psm = new TimeOfImpactSolverManifold(),
    rA = new Vector(),
    rB = new Vector(),
    P = new Vector(),
-   temp = new Vector() {
-   for (int i = 0; i&lt;constraints.length; i++){
-     constraints[i] = new TimeOfImpactConstraint();
-   }
- }
+   temp = new Vector();
 
  void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
    count = argCount;
@@ -190,18 +187,15 @@ new <strong>TimeOfImpactSolver</strong>() <a class="anchor-link" href="#TimeOfIm
 TimeOfImpactSolver() :
  count = 0,
  toiBody = null,
- constraints = new List&lt;TimeOfImpactConstraint&gt;(4),
+ constraints = new List&lt;TimeOfImpactConstraint&gt;.generate(
+     4, (i) =&gt; new TimeOfImpactConstraint()),
 
  // Initialize pool variables.
  psm = new TimeOfImpactSolverManifold(),
  rA = new Vector(),
  rB = new Vector(),
  P = new Vector(),
- temp = new Vector() {
- for (int i = 0; i&lt;constraints.length; i++){
-   constraints[i] = new TimeOfImpactConstraint();
- }
-}
+ temp = new Vector();
 </pre>
 </div>
 </div>

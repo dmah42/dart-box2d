@@ -526,14 +526,9 @@ class World {
    // positions.
    if (timestep.dt &gt; 0.0) {
      solve(timestep);
-   }
-
-   // Handle TimeOfImpact events.
-   if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
-     solveTimeOfImpact();
-   }
-
-   if (timestep.dt &gt; 0.0) {
+     if (_continuousPhysics) {
+       solveTimeOfImpact();
+     }
      _inverseTimestep = timestep.inv_dt;
    }
 
@@ -705,6 +700,8 @@ class World {
      _flags &amp;= ~CLEAR_FORCES;
    }
  }
+
+ Body get bodyList =&gt; _bodyList;
 
  Joint get jointList =&gt; _jointList;
 
@@ -881,23 +878,19 @@ class World {
    for (Body body = _bodyList; body != null; body = body.next) {
      // Kinematic, and static bodies will not be affected by the TimeOfImpact
      // event.  If a body was not in an island then it did not move.
-     if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
-         == BodyType.KINEMATIC
-         || body.type == BodyType.STATIC) {
+     if ((body.flags &amp; Body.ISLAND_FLAG) == 0 ||
+         body.type == BodyType.KINEMATIC ||
+         body.type == BodyType.STATIC) {
        body.flags |= Body.TO_I_FLAG;
-     }
-     else {
+     } else {
        body.flags &amp;= ~Body.TO_I_FLAG;
      }
    }
 
    // Collide non-bullets.
    for (Body body = _bodyList; body != null; body = body.next) {
-     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-       continue;
-     }
-
-     if (body.bullet == true) {
+     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+         body.bullet == true) {
        continue;
      }
 
@@ -908,11 +901,8 @@ class World {
 
    // Collide bullets.
    for (Body body = _bodyList; body != null; body = body.next) {
-     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-       continue;
-     }
-
-     if (body.bullet == false) {
+     if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+         !body.bullet) {
        continue;
      }
 
@@ -948,7 +938,7 @@ class World {
        int type = other.type;
 
        // Only bullets perform TimeOfImpact with dynamic bodies.
-       if (bullet == true) {
+       if (bullet) {
          // Bullets only perform TimeOfImpact with bodies that have their
          // TimeOfImpact resolved.
          if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
@@ -956,8 +946,8 @@ class World {
          }
 
          // No repeated hits on non-static bodies
-         if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
-               Contact.BULLET_HIT_FLAG) != 0) {
+         if (type != BodyType.STATIC &amp;&amp;
+             (ce.contact.flags &amp; Contact.BULLET_HIT_FLAG) != 0) {
            continue;
          }
        } else if (type == BodyType.DYNAMIC) {
@@ -965,13 +955,9 @@ class World {
        }
 
        // Check for a disabled contact.
-       Contact contact = ce.contact;
-       if (contact.enabled == false) {
-         continue;
-       }
-
        // Prevent infinite looping.
-       if (contact.toiCount &gt; 10) {
+       Contact contact = ce.contact;
+       if (!contact.enabled || contact.toiCount &gt; 10) {
          continue;
        }
 
@@ -1026,14 +1012,15 @@ class World {
    ++toiContact.toiCount;
 
    // Update all the valid contacts on this body and build a contact island.
-   if (contacts == null || contacts.length &lt;
-       Settings.MAX_TIME_OF_IMPACT_CONTACTS){
+   if (contacts == null ||
+       contacts.length &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS) {
      contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
    }
 
    count = 0;
-   for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
-       &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
+   for (ContactEdge ce = body.contactList; ce != null &amp;&amp;
+        count &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS;
+        ce = ce.next) {
      Body other = ce.other;
      int type = other.type;
 
@@ -1045,7 +1032,7 @@ class World {
 
      // Check for a disabled contact.
      Contact contact = ce.contact;
-     if (contact.enabled == false) {
+     if (!contact.enabled) {
        continue;
      }
 
@@ -1064,12 +1051,7 @@ class World {
      }
 
      // Did the user disable the contact?
-     if (contact.enabled == false) {
-       // Skip this contact.
-       continue;
-     }
-
-     if (contact.touching == false) {
+     if (!contact.enabled || !contact.touching) {
        continue;
      }
 
@@ -1083,8 +1065,7 @@ class World {
    num k_toiBaumgarte = 0.75;
    // bool solved = false;
    for (int i = 0; i &lt; 20; ++i) {
-     bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
-     if (contactsOkay) {
+     if (toiSolver.solve(k_toiBaumgarte)) {
        // solved = true;
        break;
      }
@@ -1116,11 +1097,8 @@ class World {
        final PolygonShape poly = fixture.shape;
        int vertexCount = poly.vertexCount;
        assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-       List&lt;Vector&gt; vertices =
-           new List&lt;Vector&gt;(vertexCount);
-       for (int i = 0; i &lt; vertexCount; i++) {
-         vertices[i] = new Vector();
-       }
+       List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
+           vertexCount, (i) =&gt; new Vector());
 
        for (int i = 0; i &lt; vertexCount; ++i) {
          assert(poly.vertices[i] != null);
@@ -1130,12 +1108,10 @@ class World {
 
        if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawPolygon(vertices, vertexCount, color);
+       } else if (vertexCount &gt; 2) {
+         _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
        } else {
-         if (vertexCount &gt; 2) {
-           _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-         } else {
-           _debugDraw.drawPolygon(vertices, vertexCount, color);
-         }
+         _debugDraw.drawPolygon(vertices, vertexCount, color);
        }
        break;
    }
@@ -1372,6 +1348,18 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>backup</strong> <a
         <div class="doc">
 <pre class="source">
 final Sweep backup
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="bodyList">
+<button class="show-code">Code</button>
+final <a href="../box2d/Body.html">Body</a>         <strong>bodyList</strong> <a class="anchor-link"
+            href="#bodyList"
+            title="Permalink to World.bodyList">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Body get bodyList =&gt; _bodyList;
 </pre>
 </div>
 </div>
@@ -2100,11 +2088,8 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
      final PolygonShape poly = fixture.shape;
      int vertexCount = poly.vertexCount;
      assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-     List&lt;Vector&gt; vertices =
-         new List&lt;Vector&gt;(vertexCount);
-     for (int i = 0; i &lt; vertexCount; i++) {
-       vertices[i] = new Vector();
-     }
+     List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
+         vertexCount, (i) =&gt; new Vector());
 
      for (int i = 0; i &lt; vertexCount; ++i) {
        assert(poly.vertices[i] != null);
@@ -2114,12 +2099,10 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
 
      if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
        _debugDraw.drawPolygon(vertices, vertexCount, color);
+     } else if (vertexCount &gt; 2) {
+       _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
      } else {
-       if (vertexCount &gt; 2) {
-         _debugDraw.drawSolidPolygon(vertices, vertexCount, color);
-       } else {
-         _debugDraw.drawPolygon(vertices, vertexCount, color);
-       }
+       _debugDraw.drawPolygon(vertices, vertexCount, color);
      }
      break;
  }
@@ -2382,23 +2365,19 @@ void solveTimeOfImpact() {
  for (Body body = _bodyList; body != null; body = body.next) {
    // Kinematic, and static bodies will not be affected by the TimeOfImpact
    // event.  If a body was not in an island then it did not move.
-   if ((body.flags &amp; Body.ISLAND_FLAG) == 0 || body.type
-       == BodyType.KINEMATIC
-       || body.type == BodyType.STATIC) {
+   if ((body.flags &amp; Body.ISLAND_FLAG) == 0 ||
+       body.type == BodyType.KINEMATIC ||
+       body.type == BodyType.STATIC) {
      body.flags |= Body.TO_I_FLAG;
-   }
-   else {
+   } else {
      body.flags &amp;= ~Body.TO_I_FLAG;
    }
  }
 
  // Collide non-bullets.
  for (Body body = _bodyList; body != null; body = body.next) {
-   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-     continue;
-   }
-
-   if (body.bullet == true) {
+   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+       body.bullet == true) {
      continue;
    }
 
@@ -2409,11 +2388,8 @@ void solveTimeOfImpact() {
 
  // Collide bullets.
  for (Body body = _bodyList; body != null; body = body.next) {
-   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG) {
-     continue;
-   }
-
-   if (body.bullet == false) {
+   if ((body.flags &amp; Body.TO_I_FLAG) == Body.TO_I_FLAG ||
+       !body.bullet) {
      continue;
    }
 
@@ -2457,7 +2433,7 @@ void solveTimeOfImpactGivenBody(Body body) {
      int type = other.type;
 
      // Only bullets perform TimeOfImpact with dynamic bodies.
-     if (bullet == true) {
+     if (bullet) {
        // Bullets only perform TimeOfImpact with bodies that have their
        // TimeOfImpact resolved.
        if ((other.flags &amp; Body.TO_I_FLAG) == 0) {
@@ -2465,8 +2441,8 @@ void solveTimeOfImpactGivenBody(Body body) {
        }
 
        // No repeated hits on non-static bodies
-       if (type != BodyType.STATIC &amp;&amp; (ce.contact.flags &amp;
-             Contact.BULLET_HIT_FLAG) != 0) {
+       if (type != BodyType.STATIC &amp;&amp;
+           (ce.contact.flags &amp; Contact.BULLET_HIT_FLAG) != 0) {
          continue;
        }
      } else if (type == BodyType.DYNAMIC) {
@@ -2474,13 +2450,9 @@ void solveTimeOfImpactGivenBody(Body body) {
      }
 
      // Check for a disabled contact.
-     Contact contact = ce.contact;
-     if (contact.enabled == false) {
-       continue;
-     }
-
      // Prevent infinite looping.
-     if (contact.toiCount &gt; 10) {
+     Contact contact = ce.contact;
+     if (!contact.enabled || contact.toiCount &gt; 10) {
        continue;
      }
 
@@ -2535,14 +2507,15 @@ void solveTimeOfImpactGivenBody(Body body) {
  ++toiContact.toiCount;
 
  // Update all the valid contacts on this body and build a contact island.
- if (contacts == null || contacts.length &lt;
-     Settings.MAX_TIME_OF_IMPACT_CONTACTS){
+ if (contacts == null ||
+     contacts.length &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS) {
    contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
  }
 
  count = 0;
- for (ContactEdge ce = body.contactList; ce != null &amp;&amp; count
-     &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS; ce = ce.next) {
+ for (ContactEdge ce = body.contactList; ce != null &amp;&amp;
+      count &lt; Settings.MAX_TIME_OF_IMPACT_CONTACTS;
+      ce = ce.next) {
    Body other = ce.other;
    int type = other.type;
 
@@ -2554,7 +2527,7 @@ void solveTimeOfImpactGivenBody(Body body) {
 
    // Check for a disabled contact.
    Contact contact = ce.contact;
-   if (contact.enabled == false) {
+   if (!contact.enabled) {
      continue;
    }
 
@@ -2573,12 +2546,7 @@ void solveTimeOfImpactGivenBody(Body body) {
    }
 
    // Did the user disable the contact?
-   if (contact.enabled == false) {
-     // Skip this contact.
-     continue;
-   }
-
-   if (contact.touching == false) {
+   if (!contact.enabled || !contact.touching) {
      continue;
    }
 
@@ -2592,8 +2560,7 @@ void solveTimeOfImpactGivenBody(Body body) {
  num k_toiBaumgarte = 0.75;
  // bool solved = false;
  for (int i = 0; i &lt; 20; ++i) {
-   bool contactsOkay = toiSolver.solve(k_toiBaumgarte);
-   if (contactsOkay) {
+   if (toiSolver.solve(k_toiBaumgarte)) {
      // solved = true;
      break;
    }
@@ -2649,14 +2616,9 @@ void step(num dt, int velocityIterations, int positionIterations) {
  // positions.
  if (timestep.dt &gt; 0.0) {
    solve(timestep);
- }
-
- // Handle TimeOfImpact events.
- if (_continuousPhysics &amp;&amp; timestep.dt &gt; 0.0) {
-   solveTimeOfImpact();
- }
-
- if (timestep.dt &gt; 0.0) {
+   if (_continuousPhysics) {
+     solveTimeOfImpact();
+   }
    _inverseTimestep = timestep.inv_dt;
  }
 

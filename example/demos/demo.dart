@@ -33,7 +33,7 @@ abstract class Demo {
   static const num _VIEWPORT_SCALE = 10;
 
   /** The gravity vector's y value. */
-  static const num GRAVITY = -10;
+  static const double GRAVITY = -10.0;
 
   /** The timestep and iteration numbers. */
   static const num TIME_STEP = 1/60;
@@ -47,7 +47,7 @@ abstract class Demo {
   CanvasRenderingContext2D ctx;
 
   /** The transform abstraction layer between the world and drawing canvas. */
-  IViewportTransform viewport;
+  ViewportTransform viewport;
 
   /** The debug drawing tool. */
   DebugDraw debugDraw;
@@ -125,11 +125,11 @@ abstract class Demo {
     fpsCounter = query("#fps-counter");
     worldStepTime = query("#world-step-time");
     new Timer.periodic(new Duration(seconds: 1), (Timer t) {
-      fpsCounter.innerHtml = frameCount.toString();
-      frameCount = 0;
+        fpsCounter.innerHtml = frameCount.toString();
+        frameCount = 0;
     });
     new Timer.periodic(new Duration(milliseconds: 200), (Timer t) {
-      worldStepTime.innerHtml = "${elapsedUs / 1000.0} ms";
+        worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
     });
   }
 

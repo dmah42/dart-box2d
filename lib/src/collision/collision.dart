@@ -171,12 +171,7 @@ class Collision {
     return numOut;
   }
 
-  /**
-   * Compute the collision manifold between two circles.
-   *
-   */
-  //TODO(gregbglw): Consider introducing operator overloading for matrix/vector
-  //operations and then replace many of the inlined calculations with those.
+  /** Compute the collision manifold between two circles. */
   void collideCircles(Manifold manifold, CircleShape circle1, Transform xfA,
       CircleShape circle2, Transform xfB) {
     manifold.pointCount = 0;

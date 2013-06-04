@@ -99,9 +99,7 @@ abstract class Contact {
         shapeA.radius, bodyB.originTransform, shapeB.radius);
   }
 
-  /**
-   * Is this contact touching
-   */
+  /** Is this contact touching */
   bool get touching => (flags & TOUCHING_FLAG) == TOUCHING_FLAG;
 
   /**
@@ -193,15 +191,15 @@ abstract class Contact {
       return;
     }
 
-    if (wasTouching == false && touching == true) {
+    if (!wasTouching && touching) {
       listener.beginContact(this);
     }
 
-    if (wasTouching == true && touching == false) {
+    if (wasTouching && !touching) {
       listener.endContact(this);
     }
 
-    if (sensor == false && touching) {
+    if (!sensor && touching) {
       listener.preSolve(this, _oldManifold);
     }
   }

@@ -70,18 +70,16 @@ abstract class Benchmark {
    */
   void _recordResults(int time, StringBuffer resultsWriter, benchmarkIterations,
       steps) {
-    resultsWriter.add(name);
-    resultsWriter.add(" ($steps steps, $benchmarkIterations solve loops) : $time ms");
+    resultsWriter.write(name);
+    resultsWriter.write(" ($steps steps, $benchmarkIterations solve loops) : $time ms");
 
     // Calculate and write-out steps/second.
     num stepsPerSecond = (steps / (time / 1000));
-    resultsWriter.add('  ($stepsPerSecond steps/second)');
+    resultsWriter.writeln('  ($stepsPerSecond steps/second)');
 
     // Write out the checksum. This should be compared manually to other
     // implementations of the Box2D benchmarks.
-    resultsWriter.add('\n');
-    resultsWriter.add("Checksum: $checksum");
-    resultsWriter.add('\n\n');
+    resultsWriter.writeln("Checksum: $checksum\n");
   }
 
   /**

@@ -99,10 +99,7 @@ class ConstantVolumeJoint extends Joint {
    frequencyHz = def.frequencyHz;
    dampingRatio = def.dampingRatio;
 
-   normals = new List&lt;Vector&gt;(bodies.length);
-   for (int i = 0; i &lt; normals.length; ++i) {
-     normals[i] = new Vector();
-   }
+   normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
    this.bodyA = bodies[0];
    this.bodyB = bodies[1];
@@ -174,10 +171,7 @@ class ConstantVolumeJoint extends Joint {
  void initVelocityConstraints(TimeStep argStep) {
    step = argStep;
 
-   final d = new List&lt;Vector&gt;(bodies.length);
-   for (int i = 0; i &lt; bodies.length; i++) {
-     d[i] = new Vector();
-   }
+   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -215,10 +209,7 @@ class ConstantVolumeJoint extends Joint {
    num crossMassSum = 0.0;
    num dotMassSum = 0.0;
 
-   final d = new List&lt;Vector&gt;(bodies.length);
-   for (int i = 0; i &lt; bodies.length; i++) {
-     d[i] = new Vector();
-   }
+   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -236,21 +227,13 @@ class ConstantVolumeJoint extends Joint {
    }
  }
 
- void getAnchorA(Vector argOut) {
-   throw new UnimplementedError();
- }
+ void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
 
- void getAnchorB(Vector argOut) {
-   throw new UnimplementedError();
- }
+ void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
 
- void getReactionForce(num inv_dt, Vector argOut) {
-   throw new UnimplementedError();
- }
+ void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
 
- num getReactionTorque(num inv_dt) {
-   throw new UnimplementedError();
- }
+ num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 }
 </pre>
 </div>
@@ -313,10 +296,7 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  frequencyHz = def.frequencyHz;
  dampingRatio = def.dampingRatio;
 
- normals = new List&lt;Vector&gt;(bodies.length);
- for (int i = 0; i &lt; normals.length; ++i) {
-   normals[i] = new Vector();
- }
+ normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
  this.bodyA = bodies[0];
  this.bodyB = bodies[1];
@@ -704,9 +684,7 @@ void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOu
 <p>Get the anchor point on bodyA in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorA(Vector argOut) {
- throw new UnimplementedError();
-}
+void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
@@ -719,9 +697,7 @@ void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOu
 <p>Get the anchor point on bodyB in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorB(Vector argOut) {
- throw new UnimplementedError();
-}
+void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
@@ -734,9 +710,7 @@ void <strong>getReactionForce</strong>(num inv_dt, <a href="../box2d/Vector.html
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getReactionForce(num inv_dt, Vector argOut) {
- throw new UnimplementedError();
-}
+void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
@@ -749,9 +723,7 @@ num <strong>getReactionTorque</strong>(num inv_dt) <a class="anchor-link" href="
 <p>Get the reaction torque on body2 in N*m. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-num getReactionTorque(num inv_dt) {
- throw new UnimplementedError();
-}
+num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
@@ -776,10 +748,7 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 void initVelocityConstraints(TimeStep argStep) {
  step = argStep;
 
- final d = new List&lt;Vector&gt;(bodies.length);
- for (int i = 0; i &lt; bodies.length; i++) {
-   d[i] = new Vector();
- }
+ final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -829,10 +798,7 @@ void solveVelocityConstraints(TimeStep argStep) {
  num crossMassSum = 0.0;
  num dotMassSum = 0.0;
 
- final d = new List&lt;Vector&gt;(bodies.length);
- for (int i = 0; i &lt; bodies.length; i++) {
-   d[i] = new Vector();
- }
+ final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;

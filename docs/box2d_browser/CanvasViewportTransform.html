@@ -33,7 +33,7 @@
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
 <pre class="source">
-class CanvasViewportTransform extends IViewportTransform {
+class CanvasViewportTransform extends ViewportTransform {
  static const int DEFAULT_DRAWING_SCALE = 20;
 
  /**
@@ -62,13 +62,12 @@ class CanvasViewportTransform extends IViewportTransform {
    // Scale everything according to the current scale and mirror the y-axis.
    ctx.scale(scale, -scale);
  }
-
 }
 </pre>
 </div>
 <h3>Extends</h3>
 <p>
-<span class="type-box"><span class="icon-class"></span><a href="../box2d/IViewportTransform.html">IViewportTransform</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>CanvasViewportTransform</strong></span></p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/ViewportTransform.html">ViewportTransform</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>CanvasViewportTransform</strong></span></p>
 <div>
 <h3>Static Properties</h3>
 <div class="field"><h4 id="DEFAULT_DRAWING_SCALE">
@@ -109,7 +108,7 @@ CanvasViewportTransform(Vector _extents, Vector _center) :
             href="#center"
             title="Permalink to CanvasViewportTransform.center">#</a>
         </h4>
-        <div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+        <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>center of the viewport.</p>
 <pre class="source">
 Vector center
@@ -122,7 +121,7 @@ Vector center
             href="#extents"
             title="Permalink to CanvasViewportTransform.extents">#</a>
         </h4>
-        <div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+        <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>This is the half-width and half-height.
 This should be the actual half-width and 
 half-height, not anything transformed or scaled.</p>
@@ -137,7 +136,7 @@ num         <strong>scale</strong> <a class="anchor-link"
             href="#scale"
             title="Permalink to CanvasViewportTransform.scale">#</a>
         </h4>
-        <div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+        <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Returns the scaling factor used in converting from world sizes to rendering
 sizes.</p>
 <pre class="source">
@@ -151,7 +150,7 @@ num scale
             href="#translation"
             title="Permalink to CanvasViewportTransform.translation">#</a>
         </h4>
-        <div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+        <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>The current translation is the difference in canvas units between the
 actual center of the canvas and the currently specified center. For
 example, if the actual canvas center is (5, 5) but the current center is
@@ -177,7 +176,7 @@ bool         <strong>yFlip</strong> <a class="anchor-link"
             href="#yFlip"
             title="Permalink to CanvasViewportTransform.yFlip">#</a>
         </h4>
-        <div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+        <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>if we flip the y axis when transforming.</p>
 <pre class="source">
 bool yFlip
@@ -191,7 +190,7 @@ bool yFlip
 <button class="show-code">Code</button>
 void <strong>getScreenToWorld</strong>(<a href="../box2d/Vector.html">Vector</a> argScreen, <a href="../box2d/Vector.html">Vector</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
               title="Permalink to CanvasViewportTransform.getScreenToWorld">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+<div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Takes the screen coordinates (argScreen) and puts the
 corresponding world coordinates in argWorld. It should be safe
 to give the same object as both parameters.</p>
@@ -211,7 +210,7 @@ void getScreenToWorld(Vector argScreen, Vector argWorld) {
 <button class="show-code">Code</button>
 void <strong>getWorldToScreen</strong>(<a href="../box2d/Vector.html">Vector</a> argWorld, <a href="../box2d/Vector.html">Vector</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
               title="Permalink to CanvasViewportTransform.getWorldToScreen">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+<div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Takes the world coordinate (argWorld) puts the corresponding
 screen coordinate in argScreen.  It should be safe to give the
 same object as both parameters.</p>
@@ -232,7 +231,7 @@ void getWorldToScreen(Vector argWorld, Vector argScreen) {
 <button class="show-code">Code</button>
 void <strong>setCamera</strong>(num x, num y, num s) <a class="anchor-link" href="#setCamera"
               title="Permalink to CanvasViewportTransform.setCamera">#</a></h4>
-<div class="inherited-from">inherited from <a href="../box2d/IViewportTransform.html">IViewportTransform</a> </div><div class="doc">
+<div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Sets the transform's center to the given x and y coordinates,
 and using the given scale.</p>
 <pre class="source">

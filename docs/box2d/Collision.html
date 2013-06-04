@@ -184,12 +184,7 @@ class Collision {
    return numOut;
  }
 
- /**
-  * Compute the collision manifold between two circles.
-  *
-  */
- //TODO(gregbglw): Consider introducing operator overloading for matrix/vector
- //operations and then replace many of the inlined calculations with those.
+ /** Compute the collision manifold between two circles. */
  void collideCircles(Manifold manifold, CircleShape circle1, Transform xfA,
      CircleShape circle2, Transform xfB) {
    manifold.pointCount = 0;
@@ -922,7 +917,7 @@ final Vector v12
 void <strong>collideCircles</strong>(<a href="../box2d/Manifold.html">Manifold</a> manifold, <a href="../box2d/CircleShape.html">CircleShape</a> circle1, <a href="../box2d/Transform.html">Transform</a> xfA, <a href="../box2d/CircleShape.html">CircleShape</a> circle2, <a href="../box2d/Transform.html">Transform</a> xfB) <a class="anchor-link" href="#collideCircles"
               title="Permalink to Collision.collideCircles">#</a></h4>
 <div class="doc">
-<p>Compute the collision manifold between two circles.</p>
+<p>Compute the collision manifold between two circles. </p>
 <pre class="source">
 void collideCircles(Manifold manifold, CircleShape circle1, Transform xfA,
    CircleShape circle2, Transform xfB) {

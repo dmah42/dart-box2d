@@ -68,7 +68,8 @@ class ContactSolver {
 
  /** Constructs a new ContactSolver. */
  ContactSolver() :
-   constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
+   constraints = new List&lt;ContactConstraint&gt;.generate(
+       INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
 
    // Setup pool variables.
    worldManifold = new WorldManifold(),
@@ -85,11 +86,7 @@ class ContactSolver {
    P2 = new Vector(),
    psolver = new PositionSolverManifold(),
    rA = new Vector(),
-   rB = new Vector() {
-   for(int i=0; i &lt; constraints.length; i++) {
-     constraints[i] = new ContactConstraint();
-   }
- }
+   rB = new Vector();
 
  void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraintCount = contactCount;
@@ -101,7 +98,7 @@ class ContactSolver {
      constraints = new List&lt;ContactConstraint&gt;(newLen);
      constraints.setRange(0, old.length, old);
 
-     for(int i=old.length; i&lt; constraints.length; i++){
+     for(int i=old.length; i &lt; constraints.length; ++i) {
        constraints[i] = new ContactConstraint();
      }
    }
@@ -281,7 +278,7 @@ class ContactSolver {
  }
 
  void solveVelocityConstraints(){
-   for (int i = 0; i &lt; constraintCount; ++i){
+   for (int i = 0; i &lt; constraintCount; ++i) {
      final ContactConstraint c = constraints[i];
      final Body bodyA = c.bodyA;
      final Body bodyB = c.bodyB;
@@ -300,7 +297,7 @@ class ContactSolver {
      assert(c.pointCount == 1 || c.pointCount == 2);
 
      // Solve tangent constraints
-     for (int j = 0; j &lt; c.pointCount; ++j){
+     for (int j = 0; j &lt; c.pointCount; ++j) {
        ContactConstraintPoint ccp = c.points[j];
        Vector a = ccp.rA;
 
@@ -335,7 +332,7 @@ class ContactSolver {
      }
 
      // Solve normal constraints
-     if (c.pointCount == 1){
+     if (c.pointCount == 1) {
        ContactConstraintPoint ccp = c.points[0];
        Vector a1 = ccp.rA;
 
@@ -531,12 +528,12 @@ class ContactSolver {
    }
  }
 
- void storeImpulses(){
-   for( int i=0; i&lt;constraintCount; i++){
+ void storeImpulses() {
+   for( int i=0; i&lt;constraintCount; i++) {
      ContactConstraint c = constraints[i];
      Manifold m = c.manifold;
 
-     for(int j=0; j&lt; c.pointCount; j++){
+     for(int j=0; j&lt; c.pointCount; j++) {
        m.points[j].normalImpulse = c.points[j].normalImpulse;
        m.points[j].tangentImpulse = c.points[j].tangentImpulse;
      }
@@ -546,10 +543,10 @@ class ContactSolver {
  /**
   * Sequential solver.
   */
- bool solvePositionConstraints(num baumgarte){
+ bool solvePositionConstraints(num baumgarte) {
    num minSeparation = 0.0;
 
-   for (int i = 0; i &lt; constraintCount; ++i){
+   for (int i = 0; i &lt; constraintCount; ++i) {
      final ContactConstraint c = constraints[i];
      final Body bodyA = c.bodyA;
      final Body bodyB = c.bodyB;
@@ -560,7 +557,7 @@ class ContactSolver {
      final num invIB = bodyB.mass * bodyB.invInertia;
 
      // Solve normal constraints
-     for (int j = 0; j &lt; c.pointCount; ++j){
+     for (int j = 0; j &lt; c.pointCount; ++j) {
        PositionSolverManifold psm = psolver;
        psm.initialize(c, j);
        Vector normal = psm.normal;
@@ -648,7 +645,8 @@ new <strong>ContactSolver</strong>() <a class="anchor-link" href="#ContactSolver
 <p>Constructs a new ContactSolver. </p>
 <pre class="source">
 ContactSolver() :
- constraints = new List&lt;ContactConstraint&gt;(INITIAL_NUM_CONSTRAINTS),
+ constraints = new List&lt;ContactConstraint&gt;.generate(
+     INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
 
  // Setup pool variables.
  worldManifold = new WorldManifold(),
@@ -665,11 +663,7 @@ ContactSolver() :
  P2 = new Vector(),
  psolver = new PositionSolverManifold(),
  rA = new Vector(),
- rB = new Vector() {
- for(int i=0; i &lt; constraints.length; i++) {
-   constraints[i] = new ContactConstraint();
- }
-}
+ rB = new Vector();
 </pre>
 </div>
 </div>
@@ -900,7 +894,7 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraints = new List&lt;ContactConstraint&gt;(newLen);
    constraints.setRange(0, old.length, old);
 
-   for(int i=old.length; i&lt; constraints.length; i++){
+   for(int i=old.length; i &lt; constraints.length; ++i) {
      constraints[i] = new ContactConstraint();
    }
  }
@@ -1055,10 +1049,10 @@ bool <strong>solvePositionConstraints</strong>(num baumgarte) <a class="anchor-l
 <div class="doc">
 <p>Sequential solver.</p>
 <pre class="source">
-bool solvePositionConstraints(num baumgarte){
+bool solvePositionConstraints(num baumgarte) {
  num minSeparation = 0.0;
 
- for (int i = 0; i &lt; constraintCount; ++i){
+ for (int i = 0; i &lt; constraintCount; ++i) {
    final ContactConstraint c = constraints[i];
    final Body bodyA = c.bodyA;
    final Body bodyB = c.bodyB;
@@ -1069,7 +1063,7 @@ bool solvePositionConstraints(num baumgarte){
    final num invIB = bodyB.mass * bodyB.invInertia;
 
    // Solve normal constraints
-   for (int j = 0; j &lt; c.pointCount; ++j){
+   for (int j = 0; j &lt; c.pointCount; ++j) {
      PositionSolverManifold psm = psolver;
      psm.initialize(c, j);
      Vector normal = psm.normal;
@@ -1124,7 +1118,7 @@ void <strong>solveVelocityConstraints</strong>() <a class="anchor-link" href="#s
 <div class="doc">
 <pre class="source">
 void solveVelocityConstraints(){
- for (int i = 0; i &lt; constraintCount; ++i){
+ for (int i = 0; i &lt; constraintCount; ++i) {
    final ContactConstraint c = constraints[i];
    final Body bodyA = c.bodyA;
    final Body bodyB = c.bodyB;
@@ -1143,7 +1137,7 @@ void solveVelocityConstraints(){
    assert(c.pointCount == 1 || c.pointCount == 2);
 
    // Solve tangent constraints
-   for (int j = 0; j &lt; c.pointCount; ++j){
+   for (int j = 0; j &lt; c.pointCount; ++j) {
      ContactConstraintPoint ccp = c.points[j];
      Vector a = ccp.rA;
 
@@ -1178,7 +1172,7 @@ void solveVelocityConstraints(){
    }
 
    // Solve normal constraints
-   if (c.pointCount == 1){
+   if (c.pointCount == 1) {
      ContactConstraintPoint ccp = c.points[0];
      Vector a1 = ccp.rA;
 
@@ -1382,12 +1376,12 @@ void <strong>storeImpulses</strong>() <a class="anchor-link" href="#storeImpulse
               title="Permalink to ContactSolver.storeImpulses">#</a></h4>
 <div class="doc">
 <pre class="source">
-void storeImpulses(){
- for( int i=0; i&lt;constraintCount; i++){
+void storeImpulses() {
+ for( int i=0; i&lt;constraintCount; i++) {
    ContactConstraint c = constraints[i];
    Manifold m = c.manifold;
 
-   for(int j=0; j&lt; c.pointCount; j++){
+   for(int j=0; j&lt; c.pointCount; j++) {
      m.points[j].normalImpulse = c.points[j].normalImpulse;
      m.points[j].tangentImpulse = c.points[j].tangentImpulse;
    }
