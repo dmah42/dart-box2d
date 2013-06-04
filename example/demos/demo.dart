@@ -129,7 +129,7 @@ abstract class Demo {
       frameCount = 0;
     });
     new Timer.periodic(new Duration(milliseconds: 200), (Timer t) {
-      worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
+      worldStepTime.innerHtml = "${elapsedUs / 1000.0} ms";
     });
   }
 

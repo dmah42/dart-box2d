@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DartBox2D" default="default">
   <!-- Expect ant-contrib 1.0b5 available -->
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
   <property environment="env" />
   <fail message="ERROR: Please set environmental variable DART_SDK">
@@ -16,12 +16,19 @@
   <property name="dartdoc.dart" value="${dart.sdk.dir}/bin/dartdoc" />
   <property name="dart_analyzer" value="${dart.sdk.dir}/bin/dartanalyzer" />
   <property name="dart_analyzer.args" value="" />
+  <property name="pub.dart" value="${dart.sdk.dir}/bin/pub" />
 
   <!-- Set envvar DB2D_WITH_CHECKS to compile with checks. -->
   <condition property="withChecks" value="true">
     <isset property="env.DB2D_WITH_CHECKS"/>
   </condition>
   <property name="withChecks" value="false" />
+
+  <!-- Set envvar DB2D_NO_MINIFY to disable JS minification. -->
+  <condition property="minify" value="false">
+    <isset property="env.DB2D_NO_MINIFY"/>
+  </condition>
+  <property name="minify" value="true" />
 
   <!-- Set envvar DB2D_THREAD_COUNT to parallelize.
        May affect output readability. -->
@@ -56,30 +63,50 @@
   <macrodef name="dart2js">
     <attribute name="file" />
     <attribute name="withChecks" default="false" />
+    <attribute name="minify" default="true" />
 
     <sequential>
-      <local name="dart2js.args" />
+      <local name="dart2js.check_arg" />
       <if>
         <istrue value="@{withChecks}" />
         <then>
-          <property name="dart2js.args" value="-c" />
+          <property name="dart2js.check_arg" value="-c" />
         </then>
         <else>
-          <property name="dart2js.args" value="" />
+          <property name="dart2js.check_arg" value="" />
         </else>
       </if>
 
+      <local name="dart2js.min_arg" />
+      <if>
+        <istrue value="@{minify}" />
+        <then>
+          <property name="dart2js.min_arg" value="--minify" />
+        </then>
+        <else>
+          <property name="dart2js.min_arg" value="" />
+        </else>
+      </if>
       <echo>Generating JS "@{file}.js" from "@{file}"</echo>
       <exec executable="${dart.sdk.dir}/bin/dart2js" failonerror="true">
-        <arg line="${dart2js.args} -o@{file}.js @{file}"/>
+        <arg line="${dart2js.check_arg} ${dart2js.min_arg} -o@{file}.js @{file}"/>
       </exec>
     </sequential>
   </macrodef>
 
   <!-- MAIN -->
   <target name="default"
-    depends="analyze, generate-JS, generate-docs"
+    depends="pub-install, analyze, generate-JS, generate-docs"
     description="Analyze, generate JS and library's DartDoc." />
+
+  <target name="pub-install">
+    <exec executable="${pub.dart}" failonerror="true">
+      <arg line="install"/>
+    </exec>
+    <exec executable="${pub.dart}" failonerror="true">
+      <arg line="update"/>
+    </exec>
+  </target>
 
   <target name="analyze"
     depends="analyze-libs, analyze-demos, analyze-benchmarks"
@@ -100,13 +127,13 @@
   </target>
 
   <target name="analyze-benchmarks">
-    <dart_analyze file="example/benchmarks/BenchmarkRunner.dart" />
+    <dart_analyze file="example/benchmarks/benchmark_runner.dart" />
   </target>
 
   <target name="generate-docs" description="Generate DartDoc for library.">
     <echo>Generating documentation</echo>
     <exec executable="${dartdoc.dart}" failonerror="true">
-      <arg line="--omit-generation-time --pkg ./packages/ lib/box2d.dart lib/box2d_browser.dart" />
+      <arg line="--no-show-private --omit-generation-time --pkg ./packages lib/box2d_browser.dart lib/box2d.dart"  />
     </exec>
   </target>
 
@@ -114,7 +141,7 @@
     <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
       <path refid="demos" />
       <sequential>
-        <dart2js file="@{file}" withChecks="${withChecks}" />
+        <dart2js file="@{file}" withChecks="${withChecks}" minify="${minify}"/>
       </sequential>
     </for>
   </target>

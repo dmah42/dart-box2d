@@ -13,10 +13,10 @@
 // limitations under the License.
 library box2d_browser;
 
-import 'package:box2d/box2d.dart';
 import 'dart:html';
+import 'package:box2d/box2d.dart';
 
 export 'package:box2d/box2d.dart';
 
-part 'src/callbacks/CanvasDraw.dart';
-part 'src/common/CanvasViewportTransform.dart';
+part 'src/callbacks/canvas_draw.dart';
+part 'src/common/canvas_viewport_transform.dart';
