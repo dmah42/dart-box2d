@@ -88,7 +88,7 @@ class Transform {
   */
  static void mulToOut(Transform transform, Vector vector, Vector out) {
    assert(out != null);
-   num tempY = transform.position.y + transform.rotation.col1.y *
+   double tempY = transform.position.y + transform.rotation.col1.y *
        vector.x + transform.rotation.col2.y * vector.y;
    out.x = transform.position.x + transform.rotation.col1.x * vector.x +
        transform.rotation.col2.x * vector.y;
@@ -96,11 +96,11 @@ class Transform {
  }
 
  static void mulTransToOut(Transform T, Vector v, Vector out) {
-   num v1x = v.x - T.position.x;
-   num v1y = v.y - T.position.y;
+   double v1x = v.x - T.position.x;
+   double v1y = v.y - T.position.y;
    Vector b = T.rotation.col1;
    Vector b1 = T.rotation.col2;
-   num tempy = v1x * b1.x + v1y * b1.y;
+   double tempy = v1x * b1.x + v1y * b1.y;
    out.x = v1x * b.x + v1y * b.y;
    out.y = tempy;
  }
@@ -135,7 +135,7 @@ in the given out parameter.</p>
 <pre class="source">
 static void mulToOut(Transform transform, Vector vector, Vector out) {
  assert(out != null);
- num tempY = transform.position.y + transform.rotation.col1.y *
+ double tempY = transform.position.y + transform.rotation.col1.y *
      vector.x + transform.rotation.col2.y * vector.y;
  out.x = transform.position.x + transform.rotation.col1.x * vector.x +
      transform.rotation.col2.x * vector.y;
@@ -151,11 +151,11 @@ void <strong>mulTransToOut</strong>(<a href="../box2d/Transform.html">Transform<
 <div class="doc">
 <pre class="source">
 static void mulTransToOut(Transform T, Vector v, Vector out) {
- num v1x = v.x - T.position.x;
- num v1y = v.y - T.position.y;
+ double v1x = v.x - T.position.x;
+ double v1y = v.y - T.position.y;
  Vector b = T.rotation.col1;
  Vector b1 = T.rotation.col2;
- num tempy = v1x * b1.x + v1y * b1.y;
+ double tempy = v1x * b1.x + v1y * b1.y;
  out.x = v1x * b.x + v1y * b.y;
  out.y = tempy;
 }

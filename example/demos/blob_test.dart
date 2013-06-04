@@ -51,19 +51,19 @@ class BlobTest extends Demo {
 
     ConstantVolumeJointDef cvjd = new ConstantVolumeJointDef();
 
-    num cx = 0.0;
-    num cy = 10.0;
-    num rx = 5.0;
-    num ry = 5.0;
-    int nBodies = 20;
-    num bodyRadius = 0.5;
+    double cx = 0.0;
+    double cy = 10.0;
+    double rx = 5.0;
+    double ry = 5.0;
+    double nBodies = 20.0;
+    double bodyRadius = 0.5;
     for (int i = 0; i < nBodies; ++i) {
-      num angle = MathBox.translateAndScale(i, 0, nBodies, 0, Math.PI * 2);
+      double angle = MathBox.translateAndScale(i.toDouble(), 0.0, nBodies, 0.0, Math.PI * 2);
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true;
 
-      num x = cx + rx * Math.sin(angle);
-      num y = cy + ry * Math.cos(angle);
+      double x = cx + rx * Math.sin(angle);
+      double y = cy + ry * Math.cos(angle);
       bd.position.setFrom(new Vector(x,y));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);

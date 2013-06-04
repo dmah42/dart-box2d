@@ -88,16 +88,16 @@ class TimeOfImpact {
     sweepA.normalize();
     sweepB.normalize();
 
-    num tMax = input.tMax;
+    double tMax = input.tMax;
 
-    num totalRadius = proxyA.radius + proxyB.radius;
-    num target = Math.max(Settings.LINEAR_SLOP, totalRadius
-        - 3.0 * Settings.LINEAR_SLOP);
-    num tolerance = 0.25 * Settings.LINEAR_SLOP;
+    double totalRadius = proxyA.radius + proxyB.radius;
+    double target = Math.max(Settings.LINEAR_SLOP,
+        totalRadius - 3.0 * Settings.LINEAR_SLOP);
+    double tolerance = 0.25 * Settings.LINEAR_SLOP;
 
     assert (target > tolerance);
 
-    num t1 = 0;
+    double t1 = 0.0;
     int iter = 0;
 
     cache.count = 0;
@@ -325,7 +325,7 @@ class SeparationFunction {
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.setFrom(localPointB2).subLocal(localPointB1);
-      Vector.crossVectorAndNumToOut(temp, 1, axis);
+      Vector.crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
       Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);

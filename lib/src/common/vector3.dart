@@ -19,11 +19,11 @@ part of box2d;
 class Vector3 {
   // Each vector is defined as the vector originating from (0,0) to the point
   // defined by these values.
-  num x;
-  num y;
-  num z;
+  double x;
+  double y;
+  double z;
 
-  Vector3([this.x = 0, this.y = 0, this.z = 0]);
+  Vector3([this.x = 0.0, this.y = 0.0, this.z = 0.0]);
 
   Vector3.copy(Vector3 argCopy) {
     x = argCopy.x;
@@ -44,7 +44,7 @@ class Vector3 {
   }
 
   /** Sets the vectors coordinate values to those given. */
-  Vector3 setCoords(num argX, num argY, num argZ) {
+  Vector3 setCoords(double argX, double argY, double argZ) {
     x = argX;
     y = argY;
     z = argZ;
@@ -71,14 +71,14 @@ class Vector3 {
   Vector3 sub(Vector3 argVec) =>
       new Vector3(x - argVec.x, y - argVec.y, z - argVec.z);
 
-  Vector3 mulLocal(num argScalar) {
+  Vector3 mulLocal(double argScalar) {
     x *= argScalar;
     y *= argScalar;
     z *= argScalar;
     return this;
   }
 
-  Vector3 mul(num argScalar) =>
+  Vector3 mul(double argScalar) =>
       new Vector3(x * argScalar, y * argScalar, z * argScalar);
 
   Vector3 negateLocal() {
@@ -89,14 +89,12 @@ class Vector3 {
   }
 
   void setZero() {
-    x = 0;
-    y = 0;
-    z = 0;
+    x = y = z = 0.0;
   }
 
   String toString() => "($x, $y, $z)";
 
-  static num dot(Vector3 a, Vector3 b) => a.x * b.x + a.y * b.y + a.z * b.z;
+  static double dot(Vector3 a, Vector3 b) => a.x * b.x + a.y * b.y + a.z * b.z;
 
   static Vector3 cross(Vector3 a, Vector3 b) =>
       new Vector3(a.y * b.z - a.z * b.y,
@@ -104,8 +102,8 @@ class Vector3 {
                   a.x * b.y - a.y * b.x);
 
   static void crossToOut(Vector3 a, Vector3 b, Vector3 out) {
-    final num tempy = a.z * b.x - a.x * b.z;
-    final num tempz = a.x * b.y - a.y * b.x;
+    final double tempy = a.z * b.x - a.x * b.z;
+    final double tempz = a.x * b.y - a.y * b.x;
     out.x = a.y * b.z - a.z * b.y;
     out.y = tempy;
     out.z = tempz;

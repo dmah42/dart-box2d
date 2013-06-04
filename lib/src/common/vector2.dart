@@ -20,10 +20,10 @@ part of box2d;
 class Vector {
   // Each vector is defined as the vector originating from (0,0) to these x and
   // y coordinates.
-  num x;
-  num y;
+  double x;
+  double y;
 
-  Vector([this.x = 0, this.y = 0]);
+  Vector([this.x = 0.0, this.y = 0.0]);
 
   /**
    * Constructs a new vector with the same coordinates as the given vector.
@@ -54,25 +54,25 @@ class Vector {
     return this;
   }
 
-  Vector setCoords(num xCoord, num yCoord) {
+  Vector setCoords(double xCoord, double yCoord) {
     x = xCoord;
     y = yCoord;
     return this;
   }
 
   /** Return the cross product of the twe given vectors. */
-  static num crossVectors(Vector v1, Vector v2) => (v1.x * v2.y - v1.y * v2.x);
+  static double crossVectors(Vector v1, Vector v2) => (v1.x * v2.y - v1.y * v2.x);
 
   /** Return the dot product of the two given vectors. */
-  static num dot(Vector one, Vector two) => (one.x * two.x + one.y * two.y);
+  static double dot(Vector one, Vector two) => (one.x * two.x + one.y * two.y);
 
   /**
    * Has the effect of swapping the x and y coordinates of the vector,
    * multiplying both by the given number, and then flipping the sign of the new
    * x coordinate. Returns the result through the out parameter.
    */
-  static void crossNumAndVectorToOut(num s, Vector a, Vector out) {
-    num tempY = s * a.x;
+  static void crossNumAndVectorToOut(double s, Vector a, Vector out) {
+    double tempY = s * a.x;
     out.x = -s * a.y;
     out.y = tempY;
   }
@@ -82,8 +82,8 @@ class Vector {
    * multiplying both by the given number, and then flipping the sign of the new
    * y coordinate. Returns the result through the out parameter.
    */
-  static void crossVectorAndNumToOut(Vector a, num s, Vector out) {
-    num tempy = -s * a.x;
+  static void crossVectorAndNumToOut(Vector a, double s, Vector out) {
+    double tempy = -s * a.x;
     out.x = s * a.y;
     out.y = tempy;
   }
@@ -99,18 +99,18 @@ class Vector {
   /**
    * Multiplies this vector by the given number.
    */
-  Vector mulLocal(num d) {
+  Vector mulLocal(double d) {
     x *= d;
     y *= d;
     return this;
   }
 
   Vector setZero() {
-    setCoords(0, 0);
+    setCoords(0.0, 0.0);
     return this;
   }
 
-  num get length => Math.sqrt(this.lengthSquared);
+  double get length => Math.sqrt(this.lengthSquared);
 
   /**
    * Take the minimum of each coordinate from the two given vectors and store
@@ -133,7 +133,7 @@ class Vector {
   /**
    * Returns the length of this vector, squared.
    */
-  num get lengthSquared => x * x + y * y;
+  double get lengthSquared => x * x + y * y;
 
   /**
    * Set the x and y coordinates of this vector to absolute values.
@@ -146,13 +146,13 @@ class Vector {
   /**
    * Normalizes this vector and returns the length before normalization.
    */
-  num normalize() {
-    num len = length;
+  double normalize() {
+    double len = length;
     if (len < Settings.EPSILON) {
-      return 0;
+      return 0.0;
     }
 
-    num invLength = 1.0 / len;
+    double invLength = 1.0 / len;
     x *= invLength;
     y *= invLength;
     return len;
@@ -162,9 +162,9 @@ class Vector {
    * Returns the distance between the point defined by this vector and the given
    * vector.
    */
-  num distanceBetween(Vector v) {
-    num xDelta = this.x - v.x;
-    num yDelta = this.y - v.y;
+  double distanceBetween(Vector v) {
+    double xDelta = this.x - v.x;
+    double yDelta = this.y - v.y;
     return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
   }
 
@@ -172,7 +172,7 @@ class Vector {
    * Returns a vector that is the result of rotating the original vector by
    * angle degrees counter-clockwise.
    */
-  Vector rotate(num angle) {
+  Vector rotate(double angle) {
     Matrix22 mtx = new Matrix22();
     mtx.setAngle(angle);
     Vector temp = new Vector();
@@ -188,8 +188,7 @@ class Vector {
   }
 
   /** Returns if the values of coordinates within the MAX_INTEGER. */
-  bool isValid() =>
-      !x.isInfinite && !x.isNaN && !y.isInfinite && !y.isNaN;
+  bool isValid() => !x.isInfinite && !x.isNaN && !y.isInfinite && !y.isNaN;
 
   /** Returns a String representation of the given vector. */
   String toString() => "($x, $y)";

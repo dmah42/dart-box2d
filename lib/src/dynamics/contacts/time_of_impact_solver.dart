@@ -196,7 +196,7 @@ class TimeOfImpactSolverManifold {
           normal.setFrom(pointB).subLocal(pointA);
           normal.normalize();
         } else {
-          normal.setCoords(1, 0);
+          normal.setCoords(1.0, 0.0);
         }
 
         point.setFrom(pointA).addLocal(pointB).mulLocal(.5);

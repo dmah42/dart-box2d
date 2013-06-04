@@ -31,7 +31,7 @@ class Matrix22 {
   }
 
   /** Constructs a new Matrix22 representing an angle. */
-  Matrix22.fromAngle(num angle)
+  Matrix22.fromAngle(double angle)
       : col1 = new Vector(), col2 = new Vector() {
     setAngle(angle);
   }
@@ -50,17 +50,17 @@ class Matrix22 {
   }
 
   /** Set as a matrix representing a rotation. */
-  void setAngle(num angle) {
-    num cosin = Math.cos(angle);
-    num sin = Math.sin(angle);
+  void setAngle(double angle) {
+    double cosin = Math.cos(angle);
+    double sin = Math.sin(angle);
     col1.setCoords(cosin, sin);
     col2.setCoords(-sin, cosin);
   }
 
   /** Set as the identity matrix. */
   void setIdentity() {
-    col1.setCoords(1, 0);
-    col2.setCoords(0, 1);
+    col1.setCoords(1.0, 0.0);
+    col2.setCoords(0.0, 1.0);
   }
 
   /**
@@ -76,7 +76,7 @@ class Matrix22 {
    * parameter.
    */
   void multiplyVectorToOut(Vector v, Vector out) {
-    num tempy = col1.y * v.x + col2.y * v.y;
+    double tempy = col1.y * v.x + col2.y * v.y;
     out.x = col1.x * v.x + col2.x * v.y;
     out.y = tempy;
   }
@@ -93,7 +93,7 @@ class Matrix22 {
    */
   static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
       Vector out) {
-    num outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
+    double outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
     out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
     out.x = outx;
   }
@@ -104,15 +104,15 @@ class Matrix22 {
    */
   static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
       Vector out) {
-    num tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
+    double tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
     out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
     out.y = tempy;
   }
 
   /** Inverts this Matrix. */
   Matrix22 invertLocal() {
-    num a = col1.x, b = col2.x, c = col1.y, d = col2.y;
-    num det = a * d - b * c;
+    double a = col1.x, b = col2.x, c = col1.y, d = col2.y;
+    double det = a * d - b * c;
     if (det != 0) {
       det = 1.0 / det;
     }
@@ -133,12 +133,12 @@ class Matrix22 {
   }
 
   void solveToOut(Vector b, Vector out) {
-    num a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
-    num det = a11 * a22 - a12 * a21;
+    double a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
+    double det = a11 * a22 - a12 * a21;
     if (det != 0.0){
       det = 1.0 / det;
     }
-    final num tempy =  det * (a11 * b.y - a21 * b.x) ;
+    final double tempy =  det * (a11 * b.y - a21 * b.x) ;
     out.x = det * (a22 * b.x - a12 * b.y);
     out.y = tempy;
   }

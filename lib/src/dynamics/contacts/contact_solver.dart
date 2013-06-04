@@ -237,7 +237,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final Vector normal = c.normal;
-      Vector.crossVectorAndNumToOut(normal, 1, tangent);
+      Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
@@ -372,7 +372,7 @@ class ContactSolver {
 
         while (true) {
           Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-          x.mulLocal(-1);
+          x.mulLocal(-1.0);
 
           if (x.x >= 0.0 && x.y >= 0.0){
             // Resubstitute for the incremental impulse

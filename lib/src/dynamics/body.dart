@@ -884,7 +884,7 @@ class Body {
     xf1.rotation.setAngle(sweep.angleZero);
     Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
         xf1.position);
-    xf1.position.mulLocal(-1);
+    xf1.position.mulLocal(-1.0);
     xf1.position.addLocal(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;

@@ -111,7 +111,7 @@ class SeparationFunction {
      localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
      temp.setFrom(localPointB2).subLocal(localPointB1);
-     Vector.crossVectorAndNumToOut(temp, 1, axis);
+     Vector.crossVectorAndNumToOut(temp, 1.0, axis);
      axis.normalize();
 
      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
@@ -748,7 +748,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
    temp.setFrom(localPointB2).subLocal(localPointB1);
-   Vector.crossVectorAndNumToOut(temp, 1, axis);
+   Vector.crossVectorAndNumToOut(temp, 1.0, axis);
    axis.normalize();
 
    Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
