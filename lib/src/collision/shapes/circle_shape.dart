@@ -30,8 +30,7 @@ class CircleShape extends Shape {
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new Vector() {
-  }
+    position = new Vector.zero();
 
   /**
    * Constructs a new CircleShape equal to the given CircleShape.
@@ -47,7 +46,7 @@ class CircleShape extends Shape {
    * the same name.
    */
   bool testPoint(Transform transform, Vector point) {
-    Vector center = new Vector();
+    Vector center = new Vector.zero();
     transform.rotation.multiplyVectorToOut(position, center);
     center.addLocal(transform.position);
 
@@ -60,7 +59,7 @@ class CircleShape extends Shape {
    * applied. Stores the result in the given box.
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-    Vector p = new Vector();
+    Vector p = new Vector.zero();
     Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
     p.addLocal(argTransform.position);
 

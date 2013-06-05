@@ -28,9 +28,9 @@ class ContactConstraintPoint {
 
   /** Constructs a new ContactConstraintPoint. */
   ContactConstraintPoint()
-    : localPoint = new Vector(),
-    rA = new Vector(),
-    rB = new Vector(),
+    : localPoint = new Vector.zero(),
+    rA = new Vector.zero(),
+    rB = new Vector.zero(),
     normalImpulse = 0,
     tangentImpulse = 0,
     normalMass = 0,

@@ -54,8 +54,8 @@ class Manifold {
    */
   Manifold() :
       points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new Vector(),
-      localPoint = new Vector(),
+      localNormal = new Vector.zero(),
+      localPoint = new Vector.zero(),
       pointCount = 0 {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i)
       points[i] = new ManifoldPoint();

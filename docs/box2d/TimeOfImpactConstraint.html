@@ -45,9 +45,9 @@ class TimeOfImpactConstraint {
 
  TimeOfImpactConstraint() :
    localPoints = new List&lt;Vector&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
-   localNormal = new Vector(),
-   localPoint = new Vector(),
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero()),
+   localNormal = new Vector.zero(),
+   localPoint = new Vector.zero(),
    type = 0,
    radius = 0,
    pointCount = 0,
@@ -80,9 +80,9 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
 <pre class="source">
 TimeOfImpactConstraint() :
  localPoints = new List&lt;Vector&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector()),
- localNormal = new Vector(),
- localPoint = new Vector(),
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero()),
+ localNormal = new Vector.zero(),
+ localPoint = new Vector.zero(),
  type = 0,
  radius = 0,
  pointCount = 0,

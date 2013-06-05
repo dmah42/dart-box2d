@@ -87,7 +87,7 @@ class ConstantVolumeJoint extends Joint {
     frequencyHz = def.frequencyHz;
     dampingRatio = def.dampingRatio;
 
-    normals = new List<Vector>.generate(bodies.length, (i) => new Vector());
+    normals = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
 
     this.bodyA = bodies[0];
     this.bodyB = bodies[1];
@@ -132,7 +132,7 @@ class ConstantVolumeJoint extends Joint {
       perimeter += dist;
     }
 
-    final delta = new Vector();
+    final delta = new Vector.zero();
 
     num deltaArea = targetVolume - area;
     num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -159,7 +159,7 @@ class ConstantVolumeJoint extends Joint {
   void initVelocityConstraints(TimeStep argStep) {
     step = argStep;
 
-    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -197,7 +197,7 @@ class ConstantVolumeJoint extends Joint {
     num crossMassSum = 0.0;
     num dotMassSum = 0.0;
 
-    final d = new List<Vector>.generate(bodies.length, (i) => new Vector());
+    final d = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;

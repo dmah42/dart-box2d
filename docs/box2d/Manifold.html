@@ -67,8 +67,8 @@ class Manifold {
   */
  Manifold() :
      points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-     localNormal = new Vector(),
-     localPoint = new Vector(),
+     localNormal = new Vector.zero(),
+     localPoint = new Vector.zero(),
      pointCount = 0 {
    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
      points[i] = new ManifoldPoint();
@@ -114,8 +114,8 @@ already instantiated ManifoldPoints.</p>
 <pre class="source">
 Manifold() :
    points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-   localNormal = new Vector(),
-   localPoint = new Vector(),
+   localNormal = new Vector.zero(),
+   localPoint = new Vector.zero(),
    pointCount = 0 {
  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
    points[i] = new ManifoldPoint();

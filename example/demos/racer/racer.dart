@@ -35,7 +35,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super("Racer", new Vector(), 2.5), _lastTime = 0;
+  Racer() : super("Racer", new Vector.zero(), 2.5), _lastTime = 0;
 
   void initialize() {
     _createGround();
@@ -83,12 +83,12 @@ class Racer extends Demo implements ContactListener {
 
     fixtureDef.userData = new GroundArea(0.001, false);
     shape.setAsBoxWithCenterAndAngle(
-        27, 21, new Vector(-30.0, 30.0), MathBox.degToRad(20.0));
+        27.0, 21.0, new Vector(-30.0, 30.0), MathBox.degToRad(20.0));
     _groundBody.createFixture(fixtureDef);
 
     fixtureDef.userData = new GroundArea(0.2, false);
     shape.setAsBoxWithCenterAndAngle(
-        27, 15, new Vector(20.0, 40.0), MathBox.degToRad(-40.0));
+        27.0, 15.0, new Vector(20.0, 40.0), MathBox.degToRad(-40.0));
     _groundBody.createFixture(fixtureDef);
   }
 

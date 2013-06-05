@@ -47,14 +47,14 @@ class TimeOfImpactSolverManifold {
 
  /** constructor that initiliazes everything. */
  TimeOfImpactSolverManifold() :
-   normal = new Vector(),
-   point = new Vector(),
+   normal = new Vector.zero(),
+   point = new Vector.zero(),
    separation = 0,
-   pointA = new Vector(),
-   pointB = new Vector(),
-   temp = new Vector(),
-   planePoint = new Vector(),
-   clipPoint = new Vector() { }
+   pointA = new Vector.zero(),
+   pointB = new Vector.zero(),
+   temp = new Vector.zero(),
+   planePoint = new Vector.zero(),
+   clipPoint = new Vector.zero() { }
 
  void initialize(TimeOfImpactConstraint cc, int index) {
    assert(cc.pointCount &gt; 0);
@@ -113,14 +113,14 @@ new <strong>TimeOfImpactSolverManifold</strong>() <a class="anchor-link" href="#
 <p>constructor that initiliazes everything. </p>
 <pre class="source">
 TimeOfImpactSolverManifold() :
- normal = new Vector(),
- point = new Vector(),
+ normal = new Vector.zero(),
+ point = new Vector.zero(),
  separation = 0,
- pointA = new Vector(),
- pointB = new Vector(),
- temp = new Vector(),
- planePoint = new Vector(),
- clipPoint = new Vector() { }
+ pointA = new Vector.zero(),
+ pointB = new Vector.zero(),
+ temp = new Vector.zero(),
+ planePoint = new Vector.zero(),
+ clipPoint = new Vector.zero() { }
 </pre>
 </div>
 </div>

@@ -118,11 +118,11 @@ class World {
     _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
 
     // Initialize Pool Objects.
-    center = new Vector(),
-    axis = new Vector(),
+    center = new Vector.zero(),
+    axis = new Vector.zero(),
     timestep = new TimeStep(),
-    cA = new Vector(),
-    cB = new Vector(),
+    cA = new Vector.zero(),
+    cB = new Vector.zero(),
     wqwrapper = new WorldQueryWrapper(),
     toiInput = new TimeOfImpactInput(),
     toiOutput = new TimeOfImpactOutput(),
@@ -610,7 +610,7 @@ class World {
 
           List<Vector> vs = new List<Vector>(4);
           for (int i = 0; i < vs.length; i++) {
-            vs[i] = new Vector();
+            vs[i] = new Vector.zero();
           }
 
           vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -1087,7 +1087,7 @@ class World {
         int vertexCount = poly.vertexCount;
         assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
         List<Vector> vertices = new List<Vector>.generate(
-            vertexCount, (i) => new Vector());
+            vertexCount, (i) => new Vector.zero());
 
         for (int i = 0; i < vertexCount; ++i) {
           assert(poly.vertices[i] != null);
@@ -1115,8 +1115,8 @@ class World {
     Transform xf2 = bodyB.originTransform;
     Vector x1 = new Vector.copy(xf1.position);
     Vector x2 = new Vector.copy(xf2.position);
-    Vector p1 = new Vector();
-    Vector p2 = new Vector();
+    Vector p1 = new Vector.zero();
+    Vector p2 = new Vector.zero();
     joint.getAnchorA(p1);
     joint.getAnchorB(p2);
 
