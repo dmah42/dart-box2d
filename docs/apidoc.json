@@ -1,1 +1,0 @@
-{"name":"dart:","dependencies":[],"location":"0","revision":"0","libraries":[{"refId":"box2d"},{"refId":"box2d","name":"package:box2d/box2d.dart"},{"refId":"box2d","name":"file:///home/dominich/git/dartbox2d/packages/box2d/box2d.dart"},{"refId":"box2d_browser"},{"refId":"metadata"}],"description":"Dart System Libraries"}

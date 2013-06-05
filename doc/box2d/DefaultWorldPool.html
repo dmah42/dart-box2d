@@ -1,0 +1,188 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>DefaultWorldPool class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="DefaultWorldPool">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>DefaultWorldPool</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class DefaultWorldPool {
+ Collision collision;
+ TimeOfImpact timeOfImpact;
+ Distance distance;
+
+ DefaultWorldPool() {
+   distance = new Distance._construct();
+   collision = new Collision._construct(this);
+   timeOfImpact = new TimeOfImpact._construct(this);
+ }
+
+ Queue&lt;CircleContact&gt; getCircleContactStack() {
+   final queue = new Queue&lt;CircleContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new CircleContact(this));
+   }
+   return queue;
+ }
+
+ Queue&lt;PolygonAndCircleContact&gt; getPolyCircleContactStack() {
+   final queue = new Queue&lt;PolygonAndCircleContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new PolygonAndCircleContact(this));
+   }
+   return queue;
+ }
+
+ Queue&lt;PolygonContact&gt; getPolyContactStack() {
+   final queue = new Queue&lt;PolygonContact&gt;();
+   for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+     queue.addFirst(new PolygonContact(this));
+   }
+   return queue;
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="DefaultWorldPool">
+<button class="show-code">Code</button>
+new <strong>DefaultWorldPool</strong>() <a class="anchor-link" href="#DefaultWorldPool"
+              title="Permalink to DefaultWorldPool.DefaultWorldPool">#</a></h4>
+<div class="doc">
+<pre class="source">
+DefaultWorldPool() {
+ distance = new Distance._construct();
+ collision = new Collision._construct(this);
+ timeOfImpact = new TimeOfImpact._construct(this);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="collision">
+<button class="show-code">Code</button>
+<a href="../box2d/Collision.html">Collision</a>         <strong>collision</strong> <a class="anchor-link"
+            href="#collision"
+            title="Permalink to DefaultWorldPool.collision">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Collision collision
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="distance">
+<button class="show-code">Code</button>
+<a href="../box2d/Distance.html">Distance</a>         <strong>distance</strong> <a class="anchor-link"
+            href="#distance"
+            title="Permalink to DefaultWorldPool.distance">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Distance distance
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="timeOfImpact">
+<button class="show-code">Code</button>
+<a href="../box2d/TimeOfImpact.html">TimeOfImpact</a>         <strong>timeOfImpact</strong> <a class="anchor-link"
+            href="#timeOfImpact"
+            title="Permalink to DefaultWorldPool.timeOfImpact">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+TimeOfImpact timeOfImpact
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="getCircleContactStack">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_collection/Queue.html">Queue</a>&lt;<a href="../box2d/CircleContact.html">CircleContact</a>&gt; <strong>getCircleContactStack</strong>() <a class="anchor-link" href="#getCircleContactStack"
+              title="Permalink to DefaultWorldPool.getCircleContactStack">#</a></h4>
+<div class="doc">
+<pre class="source">
+Queue&lt;CircleContact&gt; getCircleContactStack() {
+ final queue = new Queue&lt;CircleContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new CircleContact(this));
+ }
+ return queue;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getPolyCircleContactStack">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_collection/Queue.html">Queue</a>&lt;<a href="../box2d/PolygonAndCircleContact.html">PolygonAndCircleContact</a>&gt; <strong>getPolyCircleContactStack</strong>() <a class="anchor-link" href="#getPolyCircleContactStack"
+              title="Permalink to DefaultWorldPool.getPolyCircleContactStack">#</a></h4>
+<div class="doc">
+<pre class="source">
+Queue&lt;PolygonAndCircleContact&gt; getPolyCircleContactStack() {
+ final queue = new Queue&lt;PolygonAndCircleContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new PolygonAndCircleContact(this));
+ }
+ return queue;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getPolyContactStack">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_collection/Queue.html">Queue</a>&lt;<a href="../box2d/PolygonContact.html">PolygonContact</a>&gt; <strong>getPolyContactStack</strong>() <a class="anchor-link" href="#getPolyContactStack"
+              title="Permalink to DefaultWorldPool.getPolyContactStack">#</a></h4>
+<div class="doc">
+<pre class="source">
+Queue&lt;PolygonContact&gt; getPolyContactStack() {
+ final queue = new Queue&lt;PolygonContact&gt;();
+ for (int i = 0; i &lt; Settings.CONTACT_STACK_INIT_SIZE; i++) {
+   queue.addFirst(new PolygonContact(this));
+ }
+ return queue;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

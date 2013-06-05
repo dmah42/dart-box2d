@@ -1,0 +1,168 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>JointDef class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="JointDef">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/JointDef.html">JointDef</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>JointDef</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class JointDef {
+ JointDef() :
+   type = JointType.UNKNOWN,
+   userData = null,
+   bodyA = null,
+   bodyB = null,
+   collideConnected = false { }
+
+ /**
+  * The joint type is set automatically for concrete joint types.
+  */
+ int type;
+
+ /**
+  * Use this to attach application specific data to your joints.
+  */
+ dynamic userData;
+
+ /**
+  * The first attached body.
+  */
+ Body bodyA;
+
+ /**
+  * The second attached body.
+  */
+ Body bodyB;
+
+ /**
+  * Set this flag to true if the attached bodies should collide.
+  */
+ bool collideConnected;
+}
+</pre>
+</div>
+<h3>Subclasses</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/ConstantVolumeJointDef.html">ConstantVolumeJointDef</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/DistanceJointDef.html">DistanceJointDef</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/FrictionJointDef.html">FrictionJointDef</a></span>, <span class="type-box"><span class="icon-class"></span><a href="../box2d/RevoluteJointDef.html">RevoluteJointDef</a></span></p>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="JointDef">
+<button class="show-code">Code</button>
+new <strong>JointDef</strong>() <a class="anchor-link" href="#JointDef"
+              title="Permalink to JointDef.JointDef">#</a></h4>
+<div class="doc">
+<pre class="source">
+JointDef() :
+ type = JointType.UNKNOWN,
+ userData = null,
+ bodyA = null,
+ bodyB = null,
+ collideConnected = false { }
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="bodyA">
+<button class="show-code">Code</button>
+<a href="../box2d/Body.html">Body</a>         <strong>bodyA</strong> <a class="anchor-link"
+            href="#bodyA"
+            title="Permalink to JointDef.bodyA">#</a>
+        </h4>
+        <div class="doc">
+<p>The first attached body.</p>
+<pre class="source">
+Body bodyA
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="bodyB">
+<button class="show-code">Code</button>
+<a href="../box2d/Body.html">Body</a>         <strong>bodyB</strong> <a class="anchor-link"
+            href="#bodyB"
+            title="Permalink to JointDef.bodyB">#</a>
+        </h4>
+        <div class="doc">
+<p>The second attached body.</p>
+<pre class="source">
+Body bodyB
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="collideConnected">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a>         <strong>collideConnected</strong> <a class="anchor-link"
+            href="#collideConnected"
+            title="Permalink to JointDef.collideConnected">#</a>
+        </h4>
+        <div class="doc">
+<p>Set this flag to true if the attached bodies should collide.</p>
+<pre class="source">
+bool collideConnected
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="type">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to JointDef.type">#</a>
+        </h4>
+        <div class="doc">
+<p>The joint type is set automatically for concrete joint types.</p>
+<pre class="source">
+int type
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="userData">
+<button class="show-code">Code</button>
+var         <strong>userData</strong> <a class="anchor-link"
+            href="#userData"
+            title="Permalink to JointDef.userData">#</a>
+        </h4>
+        <div class="doc">
+<p>Use this to attach application specific data to your joints.</p>
+<pre class="source">
+dynamic userData
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
