@@ -108,7 +108,7 @@ class Body {
 
         // Set the linear and angular velocities.
         _linearVelocity = new Vector.copy(bd.linearVelocity),
-        _angularVelocity = 0,
+        _angularVelocity = 0.0,
 
         // Set the linear and angular damping.
         linearDamping = bd.linearDamping,
@@ -116,10 +116,10 @@ class Body {
 
         // Set force and torque.
         _force = new Vector.zero(),
-        _torque = 0,
+        _torque = 0.0,
 
-        _inertia = 0,
-        invInertia = 0,
+        _inertia = 0.0,
+        invInertia = 0.0,
 
         userData = bd.userData,
 

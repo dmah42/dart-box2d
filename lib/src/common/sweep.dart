@@ -34,8 +34,8 @@ class Sweep {
       : localCenter = new Vector.zero(),
         centerZero = new Vector.zero(),
         center = new Vector.zero(),
-        angleZero = 0,
-        angle = 0;
+        angleZero = 0.0,
+        angle = 0.0;
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
