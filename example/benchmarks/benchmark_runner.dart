@@ -67,10 +67,13 @@ class BenchmarkRunner {
     ];
 
     if (filter == null || filter.isEmpty) {
-      benchmarks.map(_addBenchmark);
+      _benchmarks = benchmarks;
     } else {
       List<String> filterList = filter.split(",").map((e) => e.trim());
-      benchmarks.where((e) => filterList.indexOf(e.name) != -1).map(_addBenchmark);
+      benchmarks.forEach((benchmark) {
+          if (filterList.indexOf(benchmark.name) != -1)
+            _benchmarks.add(benchmark);
+      });
     }
   }
 
@@ -99,7 +102,7 @@ void main() {
 
   var parser = new ArgParser();
   parser.addOption('filter', abbr: 'f');
-  var results = parser.Parse(new Options().arguments);
+  var results = parser.parse(new Options().arguments);
   runner.setupBenchmarks(results['filter']);
   runner.runBenchmarks();
 }
