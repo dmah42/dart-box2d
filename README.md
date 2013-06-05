@@ -5,7 +5,7 @@ present in the original source files.
 * example/benchmarks/   Contains benchmark .dart files
 * example/demos/        Contains demo .dart files
 * lib/         	        Contains the DartBox2d library .dart files
-* docs/                 Contains the generated documentation
+* doc/                  Contains the generated documentation
 
 ![drone.io status](https://drone.io/github.com/google/dartbox2d/status.png)
 
