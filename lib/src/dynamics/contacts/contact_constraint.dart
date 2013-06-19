@@ -20,9 +20,9 @@ part of box2d;
 class ContactConstraint {
   List<ContactConstraintPoint> points;
 
-  final Vector localNormal;
-  final Vector localPoint;
-  final Vector normal;
+  final Vector2 localNormal;
+  final Vector2 localPoint;
+  final Vector2 normal;
 
   final Matrix22 normalMass;
   //TODO(gregbglw): What does K mean? Find out and change the name.
@@ -45,9 +45,9 @@ class ContactConstraint {
         Settings.MAX_MANIFOLD_POINTS, (i) => new ContactConstraintPoint()),
     pointCount = 0,
     manifold = null,
-    localNormal = new Vector.zero(),
-    localPoint = new Vector.zero(),
-    normal = new Vector.zero(),
+    localNormal = new Vector2.zero(),
+    localPoint = new Vector2.zero(),
+    normal = new Vector2.zero(),
     normalMass = new Matrix22(),
     K = new Matrix22();
 

@@ -18,7 +18,7 @@
 part of box2d;
 
 class DistanceProxy {
-  final List<Vector> vertices;
+  final List<Vector2> vertices;
   int count;
   num radius;
 
@@ -26,12 +26,12 @@ class DistanceProxy {
    * Constructs a new DistanceProxy.
    */
   DistanceProxy() :
-    vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
+    vertices = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
     count = 0,
     radius = 0 {
 
       for(int i = 0; i < vertices.length; ++i)
-        vertices[i] = new Vector.zero();
+        vertices[i] = new Vector2.zero();
     }
 
   /**
@@ -61,11 +61,11 @@ class DistanceProxy {
   /**
    * Get the supporting vertex index in the given direction.
    */
-  int getSupport(Vector direction) {
+  int getSupport(Vector2 direction) {
     int bestIndex = 0;
-    num bestValue = Vector.dot(vertices[0], direction);
+    num bestValue = Vector2.dot(vertices[0], direction);
     for (int i = 1; i < count; ++i) {
-      num value = Vector.dot(vertices[i], direction);
+      num value = Vector2.dot(vertices[i], direction);
       if(value > bestValue) {
         bestIndex = i;
         bestValue = value;
@@ -78,5 +78,5 @@ class DistanceProxy {
   /**
    * Get the supporting vertex in the given direction.
    */
-  Vector getSupportVertex(Vector direction) => vertices[getSupport(direction)];
+  Vector2 getSupportVertex(Vector2 direction) => vertices[getSupport(direction)];
 }

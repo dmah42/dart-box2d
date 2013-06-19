@@ -35,7 +35,7 @@ class DominoPlatformBench extends Benchmark {
       fd.shape = sd;
 
       BodyDef bd = new BodyDef();
-      bd.position = new Vector(0.0, -10.0);
+      bd.position = new Vector2(0.0, -10.0);
       final body = world.createBody(bd);
       body.createFixture(fd);
       bodies.add(body);
@@ -49,7 +49,7 @@ class DominoPlatformBench extends Benchmark {
         fd.shape = sd;
 
         BodyDef bd = new BodyDef();
-        bd.position = new Vector(0.0, 5.0 + 5 * i);
+        bd.position = new Vector2(0.0, 5.0 + 5 * i);
         final body = world.createBody(bd);
         body.createFixture(fd);
         bodies.add(body);
@@ -73,7 +73,7 @@ class DominoPlatformBench extends Benchmark {
       for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < numPerRow; j++) {
           fd.friction = friction;
-          bd.position = new Vector(-14.75 + j * (29.5 / (numPerRow - 1)),
+          bd.position = new Vector2(-14.75 + j * (29.5 / (numPerRow - 1)),
               7.3 + 5 * i);
           if (i == 2 && j == 0) {
             bd.angle = -.1;

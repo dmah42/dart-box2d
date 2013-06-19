@@ -37,24 +37,24 @@ class SeparationFunction {
  DistanceProxy proxyA;
  DistanceProxy proxyB;
  int type;
- final Vector localPoint;
- final Vector axis;
+ final Vector2 localPoint;
+ final Vector2 axis;
  Sweep sweepA;
  Sweep sweepB;
 
  /** Pooling */
- final Vector localPointA;
- final Vector localPointB;
- final Vector pointA;
- final Vector pointB;
- final Vector localPointA1;
- final Vector localPointA2;
- final Vector normal;
- final Vector localPointB1;
- final Vector localPointB2;
- final Vector axisA;
- final Vector axisB;
- final Vector temp;
+ final Vector2 localPointA;
+ final Vector2 localPointB;
+ final Vector2 pointA;
+ final Vector2 pointB;
+ final Vector2 localPointA1;
+ final Vector2 localPointA2;
+ final Vector2 normal;
+ final Vector2 localPointB1;
+ final Vector2 localPointB2;
+ final Vector2 axisA;
+ final Vector2 axisB;
+ final Vector2 temp;
  final Transform xfa;
  final Transform xfb;
 
@@ -62,24 +62,24 @@ class SeparationFunction {
    proxyA = new DistanceProxy(),
    proxyB = new DistanceProxy(),
    type = SeparationType.POINTS,
-   localPoint = new Vector.zero(),
-   axis = new Vector.zero(),
+   localPoint = new Vector2.zero(),
+   axis = new Vector2.zero(),
    sweepA = new Sweep(),
    sweepB = new Sweep(),
-   localPointA = new Vector.zero(),
-   localPointB = new Vector.zero(),
-   pointA = new Vector.zero(),
-   pointB = new Vector.zero(),
-   localPointA1 = new Vector.zero(),
-   localPointA2 = new Vector.zero(),
-   normal = new Vector.zero(),
-   localPointB1 = new Vector.zero(),
-   localPointB2 = new Vector.zero(),
-   temp = new Vector.zero(),
+   localPointA = new Vector2.zero(),
+   localPointB = new Vector2.zero(),
+   pointA = new Vector2.zero(),
+   pointB = new Vector2.zero(),
+   localPointA1 = new Vector2.zero(),
+   localPointA2 = new Vector2.zero(),
+   normal = new Vector2.zero(),
+   localPointB1 = new Vector2.zero(),
+   localPointB2 = new Vector2.zero(),
+   temp = new Vector2.zero(),
    xfa = new Transform(),
    xfb = new Transform(),
-   axisA = new Vector.zero(),
-   axisB = new Vector.zero();
+   axisA = new Vector2.zero(),
+   axisB = new Vector2.zero();
 
  num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
      argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -111,7 +111,7 @@ class SeparationFunction {
      localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
      temp.setFrom(localPointB2).subLocal(localPointB1);
-     Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+     Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
      axis.normalize();
 
      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
@@ -126,7 +126,7 @@ class SeparationFunction {
 
      temp.setFrom(pointA);
      temp.subLocal(pointB);
-     num s = Vector.dot(temp, normal);
+     num s = Vector2.dot(temp, normal);
      if (s &lt; 0.0) {
        axis.negateLocal();
        s = -s;
@@ -142,7 +142,7 @@ class SeparationFunction {
 
      temp.setFrom(localPointA2);
      temp.subLocal(localPointA1);
-     Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+     Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
      axis.normalize();
 
      Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
@@ -157,7 +157,7 @@ class SeparationFunction {
 
      temp.setFrom(pointB);
      temp.subLocal(pointA);
-     num s = Vector.dot(temp, normal);
+     num s = Vector2.dot(temp, normal);
      if (s &lt; 0.0) {
        axis.negateLocal();
        s = -s;
@@ -186,7 +186,7 @@ class SeparationFunction {
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = Vector.dot(pointB.subLocal(pointA), axis);
+       num separation = Vector2.dot(pointB.subLocal(pointA), axis);
        return separation;
 
      case SeparationType.FACE_A:
@@ -203,7 +203,7 @@ class SeparationFunction {
        localPointB.setFrom(proxyB.vertices[indexes[1]]);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = Vector.dot(pointB.subLocal(pointA), normal);
+       num separation = Vector2.dot(pointB.subLocal(pointA), normal);
        return separation;
 
      case SeparationType.FACE_B:
@@ -220,7 +220,7 @@ class SeparationFunction {
        localPointA.setFrom(proxyA.vertices[indexes[0]]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
-       num separation = Vector.dot(pointA.subLocal(pointB), normal);
+       num separation = Vector2.dot(pointA.subLocal(pointB), normal);
        return separation;
 
      default:
@@ -248,7 +248,7 @@ class SeparationFunction {
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = Vector.dot(pointB.subLocal(pointA), axis);
+       num separation = Vector2.dot(pointB.subLocal(pointA), axis);
        return separation;
 
      case SeparationType.FACE_A:
@@ -261,7 +261,7 @@ class SeparationFunction {
 
        localPointB.setFrom(proxyB.vertices[indexB]);
        Transform.mulToOut(xfb, localPointB, pointB);
-       num separation = Vector.dot(pointB.subLocal(pointA), normal);
+       num separation = Vector2.dot(pointB.subLocal(pointA), normal);
        return separation;
 
      case SeparationType.FACE_B:
@@ -275,7 +275,7 @@ class SeparationFunction {
        localPointA.setFrom(proxyA.vertices[indexA]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
-       num separation = Vector.dot(pointA.subLocal(pointB), normal);
+       num separation = Vector2.dot(pointA.subLocal(pointB), normal);
        return separation;
 
      default:
@@ -298,24 +298,24 @@ SeparationFunction() :
  proxyA = new DistanceProxy(),
  proxyB = new DistanceProxy(),
  type = SeparationType.POINTS,
- localPoint = new Vector.zero(),
- axis = new Vector.zero(),
+ localPoint = new Vector2.zero(),
+ axis = new Vector2.zero(),
  sweepA = new Sweep(),
  sweepB = new Sweep(),
- localPointA = new Vector.zero(),
- localPointB = new Vector.zero(),
- pointA = new Vector.zero(),
- pointB = new Vector.zero(),
- localPointA1 = new Vector.zero(),
- localPointA2 = new Vector.zero(),
- normal = new Vector.zero(),
- localPointB1 = new Vector.zero(),
- localPointB2 = new Vector.zero(),
- temp = new Vector.zero(),
+ localPointA = new Vector2.zero(),
+ localPointB = new Vector2.zero(),
+ pointA = new Vector2.zero(),
+ pointB = new Vector2.zero(),
+ localPointA1 = new Vector2.zero(),
+ localPointA2 = new Vector2.zero(),
+ normal = new Vector2.zero(),
+ localPointB1 = new Vector2.zero(),
+ localPointB2 = new Vector2.zero(),
+ temp = new Vector2.zero(),
  xfa = new Transform(),
  xfb = new Transform(),
- axisA = new Vector.zero(),
- axisB = new Vector.zero();
+ axisA = new Vector2.zero(),
+ axisB = new Vector2.zero();
 </pre>
 </div>
 </div>
@@ -324,158 +324,158 @@ SeparationFunction() :
 <h3>Properties</h3>
 <div class="field"><h4 id="axis">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>axis</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>axis</strong> <a class="anchor-link"
             href="#axis"
             title="Permalink to SeparationFunction.axis">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector axis
+final Vector2 axis
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="axisA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>axisA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>axisA</strong> <a class="anchor-link"
             href="#axisA"
             title="Permalink to SeparationFunction.axisA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector axisA
+final Vector2 axisA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="axisB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>axisB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>axisB</strong> <a class="anchor-link"
             href="#axisB"
             title="Permalink to SeparationFunction.axisB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector axisB
+final Vector2 axisB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to SeparationFunction.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointA</strong> <a class="anchor-link"
             href="#localPointA"
             title="Permalink to SeparationFunction.localPointA">#</a>
         </h4>
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final Vector localPointA
+final Vector2 localPointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointA1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointA1</strong> <a class="anchor-link"
             href="#localPointA1"
             title="Permalink to SeparationFunction.localPointA1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPointA1
+final Vector2 localPointA1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointA2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointA2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointA2</strong> <a class="anchor-link"
             href="#localPointA2"
             title="Permalink to SeparationFunction.localPointA2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPointA2
+final Vector2 localPointA2
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointB</strong> <a class="anchor-link"
             href="#localPointB"
             title="Permalink to SeparationFunction.localPointB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPointB
+final Vector2 localPointB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointB1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointB1</strong> <a class="anchor-link"
             href="#localPointB1"
             title="Permalink to SeparationFunction.localPointB1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPointB1
+final Vector2 localPointB1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPointB2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPointB2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPointB2</strong> <a class="anchor-link"
             href="#localPointB2"
             title="Permalink to SeparationFunction.localPointB2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPointB2
+final Vector2 localPointB2
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to SeparationFunction.normal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector normal
+final Vector2 normal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pointA</strong> <a class="anchor-link"
             href="#pointA"
             title="Permalink to SeparationFunction.pointA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector pointA
+final Vector2 pointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pointB</strong> <a class="anchor-link"
             href="#pointB"
             title="Permalink to SeparationFunction.pointB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector pointB
+final Vector2 pointB
 </pre>
 </div>
 </div>
@@ -529,13 +529,13 @@ Sweep sweepB
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to SeparationFunction.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector temp
+final Vector2 temp
 </pre>
 </div>
 </div>
@@ -601,7 +601,7 @@ num evaluate(int indexA, int indexB, num t) {
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = Vector.dot(pointB.subLocal(pointA), axis);
+     num separation = Vector2.dot(pointB.subLocal(pointA), axis);
      return separation;
 
    case SeparationType.FACE_A:
@@ -614,7 +614,7 @@ num evaluate(int indexA, int indexB, num t) {
 
      localPointB.setFrom(proxyB.vertices[indexB]);
      Transform.mulToOut(xfb, localPointB, pointB);
-     num separation = Vector.dot(pointB.subLocal(pointA), normal);
+     num separation = Vector2.dot(pointB.subLocal(pointA), normal);
      return separation;
 
    case SeparationType.FACE_B:
@@ -628,7 +628,7 @@ num evaluate(int indexA, int indexB, num t) {
      localPointA.setFrom(proxyA.vertices[indexA]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     num separation = Vector.dot(pointA.subLocal(pointB), normal);
+     num separation = Vector2.dot(pointA.subLocal(pointB), normal);
      return separation;
 
    default:
@@ -665,7 +665,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = Vector.dot(pointB.subLocal(pointA), axis);
+     num separation = Vector2.dot(pointB.subLocal(pointA), axis);
      return separation;
 
    case SeparationType.FACE_A:
@@ -682,7 +682,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      localPointB.setFrom(proxyB.vertices[indexes[1]]);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = Vector.dot(pointB.subLocal(pointA), normal);
+     num separation = Vector2.dot(pointB.subLocal(pointA), normal);
      return separation;
 
    case SeparationType.FACE_B:
@@ -699,7 +699,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      localPointA.setFrom(proxyA.vertices[indexes[0]]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     num separation = Vector.dot(pointA.subLocal(pointB), normal);
+     num separation = Vector2.dot(pointA.subLocal(pointB), normal);
      return separation;
 
    default:
@@ -748,7 +748,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
    temp.setFrom(localPointB2).subLocal(localPointB1);
-   Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+   Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
    axis.normalize();
 
    Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
@@ -763,7 +763,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(pointA);
    temp.subLocal(pointB);
-   num s = Vector.dot(temp, normal);
+   num s = Vector2.dot(temp, normal);
    if (s &lt; 0.0) {
      axis.negateLocal();
      s = -s;
@@ -779,7 +779,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(localPointA2);
    temp.subLocal(localPointA1);
-   Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+   Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
    axis.normalize();
 
    Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
@@ -794,7 +794,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(pointB);
    temp.subLocal(pointA);
-   num s = Vector.dot(temp, normal);
+   num s = Vector2.dot(temp, normal);
    if (s &lt; 0.0) {
      axis.negateLocal();
      s = -s;

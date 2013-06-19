@@ -37,12 +37,12 @@ class RevoluteJointDef extends JointDef {
  /**
   *  The local anchor point relative to body1's origin.
   */
- Vector localAnchorA;
+ Vector2 localAnchorA;
 
  /**
   *  The local anchor point relative to body2's origin.
   */
- Vector localAnchorB;
+ Vector2 localAnchorB;
 
  /**
   *  The body2 angle minus body1 angle in the reference state (radians).
@@ -82,8 +82,8 @@ class RevoluteJointDef extends JointDef {
 
  RevoluteJointDef() :
    super(),
-   localAnchorA = new Vector(0.0, 0.0),
-   localAnchorB = new Vector(0.0, 0.0),
+   localAnchorA = new Vector2(0.0, 0.0),
+   localAnchorB = new Vector2(0.0, 0.0),
    referenceAngle = 0.0,
    lowerAngle = 0.0,
    upperAngle = 0.0,
@@ -98,7 +98,7 @@ class RevoluteJointDef extends JointDef {
   * Initialize the bodies, anchors, and reference angle using the world
   * anchor.
   */
- void initialize(Body b1, Body b2, Vector anchor) {
+ void initialize(Body b1, Body b2, Vector2 anchor) {
    bodyA = b1;
    bodyB = b2;
    bodyA.getLocalPointToOut(anchor, localAnchorA);
@@ -121,8 +121,8 @@ new <strong>RevoluteJointDef</strong>() <a class="anchor-link" href="#RevoluteJo
 <pre class="source">
 RevoluteJointDef() :
  super(),
- localAnchorA = new Vector(0.0, 0.0),
- localAnchorB = new Vector(0.0, 0.0),
+ localAnchorA = new Vector2(0.0, 0.0),
+ localAnchorB = new Vector2(0.0, 0.0),
  referenceAngle = 0.0,
  lowerAngle = 0.0,
  upperAngle = 0.0,
@@ -205,27 +205,27 @@ bool enableMotor
 </div>
 <div class="field"><h4 id="localAnchorA">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
             href="#localAnchorA"
             title="Permalink to RevoluteJointDef.localAnchorA">#</a>
         </h4>
         <div class="doc">
 <p> The local anchor point relative to body1's origin.</p>
 <pre class="source">
-Vector localAnchorA
+Vector2 localAnchorA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localAnchorB">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
             href="#localAnchorB"
             title="Permalink to RevoluteJointDef.localAnchorB">#</a>
         </h4>
         <div class="doc">
 <p> The local anchor point relative to body2's origin.</p>
 <pre class="source">
-Vector localAnchorB
+Vector2 localAnchorB
 </pre>
 </div>
 </div>
@@ -326,13 +326,13 @@ dynamic userData
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector.html">Vector</a> anchor) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
               title="Permalink to RevoluteJointDef.initialize">#</a></h4>
 <div class="doc">
 <p>Initialize the bodies, anchors, and reference angle using the world
 anchor.</p>
 <pre class="source">
-void initialize(Body b1, Body b2, Vector anchor) {
+void initialize(Body b1, Body b2, Vector2 anchor) {
  bodyA = b1;
  bodyB = b2;
  bodyA.getLocalPointToOut(anchor, localAnchorA);

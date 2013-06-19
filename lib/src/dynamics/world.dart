@@ -40,7 +40,7 @@ class World {
   int _bodyCount;
   int _jointCount;
 
-  final Vector _gravity;
+  final Vector2 _gravity;
   bool _allowSleep;
 
   DebugDraw _debugDraw;
@@ -69,12 +69,12 @@ class World {
   List<List<ContactRegister>> _contactStacks;
 
   /** Pooling */
-  final Vector center;
-  final Vector axis;
+  final Vector2 center;
+  final Vector2 axis;
 
   final TimeStep timestep;
-  final Vector cA;
-  final Vector cB;
+  final Vector2 cA;
+  final Vector2 cB;
   final WorldQueryWrapper wqwrapper;
 
   final TimeOfImpactInput toiInput;
@@ -93,7 +93,7 @@ class World {
    * doSleep
    *   improve performance by not simulating inactive bodies.
    */
-  World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
+  World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
     _pool = argPool,
     _jointDestructionListener = null,
     _fixtureDestructionListener = null,
@@ -118,11 +118,11 @@ class World {
     _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
 
     // Initialize Pool Objects.
-    center = new Vector.zero(),
-    axis = new Vector.zero(),
+    center = new Vector2.zero(),
+    axis = new Vector2.zero(),
     timestep = new TimeStep(),
-    cA = new Vector.zero(),
-    cB = new Vector.zero(),
+    cA = new Vector2.zero(),
+    cB = new Vector2.zero(),
     wqwrapper = new WorldQueryWrapper(),
     toiInput = new TimeOfImpactInput(),
     toiOutput = new TimeOfImpactOutput(),
@@ -608,9 +608,9 @@ class World {
         for (Fixture f = b.fixtureList; f != null; f = f.next) {
           AxisAlignedBox aabb = f.proxy.box;
 
-          List<Vector> vs = new List<Vector>(4);
+          List<Vector2> vs = new List<Vector2>(4);
           for (int i = 0; i < vs.length; i++) {
-            vs[i] = new Vector.zero();
+            vs[i] = new Vector2.zero();
           }
 
           vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -1070,7 +1070,7 @@ class World {
       case ShapeType.CIRCLE:
         final CircleShape circle = fixture.shape;
 
-        // Vector center = Mul(xf, circle.p);
+        // Vector2 center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
         num radius = circle.radius;
         axis.setFrom(xf.rotation.col1);
@@ -1086,8 +1086,8 @@ class World {
         final PolygonShape poly = fixture.shape;
         int vertexCount = poly.vertexCount;
         assert (vertexCount <= Settings.MAX_POLYGON_VERTICES);
-        List<Vector> vertices = new List<Vector>.generate(
-            vertexCount, (i) => new Vector.zero());
+        List<Vector2> vertices = new List<Vector2>.generate(
+            vertexCount, (i) => new Vector2.zero());
 
         for (int i = 0; i < vertexCount; ++i) {
           assert(poly.vertices[i] != null);
@@ -1113,10 +1113,10 @@ class World {
     Body bodyB = joint.bodyB;
     Transform xf1 = bodyA.originTransform;
     Transform xf2 = bodyB.originTransform;
-    Vector x1 = new Vector.copy(xf1.position);
-    Vector x2 = new Vector.copy(xf2.position);
-    Vector p1 = new Vector.zero();
-    Vector p2 = new Vector.zero();
+    Vector2 x1 = new Vector2.copy(xf1.position);
+    Vector2 x2 = new Vector2.copy(xf2.position);
+    Vector2 p1 = new Vector2.zero();
+    Vector2 p2 = new Vector2.zero();
     joint.getAnchorA(p1);
     joint.getAnchorB(p2);
 
@@ -1130,8 +1130,8 @@ class World {
 
       case JointType.PULLEY :
         throw new UnimplementedError();
-        //Vector s1 = pulley.getGroundAnchorA();
-        //Vector s2 = pulley.getGroundAnchorB();
+        //Vector2 s1 = pulley.getGroundAnchorA();
+        //Vector2 s2 = pulley.getGroundAnchorB();
         //_debugDraw.drawSegment(s1, p1, color);
         //_debugDraw.drawSegment(s2, p2, color);
         //_debugDraw.drawSegment(s1, s2, color);
@@ -1147,8 +1147,8 @@ class World {
         // Don't draw anything for mouse. Already have cursor!
         break;
       default :
-        Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
-        Vector p2t = new Vector.copy(p2);
+        Vector2 p1t = new Vector2.copy(p1); // copies since drawSegment modifies
+        Vector2 p2t = new Vector2.copy(p2);
         _debugDraw.drawSegment(x1, p1, color);
         _debugDraw.drawSegment(p1t, p2, color);
         _debugDraw.drawSegment(x2, p2t, color);

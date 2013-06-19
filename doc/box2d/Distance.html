@@ -42,10 +42,10 @@ class Distance {
  Simplex simplex;
  List&lt;int&gt; saveA;
  List&lt;int&gt; saveB;
- Vector closestPoint;
- Vector searchDirection;
- Vector temp;
- Vector normal;
+ Vector2 closestPoint;
+ Vector2 searchDirection;
+ Vector2 temp;
+ Vector2 normal;
 
  /**
   * Construct a new Distance object. For internal use only. Don't directly
@@ -55,10 +55,10 @@ class Distance {
    simplex = new Simplex(),
    saveA = new List&lt;int&gt;(3),
    saveB = new List&lt;int&gt;(3),
-   closestPoint = new Vector.zero(),
-   searchDirection = new Vector.zero(),
-   temp = new Vector.zero(),
-   normal = new Vector.zero(),
+   closestPoint = new Vector2.zero(),
+   searchDirection = new Vector2.zero(),
+   temp = new Vector2.zero(),
+   normal = new Vector2.zero(),
    calls = 0,
    iters = 0,
    maxIters = 20 { }
@@ -234,13 +234,13 @@ int calls
 </div>
 <div class="field"><h4 id="closestPoint">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>closestPoint</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>closestPoint</strong> <a class="anchor-link"
             href="#closestPoint"
             title="Permalink to Distance.closestPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector closestPoint
+Vector2 closestPoint
 </pre>
 </div>
 </div>
@@ -270,13 +270,13 @@ int maxIters
 </div>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to Distance.normal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector normal
+Vector2 normal
 </pre>
 </div>
 </div>
@@ -306,13 +306,13 @@ List&lt;int&gt; saveB
 </div>
 <div class="field"><h4 id="searchDirection">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>searchDirection</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>searchDirection</strong> <a class="anchor-link"
             href="#searchDirection"
             title="Permalink to Distance.searchDirection">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector searchDirection
+Vector2 searchDirection
 </pre>
 </div>
 </div>
@@ -331,13 +331,13 @@ Simplex simplex
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to Distance.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector temp
+Vector2 temp
 </pre>
 </div>
 </div>

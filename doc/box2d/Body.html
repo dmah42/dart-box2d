@@ -55,7 +55,7 @@ class Body {
  Object userData;
 
  /** The linear velocity of this body. */
- final Vector _linearVelocity;
+ final Vector2 _linearVelocity;
 
  /** The angular velocity of this body. */
  double _angularVelocity;
@@ -76,7 +76,7 @@ class Body {
  JointEdge jointList;
 
  /** Forces applied on the body. */
- final Vector _force;
+ final Vector2 _force;
 
  double _torque;
 
@@ -105,8 +105,8 @@ class Body {
  FixtureDef _fixDef;
  MassData _pmd;
  Transform _pxf;
- Vector oldCenter;
- Vector tempCenter;
+ Vector2 oldCenter;
+ Vector2 tempCenter;
 
  Body(BodyDef bd, this.world)
      : flags = 0,
@@ -122,19 +122,19 @@ class Body {
        next = null,
 
        // Set the linear and angular velocities.
-       _linearVelocity = new Vector.copy(bd.linearVelocity),
-       _angularVelocity = 0,
+       _linearVelocity = new Vector2.copy(bd.linearVelocity),
+       _angularVelocity = 0.0,
 
        // Set the linear and angular damping.
        linearDamping = bd.linearDamping,
        angularDamping = bd.angularDamping,
 
        // Set force and torque.
-       _force = new Vector.zero(),
-       _torque = 0,
+       _force = new Vector2.zero(),
+       _torque = 0.0,
 
-       _inertia = 0,
-       invInertia = 0,
+       _inertia = 0.0,
+       invInertia = 0.0,
 
        userData = bd.userData,
 
@@ -145,8 +145,8 @@ class Body {
        _fixDef = new FixtureDef(),
        _pmd = new MassData(),
        _pxf = new Transform(),
-       oldCenter = new Vector.zero(),
-       tempCenter = new Vector.zero(),
+       oldCenter = new Vector2.zero(),
+       tempCenter = new Vector2.zero(),
 
        sleepTime = 0,
 
@@ -315,7 +315,7 @@ class Body {
   * This breaks any contacts and wakes the other bodies.
   * Manipulating a body's transform may cause non-physical behavior.
   */
- void setTransform(Vector argPosition, double argAngle) {
+ void setTransform(Vector2 argPosition, double argAngle) {
    assert (world.locked == false);
    if (world.locked == true) {
      return;
@@ -341,7 +341,7 @@ class Body {
  /**
   * Get the world body origin position. Do not modify.
   */
- Vector get position =&gt; originTransform.position;
+ Vector2 get position =&gt; originTransform.position;
 
  /**
   * Get the angle in radians.
@@ -351,21 +351,21 @@ class Body {
  /**
   * Get the world position of the center of mass. Do not modify.
   */
- Vector get worldCenter =&gt; sweep.center; 
+ Vector2 get worldCenter =&gt; sweep.center; 
 
  /**
   * Get the local position of the center of mass. Do not modify.
   */
- Vector get localCenter =&gt; sweep.localCenter; 
+ Vector2 get localCenter =&gt; sweep.localCenter; 
 
- Vector get linearVelocity =&gt; _linearVelocity; 
+ Vector2 get linearVelocity =&gt; _linearVelocity; 
 
- void set linearVelocity(Vector v) {
+ void set linearVelocity(Vector2 v) {
    if (_type == BodyType.STATIC) {
      return;
    }
 
-   if (Vector.dot(v, v) &gt; 0.0) {
+   if (Vector2.dot(v, v) &gt; 0.0) {
      awake = true;
    }
 
@@ -395,7 +395,7 @@ class Body {
   * point
   *   the world position of the point of application.
   */
- void applyForce(Vector force, Vector point) {
+ void applyForce(Vector2 force, Vector2 point) {
    if (_type != BodyType.DYNAMIC) {
      return;
    }
@@ -437,7 +437,7 @@ class Body {
   * point
   *   the world position of the point of application.
   */
- void applyLinearImpulse(Vector impulse, Vector point) {
+ void applyLinearImpulse(Vector2 impulse, Vector2 point) {
    if (_type != BodyType.DYNAMIC) {
      return;
    }
@@ -483,7 +483,7 @@ class Body {
   */
  void getMassData(MassData data) {
    data.mass = mass;
-   final Vector lc = sweep.localCenter;
+   final Vector2 lc = sweep.localCenter;
    data.inertia = _inertia + mass * lc.lengthSquared;
    data.center.x = lc.x;
    data.center.y = lc.y;
@@ -519,7 +519,7 @@ class Body {
    invMass = 1.0 / mass;
 
    if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-     _inertia = data.inertia - mass * Vector.dot(data.center,
+     _inertia = data.inertia - mass * Vector2.dot(data.center,
          data.center);
      assert (_inertia &gt; 0.0);
      invInertia = 1.0 / _inertia;
@@ -532,9 +532,9 @@ class Body {
    sweep.center.setFrom(sweep.centerZero);
 
    // Update center of mass velocity.
-   final Vector temp = new Vector.copy(sweep.center);
+   final Vector2 temp = new Vector2.copy(sweep.center);
    temp.subLocal(oldCenter);
-   Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+   Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
    _linearVelocity.addLocal(temp);
  }
 
@@ -570,7 +570,7 @@ class Body {
      }
      f.getMassData(massData);
      mass += massData.mass;
-     final temp = new Vector.copy(massData.center);
+     final temp = new Vector2.copy(massData.center);
      temp.mulLocal(massData.mass);
      tempCenter.addLocal(temp);
      _inertia += massData.inertia;
@@ -588,7 +588,7 @@ class Body {
 
    if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
      // Center the inertia about the center of mass.
-     _inertia -= mass * Vector.dot(tempCenter, tempCenter);
+     _inertia -= mass * Vector2.dot(tempCenter, tempCenter);
      assert (_inertia &gt; 0.0);
      invInertia = 1.0 / _inertia;
    } else {
@@ -603,9 +603,9 @@ class Body {
    sweep.center.setFrom(sweep.centerZero);
 
    // Update center of mass velocity.
-   final Vector temp = new Vector.copy(sweep.center);
+   final Vector2 temp = new Vector2.copy(sweep.center);
    temp.subLocal(oldCenter);
-   Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+   Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
    _linearVelocity.addLocal(temp);
  }
 
@@ -616,8 +616,8 @@ class Body {
   *   a point on the body measured relative the the body's origin.
   * returns the same point expressed in world coordinates.
   */
- Vector getWorldPoint(Vector localPoint) {
-   Vector v = new Vector.zero();
+ Vector2 getWorldPoint(Vector2 localPoint) {
+   Vector2 v = new Vector2.zero();
    getWorldPointToOut(localPoint, v);
    return v;
  }
@@ -626,7 +626,7 @@ class Body {
   * Get the world coordinates of a point given the local coordinates to the
   * given out parameter.
   */
- void getWorldPointToOut(Vector localPoint, Vector out) {
+ void getWorldPointToOut(Vector2 localPoint, Vector2 out) {
    Transform.mulToOut(originTransform, localPoint, out);
  }
 
@@ -636,8 +636,8 @@ class Body {
   * localVector: a vector fixed in the body.
   * return the same vector expressed in world coordinates.
   */
- Vector getWorldVector(Vector localVector) {
-   Vector out = new Vector.zero();
+ Vector2 getWorldVector2(Vector2 localVector) {
+   Vector2 out = new Vector2.zero();
    getWorldVectorToOut(localVector, out);
    return out;
  }
@@ -646,7 +646,7 @@ class Body {
   * Get the world coordinates of a vector given the local coordinates to the
   * given out paramater.
   */
- void getWorldVectorToOut(Vector localVector, Vector out) {
+ void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
    Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
        out);
  }
@@ -655,7 +655,7 @@ class Body {
   * Gets a local point relative to the body's origin given a world point.
   * Returns this through the given out parameter.
   */
- void getLocalPointToOut(Vector worldPoint, Vector out) {
+ void getLocalPointToOut(Vector2 worldPoint, Vector2 out) {
    Transform.mulTransToOut(originTransform, worldPoint, out);
  }
 
@@ -665,8 +665,8 @@ class Body {
   * worldPoint: point in world coordinates.
   * returns the corresponding local point relative to the body's origin.
   */
- Vector getLocalPoint(Vector worldPoint) {
-   Vector out = new Vector.zero();
+ Vector2 getLocalPoint(Vector2 worldPoint) {
+   Vector2 out = new Vector2.zero();
    getLocalPointToOut(worldPoint, out);
    return out;
  }
@@ -677,8 +677,8 @@ class Body {
   * worldVector: vector in world coordinates.
   * returns the corresponding local vector.
   */
- Vector getLocalVector(Vector worldVector) {
-   Vector out = new Vector.zero();
+ Vector2 getLocalVector2(Vector2 worldVector) {
+   Vector2 out = new Vector2.zero();
    getLocalVectorToOut(worldVector, out);
    return out;
  }
@@ -687,7 +687,7 @@ class Body {
   * Gets a local vector given a world vector and stores the result in the given
   * out parameter.
   */
- void getLocalVectorToOut(Vector worldVector, Vector out) {
+ void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
    Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
        out);
  }
@@ -698,15 +698,15 @@ class Body {
   * worldPoint: point in world coordinates.
   * returns the world velocity of a point.
   */
- Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
-   Vector out = new Vector.zero();
+ Vector2 getLinearVelocityFromWorldPoint(Vector2 worldPoint) {
+   Vector2 out = new Vector2.zero();
    getLinearVelocityFromWorldPointToOut(worldPoint, out);
    return out;
  }
 
- void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
+ void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
    out.setFrom(worldPoint).subLocal(sweep.center);
-   Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+   Vector2.crossNumAndVectorToOut(_angularVelocity, out, out);
    out.addLocal(_linearVelocity);
  }
 
@@ -716,8 +716,8 @@ class Body {
   * localPoint: point in local coordinates.
   * returns the world velocity of a point.
   */
- Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
-   Vector out = new Vector.zero();
+ Vector2 getLinearVelocityFromLocalPoint(Vector2 localPoint) {
+   Vector2 out = new Vector2.zero();
    getLinearVelocityFromLocalPointToOut(localPoint, out);
    return out;
  }
@@ -726,7 +726,7 @@ class Body {
   * Get the world velocity of a local point and store the result in the given
   * out parameter.
   */
- void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
+ void getLinearVelocityFromLocalPointToOut(Vector2 localPoint, Vector2 out) {
    getWorldPointToOut(localPoint, out);
    getLinearVelocityFromWorldPointToOut(out, out);
  }
@@ -911,7 +911,7 @@ class Body {
    final double s = Math.sin(sweep.angle);
    final Transform t = originTransform;
    final Matrix22 r = t.rotation;
-   final Vector p = t.position;
+   final Vector2 p = t.position;
 
    r.col1.x = c;
    r.col2.x = -s;
@@ -1051,19 +1051,19 @@ Body(BodyDef bd, this.world)
      next = null,
 
      // Set the linear and angular velocities.
-     _linearVelocity = new Vector.copy(bd.linearVelocity),
-     _angularVelocity = 0,
+     _linearVelocity = new Vector2.copy(bd.linearVelocity),
+     _angularVelocity = 0.0,
 
      // Set the linear and angular damping.
      linearDamping = bd.linearDamping,
      angularDamping = bd.angularDamping,
 
      // Set force and torque.
-     _force = new Vector.zero(),
-     _torque = 0,
+     _force = new Vector2.zero(),
+     _torque = 0.0,
 
-     _inertia = 0,
-     invInertia = 0,
+     _inertia = 0.0,
+     invInertia = 0.0,
 
      userData = bd.userData,
 
@@ -1074,8 +1074,8 @@ Body(BodyDef bd, this.world)
      _fixDef = new FixtureDef(),
      _pmd = new MassData(),
      _pxf = new Transform(),
-     oldCenter = new Vector.zero(),
-     tempCenter = new Vector.zero(),
+     oldCenter = new Vector2.zero(),
+     tempCenter = new Vector2.zero(),
 
      sleepTime = 0,
 
@@ -1454,21 +1454,21 @@ double linearDamping
 </div>
 <div class="field"><h4 id="linearVelocity">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>linearVelocity</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>linearVelocity</strong> <a class="anchor-link"
             href="#linearVelocity"
             title="Permalink to Body.linearVelocity">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector get linearVelocity =&gt; _linearVelocity;
+Vector2 get linearVelocity =&gt; _linearVelocity;
 </pre>
 <pre class="source">
-void set linearVelocity(Vector v) {
+void set linearVelocity(Vector2 v) {
  if (_type == BodyType.STATIC) {
    return;
  }
 
- if (Vector.dot(v, v) &gt; 0.0) {
+ if (Vector2.dot(v, v) &gt; 0.0) {
    awake = true;
  }
 
@@ -1479,14 +1479,14 @@ void set linearVelocity(Vector v) {
 </div>
 <div class="field"><h4 id="localCenter">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenter</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenter</strong> <a class="anchor-link"
             href="#localCenter"
             title="Permalink to Body.localCenter">#</a>
         </h4>
         <div class="doc">
 <p>Get the local position of the center of mass. Do not modify.</p>
 <pre class="source">
-Vector get localCenter =&gt; sweep.localCenter;
+Vector2 get localCenter =&gt; sweep.localCenter;
 </pre>
 </div>
 </div>
@@ -1536,7 +1536,7 @@ void set massData(MassData data) {
  invMass = 1.0 / mass;
 
  if (data.inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
-   _inertia = data.inertia - mass * Vector.dot(data.center,
+   _inertia = data.inertia - mass * Vector2.dot(data.center,
        data.center);
    assert (_inertia &gt; 0.0);
    invInertia = 1.0 / _inertia;
@@ -1549,9 +1549,9 @@ void set massData(MassData data) {
  sweep.center.setFrom(sweep.centerZero);
 
  // Update center of mass velocity.
- final Vector temp = new Vector.copy(sweep.center);
+ final Vector2 temp = new Vector2.copy(sweep.center);
  temp.subLocal(oldCenter);
- Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+ Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
  _linearVelocity.addLocal(temp);
 }
 </pre>
@@ -1572,13 +1572,13 @@ Body next
 </div>
 <div class="field"><h4 id="oldCenter">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>oldCenter</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>oldCenter</strong> <a class="anchor-link"
             href="#oldCenter"
             title="Permalink to Body.oldCenter">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector oldCenter
+Vector2 oldCenter
 </pre>
 </div>
 </div>
@@ -1597,14 +1597,14 @@ final Transform originTransform
 </div>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>position</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to Body.position">#</a>
         </h4>
         <div class="doc">
 <p>Get the world body origin position. Do not modify.</p>
 <pre class="source">
-Vector get position =&gt; originTransform.position;
+Vector2 get position =&gt; originTransform.position;
 </pre>
 </div>
 </div>
@@ -1677,13 +1677,13 @@ final Sweep sweep
 </div>
 <div class="field"><h4 id="tempCenter">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>tempCenter</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>tempCenter</strong> <a class="anchor-link"
             href="#tempCenter"
             title="Permalink to Body.tempCenter">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector tempCenter
+Vector2 tempCenter
 </pre>
 </div>
 </div>
@@ -1759,14 +1759,14 @@ World world
 </div>
 <div class="field"><h4 id="worldCenter">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>worldCenter</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>worldCenter</strong> <a class="anchor-link"
             href="#worldCenter"
             title="Permalink to Body.worldCenter">#</a>
         </h4>
         <div class="doc">
 <p>Get the world position of the center of mass. Do not modify.</p>
 <pre class="source">
-Vector get worldCenter =&gt; sweep.center;
+Vector2 get worldCenter =&gt; sweep.center;
 </pre>
 </div>
 </div>
@@ -1810,7 +1810,7 @@ void applyAngularImpulse(double impulse) {
 </div>
 <div class="method"><h4 id="applyForce">
 <button class="show-code">Code</button>
-void <strong>applyForce</strong>(<a href="../box2d/Vector.html">Vector</a> force, <a href="../box2d/Vector.html">Vector</a> point) <a class="anchor-link" href="#applyForce"
+void <strong>applyForce</strong>(<a href="../box2d/Vector2.html">Vector2</a> force, <a href="../box2d/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#applyForce"
               title="Permalink to Body.applyForce">#</a></h4>
 <div class="doc">
 <p>Apply a force at a world point. If the force is not
@@ -1821,7 +1821,7 @@ affect the angular velocity. This wakes up the body.</p>
 point
   the world position of the point of application.</p>
 <pre class="source">
-void applyForce(Vector force, Vector point) {
+void applyForce(Vector2 force, Vector2 point) {
  if (_type != BodyType.DYNAMIC) {
    return;
  }
@@ -1839,7 +1839,7 @@ void applyForce(Vector force, Vector point) {
 </div>
 <div class="method"><h4 id="applyLinearImpulse">
 <button class="show-code">Code</button>
-void <strong>applyLinearImpulse</strong>(<a href="../box2d/Vector.html">Vector</a> impulse, <a href="../box2d/Vector.html">Vector</a> point) <a class="anchor-link" href="#applyLinearImpulse"
+void <strong>applyLinearImpulse</strong>(<a href="../box2d/Vector2.html">Vector2</a> impulse, <a href="../box2d/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#applyLinearImpulse"
               title="Permalink to Body.applyLinearImpulse">#</a></h4>
 <div class="doc">
 <p>Apply an impulse at a point. This immediately modifies the velocity.
@@ -1850,7 +1850,7 @@ is not at the center of mass. This wakes up the body.</p>
 point
   the world position of the point of application.</p>
 <pre class="source">
-void applyLinearImpulse(Vector impulse, Vector point) {
+void applyLinearImpulse(Vector2 impulse, Vector2 point) {
  if (_type != BodyType.DYNAMIC) {
    return;
  }
@@ -2035,15 +2035,15 @@ void destroyFixture(Fixture fixture) {
 </div>
 <div class="method"><h4 id="getLinearVelocityFromLocalPoint">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLinearVelocityFromLocalPoint</strong>(<a href="../box2d/Vector.html">Vector</a> localPoint) <a class="anchor-link" href="#getLinearVelocityFromLocalPoint"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLinearVelocityFromLocalPoint</strong>(<a href="../box2d/Vector2.html">Vector2</a> localPoint) <a class="anchor-link" href="#getLinearVelocityFromLocalPoint"
               title="Permalink to Body.getLinearVelocityFromLocalPoint">#</a></h4>
 <div class="doc">
 <p>Get the world velocity of a local point.</p>
 <p>localPoint: point in local coordinates.
 returns the world velocity of a point.</p>
 <pre class="source">
-Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
- Vector out = new Vector.zero();
+Vector2 getLinearVelocityFromLocalPoint(Vector2 localPoint) {
+ Vector2 out = new Vector2.zero();
  getLinearVelocityFromLocalPointToOut(localPoint, out);
  return out;
 }
@@ -2052,13 +2052,13 @@ Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
 </div>
 <div class="method"><h4 id="getLinearVelocityFromLocalPointToOut">
 <button class="show-code">Code</button>
-void <strong>getLinearVelocityFromLocalPointToOut</strong>(<a href="../box2d/Vector.html">Vector</a> localPoint, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getLinearVelocityFromLocalPointToOut"
+void <strong>getLinearVelocityFromLocalPointToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> localPoint, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getLinearVelocityFromLocalPointToOut"
               title="Permalink to Body.getLinearVelocityFromLocalPointToOut">#</a></h4>
 <div class="doc">
 <p>Get the world velocity of a local point and store the result in the given
 out parameter.</p>
 <pre class="source">
-void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
+void getLinearVelocityFromLocalPointToOut(Vector2 localPoint, Vector2 out) {
  getWorldPointToOut(localPoint, out);
  getLinearVelocityFromWorldPointToOut(out, out);
 }
@@ -2067,15 +2067,15 @@ void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
 </div>
 <div class="method"><h4 id="getLinearVelocityFromWorldPoint">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLinearVelocityFromWorldPoint</strong>(<a href="../box2d/Vector.html">Vector</a> worldPoint) <a class="anchor-link" href="#getLinearVelocityFromWorldPoint"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLinearVelocityFromWorldPoint</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldPoint) <a class="anchor-link" href="#getLinearVelocityFromWorldPoint"
               title="Permalink to Body.getLinearVelocityFromWorldPoint">#</a></h4>
 <div class="doc">
 <p>Get the world linear velocity of a world point attached to this body.</p>
 <p>worldPoint: point in world coordinates.
 returns the world velocity of a point.</p>
 <pre class="source">
-Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
- Vector out = new Vector.zero();
+Vector2 getLinearVelocityFromWorldPoint(Vector2 worldPoint) {
+ Vector2 out = new Vector2.zero();
  getLinearVelocityFromWorldPointToOut(worldPoint, out);
  return out;
 }
@@ -2084,13 +2084,13 @@ Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
 </div>
 <div class="method"><h4 id="getLinearVelocityFromWorldPointToOut">
 <button class="show-code">Code</button>
-void <strong>getLinearVelocityFromWorldPointToOut</strong>(<a href="../box2d/Vector.html">Vector</a> worldPoint, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getLinearVelocityFromWorldPointToOut"
+void <strong>getLinearVelocityFromWorldPointToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldPoint, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getLinearVelocityFromWorldPointToOut"
               title="Permalink to Body.getLinearVelocityFromWorldPointToOut">#</a></h4>
 <div class="doc">
 <pre class="source">
-void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
+void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
  out.setFrom(worldPoint).subLocal(sweep.center);
- Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+ Vector2.crossNumAndVectorToOut(_angularVelocity, out, out);
  out.addLocal(_linearVelocity);
 }
 </pre>
@@ -2098,15 +2098,15 @@ void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
 </div>
 <div class="method"><h4 id="getLocalPoint">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLocalPoint</strong>(<a href="../box2d/Vector.html">Vector</a> worldPoint) <a class="anchor-link" href="#getLocalPoint"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLocalPoint</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldPoint) <a class="anchor-link" href="#getLocalPoint"
               title="Permalink to Body.getLocalPoint">#</a></h4>
 <div class="doc">
 <p>Gets a local point relative to the body's origin given a world point.</p>
 <p>worldPoint: point in world coordinates.
 returns the corresponding local point relative to the body's origin.</p>
 <pre class="source">
-Vector getLocalPoint(Vector worldPoint) {
- Vector out = new Vector.zero();
+Vector2 getLocalPoint(Vector2 worldPoint) {
+ Vector2 out = new Vector2.zero();
  getLocalPointToOut(worldPoint, out);
  return out;
 }
@@ -2115,29 +2115,29 @@ Vector getLocalPoint(Vector worldPoint) {
 </div>
 <div class="method"><h4 id="getLocalPointToOut">
 <button class="show-code">Code</button>
-void <strong>getLocalPointToOut</strong>(<a href="../box2d/Vector.html">Vector</a> worldPoint, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getLocalPointToOut"
+void <strong>getLocalPointToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldPoint, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getLocalPointToOut"
               title="Permalink to Body.getLocalPointToOut">#</a></h4>
 <div class="doc">
 <p>Gets a local point relative to the body's origin given a world point.
 Returns this through the given out parameter.</p>
 <pre class="source">
-void getLocalPointToOut(Vector worldPoint, Vector out) {
+void getLocalPointToOut(Vector2 worldPoint, Vector2 out) {
  Transform.mulTransToOut(originTransform, worldPoint, out);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="getLocalVector">
+<div class="method"><h4 id="getLocalVector2">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLocalVector</strong>(<a href="../box2d/Vector.html">Vector</a> worldVector) <a class="anchor-link" href="#getLocalVector"
-              title="Permalink to Body.getLocalVector">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLocalVector2</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldVector) <a class="anchor-link" href="#getLocalVector2"
+              title="Permalink to Body.getLocalVector2">#</a></h4>
 <div class="doc">
 <p>Gets a local vector given a world vector.</p>
 <p>worldVector: vector in world coordinates.
 returns the corresponding local vector.</p>
 <pre class="source">
-Vector getLocalVector(Vector worldVector) {
- Vector out = new Vector.zero();
+Vector2 getLocalVector2(Vector2 worldVector) {
+ Vector2 out = new Vector2.zero();
  getLocalVectorToOut(worldVector, out);
  return out;
 }
@@ -2146,13 +2146,13 @@ Vector getLocalVector(Vector worldVector) {
 </div>
 <div class="method"><h4 id="getLocalVectorToOut">
 <button class="show-code">Code</button>
-void <strong>getLocalVectorToOut</strong>(<a href="../box2d/Vector.html">Vector</a> worldVector, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getLocalVectorToOut"
+void <strong>getLocalVectorToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> worldVector, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getLocalVectorToOut"
               title="Permalink to Body.getLocalVectorToOut">#</a></h4>
 <div class="doc">
 <p>Gets a local vector given a world vector and stores the result in the given
 out parameter.</p>
 <pre class="source">
-void getLocalVectorToOut(Vector worldVector, Vector out) {
+void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
  Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
      out);
 }
@@ -2170,7 +2170,7 @@ data.</p>
 <pre class="source">
 void getMassData(MassData data) {
  data.mass = mass;
- final Vector lc = sweep.localCenter;
+ final Vector2 lc = sweep.localCenter;
  data.inertia = _inertia + mass * lc.lengthSquared;
  data.center.x = lc.x;
  data.center.y = lc.y;
@@ -2180,7 +2180,7 @@ void getMassData(MassData data) {
 </div>
 <div class="method"><h4 id="getWorldPoint">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getWorldPoint</strong>(<a href="../box2d/Vector.html">Vector</a> localPoint) <a class="anchor-link" href="#getWorldPoint"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getWorldPoint</strong>(<a href="../box2d/Vector2.html">Vector2</a> localPoint) <a class="anchor-link" href="#getWorldPoint"
               title="Permalink to Body.getWorldPoint">#</a></h4>
 <div class="doc">
 <p>Get the world coordinates of a point given the local coordinates.</p>
@@ -2188,8 +2188,8 @@ void getMassData(MassData data) {
   a point on the body measured relative the the body's origin.
 returns the same point expressed in world coordinates.</p>
 <pre class="source">
-Vector getWorldPoint(Vector localPoint) {
- Vector v = new Vector.zero();
+Vector2 getWorldPoint(Vector2 localPoint) {
+ Vector2 v = new Vector2.zero();
  getWorldPointToOut(localPoint, v);
  return v;
 }
@@ -2198,29 +2198,29 @@ Vector getWorldPoint(Vector localPoint) {
 </div>
 <div class="method"><h4 id="getWorldPointToOut">
 <button class="show-code">Code</button>
-void <strong>getWorldPointToOut</strong>(<a href="../box2d/Vector.html">Vector</a> localPoint, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getWorldPointToOut"
+void <strong>getWorldPointToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> localPoint, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getWorldPointToOut"
               title="Permalink to Body.getWorldPointToOut">#</a></h4>
 <div class="doc">
 <p>Get the world coordinates of a point given the local coordinates to the
 given out parameter.</p>
 <pre class="source">
-void getWorldPointToOut(Vector localPoint, Vector out) {
+void getWorldPointToOut(Vector2 localPoint, Vector2 out) {
  Transform.mulToOut(originTransform, localPoint, out);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="getWorldVector">
+<div class="method"><h4 id="getWorldVector2">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getWorldVector</strong>(<a href="../box2d/Vector.html">Vector</a> localVector) <a class="anchor-link" href="#getWorldVector"
-              title="Permalink to Body.getWorldVector">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getWorldVector2</strong>(<a href="../box2d/Vector2.html">Vector2</a> localVector) <a class="anchor-link" href="#getWorldVector2"
+              title="Permalink to Body.getWorldVector2">#</a></h4>
 <div class="doc">
 <p>Get the world coordinates of a vector given the local coordinates.</p>
 <p>localVector: a vector fixed in the body.
 return the same vector expressed in world coordinates.</p>
 <pre class="source">
-Vector getWorldVector(Vector localVector) {
- Vector out = new Vector.zero();
+Vector2 getWorldVector2(Vector2 localVector) {
+ Vector2 out = new Vector2.zero();
  getWorldVectorToOut(localVector, out);
  return out;
 }
@@ -2229,13 +2229,13 @@ Vector getWorldVector(Vector localVector) {
 </div>
 <div class="method"><h4 id="getWorldVectorToOut">
 <button class="show-code">Code</button>
-void <strong>getWorldVectorToOut</strong>(<a href="../box2d/Vector.html">Vector</a> localVector, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#getWorldVectorToOut"
+void <strong>getWorldVectorToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> localVector, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#getWorldVectorToOut"
               title="Permalink to Body.getWorldVectorToOut">#</a></h4>
 <div class="doc">
 <p>Get the world coordinates of a vector given the local coordinates to the
 given out paramater.</p>
 <pre class="source">
-void getWorldVectorToOut(Vector localVector, Vector out) {
+void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
  Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
      out);
 }
@@ -2278,7 +2278,7 @@ void resetMassData() {
    }
    f.getMassData(massData);
    mass += massData.mass;
-   final temp = new Vector.copy(massData.center);
+   final temp = new Vector2.copy(massData.center);
    temp.mulLocal(massData.mass);
    tempCenter.addLocal(temp);
    _inertia += massData.inertia;
@@ -2296,7 +2296,7 @@ void resetMassData() {
 
  if (_inertia &gt; 0.0 &amp;&amp; (flags &amp; FIXED_ROTATION_FLAG) == 0) {
    // Center the inertia about the center of mass.
-   _inertia -= mass * Vector.dot(tempCenter, tempCenter);
+   _inertia -= mass * Vector2.dot(tempCenter, tempCenter);
    assert (_inertia &gt; 0.0);
    invInertia = 1.0 / _inertia;
  } else {
@@ -2311,9 +2311,9 @@ void resetMassData() {
  sweep.center.setFrom(sweep.centerZero);
 
  // Update center of mass velocity.
- final Vector temp = new Vector.copy(sweep.center);
+ final Vector2 temp = new Vector2.copy(sweep.center);
  temp.subLocal(oldCenter);
- Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+ Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
  _linearVelocity.addLocal(temp);
 }
 </pre>
@@ -2321,14 +2321,14 @@ void resetMassData() {
 </div>
 <div class="method"><h4 id="setTransform">
 <button class="show-code">Code</button>
-void <strong>setTransform</strong>(<a href="../box2d/Vector.html">Vector</a> argPosition, <a href="http://api.dartlang.org/dart_core/double.html">double</a> argAngle) <a class="anchor-link" href="#setTransform"
+void <strong>setTransform</strong>(<a href="../box2d/Vector2.html">Vector2</a> argPosition, <a href="http://api.dartlang.org/dart_core/double.html">double</a> argAngle) <a class="anchor-link" href="#setTransform"
               title="Permalink to Body.setTransform">#</a></h4>
 <div class="doc">
 <p>Set the position of the body's origin and rotation.
 This breaks any contacts and wakes the other bodies.
 Manipulating a body's transform may cause non-physical behavior.</p>
 <pre class="source">
-void setTransform(Vector argPosition, double argAngle) {
+void setTransform(Vector2 argPosition, double argAngle) {
  assert (world.locked == false);
  if (world.locked == true) {
    return;
@@ -2400,7 +2400,7 @@ void synchronizeTransform() {
  final double s = Math.sin(sweep.angle);
  final Transform t = originTransform;
  final Matrix22 r = t.rotation;
- final Vector p = t.position;
+ final Vector2 p = t.position;
 
  r.col1.x = c;
  r.col2.x = -s;

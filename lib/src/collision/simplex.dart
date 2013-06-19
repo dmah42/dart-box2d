@@ -29,26 +29,26 @@ class Simplex {
       v2 = new SimplexVertex(),
       v3 = new SimplexVertex(),
       vertices = new List<SimplexVertex>(3),
-      e13 = new Vector.zero(),
-      e12 = new Vector.zero(),
-      e23 = new Vector.zero(),
-      case2 = new Vector.zero(),
-      case22 = new Vector.zero(),
-      case3 = new Vector.zero(),
-      case33 = new Vector.zero() {
+      e13 = new Vector2.zero(),
+      e12 = new Vector2.zero(),
+      e23 = new Vector2.zero(),
+      case2 = new Vector2.zero(),
+      case22 = new Vector2.zero(),
+      case3 = new Vector2.zero(),
+      case33 = new Vector2.zero() {
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
   }
 
   /** Pooling. */
-  final Vector e13;
-  final Vector e23;
-  final Vector e12;
-  final Vector case2;
-  final Vector case22;
-  final Vector case3;
-  final Vector case33;
+  final Vector2 e13;
+  final Vector2 e23;
+  final Vector2 e12;
+  final Vector2 case2;
+  final Vector2 case22;
+  final Vector2 case3;
+  final Vector2 case33;
 
   void readCache(SimplexCache cache, DistanceProxy proxyA,
       Transform transformA, DistanceProxy proxyB,
@@ -62,8 +62,8 @@ class Simplex {
       SimplexVertex v = vertices[i];
       v.indexA = cache.indexA[i];
       v.indexB = cache.indexB[i];
-      Vector wALocal = proxyA.vertices[v.indexA];
-      Vector wBLocal = proxyB.vertices[v.indexB];
+      Vector2 wALocal = proxyA.vertices[v.indexA];
+      Vector2 wBLocal = proxyB.vertices[v.indexB];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
       v.w.setFrom(v.wB).subLocal(v.wA);
@@ -87,8 +87,8 @@ class Simplex {
       SimplexVertex v = vertices[0];
       v.indexA = 0;
       v.indexB = 0;
-      Vector wALocal = proxyA.vertices[0];
-      Vector wBLocal = proxyB.vertices[0];
+      Vector2 wALocal = proxyA.vertices[0];
+      Vector2 wBLocal = proxyB.vertices[0];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
       v.w.setFrom(v.wB).subLocal(v.wA);
@@ -106,7 +106,7 @@ class Simplex {
     }
   }
 
-  void getSearchDirection(Vector out) {
+  void getSearchDirection(Vector2 out) {
     switch (count) {
       case 1 :
         out.setFrom(v1.w).negateLocal();
@@ -115,15 +115,15 @@ class Simplex {
         e12.setFrom(v2.w).subLocal(v1.w);
         // use out for a temp variable real quick
         out.setFrom(v1.w).negateLocal();
-        num sgn = Vector.crossVectors(e12, out);
+        num sgn = Vector2.crossVectors(e12, out);
 
         if (sgn > 0) {
           // Origin is left of e12.
-          Vector.crossNumAndVectorToOut(1.0, e12, out);
+          Vector2.crossNumAndVectorToOut(1.0, e12, out);
         }
         else {
           // Origin is right of e12.
-          Vector.crossVectorAndNumToOut(e12, 1.0, out);
+          Vector2.crossVectorAndNumToOut(e12, 1.0, out);
         }
         break;
       default :
@@ -137,7 +137,7 @@ class Simplex {
   /**
    * this returns pooled objects. don't keep or modify them
    */
-  void getClosestPoint(Vector out) {
+  void getClosestPoint(Vector2 out) {
     switch (count) {
       case 0 :
         assert (false);
@@ -162,7 +162,7 @@ class Simplex {
   }
 
 
-  void getWitnessPoints(Vector pA, Vector pB) {
+  void getWitnessPoints(Vector2 pA, Vector2 pB) {
     switch (count) {
       case 0 :
         assert (false);
@@ -210,7 +210,7 @@ class Simplex {
       case 3 :
         case3.setFrom(v2.w).subLocal(v1.w);
         case33.setFrom(v3.w).subLocal(v1.w);
-        return Vector.crossVectors(case3, case33);
+        return Vector2.crossVectors(case3, case33);
 
       default :
         assert (false);
@@ -222,12 +222,12 @@ class Simplex {
    * Solve a line segment using barycentric coordinates.
    */
   void solve2() {
-    Vector w1 = v1.w;
-    Vector w2 = v2.w;
+    Vector2 w1 = v1.w;
+    Vector2 w2 = v2.w;
     e12.setFrom(w2).subLocal(w1);
 
     // w1 region
-    num d12_2 = -Vector.dot(w1, e12);
+    num d12_2 = -Vector2.dot(w1, e12);
     if (d12_2 <= 0.0) {
       // a2 <= 0, so we clamp it to 0
       v1.a = 1.0;
@@ -236,7 +236,7 @@ class Simplex {
     }
 
     // w2 region
-    num d12_1 = Vector.dot(w2, e12);
+    num d12_1 = Vector2.dot(w2, e12);
     if (d12_1 <= 0.0) {
       // a1 <= 0, so we clamp it to 0
       v2.a = 1.0;
@@ -261,37 +261,37 @@ class Simplex {
    * - inside the triangle
    */
   void solve3() {
-    Vector w1 = v1.w;
-    Vector w2 = v2.w;
-    Vector w3 = v3.w;
+    Vector2 w1 = v1.w;
+    Vector2 w2 = v2.w;
+    Vector2 w3 = v3.w;
 
     // Edge12
     e12.setFrom(w2).subLocal(w1);
-    num w1e12 = Vector.dot(w1, e12);
-    num w2e12 = Vector.dot(w2, e12);
+    num w1e12 = Vector2.dot(w1, e12);
+    num w2e12 = Vector2.dot(w2, e12);
     num d12_1 = w2e12;
     num d12_2 = -w1e12;
 
     // Edge13
     e13.setFrom(w3).subLocal(w1);
-    num w1e13 = Vector.dot(w1, e13);
-    num w3e13 = Vector.dot(w3, e13);
+    num w1e13 = Vector2.dot(w1, e13);
+    num w3e13 = Vector2.dot(w3, e13);
     num d13_1 = w3e13;
     num d13_2 = -w1e13;
 
     // Edge23
     e23.setFrom(w3).subLocal(w2);
-    num w2e23 = Vector.dot(w2, e23);
-    num w3e23 = Vector.dot(w3, e23);
+    num w2e23 = Vector2.dot(w2, e23);
+    num w3e23 = Vector2.dot(w3, e23);
     num d23_1 = w3e23;
     num d23_2 = -w2e23;
 
     // Triangle123
-    num n123 = Vector.crossVectors(e12, e13);
+    num n123 = Vector2.crossVectors(e12, e13);
 
-    num d123_1 = n123 * Vector.crossVectors(w2, w3);
-    num d123_2 = n123 * Vector.crossVectors(w3, w1);
-    num d123_3 = n123 * Vector.crossVectors(w1, w2);
+    num d123_1 = n123 * Vector2.crossVectors(w2, w3);
+    num d123_2 = n123 * Vector2.crossVectors(w3, w1);
+    num d123_3 = n123 * Vector2.crossVectors(w1, w2);
 
     // w1 region
     if (d12_2 <= 0.0 && d13_2 <= 0.0) {

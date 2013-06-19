@@ -34,10 +34,10 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraintPoint {
- final Vector localPoint;
+ final Vector2 localPoint;
  //TODO(gregbglw): Find out what rA and rB mean and change the names.
- final Vector rA;
- final Vector rB;
+ final Vector2 rA;
+ final Vector2 rB;
 
  num normalImpulse;
  num tangentImpulse;
@@ -47,9 +47,9 @@ class ContactConstraintPoint {
 
  /** Constructs a new ContactConstraintPoint. */
  ContactConstraintPoint()
-   : localPoint = new Vector.zero(),
-   rA = new Vector.zero(),
-   rB = new Vector.zero(),
+   : localPoint = new Vector2.zero(),
+   rA = new Vector2.zero(),
+   rB = new Vector2.zero(),
    normalImpulse = 0,
    tangentImpulse = 0,
    normalMass = 0,
@@ -87,9 +87,9 @@ new <strong>ContactConstraintPoint</strong>() <a class="anchor-link" href="#Cont
 <p>Constructs a new ContactConstraintPoint. </p>
 <pre class="source">
 ContactConstraintPoint()
- : localPoint = new Vector.zero(),
- rA = new Vector.zero(),
- rB = new Vector.zero(),
+ : localPoint = new Vector2.zero(),
+ rA = new Vector2.zero(),
+ rB = new Vector2.zero(),
  normalImpulse = 0,
  tangentImpulse = 0,
  normalMass = 0,
@@ -103,13 +103,13 @@ ContactConstraintPoint()
 <h3>Properties</h3>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ContactConstraintPoint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>
@@ -139,25 +139,25 @@ num normalMass
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to ContactConstraintPoint.rA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rA
+final Vector2 rA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to ContactConstraintPoint.rB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rB
+final Vector2 rB
 </pre>
 </div>
 </div>

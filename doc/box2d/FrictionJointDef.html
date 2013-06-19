@@ -35,10 +35,10 @@
 <pre class="source">
 class FrictionJointDef extends JointDef {
  /** The local anchor point relative to bodyA's origin. */
- final Vector localAnchorA;
+ final Vector2 localAnchorA;
 
  /** The local anchor point relative to bodyB's origin. */
- final Vector localAnchorB;
+ final Vector2 localAnchorB;
 
  /** The maximum friction force in N. */
  num maxForce;
@@ -48,14 +48,14 @@ class FrictionJointDef extends JointDef {
 
  FrictionJointDef()
      : super(),
-       localAnchorA = new Vector(0.0, 0.0),
-       localAnchorB = new Vector(0.0, 0.0),
+       localAnchorA = new Vector2(0.0, 0.0),
+       localAnchorB = new Vector2(0.0, 0.0),
        maxForce = 0.0,
        maxTorque = 0.0 {
    type = JointType.FRICTION;
  }
 
- void initialize(Body bA, Body bB, Vector anchor) {
+ void initialize(Body bA, Body bB, Vector2 anchor) {
    bodyA = bA;
    bodyB = bB;
    bA.getLocalPointToOut(anchor, localAnchorA);
@@ -77,8 +77,8 @@ new <strong>FrictionJointDef</strong>() <a class="anchor-link" href="#FrictionJo
 <pre class="source">
 FrictionJointDef()
    : super(),
-     localAnchorA = new Vector(0.0, 0.0),
-     localAnchorB = new Vector(0.0, 0.0),
+     localAnchorA = new Vector2(0.0, 0.0),
+     localAnchorB = new Vector2(0.0, 0.0),
      maxForce = 0.0,
      maxTorque = 0.0 {
  type = JointType.FRICTION;
@@ -130,27 +130,27 @@ bool collideConnected
 </div>
 <div class="field"><h4 id="localAnchorA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
             href="#localAnchorA"
             title="Permalink to FrictionJointDef.localAnchorA">#</a>
         </h4>
         <div class="doc">
 <p>The local anchor point relative to bodyA's origin. </p>
 <pre class="source">
-final Vector localAnchorA
+final Vector2 localAnchorA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localAnchorB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
             href="#localAnchorB"
             title="Permalink to FrictionJointDef.localAnchorB">#</a>
         </h4>
         <div class="doc">
 <p>The local anchor point relative to bodyB's origin. </p>
 <pre class="source">
-final Vector localAnchorB
+final Vector2 localAnchorB
 </pre>
 </div>
 </div>
@@ -211,11 +211,11 @@ dynamic userData
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> bA, <a href="../box2d/Body.html">Body</a> bB, <a href="../box2d/Vector.html">Vector</a> anchor) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> bA, <a href="../box2d/Body.html">Body</a> bB, <a href="../box2d/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
               title="Permalink to FrictionJointDef.initialize">#</a></h4>
 <div class="doc">
 <pre class="source">
-void initialize(Body bA, Body bB, Vector anchor) {
+void initialize(Body bA, Body bB, Vector2 anchor) {
  bodyA = bA;
  bodyB = bB;
  bA.getLocalPointToOut(anchor, localAnchorA);

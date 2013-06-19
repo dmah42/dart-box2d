@@ -35,10 +35,10 @@ class BodyDef {
   Object userData;
 
   /** The world position of the body. */
-  Vector position;
+  Vector2 position;
 
   /** Linear velocity of the body in world coordinates. */
-  Vector linearVelocity;
+  Vector2 linearVelocity;
 
   /** Angular velocity of the body. */
   num angularVelocity;
@@ -92,7 +92,7 @@ class BodyDef {
     userData = null,
     bullet = false,
     type = BodyType.STATIC,
-    position = new Vector.zero(),
+    position = new Vector2.zero(),
     angle = 0,
     linearDamping = 0,
     angularDamping = 0,
@@ -100,6 +100,6 @@ class BodyDef {
     awake = true,
     fixedRotation = false,
     active = true,
-    linearVelocity = new Vector.zero(),
+    linearVelocity = new Vector2.zero(),
     angularVelocity = 0;
 }

@@ -44,7 +44,7 @@ class Manifold {
   * faceA: The normal on polygonA.
   * faceB: The normal on polygonB.
   */
- final Vector localNormal;
+ final Vector2 localNormal;
 
  /**
   * The meaning of the localPoint depends on the type of this manifold. The
@@ -53,7 +53,7 @@ class Manifold {
   * faceA: The center of faceA.
   * faceB: The center of faceB.
   */
- final Vector localPoint;
+ final Vector2 localPoint;
 
  /** The type of manifold. See [ManifoldType]. */
  int type;
@@ -67,8 +67,8 @@ class Manifold {
   */
  Manifold() :
      points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-     localNormal = new Vector.zero(),
-     localPoint = new Vector.zero(),
+     localNormal = new Vector2.zero(),
+     localPoint = new Vector2.zero(),
      pointCount = 0 {
    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
      points[i] = new ManifoldPoint();
@@ -79,8 +79,8 @@ class Manifold {
   */
  Manifold.copy(Manifold other) :
      points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-     localNormal = new Vector.copy(other.localNormal),
-     localPoint = new Vector.copy(other.localPoint),
+     localNormal = new Vector2.copy(other.localNormal),
+     localPoint = new Vector2.copy(other.localPoint),
      pointCount = other.pointCount,
      type = other.type {
    for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
@@ -114,8 +114,8 @@ already instantiated ManifoldPoints.</p>
 <pre class="source">
 Manifold() :
    points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-   localNormal = new Vector.zero(),
-   localPoint = new Vector.zero(),
+   localNormal = new Vector2.zero(),
+   localPoint = new Vector2.zero(),
    pointCount = 0 {
  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
    points[i] = new ManifoldPoint();
@@ -132,8 +132,8 @@ new <strong>Manifold.copy</strong>(<a href="../box2d/Manifold.html">Manifold</a>
 <pre class="source">
 Manifold.copy(Manifold other) :
    points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-   localNormal = new Vector.copy(other.localNormal),
-   localPoint = new Vector.copy(other.localPoint),
+   localNormal = new Vector2.copy(other.localNormal),
+   localPoint = new Vector2.copy(other.localPoint),
    pointCount = other.pointCount,
    type = other.type {
  for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
@@ -147,7 +147,7 @@ Manifold.copy(Manifold other) :
 <h3>Properties</h3>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to Manifold.localNormal">#</a>
         </h4>
@@ -158,13 +158,13 @@ Circles: not used.
 faceA: The normal on polygonA.
 faceB: The normal on polygonB.</p>
 <pre class="source">
-final Vector localNormal
+final Vector2 localNormal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to Manifold.localPoint">#</a>
         </h4>
@@ -175,7 +175,7 @@ Circles: The local center of circleA.
 faceA: The center of faceA.
 faceB: The center of faceB.</p>
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>

@@ -35,11 +35,11 @@
 <p>Used for computing contact manifolds.</p>
 <pre class="source">
 class ClipVertex {
- Vector v;
+ Vector2 v;
  ContactID id;
 
  ClipVertex() :
-   v = new Vector.zero(),
+   v = new Vector2.zero(),
    id = new ContactID() { }
 
  void setFrom(ClipVertex cv){
@@ -58,7 +58,7 @@ new <strong>ClipVertex</strong>() <a class="anchor-link" href="#ClipVertex"
 <div class="doc">
 <pre class="source">
 ClipVertex() :
- v = new Vector.zero(),
+ v = new Vector2.zero(),
  id = new ContactID() { }
 </pre>
 </div>
@@ -80,13 +80,13 @@ ContactID id
 </div>
 <div class="field"><h4 id="v">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>v</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>v</strong> <a class="anchor-link"
             href="#v"
             title="Permalink to ClipVertex.v">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-Vector v
+Vector2 v
 </pre>
 </div>
 </div>

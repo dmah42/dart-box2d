@@ -75,12 +75,12 @@ abstract class Demo {
   // every frame to minimize overhead.
   Stopwatch _stopwatch;
 
-  Demo(String name, [Vector gravity, this.viewportScale = _VIEWPORT_SCALE])
+  Demo(String name, [Vector2 gravity, this.viewportScale = _VIEWPORT_SCALE])
       : bodies = new List<Body>() {
     _stopwatch = new Stopwatch()..start();
     query("#title").innerHtml = name;
     bool doSleep = true;
-    if (null == gravity) gravity = new Vector(0.0, GRAVITY);
+    if (null == gravity) gravity = new Vector2(0.0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 
@@ -111,7 +111,7 @@ abstract class Demo {
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.
-    final extents = new Vector(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    final extents = new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
     viewport = new CanvasViewportTransform(extents, extents);
     viewport.scale = viewportScale;
 

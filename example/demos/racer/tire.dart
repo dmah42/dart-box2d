@@ -45,7 +45,7 @@ class Tire {
   }
 
   void updateFriction() {
-    final Vector impulse = _lateralVelocity.mulLocal(-_body.mass);
+    final Vector2 impulse = _lateralVelocity.mulLocal(-_body.mass);
     if (impulse.length > _maxLateralImpulse) {
       impulse.mulLocal(_maxLateralImpulse / impulse.length);
     }
@@ -54,7 +54,7 @@ class Tire {
     _body.applyAngularImpulse(
         0.1 * _currentTraction * _body.inertia * (-_body.angularVelocity));
 
-    Vector currentForwardNormal = _forwardVelocity;
+    Vector2 currentForwardNormal = _forwardVelocity;
     final double currentForwardSpeed = currentForwardNormal.length;
     currentForwardNormal.normalize();
     final double dragForceMagnitude = -2 * currentForwardSpeed;
@@ -71,9 +71,9 @@ class Tire {
       default: return;
     }
 
-    Vector currentForwardNormal = _body.getWorldVector(new Vector(0.0, 1.0));
+    Vector2 currentForwardNormal = _body.getWorldVector2(new Vector2(0.0, 1.0));
     final double currentSpeed =
-        Vector.dot(_forwardVelocity, currentForwardNormal);
+        Vector2.dot(_forwardVelocity, currentForwardNormal);
     double force = 0.0;
     if (desiredSpeed < currentSpeed) {
       force = -_maxDriveForce;
@@ -107,15 +107,15 @@ class Tire {
     }
   }
 
-  Vector get _lateralVelocity {
-    final Vector currentRightNormal = _body.getWorldVector(_worldLeft);
-    return currentRightNormal.mulLocal(Vector.dot(currentRightNormal,
+  Vector2 get _lateralVelocity {
+    final Vector2 currentRightNormal = _body.getWorldVector2(_worldLeft);
+    return currentRightNormal.mulLocal(Vector2.dot(currentRightNormal,
                                                   _body.linearVelocity));
   }
 
-  Vector get _forwardVelocity {
-    final Vector currentForwardNormal = _body.getWorldVector(_worldUp);
-    return currentForwardNormal.mulLocal(Vector.dot(currentForwardNormal,
+  Vector2 get _forwardVelocity {
+    final Vector2 currentForwardNormal = _body.getWorldVector2(_worldUp);
+    return currentForwardNormal.mulLocal(Vector2.dot(currentForwardNormal,
                                                     _body.linearVelocity));
   }
 
@@ -128,6 +128,6 @@ class Tire {
   final Set<GroundArea> _groundAreas;
 
   // Cached Vectors to reduce unnecessary object creation.
-  final Vector _worldLeft = new Vector(1.0, 0.0);
-  final Vector _worldUp = new Vector(0.0, 1.0);
+  final Vector2 _worldLeft = new Vector2(1.0, 0.0);
+  final Vector2 _worldUp = new Vector2(0.0, 1.0);
 }

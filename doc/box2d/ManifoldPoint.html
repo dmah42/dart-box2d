@@ -39,7 +39,7 @@ class ManifoldPoint {
   * circleB. For faceA, is the local center of CircleB or the clip point of
   * polygonB. For faceB, is the clip point of polygonA.
   */
- final Vector localPoint;
+ final Vector2 localPoint;
 
  /** The non-penetration impulse. */
  num normalImpulse;
@@ -54,7 +54,7 @@ class ManifoldPoint {
   * Constructs a new ManifoldPoint.
   */
  ManifoldPoint() :
-   localPoint = new Vector.zero(),
+   localPoint = new Vector2.zero(),
    tangentImpulse = 0,
    normalImpulse = 0,
    id = new ContactID();
@@ -63,7 +63,7 @@ class ManifoldPoint {
   * Constructs a new ManifoldPoint that is a copy of the given point.
   */
  ManifoldPoint.copy(ManifoldPoint other) :
-   localPoint = new Vector.copy(other.localPoint),
+   localPoint = new Vector2.copy(other.localPoint),
    normalImpulse = other.normalImpulse,
    tangentImpulse = other.tangentImpulse,
    id = new ContactID.copy(other.id) { }
@@ -90,7 +90,7 @@ new <strong>ManifoldPoint</strong>() <a class="anchor-link" href="#ManifoldPoint
 <p>Constructs a new ManifoldPoint.</p>
 <pre class="source">
 ManifoldPoint() :
- localPoint = new Vector.zero(),
+ localPoint = new Vector2.zero(),
  tangentImpulse = 0,
  normalImpulse = 0,
  id = new ContactID();
@@ -105,7 +105,7 @@ new <strong>ManifoldPoint.copy</strong>(<a href="../box2d/ManifoldPoint.html">Ma
 <p>Constructs a new ManifoldPoint that is a copy of the given point.</p>
 <pre class="source">
 ManifoldPoint.copy(ManifoldPoint other) :
- localPoint = new Vector.copy(other.localPoint),
+ localPoint = new Vector2.copy(other.localPoint),
  normalImpulse = other.normalImpulse,
  tangentImpulse = other.tangentImpulse,
  id = new ContactID.copy(other.id) { }
@@ -130,7 +130,7 @@ final ContactID id
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ManifoldPoint.localPoint">#</a>
         </h4>
@@ -139,7 +139,7 @@ final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</stro
 circleB. For faceA, is the local center of CircleB or the clip point of
 polygonB. For faceB, is the clip point of polygonA.</p>
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>

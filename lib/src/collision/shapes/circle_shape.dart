@@ -22,7 +22,7 @@ class CircleShape extends Shape {
   /**
    * The current position of the center of this circle.
    */
-  final Vector position;
+  final Vector2 position;
 
   /**
    * A constructor for internal use only. Instead use Body.createShape with a
@@ -30,14 +30,14 @@ class CircleShape extends Shape {
    */
   CircleShape() :
     super(ShapeType.CIRCLE, 0),
-    position = new Vector.zero();
+    position = new Vector2.zero();
 
   /**
    * Constructs a new CircleShape equal to the given CircleShape.
    */
   CircleShape.copy(CircleShape other) :
     super(other.type, other.radius),
-    position = new Vector.copy(other.position) { }
+    position = new Vector2.copy(other.position) { }
 
 
   /**
@@ -45,13 +45,13 @@ class CircleShape extends Shape {
    * rotation transform is applied. Implements superclass abstract method of
    * the same name.
    */
-  bool testPoint(Transform transform, Vector point) {
-    Vector center = new Vector.zero();
+  bool testPoint(Transform transform, Vector2 point) {
+    Vector2 center = new Vector2.zero();
     transform.rotation.multiplyVectorToOut(position, center);
     center.addLocal(transform.position);
 
-    Vector d = center.subLocal(point).negateLocal();
-    return Vector.dot(d, d) <= radius * radius;
+    Vector2 d = center.subLocal(point).negateLocal();
+    return Vector2.dot(d, d) <= radius * radius;
   }
 
   /**
@@ -59,7 +59,7 @@ class CircleShape extends Shape {
    * applied. Stores the result in the given box.
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
-    Vector p = new Vector.zero();
+    Vector2 p = new Vector2.zero();
     Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
     p.addLocal(argTransform.position);
 
@@ -80,6 +80,6 @@ class CircleShape extends Shape {
 
     // Store inertia above the local origin.
     massData.inertia = massData.mass * (.5 * radius * radius +
-        Vector.dot(position, position));
+        Vector2.dot(position, position));
   }
 }

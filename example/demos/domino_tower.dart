@@ -52,7 +52,7 @@ class DominoTower extends Demo {
     bd.type = BodyType.DYNAMIC;
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
-    bd.position = new Vector(x, y);
+    bd.position = new Vector2(x, y);
     bd.angle = horizontal ? (Math.PI / 2.0) : 0;
     Body myBody = world.createBody(bd);
     myBody.createFixture(fd);
@@ -69,7 +69,7 @@ class DominoTower extends Demo {
       sd.setAsBox(50.0, 10.0);
 
       BodyDef bd = new BodyDef();
-      bd.position = new Vector(0.0, -10.0);
+      bd.position = new Vector2(0.0, -10.0);
       final body = world.createBody(bd);
       body.createFixtureFromShape(sd);
       bodies.add(body);
@@ -88,19 +88,19 @@ class DominoTower extends Demo {
       fd.friction = 0;
       fd.restitution = 0.85;
       bd.bullet = true;
-      bd.position = new Vector(30.0, 5.00);
+      bd.position = new Vector2(30.0, 5.00);
       Body b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new Vector(-25.0, -25.0);
+      b.linearVelocity = new Vector2(-25.0, -25.0);
       b.angularVelocity = 6.7;
 
       fd.density = 25;
-      bd.position = new Vector(-30.0, 25.0);
+      bd.position = new Vector2(-30.0, 25.0);
       b = world.createBody(bd);
       bodies.add(b);
       b.createFixture(fd);
-      b.linearVelocity = new Vector(35.0, -10.0);
+      b.linearVelocity = new Vector2(35.0, -10.0);
       b.angularVelocity = -8.3;
     }
 

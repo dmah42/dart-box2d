@@ -20,10 +20,10 @@ part of box2d;
 
 class DistanceOutput {
   /** Closest point on shapeA */
-  final Vector pointA;
+  final Vector2 pointA;
 
   /** Closest point on shapeB */
-  final Vector pointB;
+  final Vector2 pointB;
 
   num distance;
 
@@ -31,6 +31,6 @@ class DistanceOutput {
   int iterations;
 
   DistanceOutput() :
-    pointA = new Vector.zero(),
-    pointB = new Vector.zero() { }
+    pointA = new Vector2.zero(),
+    pointB = new Vector2.zero();
 }

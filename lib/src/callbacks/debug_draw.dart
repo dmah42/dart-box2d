@@ -51,22 +51,22 @@ abstract class DebugDraw {
   void clearFlags(int value) { flags &= ~value; }
 
   /** Draw a closed polygon provided in CCW order. */
-  void drawPolygon(List<Vector> vertices, int vertexCount, Color3 color);
+  void drawPolygon(List<Vector2> vertices, int vertexCount, Color3 color);
 
   /** Draws the given point with the given radius and color.  */
-  void drawPoint(Vector point, num radiusOnScreen, Color3 color);
+  void drawPoint(Vector2 point, num radiusOnScreen, Color3 color);
 
   /** Draw a solid closed polygon provided in CCW order. */
-  void drawSolidPolygon(List<Vector> vertices, int vertexCount, Color3 color);
+  void drawSolidPolygon(List<Vector2> vertices, int vertexCount, Color3 color);
 
   /** Draw a circle. */
-  void drawCircle(Vector center, num radius, Color3 color, [Vector axis]);
+  void drawCircle(Vector2 center, num radius, Color3 color, [Vector2 axis]);
 
   /** Draw a solid circle. */
-  void drawSolidCircle(Vector center, num radius, Color3 color, [Vector axis]);
+  void drawSolidCircle(Vector2 center, num radius, Color3 color, [Vector2 axis]);
 
   /** Draw a line segment. */
-  void drawSegment(Vector p1, Vector p2, Color3 color);
+  void drawSegment(Vector2 p1, Vector2 p2, Color3 color);
 
   /** Draw a transform.  Choose your own length scale. */
   void drawTransform(Transform xf, Color3 color);
@@ -87,7 +87,7 @@ abstract class DebugDraw {
    * Screen coordinates are specified in argScreen. These coordinates are
    * converted to World coordinates and placed in the argWorld return vector.
    */
-  void getScreenToWorldToOut(Vector argScreen, Vector argWorld) {
+  void getScreenToWorldToOut(Vector2 argScreen, Vector2 argWorld) {
     viewportTransform.getScreenToWorld(argScreen, argWorld);
   }
 
@@ -95,7 +95,7 @@ abstract class DebugDraw {
    * World coordinates are specified in argWorld. These coordinates are
    * converted to screen coordinates and placed in the argScreen return vector.
    */
-  void getWorldToScreenToOut(Vector argWorld, Vector argScreen) {
+  void getWorldToScreenToOut(Vector2 argWorld, Vector2 argScreen) {
     viewportTransform.getWorldToScreen(argWorld, argScreen);
   }
 }

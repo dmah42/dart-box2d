@@ -22,7 +22,7 @@ class MathBox {
   /**
    * Return the distance between the two given vectors, but squared.
    */
-  static double distanceSquared(Vector v1, Vector v2) {
+  static double distanceSquared(Vector2 v1, Vector2 v2) {
     double dx = (v1.x - v2.x);
     double dy = (v1.y - v2.y);
     return dx * dx + dy * dy;
@@ -31,7 +31,7 @@ class MathBox {
   /**
    * Return the distance between the two given vectors.
    */
-  static double distance(Vector v1, Vector v2) {
+  static double distance(Vector2 v1, Vector2 v2) {
     return Math.sqrt(distanceSquared(v1, v2));
   }
 

@@ -28,10 +28,10 @@ class Distance {
   Simplex simplex;
   List<int> saveA;
   List<int> saveB;
-  Vector closestPoint;
-  Vector searchDirection;
-  Vector temp;
-  Vector normal;
+  Vector2 closestPoint;
+  Vector2 searchDirection;
+  Vector2 temp;
+  Vector2 normal;
 
   /**
    * Construct a new Distance object. For internal use only. Don't directly
@@ -41,10 +41,10 @@ class Distance {
     simplex = new Simplex(),
     saveA = new List<int>(3),
     saveB = new List<int>(3),
-    closestPoint = new Vector.zero(),
-    searchDirection = new Vector.zero(),
-    temp = new Vector.zero(),
-    normal = new Vector.zero(),
+    closestPoint = new Vector2.zero(),
+    searchDirection = new Vector2.zero(),
+    temp = new Vector2.zero(),
+    normal = new Vector2.zero(),
     calls = 0,
     iters = 0,
     maxIters = 20 { }

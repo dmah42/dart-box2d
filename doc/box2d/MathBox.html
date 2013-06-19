@@ -41,7 +41,7 @@ class MathBox {
  /**
   * Return the distance between the two given vectors, but squared.
   */
- static double distanceSquared(Vector v1, Vector v2) {
+ static double distanceSquared(Vector2 v1, Vector2 v2) {
    double dx = (v1.x - v2.x);
    double dy = (v1.y - v2.y);
    return dx * dx + dy * dy;
@@ -50,7 +50,7 @@ class MathBox {
  /**
   * Return the distance between the two given vectors.
   */
- static double distance(Vector v1, Vector v2) {
+ static double distance(Vector2 v1, Vector2 v2) {
    return Math.sqrt(distanceSquared(v1, v2));
  }
 
@@ -98,12 +98,12 @@ static const double TWO_PI = Math.PI * 2.0
 <h3>Static Methods</h3>
 <div class="method"><h4 id="distanceSquared">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceSquared</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#distanceSquared"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceSquared</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distanceSquared"
               title="Permalink to MathBox.distanceSquared">#</a></h4>
 <div class="doc">
 <p>Return the distance between the two given vectors, but squared.</p>
 <pre class="source">
-static double distanceSquared(Vector v1, Vector v2) {
+static double distanceSquared(Vector2 v1, Vector2 v2) {
  double dx = (v1.x - v2.x);
  double dy = (v1.y - v2.y);
  return dx * dx + dy * dy;
@@ -113,12 +113,12 @@ static double distanceSquared(Vector v1, Vector v2) {
 </div>
 <div class="method"><h4 id="distance">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distance</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#distance"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distance</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distance"
               title="Permalink to MathBox.distance">#</a></h4>
 <div class="doc">
 <p>Return the distance between the two given vectors.</p>
 <pre class="source">
-static double distance(Vector v1, Vector v2) {
+static double distance(Vector2 v1, Vector2 v2) {
  return Math.sqrt(distanceSquared(v1, v2));
 }
 </pre>

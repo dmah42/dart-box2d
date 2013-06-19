@@ -140,7 +140,7 @@ class Fixture {
    box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
        _poolOne.upperBound.y : _poolTwo.upperBound.y;
 
-   Vector disp = _poolOne.lowerBound;
+   Vector2 disp = _poolOne.lowerBound;
    disp.x = transformTwo.position.x - transformOne.position.x;
    disp.y = transformTwo.position.y - transformOne.position.y;
 
@@ -451,7 +451,7 @@ void synchronize(BroadPhase broadPhase, Transform transformOne,
  box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
      _poolOne.upperBound.y : _poolTwo.upperBound.y;
 
- Vector disp = _poolOne.lowerBound;
+ Vector2 disp = _poolOne.lowerBound;
  disp.x = transformTwo.position.x - transformOne.position.x;
  disp.y = transformTwo.position.y - transformOne.position.y;
 

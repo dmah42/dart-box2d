@@ -93,7 +93,7 @@ class BroadPhase implements TreeCallback {
   * Call MoveProxy as many times as you like, then when you are done
   * call UpdatePairs to constize the proxy pairs (for your time step).
   */
- void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+ void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) {
    if (_tree.moveProxy(proxy, box, displacement))
      _bufferMove(proxy);
  }
@@ -374,13 +374,13 @@ void destroyProxy(DynamicTreeNode proxy) {
 </div>
 <div class="method"><h4 id="moveProxy">
 <button class="show-code">Code</button>
-void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../box2d/Vector.html">Vector</a> displacement) <a class="anchor-link" href="#moveProxy"
+void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../box2d/Vector2.html">Vector2</a> displacement) <a class="anchor-link" href="#moveProxy"
               title="Permalink to BroadPhase.moveProxy">#</a></h4>
 <div class="doc">
 <p>Call MoveProxy as many times as you like, then when you are done
 call UpdatePairs to constize the proxy pairs (for your time step).</p>
 <pre class="source">
-void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector displacement) {
+void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) {
  if (_tree.moveProxy(proxy, box, displacement))
    _bufferMove(proxy);
 }

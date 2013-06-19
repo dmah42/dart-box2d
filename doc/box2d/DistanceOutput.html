@@ -35,10 +35,10 @@
 <pre class="source">
 class DistanceOutput {
  /** Closest point on shapeA */
- final Vector pointA;
+ final Vector2 pointA;
 
  /** Closest point on shapeB */
- final Vector pointB;
+ final Vector2 pointB;
 
  num distance;
 
@@ -46,8 +46,8 @@ class DistanceOutput {
  int iterations;
 
  DistanceOutput() :
-   pointA = new Vector.zero(),
-   pointB = new Vector.zero() { }
+   pointA = new Vector2.zero(),
+   pointB = new Vector2.zero();
 }
 </pre>
 </div>
@@ -60,8 +60,8 @@ new <strong>DistanceOutput</strong>() <a class="anchor-link" href="#DistanceOutp
 <div class="doc">
 <pre class="source">
 DistanceOutput() :
- pointA = new Vector.zero(),
- pointB = new Vector.zero() { }
+ pointA = new Vector2.zero(),
+ pointB = new Vector2.zero();
 </pre>
 </div>
 </div>
@@ -95,27 +95,27 @@ int iterations
 </div>
 <div class="field"><h4 id="pointA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>pointA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pointA</strong> <a class="anchor-link"
             href="#pointA"
             title="Permalink to DistanceOutput.pointA">#</a>
         </h4>
         <div class="doc">
 <p>Closest point on shapeA </p>
 <pre class="source">
-final Vector pointA
+final Vector2 pointA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="pointB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>pointB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pointB</strong> <a class="anchor-link"
             href="#pointB"
             title="Permalink to DistanceOutput.pointB">#</a>
         </h4>
         <div class="doc">
 <p>Closest point on shapeB </p>
 <pre class="source">
-final Vector pointB
+final Vector2 pointB
 </pre>
 </div>
 </div>

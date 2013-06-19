@@ -18,18 +18,18 @@ part of box2d;
 
 class AxisAlignedBox {
   /** Bottom left vertex of bounding box. */
-  Vector lowerBound;
+  Vector2 lowerBound;
 
   /** Top right vertex of bounding box. */
-  Vector upperBound;
+  Vector2 upperBound;
 
   /**
    * Constructs a new box with the given lower and upper bounds. If no bounds
    * are specified, constructs the box with both bounds at the origin.
    */
   AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-    if (lowerBound == null) lowerBound = new Vector.zero();
-    if (upperBound == null) upperBound = new Vector.zero();
+    if (lowerBound == null) lowerBound = new Vector2.zero();
+    if (upperBound == null) upperBound = new Vector2.zero();
   }
 
   /**
@@ -47,7 +47,7 @@ class AxisAlignedBox {
   }
 
   /** Sets the bounds to the given values. */
-  AxisAlignedBox setBounds(Vector lower, Vector upper) {
+  AxisAlignedBox setBounds(Vector2 lower, Vector2 upper) {
     lowerBound.setFrom(lower);
     upperBound.setFrom(upper);
     return this;
@@ -60,14 +60,14 @@ class AxisAlignedBox {
 
   /**
    * Returns true if the lower bound is strictly less than the upper bound and
-   * both bounds are themselves valid (Vector.isValid() returns true).
+   * both bounds are themselves valid (Vector2.isValid() returns true).
    */
   bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */
-  Vector get center {
-    Vector c = new Vector.copy(lowerBound);
+  Vector2 get center {
+    Vector2 c = new Vector2.copy(lowerBound);
     c.addLocal(upperBound);
     c.mulLocal(.5);
     return c;

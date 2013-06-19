@@ -35,18 +35,18 @@
 <pre class="source">
 class AxisAlignedBox {
  /** Bottom left vertex of bounding box. */
- Vector lowerBound;
+ Vector2 lowerBound;
 
  /** Top right vertex of bounding box. */
- Vector upperBound;
+ Vector2 upperBound;
 
  /**
   * Constructs a new box with the given lower and upper bounds. If no bounds
   * are specified, constructs the box with both bounds at the origin.
   */
  AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
-   if (lowerBound == null) lowerBound = new Vector.zero();
-   if (upperBound == null) upperBound = new Vector.zero();
+   if (lowerBound == null) lowerBound = new Vector2.zero();
+   if (upperBound == null) upperBound = new Vector2.zero();
  }
 
  /**
@@ -64,7 +64,7 @@ class AxisAlignedBox {
  }
 
  /** Sets the bounds to the given values. */
- AxisAlignedBox setBounds(Vector lower, Vector upper) {
+ AxisAlignedBox setBounds(Vector2 lower, Vector2 upper) {
    lowerBound.setFrom(lower);
    upperBound.setFrom(upper);
    return this;
@@ -77,14 +77,14 @@ class AxisAlignedBox {
 
  /**
   * Returns true if the lower bound is strictly less than the upper bound and
-  * both bounds are themselves valid (Vector.isValid() returns true).
+  * both bounds are themselves valid (Vector2.isValid() returns true).
   */
  bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
                    lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
 
  /** Returns the center of this box. */
- Vector get center {
-   Vector c = new Vector.copy(lowerBound);
+ Vector2 get center {
+   Vector2 c = new Vector2.copy(lowerBound);
    c.addLocal(upperBound);
    c.mulLocal(.5);
    return c;
@@ -125,15 +125,15 @@ static bool testOverlap(AxisAlignedBox a, AxisAlignedBox b) =&gt;
 <h3>Constructors</h3>
 <div class="method"><h4 id="AxisAlignedBox">
 <button class="show-code">Code</button>
-new <strong>AxisAlignedBox</strong>([<a href="../box2d/Vector.html">Vector</a> lowerBound = null, <a href="../box2d/Vector.html">Vector</a> upperBound = null]) <a class="anchor-link" href="#AxisAlignedBox"
+new <strong>AxisAlignedBox</strong>([<a href="../box2d/Vector2.html">Vector2</a> lowerBound = null, <a href="../box2d/Vector2.html">Vector2</a> upperBound = null]) <a class="anchor-link" href="#AxisAlignedBox"
               title="Permalink to AxisAlignedBox.AxisAlignedBox">#</a></h4>
 <div class="doc">
 <p>Constructs a new box with the given lower and upper bounds. If no bounds
 are specified, constructs the box with both bounds at the origin.</p>
 <pre class="source">
 AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
- if (lowerBound == null) lowerBound = new Vector.zero();
- if (upperBound == null) upperBound = new Vector.zero();
+ if (lowerBound == null) lowerBound = new Vector2.zero();
+ if (upperBound == null) upperBound = new Vector2.zero();
 }
 </pre>
 </div>
@@ -143,15 +143,15 @@ AxisAlignedBox([this.lowerBound = null, this.upperBound = null]) {
 <h3>Properties</h3>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to AxisAlignedBox.center">#</a>
         </h4>
         <div class="doc">
 <p>Returns the center of this box. </p>
 <pre class="source">
-Vector get center {
- Vector c = new Vector.copy(lowerBound);
+Vector2 get center {
+ Vector2 c = new Vector2.copy(lowerBound);
  c.addLocal(upperBound);
  c.mulLocal(.5);
  return c;
@@ -161,27 +161,27 @@ Vector get center {
 </div>
 <div class="field"><h4 id="lowerBound">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>lowerBound</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>lowerBound</strong> <a class="anchor-link"
             href="#lowerBound"
             title="Permalink to AxisAlignedBox.lowerBound">#</a>
         </h4>
         <div class="doc">
 <p>Bottom left vertex of bounding box. </p>
 <pre class="source">
-Vector lowerBound
+Vector2 lowerBound
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="upperBound">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>upperBound</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>upperBound</strong> <a class="anchor-link"
             href="#upperBound"
             title="Permalink to AxisAlignedBox.upperBound">#</a>
         </h4>
         <div class="doc">
 <p>Top right vertex of bounding box. </p>
 <pre class="source">
-Vector upperBound
+Vector2 upperBound
 </pre>
 </div>
 </div>
@@ -207,7 +207,7 @@ bool contains(AxisAlignedBox aabb) =&gt;
               title="Permalink to AxisAlignedBox.isValid">#</a></h4>
 <div class="doc">
 <p>Returns true if the lower bound is strictly less than the upper bound and
-both bounds are themselves valid (Vector.isValid() returns true).</p>
+both bounds are themselves valid (Vector2.isValid() returns true).</p>
 <pre class="source">
 bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&amp;
                  lowerBound.x &lt; upperBound.x &amp;&amp; lowerBound.y &lt; upperBound.y;
@@ -216,12 +216,12 @@ bool isValid() =&gt; lowerBound.isValid() &amp;&amp; upperBound.isValid() &amp;&
 </div>
 <div class="method"><h4 id="setBounds">
 <button class="show-code">Code</button>
-<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> <strong>setBounds</strong>(<a href="../box2d/Vector.html">Vector</a> lower, <a href="../box2d/Vector.html">Vector</a> upper) <a class="anchor-link" href="#setBounds"
+<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> <strong>setBounds</strong>(<a href="../box2d/Vector2.html">Vector2</a> lower, <a href="../box2d/Vector2.html">Vector2</a> upper) <a class="anchor-link" href="#setBounds"
               title="Permalink to AxisAlignedBox.setBounds">#</a></h4>
 <div class="doc">
 <p>Sets the bounds to the given values. </p>
 <pre class="source">
-AxisAlignedBox setBounds(Vector lower, Vector upper) {
+AxisAlignedBox setBounds(Vector2 lower, Vector2 upper) {
  lowerBound.setFrom(lower);
  upperBound.setFrom(upper);
  return this;

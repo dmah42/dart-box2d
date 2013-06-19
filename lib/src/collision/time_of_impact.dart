@@ -251,24 +251,24 @@ class SeparationFunction {
   DistanceProxy proxyA;
   DistanceProxy proxyB;
   int type;
-  final Vector localPoint;
-  final Vector axis;
+  final Vector2 localPoint;
+  final Vector2 axis;
   Sweep sweepA;
   Sweep sweepB;
 
   /** Pooling */
-  final Vector localPointA;
-  final Vector localPointB;
-  final Vector pointA;
-  final Vector pointB;
-  final Vector localPointA1;
-  final Vector localPointA2;
-  final Vector normal;
-  final Vector localPointB1;
-  final Vector localPointB2;
-  final Vector axisA;
-  final Vector axisB;
-  final Vector temp;
+  final Vector2 localPointA;
+  final Vector2 localPointB;
+  final Vector2 pointA;
+  final Vector2 pointB;
+  final Vector2 localPointA1;
+  final Vector2 localPointA2;
+  final Vector2 normal;
+  final Vector2 localPointB1;
+  final Vector2 localPointB2;
+  final Vector2 axisA;
+  final Vector2 axisB;
+  final Vector2 temp;
   final Transform xfa;
   final Transform xfb;
 
@@ -276,24 +276,24 @@ class SeparationFunction {
     proxyA = new DistanceProxy(),
     proxyB = new DistanceProxy(),
     type = SeparationType.POINTS,
-    localPoint = new Vector.zero(),
-    axis = new Vector.zero(),
+    localPoint = new Vector2.zero(),
+    axis = new Vector2.zero(),
     sweepA = new Sweep(),
     sweepB = new Sweep(),
-    localPointA = new Vector.zero(),
-    localPointB = new Vector.zero(),
-    pointA = new Vector.zero(),
-    pointB = new Vector.zero(),
-    localPointA1 = new Vector.zero(),
-    localPointA2 = new Vector.zero(),
-    normal = new Vector.zero(),
-    localPointB1 = new Vector.zero(),
-    localPointB2 = new Vector.zero(),
-    temp = new Vector.zero(),
+    localPointA = new Vector2.zero(),
+    localPointB = new Vector2.zero(),
+    pointA = new Vector2.zero(),
+    pointB = new Vector2.zero(),
+    localPointA1 = new Vector2.zero(),
+    localPointA2 = new Vector2.zero(),
+    normal = new Vector2.zero(),
+    localPointB1 = new Vector2.zero(),
+    localPointB2 = new Vector2.zero(),
+    temp = new Vector2.zero(),
     xfa = new Transform(),
     xfb = new Transform(),
-    axisA = new Vector.zero(),
-    axisB = new Vector.zero();
+    axisA = new Vector2.zero(),
+    axisB = new Vector2.zero();
 
   num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
       argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -325,7 +325,7 @@ class SeparationFunction {
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.setFrom(localPointB2).subLocal(localPointB1);
-      Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+      Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
       Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
@@ -340,7 +340,7 @@ class SeparationFunction {
 
       temp.setFrom(pointA);
       temp.subLocal(pointB);
-      num s = Vector.dot(temp, normal);
+      num s = Vector2.dot(temp, normal);
       if (s < 0.0) {
         axis.negateLocal();
         s = -s;
@@ -356,7 +356,7 @@ class SeparationFunction {
 
       temp.setFrom(localPointA2);
       temp.subLocal(localPointA1);
-      Vector.crossVectorAndNumToOut(temp, 1.0, axis);
+      Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
       Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
@@ -371,7 +371,7 @@ class SeparationFunction {
 
       temp.setFrom(pointB);
       temp.subLocal(pointA);
-      num s = Vector.dot(temp, normal);
+      num s = Vector2.dot(temp, normal);
       if (s < 0.0) {
         axis.negateLocal();
         s = -s;
@@ -400,7 +400,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector.dot(pointB.subLocal(pointA), axis);
+        num separation = Vector2.dot(pointB.subLocal(pointA), axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -417,7 +417,7 @@ class SeparationFunction {
         localPointB.setFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector.dot(pointB.subLocal(pointA), normal);
+        num separation = Vector2.dot(pointB.subLocal(pointA), normal);
         return separation;
 
       case SeparationType.FACE_B:
@@ -434,7 +434,7 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = Vector.dot(pointA.subLocal(pointB), normal);
+        num separation = Vector2.dot(pointA.subLocal(pointB), normal);
         return separation;
 
       default:
@@ -462,7 +462,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector.dot(pointB.subLocal(pointA), axis);
+        num separation = Vector2.dot(pointB.subLocal(pointA), axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -475,7 +475,7 @@ class SeparationFunction {
 
         localPointB.setFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        num separation = Vector.dot(pointB.subLocal(pointA), normal);
+        num separation = Vector2.dot(pointB.subLocal(pointA), normal);
         return separation;
 
       case SeparationType.FACE_B:
@@ -489,7 +489,7 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = Vector.dot(pointA.subLocal(pointB), normal);
+        num separation = Vector2.dot(pointA.subLocal(pointB), normal);
         return separation;
 
       default:

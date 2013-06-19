@@ -16,11 +16,11 @@ part of box2d;
 
 class Sweep {
   /** Local center of mass position. */
-  final Vector localCenter;
+  final Vector2 localCenter;
 
   /** Center world positions. */
-  final Vector centerZero;
-  final Vector center;
+  final Vector2 centerZero;
+  final Vector2 center;
 
   /** World angles. */
   double angleZero;
@@ -31,9 +31,9 @@ class Sweep {
    * set to zero.
    */
   Sweep()
-      : localCenter = new Vector.zero(),
-        centerZero = new Vector.zero(),
-        center = new Vector.zero(),
+      : localCenter = new Vector2.zero(),
+        centerZero = new Vector2.zero(),
+        center = new Vector2.zero(),
         angleZero = 0.0,
         angle = 0.0;
 
@@ -41,9 +41,9 @@ class Sweep {
    * Constructs a new sweep that is a copy of the given Sweep.
    */
   Sweep.copy(Sweep other)
-      : localCenter = new Vector.copy(other.localCenter),
-        centerZero = new Vector.copy(other.centerZero),
-        center = new Vector.copy(other.center),
+      : localCenter = new Vector2.copy(other.localCenter),
+        centerZero = new Vector2.copy(other.centerZero),
+        center = new Vector2.copy(other.center),
         angleZero = other.angleZero,
         angle = other.angle;
 

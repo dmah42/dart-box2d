@@ -51,7 +51,7 @@ class World {
  int _bodyCount;
  int _jointCount;
 
- final Vector _gravity;
+ final Vector2 _gravity;
  bool _allowSleep;
 
  DebugDraw _debugDraw;
@@ -80,12 +80,12 @@ class World {
  List&lt;List&lt;ContactRegister&gt;&gt; _contactStacks;
 
  /** Pooling */
- final Vector center;
- final Vector axis;
+ final Vector2 center;
+ final Vector2 axis;
 
  final TimeStep timestep;
- final Vector cA;
- final Vector cB;
+ final Vector2 cA;
+ final Vector2 cB;
  final WorldQueryWrapper wqwrapper;
 
  final TimeOfImpactInput toiInput;
@@ -104,7 +104,7 @@ class World {
   * doSleep
   *   improve performance by not simulating inactive bodies.
   */
- World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
+ World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
    _pool = argPool,
    _jointDestructionListener = null,
    _fixtureDestructionListener = null,
@@ -129,11 +129,11 @@ class World {
    _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
    // Initialize Pool Objects.
-   center = new Vector.zero(),
-   axis = new Vector.zero(),
+   center = new Vector2.zero(),
+   axis = new Vector2.zero(),
    timestep = new TimeStep(),
-   cA = new Vector.zero(),
-   cB = new Vector.zero(),
+   cA = new Vector2.zero(),
+   cB = new Vector2.zero(),
    wqwrapper = new WorldQueryWrapper(),
    toiInput = new TimeOfImpactInput(),
    toiOutput = new TimeOfImpactOutput(),
@@ -619,9 +619,9 @@ class World {
        for (Fixture f = b.fixtureList; f != null; f = f.next) {
          AxisAlignedBox aabb = f.proxy.box;
 
-         List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
+         List&lt;Vector2&gt; vs = new List&lt;Vector2&gt;(4);
          for (int i = 0; i &lt; vs.length; i++) {
-           vs[i] = new Vector.zero();
+           vs[i] = new Vector2.zero();
          }
 
          vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -1081,7 +1081,7 @@ class World {
      case ShapeType.CIRCLE:
        final CircleShape circle = fixture.shape;
 
-       // Vector center = Mul(xf, circle.p);
+       // Vector2 center = Mul(xf, circle.p);
        Transform.mulToOut(xf, circle.position, center);
        num radius = circle.radius;
        axis.setFrom(xf.rotation.col1);
@@ -1097,8 +1097,8 @@ class World {
        final PolygonShape poly = fixture.shape;
        int vertexCount = poly.vertexCount;
        assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-       List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
-           vertexCount, (i) =&gt; new Vector.zero());
+       List&lt;Vector2&gt; vertices = new List&lt;Vector2&gt;.generate(
+           vertexCount, (i) =&gt; new Vector2.zero());
 
        for (int i = 0; i &lt; vertexCount; ++i) {
          assert(poly.vertices[i] != null);
@@ -1124,10 +1124,10 @@ class World {
    Body bodyB = joint.bodyB;
    Transform xf1 = bodyA.originTransform;
    Transform xf2 = bodyB.originTransform;
-   Vector x1 = new Vector.copy(xf1.position);
-   Vector x2 = new Vector.copy(xf2.position);
-   Vector p1 = new Vector.zero();
-   Vector p2 = new Vector.zero();
+   Vector2 x1 = new Vector2.copy(xf1.position);
+   Vector2 x2 = new Vector2.copy(xf2.position);
+   Vector2 p1 = new Vector2.zero();
+   Vector2 p2 = new Vector2.zero();
    joint.getAnchorA(p1);
    joint.getAnchorB(p2);
 
@@ -1141,8 +1141,8 @@ class World {
 
      case JointType.PULLEY :
        throw new UnimplementedError();
-       //Vector s1 = pulley.getGroundAnchorA();
-       //Vector s2 = pulley.getGroundAnchorB();
+       //Vector2 s1 = pulley.getGroundAnchorA();
+       //Vector2 s2 = pulley.getGroundAnchorB();
        //_debugDraw.drawSegment(s1, p1, color);
        //_debugDraw.drawSegment(s2, p2, color);
        //_debugDraw.drawSegment(s1, s2, color);
@@ -1158,8 +1158,8 @@ class World {
        // Don't draw anything for mouse. Already have cursor!
        break;
      default :
-       Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
-       Vector p2t = new Vector.copy(p2);
+       Vector2 p1t = new Vector2.copy(p1); // copies since drawSegment modifies
+       Vector2 p2t = new Vector2.copy(p2);
        _debugDraw.drawSegment(x1, p1, color);
        _debugDraw.drawSegment(p1t, p2, color);
        _debugDraw.drawSegment(x2, p2t, color);
@@ -1236,7 +1236,7 @@ static const int WORLD_POOL_SIZE = 100
 <h3>Constructors</h3>
 <div class="method"><h4 id="World">
 <button class="show-code">Code</button>
-new <strong>World</strong>(<a href="../box2d/Vector.html">Vector</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
+new <strong>World</strong>(<a href="../box2d/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
               title="Permalink to World.World">#</a></h4>
 <div class="doc">
 <p>Constructs a world object.</p>
@@ -1245,7 +1245,7 @@ new <strong>World</strong>(<a href="../box2d/Vector.html">Vector</a> gravity, <a
 doSleep
   improve performance by not simulating inactive bodies.</p>
 <pre class="source">
-World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
+World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
  _pool = argPool,
  _jointDestructionListener = null,
  _fixtureDestructionListener = null,
@@ -1270,11 +1270,11 @@ World(Vector gravity, bool doSleep, DefaultWorldPool argPool) :
  _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
  // Initialize Pool Objects.
- center = new Vector.zero(),
- axis = new Vector.zero(),
+ center = new Vector2.zero(),
+ axis = new Vector2.zero(),
  timestep = new TimeStep(),
- cA = new Vector.zero(),
- cB = new Vector.zero(),
+ cA = new Vector2.zero(),
+ cB = new Vector2.zero(),
  wqwrapper = new WorldQueryWrapper(),
  toiInput = new TimeOfImpactInput(),
  toiOutput = new TimeOfImpactOutput(),
@@ -1329,13 +1329,13 @@ void set autoClearForces(bool flag) {
 </div>
 <div class="field"><h4 id="axis">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>axis</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>axis</strong> <a class="anchor-link"
             href="#axis"
             title="Permalink to World.axis">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector axis
+final Vector2 axis
 </pre>
 </div>
 </div>
@@ -1365,38 +1365,38 @@ Body get bodyList =&gt; _bodyList;
 </div>
 <div class="field"><h4 id="cA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>cA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>cA</strong> <a class="anchor-link"
             href="#cA"
             title="Permalink to World.cA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector cA
+final Vector2 cA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="cB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>cB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>cB</strong> <a class="anchor-link"
             href="#cB"
             title="Permalink to World.cB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector cB
+final Vector2 cB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to World.center">#</a>
         </h4>
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final Vector center
+final Vector2 center
 </pre>
 </div>
 </div>
@@ -1971,9 +1971,9 @@ void drawDebugData() {
      for (Fixture f = b.fixtureList; f != null; f = f.next) {
        AxisAlignedBox aabb = f.proxy.box;
 
-       List&lt;Vector&gt; vs = new List&lt;Vector&gt;(4);
+       List&lt;Vector2&gt; vs = new List&lt;Vector2&gt;(4);
        for (int i = 0; i &lt; vs.length; i++) {
-         vs[i] = new Vector.zero();
+         vs[i] = new Vector2.zero();
        }
 
        vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
@@ -2016,10 +2016,10 @@ void drawJoint(Joint joint) {
  Body bodyB = joint.bodyB;
  Transform xf1 = bodyA.originTransform;
  Transform xf2 = bodyB.originTransform;
- Vector x1 = new Vector.copy(xf1.position);
- Vector x2 = new Vector.copy(xf2.position);
- Vector p1 = new Vector.zero();
- Vector p2 = new Vector.zero();
+ Vector2 x1 = new Vector2.copy(xf1.position);
+ Vector2 x2 = new Vector2.copy(xf2.position);
+ Vector2 p1 = new Vector2.zero();
+ Vector2 p2 = new Vector2.zero();
  joint.getAnchorA(p1);
  joint.getAnchorB(p2);
 
@@ -2033,8 +2033,8 @@ void drawJoint(Joint joint) {
 
    case JointType.PULLEY :
      throw new UnimplementedError();
-     //Vector s1 = pulley.getGroundAnchorA();
-     //Vector s2 = pulley.getGroundAnchorB();
+     //Vector2 s1 = pulley.getGroundAnchorA();
+     //Vector2 s2 = pulley.getGroundAnchorB();
      //_debugDraw.drawSegment(s1, p1, color);
      //_debugDraw.drawSegment(s2, p2, color);
      //_debugDraw.drawSegment(s1, s2, color);
@@ -2050,8 +2050,8 @@ void drawJoint(Joint joint) {
      // Don't draw anything for mouse. Already have cursor!
      break;
    default :
-     Vector p1t = new Vector.copy(p1); // copies since drawSegment modifies
-     Vector p2t = new Vector.copy(p2);
+     Vector2 p1t = new Vector2.copy(p1); // copies since drawSegment modifies
+     Vector2 p2t = new Vector2.copy(p2);
      _debugDraw.drawSegment(x1, p1, color);
      _debugDraw.drawSegment(p1t, p2, color);
      _debugDraw.drawSegment(x2, p2t, color);
@@ -2072,7 +2072,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
    case ShapeType.CIRCLE:
      final CircleShape circle = fixture.shape;
 
-     // Vector center = Mul(xf, circle.p);
+     // Vector2 center = Mul(xf, circle.p);
      Transform.mulToOut(xf, circle.position, center);
      num radius = circle.radius;
      axis.setFrom(xf.rotation.col1);
@@ -2088,8 +2088,8 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
      final PolygonShape poly = fixture.shape;
      int vertexCount = poly.vertexCount;
      assert (vertexCount &lt;= Settings.MAX_POLYGON_VERTICES);
-     List&lt;Vector&gt; vertices = new List&lt;Vector&gt;.generate(
-         vertexCount, (i) =&gt; new Vector.zero());
+     List&lt;Vector2&gt; vertices = new List&lt;Vector2&gt;.generate(
+         vertexCount, (i) =&gt; new Vector2.zero());
 
      for (int i = 0; i &lt; vertexCount; ++i) {
        assert(poly.vertices[i] != null);

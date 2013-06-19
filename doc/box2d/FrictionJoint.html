@@ -34,32 +34,32 @@
 <div class="doc">
 <pre class="source">
 class FrictionJoint extends Joint {
- final Vector _localAnchorA;
- final Vector _localAnchorB;
+ final Vector2 _localAnchorA;
+ final Vector2 _localAnchorB;
 
- Vector _linearImpulse;
+ Vector2 _linearImpulse;
  num _angularImpulse;
  num _maxForce;
  num _maxTorque;
 
  FrictionJoint(FrictionJointDef def)
-     : _localAnchorA = new Vector.copy(def.localAnchorA),
-       _localAnchorB = new Vector.copy(def.localAnchorB),
-       _linearImpulse = new Vector.zero(),
+     : _localAnchorA = new Vector2.copy(def.localAnchorA),
+       _localAnchorB = new Vector2.copy(def.localAnchorB),
+       _linearImpulse = new Vector2.zero(),
        _angularImpulse = 0.0,
        _maxForce = def.maxForce,
        _maxTorque = def.maxTorque,
        super(def);
 
- Vector getLocalAnchorA(Vector argOut) {
+ Vector2 getLocalAnchorA(Vector2 argOut) {
    bodyA.getWorldPointToOut(_localAnchorA, argOut);
  }
 
- Vector getLocalAnchorB(Vector argOut) {
+ Vector2 getLocalAnchorB(Vector2 argOut) {
    bodyB.getWorldPointToOut(_localAnchorB, argOut);
  }
 
- void getReactionForce(num inv_dt, Vector argOut) {
+ void getReactionForce(num inv_dt, Vector2 argOut) {
    argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
  }
 
@@ -81,8 +81,8 @@ class FrictionJoint extends Joint {
 
  void initVelocityConstraints(TimeStep step) {
    // Compute the effective mass matrix.
-   Vector r1 = new Vector.zero();
-   Vector r2 = new Vector.zero();
+   Vector2 r1 = new Vector2.zero();
+   Vector2 r2 = new Vector2.zero();
 
    r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
    r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
@@ -120,16 +120,16 @@ class FrictionJoint extends Joint {
      _linearImpulse.mulLocal(step.dtRatio);
      _angularImpulse *= step.dtRatio;
 
-     Vector P = new Vector.zero();
+     Vector2 P = new Vector2.zero();
      P.setFrom(_linearImpulse);
 
      bodyA.linearVelocity.x -= bodyA.invMass * P.x;
      bodyA.linearVelocity.y -= bodyA.invMass * P.y;
-     bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
+     bodyA.angularVelocity -= bodyA.invInertia * (Vector2.crossVectors(r1, P) + _angularImpulse);
 
      bodyB.linearVelocity.x += bodyB.invMass * P.x;
      bodyB.linearVelocity.y += bodyB.invMass * P.y;
-     bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
+     bodyB.angularVelocity += bodyB.invInertia * (Vector2.crossVectors(r2, P) + _angularImpulse);
    } else {
      _linearImpulse.setZero();
      _angularImpulse = 0.0;
@@ -157,19 +157,19 @@ class FrictionJoint extends Joint {
 
    // Solve linear friction
    {
-     Vector r1 = new Vector.zero();
-     Vector r2 = new Vector.zero();
+     Vector2 r1 = new Vector2.zero();
+     Vector2 r2 = new Vector2.zero();
 
      r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
      r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
      Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
      Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-     Vector temp = new Vector.zero();
-     Vector Cdot = new Vector.zero();
+     Vector2 temp = new Vector2.zero();
+     Vector2 Cdot = new Vector2.zero();
 
-     Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
-     Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
+     Vector2.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
+     Vector2.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
 
      Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
 
@@ -185,11 +185,11 @@ class FrictionJoint extends Joint {
      linearMass.setFrom(K);
      linearMass.invertLocal();
 
-     Vector impulse = new Vector.zero();
+     Vector2 impulse = new Vector2.zero();
      Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
      impulse.negateLocal();
 
-     Vector oldImpulse = new Vector.zero();
+     Vector2 oldImpulse = new Vector2.zero();
      oldImpulse.setFrom(_linearImpulse);
      _linearImpulse.addLocal(impulse);
 
@@ -203,11 +203,11 @@ class FrictionJoint extends Joint {
 
      bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
      bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
-     bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
+     bodyA.angularVelocity -= bodyA.invInertia * Vector2.crossVectors(r1, impulse);
 
      bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
      bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
-     bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
+     bodyB.angularVelocity += bodyB.invInertia * Vector2.crossVectors(r2, impulse);
    }
  }
 
@@ -227,9 +227,9 @@ new <strong>FrictionJoint</strong>(<a href="../box2d/FrictionJointDef.html">Fric
 <div class="doc">
 <pre class="source">
 FrictionJoint(FrictionJointDef def)
-   : _localAnchorA = new Vector.copy(def.localAnchorA),
-     _localAnchorB = new Vector.copy(def.localAnchorB),
-     _linearImpulse = new Vector.zero(),
+   : _localAnchorA = new Vector2.copy(def.localAnchorA),
+     _localAnchorB = new Vector2.copy(def.localAnchorB),
+     _linearImpulse = new Vector2.zero(),
      _angularImpulse = 0.0,
      _maxForce = def.maxForce,
      _maxTorque = def.maxTorque,
@@ -375,25 +375,25 @@ bool islandFlag
 </div>
 <div class="field inherited"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to FrictionJoint.localCenterA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterA
+final Vector2 localCenterA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to FrictionJoint.localCenterB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterB
+final Vector2 localCenterB
 </pre>
 </div>
 </div>
@@ -473,33 +473,33 @@ void destructor() { }
 </div>
 <div class="method inherited"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to FrictionJoint.getAnchorA">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <p>Get the anchor point on bodyA in world coordinates. </p>
 <pre class="source">
-void getAnchorA(Vector argOut) { }
+void getAnchorA(Vector2 argOut) { }
 </pre>
 </div>
 </div>
 <div class="method inherited"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to FrictionJoint.getAnchorB">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <p>Get the anchor point on bodyB in world coordinates. </p>
 <pre class="source">
-void getAnchorB(Vector argOut) { }
+void getAnchorB(Vector2 argOut) { }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getLocalAnchorA">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLocalAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getLocalAnchorA"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLocalAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getLocalAnchorA"
               title="Permalink to FrictionJoint.getLocalAnchorA">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector getLocalAnchorA(Vector argOut) {
+Vector2 getLocalAnchorA(Vector2 argOut) {
  bodyA.getWorldPointToOut(_localAnchorA, argOut);
 }
 </pre>
@@ -507,11 +507,11 @@ Vector getLocalAnchorA(Vector argOut) {
 </div>
 <div class="method"><h4 id="getLocalAnchorB">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getLocalAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getLocalAnchorB"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getLocalAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getLocalAnchorB"
               title="Permalink to FrictionJoint.getLocalAnchorB">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector getLocalAnchorB(Vector argOut) {
+Vector2 getLocalAnchorB(Vector2 argOut) {
  bodyB.getWorldPointToOut(_localAnchorB, argOut);
 }
 </pre>
@@ -519,14 +519,14 @@ Vector getLocalAnchorB(Vector argOut) {
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to FrictionJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getReactionForce(num inv_dt, Vector argOut) {
+void getReactionForce(num inv_dt, Vector2 argOut) {
  argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
 }
 </pre>
@@ -553,8 +553,8 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 <pre class="source">
 void initVelocityConstraints(TimeStep step) {
  // Compute the effective mass matrix.
- Vector r1 = new Vector.zero();
- Vector r2 = new Vector.zero();
+ Vector2 r1 = new Vector2.zero();
+ Vector2 r2 = new Vector2.zero();
 
  r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
  r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
@@ -592,16 +592,16 @@ void initVelocityConstraints(TimeStep step) {
    _linearImpulse.mulLocal(step.dtRatio);
    _angularImpulse *= step.dtRatio;
 
-   Vector P = new Vector.zero();
+   Vector2 P = new Vector2.zero();
    P.setFrom(_linearImpulse);
 
    bodyA.linearVelocity.x -= bodyA.invMass * P.x;
    bodyA.linearVelocity.y -= bodyA.invMass * P.y;
-   bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
+   bodyA.angularVelocity -= bodyA.invInertia * (Vector2.crossVectors(r1, P) + _angularImpulse);
 
    bodyB.linearVelocity.x += bodyB.invMass * P.x;
    bodyB.linearVelocity.y += bodyB.invMass * P.y;
-   bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
+   bodyB.angularVelocity += bodyB.invInertia * (Vector2.crossVectors(r2, P) + _angularImpulse);
  } else {
    _linearImpulse.setZero();
    _angularImpulse = 0.0;
@@ -650,19 +650,19 @@ void solveVelocityConstraints(TimeStep step) {
 
  // Solve linear friction
  {
-   Vector r1 = new Vector.zero();
-   Vector r2 = new Vector.zero();
+   Vector2 r1 = new Vector2.zero();
+   Vector2 r2 = new Vector2.zero();
 
    r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
    r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
    Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
    Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-   Vector temp = new Vector.zero();
-   Vector Cdot = new Vector.zero();
+   Vector2 temp = new Vector2.zero();
+   Vector2 Cdot = new Vector2.zero();
 
-   Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
-   Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
+   Vector2.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
+   Vector2.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
 
    Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
 
@@ -678,11 +678,11 @@ void solveVelocityConstraints(TimeStep step) {
    linearMass.setFrom(K);
    linearMass.invertLocal();
 
-   Vector impulse = new Vector.zero();
+   Vector2 impulse = new Vector2.zero();
    Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
    impulse.negateLocal();
 
-   Vector oldImpulse = new Vector.zero();
+   Vector2 oldImpulse = new Vector2.zero();
    oldImpulse.setFrom(_linearImpulse);
    _linearImpulse.addLocal(impulse);
 
@@ -696,11 +696,11 @@ void solveVelocityConstraints(TimeStep step) {
 
    bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
    bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
-   bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
+   bodyA.angularVelocity -= bodyA.invInertia * Vector2.crossVectors(r1, impulse);
 
    bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
    bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
-   bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
+   bodyB.angularVelocity += bodyB.invInertia * Vector2.crossVectors(r2, impulse);
  }
 }
 </pre>

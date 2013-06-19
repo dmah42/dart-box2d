@@ -36,9 +36,9 @@
 class ContactConstraint {
  List&lt;ContactConstraintPoint&gt; points;
 
- final Vector localNormal;
- final Vector localPoint;
- final Vector normal;
+ final Vector2 localNormal;
+ final Vector2 localPoint;
+ final Vector2 normal;
 
  final Matrix22 normalMass;
  //TODO(gregbglw): What does K mean? Find out and change the name.
@@ -61,9 +61,9 @@ class ContactConstraint {
        Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
    pointCount = 0,
    manifold = null,
-   localNormal = new Vector.zero(),
-   localPoint = new Vector.zero(),
-   normal = new Vector.zero(),
+   localNormal = new Vector2.zero(),
+   localPoint = new Vector2.zero(),
+   normal = new Vector2.zero(),
    normalMass = new Matrix22(),
    K = new Matrix22();
 
@@ -108,9 +108,9 @@ ContactConstraint() :
      Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
  pointCount = 0,
  manifold = null,
- localNormal = new Vector.zero(),
- localPoint = new Vector.zero(),
- normal = new Vector.zero(),
+ localNormal = new Vector2.zero(),
+ localPoint = new Vector2.zero(),
+ normal = new Vector2.zero(),
  normalMass = new Matrix22(),
  K = new Matrix22();
 </pre>
@@ -169,25 +169,25 @@ final Matrix22 K
 </div>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to ContactConstraint.localNormal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localNormal
+final Vector2 localNormal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ContactConstraint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>
@@ -205,13 +205,13 @@ Manifold manifold
 </div>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>normal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to ContactConstraint.normal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector normal
+final Vector2 normal
 </pre>
 </div>
 </div>

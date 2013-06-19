@@ -51,20 +51,20 @@ class ContactSolver {
  /** Pooling */
  //TODO(gregbglw): What do many of these names mean? What is rA, for example?
  final WorldManifold worldManifold;
- final Vector tangent;
- final Vector temp1;
- final Vector temp2;
- final Vector P;
- final Vector dv;
- final Vector dv1;
- final Vector dv2;
- final Vector x;
- final Vector d;
- final Vector P1;
- final Vector P2;
+ final Vector2 tangent;
+ final Vector2 temp1;
+ final Vector2 temp2;
+ final Vector2 P;
+ final Vector2 dv;
+ final Vector2 dv1;
+ final Vector2 dv2;
+ final Vector2 x;
+ final Vector2 d;
+ final Vector2 P1;
+ final Vector2 P2;
  final PositionSolverManifold psolver;
- final Vector rA;
- final Vector rB;
+ final Vector2 rA;
+ final Vector2 rB;
 
  /** Constructs a new ContactSolver. */
  ContactSolver() :
@@ -73,20 +73,20 @@ class ContactSolver {
 
    // Setup pool variables.
    worldManifold = new WorldManifold(),
-   tangent = new Vector.zero(),
-   temp1 = new Vector.zero(),
-   temp2 = new Vector.zero(),
-   P = new Vector.zero(),
-   dv = new Vector.zero(),
-   dv1 = new Vector.zero(),
-   dv2 = new Vector.zero(),
-   x = new Vector.zero(),
-   d = new Vector.zero(),
-   P1 = new Vector.zero(),
-   P2 = new Vector.zero(),
+   tangent = new Vector2.zero(),
+   temp1 = new Vector2.zero(),
+   temp2 = new Vector2.zero(),
+   P = new Vector2.zero(),
+   dv = new Vector2.zero(),
+   dv1 = new Vector2.zero(),
+   dv2 = new Vector2.zero(),
+   x = new Vector2.zero(),
+   d = new Vector2.zero(),
+   P1 = new Vector2.zero(),
+   P2 = new Vector2.zero(),
    psolver = new PositionSolverManifold(),
-   rA = new Vector.zero(),
-   rB = new Vector.zero();
+   rA = new Vector2.zero(),
+   rB = new Vector2.zero();
 
  void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraintCount = contactCount;
@@ -121,8 +121,8 @@ class ContactSolver {
      num restitution = Settings.mixRestitution(fixtureA.restitution,
          fixtureB.restitution);
 
-     Vector vA = bodyA.linearVelocity;
-     Vector vB = bodyB.linearVelocity;
+     Vector2 vA = bodyA.linearVelocity;
+     Vector2 vB = bodyB.linearVelocity;
      num wA = bodyA.angularVelocity;
      num wB = bodyB.angularVelocity;
 
@@ -193,7 +193,7 @@ class ContactSolver {
        temp1.x = -wB * ccp.rB.y + vB.x - vA.x - temp2.x;
        temp1.y = wB * ccp.rB.x + vB.y - vA.y - temp2.y;
 
-       Vector a = cc.normal;
+       Vector2 a = cc.normal;
 
        num vRel = a.x * temp1.x + a.y * temp1.y;
 
@@ -212,10 +212,10 @@ class ContactSolver {
        num invMassB = bodyB.invMass;
        num invIB = bodyB.invInertia;
 
-       num rn1A = Vector.crossVectors(ccp1.rA, cc.normal);
-       num rn1B = Vector.crossVectors(ccp1.rB, cc.normal);
-       num rn2A = Vector.crossVectors(ccp2.rA, cc.normal);
-       num rn2B = Vector.crossVectors(ccp2.rB, cc.normal);
+       num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
+       num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
+       num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
+       num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
 
        num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
            * rn1B;
@@ -255,8 +255,8 @@ class ContactSolver {
      final num invIA = bodyA.invInertia;
      final num invMassB = bodyB.invMass;
      final num invIB = bodyB.invInertia;
-     final Vector normal = c.normal;
-     Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
+     final Vector2 normal = c.normal;
+     Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
 
      for (int j = 0; j &lt; c.pointCount; ++j){
        ContactConstraintPoint ccp = c.points[j];
@@ -284,8 +284,8 @@ class ContactSolver {
      final Body bodyB = c.bodyB;
      num wA = bodyA.angularVelocity;
      num wB = bodyB.angularVelocity;
-     final Vector vA = bodyA.linearVelocity;
-     final Vector vB = bodyB.linearVelocity;
+     final Vector2 vA = bodyA.linearVelocity;
+     final Vector2 vB = bodyB.linearVelocity;
      final num invMassA = bodyA.invMass;
      final num invIA = bodyA.invInertia;
      final num invMassB = bodyB.invMass;
@@ -299,7 +299,7 @@ class ContactSolver {
      // Solve tangent constraints
      for (int j = 0; j &lt; c.pointCount; ++j) {
        ContactConstraintPoint ccp = c.points[j];
-       Vector a = ccp.rA;
+       Vector2 a = ccp.rA;
 
        dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
        dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
@@ -334,11 +334,11 @@ class ContactSolver {
      // Solve normal constraints
      if (c.pointCount == 1) {
        ContactConstraintPoint ccp = c.points[0];
-       Vector a1 = ccp.rA;
+       Vector2 a1 = ccp.rA;
 
        dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
        dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
-       Vector b = c.normal;
+       Vector2 b = c.normal;
 
        // Compute normal impulse
        num vn = dv.x * b.x + dv.y * b.y;
@@ -367,15 +367,15 @@ class ContactSolver {
      } else {
        ContactConstraintPoint cp1 = c.points[0];
        ContactConstraintPoint cp2 = c.points[1];
-       Vector a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
+       Vector2 a = new Vector2(cp1.normalImpulse, cp2.normalImpulse);
 
        assert(a.x &gt;= 0.0 &amp;&amp; a.y &gt;= 0.0);
        // Relative velocity at contact
-       //Vector dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
+       //Vector2 dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
        dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
        dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
 
-       //Vector dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
+       //Vector2 dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
        dv2.x = -wB * cp2.rB.y + vB.x - vA.x + wA * cp2.rA.y;
        dv2.y = wB * cp2.rB.x + vB.y - vA.y - wA * cp2.rA.x;
 
@@ -383,7 +383,7 @@ class ContactSolver {
        num vn1 = dv1.x * c.normal.x + dv1.y * c.normal.y;
        num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
-       Vector b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
+       Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
        temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
        temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
        b.x -= temp2.x;
@@ -395,12 +395,12 @@ class ContactSolver {
 
          if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
            // Resubstitute for the incremental impulse
-           //Vector d = x - a;
+           //Vector2 d = x - a;
            d.setFrom(x).subLocal(a);
 
            // Apply incremental impulse
-           // Vector P1 = d.x * normal;
-           // Vector P2 = d.y * normal;
+           // Vector2 P1 = d.x * normal;
+           // Vector2 P2 = d.y * normal;
            P1.setFrom(c.normal).mulLocal(d.x);
            P2.setFrom(c.normal).mulLocal(d.y);
 
@@ -410,10 +410,10 @@ class ContactSolver {
            temp2.setFrom(temp1).mulLocal(invMassB);
            vB.addLocal(temp2);
 
-           wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-               Vector.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-               Vector.crossVectors(cp2.rB, P2));
+           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+               Vector2.crossVectors(cp2.rA, P2));
+           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+               Vector2.crossVectors(cp2.rB, P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -441,10 +441,10 @@ class ContactSolver {
            temp2.setFrom(temp1).mulLocal(invMassB);
            vB.addLocal(temp2);
 
-           wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-               Vector.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-               Vector.crossVectors(cp2.rB, P2));
+           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+               Vector2.crossVectors(cp2.rA, P2));
+           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+               Vector2.crossVectors(cp2.rB, P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -472,10 +472,10 @@ class ContactSolver {
            temp2.setFrom(temp1).mulLocal(invMassB);
            vB.addLocal(temp2);
 
-           wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-               Vector.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-               Vector.crossVectors(cp2.rB, P2));
+           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+               Vector2.crossVectors(cp2.rA, P2));
+           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+               Vector2.crossVectors(cp2.rB, P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -503,10 +503,10 @@ class ContactSolver {
            temp2.setFrom(temp1).mulLocal(invMassB);
            vB.addLocal(temp2);
 
-           wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-               Vector.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-               Vector.crossVectors(cp2.rB, P2));
+           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+               Vector2.crossVectors(cp2.rA, P2));
+           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+               Vector2.crossVectors(cp2.rB, P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -560,9 +560,9 @@ class ContactSolver {
      for (int j = 0; j &lt; c.pointCount; ++j) {
        PositionSolverManifold psm = psolver;
        psm.initialize(c, j);
-       Vector normal = psm.normal;
+       Vector2 normal = psm.normal;
 
-       Vector point = psm.point;
+       Vector2 point = psm.point;
        num separation = psm.separation;
 
        rA.setFrom(point).subLocal(bodyA.sweep.center);
@@ -577,8 +577,8 @@ class ContactSolver {
            -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
        // Compute the effective mass.
-       num rnA = Vector.crossVectors(rA, normal);
-       num rnB = Vector.crossVectors(rB, normal);
+       num rnA = Vector2.crossVectors(rA, normal);
+       num rnB = Vector2.crossVectors(rB, normal);
        num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
        // Compute normal impulse
@@ -588,12 +588,12 @@ class ContactSolver {
 
        temp1.setFrom(P).mulLocal(invMassA);
        bodyA.sweep.center.subLocal(temp1);;
-       bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+       bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
        bodyA.synchronizeTransform();
 
        temp1.setFrom(P).mulLocal(invMassB);
        bodyB.sweep.center.addLocal(temp1);
-       bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+       bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
        bodyB.synchronizeTransform();
      }
    }
@@ -650,20 +650,20 @@ ContactSolver() :
 
  // Setup pool variables.
  worldManifold = new WorldManifold(),
- tangent = new Vector.zero(),
- temp1 = new Vector.zero(),
- temp2 = new Vector.zero(),
- P = new Vector.zero(),
- dv = new Vector.zero(),
- dv1 = new Vector.zero(),
- dv2 = new Vector.zero(),
- x = new Vector.zero(),
- d = new Vector.zero(),
- P1 = new Vector.zero(),
- P2 = new Vector.zero(),
+ tangent = new Vector2.zero(),
+ temp1 = new Vector2.zero(),
+ temp2 = new Vector2.zero(),
+ P = new Vector2.zero(),
+ dv = new Vector2.zero(),
+ dv1 = new Vector2.zero(),
+ dv2 = new Vector2.zero(),
+ x = new Vector2.zero(),
+ d = new Vector2.zero(),
+ P1 = new Vector2.zero(),
+ P2 = new Vector2.zero(),
  psolver = new PositionSolverManifold(),
- rA = new Vector.zero(),
- rB = new Vector.zero();
+ rA = new Vector2.zero(),
+ rB = new Vector2.zero();
 </pre>
 </div>
 </div>
@@ -696,85 +696,85 @@ List&lt;ContactConstraint&gt; constraints
 </div>
 <div class="field"><h4 id="d">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>d</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>d</strong> <a class="anchor-link"
             href="#d"
             title="Permalink to ContactSolver.d">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector d
+final Vector2 d
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="dv">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>dv</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv</strong> <a class="anchor-link"
             href="#dv"
             title="Permalink to ContactSolver.dv">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector dv
+final Vector2 dv
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="dv1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>dv1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv1</strong> <a class="anchor-link"
             href="#dv1"
             title="Permalink to ContactSolver.dv1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector dv1
+final Vector2 dv1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="dv2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>dv2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv2</strong> <a class="anchor-link"
             href="#dv2"
             title="Permalink to ContactSolver.dv2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector dv2
+final Vector2 dv2
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="P">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>P</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P</strong> <a class="anchor-link"
             href="#P"
             title="Permalink to ContactSolver.P">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector P
+final Vector2 P
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="P1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>P1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P1</strong> <a class="anchor-link"
             href="#P1"
             title="Permalink to ContactSolver.P1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector P1
+final Vector2 P1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="P2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>P2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P2</strong> <a class="anchor-link"
             href="#P2"
             title="Permalink to ContactSolver.P2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector P2
+final Vector2 P2
 </pre>
 </div>
 </div>
@@ -792,61 +792,61 @@ final PositionSolverManifold psolver
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to ContactSolver.rA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rA
+final Vector2 rA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to ContactSolver.rB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rB
+final Vector2 rB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="tangent">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>tangent</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>tangent</strong> <a class="anchor-link"
             href="#tangent"
             title="Permalink to ContactSolver.tangent">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector tangent
+final Vector2 tangent
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="temp1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>temp1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp1</strong> <a class="anchor-link"
             href="#temp1"
             title="Permalink to ContactSolver.temp1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector temp1
+final Vector2 temp1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="temp2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>temp2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp2</strong> <a class="anchor-link"
             href="#temp2"
             title="Permalink to ContactSolver.temp2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector temp2
+final Vector2 temp2
 </pre>
 </div>
 </div>
@@ -865,13 +865,13 @@ final WorldManifold worldManifold
 </div>
 <div class="field"><h4 id="x">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>x</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>x</strong> <a class="anchor-link"
             href="#x"
             title="Permalink to ContactSolver.x">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector x
+final Vector2 x
 </pre>
 </div>
 </div>
@@ -917,8 +917,8 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    num restitution = Settings.mixRestitution(fixtureA.restitution,
        fixtureB.restitution);
 
-   Vector vA = bodyA.linearVelocity;
-   Vector vB = bodyB.linearVelocity;
+   Vector2 vA = bodyA.linearVelocity;
+   Vector2 vB = bodyB.linearVelocity;
    num wA = bodyA.angularVelocity;
    num wB = bodyB.angularVelocity;
 
@@ -989,7 +989,7 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
      temp1.x = -wB * ccp.rB.y + vB.x - vA.x - temp2.x;
      temp1.y = wB * ccp.rB.x + vB.y - vA.y - temp2.y;
 
-     Vector a = cc.normal;
+     Vector2 a = cc.normal;
 
      num vRel = a.x * temp1.x + a.y * temp1.y;
 
@@ -1008,10 +1008,10 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
      num invMassB = bodyB.invMass;
      num invIB = bodyB.invInertia;
 
-     num rn1A = Vector.crossVectors(ccp1.rA, cc.normal);
-     num rn1B = Vector.crossVectors(ccp1.rB, cc.normal);
-     num rn2A = Vector.crossVectors(ccp2.rA, cc.normal);
-     num rn2B = Vector.crossVectors(ccp2.rB, cc.normal);
+     num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
+     num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
+     num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
+     num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
 
      num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
          * rn1B;
@@ -1066,9 +1066,9 @@ bool solvePositionConstraints(num baumgarte) {
    for (int j = 0; j &lt; c.pointCount; ++j) {
      PositionSolverManifold psm = psolver;
      psm.initialize(c, j);
-     Vector normal = psm.normal;
+     Vector2 normal = psm.normal;
 
-     Vector point = psm.point;
+     Vector2 point = psm.point;
      num separation = psm.separation;
 
      rA.setFrom(point).subLocal(bodyA.sweep.center);
@@ -1083,8 +1083,8 @@ bool solvePositionConstraints(num baumgarte) {
          -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
      // Compute the effective mass.
-     num rnA = Vector.crossVectors(rA, normal);
-     num rnB = Vector.crossVectors(rB, normal);
+     num rnA = Vector2.crossVectors(rA, normal);
+     num rnB = Vector2.crossVectors(rB, normal);
      num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
      // Compute normal impulse
@@ -1094,12 +1094,12 @@ bool solvePositionConstraints(num baumgarte) {
 
      temp1.setFrom(P).mulLocal(invMassA);
      bodyA.sweep.center.subLocal(temp1);;
-     bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+     bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
      bodyA.synchronizeTransform();
 
      temp1.setFrom(P).mulLocal(invMassB);
      bodyB.sweep.center.addLocal(temp1);
-     bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+     bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
      bodyB.synchronizeTransform();
    }
  }
@@ -1124,8 +1124,8 @@ void solveVelocityConstraints(){
    final Body bodyB = c.bodyB;
    num wA = bodyA.angularVelocity;
    num wB = bodyB.angularVelocity;
-   final Vector vA = bodyA.linearVelocity;
-   final Vector vB = bodyB.linearVelocity;
+   final Vector2 vA = bodyA.linearVelocity;
+   final Vector2 vB = bodyB.linearVelocity;
    final num invMassA = bodyA.invMass;
    final num invIA = bodyA.invInertia;
    final num invMassB = bodyB.invMass;
@@ -1139,7 +1139,7 @@ void solveVelocityConstraints(){
    // Solve tangent constraints
    for (int j = 0; j &lt; c.pointCount; ++j) {
      ContactConstraintPoint ccp = c.points[j];
-     Vector a = ccp.rA;
+     Vector2 a = ccp.rA;
 
      dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
      dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
@@ -1174,11 +1174,11 @@ void solveVelocityConstraints(){
    // Solve normal constraints
    if (c.pointCount == 1) {
      ContactConstraintPoint ccp = c.points[0];
-     Vector a1 = ccp.rA;
+     Vector2 a1 = ccp.rA;
 
      dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
      dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
-     Vector b = c.normal;
+     Vector2 b = c.normal;
 
      // Compute normal impulse
      num vn = dv.x * b.x + dv.y * b.y;
@@ -1207,15 +1207,15 @@ void solveVelocityConstraints(){
    } else {
      ContactConstraintPoint cp1 = c.points[0];
      ContactConstraintPoint cp2 = c.points[1];
-     Vector a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
+     Vector2 a = new Vector2(cp1.normalImpulse, cp2.normalImpulse);
 
      assert(a.x &gt;= 0.0 &amp;&amp; a.y &gt;= 0.0);
      // Relative velocity at contact
-     //Vector dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
+     //Vector2 dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
      dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
      dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
 
-     //Vector dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
+     //Vector2 dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
      dv2.x = -wB * cp2.rB.y + vB.x - vA.x + wA * cp2.rA.y;
      dv2.y = wB * cp2.rB.x + vB.y - vA.y - wA * cp2.rA.x;
 
@@ -1223,7 +1223,7 @@ void solveVelocityConstraints(){
      num vn1 = dv1.x * c.normal.x + dv1.y * c.normal.y;
      num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
-     Vector b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
+     Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
      temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
      temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
      b.x -= temp2.x;
@@ -1235,12 +1235,12 @@ void solveVelocityConstraints(){
 
        if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
          // Resubstitute for the incremental impulse
-         //Vector d = x - a;
+         //Vector2 d = x - a;
          d.setFrom(x).subLocal(a);
 
          // Apply incremental impulse
-         // Vector P1 = d.x * normal;
-         // Vector P2 = d.y * normal;
+         // Vector2 P1 = d.x * normal;
+         // Vector2 P2 = d.y * normal;
          P1.setFrom(c.normal).mulLocal(d.x);
          P2.setFrom(c.normal).mulLocal(d.y);
 
@@ -1250,10 +1250,10 @@ void solveVelocityConstraints(){
          temp2.setFrom(temp1).mulLocal(invMassB);
          vB.addLocal(temp2);
 
-         wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-             Vector.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-             Vector.crossVectors(cp2.rB, P2));
+         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+             Vector2.crossVectors(cp2.rA, P2));
+         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+             Vector2.crossVectors(cp2.rB, P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1281,10 +1281,10 @@ void solveVelocityConstraints(){
          temp2.setFrom(temp1).mulLocal(invMassB);
          vB.addLocal(temp2);
 
-         wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-             Vector.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-             Vector.crossVectors(cp2.rB, P2));
+         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+             Vector2.crossVectors(cp2.rA, P2));
+         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+             Vector2.crossVectors(cp2.rB, P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1312,10 +1312,10 @@ void solveVelocityConstraints(){
          temp2.setFrom(temp1).mulLocal(invMassB);
          vB.addLocal(temp2);
 
-         wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-             Vector.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-             Vector.crossVectors(cp2.rB, P2));
+         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+             Vector2.crossVectors(cp2.rA, P2));
+         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+             Vector2.crossVectors(cp2.rB, P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1343,10 +1343,10 @@ void solveVelocityConstraints(){
          temp2.setFrom(temp1).mulLocal(invMassB);
          vB.addLocal(temp2);
 
-         wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-             Vector.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-             Vector.crossVectors(cp2.rB, P2));
+         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+             Vector2.crossVectors(cp2.rA, P2));
+         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+             Vector2.crossVectors(cp2.rB, P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1407,8 +1407,8 @@ void warmStart(){
    final num invIA = bodyA.invInertia;
    final num invMassB = bodyB.invMass;
    final num invIB = bodyB.invInertia;
-   final Vector normal = c.normal;
-   Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
+   final Vector2 normal = c.normal;
+   Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
 
    for (int j = 0; j &lt; c.pointCount; ++j){
      ContactConstraintPoint ccp = c.points[j];

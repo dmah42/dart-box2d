@@ -23,19 +23,19 @@ class PolygonShape extends Shape {
   /**
    * Local position of the shape centroid in parent body frame.
    */
-  final Vector centroid;
+  final Vector2 centroid;
 
   /**
    * The vertices of the shape. Note: Use getVertexCount() rather than
    * vertices.length to get the number of active vertices.
    */
-  final List<Vector> vertices;
+  final List<Vector2> vertices;
 
   /**
    * The normals of the shape. Note: Use getVertexCount() rather than
    * normals.length to get the number of active normals.
    */
-  final List<Vector> normals;
+  final List<Vector2> normals;
 
   int vertexCount;
 
@@ -45,13 +45,13 @@ class PolygonShape extends Shape {
   PolygonShape() :
       super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
       vertexCount = 0,
-      vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-      normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new Vector.zero() {
+      vertices = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
+      normals = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
+      centroid = new Vector2.zero() {
     for (int i = 0; i < vertices.length; ++i)
-      vertices[i] = new Vector.zero();
+      vertices[i] = new Vector2.zero();
     for (int i = 0; i < normals.length; ++i)
-      normals[i] = new Vector.zero();
+      normals[i] = new Vector2.zero();
   }
 
   /**
@@ -60,25 +60,25 @@ class PolygonShape extends Shape {
   PolygonShape.copy(PolygonShape other) :
       super(ShapeType.POLYGON, other.radius),
       vertexCount = other.vertexCount,
-      vertices = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-      normals = new List<Vector>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new Vector.copy(other.centroid) {
+      vertices = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
+      normals = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
+      centroid = new Vector2.copy(other.centroid) {
     // Copy the vertices and normals from the other polygon shape.
     for (int i = 0; i < other.vertices.length; ++i)
-      vertices[i] = new Vector.copy(other.vertices[i]);
+      vertices[i] = new Vector2.copy(other.vertices[i]);
 
     for (int i = 0; i < other.normals.length; ++i)
-      normals[i] = new Vector.copy(other.normals[i]);
+      normals[i] = new Vector2.copy(other.normals[i]);
   }
 
   /**
    * Get the supporting vertex index in the given direction.
    */
-  int getSupport(Vector d) {
+  int getSupport(Vector2 d) {
     int bestIndex = 0;
-    num bestValue = Vector.dot(vertices[0], d);
+    num bestValue = Vector2.dot(vertices[0], d);
     for (int i = 1; i < vertexCount; ++i) {
-      num value = Vector.dot(vertices[i], d);
+      num value = Vector2.dot(vertices[i], d);
       if (value > bestValue) {
         bestIndex = i;
         bestValue = value;
@@ -92,14 +92,14 @@ class PolygonShape extends Shape {
   /**
    * Get the supporting vertex in the given direction.
    */
-  Vector getSupportVertex(Vector d) => vertices[getSupport(d)];
+  Vector2 getSupportVertex(Vector2 d) => vertices[getSupport(d)];
 
   /**
    * Copy vertices. This assumes the vertices define a convex polygon.
    * It is assumed that the exterior is the the right of each edge.
    * TODO(dominich): Consider removing [count].
    */
-  void setFrom(List<Vector> otherVertices, int count) {
+  void setFrom(List<Vector2> otherVertices, int count) {
     assert (2 <= count && count <= Settings.MAX_POLYGON_VERTICES);
     vertexCount = count;
 
@@ -109,7 +109,7 @@ class PolygonShape extends Shape {
       vertices[i].setFrom(otherVertices[i]);
     }
 
-    Vector edge = new Vector.zero();
+    Vector2 edge = new Vector2.zero();
 
     // Compute normals. Ensure the edges have non-zero length.
     for (int i = 0; i < vertexCount; ++i) {
@@ -118,7 +118,7 @@ class PolygonShape extends Shape {
       edge.setFrom(vertices[i2]).subLocal(vertices[i1]);
 
       assert (edge.lengthSquared > Settings.EPSILON * Settings.EPSILON);
-      Vector.crossVectorAndNumToOut(edge, 1.0, normals[i]);
+      Vector2.crossVectorAndNumToOut(edge, 1.0, normals[i]);
       normals[i].normalize();
     }
 
@@ -148,7 +148,7 @@ class PolygonShape extends Shape {
    * half-height, center is the center of the box in local coordinates and angle
    * is the rotation of the box in local coordinates.
    */
-  void setAsBoxWithCenterAndAngle(double hx, double hy, Vector center, double angle) {
+  void setAsBoxWithCenterAndAngle(double hx, double hy, Vector2 center, double angle) {
     vertexCount = 4;
     vertices[0].setCoords(-hx, -hy);
     vertices[1].setCoords(hx, -hy);
@@ -174,13 +174,13 @@ class PolygonShape extends Shape {
   /**
    * Set this as a single edge.
    */
-  void setAsEdge(Vector v1, Vector v2) {
+  void setAsEdge(Vector2 v1, Vector2 v2) {
     vertexCount = 2;
     vertices[0].setFrom(v1);
     vertices[1].setFrom(v2);
     centroid.setFrom(v1).addLocal(v2).mulLocal(0.5);
     normals[0].setFrom(v2).subLocal(v1);
-    Vector.crossVectorAndNumToOut(normals[0], 1.0, normals[0]);
+    Vector2.crossVectorAndNumToOut(normals[0], 1.0, normals[0]);
     normals[0].normalize();
     normals[1].setFrom(normals[0]).negateLocal();
   }
@@ -188,17 +188,17 @@ class PolygonShape extends Shape {
   /**
    * See Shape.testPoint(Transform, Vector).
    */
-  bool testPoint(Transform xf, Vector p) {
-    Vector pLocal = new Vector.zero();
+  bool testPoint(Transform xf, Vector2 p) {
+    Vector2 pLocal = new Vector2.zero();
 
     pLocal.setFrom(p).subLocal(xf.position);
     Matrix22.mulTransMatrixAndVectorToOut(xf.rotation, pLocal, pLocal);
 
-    Vector temp = new Vector.zero();
+    Vector2 temp = new Vector2.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       temp.setFrom(pLocal).subLocal(vertices[i]);
-      if (Vector.dot(normals[i], temp) > 0)
+      if (Vector2.dot(normals[i], temp) > 0)
         return false;
     }
 
@@ -209,17 +209,17 @@ class PolygonShape extends Shape {
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */
   void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
-    final Vector lower = new Vector.zero();
-    final Vector upper = new Vector.zero();
-    final Vector v = new Vector.zero();
+    final Vector2 lower = new Vector2.zero();
+    final Vector2 upper = new Vector2.zero();
+    final Vector2 v = new Vector2.zero();
 
     Transform.mulToOut(argXf, vertices[0], lower);
     upper.setFrom(lower);
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
-      Vector.minToOut(lower, v, lower);
-      Vector.maxToOut(upper, v, upper);
+      Vector2.minToOut(lower, v, lower);
+      Vector2.maxToOut(upper, v, upper);
     }
 
     argAabb.lowerBound.x = lower.x - radius;
@@ -231,12 +231,12 @@ class PolygonShape extends Shape {
   /**
    * Get a vertex by index.
    */
-  Vector getVertex(int index) => vertices[index];
+  Vector2 getVertex(int index) => vertices[index];
 
   /**
    * Compute the centroid and store the value in the given out parameter.
    */
-  void computeCentroidToOut(List<Vector> vs, int count, Vector out) {
+  void computeCentroidToOut(List<Vector2> vs, int count, Vector2 out) {
     assert (count >= 3);
 
     out.setCoords(0.0, 0.0);
@@ -249,24 +249,24 @@ class PolygonShape extends Shape {
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = new Vector.zero();
+    final Vector2 pRef = new Vector2.zero();
     pRef.setZero();
 
-    final Vector e1 = new Vector.zero();
-    final Vector e2 = new Vector.zero();
+    final Vector2 e1 = new Vector2.zero();
+    final Vector2 e2 = new Vector2.zero();
 
     final num inv3 = 1.0 / 3.0;
 
     for (int i = 0; i < count; ++i) {
       // Triangle vertices.
-      final Vector p1 = pRef;
-      final Vector p2 = vs[i];
-      final Vector p3 = i + 1 < count ? vs[i + 1] : vs[0];
+      final Vector2 p1 = pRef;
+      final Vector2 p2 = vs[i];
+      final Vector2 p3 = i + 1 < count ? vs[i + 1] : vs[0];
 
       e1.setFrom(p2).subLocal(p1);
       e2.setFrom(p3).subLocal(p1);
 
-      final num D = Vector.crossVectors(e1, e2);
+      final num D = Vector2.crossVectors(e1, e2);
 
       final num triangleArea = 0.5 * D;
       area += triangleArea;
@@ -319,26 +319,26 @@ class PolygonShape extends Shape {
       return;
     }
 
-    final Vector center = new Vector.zero();
+    final Vector2 center = new Vector2.zero();
     center.setZero();
     num area = 0.0;
     num I = 0.0;
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
-    final Vector pRef = new Vector.zero();
+    final Vector2 pRef = new Vector2.zero();
     pRef.setZero();
 
     final num k_inv3 = 1.0 / 3.0;
 
-    final Vector e1 = new Vector.zero();
-    final Vector e2 = new Vector.zero();
+    final Vector2 e1 = new Vector2.zero();
+    final Vector2 e2 = new Vector2.zero();
 
     for (int i = 0; i < vertexCount; ++i) {
       // Triangle vertices.
-      final Vector p1 = pRef;
-      final Vector p2 = vertices[i];
-      final Vector p3 = i + 1 < vertexCount ? vertices[i + 1] : vertices[0];
+      final Vector2 p1 = pRef;
+      final Vector2 p2 = vertices[i];
+      final Vector2 p3 = i + 1 < vertexCount ? vertices[i + 1] : vertices[0];
 
       e1.setFrom(p2);
       e1.subLocal(p1);
@@ -346,7 +346,7 @@ class PolygonShape extends Shape {
       e2.setFrom(p3);
       e2.subLocal(p1);
 
-      final num D = Vector.crossVectors(e1, e2);
+      final num D = Vector2.crossVectors(e1, e2);
 
       final num triangleArea = 0.5 * D;
       area += triangleArea;
@@ -385,13 +385,13 @@ class PolygonShape extends Shape {
   /**
    * Get the centroid and apply the supplied transform.
    */
-  Vector applyTransformToCentroid(Transform xf) => Transform.mul(xf, centroid);
+  Vector2 applyTransformToCentroid(Transform xf) => Transform.mul(xf, centroid);
 
   /**
    * Get the centroid and apply the supplied transform. Return the result
    * through the return parameter out.
    */
-  Vector centroidToOut(Transform xf, Vector out) {
+  Vector2 centroidToOut(Transform xf, Vector2 out) {
     Transform.mulToOut(xf, centroid, out);
     return out;
   }

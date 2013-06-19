@@ -34,24 +34,24 @@
 <div class="doc">
 <pre class="source">
 class Matrix22 {
- final Vector col1;
- final Vector col2;
+ final Vector2 col1;
+ final Vector2 col2;
 
  /**
   * Constructs a new Matrix. Defaults to both columns being default vectors.
   */
- Matrix22() : col1 = new Vector.zero(), col2 = new Vector.zero();
+ Matrix22() : col1 = new Vector2.zero(), col2 = new Vector2.zero();
 
  /** Constructs a new Matrix22 representing an angle. */
  Matrix22.fromAngle(double angle)
-     : col1 = new Vector.zero(), col2 = new Vector.zero() {
+     : col1 = new Vector2.zero(), col2 = new Vector2.zero() {
    setAngle(angle);
  }
 
  /** Create a new Matrix equal to the given Matrix. */
  Matrix22.copy(Matrix22 other)
-     : col1 = new Vector.copy(other.col1),
-       col2 = new Vector.copy(other.col2);
+     : col1 = new Vector2.copy(other.col1),
+       col2 = new Vector2.copy(other.col2);
 
  /**
   * Returns true if given object is a Matrix22 and its col1 and col2 are equal
@@ -78,7 +78,7 @@ class Matrix22 {
  /**
   * Sets this matrix's columns equal to the given vectors, respectively.
   */
- void setFromColumns(Vector v1, Vector v2) {
+ void setFromColumns(Vector2 v1, Vector2 v2) {
    col1.setFrom(v1);
    col2.setFrom(v2);
  }
@@ -87,7 +87,7 @@ class Matrix22 {
   * Multiply this matrix by a vector. Return the result through the given out
   * parameter.
   */
- void multiplyVectorToOut(Vector v, Vector out) {
+ void multiplyVectorToOut(Vector2 v, Vector2 out) {
    double tempy = col1.y * v.x + col2.y * v.y;
    out.x = col1.x * v.x + col2.x * v.y;
    out.y = tempy;
@@ -103,8 +103,8 @@ class Matrix22 {
   * Multiply the given vector by the transpose of the given matrix and store
   * the result in the given parameter out.
   */
- static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-     Vector out) {
+ static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector2 vector,
+     Vector2 out) {
    double outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
    out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
    out.x = outx;
@@ -114,8 +114,8 @@ class Matrix22 {
   * Multiply the given vector by the given matrix and store
   * the result in the given parameter out.
   */
- static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-     Vector out) {
+ static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector2 vector,
+     Vector2 out) {
    double tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
    out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
    out.y = tempy;
@@ -144,7 +144,7 @@ class Matrix22 {
    return this;
  }
 
- void solveToOut(Vector b, Vector out) {
+ void solveToOut(Vector2 b, Vector2 out) {
    double a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
    double det = a11 * a22 - a12 * a21;
    if (det != 0.0){
@@ -164,14 +164,14 @@ class Matrix22 {
 <h3>Static Methods</h3>
 <div class="method"><h4 id="mulTransMatrixAndVectorToOut">
 <button class="show-code">Code</button>
-void <strong>mulTransMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matrix, <a href="../box2d/Vector.html">Vector</a> vector, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#mulTransMatrixAndVectorToOut"
+void <strong>mulTransMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matrix, <a href="../box2d/Vector2.html">Vector2</a> vector, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#mulTransMatrixAndVectorToOut"
               title="Permalink to Matrix22.mulTransMatrixAndVectorToOut">#</a></h4>
 <div class="doc">
 <p>Multiply the given vector by the transpose of the given matrix and store
 the result in the given parameter out.</p>
 <pre class="source">
-static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-   Vector out) {
+static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector2 vector,
+   Vector2 out) {
  double outx = vector.x * matrix.col1.x + vector.y * matrix.col1.y;
  out.y = vector.x * matrix.col2.x + vector.y * matrix.col2.y;
  out.x = outx;
@@ -181,14 +181,14 @@ static void mulTransMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
 </div>
 <div class="method"><h4 id="mulMatrixAndVectorToOut">
 <button class="show-code">Code</button>
-void <strong>mulMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matrix, <a href="../box2d/Vector.html">Vector</a> vector, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#mulMatrixAndVectorToOut"
+void <strong>mulMatrixAndVectorToOut</strong>(<a href="../box2d/Matrix22.html">Matrix22</a> matrix, <a href="../box2d/Vector2.html">Vector2</a> vector, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#mulMatrixAndVectorToOut"
               title="Permalink to Matrix22.mulMatrixAndVectorToOut">#</a></h4>
 <div class="doc">
 <p>Multiply the given vector by the given matrix and store
 the result in the given parameter out.</p>
 <pre class="source">
-static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector vector,
-   Vector out) {
+static void mulMatrixAndVectorToOut(Matrix22 matrix, Vector2 vector,
+   Vector2 out) {
  double tempy = matrix.col1.y * vector.x + matrix.col2.y * vector.y;
  out.x = matrix.col1.x * vector.x + matrix.col2.x * vector.y;
  out.y = tempy;
@@ -206,7 +206,7 @@ new <strong>Matrix22</strong>() <a class="anchor-link" href="#Matrix22"
 <div class="doc">
 <p>Constructs a new Matrix. Defaults to both columns being default vectors.</p>
 <pre class="source">
-Matrix22() : col1 = new Vector.zero(), col2 = new Vector.zero();
+Matrix22() : col1 = new Vector2.zero(), col2 = new Vector2.zero();
 </pre>
 </div>
 </div>
@@ -218,8 +218,8 @@ new <strong>Matrix22.copy</strong>(<a href="../box2d/Matrix22.html">Matrix22</a>
 <p>Create a new Matrix equal to the given Matrix. </p>
 <pre class="source">
 Matrix22.copy(Matrix22 other)
-   : col1 = new Vector.copy(other.col1),
-     col2 = new Vector.copy(other.col2);
+   : col1 = new Vector2.copy(other.col1),
+     col2 = new Vector2.copy(other.col2);
 </pre>
 </div>
 </div>
@@ -231,7 +231,7 @@ new <strong>Matrix22.fromAngle</strong>(<a href="http://api.dartlang.org/dart_co
 <p>Constructs a new Matrix22 representing an angle. </p>
 <pre class="source">
 Matrix22.fromAngle(double angle)
-   : col1 = new Vector.zero(), col2 = new Vector.zero() {
+   : col1 = new Vector2.zero(), col2 = new Vector2.zero() {
  setAngle(angle);
 }
 </pre>
@@ -242,25 +242,25 @@ Matrix22.fromAngle(double angle)
 <h3>Properties</h3>
 <div class="field"><h4 id="col1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>col1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>col1</strong> <a class="anchor-link"
             href="#col1"
             title="Permalink to Matrix22.col1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector col1
+final Vector2 col1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="col2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>col2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>col2</strong> <a class="anchor-link"
             href="#col2"
             title="Permalink to Matrix22.col2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector col2
+final Vector2 col2
 </pre>
 </div>
 </div>
@@ -325,13 +325,13 @@ Matrix22 invertLocal() {
 </div>
 <div class="method"><h4 id="multiplyVectorToOut">
 <button class="show-code">Code</button>
-void <strong>multiplyVectorToOut</strong>(<a href="../box2d/Vector.html">Vector</a> v, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#multiplyVectorToOut"
+void <strong>multiplyVectorToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> v, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#multiplyVectorToOut"
               title="Permalink to Matrix22.multiplyVectorToOut">#</a></h4>
 <div class="doc">
 <p>Multiply this matrix by a vector. Return the result through the given out
 parameter.</p>
 <pre class="source">
-void multiplyVectorToOut(Vector v, Vector out) {
+void multiplyVectorToOut(Vector2 v, Vector2 out) {
  double tempy = col1.y * v.x + col2.y * v.y;
  out.x = col1.x * v.x + col2.x * v.y;
  out.y = tempy;
@@ -371,12 +371,12 @@ void setFrom(Matrix22 matrix) {
 </div>
 <div class="method"><h4 id="setFromColumns">
 <button class="show-code">Code</button>
-void <strong>setFromColumns</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#setFromColumns"
+void <strong>setFromColumns</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#setFromColumns"
               title="Permalink to Matrix22.setFromColumns">#</a></h4>
 <div class="doc">
 <p>Sets this matrix's columns equal to the given vectors, respectively.</p>
 <pre class="source">
-void setFromColumns(Vector v1, Vector v2) {
+void setFromColumns(Vector2 v1, Vector2 v2) {
  col1.setFrom(v1);
  col2.setFrom(v2);
 }
@@ -399,11 +399,11 @@ void setIdentity() {
 </div>
 <div class="method"><h4 id="solveToOut">
 <button class="show-code">Code</button>
-void <strong>solveToOut</strong>(<a href="../box2d/Vector.html">Vector</a> b, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#solveToOut"
+void <strong>solveToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> b, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#solveToOut"
               title="Permalink to Matrix22.solveToOut">#</a></h4>
 <div class="doc">
 <pre class="source">
-void solveToOut(Vector b, Vector out) {
+void solveToOut(Vector2 b, Vector2 out) {
  double a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
  double det = a11 * a22 - a12 * a21;
  if (det != 0.0){

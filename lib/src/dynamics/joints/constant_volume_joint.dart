@@ -26,7 +26,7 @@ class ConstantVolumeJoint extends Joint {
   List<num> targetLengths;
   num targetVolume;
 
-  List<Vector> normals;
+  List<Vector2> normals;
 
   TimeStep step;
 
@@ -55,7 +55,7 @@ class ConstantVolumeJoint extends Joint {
     targetLengths = new List<num>(bodies.length);
     for (int i = 0; i < targetLengths.length; ++i) {
       final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-      Vector temp = new Vector.copy(bodies[i].worldCenter);
+      Vector2 temp = new Vector2.copy(bodies[i].worldCenter);
       temp.subLocal(bodies[next].worldCenter);
       num dist = temp.length;
       targetLengths[i] = dist;
@@ -87,7 +87,7 @@ class ConstantVolumeJoint extends Joint {
     frequencyHz = def.frequencyHz;
     dampingRatio = def.dampingRatio;
 
-    normals = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
+    normals = new List<Vector2>.generate(bodies.length, (i) => new Vector2.zero());
 
     this.bodyA = bodies[0];
     this.bodyB = bodies[1];
@@ -132,7 +132,7 @@ class ConstantVolumeJoint extends Joint {
       perimeter += dist;
     }
 
-    final delta = new Vector.zero();
+    final delta = new Vector2.zero();
 
     num deltaArea = targetVolume - area;
     num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -159,7 +159,7 @@ class ConstantVolumeJoint extends Joint {
   void initVelocityConstraints(TimeStep argStep) {
     step = argStep;
 
-    final d = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
+    final d = new List<Vector2>.generate(bodies.length, (i) => new Vector2.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -197,7 +197,7 @@ class ConstantVolumeJoint extends Joint {
     num crossMassSum = 0.0;
     num dotMassSum = 0.0;
 
-    final d = new List<Vector>.generate(bodies.length, (i) => new Vector.zero());
+    final d = new List<Vector2>.generate(bodies.length, (i) => new Vector2.zero());
 
     for (int i = 0; i < bodies.length; ++i) {
       final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -205,7 +205,7 @@ class ConstantVolumeJoint extends Joint {
       d[i].setFrom(bodies[next].worldCenter);
       d[i].subLocal(bodies[prev].worldCenter);
       dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
-      crossMassSum += Vector.crossVectors(bodies[i].linearVelocity, d[i]);
+      crossMassSum += Vector2.crossVectors(bodies[i].linearVelocity, d[i]);
     }
     num lambda = -2.0 * crossMassSum / dotMassSum;
     _impulse += lambda;
@@ -215,11 +215,11 @@ class ConstantVolumeJoint extends Joint {
     }
   }
 
-  void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
+  void getAnchorA(Vector2 argOut) { throw new UnimplementedError(); }
 
-  void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
+  void getAnchorB(Vector2 argOut) { throw new UnimplementedError(); }
 
-  void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
+  void getReactionForce(num inv_dt, Vector2 argOut) { throw new UnimplementedError(); }
 
   num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 }

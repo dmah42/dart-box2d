@@ -14,8 +14,7 @@
 
 /**
  * Functions used for computing contact points, distance
- * queries, and time of impact (TimeOfImpact) queries. Collision methods are non-static
- * for pooling speed, retrieve a collision object from the [SingletonPool].
+ * queries, and time of impact (TimeOfImpact) queries.
  */
 
 part of box2d;
@@ -36,14 +35,14 @@ class Collision {
   final EdgeResults results1;
   final EdgeResults results2;
   final List<ClipVertex> incidentEdge;
-  final Vector localTangent;
-  final Vector localNormal;
-  final Vector planePoint;
-  final Vector tangent;
-  final Vector normal;
-  final Vector normal1;
-  final Vector v11;
-  final Vector v12;
+  final Vector2 localTangent;
+  final Vector2 localNormal;
+  final Vector2 planePoint;
+  final Vector2 tangent;
+  final Vector2 normal;
+  final Vector2 normal1;
+  final Vector2 v11;
+  final Vector2 v12;
   final List<ClipVertex> clipPoints1;
   final List<ClipVertex> clipPoints2;
 
@@ -59,14 +58,14 @@ class Collision {
     results1 = new EdgeResults(),
     results2 = new EdgeResults(),
     incidentEdge = new List<ClipVertex>(2),
-    localTangent = new Vector.zero(),
-    localNormal = new Vector.zero(),
-    planePoint = new Vector.zero(),
-    tangent = new Vector.zero(),
-    normal = new Vector.zero(),
-    normal1 = new Vector.zero(),
-    v11 = new Vector.zero(),
-    v12 = new Vector.zero(),
+    localTangent = new Vector2.zero(),
+    localNormal = new Vector2.zero(),
+    planePoint = new Vector2.zero(),
+    tangent = new Vector2.zero(),
+    normal = new Vector2.zero(),
+    normal1 = new Vector2.zero(),
+    v11 = new Vector2.zero(),
+    v12 = new Vector2.zero(),
     clipPoints1 = new List<ClipVertex>(2),
     clipPoints2 = new List<ClipVertex>(2) {
     incidentEdge[0] = new ClipVertex();
@@ -140,14 +139,14 @@ class Collision {
    * Sutherland-Hodgman clipping.
    */
   static int clipSegmentToLine(List<ClipVertex> vOut, List<ClipVertex> vIn,
-      Vector norm, num offset) {
+      Vector2 norm, num offset) {
 
     // Start with no output points
     int numOut = 0;
 
     // Calculate the distance of end points to the line
-    num distance0 = Vector.dot(norm, vIn[0].v) - offset;
-    num distance1 = Vector.dot(norm, vIn[1].v) - offset;
+    num distance0 = Vector2.dot(norm, vIn[0].v) - offset;
+    num distance1 = Vector2.dot(norm, vIn[1].v) - offset;
 
     // If the points are behind the plane
     if (distance0 <= 0.0)
@@ -176,14 +175,14 @@ class Collision {
       CircleShape circle2, Transform xfB) {
     manifold.pointCount = 0;
 
-    final Vector v = circle1.position;
+    final Vector2 v = circle1.position;
     final num pAy = xfA.position.y + xfA.rotation.col1.y *
         v.x + xfA.rotation.col2.y * v.y;
 
     final num pAx = xfA.position.x + xfA.rotation.col1.x *
         v.x + xfA.rotation.col2.x * v.y;
 
-    final Vector v1 = circle2.position;
+    final Vector2 v1 = circle2.position;
     final num pBy = xfB.position.y + xfB.rotation.col1.y * v1.x +
         xfB.rotation.col2.y * v1.y;
     final num pBx = xfB.position.x + xfB.rotation.col1.x * v1.x +
@@ -213,7 +212,7 @@ class Collision {
   void collidePolygonAndCircle(Manifold manifold, PolygonShape polygon,
       Transform xfA, CircleShape circle, Transform xfB) {
     manifold.pointCount = 0;
-    Vector v = circle.position;
+    Vector2 v = circle.position;
 
     final num cy = xfB.position.y + xfB.rotation.col1.y * v.x +
         xfB.rotation.col2.y * v.y;
@@ -221,8 +220,8 @@ class Collision {
         xfB.rotation.col2.x * v.y;
     final num v1x = cx - xfA.position.x;
     final num v1y = cy - xfA.position.y;
-    final Vector b = xfA.rotation.col1;
-    final Vector b1 = xfA.rotation.col2;
+    final Vector2 b = xfA.rotation.col1;
+    final Vector2 b1 = xfA.rotation.col2;
     final num cLocaly = v1x * b1.x + v1y * b1.y;
     final num cLocalx = v1x * b.x + v1y * b.y;
 
@@ -232,14 +231,14 @@ class Collision {
     final num radius = polygon.radius + circle.radius;
     final int vertexCount = polygon.vertexCount;
 
-    final List<Vector> vertices = polygon.vertices;
-    final List<Vector> normals = polygon.normals;
+    final List<Vector2> vertices = polygon.vertices;
+    final List<Vector2> normals = polygon.normals;
 
     for (int i = 0; i < vertexCount; ++i) {
-      final Vector vertex = vertices[i];
+      final Vector2 vertex = vertices[i];
       final num tempx = cLocalx - vertex.x;
       final num tempy = cLocaly - vertex.y;
-      final Vector norm = normals[i];
+      final Vector2 norm = normals[i];
       final num s = norm.x * tempx + norm.y * tempy;
 
       // early out
@@ -255,15 +254,15 @@ class Collision {
     // Vertices that subtend the incident face.
     final int vertIndex1 = normalIndex;
     final int vertIndex2 = vertIndex1 + 1 < vertexCount ? vertIndex1 + 1 : 0;
-    final Vector v1 = vertices[vertIndex1];
-    final Vector v2 = vertices[vertIndex2];
+    final Vector2 v1 = vertices[vertIndex1];
+    final Vector2 v2 = vertices[vertIndex2];
 
     // If the center is inside the polygon ...
     if (separation < Settings.EPSILON) {
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
 
-      Vector norm = normals[normalIndex];
+      Vector2 norm = normals[normalIndex];
       manifold.localNormal.x = norm.x;
       manifold.localNormal.y = norm.y;
       manifold.localPoint.x = (v1.x + v2.x) * .5;
@@ -317,14 +316,14 @@ class Collision {
       manifold.points[0].localPoint.setFrom(circle.position);
       manifold.points[0].id.zero();
     } else {
-      // Vector faceCenter = 0.5 * (v1 + v2);
+      // Vector2 faceCenter = 0.5 * (v1 + v2);
       // (temp is faceCenter)
       final num fcx = (v1.x + v2.x) * .5;
       final num fcy = (v1.y + v2.y) * .5;
 
       final num tx = cLocalx - fcx;
       final num ty = cLocaly - fcy;
-      final Vector norm = normals[vertIndex1];
+      final Vector2 norm = normals[vertIndex1];
       separation = tx * norm.x + ty * norm.y;
       if (separation > radius)
         return;
@@ -346,16 +345,16 @@ class Collision {
   num edgeSeparation(PolygonShape poly1, Transform xf1, int edge1,
       PolygonShape poly2, Transform xf2) {
     final int count1 = poly1.vertexCount;
-    final List<Vector> vertices1 = poly1.vertices;
-    final List<Vector> normals1 = poly1.normals;
+    final List<Vector2> vertices1 = poly1.vertices;
+    final List<Vector2> normals1 = poly1.normals;
 
     final int count2 = poly2.vertexCount;
-    final List<Vector> vertices2 = poly2.vertices;
+    final List<Vector2> vertices2 = poly2.vertices;
 
     assert (0 <= edge1 && edge1 < count1);
     // Convert normal from poly1's frame into poly2's frame.
     final Matrix22 R = xf1.rotation;
-    final Vector v = normals1[edge1];
+    final Vector2 v = normals1[edge1];
     final num normal1Worldy = R.col1.y * v.x + R.col2.y * v.y;
     final num normal1Worldx = R.col1.x * v.x + R.col2.x * v.y;
     final Matrix22 R1 = xf2.rotation;
@@ -368,7 +367,7 @@ class Collision {
     num minDot = Settings.BIG_NUMBER;
 
     for (int i = 0; i < count2; ++i) {
-      final Vector a = vertices2[i];
+      final Vector2 a = vertices2[i];
       final num dot = a.x * normal1x + a.y * normal1y;
       if (dot < minDot) {
         minDot = dot;
@@ -376,10 +375,10 @@ class Collision {
       }
     }
 
-    final Vector v3 = vertices1[edge1];
+    final Vector2 v3 = vertices1[edge1];
     final num v1y = xf1.position.y + R.col1.y * v3.x + R.col2.y * v3.y;
     final num v1x = xf1.position.x + R.col1.x * v3.x + R.col2.x * v3.y;
-    final Vector v4 = vertices2[index];
+    final Vector2 v4 = vertices2[index];
     final num v2y = xf2.position.y + R1.col1.y * v4.x + R1.col2.y * v4.y - v1y;
     final num v2x = xf2.position.x + R1.col1.x * v4.x + R1.col2.x * v4.y - v1x;
 
@@ -393,14 +392,14 @@ class Collision {
   void findMaxSeparation(EdgeResults results, PolygonShape poly1, Transform xf1,
       PolygonShape poly2, Transform xf2) {
     int count1 = poly1.vertexCount;
-    final List<Vector> normals1 = poly1.normals;
-    Vector v = poly2.centroid;
+    final List<Vector2> normals1 = poly1.normals;
+    Vector2 v = poly2.centroid;
 
     final num predy = xf2.position.y + xf2.rotation.col1.y * v.x +
         xf2.rotation.col2.y * v.y;
     final num predx = xf2.position.x + xf2.rotation.col1.x * v.x +
         xf2.rotation.col2.x * v.y;
-    final Vector v1 = poly1.centroid;
+    final Vector2 v1 = poly1.centroid;
     final num tempy = xf1.position.y + xf1.rotation.col1.y * v1.x +
         xf1.rotation.col2.y * v1.y;
     final num tempx = xf1.position.x + xf1.rotation.col1.x * v1.x +
@@ -417,7 +416,7 @@ class Collision {
     num dot;
     num maxDot = Settings.SMALL_NUMBER;
     for (int i = 0; i < count1; i++) {
-      final Vector norm = normals1[i];
+      final Vector2 norm = normals1[i];
       dot = norm.x * dLocal1x + norm.y * dLocal1y;
       if (dot > maxDot) {
         maxDot = dot;
@@ -478,11 +477,11 @@ class Collision {
   void findIncidentEdge(List<ClipVertex> c, PolygonShape poly1, Transform xf1,
       int edge1, PolygonShape poly2, Transform xf2) {
     int count1 = poly1.vertexCount;
-    final List<Vector> normals1 = poly1.normals;
+    final List<Vector2> normals1 = poly1.normals;
 
     int count2 = poly2.vertexCount;
-    final List<Vector> vertices2 = poly2.vertices;
-    final List<Vector> normals2 = poly2.normals;
+    final List<Vector2> vertices2 = poly2.vertices;
+    final List<Vector2> normals2 = poly2.normals;
 
     assert (0 <= edge1 && edge1 < count1);
 
@@ -494,7 +493,7 @@ class Collision {
     int index = 0;
     num minDot = Settings.BIG_NUMBER;
     for (int i = 0; i < count2; ++i) {
-      num dot = Vector.dot(normal1, normals2[i]);
+      num dot = Vector2.dot(normal1, normals2[i]);
       if (dot < minDot) {
         minDot = dot;
         index = i;
@@ -563,7 +562,7 @@ class Collision {
     findIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
 
     int count1 = poly1.vertexCount;
-    List<Vector> vertices1 = poly1.vertices;
+    List<Vector2> vertices1 = poly1.vertices;
 
     v11.setFrom(vertices1[edge1]);
     v12.setFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
@@ -571,17 +570,17 @@ class Collision {
     localTangent.setFrom(v12).subLocal(v11);
     localTangent.normalize();
 
-    // Vector localNormal = Cross(dv, 1.0);
-    Vector.crossVectorAndNumToOut(localTangent, 1.0, localNormal);
+    // Vector2 localNormal = Cross(dv, 1.0);
+    Vector2.crossVectorAndNumToOut(localTangent, 1.0, localNormal);
 
-    // Vector planePoint = 0.5 * (v11 + v12)
+    // Vector2 planePoint = 0.5 * (v11 + v12)
     planePoint.setFrom(v11).addLocal(v12).mulLocal(.5);
 
-    // Vector sideNormal = Mul(xf1.rotation, v12 - v11);
+    // Vector2 sideNormal = Mul(xf1.rotation, v12 - v11);
     Matrix22.mulMatrixAndVectorToOut(xf1.rotation, localTangent, tangent);
 
-    // Vector frontNormal = Cross(sideNormal, 1.0);
-    Vector.crossVectorAndNumToOut(tangent, 1.0, normal);
+    // Vector2 frontNormal = Cross(sideNormal, 1.0);
+    Vector2.crossVectorAndNumToOut(tangent, 1.0, normal);
 
     // v11 = Mul(xf1, v11);
     // v12 = Mul(xf1, v12);
@@ -589,11 +588,11 @@ class Collision {
     Transform.mulToOut(xf1, v12, v12);
 
     // Face offset
-    num frontOffset = Vector.dot(normal, v11);
+    num frontOffset = Vector2.dot(normal, v11);
 
     // Side offsets, extended by polytope skin thickness.
-    num sideOffset1 = -Vector.dot(tangent, v11) + totalRadius;
-    num sideOffset2 = Vector.dot(tangent, v12) + totalRadius;
+    num sideOffset1 = -Vector2.dot(tangent, v11) + totalRadius;
+    num sideOffset2 = Vector2.dot(tangent, v12) + totalRadius;
 
     // Clip incident edge against extruded edge1 side edges.
     // ClipVertex clipPoints1[2];
@@ -622,7 +621,7 @@ class Collision {
 
     int pointCount = 0;
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
-      num separation = Vector.dot(normal, clipPoints2[i].v) - frontOffset;
+      num separation = Vector2.dot(normal, clipPoints2[i].v) - frontOffset;
 
       if (separation <= totalRadius) {
         ManifoldPoint cp = manifold.points[pointCount];
@@ -642,11 +641,11 @@ class Collision {
  * Used for computing contact manifolds.
  */
 class ClipVertex {
-  Vector v;
+  Vector2 v;
   ContactID id;
 
   ClipVertex() :
-    v = new Vector.zero(),
+    v = new Vector2.zero(),
     id = new ContactID() { }
 
   void setFrom(ClipVertex cv){

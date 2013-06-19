@@ -40,7 +40,7 @@ class Body {
   Object userData;
 
   /** The linear velocity of this body. */
-  final Vector _linearVelocity;
+  final Vector2 _linearVelocity;
 
   /** The angular velocity of this body. */
   double _angularVelocity;
@@ -61,7 +61,7 @@ class Body {
   JointEdge jointList;
 
   /** Forces applied on the body. */
-  final Vector _force;
+  final Vector2 _force;
 
   double _torque;
 
@@ -90,8 +90,8 @@ class Body {
   FixtureDef _fixDef;
   MassData _pmd;
   Transform _pxf;
-  Vector oldCenter;
-  Vector tempCenter;
+  Vector2 oldCenter;
+  Vector2 tempCenter;
 
   Body(BodyDef bd, this.world)
       : flags = 0,
@@ -107,7 +107,7 @@ class Body {
         next = null,
 
         // Set the linear and angular velocities.
-        _linearVelocity = new Vector.copy(bd.linearVelocity),
+        _linearVelocity = new Vector2.copy(bd.linearVelocity),
         _angularVelocity = 0.0,
 
         // Set the linear and angular damping.
@@ -115,7 +115,7 @@ class Body {
         angularDamping = bd.angularDamping,
 
         // Set force and torque.
-        _force = new Vector.zero(),
+        _force = new Vector2.zero(),
         _torque = 0.0,
 
         _inertia = 0.0,
@@ -130,8 +130,8 @@ class Body {
         _fixDef = new FixtureDef(),
         _pmd = new MassData(),
         _pxf = new Transform(),
-        oldCenter = new Vector.zero(),
-        tempCenter = new Vector.zero(),
+        oldCenter = new Vector2.zero(),
+        tempCenter = new Vector2.zero(),
 
         sleepTime = 0,
 
@@ -300,7 +300,7 @@ class Body {
    * This breaks any contacts and wakes the other bodies.
    * Manipulating a body's transform may cause non-physical behavior.
    */
-  void setTransform(Vector argPosition, double argAngle) {
+  void setTransform(Vector2 argPosition, double argAngle) {
     assert (world.locked == false);
     if (world.locked == true) {
       return;
@@ -326,7 +326,7 @@ class Body {
   /**
    * Get the world body origin position. Do not modify.
    */
-  Vector get position => originTransform.position;
+  Vector2 get position => originTransform.position;
 
   /**
    * Get the angle in radians.
@@ -336,21 +336,21 @@ class Body {
   /**
    * Get the world position of the center of mass. Do not modify.
    */
-  Vector get worldCenter => sweep.center; 
+  Vector2 get worldCenter => sweep.center; 
 
   /**
    * Get the local position of the center of mass. Do not modify.
    */
-  Vector get localCenter => sweep.localCenter; 
+  Vector2 get localCenter => sweep.localCenter; 
 
-  Vector get linearVelocity => _linearVelocity; 
+  Vector2 get linearVelocity => _linearVelocity; 
 
-  void set linearVelocity(Vector v) {
+  void set linearVelocity(Vector2 v) {
     if (_type == BodyType.STATIC) {
       return;
     }
 
-    if (Vector.dot(v, v) > 0.0) {
+    if (Vector2.dot(v, v) > 0.0) {
       awake = true;
     }
 
@@ -380,7 +380,7 @@ class Body {
    * point
    *   the world position of the point of application.
    */
-  void applyForce(Vector force, Vector point) {
+  void applyForce(Vector2 force, Vector2 point) {
     if (_type != BodyType.DYNAMIC) {
       return;
     }
@@ -422,7 +422,7 @@ class Body {
    * point
    *   the world position of the point of application.
    */
-  void applyLinearImpulse(Vector impulse, Vector point) {
+  void applyLinearImpulse(Vector2 impulse, Vector2 point) {
     if (_type != BodyType.DYNAMIC) {
       return;
     }
@@ -468,7 +468,7 @@ class Body {
    */
   void getMassData(MassData data) {
     data.mass = mass;
-    final Vector lc = sweep.localCenter;
+    final Vector2 lc = sweep.localCenter;
     data.inertia = _inertia + mass * lc.lengthSquared;
     data.center.x = lc.x;
     data.center.y = lc.y;
@@ -504,7 +504,7 @@ class Body {
     invMass = 1.0 / mass;
 
     if (data.inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
-      _inertia = data.inertia - mass * Vector.dot(data.center,
+      _inertia = data.inertia - mass * Vector2.dot(data.center,
           data.center);
       assert (_inertia > 0.0);
       invInertia = 1.0 / _inertia;
@@ -517,9 +517,9 @@ class Body {
     sweep.center.setFrom(sweep.centerZero);
 
     // Update center of mass velocity.
-    final Vector temp = new Vector.copy(sweep.center);
+    final Vector2 temp = new Vector2.copy(sweep.center);
     temp.subLocal(oldCenter);
-    Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+    Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
     _linearVelocity.addLocal(temp);
   }
 
@@ -555,7 +555,7 @@ class Body {
       }
       f.getMassData(massData);
       mass += massData.mass;
-      final temp = new Vector.copy(massData.center);
+      final temp = new Vector2.copy(massData.center);
       temp.mulLocal(massData.mass);
       tempCenter.addLocal(temp);
       _inertia += massData.inertia;
@@ -573,7 +573,7 @@ class Body {
 
     if (_inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
       // Center the inertia about the center of mass.
-      _inertia -= mass * Vector.dot(tempCenter, tempCenter);
+      _inertia -= mass * Vector2.dot(tempCenter, tempCenter);
       assert (_inertia > 0.0);
       invInertia = 1.0 / _inertia;
     } else {
@@ -588,9 +588,9 @@ class Body {
     sweep.center.setFrom(sweep.centerZero);
 
     // Update center of mass velocity.
-    final Vector temp = new Vector.copy(sweep.center);
+    final Vector2 temp = new Vector2.copy(sweep.center);
     temp.subLocal(oldCenter);
-    Vector.crossNumAndVectorToOut(_angularVelocity, temp, temp);
+    Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
     _linearVelocity.addLocal(temp);
   }
 
@@ -601,8 +601,8 @@ class Body {
    *   a point on the body measured relative the the body's origin.
    * returns the same point expressed in world coordinates.
    */
-  Vector getWorldPoint(Vector localPoint) {
-    Vector v = new Vector.zero();
+  Vector2 getWorldPoint(Vector2 localPoint) {
+    Vector2 v = new Vector2.zero();
     getWorldPointToOut(localPoint, v);
     return v;
   }
@@ -611,7 +611,7 @@ class Body {
    * Get the world coordinates of a point given the local coordinates to the
    * given out parameter.
    */
-  void getWorldPointToOut(Vector localPoint, Vector out) {
+  void getWorldPointToOut(Vector2 localPoint, Vector2 out) {
     Transform.mulToOut(originTransform, localPoint, out);
   }
 
@@ -621,8 +621,8 @@ class Body {
    * localVector: a vector fixed in the body.
    * return the same vector expressed in world coordinates.
    */
-  Vector getWorldVector(Vector localVector) {
-    Vector out = new Vector.zero();
+  Vector2 getWorldVector2(Vector2 localVector) {
+    Vector2 out = new Vector2.zero();
     getWorldVectorToOut(localVector, out);
     return out;
   }
@@ -631,7 +631,7 @@ class Body {
    * Get the world coordinates of a vector given the local coordinates to the
    * given out paramater.
    */
-  void getWorldVectorToOut(Vector localVector, Vector out) {
+  void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
     Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
         out);
   }
@@ -640,7 +640,7 @@ class Body {
    * Gets a local point relative to the body's origin given a world point.
    * Returns this through the given out parameter.
    */
-  void getLocalPointToOut(Vector worldPoint, Vector out) {
+  void getLocalPointToOut(Vector2 worldPoint, Vector2 out) {
     Transform.mulTransToOut(originTransform, worldPoint, out);
   }
 
@@ -650,8 +650,8 @@ class Body {
    * worldPoint: point in world coordinates.
    * returns the corresponding local point relative to the body's origin.
    */
-  Vector getLocalPoint(Vector worldPoint) {
-    Vector out = new Vector.zero();
+  Vector2 getLocalPoint(Vector2 worldPoint) {
+    Vector2 out = new Vector2.zero();
     getLocalPointToOut(worldPoint, out);
     return out;
   }
@@ -662,8 +662,8 @@ class Body {
    * worldVector: vector in world coordinates.
    * returns the corresponding local vector.
    */
-  Vector getLocalVector(Vector worldVector) {
-    Vector out = new Vector.zero();
+  Vector2 getLocalVector2(Vector2 worldVector) {
+    Vector2 out = new Vector2.zero();
     getLocalVectorToOut(worldVector, out);
     return out;
   }
@@ -672,7 +672,7 @@ class Body {
    * Gets a local vector given a world vector and stores the result in the given
    * out parameter.
    */
-  void getLocalVectorToOut(Vector worldVector, Vector out) {
+  void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
     Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
         out);
   }
@@ -683,15 +683,15 @@ class Body {
    * worldPoint: point in world coordinates.
    * returns the world velocity of a point.
    */
-  Vector getLinearVelocityFromWorldPoint(Vector worldPoint) {
-    Vector out = new Vector.zero();
+  Vector2 getLinearVelocityFromWorldPoint(Vector2 worldPoint) {
+    Vector2 out = new Vector2.zero();
     getLinearVelocityFromWorldPointToOut(worldPoint, out);
     return out;
   }
 
-  void getLinearVelocityFromWorldPointToOut(Vector worldPoint, Vector out) {
+  void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
     out.setFrom(worldPoint).subLocal(sweep.center);
-    Vector.crossNumAndVectorToOut(_angularVelocity, out, out);
+    Vector2.crossNumAndVectorToOut(_angularVelocity, out, out);
     out.addLocal(_linearVelocity);
   }
 
@@ -701,8 +701,8 @@ class Body {
    * localPoint: point in local coordinates.
    * returns the world velocity of a point.
    */
-  Vector getLinearVelocityFromLocalPoint(Vector localPoint) {
-    Vector out = new Vector.zero();
+  Vector2 getLinearVelocityFromLocalPoint(Vector2 localPoint) {
+    Vector2 out = new Vector2.zero();
     getLinearVelocityFromLocalPointToOut(localPoint, out);
     return out;
   }
@@ -711,7 +711,7 @@ class Body {
    * Get the world velocity of a local point and store the result in the given
    * out parameter.
    */
-  void getLinearVelocityFromLocalPointToOut(Vector localPoint, Vector out) {
+  void getLinearVelocityFromLocalPointToOut(Vector2 localPoint, Vector2 out) {
     getWorldPointToOut(localPoint, out);
     getLinearVelocityFromWorldPointToOut(out, out);
   }
@@ -896,7 +896,7 @@ class Body {
     final double s = Math.sin(sweep.angle);
     final Transform t = originTransform;
     final Matrix22 r = t.rotation;
-    final Vector p = t.position;
+    final Vector2 p = t.position;
 
     r.col1.x = c;
     r.col2.x = -s;

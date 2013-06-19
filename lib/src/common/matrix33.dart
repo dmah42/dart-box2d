@@ -57,8 +57,8 @@ class Matrix33 {
    * Solve A * x = b, where b is a column vector. This is more efficient
    * than computing the inverse in one-shot cases.
    */
-  Vector solve22(Vector b) {
-    Vector x = new Vector.zero();
+  Vector2 solve22(Vector2 b) {
+    Vector2 x = new Vector2.zero();
     solve22ToOut(b, x);
     return x;
   }
@@ -67,7 +67,7 @@ class Matrix33 {
    * Solve A * x = b, where b is a column vector. This is more efficient
    * than computing the inverse in one-shot cases.
    */
-  void solve22ToOut(Vector b, Vector out) {
+  void solve22ToOut(Vector2 b, Vector2 out) {
     final double a11 = col1.x, a12 = col2.x, a21 = col1.y, a22 = col2.y;
     double det = a11 * a22 - a12 * a21;
     if (det != 0.0){

@@ -32,20 +32,20 @@ class ContactSolver {
   /** Pooling */
   //TODO(gregbglw): What do many of these names mean? What is rA, for example?
   final WorldManifold worldManifold;
-  final Vector tangent;
-  final Vector temp1;
-  final Vector temp2;
-  final Vector P;
-  final Vector dv;
-  final Vector dv1;
-  final Vector dv2;
-  final Vector x;
-  final Vector d;
-  final Vector P1;
-  final Vector P2;
+  final Vector2 tangent;
+  final Vector2 temp1;
+  final Vector2 temp2;
+  final Vector2 P;
+  final Vector2 dv;
+  final Vector2 dv1;
+  final Vector2 dv2;
+  final Vector2 x;
+  final Vector2 d;
+  final Vector2 P1;
+  final Vector2 P2;
   final PositionSolverManifold psolver;
-  final Vector rA;
-  final Vector rB;
+  final Vector2 rA;
+  final Vector2 rB;
 
   /** Constructs a new ContactSolver. */
   ContactSolver() :
@@ -54,20 +54,20 @@ class ContactSolver {
 
     // Setup pool variables.
     worldManifold = new WorldManifold(),
-    tangent = new Vector.zero(),
-    temp1 = new Vector.zero(),
-    temp2 = new Vector.zero(),
-    P = new Vector.zero(),
-    dv = new Vector.zero(),
-    dv1 = new Vector.zero(),
-    dv2 = new Vector.zero(),
-    x = new Vector.zero(),
-    d = new Vector.zero(),
-    P1 = new Vector.zero(),
-    P2 = new Vector.zero(),
+    tangent = new Vector2.zero(),
+    temp1 = new Vector2.zero(),
+    temp2 = new Vector2.zero(),
+    P = new Vector2.zero(),
+    dv = new Vector2.zero(),
+    dv1 = new Vector2.zero(),
+    dv2 = new Vector2.zero(),
+    x = new Vector2.zero(),
+    d = new Vector2.zero(),
+    P1 = new Vector2.zero(),
+    P2 = new Vector2.zero(),
     psolver = new PositionSolverManifold(),
-    rA = new Vector.zero(),
-    rB = new Vector.zero();
+    rA = new Vector2.zero(),
+    rB = new Vector2.zero();
 
   void init(List<Contact> contacts, int contactCount, num impulseRatio){
     constraintCount = contactCount;
@@ -102,8 +102,8 @@ class ContactSolver {
       num restitution = Settings.mixRestitution(fixtureA.restitution,
           fixtureB.restitution);
 
-      Vector vA = bodyA.linearVelocity;
-      Vector vB = bodyB.linearVelocity;
+      Vector2 vA = bodyA.linearVelocity;
+      Vector2 vB = bodyB.linearVelocity;
       num wA = bodyA.angularVelocity;
       num wB = bodyB.angularVelocity;
 
@@ -174,7 +174,7 @@ class ContactSolver {
         temp1.x = -wB * ccp.rB.y + vB.x - vA.x - temp2.x;
         temp1.y = wB * ccp.rB.x + vB.y - vA.y - temp2.y;
 
-        Vector a = cc.normal;
+        Vector2 a = cc.normal;
 
         num vRel = a.x * temp1.x + a.y * temp1.y;
 
@@ -193,10 +193,10 @@ class ContactSolver {
         num invMassB = bodyB.invMass;
         num invIB = bodyB.invInertia;
 
-        num rn1A = Vector.crossVectors(ccp1.rA, cc.normal);
-        num rn1B = Vector.crossVectors(ccp1.rB, cc.normal);
-        num rn2A = Vector.crossVectors(ccp2.rA, cc.normal);
-        num rn2B = Vector.crossVectors(ccp2.rB, cc.normal);
+        num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
+        num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
+        num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
+        num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
 
         num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
             * rn1B;
@@ -236,8 +236,8 @@ class ContactSolver {
       final num invIA = bodyA.invInertia;
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
-      final Vector normal = c.normal;
-      Vector.crossVectorAndNumToOut(normal, 1.0, tangent);
+      final Vector2 normal = c.normal;
+      Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
@@ -265,8 +265,8 @@ class ContactSolver {
       final Body bodyB = c.bodyB;
       num wA = bodyA.angularVelocity;
       num wB = bodyB.angularVelocity;
-      final Vector vA = bodyA.linearVelocity;
-      final Vector vB = bodyB.linearVelocity;
+      final Vector2 vA = bodyA.linearVelocity;
+      final Vector2 vB = bodyB.linearVelocity;
       final num invMassA = bodyA.invMass;
       final num invIA = bodyA.invInertia;
       final num invMassB = bodyB.invMass;
@@ -280,7 +280,7 @@ class ContactSolver {
       // Solve tangent constraints
       for (int j = 0; j < c.pointCount; ++j) {
         ContactConstraintPoint ccp = c.points[j];
-        Vector a = ccp.rA;
+        Vector2 a = ccp.rA;
 
         dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a.y;
         dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a.x;
@@ -315,11 +315,11 @@ class ContactSolver {
       // Solve normal constraints
       if (c.pointCount == 1) {
         ContactConstraintPoint ccp = c.points[0];
-        Vector a1 = ccp.rA;
+        Vector2 a1 = ccp.rA;
 
         dv.x = -wB * ccp.rB.y + vB.x - vA.x + wA * a1.y;
         dv.y = wB * ccp.rB.x + vB.y - vA.y - wA * a1.x;
-        Vector b = c.normal;
+        Vector2 b = c.normal;
 
         // Compute normal impulse
         num vn = dv.x * b.x + dv.y * b.y;
@@ -348,15 +348,15 @@ class ContactSolver {
       } else {
         ContactConstraintPoint cp1 = c.points[0];
         ContactConstraintPoint cp2 = c.points[1];
-        Vector a = new Vector(cp1.normalImpulse, cp2.normalImpulse);
+        Vector2 a = new Vector2(cp1.normalImpulse, cp2.normalImpulse);
 
         assert(a.x >= 0.0 && a.y >= 0.0);
         // Relative velocity at contact
-        //Vector dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
+        //Vector2 dv1 = vB + Cross(wB, cp1.rB) - vA - Cross(wA, cp1.rA);
         dv1.x = -wB * cp1.rB.y + vB.x - vA.x + wA * cp1.rA.y;
         dv1.y = wB * cp1.rB.x + vB.y - vA.y - wA * cp1.rA.x;
 
-        //Vector dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
+        //Vector2 dv2 = vB + Cross(wB, cp2.rB) - vA - Cross(wA, cp2.rA);
         dv2.x = -wB * cp2.rB.y + vB.x - vA.x + wA * cp2.rA.y;
         dv2.y = wB * cp2.rB.x + vB.y - vA.y - wA * cp2.rA.x;
 
@@ -364,7 +364,7 @@ class ContactSolver {
         num vn1 = dv1.x * c.normal.x + dv1.y * c.normal.y;
         num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
-        Vector b = new Vector(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
+        Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
         temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
         temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
         b.x -= temp2.x;
@@ -376,12 +376,12 @@ class ContactSolver {
 
           if (x.x >= 0.0 && x.y >= 0.0){
             // Resubstitute for the incremental impulse
-            //Vector d = x - a;
+            //Vector2 d = x - a;
             d.setFrom(x).subLocal(a);
 
             // Apply incremental impulse
-            // Vector P1 = d.x * normal;
-            // Vector P2 = d.y * normal;
+            // Vector2 P1 = d.x * normal;
+            // Vector2 P2 = d.y * normal;
             P1.setFrom(c.normal).mulLocal(d.x);
             P2.setFrom(c.normal).mulLocal(d.y);
 
@@ -391,10 +391,10 @@ class ContactSolver {
             temp2.setFrom(temp1).mulLocal(invMassB);
             vB.addLocal(temp2);
 
-            wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-                Vector.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-                Vector.crossVectors(cp2.rB, P2));
+            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+                Vector2.crossVectors(cp2.rA, P2));
+            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+                Vector2.crossVectors(cp2.rB, P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -422,10 +422,10 @@ class ContactSolver {
             temp2.setFrom(temp1).mulLocal(invMassB);
             vB.addLocal(temp2);
 
-            wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-                Vector.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-                Vector.crossVectors(cp2.rB, P2));
+            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+                Vector2.crossVectors(cp2.rA, P2));
+            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+                Vector2.crossVectors(cp2.rB, P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -453,10 +453,10 @@ class ContactSolver {
             temp2.setFrom(temp1).mulLocal(invMassB);
             vB.addLocal(temp2);
 
-            wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-                Vector.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-                Vector.crossVectors(cp2.rB, P2));
+            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+                Vector2.crossVectors(cp2.rA, P2));
+            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+                Vector2.crossVectors(cp2.rB, P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -484,10 +484,10 @@ class ContactSolver {
             temp2.setFrom(temp1).mulLocal(invMassB);
             vB.addLocal(temp2);
 
-            wA -= invIA * (Vector.crossVectors(cp1.rA, P1) +
-                Vector.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector.crossVectors(cp1.rB, P1) +
-                Vector.crossVectors(cp2.rB, P2));
+            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
+                Vector2.crossVectors(cp2.rA, P2));
+            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
+                Vector2.crossVectors(cp2.rB, P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -541,9 +541,9 @@ class ContactSolver {
       for (int j = 0; j < c.pointCount; ++j) {
         PositionSolverManifold psm = psolver;
         psm.initialize(c, j);
-        Vector normal = psm.normal;
+        Vector2 normal = psm.normal;
 
-        Vector point = psm.point;
+        Vector2 point = psm.point;
         num separation = psm.separation;
 
         rA.setFrom(point).subLocal(bodyA.sweep.center);
@@ -558,8 +558,8 @@ class ContactSolver {
             -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
         // Compute the effective mass.
-        num rnA = Vector.crossVectors(rA, normal);
-        num rnB = Vector.crossVectors(rB, normal);
+        num rnA = Vector2.crossVectors(rA, normal);
+        num rnB = Vector2.crossVectors(rB, normal);
         num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
@@ -569,12 +569,12 @@ class ContactSolver {
 
         temp1.setFrom(P).mulLocal(invMassA);
         bodyA.sweep.center.subLocal(temp1);;
-        bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+        bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
         bodyA.synchronizeTransform();
 
         temp1.setFrom(P).mulLocal(invMassB);
         bodyB.sweep.center.addLocal(temp1);
-        bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+        bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
         bodyB.synchronizeTransform();
       }
     }
@@ -586,28 +586,28 @@ class ContactSolver {
 }
 
 class PositionSolverManifold {
-  Vector normal;
-  Vector point;
+  Vector2 normal;
+  Vector2 point;
   num separation;
 
   /** Pooling */
-  Vector pointA;
-  Vector pointB;
-  Vector temp;
-  Vector planePoint;
-  Vector clipPoint;
+  Vector2 pointA;
+  Vector2 pointB;
+  Vector2 temp;
+  Vector2 planePoint;
+  Vector2 clipPoint;
 
   PositionSolverManifold() :
-    normal = new Vector.zero(),
-    point = new Vector.zero(),
+    normal = new Vector2.zero(),
+    point = new Vector2.zero(),
     separation = 0,
 
     // Initialize pool variables.
-    pointA = new Vector.zero(),
-    pointB = new Vector.zero(),
-    temp = new Vector.zero(),
-    planePoint = new Vector.zero(),
-    clipPoint = new Vector.zero();
+    pointA = new Vector2.zero(),
+    pointB = new Vector2.zero(),
+    temp = new Vector2.zero(),
+    planePoint = new Vector2.zero(),
+    clipPoint = new Vector2.zero();
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);
@@ -626,7 +626,7 @@ class PositionSolverManifold {
 
         point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
         temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector.dot(temp, normal) - cc.radius;
+        separation = Vector2.dot(temp, normal) - cc.radius;
         break;
 
       case ManifoldType.FACE_A:
@@ -636,7 +636,7 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
             clipPoint);
         temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
+        separation = Vector2.dot(temp, normal) - cc.radius;
         point.setFrom(clipPoint);
         break;
 
@@ -646,7 +646,7 @@ class PositionSolverManifold {
 
         cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
         temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector.dot(temp, normal) - cc.radius;
+        separation = Vector2.dot(temp, normal) - cc.radius;
         point.setFrom(clipPoint);
 
         // Ensure normal points from A to B

@@ -39,7 +39,7 @@ class CanvasViewportTransform extends ViewportTransform {
  /**
   * Constructs a new viewport transform with the default scale.
   */
- CanvasViewportTransform(Vector _extents, Vector _center) :
+ CanvasViewportTransform(Vector2 _extents, Vector2 _center) :
    super(_extents, _center, DEFAULT_DRAWING_SCALE) {
    yFlip = true;
  }
@@ -87,12 +87,12 @@ static const double DEFAULT_DRAWING_SCALE = 20.0
 <h3>Constructors</h3>
 <div class="method"><h4 id="CanvasViewportTransform">
 <button class="show-code">Code</button>
-new <strong>CanvasViewportTransform</strong>(<a href="../box2d/Vector.html">Vector</a> _extents, <a href="../box2d/Vector.html">Vector</a> _center) <a class="anchor-link" href="#CanvasViewportTransform"
+new <strong>CanvasViewportTransform</strong>(<a href="../box2d/Vector2.html">Vector2</a> _extents, <a href="../box2d/Vector2.html">Vector2</a> _center) <a class="anchor-link" href="#CanvasViewportTransform"
               title="Permalink to CanvasViewportTransform.CanvasViewportTransform">#</a></h4>
 <div class="doc">
 <p>Constructs a new viewport transform with the default scale.</p>
 <pre class="source">
-CanvasViewportTransform(Vector _extents, Vector _center) :
+CanvasViewportTransform(Vector2 _extents, Vector2 _center) :
  super(_extents, _center, DEFAULT_DRAWING_SCALE) {
  yFlip = true;
 }
@@ -104,20 +104,20 @@ CanvasViewportTransform(Vector _extents, Vector _center) :
 <h3>Properties</h3>
 <div class="field inherited"><h4 id="center">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to CanvasViewportTransform.center">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>center of the viewport.</p>
 <pre class="source">
-Vector center
+Vector2 center
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="extents">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>extents</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>extents</strong> <a class="anchor-link"
             href="#extents"
             title="Permalink to CanvasViewportTransform.extents">#</a>
         </h4>
@@ -126,7 +126,7 @@ Vector center
 This should be the actual half-width and 
 half-height, not anything transformed or scaled.</p>
 <pre class="source">
-Vector extents
+Vector2 extents
 </pre>
 </div>
 </div>
@@ -146,7 +146,7 @@ double scale
 </div>
 <div class="field inherited"><h4 id="translation">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>translation</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>translation</strong> <a class="anchor-link"
             href="#translation"
             title="Permalink to CanvasViewportTransform.translation">#</a>
         </h4>
@@ -156,14 +156,14 @@ actual center of the canvas and the currently specified center. For
 example, if the actual canvas center is (5, 5) but the current center is
 (6, 6), the translation is (1, 1).</p>
 <pre class="source">
-Vector get translation {
- Vector result = new Vector.copy(extents);
+Vector2 get translation {
+ Vector2 result = new Vector2.copy(extents);
  result.subLocal(center);
  return result;
 }
 </pre>
 <pre class="source">
-void set translation(Vector translation) {
+void set translation(Vector2 translation) {
  center.setFrom(extents);
  center.subLocal(translation);
 }
@@ -188,14 +188,14 @@ bool yFlip
 <h3>Methods</h3>
 <div class="method inherited"><h4 id="getScreenToWorld">
 <button class="show-code">Code</button>
-void <strong>getScreenToWorld</strong>(<a href="../box2d/Vector.html">Vector</a> argScreen, <a href="../box2d/Vector.html">Vector</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
+void <strong>getScreenToWorld</strong>(<a href="../box2d/Vector2.html">Vector2</a> argScreen, <a href="../box2d/Vector2.html">Vector2</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
               title="Permalink to CanvasViewportTransform.getScreenToWorld">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Takes the screen coordinates (argScreen) and puts the
 corresponding world coordinates in argWorld. It should be safe
 to give the same object as both parameters.</p>
 <pre class="source">
-void getScreenToWorld(Vector argScreen, Vector argWorld) {
+void getScreenToWorld(Vector2 argScreen, Vector2 argWorld) {
  double translationCorrectedX = argScreen.x - translation.x;
  double translationCorrectedY = argScreen.y + translation.y;
 
@@ -208,14 +208,14 @@ void getScreenToWorld(Vector argScreen, Vector argWorld) {
 </div>
 <div class="method inherited"><h4 id="getWorldToScreen">
 <button class="show-code">Code</button>
-void <strong>getWorldToScreen</strong>(<a href="../box2d/Vector.html">Vector</a> argWorld, <a href="../box2d/Vector.html">Vector</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
+void <strong>getWorldToScreen</strong>(<a href="../box2d/Vector2.html">Vector2</a> argWorld, <a href="../box2d/Vector2.html">Vector2</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
               title="Permalink to CanvasViewportTransform.getWorldToScreen">#</a></h4>
 <div class="inherited-from">inherited from <a href="../box2d/ViewportTransform.html">ViewportTransform</a> </div><div class="doc">
 <p>Takes the world coordinate (argWorld) puts the corresponding
 screen coordinate in argScreen.  It should be safe to give the
 same object as both parameters.</p>
 <pre class="source">
-void getWorldToScreen(Vector argWorld, Vector argScreen) {
+void getWorldToScreen(Vector2 argWorld, Vector2 argScreen) {
  // Correct for canvas considering the upper-left corner, rather than the
  // center, to be the origin.
  double gridCorrectedX = (argWorld.x * scale) + extents.x;

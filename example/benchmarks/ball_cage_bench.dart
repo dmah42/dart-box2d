@@ -57,22 +57,22 @@ class BallCageBench extends Benchmark {
       final double shiftX = START_X + circleShape.radius * 2 * i;
       final double shiftY = START_Y + circleShape.radius * 2 * i;
 
-      circleBodyDef.position = new Vector(shiftX, START_Y);
+      circleBodyDef.position = new Vector2(shiftX, START_Y);
       Body circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(shiftX, borderLimitY);
+      circleBodyDef.position = new Vector2(shiftX, borderLimitY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(START_X, shiftY);
+      circleBodyDef.position = new Vector2(START_X, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
 
-      circleBodyDef.position = new Vector(borderLimitX, shiftY);
+      circleBodyDef.position = new Vector2(borderLimitX, shiftY);
       circleBody = world.createBody(circleBodyDef);
       bodies.add(circleBody);
       circleBody.createFixture(circleFixtureDef);
@@ -90,8 +90,8 @@ class BallCageBench extends Benchmark {
 
     // Create the active ball body.
     final activeBodyDef = new BodyDef();
-    activeBodyDef.linearVelocity = new Vector(0.0, -20.0);
-    activeBodyDef.position = new Vector(15.0, 15.0);
+    activeBodyDef.linearVelocity = new Vector2(0.0, -20.0);
+    activeBodyDef.position = new Vector2(15.0, 15.0);
     activeBodyDef.type = BodyType.DYNAMIC;
     activeBodyDef.bullet = true;
     final activeBody = world.createBody(activeBodyDef);

@@ -2,19 +2,19 @@
         <html>
         <head>
                 <meta charset="utf-8">
-        <title>Vector class / box2d Library / Dart Documentation</title>
+        <title>Vector2 class / box2d Library / Dart Documentation</title>
         <link rel="stylesheet" type="text/css"
             href="../styles.css">
         <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="../favicon.ico">
         
         </head>
-        <body data-library="box2d" data-type="Vector">
+        <body data-library="box2d" data-type="Vector2">
         <div class="page">
         <div class="header">
           <a href="../index.html"><div class="logo"></div></a>
           <a href="../index.html">Dart Documentation</a>
-         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Vector.html">Vector</a>        <div id="search-box">
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/Vector2.html">Vector2</a>        <div id="search-box">
           <input type="search" name="q" id="q" autocomplete="off"
               class="search-input" placeholder="Search API">
         </div>
@@ -26,24 +26,24 @@
         
 </div>
 <div class="content">
-        <h2><strong>Vector</strong>
+        <h2><strong>Vector2</strong>
           class
         </h2>
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
 <pre class="source">
-class Vector {
+class Vector2 {
  final _f = new Float64List(2);
  static const int X = 0;
  static const int Y = 1;
 
- Vector(double x, double y) {
+ Vector2(double x, double y) {
    _f[X] = x;
    _f[Y] = y;
  }
 
- Vector.zero() {
+ Vector2.zero() {
    _f[X] = 0.0;
    _f[Y] = 0.0;
  }
@@ -51,7 +51,7 @@ class Vector {
  /**
   * Constructs a new vector with the same coordinates as the given vector.
   */
- Vector.copy(Vector other) {
+ Vector2.copy(Vector2 other) {
    _f[X] = other._f[X];
    _f[Y] = other._f[Y];
  }
@@ -63,7 +63,7 @@ class Vector {
  set y(double v) { _f[Y] = v; }
 
  /**
-  * Returns true if given object is a Vector with the same x and y values as
+  * Returns true if given object is a Vector2 with the same x and y values as
   * this vector. Returns false otherwise.
   */
  bool operator ==(other) =&gt; x == other.x &amp;&amp; y == other.y;
@@ -71,7 +71,7 @@ class Vector {
  /**
   * Update the current vector by adding v.
   */
- Vector addLocal(Vector v) {
+ Vector2 addLocal(Vector2 v) {
    _f[X] += v._f[X];
    _f[Y] += v._f[Y];
    return this;
@@ -80,30 +80,30 @@ class Vector {
  /**
   * Subtracts the given vector from this vector.
   */
- Vector subLocal(Vector other) {
+ Vector2 subLocal(Vector2 other) {
    _f[X] -= other._f[X];
    _f[Y] -= other._f[Y];
    return this;
  }
 
- Vector setCoords(double xCoord, double yCoord) {
+ Vector2 setCoords(double xCoord, double yCoord) {
    _f[X] = xCoord;
    _f[Y] = yCoord;
    return this;
  }
 
  /** Return the cross product of the twe given vectors. */
- static double crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
+ static double crossVectors(Vector2 v1, Vector2 v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
 
  /** Return the dot product of the two given vectors. */
- static double dot(Vector one, Vector two) =&gt; (one.x * two.x + one.y * two.y);
+ static double dot(Vector2 one, Vector2 two) =&gt; (one.x * two.x + one.y * two.y);
 
  /**
   * Has the effect of swapping the x and y coordinates of the vector,
   * multiplying both by the given number, and then flipping the sign of the new
   * x coordinate. Returns the result through the out parameter.
   */
- static void crossNumAndVectorToOut(double s, Vector a, Vector out) {
+ static void crossNumAndVectorToOut(double s, Vector2 a, Vector2 out) {
    double tempY = s * a._f[X];
    out._f[X] = -s * a._f[Y];
    out._f[Y] = tempY;
@@ -114,7 +114,7 @@ class Vector {
   * multiplying both by the given number, and then flipping the sign of the new
   * y coordinate. Returns the result through the out parameter.
   */
- static void crossVectorAndNumToOut(Vector a, double s, Vector out) {
+ static void crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {
    double tempy = -s * a._f[X];
    out._f[X] = s * a._f[Y];
    out._f[Y] = tempy;
@@ -123,7 +123,7 @@ class Vector {
  /**
   * Sets this vector to be a copy of the given vector.
   */
- Vector setFrom(Vector v) {
+ Vector2 setFrom(Vector2 v) {
    _f[X] = v._f[X];
    _f[Y] = v._f[Y];
    return this;
@@ -132,13 +132,13 @@ class Vector {
  /**
   * Multiplies this vector by the given number.
   */
- Vector mulLocal(double d) {
+ Vector2 mulLocal(double d) {
    _f[X] *= d;
    _f[Y] *= d;
    return this;
  }
 
- Vector setZero() {
+ Vector2 setZero() {
    _f[X] = _f[Y] = 0.0;
    return this;
  }
@@ -149,7 +149,7 @@ class Vector {
   * Take the minimum of each coordinate from the two given vectors and store
   * the result in the given out vector.
   */
- static void minToOut(Vector a, Vector b, Vector out) {
+ static void minToOut(Vector2 a, Vector2 b, Vector2 out) {
    out._f[X] = a.x &lt; b.x ? a.x : b.x;
    out._f[Y] = a.y &lt; b.y ? a.y : b.y;
  }
@@ -158,7 +158,7 @@ class Vector {
   * Take the maximum of each coordinate from the two given vectors and store
   * the result in the given out vector.
   */
- static void maxToOut(Vector a, Vector b, Vector out) {
+ static void maxToOut(Vector2 a, Vector2 b, Vector2 out) {
    out._f[X] = a.x &gt; b.x ? a.x : b.x;
    out._f[Y] = a.y &gt; b.y ? a.y : b.y;
  }
@@ -195,7 +195,7 @@ class Vector {
   * Returns the distance between the point defined by this vector and the given
   * vector.
   */
- double distanceBetween(Vector v) {
+ double distanceBetween(Vector2 v) {
    double xDelta = x - v.x;
    double yDelta = y - v.y;
    return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
@@ -205,16 +205,16 @@ class Vector {
   * Returns a vector that is the result of rotating the original vector by
   * angle degrees counter-clockwise.
   */
- Vector rotate(double angle) {
+ Vector2 rotate(double angle) {
    Matrix22 mtx = new Matrix22();
    mtx.setAngle(angle);
-   Vector temp = new Vector.zero();
+   Vector2 temp = new Vector2.zero();
    mtx.multiplyVectorToOut(this, temp);
    return temp;
  }
 
  /** Flips this vector such that the +/- of each x and y are reversed. */
- Vector negateLocal() {
+ Vector2 negateLocal() {
    _f[X] = -_f[X];
    _f[Y] = -_f[Y];
    return this;
@@ -234,7 +234,7 @@ class Vector {
 <button class="show-code">Code</button>
 const <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>X</strong> <a class="anchor-link"
             href="#X"
-            title="Permalink to Vector.X">#</a>
+            title="Permalink to Vector2.X">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
@@ -246,7 +246,7 @@ static const int X = 0
 <button class="show-code">Code</button>
 const <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>Y</strong> <a class="anchor-link"
             href="#Y"
-            title="Permalink to Vector.Y">#</a>
+            title="Permalink to Vector2.Y">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
@@ -259,36 +259,36 @@ static const int Y = 1
 <h3>Static Methods</h3>
 <div class="method"><h4 id="crossVectors">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>crossVectors</strong>(<a href="../box2d/Vector.html">Vector</a> v1, <a href="../box2d/Vector.html">Vector</a> v2) <a class="anchor-link" href="#crossVectors"
-              title="Permalink to Vector.crossVectors">#</a></h4>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>crossVectors</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#crossVectors"
+              title="Permalink to Vector2.crossVectors">#</a></h4>
 <div class="doc">
 <p>Return the cross product of the twe given vectors. </p>
 <pre class="source">
-static double crossVectors(Vector v1, Vector v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
+static double crossVectors(Vector2 v1, Vector2 v2) =&gt; (v1.x * v2.y - v1.y * v2.x);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="dot">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>dot</strong>(<a href="../box2d/Vector.html">Vector</a> one, <a href="../box2d/Vector.html">Vector</a> two) <a class="anchor-link" href="#dot"
-              title="Permalink to Vector.dot">#</a></h4>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>dot</strong>(<a href="../box2d/Vector2.html">Vector2</a> one, <a href="../box2d/Vector2.html">Vector2</a> two) <a class="anchor-link" href="#dot"
+              title="Permalink to Vector2.dot">#</a></h4>
 <div class="doc">
 <p>Return the dot product of the two given vectors. </p>
 <pre class="source">
-static double dot(Vector one, Vector two) =&gt; (one.x * two.x + one.y * two.y);
+static double dot(Vector2 one, Vector2 two) =&gt; (one.x * two.x + one.y * two.y);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="crossNumAndVectorToOut">
 <button class="show-code">Code</button>
-void <strong>crossNumAndVectorToOut</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> s, <a href="../box2d/Vector.html">Vector</a> a, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#crossNumAndVectorToOut"
-              title="Permalink to Vector.crossNumAndVectorToOut">#</a></h4>
+void <strong>crossNumAndVectorToOut</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> s, <a href="../box2d/Vector2.html">Vector2</a> a, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#crossNumAndVectorToOut"
+              title="Permalink to Vector2.crossNumAndVectorToOut">#</a></h4>
 <div class="doc">
 <p>Has the effect of swapping the x and y coordinates of the vector,
 multiplying both by the given number, and then flipping the sign of the new
 x coordinate. Returns the result through the out parameter.</p>
 <pre class="source">
-static void crossNumAndVectorToOut(double s, Vector a, Vector out) {
+static void crossNumAndVectorToOut(double s, Vector2 a, Vector2 out) {
  double tempY = s * a._f[X];
  out._f[X] = -s * a._f[Y];
  out._f[Y] = tempY;
@@ -298,14 +298,14 @@ static void crossNumAndVectorToOut(double s, Vector a, Vector out) {
 </div>
 <div class="method"><h4 id="crossVectorAndNumToOut">
 <button class="show-code">Code</button>
-void <strong>crossVectorAndNumToOut</strong>(<a href="../box2d/Vector.html">Vector</a> a, <a href="http://api.dartlang.org/dart_core/double.html">double</a> s, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#crossVectorAndNumToOut"
-              title="Permalink to Vector.crossVectorAndNumToOut">#</a></h4>
+void <strong>crossVectorAndNumToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> a, <a href="http://api.dartlang.org/dart_core/double.html">double</a> s, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#crossVectorAndNumToOut"
+              title="Permalink to Vector2.crossVectorAndNumToOut">#</a></h4>
 <div class="doc">
 <p>Has the effect of swapping the x and y coordinates of the vector,
 multiplying both by the given number, and then flipping the sign of the new
 y coordinate. Returns the result through the out parameter.</p>
 <pre class="source">
-static void crossVectorAndNumToOut(Vector a, double s, Vector out) {
+static void crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {
  double tempy = -s * a._f[X];
  out._f[X] = s * a._f[Y];
  out._f[Y] = tempy;
@@ -315,13 +315,13 @@ static void crossVectorAndNumToOut(Vector a, double s, Vector out) {
 </div>
 <div class="method"><h4 id="minToOut">
 <button class="show-code">Code</button>
-void <strong>minToOut</strong>(<a href="../box2d/Vector.html">Vector</a> a, <a href="../box2d/Vector.html">Vector</a> b, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#minToOut"
-              title="Permalink to Vector.minToOut">#</a></h4>
+void <strong>minToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> a, <a href="../box2d/Vector2.html">Vector2</a> b, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#minToOut"
+              title="Permalink to Vector2.minToOut">#</a></h4>
 <div class="doc">
 <p>Take the minimum of each coordinate from the two given vectors and store
 the result in the given out vector.</p>
 <pre class="source">
-static void minToOut(Vector a, Vector b, Vector out) {
+static void minToOut(Vector2 a, Vector2 b, Vector2 out) {
  out._f[X] = a.x &lt; b.x ? a.x : b.x;
  out._f[Y] = a.y &lt; b.y ? a.y : b.y;
 }
@@ -330,13 +330,13 @@ static void minToOut(Vector a, Vector b, Vector out) {
 </div>
 <div class="method"><h4 id="maxToOut">
 <button class="show-code">Code</button>
-void <strong>maxToOut</strong>(<a href="../box2d/Vector.html">Vector</a> a, <a href="../box2d/Vector.html">Vector</a> b, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#maxToOut"
-              title="Permalink to Vector.maxToOut">#</a></h4>
+void <strong>maxToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> a, <a href="../box2d/Vector2.html">Vector2</a> b, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#maxToOut"
+              title="Permalink to Vector2.maxToOut">#</a></h4>
 <div class="doc">
 <p>Take the maximum of each coordinate from the two given vectors and store
 the result in the given out vector.</p>
 <pre class="source">
-static void maxToOut(Vector a, Vector b, Vector out) {
+static void maxToOut(Vector2 a, Vector2 b, Vector2 out) {
  out._f[X] = a.x &gt; b.x ? a.x : b.x;
  out._f[Y] = a.y &gt; b.y ? a.y : b.y;
 }
@@ -346,40 +346,40 @@ static void maxToOut(Vector a, Vector b, Vector out) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Vector">
+<div class="method"><h4 id="Vector2">
 <button class="show-code">Code</button>
-new <strong>Vector</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y) <a class="anchor-link" href="#Vector"
-              title="Permalink to Vector.Vector">#</a></h4>
+new <strong>Vector2</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y) <a class="anchor-link" href="#Vector2"
+              title="Permalink to Vector2.Vector2">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector(double x, double y) {
+Vector2(double x, double y) {
  _f[X] = x;
  _f[Y] = y;
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector.copy">
+<div class="method"><h4 id="Vector2.copy">
 <button class="show-code">Code</button>
-new <strong>Vector.copy</strong>(<a href="../box2d/Vector.html">Vector</a> other) <a class="anchor-link" href="#Vector.copy"
-              title="Permalink to Vector.Vector.copy">#</a></h4>
+new <strong>Vector2.copy</strong>(<a href="../box2d/Vector2.html">Vector2</a> other) <a class="anchor-link" href="#Vector2.copy"
+              title="Permalink to Vector2.Vector2.copy">#</a></h4>
 <div class="doc">
 <p>Constructs a new vector with the same coordinates as the given vector.</p>
 <pre class="source">
-Vector.copy(Vector other) {
+Vector2.copy(Vector2 other) {
  _f[X] = other._f[X];
  _f[Y] = other._f[Y];
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector.zero">
+<div class="method"><h4 id="Vector2.zero">
 <button class="show-code">Code</button>
-new <strong>Vector.zero</strong>() <a class="anchor-link" href="#Vector.zero"
-              title="Permalink to Vector.Vector.zero">#</a></h4>
+new <strong>Vector2.zero</strong>() <a class="anchor-link" href="#Vector2.zero"
+              title="Permalink to Vector2.Vector2.zero">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector.zero() {
+Vector2.zero() {
  _f[X] = 0.0;
  _f[Y] = 0.0;
 }
@@ -393,7 +393,7 @@ Vector.zero() {
 <button class="show-code">Code</button>
 final <a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>length</strong> <a class="anchor-link"
             href="#length"
-            title="Permalink to Vector.length">#</a>
+            title="Permalink to Vector2.length">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
@@ -405,7 +405,7 @@ double get length =&gt; Math.sqrt(this.lengthSquared);
 <button class="show-code">Code</button>
 final <a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>lengthSquared</strong> <a class="anchor-link"
             href="#lengthSquared"
-            title="Permalink to Vector.lengthSquared">#</a>
+            title="Permalink to Vector2.lengthSquared">#</a>
         </h4>
         <div class="doc">
 <p>Returns the length of this vector, squared.</p>
@@ -418,7 +418,7 @@ double get lengthSquared =&gt; x * x + y * y;
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>x</strong> <a class="anchor-link"
             href="#x"
-            title="Permalink to Vector.x">#</a>
+            title="Permalink to Vector2.x">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
@@ -433,7 +433,7 @@ set x(double v) { _f[X] = v; }
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>y</strong> <a class="anchor-link"
             href="#y"
-            title="Permalink to Vector.y">#</a>
+            title="Permalink to Vector2.y">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
@@ -450,9 +450,9 @@ set y(double v) { _f[Y] = v; }
 <div class="method"><h4 id="==">
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>operator ==</strong>(other) <a class="anchor-link" href="#=="
-              title="Permalink to Vector.operator ==">#</a></h4>
+              title="Permalink to Vector2.operator ==">#</a></h4>
 <div class="doc">
-<p>Returns true if given object is a Vector with the same x and y values as
+<p>Returns true if given object is a Vector2 with the same x and y values as
 this vector. Returns false otherwise.</p>
 <pre class="source">
 bool operator ==(other) =&gt; x == other.x &amp;&amp; y == other.y;
@@ -465,7 +465,7 @@ bool operator ==(other) =&gt; x == other.x &amp;&amp; y == other.y;
 <div class="method"><h4 id="absLocal">
 <button class="show-code">Code</button>
 void <strong>absLocal</strong>() <a class="anchor-link" href="#absLocal"
-              title="Permalink to Vector.absLocal">#</a></h4>
+              title="Permalink to Vector2.absLocal">#</a></h4>
 <div class="doc">
 <p>Set the x and y coordinates of this vector to absolute values.</p>
 <pre class="source">
@@ -478,12 +478,12 @@ void absLocal() {
 </div>
 <div class="method"><h4 id="addLocal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>addLocal</strong>(<a href="../box2d/Vector.html">Vector</a> v) <a class="anchor-link" href="#addLocal"
-              title="Permalink to Vector.addLocal">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>addLocal</strong>(<a href="../box2d/Vector2.html">Vector2</a> v) <a class="anchor-link" href="#addLocal"
+              title="Permalink to Vector2.addLocal">#</a></h4>
 <div class="doc">
 <p>Update the current vector by adding v.</p>
 <pre class="source">
-Vector addLocal(Vector v) {
+Vector2 addLocal(Vector2 v) {
  _f[X] += v._f[X];
  _f[Y] += v._f[Y];
  return this;
@@ -493,13 +493,13 @@ Vector addLocal(Vector v) {
 </div>
 <div class="method"><h4 id="distanceBetween">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceBetween</strong>(<a href="../box2d/Vector.html">Vector</a> v) <a class="anchor-link" href="#distanceBetween"
-              title="Permalink to Vector.distanceBetween">#</a></h4>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceBetween</strong>(<a href="../box2d/Vector2.html">Vector2</a> v) <a class="anchor-link" href="#distanceBetween"
+              title="Permalink to Vector2.distanceBetween">#</a></h4>
 <div class="doc">
 <p>Returns the distance between the point defined by this vector and the given
 vector.</p>
 <pre class="source">
-double distanceBetween(Vector v) {
+double distanceBetween(Vector2 v) {
  double xDelta = x - v.x;
  double yDelta = y - v.y;
  return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
@@ -510,7 +510,7 @@ double distanceBetween(Vector v) {
 <div class="method"><h4 id="isValid">
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>isValid</strong>() <a class="anchor-link" href="#isValid"
-              title="Permalink to Vector.isValid">#</a></h4>
+              title="Permalink to Vector2.isValid">#</a></h4>
 <div class="doc">
 <p>Returns if the values of coordinates within the MAX_INTEGER. </p>
 <pre class="source">
@@ -520,12 +520,12 @@ bool isValid() =&gt; !x.isInfinite &amp;&amp; !x.isNaN &amp;&amp; !y.isInfinite 
 </div>
 <div class="method"><h4 id="mulLocal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>mulLocal</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> d) <a class="anchor-link" href="#mulLocal"
-              title="Permalink to Vector.mulLocal">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>mulLocal</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> d) <a class="anchor-link" href="#mulLocal"
+              title="Permalink to Vector2.mulLocal">#</a></h4>
 <div class="doc">
 <p>Multiplies this vector by the given number.</p>
 <pre class="source">
-Vector mulLocal(double d) {
+Vector2 mulLocal(double d) {
  _f[X] *= d;
  _f[Y] *= d;
  return this;
@@ -535,12 +535,12 @@ Vector mulLocal(double d) {
 </div>
 <div class="method"><h4 id="negateLocal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>negateLocal</strong>() <a class="anchor-link" href="#negateLocal"
-              title="Permalink to Vector.negateLocal">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>negateLocal</strong>() <a class="anchor-link" href="#negateLocal"
+              title="Permalink to Vector2.negateLocal">#</a></h4>
 <div class="doc">
 <p>Flips this vector such that the +/- of each x and y are reversed. </p>
 <pre class="source">
-Vector negateLocal() {
+Vector2 negateLocal() {
  _f[X] = -_f[X];
  _f[Y] = -_f[Y];
  return this;
@@ -551,7 +551,7 @@ Vector negateLocal() {
 <div class="method"><h4 id="normalize">
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
-              title="Permalink to Vector.normalize">#</a></h4>
+              title="Permalink to Vector2.normalize">#</a></h4>
 <div class="doc">
 <p>Normalizes this vector and returns the length before normalization.</p>
 <pre class="source">
@@ -571,16 +571,16 @@ double normalize() {
 </div>
 <div class="method"><h4 id="rotate">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>rotate</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> angle) <a class="anchor-link" href="#rotate"
-              title="Permalink to Vector.rotate">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>rotate</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> angle) <a class="anchor-link" href="#rotate"
+              title="Permalink to Vector2.rotate">#</a></h4>
 <div class="doc">
 <p>Returns a vector that is the result of rotating the original vector by
 angle degrees counter-clockwise.</p>
 <pre class="source">
-Vector rotate(double angle) {
+Vector2 rotate(double angle) {
  Matrix22 mtx = new Matrix22();
  mtx.setAngle(angle);
- Vector temp = new Vector.zero();
+ Vector2 temp = new Vector2.zero();
  mtx.multiplyVectorToOut(this, temp);
  return temp;
 }
@@ -589,11 +589,11 @@ Vector rotate(double angle) {
 </div>
 <div class="method"><h4 id="setCoords">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>setCoords</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> xCoord, <a href="http://api.dartlang.org/dart_core/double.html">double</a> yCoord) <a class="anchor-link" href="#setCoords"
-              title="Permalink to Vector.setCoords">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>setCoords</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> xCoord, <a href="http://api.dartlang.org/dart_core/double.html">double</a> yCoord) <a class="anchor-link" href="#setCoords"
+              title="Permalink to Vector2.setCoords">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector setCoords(double xCoord, double yCoord) {
+Vector2 setCoords(double xCoord, double yCoord) {
  _f[X] = xCoord;
  _f[Y] = yCoord;
  return this;
@@ -603,12 +603,12 @@ Vector setCoords(double xCoord, double yCoord) {
 </div>
 <div class="method"><h4 id="setFrom">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>setFrom</strong>(<a href="../box2d/Vector.html">Vector</a> v) <a class="anchor-link" href="#setFrom"
-              title="Permalink to Vector.setFrom">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>setFrom</strong>(<a href="../box2d/Vector2.html">Vector2</a> v) <a class="anchor-link" href="#setFrom"
+              title="Permalink to Vector2.setFrom">#</a></h4>
 <div class="doc">
 <p>Sets this vector to be a copy of the given vector.</p>
 <pre class="source">
-Vector setFrom(Vector v) {
+Vector2 setFrom(Vector2 v) {
  _f[X] = v._f[X];
  _f[Y] = v._f[Y];
  return this;
@@ -618,11 +618,11 @@ Vector setFrom(Vector v) {
 </div>
 <div class="method"><h4 id="setZero">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
-              title="Permalink to Vector.setZero">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>setZero</strong>() <a class="anchor-link" href="#setZero"
+              title="Permalink to Vector2.setZero">#</a></h4>
 <div class="doc">
 <pre class="source">
-Vector setZero() {
+Vector2 setZero() {
  _f[X] = _f[Y] = 0.0;
  return this;
 }
@@ -631,12 +631,12 @@ Vector setZero() {
 </div>
 <div class="method"><h4 id="subLocal">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>subLocal</strong>(<a href="../box2d/Vector.html">Vector</a> other) <a class="anchor-link" href="#subLocal"
-              title="Permalink to Vector.subLocal">#</a></h4>
+<a href="../box2d/Vector2.html">Vector2</a> <strong>subLocal</strong>(<a href="../box2d/Vector2.html">Vector2</a> other) <a class="anchor-link" href="#subLocal"
+              title="Permalink to Vector2.subLocal">#</a></h4>
 <div class="doc">
 <p>Subtracts the given vector from this vector.</p>
 <pre class="source">
-Vector subLocal(Vector other) {
+Vector2 subLocal(Vector2 other) {
  _f[X] -= other._f[X];
  _f[Y] -= other._f[Y];
  return this;
@@ -647,7 +647,7 @@ Vector subLocal(Vector other) {
 <div class="method"><h4 id="toString">
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/String.html">String</a> <strong>toString</strong>() <a class="anchor-link" href="#toString"
-              title="Permalink to Vector.toString">#</a></h4>
+              title="Permalink to Vector2.toString">#</a></h4>
 <div class="doc">
 <p>Returns a String representation of the given vector. </p>
 <pre class="source">

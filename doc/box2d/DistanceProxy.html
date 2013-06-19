@@ -34,7 +34,7 @@
 <div class="doc">
 <pre class="source">
 class DistanceProxy {
- final List&lt;Vector&gt; vertices;
+ final List&lt;Vector2&gt; vertices;
  int count;
  num radius;
 
@@ -42,12 +42,12 @@ class DistanceProxy {
   * Constructs a new DistanceProxy.
   */
  DistanceProxy() :
-   vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
+   vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
    count = 0,
    radius = 0 {
 
      for(int i = 0; i &lt; vertices.length; ++i)
-       vertices[i] = new Vector.zero();
+       vertices[i] = new Vector2.zero();
    }
 
  /**
@@ -77,11 +77,11 @@ class DistanceProxy {
  /**
   * Get the supporting vertex index in the given direction.
   */
- int getSupport(Vector direction) {
+ int getSupport(Vector2 direction) {
    int bestIndex = 0;
-   num bestValue = Vector.dot(vertices[0], direction);
+   num bestValue = Vector2.dot(vertices[0], direction);
    for (int i = 1; i &lt; count; ++i) {
-     num value = Vector.dot(vertices[i], direction);
+     num value = Vector2.dot(vertices[i], direction);
      if(value &gt; bestValue) {
        bestIndex = i;
        bestValue = value;
@@ -94,7 +94,7 @@ class DistanceProxy {
  /**
   * Get the supporting vertex in the given direction.
   */
- Vector getSupportVertex(Vector direction) =&gt; vertices[getSupport(direction)];
+ Vector2 getSupportVertex(Vector2 direction) =&gt; vertices[getSupport(direction)];
 }
 </pre>
 </div>
@@ -108,12 +108,12 @@ new <strong>DistanceProxy</strong>() <a class="anchor-link" href="#DistanceProxy
 <p>Constructs a new DistanceProxy.</p>
 <pre class="source">
 DistanceProxy() :
- vertices = new List&lt;Vector&gt;(Settings.MAX_POLYGON_VERTICES),
+ vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
  count = 0,
  radius = 0 {
 
    for(int i = 0; i &lt; vertices.length; ++i)
-     vertices[i] = new Vector.zero();
+     vertices[i] = new Vector2.zero();
  }
 </pre>
 </div>
@@ -147,13 +147,13 @@ num radius
 </div>
 <div class="field"><h4 id="vertices">
 <button class="show-code">Code</button>
-final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>vertices</strong> <a class="anchor-link"
+final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>vertices</strong> <a class="anchor-link"
             href="#vertices"
             title="Permalink to DistanceProxy.vertices">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;Vector&gt; vertices
+final List&lt;Vector2&gt; vertices
 </pre>
 </div>
 </div>
@@ -162,16 +162,16 @@ final List&lt;Vector&gt; vertices
 <h3>Methods</h3>
 <div class="method"><h4 id="getSupport">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/int.html">int</a> <strong>getSupport</strong>(<a href="../box2d/Vector.html">Vector</a> direction) <a class="anchor-link" href="#getSupport"
+<a href="http://api.dartlang.org/dart_core/int.html">int</a> <strong>getSupport</strong>(<a href="../box2d/Vector2.html">Vector2</a> direction) <a class="anchor-link" href="#getSupport"
               title="Permalink to DistanceProxy.getSupport">#</a></h4>
 <div class="doc">
 <p>Get the supporting vertex index in the given direction.</p>
 <pre class="source">
-int getSupport(Vector direction) {
+int getSupport(Vector2 direction) {
  int bestIndex = 0;
- num bestValue = Vector.dot(vertices[0], direction);
+ num bestValue = Vector2.dot(vertices[0], direction);
  for (int i = 1; i &lt; count; ++i) {
-   num value = Vector.dot(vertices[i], direction);
+   num value = Vector2.dot(vertices[i], direction);
    if(value &gt; bestValue) {
      bestIndex = i;
      bestValue = value;
@@ -185,12 +185,12 @@ int getSupport(Vector direction) {
 </div>
 <div class="method"><h4 id="getSupportVertex">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>getSupportVertex</strong>(<a href="../box2d/Vector.html">Vector</a> direction) <a class="anchor-link" href="#getSupportVertex"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>getSupportVertex</strong>(<a href="../box2d/Vector2.html">Vector2</a> direction) <a class="anchor-link" href="#getSupportVertex"
               title="Permalink to DistanceProxy.getSupportVertex">#</a></h4>
 <div class="doc">
 <p>Get the supporting vertex in the given direction.</p>
 <pre class="source">
-Vector getSupportVertex(Vector direction) =&gt; vertices[getSupport(direction)];
+Vector2 getSupportVertex(Vector2 direction) =&gt; vertices[getSupport(direction)];
 </pre>
 </div>
 </div>

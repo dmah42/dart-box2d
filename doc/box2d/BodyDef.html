@@ -49,10 +49,10 @@ class BodyDef {
  Object userData;
 
  /** The world position of the body. */
- Vector position;
+ Vector2 position;
 
  /** Linear velocity of the body in world coordinates. */
- Vector linearVelocity;
+ Vector2 linearVelocity;
 
  /** Angular velocity of the body. */
  num angularVelocity;
@@ -106,7 +106,7 @@ class BodyDef {
    userData = null,
    bullet = false,
    type = BodyType.STATIC,
-   position = new Vector.zero(),
+   position = new Vector2.zero(),
    angle = 0,
    linearDamping = 0,
    angularDamping = 0,
@@ -114,7 +114,7 @@ class BodyDef {
    awake = true,
    fixedRotation = false,
    active = true,
-   linearVelocity = new Vector.zero(),
+   linearVelocity = new Vector2.zero(),
    angularVelocity = 0;
 }
 </pre>
@@ -132,7 +132,7 @@ BodyDef() :
  userData = null,
  bullet = false,
  type = BodyType.STATIC,
- position = new Vector.zero(),
+ position = new Vector2.zero(),
  angle = 0,
  linearDamping = 0,
  angularDamping = 0,
@@ -140,7 +140,7 @@ BodyDef() :
  awake = true,
  fixedRotation = false,
  active = true,
- linearVelocity = new Vector.zero(),
+ linearVelocity = new Vector2.zero(),
  angularVelocity = 0;
 </pre>
 </div>
@@ -289,27 +289,27 @@ num linearDamping
 </div>
 <div class="field"><h4 id="linearVelocity">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>linearVelocity</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>linearVelocity</strong> <a class="anchor-link"
             href="#linearVelocity"
             title="Permalink to BodyDef.linearVelocity">#</a>
         </h4>
         <div class="doc">
 <p>Linear velocity of the body in world coordinates. </p>
 <pre class="source">
-Vector linearVelocity
+Vector2 linearVelocity
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a>         <strong>position</strong> <a class="anchor-link"
+<a href="../box2d/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to BodyDef.position">#</a>
         </h4>
         <div class="doc">
 <p>The world position of the body. </p>
 <pre class="source">
-Vector position
+Vector2 position
 </pre>
 </div>
 </div>

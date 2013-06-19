@@ -40,10 +40,10 @@ class TimeOfImpactSolver {
 
  /** Pooling. */
  final TimeOfImpactSolverManifold psm;
- final Vector rA;
- final Vector rB;
- final Vector P;
- final Vector temp;
+ final Vector2 rA;
+ final Vector2 rB;
+ final Vector2 P;
+ final Vector2 temp;
 
  TimeOfImpactSolver() :
    count = 0,
@@ -53,10 +53,10 @@ class TimeOfImpactSolver {
 
    // Initialize pool variables.
    psm = new TimeOfImpactSolverManifold(),
-   rA = new Vector.zero(),
-   rB = new Vector.zero(),
-   P = new Vector.zero(),
-   temp = new Vector.zero();
+   rA = new Vector2.zero(),
+   rB = new Vector2.zero(),
+   P = new Vector2.zero(),
+   temp = new Vector2.zero();
 
  void initialize(List&lt;Contact&gt; contacts, int argCount, Body argToiBody) {
    count = argCount;
@@ -132,9 +132,9 @@ class TimeOfImpactSolver {
      // Solve normal constraints
      for (int j = 0; j &lt; c.pointCount; ++j){
        psm.initialize(c, j);
-       Vector normal = psm.normal;
+       Vector2 normal = psm.normal;
 
-       Vector point = psm.point;
+       Vector2 point = psm.point;
        num separation = psm.separation;
 
        rA.setFrom(point).subLocal(bodyA.sweep.center);
@@ -148,8 +148,8 @@ class TimeOfImpactSolver {
            Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
        // Compute the effective mass.
-       num rnA = Vector.crossVectors(rA, normal);
-       num rnB = Vector.crossVectors(rB, normal);
+       num rnA = Vector2.crossVectors(rA, normal);
+       num rnB = Vector2.crossVectors(rB, normal);
        num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
        // Compute normal impulse
@@ -159,12 +159,12 @@ class TimeOfImpactSolver {
 
        temp.setFrom(P).mulLocal(invMassA);
        bodyA.sweep.center.subLocal(temp);
-       bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+       bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
        bodyA.synchronizeTransform();
 
        temp.setFrom(P).mulLocal(invMassB);
        bodyB.sweep.center.addLocal(temp);
-       bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+       bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
        bodyB.synchronizeTransform();
      }
    }
@@ -192,10 +192,10 @@ TimeOfImpactSolver() :
 
  // Initialize pool variables.
  psm = new TimeOfImpactSolverManifold(),
- rA = new Vector.zero(),
- rB = new Vector.zero(),
- P = new Vector.zero(),
- temp = new Vector.zero();
+ rA = new Vector2.zero(),
+ rB = new Vector2.zero(),
+ P = new Vector2.zero(),
+ temp = new Vector2.zero();
 </pre>
 </div>
 </div>
@@ -228,13 +228,13 @@ int count
 </div>
 <div class="field"><h4 id="P">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>P</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P</strong> <a class="anchor-link"
             href="#P"
             title="Permalink to TimeOfImpactSolver.P">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector P
+final Vector2 P
 </pre>
 </div>
 </div>
@@ -253,37 +253,37 @@ final TimeOfImpactSolverManifold psm
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to TimeOfImpactSolver.rA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rA
+final Vector2 rA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to TimeOfImpactSolver.rB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector rB
+final Vector2 rB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="temp">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>temp</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp</strong> <a class="anchor-link"
             href="#temp"
             title="Permalink to TimeOfImpactSolver.temp">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector temp
+final Vector2 temp
 </pre>
 </div>
 </div>
@@ -388,9 +388,9 @@ bool solve(num baumgarte){
    // Solve normal constraints
    for (int j = 0; j &lt; c.pointCount; ++j){
      psm.initialize(c, j);
-     Vector normal = psm.normal;
+     Vector2 normal = psm.normal;
 
-     Vector point = psm.point;
+     Vector2 point = psm.point;
      num separation = psm.separation;
 
      rA.setFrom(point).subLocal(bodyA.sweep.center);
@@ -404,8 +404,8 @@ bool solve(num baumgarte){
          Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
      // Compute the effective mass.
-     num rnA = Vector.crossVectors(rA, normal);
-     num rnB = Vector.crossVectors(rB, normal);
+     num rnA = Vector2.crossVectors(rA, normal);
+     num rnB = Vector2.crossVectors(rB, normal);
      num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
      // Compute normal impulse
@@ -415,12 +415,12 @@ bool solve(num baumgarte){
 
      temp.setFrom(P).mulLocal(invMassA);
      bodyA.sweep.center.subLocal(temp);
-     bodyA.sweep.angle -= invIA * Vector.crossVectors(rA, P);
+     bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
      bodyA.synchronizeTransform();
 
      temp.setFrom(P).mulLocal(invMassB);
      bodyB.sweep.center.addLocal(temp);
-     bodyB.sweep.angle += invIB * Vector.crossVectors(rB, P);
+     bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
      bodyB.synchronizeTransform();
    }
  }

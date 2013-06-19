@@ -54,9 +54,9 @@ class FrictionJointTest extends Demo {
     // Set shape 3 times and create fixture on the body for each
     shape.setAsBox(50.0, 0.4);
     _ground.createFixtureFromShape(shape);
-    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector(-20.0, 0.0), 0.0);
+    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector2(-20.0, 0.0), 0.0);
     _ground.createFixtureFromShape(shape);
-    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector( 20.0, 0.0), 0.0);
+    shape.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector2( 20.0, 0.0), 0.0);
     _ground.createFixtureFromShape(shape);
 
     // Add composite body to list
@@ -65,7 +65,7 @@ class FrictionJointTest extends Demo {
 
   void _createBoxShapeAndFixture() {
     final PolygonShape boxShape = new PolygonShape();
-    boxShape.setAsBoxWithCenterAndAngle(3.0, 1.5, new Vector.zero(), Math.PI / 2);
+    boxShape.setAsBoxWithCenterAndAngle(3.0, 1.5, new Vector2.zero(), Math.PI / 2);
 
     // Define fixture (links body and shape)
     _boxFixture = new FixtureDef();
@@ -78,7 +78,7 @@ class FrictionJointTest extends Demo {
     // Define body
     final BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
-    bodyDef.position = new Vector(-10.0, 30.0);
+    bodyDef.position = new Vector2(-10.0, 30.0);
 
     // Create body and fixture from definitions
     final Body fallingBox = world.createBody(bodyDef);
@@ -92,7 +92,7 @@ class FrictionJointTest extends Demo {
     // Define body
     final BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
-    bodyDef.position = new Vector(10.0, 30.0);
+    bodyDef.position = new Vector2(10.0, 30.0);
 
     // Create body and fixture from definitions
     final Body fallingBox = world.createBody(bodyDef);

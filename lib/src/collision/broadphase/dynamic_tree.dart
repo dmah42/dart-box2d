@@ -37,7 +37,7 @@ class DynamicTree {
   int _path;
 
   final Queue<DynamicTreeNode> _nodeStack;
-  final List<Vector> _drawVectors;
+  final List<Vector2> _drawVectors;
   /** Monotonically increasing count used to uniquely identify nodes. */
   int _nodeCounter;
 
@@ -46,11 +46,11 @@ class DynamicTree {
    *  construction. These are used instead of creating new objects during tree
    *  operation.
    */
-  final Vector _tempVector;
+  final Vector2 _tempVector;
   final AxisAlignedBox _tempBox;
-  final Vector center;
-  final Vector deltaOne;
-  final Vector deltaTwo;
+  final Vector2 center;
+  final Vector2 deltaOne;
+  final Vector2 deltaTwo;
 
   /**
    * Constructs a new DynamicTree.
@@ -61,19 +61,19 @@ class DynamicTree {
     _insertionCount = 0,
     _path = 0,
     _lastLeaf = null,
-    _drawVectors = new List<Vector>(4),
+    _drawVectors = new List<Vector2>(4),
     _nodeCounter = 0,
-    _tempVector = new Vector.zero(),
+    _tempVector = new Vector2.zero(),
     _tempBox = new AxisAlignedBox(),
     _nodeStack = new Queue<DynamicTreeNode>(),
     // Pool objects.
-    center = new Vector.zero(),
-    deltaOne = new Vector.zero(),
-    deltaTwo = new Vector.zero() {
+    center = new Vector2.zero(),
+    deltaOne = new Vector2.zero(),
+    deltaTwo = new Vector2.zero() {
 
     // Place new vectors in the draw vectors array.
     for (int i = 0; i < _drawVectors.length; ++i)
-      _drawVectors[i] = new Vector.zero();
+      _drawVectors[i] = new Vector2.zero();
   }
 
   /**
@@ -128,7 +128,7 @@ class DynamicTree {
    * Returns true if the given proxy was re-inserted.
    */
   bool moveProxy(DynamicTreeNode argProxy, AxisAlignedBox argBox,
-      Vector displacement) {
+      Vector2 displacement) {
     // The given proxy must not be null and must be a leaf.
     assert (argProxy != null);
     assert (argProxy.isLeaf);

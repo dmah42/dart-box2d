@@ -15,32 +15,32 @@
 part of box2d;
 
 class FrictionJoint extends Joint {
-  final Vector _localAnchorA;
-  final Vector _localAnchorB;
+  final Vector2 _localAnchorA;
+  final Vector2 _localAnchorB;
 
-  Vector _linearImpulse;
+  Vector2 _linearImpulse;
   num _angularImpulse;
   num _maxForce;
   num _maxTorque;
 
   FrictionJoint(FrictionJointDef def)
-      : _localAnchorA = new Vector.copy(def.localAnchorA),
-        _localAnchorB = new Vector.copy(def.localAnchorB),
-        _linearImpulse = new Vector.zero(),
+      : _localAnchorA = new Vector2.copy(def.localAnchorA),
+        _localAnchorB = new Vector2.copy(def.localAnchorB),
+        _linearImpulse = new Vector2.zero(),
         _angularImpulse = 0.0,
         _maxForce = def.maxForce,
         _maxTorque = def.maxTorque,
         super(def);
 
-  Vector getLocalAnchorA(Vector argOut) {
+  Vector2 getLocalAnchorA(Vector2 argOut) {
     bodyA.getWorldPointToOut(_localAnchorA, argOut);
   }
 
-  Vector getLocalAnchorB(Vector argOut) {
+  Vector2 getLocalAnchorB(Vector2 argOut) {
     bodyB.getWorldPointToOut(_localAnchorB, argOut);
   }
 
-  void getReactionForce(num inv_dt, Vector argOut) {
+  void getReactionForce(num inv_dt, Vector2 argOut) {
     argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
   }
 
@@ -62,8 +62,8 @@ class FrictionJoint extends Joint {
 
   void initVelocityConstraints(TimeStep step) {
     // Compute the effective mass matrix.
-    Vector r1 = new Vector.zero();
-    Vector r2 = new Vector.zero();
+    Vector2 r1 = new Vector2.zero();
+    Vector2 r2 = new Vector2.zero();
 
     r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
     r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
@@ -101,16 +101,16 @@ class FrictionJoint extends Joint {
       _linearImpulse.mulLocal(step.dtRatio);
       _angularImpulse *= step.dtRatio;
 
-      Vector P = new Vector.zero();
+      Vector2 P = new Vector2.zero();
       P.setFrom(_linearImpulse);
 
       bodyA.linearVelocity.x -= bodyA.invMass * P.x;
       bodyA.linearVelocity.y -= bodyA.invMass * P.y;
-      bodyA.angularVelocity -= bodyA.invInertia * (Vector.crossVectors(r1, P) + _angularImpulse);
+      bodyA.angularVelocity -= bodyA.invInertia * (Vector2.crossVectors(r1, P) + _angularImpulse);
 
       bodyB.linearVelocity.x += bodyB.invMass * P.x;
       bodyB.linearVelocity.y += bodyB.invMass * P.y;
-      bodyB.angularVelocity += bodyB.invInertia * (Vector.crossVectors(r2, P) + _angularImpulse);
+      bodyB.angularVelocity += bodyB.invInertia * (Vector2.crossVectors(r2, P) + _angularImpulse);
     } else {
       _linearImpulse.setZero();
       _angularImpulse = 0.0;
@@ -138,19 +138,19 @@ class FrictionJoint extends Joint {
 
     // Solve linear friction
     {
-      Vector r1 = new Vector.zero();
-      Vector r2 = new Vector.zero();
+      Vector2 r1 = new Vector2.zero();
+      Vector2 r2 = new Vector2.zero();
 
       r1.setFrom(_localAnchorA).subLocal(bodyA.localCenter);
       r2.setFrom(_localAnchorB).subLocal(bodyB.localCenter);
       Matrix22.mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
       Matrix22.mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
 
-      Vector temp = new Vector.zero();
-      Vector Cdot = new Vector.zero();
+      Vector2 temp = new Vector2.zero();
+      Vector2 Cdot = new Vector2.zero();
 
-      Vector.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
-      Vector.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
+      Vector2.crossNumAndVectorToOut(bodyA.angularVelocity, r1, temp);
+      Vector2.crossNumAndVectorToOut(bodyB.angularVelocity, r2, Cdot);
 
       Cdot.addLocal(bodyB.linearVelocity).subLocal(bodyA.linearVelocity).subLocal(temp);
 
@@ -166,11 +166,11 @@ class FrictionJoint extends Joint {
       linearMass.setFrom(K);
       linearMass.invertLocal();
 
-      Vector impulse = new Vector.zero();
+      Vector2 impulse = new Vector2.zero();
       Matrix22.mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
       impulse.negateLocal();
 
-      Vector oldImpulse = new Vector.zero();
+      Vector2 oldImpulse = new Vector2.zero();
       oldImpulse.setFrom(_linearImpulse);
       _linearImpulse.addLocal(impulse);
 
@@ -184,11 +184,11 @@ class FrictionJoint extends Joint {
 
       bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
       bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
-      bodyA.angularVelocity -= bodyA.invInertia * Vector.crossVectors(r1, impulse);
+      bodyA.angularVelocity -= bodyA.invInertia * Vector2.crossVectors(r1, impulse);
 
       bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
       bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
-      bodyB.angularVelocity += bodyB.invInertia * Vector.crossVectors(r2, impulse);
+      bodyB.angularVelocity += bodyB.invInertia * Vector2.crossVectors(r2, impulse);
     }
   }
 

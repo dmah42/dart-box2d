@@ -35,11 +35,11 @@
 <pre class="source">
 class Sweep {
  /** Local center of mass position. */
- final Vector localCenter;
+ final Vector2 localCenter;
 
  /** Center world positions. */
- final Vector centerZero;
- final Vector center;
+ final Vector2 centerZero;
+ final Vector2 center;
 
  /** World angles. */
  double angleZero;
@@ -50,19 +50,19 @@ class Sweep {
   * set to zero.
   */
  Sweep()
-     : localCenter = new Vector.zero(),
-       centerZero = new Vector.zero(),
-       center = new Vector.zero(),
-       angleZero = 0,
-       angle = 0;
+     : localCenter = new Vector2.zero(),
+       centerZero = new Vector2.zero(),
+       center = new Vector2.zero(),
+       angleZero = 0.0,
+       angle = 0.0;
 
  /**
   * Constructs a new sweep that is a copy of the given Sweep.
   */
  Sweep.copy(Sweep other)
-     : localCenter = new Vector.copy(other.localCenter),
-       centerZero = new Vector.copy(other.centerZero),
-       center = new Vector.copy(other.center),
+     : localCenter = new Vector2.copy(other.localCenter),
+       centerZero = new Vector2.copy(other.centerZero),
+       center = new Vector2.copy(other.center),
        angleZero = other.angleZero,
        angle = other.angle;
 
@@ -134,11 +134,11 @@ new <strong>Sweep</strong>() <a class="anchor-link" href="#Sweep"
 set to zero.</p>
 <pre class="source">
 Sweep()
-   : localCenter = new Vector.zero(),
-     centerZero = new Vector.zero(),
-     center = new Vector.zero(),
-     angleZero = 0,
-     angle = 0;
+   : localCenter = new Vector2.zero(),
+     centerZero = new Vector2.zero(),
+     center = new Vector2.zero(),
+     angleZero = 0.0,
+     angle = 0.0;
 </pre>
 </div>
 </div>
@@ -150,9 +150,9 @@ new <strong>Sweep.copy</strong>(<a href="../box2d/Sweep.html">Sweep</a> other) <
 <p>Constructs a new sweep that is a copy of the given Sweep.</p>
 <pre class="source">
 Sweep.copy(Sweep other)
-   : localCenter = new Vector.copy(other.localCenter),
-     centerZero = new Vector.copy(other.centerZero),
-     center = new Vector.copy(other.center),
+   : localCenter = new Vector2.copy(other.localCenter),
+     centerZero = new Vector2.copy(other.centerZero),
+     center = new Vector2.copy(other.center),
      angleZero = other.angleZero,
      angle = other.angle;
 </pre>
@@ -188,39 +188,39 @@ double angleZero
 </div>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to Sweep.center">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector center
+final Vector2 center
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="centerZero">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>centerZero</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>centerZero</strong> <a class="anchor-link"
             href="#centerZero"
             title="Permalink to Sweep.centerZero">#</a>
         </h4>
         <div class="doc">
 <p>Center world positions. </p>
 <pre class="source">
-final Vector centerZero
+final Vector2 centerZero
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localCenter">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenter</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenter</strong> <a class="anchor-link"
             href="#localCenter"
             title="Permalink to Sweep.localCenter">#</a>
         </h4>
         <div class="doc">
 <p>Local center of mass position. </p>
 <pre class="source">
-final Vector localCenter
+final Vector2 localCenter
 </pre>
 </div>
 </div>

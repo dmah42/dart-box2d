@@ -35,7 +35,7 @@
 <pre class="source">
 class Transform {
  /** The translation caused by a transform. */
- final Vector position;
+ final Vector2 position;
 
  /** A matrix representing a rotation. */
  final Matrix22 rotation;
@@ -43,13 +43,13 @@ class Transform {
  /**
   * Constructs a new transform with a vector at the origin and no rotation.
   */
- Transform() : position = new Vector.zero(), rotation = new Matrix22();
+ Transform() : position = new Vector2.zero(), rotation = new Matrix22();
 
  /**
   * Constructs a new transform equal to the given transform.
   */
  Transform.copy(Transform other)
-     : position = new Vector.copy(other.position),
+     : position = new Vector2.copy(other.position),
        rotation = new Matrix22.copy(other.rotation);
 
  bool operator ==(other) {
@@ -59,7 +59,7 @@ class Transform {
  /**
   * Sets this transform with the given position and rotation.
   */
- void setFromPositionAndRotation(Vector argPosition, Matrix22 argRotation) {
+ void setFromPositionAndRotation(Vector2 argPosition, Matrix22 argRotation) {
    position.setFrom(argPosition);
    rotation.setFrom(argRotation);
  }
@@ -73,11 +73,11 @@ class Transform {
  }
 
  /**
-  * Multiply the given transform and given vector and return a new Vector with
+  * Multiply the given transform and given vector and return a new Vector2 with
   * the result.
   */
- static Vector mul(Transform T, Vector v) {
-   return new Vector(T.position.x + T.rotation.col1.x * v.x +
+ static Vector2 mul(Transform T, Vector2 v) {
+   return new Vector2(T.position.x + T.rotation.col1.x * v.x +
        T.rotation.col2.x * v.y, T.position.y + T.rotation.col1.y * v.x +
        T.rotation.col2.y * v.y);
  }
@@ -86,7 +86,7 @@ class Transform {
   * Multiplies the given transform and the given vector and places the result
   * in the given out parameter.
   */
- static void mulToOut(Transform transform, Vector vector, Vector out) {
+ static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
    assert(out != null);
    double tempY = transform.position.y + transform.rotation.col1.y *
        vector.x + transform.rotation.col2.y * vector.y;
@@ -95,11 +95,11 @@ class Transform {
    out.y = tempY;
  }
 
- static void mulTransToOut(Transform T, Vector v, Vector out) {
+ static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
    double v1x = v.x - T.position.x;
    double v1y = v.y - T.position.y;
-   Vector b = T.rotation.col1;
-   Vector b1 = T.rotation.col2;
+   Vector2 b = T.rotation.col1;
+   Vector2 b1 = T.rotation.col2;
    double tempy = v1x * b1.x + v1y * b1.y;
    out.x = v1x * b.x + v1y * b.y;
    out.y = tempy;
@@ -111,14 +111,14 @@ class Transform {
 <h3>Static Methods</h3>
 <div class="method"><h4 id="mul">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector.html">Vector</a> <strong>mul</strong>(<a href="../box2d/Transform.html">Transform</a> T, <a href="../box2d/Vector.html">Vector</a> v) <a class="anchor-link" href="#mul"
+<a href="../box2d/Vector2.html">Vector2</a> <strong>mul</strong>(<a href="../box2d/Transform.html">Transform</a> T, <a href="../box2d/Vector2.html">Vector2</a> v) <a class="anchor-link" href="#mul"
               title="Permalink to Transform.mul">#</a></h4>
 <div class="doc">
-<p>Multiply the given transform and given vector and return a new Vector with
+<p>Multiply the given transform and given vector and return a new Vector2 with
 the result.</p>
 <pre class="source">
-static Vector mul(Transform T, Vector v) {
- return new Vector(T.position.x + T.rotation.col1.x * v.x +
+static Vector2 mul(Transform T, Vector2 v) {
+ return new Vector2(T.position.x + T.rotation.col1.x * v.x +
      T.rotation.col2.x * v.y, T.position.y + T.rotation.col1.y * v.x +
      T.rotation.col2.y * v.y);
 }
@@ -127,13 +127,13 @@ static Vector mul(Transform T, Vector v) {
 </div>
 <div class="method"><h4 id="mulToOut">
 <button class="show-code">Code</button>
-void <strong>mulToOut</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector.html">Vector</a> vector, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#mulToOut"
+void <strong>mulToOut</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector2.html">Vector2</a> vector, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#mulToOut"
               title="Permalink to Transform.mulToOut">#</a></h4>
 <div class="doc">
 <p>Multiplies the given transform and the given vector and places the result
 in the given out parameter.</p>
 <pre class="source">
-static void mulToOut(Transform transform, Vector vector, Vector out) {
+static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
  assert(out != null);
  double tempY = transform.position.y + transform.rotation.col1.y *
      vector.x + transform.rotation.col2.y * vector.y;
@@ -146,15 +146,15 @@ static void mulToOut(Transform transform, Vector vector, Vector out) {
 </div>
 <div class="method"><h4 id="mulTransToOut">
 <button class="show-code">Code</button>
-void <strong>mulTransToOut</strong>(<a href="../box2d/Transform.html">Transform</a> T, <a href="../box2d/Vector.html">Vector</a> v, <a href="../box2d/Vector.html">Vector</a> out) <a class="anchor-link" href="#mulTransToOut"
+void <strong>mulTransToOut</strong>(<a href="../box2d/Transform.html">Transform</a> T, <a href="../box2d/Vector2.html">Vector2</a> v, <a href="../box2d/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#mulTransToOut"
               title="Permalink to Transform.mulTransToOut">#</a></h4>
 <div class="doc">
 <pre class="source">
-static void mulTransToOut(Transform T, Vector v, Vector out) {
+static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
  double v1x = v.x - T.position.x;
  double v1y = v.y - T.position.y;
- Vector b = T.rotation.col1;
- Vector b1 = T.rotation.col2;
+ Vector2 b = T.rotation.col1;
+ Vector2 b1 = T.rotation.col2;
  double tempy = v1x * b1.x + v1y * b1.y;
  out.x = v1x * b.x + v1y * b.y;
  out.y = tempy;
@@ -172,7 +172,7 @@ new <strong>Transform</strong>() <a class="anchor-link" href="#Transform"
 <div class="doc">
 <p>Constructs a new transform with a vector at the origin and no rotation.</p>
 <pre class="source">
-Transform() : position = new Vector.zero(), rotation = new Matrix22();
+Transform() : position = new Vector2.zero(), rotation = new Matrix22();
 </pre>
 </div>
 </div>
@@ -184,7 +184,7 @@ new <strong>Transform.copy</strong>(<a href="../box2d/Transform.html">Transform<
 <p>Constructs a new transform equal to the given transform.</p>
 <pre class="source">
 Transform.copy(Transform other)
-   : position = new Vector.copy(other.position),
+   : position = new Vector2.copy(other.position),
      rotation = new Matrix22.copy(other.rotation);
 </pre>
 </div>
@@ -194,14 +194,14 @@ Transform.copy(Transform other)
 <h3>Properties</h3>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>position</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to Transform.position">#</a>
         </h4>
         <div class="doc">
 <p>The translation caused by a transform. </p>
 <pre class="source">
-final Vector position
+final Vector2 position
 </pre>
 </div>
 </div>
@@ -260,12 +260,12 @@ void setFrom(Transform other) {
 </div>
 <div class="method"><h4 id="setFromPositionAndRotation">
 <button class="show-code">Code</button>
-void <strong>setFromPositionAndRotation</strong>(<a href="../box2d/Vector.html">Vector</a> argPosition, <a href="../box2d/Matrix22.html">Matrix22</a> argRotation) <a class="anchor-link" href="#setFromPositionAndRotation"
+void <strong>setFromPositionAndRotation</strong>(<a href="../box2d/Vector2.html">Vector2</a> argPosition, <a href="../box2d/Matrix22.html">Matrix22</a> argRotation) <a class="anchor-link" href="#setFromPositionAndRotation"
               title="Permalink to Transform.setFromPositionAndRotation">#</a></h4>
 <div class="doc">
 <p>Sets this transform with the given position and rotation.</p>
 <pre class="source">
-void setFromPositionAndRotation(Vector argPosition, Matrix22 argRotation) {
+void setFromPositionAndRotation(Vector2 argPosition, Matrix22 argRotation) {
  position.setFrom(argPosition);
  rotation.setFrom(argRotation);
 }

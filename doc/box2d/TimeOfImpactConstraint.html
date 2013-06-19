@@ -34,9 +34,9 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactConstraint {
- final List&lt;Vector&gt; localPoints;
- final Vector localNormal;
- final Vector localPoint;
+ final List&lt;Vector2&gt; localPoints;
+ final Vector2 localNormal;
+ final Vector2 localPoint;
  int type;
  num radius;
  int pointCount;
@@ -44,10 +44,10 @@ class TimeOfImpactConstraint {
  Body bodyB;
 
  TimeOfImpactConstraint() :
-   localPoints = new List&lt;Vector&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero()),
-   localNormal = new Vector.zero(),
-   localPoint = new Vector.zero(),
+   localPoints = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero()),
+   localNormal = new Vector2.zero(),
+   localPoint = new Vector2.zero(),
    type = 0,
    radius = 0,
    pointCount = 0,
@@ -79,10 +79,10 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
 <div class="doc">
 <pre class="source">
 TimeOfImpactConstraint() :
- localPoints = new List&lt;Vector&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector.zero()),
- localNormal = new Vector.zero(),
- localPoint = new Vector.zero(),
+ localPoints = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero()),
+ localNormal = new Vector2.zero(),
+ localPoint = new Vector2.zero(),
  type = 0,
  radius = 0,
  pointCount = 0,
@@ -120,37 +120,37 @@ Body bodyB
 </div>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to TimeOfImpactConstraint.localNormal">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localNormal
+final Vector2 localNormal
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to TimeOfImpactConstraint.localPoint">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localPoint
+final Vector2 localPoint
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localPoints">
 <button class="show-code">Code</button>
-final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
+final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
             href="#localPoints"
             title="Permalink to TimeOfImpactConstraint.localPoints">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;Vector&gt; localPoints
+final List&lt;Vector2&gt; localPoints
 </pre>
 </div>
 </div>

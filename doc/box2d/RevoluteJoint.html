@@ -34,8 +34,8 @@
 <div class="doc">
 <pre class="source">
 class RevoluteJoint extends Joint {
- final Vector localAnchor1;
- final Vector localAnchor2;
+ final Vector2 localAnchor1;
+ final Vector2 localAnchor2;
 
  final Vector3 impulse;
 
@@ -65,8 +65,8 @@ class RevoluteJoint extends Joint {
 
  RevoluteJoint(RevoluteJointDef def) :
      super(def),
-     localAnchor1 = new Vector.zero(),
-     localAnchor2 = new Vector.zero(),
+     localAnchor1 = new Vector2.zero(),
+     localAnchor2 = new Vector2.zero(),
      impulse = new Vector3.zero(),
      _motorImpulse = 0,
      mass = new Matrix33() {
@@ -94,8 +94,8 @@ class RevoluteJoint extends Joint {
      assert (b1.invInertia &gt; 0.0 || b2.invInertia &gt; 0.0);
    }
 
-   final Vector r1 = new Vector.zero();
-   final Vector r2 = new Vector.zero();
+   final Vector2 r1 = new Vector2.zero();
+   final Vector2 r2 = new Vector2.zero();
 
    // Compute the effective mass matrix.
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -156,18 +156,18 @@ class RevoluteJoint extends Joint {
      impulse.mulLocal(step.dtRatio);
      _motorImpulse *= step.dtRatio;
 
-     Vector temp = new Vector.zero();
-     Vector P = new Vector.zero();
+     Vector2 temp = new Vector2.zero();
+     Vector2 P = new Vector2.zero();
      P.setCoords(impulse.x, impulse.y);
 
      temp.setFrom(P).mulLocal(m1);
      b1.linearVelocity.subLocal(temp);
-     b1.angularVelocity -= i1 * (Vector.crossVectors(r1, P) + _motorImpulse +
+     b1.angularVelocity -= i1 * (Vector2.crossVectors(r1, P) + _motorImpulse +
          impulse.z);
 
      temp.setFrom(P).mulLocal(m2);
      b2.linearVelocity.addLocal(temp);
-     b2.angularVelocity += i2 * (Vector.crossVectors(r2, P) + _motorImpulse +
+     b2.angularVelocity += i2 * (Vector2.crossVectors(r2, P) + _motorImpulse +
          impulse.z);
 
    } else {
@@ -180,9 +180,9 @@ class RevoluteJoint extends Joint {
    final Body b1 = bodyA;
    final Body b2 = bodyB;
 
-   final Vector v1 = b1.linearVelocity;
+   final Vector2 v1 = b1.linearVelocity;
    num w1 = b1.angularVelocity;
-   final Vector v2 = b2.linearVelocity;
+   final Vector2 v2 = b2.linearVelocity;
    num w2 = b2.angularVelocity;
 
    num m1 = b1.invMass, m2 = b2.invMass;
@@ -202,9 +202,9 @@ class RevoluteJoint extends Joint {
      w2 += i2 * imp;
    }
 
-   final Vector temp = new Vector.zero();
-   final Vector r1 = new Vector.zero();
-   final Vector r2 = new Vector.zero();
+   final Vector2 temp = new Vector2.zero();
+   final Vector2 r1 = new Vector2.zero();
+   final Vector2 r2 = new Vector2.zero();
 
    // Solve limit constraint.
    if (_enableLimit &amp;&amp; limitState != LimitState.INACTIVE) {
@@ -214,12 +214,12 @@ class RevoluteJoint extends Joint {
      Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
      Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-     final Vector Cdot1 = new Vector.zero();
+     final Vector2 Cdot1 = new Vector2.zero();
      final Vector3 Cdot = new Vector3.zero();
 
      // Solve point-to-point constraint
-     Vector.crossNumAndVectorToOut(w1, r1, temp);
-     Vector.crossNumAndVectorToOut(w2, r2, Cdot1);
+     Vector2.crossNumAndVectorToOut(w1, r1, temp);
+     Vector2.crossNumAndVectorToOut(w2, r2, Cdot1);
      Cdot1.addLocal(v2).subLocal(v1).subLocal(temp);
      num Cdot2 = w2 - w1;
      Cdot.setCoords(Cdot1.x, Cdot1.y, Cdot2);
@@ -252,17 +252,17 @@ class RevoluteJoint extends Joint {
          impulse.z = 0.0;
        }
      }
-     final Vector P = new Vector.zero();
+     final Vector2 P = new Vector2.zero();
 
      P.setCoords(imp.x, imp.y);
 
      temp.setFrom(P).mulLocal(m1);
      v1.subLocal(temp);
-     w1 -= i1 * (Vector.crossVectors(r1, P) + imp.z);
+     w1 -= i1 * (Vector2.crossVectors(r1, P) + imp.z);
 
      temp.setFrom(P).mulLocal(m2);
      v2.addLocal(temp);
-     w2 += i2 * (Vector.crossVectors(r2, P) + imp.z);
+     w2 += i2 * (Vector2.crossVectors(r2, P) + imp.z);
 
    } else {
      r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -271,11 +271,11 @@ class RevoluteJoint extends Joint {
      Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
      // Solve point-to-point constraint
-     Vector Cdot = new Vector.zero();
-     Vector imp = new Vector.zero();
+     Vector2 Cdot = new Vector2.zero();
+     Vector2 imp = new Vector2.zero();
 
-     Vector.crossNumAndVectorToOut(w1, r1, temp);
-     Vector.crossNumAndVectorToOut(w2, r2, Cdot);
+     Vector2.crossNumAndVectorToOut(w1, r1, temp);
+     Vector2.crossNumAndVectorToOut(w2, r2, Cdot);
      Cdot.addLocal(v2).subLocal(v1).subLocal(temp);
      mass.solve22ToOut(Cdot.negateLocal(), imp); // just leave negated
 
@@ -284,11 +284,11 @@ class RevoluteJoint extends Joint {
 
      temp.setFrom(imp).mulLocal(m1);
      v1.subLocal(temp);
-     w1 -= i1 * Vector.crossVectors(r1, imp);
+     w1 -= i1 * Vector2.crossVectors(r1, imp);
 
      temp.setFrom(imp).mulLocal(m2);
      v2.addLocal(temp);
-     w2 += i2 * Vector.crossVectors(r2, imp);
+     w2 += i2 * Vector2.crossVectors(r2, imp);
    }
 
    b1.angularVelocity = w1;
@@ -340,11 +340,11 @@ class RevoluteJoint extends Joint {
 
    // Solve point-to-point constraint.
    {
-     Vector imp = new Vector.zero();
+     Vector2 imp = new Vector2.zero();
 
-     Vector r1 = new Vector.zero();
-     Vector r2 = new Vector.zero();
-     Vector C = new Vector.zero();
+     Vector2 r1 = new Vector2.zero();
+     Vector2 r2 = new Vector2.zero();
+     Vector2 C = new Vector2.zero();
 
      r1.setFrom(localAnchor1).subLocal(b1.localCenter);
      r2.setFrom(localAnchor2).subLocal(b2.localCenter);
@@ -361,7 +361,7 @@ class RevoluteJoint extends Joint {
      // Handle large detachment.
      final num k_allowedStretch = 10.0 * Settings.LINEAR_SLOP;
      if (C.lengthSquared &gt; k_allowedStretch * k_allowedStretch) {
-       Vector u = new Vector.zero();
+       Vector2 u = new Vector2.zero();
 
        // Use a particle solution (no rotation).
        num m = invMass1 + invMass2;
@@ -404,11 +404,11 @@ class RevoluteJoint extends Joint {
      // using C as temp variable
      C.setFrom(imp).mulLocal(b1.invMass);
      b1.sweep.center.subLocal(C);
-     b1.sweep.angle -= b1.invInertia * Vector.crossVectors(r1, imp);
+     b1.sweep.angle -= b1.invInertia * Vector2.crossVectors(r1, imp);
 
      C.setFrom(imp).mulLocal(b2.invMass);
      b2.sweep.center.addLocal(C);
-     b2.sweep.angle += b2.invInertia * Vector.crossVectors(r2, imp);
+     b2.sweep.angle += b2.invInertia * Vector2.crossVectors(r2, imp);
 
      b1.synchronizeTransform();
      b2.synchronizeTransform();
@@ -418,15 +418,15 @@ class RevoluteJoint extends Joint {
        Settings.ANGULAR_SLOP;
  }
 
- void getAnchorA(Vector argOut) {
+ void getAnchorA(Vector2 argOut) {
    bodyA.getWorldPointToOut(localAnchor1, argOut);
  }
 
- void getAnchorB(Vector argOut) {
+ void getAnchorB(Vector2 argOut) {
    bodyB.getWorldPointToOut(localAnchor2, argOut);
  }
 
- void getReactionForce(num inv_dt, Vector argOut) {
+ void getReactionForce(num inv_dt, Vector2 argOut) {
    argOut.setCoords(impulse.x, impulse.y).mulLocal(inv_dt);
  }
 
@@ -503,8 +503,8 @@ new <strong>RevoluteJoint</strong>(<a href="../box2d/RevoluteJointDef.html">Revo
 <pre class="source">
 RevoluteJoint(RevoluteJointDef def) :
    super(def),
-   localAnchor1 = new Vector.zero(),
-   localAnchor2 = new Vector.zero(),
+   localAnchor1 = new Vector2.zero(),
+   localAnchor2 = new Vector2.zero(),
    impulse = new Vector3.zero(),
    _motorImpulse = 0,
    mass = new Matrix33() {
@@ -737,49 +737,49 @@ int limitState
 </div>
 <div class="field"><h4 id="localAnchor1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchor1</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchor1</strong> <a class="anchor-link"
             href="#localAnchor1"
             title="Permalink to RevoluteJoint.localAnchor1">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localAnchor1
+final Vector2 localAnchor1
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localAnchor2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localAnchor2</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchor2</strong> <a class="anchor-link"
             href="#localAnchor2"
             title="Permalink to RevoluteJoint.localAnchor2">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector localAnchor2
+final Vector2 localAnchor2
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to RevoluteJoint.localCenterA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterA
+final Vector2 localCenterA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to RevoluteJoint.localCenterB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterB
+final Vector2 localCenterB
 </pre>
 </div>
 </div>
@@ -953,14 +953,14 @@ void destructor() { }
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to RevoluteJoint.getAnchorA">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the anchor point on bodyA in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorA(Vector argOut) {
+void getAnchorA(Vector2 argOut) {
  bodyA.getWorldPointToOut(localAnchor1, argOut);
 }
 </pre>
@@ -968,14 +968,14 @@ void getAnchorA(Vector argOut) {
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to RevoluteJoint.getAnchorB">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the anchor point on bodyB in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorB(Vector argOut) {
+void getAnchorB(Vector2 argOut) {
  bodyB.getWorldPointToOut(localAnchor2, argOut);
 }
 </pre>
@@ -983,14 +983,14 @@ void getAnchorB(Vector argOut) {
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to RevoluteJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getReactionForce(num inv_dt, Vector argOut) {
+void getReactionForce(num inv_dt, Vector2 argOut) {
  argOut.setCoords(impulse.x, impulse.y).mulLocal(inv_dt);
 }
 </pre>
@@ -1027,8 +1027,8 @@ void initVelocityConstraints(TimeStep step) {
    assert (b1.invInertia &gt; 0.0 || b2.invInertia &gt; 0.0);
  }
 
- final Vector r1 = new Vector.zero();
- final Vector r2 = new Vector.zero();
+ final Vector2 r1 = new Vector2.zero();
+ final Vector2 r2 = new Vector2.zero();
 
  // Compute the effective mass matrix.
  r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -1089,18 +1089,18 @@ void initVelocityConstraints(TimeStep step) {
    impulse.mulLocal(step.dtRatio);
    _motorImpulse *= step.dtRatio;
 
-   Vector temp = new Vector.zero();
-   Vector P = new Vector.zero();
+   Vector2 temp = new Vector2.zero();
+   Vector2 P = new Vector2.zero();
    P.setCoords(impulse.x, impulse.y);
 
    temp.setFrom(P).mulLocal(m1);
    b1.linearVelocity.subLocal(temp);
-   b1.angularVelocity -= i1 * (Vector.crossVectors(r1, P) + _motorImpulse +
+   b1.angularVelocity -= i1 * (Vector2.crossVectors(r1, P) + _motorImpulse +
        impulse.z);
 
    temp.setFrom(P).mulLocal(m2);
    b2.linearVelocity.addLocal(temp);
-   b2.angularVelocity += i2 * (Vector.crossVectors(r2, P) + _motorImpulse +
+   b2.angularVelocity += i2 * (Vector2.crossVectors(r2, P) + _motorImpulse +
        impulse.z);
 
  } else {
@@ -1181,11 +1181,11 @@ bool solvePositionConstraints(num baumgarte) {
 
  // Solve point-to-point constraint.
  {
-   Vector imp = new Vector.zero();
+   Vector2 imp = new Vector2.zero();
 
-   Vector r1 = new Vector.zero();
-   Vector r2 = new Vector.zero();
-   Vector C = new Vector.zero();
+   Vector2 r1 = new Vector2.zero();
+   Vector2 r2 = new Vector2.zero();
+   Vector2 C = new Vector2.zero();
 
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
@@ -1202,7 +1202,7 @@ bool solvePositionConstraints(num baumgarte) {
    // Handle large detachment.
    final num k_allowedStretch = 10.0 * Settings.LINEAR_SLOP;
    if (C.lengthSquared &gt; k_allowedStretch * k_allowedStretch) {
-     Vector u = new Vector.zero();
+     Vector2 u = new Vector2.zero();
 
      // Use a particle solution (no rotation).
      num m = invMass1 + invMass2;
@@ -1245,11 +1245,11 @@ bool solvePositionConstraints(num baumgarte) {
    // using C as temp variable
    C.setFrom(imp).mulLocal(b1.invMass);
    b1.sweep.center.subLocal(C);
-   b1.sweep.angle -= b1.invInertia * Vector.crossVectors(r1, imp);
+   b1.sweep.angle -= b1.invInertia * Vector2.crossVectors(r1, imp);
 
    C.setFrom(imp).mulLocal(b2.invMass);
    b2.sweep.center.addLocal(C);
-   b2.sweep.angle += b2.invInertia * Vector.crossVectors(r2, imp);
+   b2.sweep.angle += b2.invInertia * Vector2.crossVectors(r2, imp);
 
    b1.synchronizeTransform();
    b2.synchronizeTransform();
@@ -1271,9 +1271,9 @@ void solveVelocityConstraints(final TimeStep step) {
  final Body b1 = bodyA;
  final Body b2 = bodyB;
 
- final Vector v1 = b1.linearVelocity;
+ final Vector2 v1 = b1.linearVelocity;
  num w1 = b1.angularVelocity;
- final Vector v2 = b2.linearVelocity;
+ final Vector2 v2 = b2.linearVelocity;
  num w2 = b2.angularVelocity;
 
  num m1 = b1.invMass, m2 = b2.invMass;
@@ -1293,9 +1293,9 @@ void solveVelocityConstraints(final TimeStep step) {
    w2 += i2 * imp;
  }
 
- final Vector temp = new Vector.zero();
- final Vector r1 = new Vector.zero();
- final Vector r2 = new Vector.zero();
+ final Vector2 temp = new Vector2.zero();
+ final Vector2 r1 = new Vector2.zero();
+ final Vector2 r2 = new Vector2.zero();
 
  // Solve limit constraint.
  if (_enableLimit &amp;&amp; limitState != LimitState.INACTIVE) {
@@ -1305,12 +1305,12 @@ void solveVelocityConstraints(final TimeStep step) {
    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-   final Vector Cdot1 = new Vector.zero();
+   final Vector2 Cdot1 = new Vector2.zero();
    final Vector3 Cdot = new Vector3.zero();
 
    // Solve point-to-point constraint
-   Vector.crossNumAndVectorToOut(w1, r1, temp);
-   Vector.crossNumAndVectorToOut(w2, r2, Cdot1);
+   Vector2.crossNumAndVectorToOut(w1, r1, temp);
+   Vector2.crossNumAndVectorToOut(w2, r2, Cdot1);
    Cdot1.addLocal(v2).subLocal(v1).subLocal(temp);
    num Cdot2 = w2 - w1;
    Cdot.setCoords(Cdot1.x, Cdot1.y, Cdot2);
@@ -1343,17 +1343,17 @@ void solveVelocityConstraints(final TimeStep step) {
        impulse.z = 0.0;
      }
    }
-   final Vector P = new Vector.zero();
+   final Vector2 P = new Vector2.zero();
 
    P.setCoords(imp.x, imp.y);
 
    temp.setFrom(P).mulLocal(m1);
    v1.subLocal(temp);
-   w1 -= i1 * (Vector.crossVectors(r1, P) + imp.z);
+   w1 -= i1 * (Vector2.crossVectors(r1, P) + imp.z);
 
    temp.setFrom(P).mulLocal(m2);
    v2.addLocal(temp);
-   w2 += i2 * (Vector.crossVectors(r2, P) + imp.z);
+   w2 += i2 * (Vector2.crossVectors(r2, P) + imp.z);
 
  } else {
    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -1362,11 +1362,11 @@ void solveVelocityConstraints(final TimeStep step) {
    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
    // Solve point-to-point constraint
-   Vector Cdot = new Vector.zero();
-   Vector imp = new Vector.zero();
+   Vector2 Cdot = new Vector2.zero();
+   Vector2 imp = new Vector2.zero();
 
-   Vector.crossNumAndVectorToOut(w1, r1, temp);
-   Vector.crossNumAndVectorToOut(w2, r2, Cdot);
+   Vector2.crossNumAndVectorToOut(w1, r1, temp);
+   Vector2.crossNumAndVectorToOut(w2, r2, Cdot);
    Cdot.addLocal(v2).subLocal(v1).subLocal(temp);
    mass.solve22ToOut(Cdot.negateLocal(), imp); // just leave negated
 
@@ -1375,11 +1375,11 @@ void solveVelocityConstraints(final TimeStep step) {
 
    temp.setFrom(imp).mulLocal(m1);
    v1.subLocal(temp);
-   w1 -= i1 * Vector.crossVectors(r1, imp);
+   w1 -= i1 * Vector2.crossVectors(r1, imp);
 
    temp.setFrom(imp).mulLocal(m2);
    v2.addLocal(temp);
-   w2 += i2 * Vector.crossVectors(r2, imp);
+   w2 += i2 * Vector2.crossVectors(r2, imp);
  }
 
  b1.angularVelocity = w1;

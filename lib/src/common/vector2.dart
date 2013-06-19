@@ -17,17 +17,17 @@
 
 part of box2d;
 
-class Vector {
+class Vector2 {
   final _f = new Float64List(2);
   static const int X = 0;
   static const int Y = 1;
 
-  Vector(double x, double y) {
+  Vector2(double x, double y) {
     _f[X] = x;
     _f[Y] = y;
   }
 
-  Vector.zero() {
+  Vector2.zero() {
     _f[X] = 0.0;
     _f[Y] = 0.0;
   }
@@ -35,7 +35,7 @@ class Vector {
   /**
    * Constructs a new vector with the same coordinates as the given vector.
    */
-  Vector.copy(Vector other) {
+  Vector2.copy(Vector2 other) {
     _f[X] = other._f[X];
     _f[Y] = other._f[Y];
   }
@@ -47,7 +47,7 @@ class Vector {
   set y(double v) { _f[Y] = v; }
 
   /**
-   * Returns true if given object is a Vector with the same x and y values as
+   * Returns true if given object is a Vector2 with the same x and y values as
    * this vector. Returns false otherwise.
    */
   bool operator ==(other) => x == other.x && y == other.y;
@@ -55,7 +55,7 @@ class Vector {
   /**
    * Update the current vector by adding v.
    */
-  Vector addLocal(Vector v) {
+  Vector2 addLocal(Vector2 v) {
     _f[X] += v._f[X];
     _f[Y] += v._f[Y];
     return this;
@@ -64,30 +64,30 @@ class Vector {
   /**
    * Subtracts the given vector from this vector.
    */
-  Vector subLocal(Vector other) {
+  Vector2 subLocal(Vector2 other) {
     _f[X] -= other._f[X];
     _f[Y] -= other._f[Y];
     return this;
   }
 
-  Vector setCoords(double xCoord, double yCoord) {
+  Vector2 setCoords(double xCoord, double yCoord) {
     _f[X] = xCoord;
     _f[Y] = yCoord;
     return this;
   }
 
   /** Return the cross product of the twe given vectors. */
-  static double crossVectors(Vector v1, Vector v2) => (v1.x * v2.y - v1.y * v2.x);
+  static double crossVectors(Vector2 v1, Vector2 v2) => (v1.x * v2.y - v1.y * v2.x);
 
   /** Return the dot product of the two given vectors. */
-  static double dot(Vector one, Vector two) => (one.x * two.x + one.y * two.y);
+  static double dot(Vector2 one, Vector2 two) => (one.x * two.x + one.y * two.y);
 
   /**
    * Has the effect of swapping the x and y coordinates of the vector,
    * multiplying both by the given number, and then flipping the sign of the new
    * x coordinate. Returns the result through the out parameter.
    */
-  static void crossNumAndVectorToOut(double s, Vector a, Vector out) {
+  static void crossNumAndVectorToOut(double s, Vector2 a, Vector2 out) {
     double tempY = s * a._f[X];
     out._f[X] = -s * a._f[Y];
     out._f[Y] = tempY;
@@ -98,7 +98,7 @@ class Vector {
    * multiplying both by the given number, and then flipping the sign of the new
    * y coordinate. Returns the result through the out parameter.
    */
-  static void crossVectorAndNumToOut(Vector a, double s, Vector out) {
+  static void crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {
     double tempy = -s * a._f[X];
     out._f[X] = s * a._f[Y];
     out._f[Y] = tempy;
@@ -107,7 +107,7 @@ class Vector {
   /**
    * Sets this vector to be a copy of the given vector.
    */
-  Vector setFrom(Vector v) {
+  Vector2 setFrom(Vector2 v) {
     _f[X] = v._f[X];
     _f[Y] = v._f[Y];
     return this;
@@ -116,13 +116,13 @@ class Vector {
   /**
    * Multiplies this vector by the given number.
    */
-  Vector mulLocal(double d) {
+  Vector2 mulLocal(double d) {
     _f[X] *= d;
     _f[Y] *= d;
     return this;
   }
 
-  Vector setZero() {
+  Vector2 setZero() {
     _f[X] = _f[Y] = 0.0;
     return this;
   }
@@ -133,7 +133,7 @@ class Vector {
    * Take the minimum of each coordinate from the two given vectors and store
    * the result in the given out vector.
    */
-  static void minToOut(Vector a, Vector b, Vector out) {
+  static void minToOut(Vector2 a, Vector2 b, Vector2 out) {
     out._f[X] = a.x < b.x ? a.x : b.x;
     out._f[Y] = a.y < b.y ? a.y : b.y;
   }
@@ -142,7 +142,7 @@ class Vector {
    * Take the maximum of each coordinate from the two given vectors and store
    * the result in the given out vector.
    */
-  static void maxToOut(Vector a, Vector b, Vector out) {
+  static void maxToOut(Vector2 a, Vector2 b, Vector2 out) {
     out._f[X] = a.x > b.x ? a.x : b.x;
     out._f[Y] = a.y > b.y ? a.y : b.y;
   }
@@ -179,7 +179,7 @@ class Vector {
    * Returns the distance between the point defined by this vector and the given
    * vector.
    */
-  double distanceBetween(Vector v) {
+  double distanceBetween(Vector2 v) {
     double xDelta = x - v.x;
     double yDelta = y - v.y;
     return Math.sqrt(xDelta * xDelta + yDelta * yDelta);
@@ -189,16 +189,16 @@ class Vector {
    * Returns a vector that is the result of rotating the original vector by
    * angle degrees counter-clockwise.
    */
-  Vector rotate(double angle) {
+  Vector2 rotate(double angle) {
     Matrix22 mtx = new Matrix22();
     mtx.setAngle(angle);
-    Vector temp = new Vector.zero();
+    Vector2 temp = new Vector2.zero();
     mtx.multiplyVectorToOut(this, temp);
     return temp;
   }
 
   /** Flips this vector such that the +/- of each x and y are reversed. */
-  Vector negateLocal() {
+  Vector2 negateLocal() {
     _f[X] = -_f[X];
     _f[Y] = -_f[Y];
     return this;

@@ -20,9 +20,9 @@
 part of box2d;
 
 class ViewportTransform {
-  ViewportTransform(Vector e, Vector c, double s) :
-    extents = new Vector.copy(e),
-    center = new Vector.copy(c),
+  ViewportTransform(Vector2 e, Vector2 c, double s) :
+    extents = new Vector2.copy(e),
+    center = new Vector2.copy(c),
     scale = s;
 
   /**
@@ -35,7 +35,7 @@ class ViewportTransform {
    * This should be the actual half-width and 
    * half-height, not anything transformed or scaled.
    */
-  Vector extents;
+  Vector2 extents;
 
   /**
    * Returns the scaling factor used in converting from world sizes to rendering
@@ -46,7 +46,7 @@ class ViewportTransform {
   /**
    * center of the viewport.
    */
-  Vector center;
+  Vector2 center;
 
   /**
    * Sets the transform's center to the given x and y coordinates,
@@ -62,13 +62,13 @@ class ViewportTransform {
    * example, if the actual canvas center is (5, 5) but the current center is
    * (6, 6), the translation is (1, 1).
    */
-  Vector get translation {
-    Vector result = new Vector.copy(extents);
+  Vector2 get translation {
+    Vector2 result = new Vector2.copy(extents);
     result.subLocal(center);
     return result;
   }
 
-  void set translation(Vector translation) {
+  void set translation(Vector2 translation) {
     center.setFrom(extents);
     center.subLocal(translation);
   }
@@ -79,7 +79,7 @@ class ViewportTransform {
    * screen coordinate in argScreen.  It should be safe to give the
    * same object as both parameters.
    */
-  void getWorldToScreen(Vector argWorld, Vector argScreen) {
+  void getWorldToScreen(Vector2 argWorld, Vector2 argScreen) {
     // Correct for canvas considering the upper-left corner, rather than the
     // center, to be the origin.
     double gridCorrectedX = (argWorld.x * scale) + extents.x;
@@ -94,7 +94,7 @@ class ViewportTransform {
    * corresponding world coordinates in argWorld. It should be safe
    * to give the same object as both parameters.
    */
-  void getScreenToWorld(Vector argScreen, Vector argWorld) {
+  void getScreenToWorld(Vector2 argScreen, Vector2 argWorld) {
     double translationCorrectedX = argScreen.x - translation.x;
     double translationCorrectedY = argScreen.y + translation.y;
 

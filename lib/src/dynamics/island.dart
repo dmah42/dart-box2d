@@ -41,12 +41,12 @@ class Island {
 
   // Pool objects to cut down on object creation.
   ContactSolver _contactSolver;
-  Vector _translation;
+  Vector2 _translation;
   ContactImpulse impulse;
 
   Island() :
     _contactSolver = new ContactSolver(),
-    _translation = new Vector.zero(),
+    _translation = new Vector2.zero(),
     impulse = new ContactImpulse();
 
   //TODO(gregbglw): No need to keep capacity, count and array for these items as
@@ -101,7 +101,7 @@ class Island {
     jointCount = 0;
   }
 
-  void solve(TimeStep step, Vector gravity, bool allowSleep){
+  void solve(TimeStep step, Vector2 gravity, bool allowSleep){
     // Integrate velocities and apply damping.
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
@@ -110,7 +110,7 @@ class Island {
         continue;
       }
 
-      final velocityDelta = new Vector(
+      final velocityDelta = new Vector2(
           (b._force.x * b.invMass + gravity.x) * step.dt,
           (b._force.y * b.invMass + gravity.y) * step.dt);
       b.linearVelocity.addLocal(velocityDelta);
@@ -164,7 +164,7 @@ class Island {
     _contactSolver.storeImpulses();
 
     // Integrate positions.
-    Vector temp = new Vector.zero();
+    Vector2 temp = new Vector2.zero();
     for (int i = 0; i < bodyCount; ++i){
       Body b = bodies[i];
 
@@ -175,7 +175,7 @@ class Island {
       // Check for large velocities.
       _translation.setFrom(b.linearVelocity);
       _translation.mulLocal(step.dt);
-      if (Vector.dot(_translation, _translation) >
+      if (Vector2.dot(_translation, _translation) >
           Settings.MAX_TRANSLATION_SQUARED){
         num ratio = Settings.MAX_TRANSLATION / _translation.length;
         b.linearVelocity.mulLocal(ratio);
@@ -245,7 +245,7 @@ class Island {
 
         if ((b.flags & Body.AUTO_SLEEP_FLAG) == 0 ||
             b.angularVelocity * b.angularVelocity > angTolSqr ||
-            Vector.dot(b.linearVelocity, b.linearVelocity) > linTolSqr){
+            Vector2.dot(b.linearVelocity, b.linearVelocity) > linTolSqr){
           b.sleepTime = 0.0;
           minSleepTime = 0.0;
         }
@@ -308,11 +308,11 @@ class Island {
  * This is an internal structure
  */
 class Position {
-  Vector x;
+  Vector2 x;
   num a;
 
   Position() {
-    x = new Vector.zero();
+    x = new Vector2.zero();
     a = 0;
   }
 }
@@ -321,11 +321,11 @@ class Position {
  * This is an internal structure
  */
 class Velocity {
-  Vector v;
+  Vector2 v;
   num a;
 
   Velocity() {
-    v = new Vector.zero();
+    v = new Vector2.zero();
     a = 0;
   }
 }

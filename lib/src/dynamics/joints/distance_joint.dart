@@ -21,9 +21,9 @@
 part of box2d;
 
 class DistanceJoint extends Joint {
-  final Vector localAnchor1;
-  final Vector localAnchor2;
-  final Vector u;
+  final Vector2 localAnchor1;
+  final Vector2 localAnchor2;
+  final Vector2 u;
   num impulse;
 
   /** Effective mass for the constraint. */
@@ -36,25 +36,25 @@ class DistanceJoint extends Joint {
 
   DistanceJoint(DistanceJointDef def) :
     super(def),
-    localAnchor1 = new Vector.copy(def.localAnchorA),
-    localAnchor2 = new Vector.copy(def.localAnchorB),
+    localAnchor1 = new Vector2.copy(def.localAnchorA),
+    localAnchor2 = new Vector2.copy(def.localAnchorB),
     length = def.length,
     impulse = 0.0,
-    u = new Vector.zero(),
+    u = new Vector2.zero(),
     frequencyHz = def.frequencyHz,
     dampingRatio = def.dampingRatio,
     gamma = 0.0,
     bias = 0.0 { }
 
-  void getAnchorA(Vector argOut) {
+  void getAnchorA(Vector2 argOut) {
     bodyA.getWorldPointToOut(localAnchor1, argOut);
   }
 
-  void getAnchorB(Vector argOut) {
+  void getAnchorB(Vector2 argOut) {
     bodyB.getWorldPointToOut(localAnchor2, argOut);
   }
 
-  void getReactionForce(num inv_dt, Vector argOut) {
+  void getReactionForce(num inv_dt, Vector2 argOut) {
     argOut.x = impulse * u.x * inv_dt;
     argOut.y = impulse * u.y * inv_dt;
   }
@@ -67,8 +67,8 @@ class DistanceJoint extends Joint {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    Vector r1 = new Vector.zero();
-    Vector r2 = new Vector.zero();
+    Vector2 r1 = new Vector2.zero();
+    Vector2 r2 = new Vector2.zero();
 
     // Compute the effective mass matrix.
     r1.setFrom(localAnchor1).subLocal(b1.localCenter);
@@ -88,8 +88,8 @@ class DistanceJoint extends Joint {
       u.setCoords(0.0, 0.0);
     }
 
-    num cr1u = Vector.crossVectors(r1, u);
-    num cr2u = Vector.crossVectors(r2, u);
+    num cr1u = Vector2.crossVectors(r1, u);
+    num cr2u = Vector2.crossVectors(r2, u);
 
     num invMass = b1.invMass + b1.invInertia * cr1u * cr1u + b2.invMass
         + b2.invInertia * cr2u * cr2u;
@@ -121,16 +121,16 @@ class DistanceJoint extends Joint {
       // Scale the impulse to support a variable time step.
       impulse *= step.dtRatio;
 
-      Vector P = new Vector.zero();
+      Vector2 P = new Vector2.zero();
       P.setFrom(u).mulLocal(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
-      b1.angularVelocity -= b1.invInertia * Vector.crossVectors(r1, P);
+      b1.angularVelocity -= b1.invInertia * Vector2.crossVectors(r1, P);
 
       b2.linearVelocity.x += b2.invMass * P.x;
       b2.linearVelocity.y += b2.invMass * P.y;
-      b2.angularVelocity += b2.invInertia * Vector.crossVectors(r2, P);
+      b2.angularVelocity += b2.invInertia * Vector2.crossVectors(r2, P);
     } else {
       impulse = 0.0;
     }
@@ -140,23 +140,23 @@ class DistanceJoint extends Joint {
     final Body b1 = bodyA;
     final Body b2 = bodyB;
 
-    final r1 = new Vector.zero();
-    final r2 = new Vector.zero();
+    final r1 = new Vector2.zero();
+    final r2 = new Vector2.zero();
 
     r1.setFrom(localAnchor1).subLocal(b1.localCenter);
     r2.setFrom(localAnchor2).subLocal(b2.localCenter);
     Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
     Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
-    final v1 = new Vector.zero();
-    final v2 = new Vector.zero();
+    final v1 = new Vector2.zero();
+    final v2 = new Vector2.zero();
 
-    Vector.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
-    Vector.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
+    Vector2.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
+    Vector2.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
     v1.addLocal(b1.linearVelocity);
     v2.addLocal(b2.linearVelocity);
 
-    num Cdot = Vector.dot(u, v2.subLocal(v1));
+    num Cdot = Vector2.dot(u, v2.subLocal(v1));
 
     num imp = -mass * (Cdot + bias + gamma * impulse);
     impulse += imp;
@@ -179,9 +179,9 @@ class DistanceJoint extends Joint {
     final b1 = bodyA;
     final b2 = bodyB;
 
-    final r1 = new Vector.zero();
-    final r2 = new Vector.zero();
-    final d = new Vector.zero();
+    final r1 = new Vector2.zero();
+    final r2 = new Vector2.zero();
+    final d = new Vector2.zero();
 
     r1.setFrom(localAnchor1).subLocal(b1.localCenter);
     r2.setFrom(localAnchor2).subLocal(b2.localCenter);

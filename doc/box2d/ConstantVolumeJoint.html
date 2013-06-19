@@ -38,7 +38,7 @@ class ConstantVolumeJoint extends Joint {
  List&lt;num&gt; targetLengths;
  num targetVolume;
 
- List&lt;Vector&gt; normals;
+ List&lt;Vector2&gt; normals;
 
  TimeStep step;
 
@@ -67,7 +67,7 @@ class ConstantVolumeJoint extends Joint {
    targetLengths = new List&lt;num&gt;(bodies.length);
    for (int i = 0; i &lt; targetLengths.length; ++i) {
      final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-     Vector temp = new Vector.copy(bodies[i].worldCenter);
+     Vector2 temp = new Vector2.copy(bodies[i].worldCenter);
      temp.subLocal(bodies[next].worldCenter);
      num dist = temp.length;
      targetLengths[i] = dist;
@@ -99,7 +99,7 @@ class ConstantVolumeJoint extends Joint {
    frequencyHz = def.frequencyHz;
    dampingRatio = def.dampingRatio;
 
-   normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+   normals = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
    this.bodyA = bodies[0];
    this.bodyB = bodies[1];
@@ -144,7 +144,7 @@ class ConstantVolumeJoint extends Joint {
      perimeter += dist;
    }
 
-   final delta = new Vector.zero();
+   final delta = new Vector2.zero();
 
    num deltaArea = targetVolume - area;
    num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -171,7 +171,7 @@ class ConstantVolumeJoint extends Joint {
  void initVelocityConstraints(TimeStep argStep) {
    step = argStep;
 
-   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+   final d = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -209,7 +209,7 @@ class ConstantVolumeJoint extends Joint {
    num crossMassSum = 0.0;
    num dotMassSum = 0.0;
 
-   final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+   final d = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -217,7 +217,7 @@ class ConstantVolumeJoint extends Joint {
      d[i].setFrom(bodies[next].worldCenter);
      d[i].subLocal(bodies[prev].worldCenter);
      dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
-     crossMassSum += Vector.crossVectors(bodies[i].linearVelocity, d[i]);
+     crossMassSum += Vector2.crossVectors(bodies[i].linearVelocity, d[i]);
    }
    num lambda = -2.0 * crossMassSum / dotMassSum;
    _impulse += lambda;
@@ -227,11 +227,11 @@ class ConstantVolumeJoint extends Joint {
    }
  }
 
- void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
+ void getAnchorA(Vector2 argOut) { throw new UnimplementedError(); }
 
- void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
+ void getAnchorB(Vector2 argOut) { throw new UnimplementedError(); }
 
- void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
+ void getReactionForce(num inv_dt, Vector2 argOut) { throw new UnimplementedError(); }
 
  num getReactionTorque(num inv_dt) { throw new UnimplementedError(); }
 }
@@ -264,7 +264,7 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  targetLengths = new List&lt;num&gt;(bodies.length);
  for (int i = 0; i &lt; targetLengths.length; ++i) {
    final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
-   Vector temp = new Vector.copy(bodies[i].worldCenter);
+   Vector2 temp = new Vector2.copy(bodies[i].worldCenter);
    temp.subLocal(bodies[next].worldCenter);
    num dist = temp.length;
    targetLengths[i] = dist;
@@ -296,7 +296,7 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  frequencyHz = def.frequencyHz;
  dampingRatio = def.dampingRatio;
 
- normals = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+ normals = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
  this.bodyA = bodies[0];
  this.bodyB = bodies[1];
@@ -513,37 +513,37 @@ bool islandFlag
 </div>
 <div class="field inherited"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to ConstantVolumeJoint.localCenterA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterA
+final Vector2 localCenterA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector.html">Vector</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to ConstantVolumeJoint.localCenterB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector localCenterB
+final Vector2 localCenterB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="normals">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector.html">Vector</a>&gt;         <strong>normals</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>normals</strong> <a class="anchor-link"
             href="#normals"
             title="Permalink to ConstantVolumeJoint.normals">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;Vector&gt; normals
+List&lt;Vector2&gt; normals
 </pre>
 </div>
 </div>
@@ -632,7 +632,7 @@ bool constrainEdges(TimeStep argStep) {
    perimeter += dist;
  }
 
- final delta = new Vector.zero();
+ final delta = new Vector2.zero();
 
  num deltaArea = targetVolume - area;
  num toExtrude = 0.5 * deltaArea / perimeter; // relaxationFactor
@@ -677,40 +677,40 @@ void destructor() {
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to ConstantVolumeJoint.getAnchorA">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the anchor point on bodyA in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorA(Vector argOut) { throw new UnimplementedError(); }
+void getAnchorA(Vector2 argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to ConstantVolumeJoint.getAnchorB">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the anchor point on bodyB in world coordinates. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getAnchorB(Vector argOut) { throw new UnimplementedError(); }
+void getAnchorB(Vector2 argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector.html">Vector</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to ConstantVolumeJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-void getReactionForce(num inv_dt, Vector argOut) { throw new UnimplementedError(); }
+void getReactionForce(num inv_dt, Vector2 argOut) { throw new UnimplementedError(); }
 </pre>
 </div>
 </div>
@@ -748,7 +748,7 @@ void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">T
 void initVelocityConstraints(TimeStep argStep) {
  step = argStep;
 
- final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+ final d = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -798,7 +798,7 @@ void solveVelocityConstraints(TimeStep argStep) {
  num crossMassSum = 0.0;
  num dotMassSum = 0.0;
 
- final d = new List&lt;Vector&gt;.generate(bodies.length, (i) =&gt; new Vector.zero());
+ final d = new List&lt;Vector2&gt;.generate(bodies.length, (i) =&gt; new Vector2.zero());
 
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
@@ -806,7 +806,7 @@ void solveVelocityConstraints(TimeStep argStep) {
    d[i].setFrom(bodies[next].worldCenter);
    d[i].subLocal(bodies[prev].worldCenter);
    dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
-   crossMassSum += Vector.crossVectors(bodies[i].linearVelocity, d[i]);
+   crossMassSum += Vector2.crossVectors(bodies[i].linearVelocity, d[i]);
  }
  num lambda = -2.0 * crossMassSum / dotMassSum;
  _impulse += lambda;

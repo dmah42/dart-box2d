@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- *  Used to warm start [distance]. Set count to zero on first call.
+ *  Used to warm start distance.
  */
 
 part of box2d;

@@ -37,8 +37,8 @@ class Joint {
   Object userData;
 
   // Cache here per time step to reduce cache misses.
-  final Vector localCenterA;
-  final Vector localCenterB;
+  final Vector2 localCenterA;
+  final Vector2 localCenterB;
 
   num invMassA;
   num invIA;
@@ -55,8 +55,8 @@ class Joint {
     islandFlag = false,
     userData = def.userData,
 
-    localCenterA = new Vector.zero(),
-    localCenterB = new Vector.zero(),
+    localCenterA = new Vector2.zero(),
+    localCenterB = new Vector2.zero(),
     edgeA = new JointEdge(),
     edgeB = new JointEdge();
 
@@ -99,13 +99,13 @@ class Joint {
   }
 
   /** Get the anchor point on bodyA in world coordinates. */
-  void getAnchorA(Vector argOut) { }
+  void getAnchorA(Vector2 argOut) { }
 
   /** Get the anchor point on bodyB in world coordinates. */
-  void getAnchorB(Vector argOut) { }
+  void getAnchorB(Vector2 argOut) { }
 
   /** Get the reaction force on body2 at the joint anchor in Newtons. */
-  void getReactionForce(num inv_dt, Vector argOut) { }
+  void getReactionForce(num inv_dt, Vector2 argOut) { }
 
   /** Get the reaction torque on body2 in N*m. */
   num getReactionTorque(num inv_dt) { }

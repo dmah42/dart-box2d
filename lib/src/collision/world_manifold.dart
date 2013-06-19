@@ -22,36 +22,36 @@ class WorldManifold {
   /**
    * World vector pointing from A to B
    */
-  final Vector normal;
+  final Vector2 normal;
 
   /**
    * World contact points (points of intersection)
    */
-  final List<Vector> points;
+  final List<Vector2> points;
 
   /**
    * Temporary Vectors that are constructed on construction. Used to prevent
    * object construction while stepping.
    */
-  final Vector pool3;
-  final Vector pool4;
+  final Vector2 pool3;
+  final Vector2 pool4;
 
   /**
    * Constructs a new WorldManifold.
    */
   WorldManifold() :
-    normal = new Vector.zero(),
-    pool3 = new Vector.zero(),
-    pool4 = new Vector.zero(),
-    points = new List<Vector>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector.zero());
+    normal = new Vector2.zero(),
+    pool3 = new Vector2.zero(),
+    pool4 = new Vector2.zero(),
+    points = new List<Vector2>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector2.zero());
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {
     switch (manifold.type) {
       case ManifoldType.CIRCLES:
-        final Vector pointA = pool3;
-        final Vector pointB = pool4;
+        final Vector2 pointA = pool3;
+        final Vector2 pointB = pool4;
 
         normal.x = 1.0;
         normal.y = 0.0;
@@ -83,7 +83,7 @@ class WorldManifold {
         points[0].y = (cAy + cBy) *.5;
         return;
       case ManifoldType.FACE_A:
-        final Vector planePoint = pool3;
+        final Vector2 planePoint = pool3;
 
         normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
             xfA.rotation.col2.x * manifold.localNormal.y;
@@ -94,7 +94,7 @@ class WorldManifold {
         planePoint.y = xfA.position.y + xfA.rotation.col1.y *
             manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
 
-        final Vector clipPoint = pool4;
+        final Vector2 clipPoint = pool4;
 
         for (int i = 0; i < manifold.pointCount; ++i) {
           clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
@@ -119,20 +119,20 @@ class WorldManifold {
 
         return;
       case ManifoldType.FACE_B :
-        final Vector planePoint = pool3;
+        final Vector2 planePoint = pool3;
 
         final Matrix22 R = xfB.rotation;
         normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
             manifold.localNormal.y;
         normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
             manifold.localNormal.y;
-        final Vector v = manifold.localPoint;
+        final Vector2 v = manifold.localPoint;
         planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
             xfB.rotation.col2.x * v.y;
         planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
             xfB.rotation.col2.y * v.y;
 
-        final Vector clipPoint = pool4;
+        final Vector2 clipPoint = pool4;
 
         for (int i = 0; i < manifold.pointCount; ++i) {
 
