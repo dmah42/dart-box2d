@@ -25,12 +25,12 @@ abstract class Shape {
   int type;
 
   /** Shape radius. */
-  num radius;
+  double radius;
 
   /**
    * Constructs a new shape of unknown type.
    */
-  Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
+  Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
     type = type,
     radius = radius { }
 

@@ -29,7 +29,7 @@ class CircleShape extends Shape {
    * CircleDef.
    */
   CircleShape() :
-    super(ShapeType.CIRCLE, 0),
+    super(ShapeType.CIRCLE, 0.0),
     position = new Vector2.zero();
 
   /**

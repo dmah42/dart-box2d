@@ -30,9 +30,9 @@ class Fixture {
 
   Shape shape;
 
-  num friction;
+  double friction;
 
-  num restitution;
+  double restitution;
 
   DynamicTreeNode proxy;
 

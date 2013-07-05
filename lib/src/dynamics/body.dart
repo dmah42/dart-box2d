@@ -213,7 +213,7 @@ class Body {
    * If the density is non-zero, this function automatically updates the mass
    * of the body.
    */
-  Fixture createFixtureFromShape(Shape shape, [num density = 0]) {
+  Fixture createFixtureFromShape(Shape shape, [double density = 0.0]) {
     _fixDef.shape = shape;
     _fixDef.density = density;
 
