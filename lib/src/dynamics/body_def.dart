@@ -29,7 +29,7 @@ class BodyDef {
   /**
    * The world angle of the body in radians.
    */
-  num angle;
+  double angle;
 
   /** User can store whatever they wish in here. */
   Object userData;
@@ -41,7 +41,7 @@ class BodyDef {
   Vector2 linearVelocity;
 
   /** Angular velocity of the body. */
-  num angularVelocity;
+  double angularVelocity;
 
   /**
    * If true, the body will be allowed to rotate. Otherwise, its rotation will
@@ -70,14 +70,14 @@ class BodyDef {
    * parameter can be larger than 1.0 but the damping effect becomes
    * sensitive to the time step when the damping parameter is large.
    */
-  num linearDamping;
+  double linearDamping;
 
   /**
    * Angular damping is used to reduce the angular velocity. The
    * damping parameter can be larger than 1.0 but the damping effect
    * becomes sensitive to time step when the damping parameter is large.
    */
-  num angularDamping;
+  double angularDamping;
 
   /** Is this body initially awake or asleep? */
   bool awake;
@@ -93,13 +93,13 @@ class BodyDef {
     bullet = false,
     type = BodyType.STATIC,
     position = new Vector2.zero(),
-    angle = 0,
-    linearDamping = 0,
-    angularDamping = 0,
+    angle = 0.0,
+    linearDamping = 0.0,
+    angularDamping = 0.0,
     allowSleep = true,
     awake = true,
     fixedRotation = false,
     active = true,
     linearVelocity = new Vector2.zero(),
-    angularVelocity = 0;
+    angularVelocity = 0.0;
 }

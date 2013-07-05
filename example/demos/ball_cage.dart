@@ -24,10 +24,10 @@ class BallCage extends Demo {
   static const double START_Y = -20.0;
 
   /** The radius of the balls forming the arena. */
-  static const num WALL_BALL_RADIUS = 2;
+  static const num WALL_BALL_RADIUS = 2.0;
 
   /** Radius of the active ball. */
-  static const num ACTIVE_BALL_RADIUS = 1;
+  static const num ACTIVE_BALL_RADIUS = 1.0;
 
   /** Constructs a new BallCage. */
   BallCage() : super("Ball cage") { }
@@ -49,7 +49,7 @@ class BallCage extends Demo {
     final circleFixtureDef = new FixtureDef();
     circleFixtureDef.shape = circleShape;
     circleFixtureDef.friction = .9;
-    circleFixtureDef.restitution = 1;
+    circleFixtureDef.restitution = 1.0;
 
     // Create a body def.
     final circleBodyDef = new BodyDef();
@@ -89,7 +89,7 @@ class BallCage extends Demo {
 
     // Create fixture for that ball shape.
     final activeFixtureDef = new FixtureDef();
-    activeFixtureDef.restitution = 1;
+    activeFixtureDef.restitution = 1.0;
     activeFixtureDef.density =  0.05;
     activeFixtureDef.shape = bouncingCircle;
 

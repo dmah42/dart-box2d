@@ -22,7 +22,7 @@ part of box2d;
 class Fixture {
   final AxisAlignedBox box;
 
-  num density;
+  double density;
 
   Fixture next;
 
@@ -30,9 +30,9 @@ class Fixture {
 
   Shape shape;
 
-  num friction;
+  double friction;
 
-  num restitution;
+  double restitution;
 
   DynamicTreeNode proxy;
 

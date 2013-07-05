@@ -24,15 +24,15 @@ class DistanceJoint extends Joint {
   final Vector2 localAnchor1;
   final Vector2 localAnchor2;
   final Vector2 u;
-  num impulse;
+  double impulse;
 
   /** Effective mass for the constraint. */
-  num mass;
-  num length;
-  num frequencyHz;
-  num dampingRatio;
-  num gamma;
-  num bias;
+  double mass;
+  double length;
+  double frequencyHz;
+  double dampingRatio;
+  double gamma;
+  double bias;
 
   DistanceJoint(DistanceJointDef def) :
     super(def),
@@ -59,7 +59,7 @@ class DistanceJoint extends Joint {
     argOut.y = impulse * u.y * inv_dt;
   }
 
-  num getReactionTorque(num inv_dt) {
+  double getReactionTorque(num inv_dt) {
     return 0.0;
   }
 

@@ -20,7 +20,7 @@ class SimplexVertex {
   final Vector2 wA; // support point in shapeA
   final Vector2 wB; // support point in shapeB
   final Vector2 w; // wB - wA
-  num a; // barycentric coordinate for closest point
+  double a; // barycentric coordinate for closest point
   int indexA; // wA index
   int indexB; // wB index
 
@@ -28,7 +28,7 @@ class SimplexVertex {
     wA = new Vector2.zero(),
     wB = new Vector2.zero(),
     w = new Vector2.zero(),
-    a = 0,
+    a = 0.0,
     indexA = 0,
     indexB = 0;
 

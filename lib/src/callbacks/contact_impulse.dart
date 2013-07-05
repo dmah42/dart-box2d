@@ -21,11 +21,11 @@
 part of box2d;
 
 class ContactImpulse {
-  List<num> normalImpulses;
-  List<num> tangentImpulses;
+  List<double> normalImpulses;
+  List<double> tangentImpulses;
 
   ContactImpulse() :
-    normalImpulses = new List<num>(Settings.MAX_MANIFOLD_POINTS),
-    tangentImpulses = new List<num>(Settings.MAX_MANIFOLD_POINTS);
+    normalImpulses = new List<double>(Settings.MAX_MANIFOLD_POINTS),
+    tangentImpulses = new List<double>(Settings.MAX_MANIFOLD_POINTS);
 }
 

@@ -22,10 +22,10 @@ class FrictionJointDef extends JointDef {
   final Vector2 localAnchorB;
 
   /** The maximum friction force in N. */
-  num maxForce;
+  double maxForce;
 
   /** The maximum friction torque in N-m. */
-  num maxTorque;
+  double maxTorque;
 
   FrictionJointDef()
       : super(),

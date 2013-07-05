@@ -33,9 +33,9 @@ class ContactConstraint {
 
   int type;
 
-  num radius;
-  num friction;
-  num restitution;
+  double radius;
+  double friction;
+  double restitution;
   int pointCount;
 
   Manifold manifold;

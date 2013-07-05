@@ -54,7 +54,7 @@ class World {
    * This is used to compute the time step ratio to
    * support a variable time step.
    */
-  num _inverseTimestep;
+  double _inverseTimestep;
 
   /**
    * This is for debugging the solver.
@@ -113,7 +113,7 @@ class World {
 
     _flags = CLEAR_FORCES,
 
-    _inverseTimestep = 0,
+    _inverseTimestep = 0.0,
 
     _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
 
@@ -486,7 +486,7 @@ class World {
    * param positionIterations
    *   for the position constraint solver.
    */
-  void step(num dt, int velocityIterations, int positionIterations) {
+  void step(double dt, int velocityIterations, int positionIterations) {
 
     // If new fixtures were added, we need to find the new contacts.
     if ((_flags & NEW_FIXTURE) == NEW_FIXTURE) {
