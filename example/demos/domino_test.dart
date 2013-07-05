@@ -62,7 +62,7 @@ class DominoTest extends Demo {
       BodyDef bd = new BodyDef();
       bd.type = BodyType.DYNAMIC;
 
-      num friction = .5;
+      double friction = .5;
       int numPerRow = 25;
 
       for (int i = 0; i < 4; ++i) {
@@ -77,7 +77,7 @@ class DominoTest extends Demo {
             bd.angle = .1;
             bd.position.x -= .1;
           } else {
-            bd.angle = 0;
+            bd.angle = 0.0;
           }
           Body myBody = world.createBody(bd);
           myBody.createFixture(fd);

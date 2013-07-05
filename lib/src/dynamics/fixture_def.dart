@@ -33,17 +33,17 @@ class FixtureDef {
   /**
    * The friction coefficient, usually in the range [0,1].
    */
-  num friction;
+  double friction;
 
   /**
    * The restitution (elasticity) usually in the range [0,1].
    */
-  num restitution;
+  double restitution;
 
   /**
    * The density, usually in kg/m^2
    */
-  num density;
+  double density;
 
   /**
    * A sensor shape collects contact information but never generates a collision
@@ -63,8 +63,8 @@ class FixtureDef {
     shape = null,
     userData = null,
     friction = 0.2,
-    restitution = 0,
-    density = 0,
+    restitution = 0.0,
+    density = 0.0,
     filter = new Filter(),
     isSensor = false {
     // Setup the filter.
