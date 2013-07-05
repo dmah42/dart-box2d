@@ -47,11 +47,11 @@ class CircleShape extends Shape {
    */
   bool testPoint(Transform transform, Vector2 point) {
     Vector2 center = new Vector2.zero();
-    transform.rotation.multiplyVectorToOut(position, center);
-    center.addLocal(transform.position);
+    Matrix2_mulMatrixAndVectorToOut(transform.rotation, position, center);
+    center.add(transform.position);
 
-    Vector2 d = center.subLocal(point).negateLocal();
-    return Vector2.dot(d, d) <= radius * radius;
+    Vector2 d = center.sub(point).negate();
+    return d.dot(d) <= radius * radius;
   }
 
   /**
@@ -60,11 +60,11 @@ class CircleShape extends Shape {
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
     Vector2 p = new Vector2.zero();
-    Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
-    p.addLocal(argTransform.position);
+    Matrix2_mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+    p.add(argTransform.position);
 
-    argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
-    argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+    argBox.lowerBound.setValues(p.x - radius, p.y - radius);
+    argBox.upperBound.setValues(p.x + radius, p.y + radius);
   }
 
   /** Returns a clone of this circle. */
@@ -80,6 +80,6 @@ class CircleShape extends Shape {
 
     // Store inertia above the local origin.
     massData.inertia = massData.mass * (.5 * radius * radius +
-        Vector2.dot(position, position));
+        position.dot(position));
   }
 }

@@ -66,7 +66,7 @@ class Simplex {
       Vector2 wBLocal = proxyB.vertices[v.indexB];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).subLocal(v.wA);
+      v.w.setFrom(v.wB).sub(v.wA);
       v.a = 0.0;
     }
 
@@ -91,7 +91,7 @@ class Simplex {
       Vector2 wBLocal = proxyB.vertices[0];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).subLocal(v.wA);
+      v.w.setFrom(v.wB).sub(v.wA);
       count = 1;
     }
   }
@@ -109,21 +109,21 @@ class Simplex {
   void getSearchDirection(Vector2 out) {
     switch (count) {
       case 1 :
-        out.setFrom(v1.w).negateLocal();
+        out.setFrom(v1.w).negate();
         return;
       case 2 :
-        e12.setFrom(v2.w).subLocal(v1.w);
+        e12.setFrom(v2.w).sub(v1.w);
         // use out for a temp variable real quick
-        out.setFrom(v1.w).negateLocal();
-        num sgn = Vector2.crossVectors(e12, out);
+        out.setFrom(v1.w).negate();
+        num sgn = e12.cross(out);
 
         if (sgn > 0) {
           // Origin is left of e12.
-          Vector2.crossNumAndVectorToOut(1.0, e12, out);
+          Vector2_crossNumAndVectorToOut(1.0, e12, out);
         }
         else {
           // Origin is right of e12.
-          Vector2.crossVectorAndNumToOut(e12, 1.0, out);
+          Vector2_crossVectorAndNumToOut(e12, 1.0, out);
         }
         break;
       default :
@@ -147,8 +147,8 @@ class Simplex {
         out.setFrom(v1.w);
         return;
       case 2 :
-        case22.setFrom(v2.w).mulLocal(v2.a);
-        case2.setFrom(v1.w).mulLocal(v1.a).addLocal(case22);
+        case22.setFrom(v2.w).scale(v2.a);
+        case2.setFrom(v1.w).scale(v1.a).add(case22);
         out.setFrom(case2);
         return;
       case 3 :
@@ -174,18 +174,18 @@ class Simplex {
         break;
 
       case 2 :
-        case2.setFrom(v1.wA).mulLocal(v1.a);
-        pA.setFrom(v2.wA).mulLocal(v2.a).addLocal(case2);
-        case2.setFrom(v1.wB).mulLocal(v1.a);
-        pB.setFrom(v2.wB).mulLocal(v2.a).addLocal(case2);
+        case2.setFrom(v1.wA).scale(v1.a);
+        pA.setFrom(v2.wA).scale(v2.a).add(case2);
+        case2.setFrom(v1.wB).scale(v1.a);
+        pB.setFrom(v2.wB).scale(v2.a).add(case2);
 
         break;
 
       case 3 :
-        pA.setFrom(v1.wA).mulLocal(v1.a);
-        case3.setFrom(v2.wA).mulLocal(v2.a);
-        case33.setFrom(v3.wA).mulLocal(v3.a);
-        pA.addLocal(case3).addLocal(case33);
+        pA.setFrom(v1.wA).scale(v1.a);
+        case3.setFrom(v2.wA).scale(v2.a);
+        case33.setFrom(v3.wA).scale(v3.a);
+        pA.add(case3).add(case33);
         pB.setFrom(pA);
         break;
 
@@ -208,9 +208,9 @@ class Simplex {
         return MathBox.distance(v1.w, v2.w);
 
       case 3 :
-        case3.setFrom(v2.w).subLocal(v1.w);
-        case33.setFrom(v3.w).subLocal(v1.w);
-        return Vector2.crossVectors(case3, case33);
+        case3.setFrom(v2.w).sub(v1.w);
+        case33.setFrom(v3.w).sub(v1.w);
+        return case3.cross(case33);
 
       default :
         assert (false);
@@ -224,10 +224,10 @@ class Simplex {
   void solve2() {
     Vector2 w1 = v1.w;
     Vector2 w2 = v2.w;
-    e12.setFrom(w2).subLocal(w1);
+    e12.setFrom(w2).sub(w1);
 
     // w1 region
-    num d12_2 = -Vector2.dot(w1, e12);
+    num d12_2 = -w1.dot(e12);
     if (d12_2 <= 0.0) {
       // a2 <= 0, so we clamp it to 0
       v1.a = 1.0;
@@ -236,7 +236,7 @@ class Simplex {
     }
 
     // w2 region
-    num d12_1 = Vector2.dot(w2, e12);
+    num d12_1 = w2.dot(e12);
     if (d12_1 <= 0.0) {
       // a1 <= 0, so we clamp it to 0
       v2.a = 1.0;
@@ -266,32 +266,32 @@ class Simplex {
     Vector2 w3 = v3.w;
 
     // Edge12
-    e12.setFrom(w2).subLocal(w1);
-    num w1e12 = Vector2.dot(w1, e12);
-    num w2e12 = Vector2.dot(w2, e12);
+    e12.setFrom(w2).sub(w1);
+    num w1e12 = w1.dot(e12);
+    num w2e12 = w2.dot(e12);
     num d12_1 = w2e12;
     num d12_2 = -w1e12;
 
     // Edge13
-    e13.setFrom(w3).subLocal(w1);
-    num w1e13 = Vector2.dot(w1, e13);
-    num w3e13 = Vector2.dot(w3, e13);
+    e13.setFrom(w3).sub(w1);
+    num w1e13 = w1.dot(e13);
+    num w3e13 = w3.dot(e13);
     num d13_1 = w3e13;
     num d13_2 = -w1e13;
 
     // Edge23
-    e23.setFrom(w3).subLocal(w2);
-    num w2e23 = Vector2.dot(w2, e23);
-    num w3e23 = Vector2.dot(w3, e23);
+    e23.setFrom(w3).sub(w2);
+    num w2e23 = w2.dot(e23);
+    num w3e23 = w3.dot(e23);
     num d23_1 = w3e23;
     num d23_2 = -w2e23;
 
     // Triangle123
-    num n123 = Vector2.crossVectors(e12, e13);
+    num n123 = e12.cross(e13);
 
-    num d123_1 = n123 * Vector2.crossVectors(w2, w3);
-    num d123_2 = n123 * Vector2.crossVectors(w3, w1);
-    num d123_3 = n123 * Vector2.crossVectors(w1, w2);
+    num d123_1 = n123 * w2.cross(w3);
+    num d123_2 = n123 * w3.cross(w1);
+    num d123_3 = n123 * w1.cross(w2);
 
     // w1 region
     if (d12_2 <= 0.0 && d13_2 <= 0.0) {

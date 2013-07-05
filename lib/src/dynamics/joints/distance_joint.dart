@@ -71,10 +71,10 @@ class DistanceJoint extends Joint {
     Vector2 r2 = new Vector2.zero();
 
     // Compute the effective mass matrix.
-    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    r1.setFrom(localAnchor1).sub(b1.localCenter);
+    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
     u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
     u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
@@ -85,11 +85,11 @@ class DistanceJoint extends Joint {
       u.x *= 1.0 / len;
       u.y *= 1.0 / len;
     } else {
-      u.setCoords(0.0, 0.0);
+      u.setValues(0.0, 0.0);
     }
 
-    num cr1u = Vector2.crossVectors(r1, u);
-    num cr2u = Vector2.crossVectors(r2, u);
+    num cr1u = r1.cross(u);
+    num cr2u = r2.cross(u);
 
     num invMass = b1.invMass + b1.invInertia * cr1u * cr1u + b2.invMass
         + b2.invInertia * cr2u * cr2u;
@@ -122,15 +122,15 @@ class DistanceJoint extends Joint {
       impulse *= step.dtRatio;
 
       Vector2 P = new Vector2.zero();
-      P.setFrom(u).mulLocal(impulse);
+      P.setFrom(u).scale(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
-      b1.angularVelocity -= b1.invInertia * Vector2.crossVectors(r1, P);
+      b1.angularVelocity -= b1.invInertia * r1.cross(P);
 
       b2.linearVelocity.x += b2.invMass * P.x;
       b2.linearVelocity.y += b2.invMass * P.y;
-      b2.angularVelocity += b2.invInertia * Vector2.crossVectors(r2, P);
+      b2.angularVelocity += b2.invInertia * r2.cross(P);
     } else {
       impulse = 0.0;
     }
@@ -143,20 +143,20 @@ class DistanceJoint extends Joint {
     final r1 = new Vector2.zero();
     final r2 = new Vector2.zero();
 
-    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    r1.setFrom(localAnchor1).sub(b1.localCenter);
+    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
     final v1 = new Vector2.zero();
     final v2 = new Vector2.zero();
 
-    Vector2.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
-    Vector2.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
-    v1.addLocal(b1.linearVelocity);
-    v2.addLocal(b2.linearVelocity);
+    Vector2_crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
+    Vector2_crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
+    v1.add(b1.linearVelocity);
+    v2.add(b2.linearVelocity);
 
-    num Cdot = Vector2.dot(u, v2.subLocal(v1));
+    num Cdot = u.dot(v2.sub(v1));
 
     num imp = -mass * (Cdot + bias + gamma * impulse);
     impulse += imp;
@@ -183,15 +183,15 @@ class DistanceJoint extends Joint {
     final r2 = new Vector2.zero();
     final d = new Vector2.zero();
 
-    r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-    r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-    Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    r1.setFrom(localAnchor1).sub(b1.localCenter);
+    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
+    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
 
     d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
     d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
 
-    num len = d.normalize();
+    num len = d.normalizeLength();
     num C = len - length;
     C = MathBox.clamp(C, -Settings.MAX_LINEAR_CORRECTION,
         Settings.MAX_LINEAR_CORRECTION);

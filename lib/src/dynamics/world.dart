@@ -613,10 +613,10 @@ class World {
             vs[i] = new Vector2.zero();
           }
 
-          vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
-          vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
-          vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
-          vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
+          vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
+          vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
+          vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
+          vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
 
           if (0 != (drawFlags & DebugDraw.e_lineDrawingBit)) {
             _debugDraw.drawPolygon(vs, 4, color);
@@ -1073,7 +1073,7 @@ class World {
         // Vector2 center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
         num radius = circle.radius;
-        axis.setFrom(xf.rotation.col1);
+        axis.setFrom(xf.rotation.getColumn(0));
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);

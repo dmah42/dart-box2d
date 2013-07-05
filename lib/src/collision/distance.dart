@@ -76,7 +76,7 @@ class Distance {
     int saveCount = 0;
 
     simplex.getClosestPoint(closestPoint);
-    num distanceSqr1 = closestPoint.lengthSquared;
+    num distanceSqr1 = closestPoint.length2;
     num distanceSqr2 = distanceSqr1;
 
     // Main iteration loop
@@ -110,7 +110,7 @@ class Distance {
 
       // Compute closest point.
       simplex.getClosestPoint(closestPoint);
-      distanceSqr2 = closestPoint.lengthSquared;
+      distanceSqr2 = closestPoint.length2;
 
       distanceSqr1 = distanceSqr2;
 
@@ -118,7 +118,7 @@ class Distance {
       simplex.getSearchDirection(searchDirection);
 
       // Ensure the search direction is numerically fit.
-      if (searchDirection.lengthSquared < Settings.EPSILON * Settings.EPSILON) {
+      if (searchDirection.length2 < Settings.EPSILON * Settings.EPSILON) {
         // The origin is probably contained by a line segment
         // or triangle. Thus the shapes are overlapped.
 
@@ -132,18 +132,18 @@ class Distance {
       // Compute a tentative new simplex vertex using support points.
       SimplexVertex vertex = vertices[simplex.count];
 
-      Matrix22.mulTransMatrixAndVectorToOut(transformA.rotation,
-          searchDirection.negateLocal(), temp);
+      Matrix2_mulTransMatrixAndVectorToOut(transformA.rotation,
+          searchDirection.negate(), temp);
       vertex.indexA = proxyA.getSupport(temp);
       Transform.mulToOut(transformA, proxyA.vertices[vertex.indexA],
           vertex.wA);
       // Vec2 wBLocal;
-      Matrix22.mulTransMatrixAndVectorToOut(transformB.rotation,
-          searchDirection.negateLocal(), temp);
+      Matrix2_mulTransMatrixAndVectorToOut(transformB.rotation,
+          searchDirection.negate(), temp);
       vertex.indexB = proxyB.getSupport(temp);
       Transform.mulToOut(transformB, proxyB.vertices[vertex.indexB],
           vertex.wB);
-      vertex.w.setFrom(vertex.wB).subLocal(vertex.wA);
+      vertex.w.setFrom(vertex.wB).sub(vertex.wA);
 
       // Iteration count is equated to the number of support point calls.
       ++iter;
@@ -186,16 +186,16 @@ class Distance {
         // Shapes are still no overlapped.
         // Move the witness points to the outer surface.
         output.distance -= rA + rB;
-        normal.setFrom(output.pointB).subLocal(output.pointA);
+        normal.setFrom(output.pointB).sub(output.pointA);
         normal.normalize();
-        temp.setFrom(normal).mulLocal(rA);
-        output.pointA.addLocal(temp);
-        temp.setFrom(normal).mulLocal(rB);
-        output.pointB.subLocal(temp);
+        temp.setFrom(normal).scale(rA);
+        output.pointA.add(temp);
+        temp.setFrom(normal).scale(rB);
+        output.pointB.sub(temp);
       } else {
         // Shapes are overlapped when radii are considered.
         // Move the witness points to the middle.
-        output.pointA.addLocal(output.pointB).mulLocal(.5);
+        output.pointA.add(output.pointB).scale(.5);
         output.pointB.setFrom(output.pointA);
         output.distance = 0.0;
       }

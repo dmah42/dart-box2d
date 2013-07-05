@@ -55,15 +55,15 @@ class WorldManifold {
 
         normal.x = 1.0;
         normal.y = 0.0;
-        pointA.x = xfA.position.x + xfA.rotation.col1.x *
-            manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-        pointA.y = xfA.position.y + xfA.rotation.col1.y *
-            manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
-        pointB.x = xfB.position.x + xfB.rotation.col1.x *
-            manifold.points[0].localPoint.x + xfB.rotation.col2.x *
+        pointA.x = xfA.position.x + xfA.rotation.getColumn(0).x *
+            manifold.localPoint.x + xfA.rotation.getColumn(1).x * manifold.localPoint.y;
+        pointA.y = xfA.position.y + xfA.rotation.getColumn(0).y *
+            manifold.localPoint.x + xfA.rotation.getColumn(1).y * manifold.localPoint.y;
+        pointB.x = xfB.position.x + xfB.rotation.getColumn(0).x *
+            manifold.points[0].localPoint.x + xfB.rotation.getColumn(1).x *
             manifold.points[0].localPoint.y;
-        pointB.y = xfB.position.y + xfB.rotation.col1.y *
-            manifold.points[0].localPoint.x + xfB.rotation.col2.y *
+        pointB.y = xfB.position.y + xfB.rotation.getColumn(0).y *
+            manifold.points[0].localPoint.x + xfB.rotation.getColumn(1).y *
             manifold.points[0].localPoint.y;
 
         if (MathBox.distanceSquared(pointA, pointB) > Settings.EPSILON *
@@ -85,23 +85,23 @@ class WorldManifold {
       case ManifoldType.FACE_A:
         final Vector2 planePoint = pool3;
 
-        normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
-            xfA.rotation.col2.x * manifold.localNormal.y;
-        normal.y = xfA.rotation.col1.y * manifold.localNormal.x +
-            xfA.rotation.col2.y * manifold.localNormal.y;
-        planePoint.x = xfA.position.x + xfA.rotation.col1.x *
-            manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-        planePoint.y = xfA.position.y + xfA.rotation.col1.y *
-            manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+        normal.x = xfA.rotation.getColumn(0).x * manifold.localNormal.x +
+            xfA.rotation.getColumn(1).x * manifold.localNormal.y;
+        normal.y = xfA.rotation.getColumn(0).y * manifold.localNormal.x +
+            xfA.rotation.getColumn(1).y * manifold.localNormal.y;
+        planePoint.x = xfA.position.x + xfA.rotation.getColumn(0).x *
+            manifold.localPoint.x + xfA.rotation.getColumn(1).x * manifold.localPoint.y;
+        planePoint.y = xfA.position.y + xfA.rotation.getColumn(0).y *
+            manifold.localPoint.x + xfA.rotation.getColumn(1).y * manifold.localPoint.y;
 
         final Vector2 clipPoint = pool4;
 
         for (int i = 0; i < manifold.pointCount; ++i) {
-          clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
-              manifold.points[i].localPoint.x + xfB.rotation.col2.x *
+          clipPoint.x = xfB.position.x + xfB.rotation.getColumn(0).x *
+              manifold.points[i].localPoint.x + xfB.rotation.getColumn(1).x *
               manifold.points[i].localPoint.y;
-          clipPoint.y = xfB.position.y + xfB.rotation.col1.y *
-              manifold.points[i].localPoint.x + xfB.rotation.col2.y *
+          clipPoint.y = xfB.position.y + xfB.rotation.getColumn(0).y *
+              manifold.points[i].localPoint.x + xfB.rotation.getColumn(1).y *
               manifold.points[i].localPoint.y;
 
           num scalar = radiusA - ((clipPoint.x - planePoint.x) *
@@ -121,26 +121,26 @@ class WorldManifold {
       case ManifoldType.FACE_B :
         final Vector2 planePoint = pool3;
 
-        final Matrix22 R = xfB.rotation;
-        normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
+        final Matrix2 R = xfB.rotation;
+        normal.x = R.getColumn(0).x * manifold.localNormal.x + R.getColumn(1).x *
             manifold.localNormal.y;
-        normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
+        normal.y = R.getColumn(0).y * manifold.localNormal.x + R.getColumn(1).y *
             manifold.localNormal.y;
         final Vector2 v = manifold.localPoint;
-        planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
-            xfB.rotation.col2.x * v.y;
-        planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
-            xfB.rotation.col2.y * v.y;
+        planePoint.x = xfB.position.x + xfB.rotation.getColumn(0).x * v.x +
+            xfB.rotation.getColumn(1).x * v.y;
+        planePoint.y = xfB.position.y + xfB.rotation.getColumn(0).y * v.x +
+            xfB.rotation.getColumn(1).y * v.y;
 
         final Vector2 clipPoint = pool4;
 
         for (int i = 0; i < manifold.pointCount; ++i) {
 
-          clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
-              manifold.points[i].localPoint.x + xfA.rotation.col2.x *
+          clipPoint.x = xfA.position.x + xfA.rotation.getColumn(0).x *
+              manifold.points[i].localPoint.x + xfA.rotation.getColumn(1).x *
               manifold.points[i].localPoint.y;
-          clipPoint.y = xfA.position.y + xfA.rotation.col1.y *
-              manifold.points[i].localPoint.x + xfA.rotation.col2.y *
+          clipPoint.y = xfA.position.y + xfA.rotation.getColumn(0).y *
+              manifold.points[i].localPoint.x + xfA.rotation.getColumn(1).y *
               manifold.points[i].localPoint.y;
 
           num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +

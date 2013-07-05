@@ -45,11 +45,11 @@ class Tire {
   }
 
   void updateFriction() {
-    final Vector2 impulse = _lateralVelocity.mulLocal(-_body.mass);
+    final Vector2 impulse = _lateralVelocity.scale(-_body.mass);
     if (impulse.length > _maxLateralImpulse) {
-      impulse.mulLocal(_maxLateralImpulse / impulse.length);
+      impulse.scale(_maxLateralImpulse / impulse.length);
     }
-    _body.applyLinearImpulse(impulse.mulLocal(_currentTraction),
+    _body.applyLinearImpulse(impulse.scale(_currentTraction),
                              _body.worldCenter);
     _body.applyAngularImpulse(
         0.1 * _currentTraction * _body.inertia * (-_body.angularVelocity));
@@ -59,7 +59,7 @@ class Tire {
     currentForwardNormal.normalize();
     final double dragForceMagnitude = -2 * currentForwardSpeed;
     _body.applyForce(
-        currentForwardNormal.mulLocal(_currentTraction * dragForceMagnitude),
+        currentForwardNormal.scale(_currentTraction * dragForceMagnitude),
         _body.worldCenter);
   }
 
@@ -73,7 +73,7 @@ class Tire {
 
     Vector2 currentForwardNormal = _body.getWorldVector2(new Vector2(0.0, 1.0));
     final double currentSpeed =
-        Vector2.dot(_forwardVelocity, currentForwardNormal);
+        _forwardVelocity.dot(currentForwardNormal);
     double force = 0.0;
     if (desiredSpeed < currentSpeed) {
       force = -_maxDriveForce;
@@ -82,7 +82,7 @@ class Tire {
     }
 
     if (force.abs() > 0) {
-      _body.applyForce(currentForwardNormal.mulLocal(_currentTraction * force),
+      _body.applyForce(currentForwardNormal.scale(_currentTraction * force),
                        _body.worldCenter);
     }
   }
@@ -109,14 +109,12 @@ class Tire {
 
   Vector2 get _lateralVelocity {
     final Vector2 currentRightNormal = _body.getWorldVector2(_worldLeft);
-    return currentRightNormal.mulLocal(Vector2.dot(currentRightNormal,
-                                                  _body.linearVelocity));
+    return currentRightNormal.scale(currentRightNormal.dot(_body.linearVelocity));
   }
 
   Vector2 get _forwardVelocity {
     final Vector2 currentForwardNormal = _body.getWorldVector2(_worldUp);
-    return currentForwardNormal.mulLocal(Vector2.dot(currentForwardNormal,
-                                                    _body.linearVelocity));
+    return currentForwardNormal.scale(currentForwardNormal.dot(_body.linearVelocity));
   }
 
   Body _body;

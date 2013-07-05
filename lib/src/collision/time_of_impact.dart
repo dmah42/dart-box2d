@@ -314,8 +314,8 @@ class SeparationFunction {
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
       Transform.mulToOut(xfb, localPointB, pointB);
-      axis.setFrom(pointB).subLocal(pointA);
-      num s = axis.normalize();
+      axis.setFrom(pointB).sub(pointA);
+      num s = axis.normalizeLength();
       return s;
     } else if (cache.indexA[0] == cache.indexA[1]) {
       // Two points on B and one on A.
@@ -324,25 +324,25 @@ class SeparationFunction {
       localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
-      temp.setFrom(localPointB2).subLocal(localPointB1);
-      Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
+      temp.setFrom(localPointB2).sub(localPointB1);
+      Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
-      Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+      Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
 
       localPoint.setFrom(localPointB1);
-      localPoint.addLocal(localPointB2);
-      localPoint.mulLocal(.5);
+      localPoint.add(localPointB2);
+      localPoint.scale(.5);
       Transform.mulToOut(xfb, localPoint, pointB);
 
       localPointA.setFrom(proxyA.vertices[cache.indexA[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
 
       temp.setFrom(pointA);
-      temp.subLocal(pointB);
-      num s = Vector2.dot(temp, normal);
+      temp.sub(pointB);
+      num s = temp.dot(normal);
       if (s < 0.0) {
-        axis.negateLocal();
+        axis.negate();
         s = -s;
       }
 
@@ -355,25 +355,25 @@ class SeparationFunction {
       localPointA2.setFrom(proxyA.vertices[cache.indexA[1]]);
 
       temp.setFrom(localPointA2);
-      temp.subLocal(localPointA1);
-      Vector2.crossVectorAndNumToOut(temp, 1.0, axis);
+      temp.sub(localPointA1);
+      Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
-      Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+      Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
 
       localPoint.setFrom(localPointA1);
-      localPoint.addLocal(localPointA2);
-      localPoint.mulLocal(.5);
+      localPoint.add(localPointA2);
+      localPoint.scale(.5);
       Transform.mulToOut(xfa, localPoint, pointA);
 
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfb, localPointB, pointB);
 
       temp.setFrom(pointB);
-      temp.subLocal(pointA);
-      num s = Vector2.dot(temp, normal);
+      temp.sub(pointA);
+      num s = temp.dot(normal);
       if (s < 0.0) {
-        axis.negateLocal();
+        axis.negate();
         s = -s;
       }
       return s;
@@ -386,10 +386,10 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
-        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, axis.negate(),
             axisB);
-        axis.negateLocal();
+        axis.negate();
 
         indexes[0] = proxyA.getSupport(axisA);
         indexes[1] = proxyB.getSupport(axisB);
@@ -400,16 +400,16 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector2.dot(pointB.subLocal(pointA), axis);
+        num separation = pointB.sub(pointA).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
-        Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+        Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        normal.negateLocal();
-        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
-        normal.negateLocal();
+        normal.negate();
+        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        normal.negate();
 
         indexes[0] = -1;
         indexes[1] = proxyB.getSupport(axisB);
@@ -417,16 +417,16 @@ class SeparationFunction {
         localPointB.setFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector2.dot(pointB.subLocal(pointA), normal);
+        num separation = pointB.sub(pointA).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
-        Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+        Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
-            normal.negateLocal(), axisA);
-        normal.negateLocal();
+        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,
+            normal.negate(), axisA);
+        normal.negate();
 
         indexes[1] = -1;
         indexes[0] = proxyA.getSupport(axisA);
@@ -434,7 +434,7 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = Vector2.dot(pointA.subLocal(pointB), normal);
+        num separation = pointA.sub(pointB).dot(normal);
         return separation;
 
       default:
@@ -451,10 +451,10 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
-        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, axis.negateLocal(),
+        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
+        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, axis.negate(),
             axisB);
-        axis.negateLocal();
+        axis.negate();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
         localPointB.setFrom(proxyB.vertices[indexB]);
@@ -462,34 +462,34 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = Vector2.dot(pointB.subLocal(pointA), axis);
+        num separation = pointB.sub(pointA).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
-        Matrix22.mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+        Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
-        normal.negateLocal();
-        Matrix22.mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
-        normal.negateLocal();
+        normal.negate();
+        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        normal.negate();
 
         localPointB.setFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        num separation = Vector2.dot(pointB.subLocal(pointA), normal);
+        num separation = pointB.sub(pointA).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
-        Matrix22.mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+        Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        Matrix22.mulTransMatrixAndVectorToOut(xfa.rotation,
-            normal.negateLocal(), axisA);
-        normal.negateLocal();
+        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,
+            normal.negate(), axisA);
+        normal.negate();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = Vector2.dot(pointA.subLocal(pointB), normal);
+        num separation = pointA.sub(pointB).dot(normal);
         return separation;
 
       default:

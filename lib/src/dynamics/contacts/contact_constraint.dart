@@ -24,9 +24,9 @@ class ContactConstraint {
   final Vector2 localPoint;
   final Vector2 normal;
 
-  final Matrix22 normalMass;
+  final Matrix2 normalMass;
   //TODO(gregbglw): What does K mean? Find out and change the name.
-  final Matrix22 K;
+  final Matrix2 K;
 
   Body bodyA;
   Body bodyB;
@@ -48,8 +48,8 @@ class ContactConstraint {
     localNormal = new Vector2.zero(),
     localPoint = new Vector2.zero(),
     normal = new Vector2.zero(),
-    normalMass = new Matrix22(),
-    K = new Matrix22();
+    normalMass = new Matrix2.zero(),
+    K = new Matrix2.zero();
 
   void setFrom(ContactConstraint cp) {
     pointCount = cp.pointCount;

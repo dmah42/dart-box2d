@@ -130,7 +130,7 @@ class CircleStress extends Demo {
         fd.restitution = .9;
         num xPos = radius * Math.cos(2 * Math.PI * (i / numPieces.toDouble()));
         num yPos = radius * Math.sin(2 * Math.PI * (i / numPieces.toDouble()));
-        cd.position.setCoords(xPos, yPos);
+        cd.position.setValues(xPos, yPos);
 
         body.createFixture(fd);
       }

@@ -83,12 +83,12 @@ class Sweep {
 
     xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
     xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
-    xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
+    xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
 
     // Shift to origin
-    xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+    xf.position.x -= xf.rotation.getColumn(0).x * localCenter.x + xf.rotation.getColumn(1).x
         * localCenter.y;
-    xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+    xf.position.y -= xf.rotation.getColumn(0).y * localCenter.x + xf.rotation.getColumn(1).y
         * localCenter.y;
   }
 
