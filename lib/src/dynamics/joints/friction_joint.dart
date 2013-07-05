@@ -19,9 +19,9 @@ class FrictionJoint extends Joint {
   final Vector2 _localAnchorB;
 
   Vector2 _linearImpulse;
-  num _angularImpulse;
-  num _maxForce;
-  num _maxTorque;
+  double _angularImpulse;
+  double _maxForce;
+  double _maxTorque;
 
   FrictionJoint(FrictionJointDef def)
       : _localAnchorA = new Vector2.copy(def.localAnchorA),
@@ -44,21 +44,21 @@ class FrictionJoint extends Joint {
     argOut.setFrom(_linearImpulse).mulLocal(inv_dt);
   }
 
-  num getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;
+  double getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;
 
   void set maxForce(num force) {
     assert(force >= 0.0);
     _maxForce = force;
   }
 
-  num get maxForce => _maxForce;
+  double get maxForce => _maxForce;
 
   void set maxTorque(num torque) {
     assert(torque >= 0.0);
     _maxTorque = torque;
   }
 
-  num get maxTorque => _maxTorque;
+  double get maxTorque => _maxTorque;
 
   void initVelocityConstraints(TimeStep step) {
     // Compute the effective mass matrix.

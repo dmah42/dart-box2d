@@ -40,10 +40,10 @@ class Joint {
   final Vector2 localCenterA;
   final Vector2 localCenterB;
 
-  num invMassA;
-  num invIA;
-  num invMassB;
-  num invIB;
+  double invMassA;
+  double invIA;
+  double invMassB;
+  double invIB;
 
   Joint(JointDef def) :
     type = def.type,
@@ -108,7 +108,7 @@ class Joint {
   void getReactionForce(num inv_dt, Vector2 argOut) { }
 
   /** Get the reaction torque on body2 in N*m. */
-  num getReactionTorque(num inv_dt) { }
+  double getReactionTorque(num inv_dt) { }
 
   /** Short-cut function to determine if either body is inactive. */
   bool get active => bodyA.active && bodyB.active;

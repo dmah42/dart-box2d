@@ -93,7 +93,7 @@ class CircleStressBench extends Benchmark {
       sd.setAsBox(50.0, 10.0);
       final topDef = new BodyDef();
       topDef.type = BodyType.STATIC;
-      topDef.angle = 0;
+      topDef.angle = 0.0;
       topDef.position = new Vector2(0.0, 75.0);
       final topBody = world.createBody(topDef);
       bodies.add(topBody);
@@ -116,7 +116,7 @@ class CircleStressBench extends Benchmark {
         final cd = new CircleShape();
         cd.radius = 1.2;
         fd.shape = cd;
-        fd.density = 25;
+        fd.density = 25.0;
         fd.friction = .1;
         fd.restitution = .9;
         num xPos = radius * cos(2 * PI * (i / numPieces.toDouble()));

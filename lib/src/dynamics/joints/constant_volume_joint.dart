@@ -23,25 +23,25 @@ part of box2d;
 
 class ConstantVolumeJoint extends Joint {
   List<Body> bodies;
-  List<num> targetLengths;
-  num targetVolume;
+  List<double> targetLengths;
+  double targetVolume;
 
   List<Vector2> normals;
 
   TimeStep step;
 
-  num _impulse;
+  double _impulse;
 
   World _world;
 
   List<DistanceJoint> distanceJoints;
 
-  num frequencyHz;
-  num dampingRatio;
+  double frequencyHz;
+  double dampingRatio;
 
   ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
     super(def),
-    _impulse = 0 {
+    _impulse = 0.0 {
     if (def.bodies.length <= 2) {
       throw new ArgumentError(
           "You cannot create a constant volume joint with less than three "
@@ -52,7 +52,7 @@ class ConstantVolumeJoint extends Joint {
     // in the growable array in the definition.
     bodies = new List.from(def.bodies);
 
-    targetLengths = new List<num>(bodies.length);
+    targetLengths = new List<double>(bodies.length);
     for (int i = 0; i < targetLengths.length; ++i) {
       final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
       Vector2 temp = new Vector2.copy(bodies[i].worldCenter);

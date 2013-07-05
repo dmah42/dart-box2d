@@ -18,20 +18,20 @@ part of box2d;
 
 class MassData {
   /** The mass of the shape, usually in kilograms. */
-  num mass;
+  double mass;
 
   /** The position of the shape's centroid relative to the shape's origin. */
   Vector2 center;
 
   /** The rotational inertia of the shape about the local origin. */
-  num inertia;
+  double inertia;
 
   /**
    * Constructs a blank mass data.
    */
   MassData() :
-    mass = 0,
-    inertia = 0,
+    mass = 0.0,
+    inertia = 0.0,
     center = new Vector2.zero();
 
   /**

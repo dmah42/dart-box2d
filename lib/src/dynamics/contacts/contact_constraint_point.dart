@@ -20,22 +20,22 @@ class ContactConstraintPoint {
   final Vector2 rA;
   final Vector2 rB;
 
-  num normalImpulse;
-  num tangentImpulse;
-  num normalMass;
-  num tangentMass;
-  num velocityBias;
+  double normalImpulse;
+  double tangentImpulse;
+  double normalMass;
+  double tangentMass;
+  double velocityBias;
 
   /** Constructs a new ContactConstraintPoint. */
   ContactConstraintPoint()
     : localPoint = new Vector2.zero(),
     rA = new Vector2.zero(),
     rB = new Vector2.zero(),
-    normalImpulse = 0,
-    tangentImpulse = 0,
-    normalMass = 0,
-    tangentMass = 0,
-    velocityBias = 0 {}
+    normalImpulse = 0.0,
+    tangentImpulse = 0.0,
+    normalMass = 0.0,
+    tangentMass = 0.0,
+    velocityBias = 0.0 {}
 
   /** Sets this point equal to the given point. */
   void setFrom(ContactConstraintPoint cp) {

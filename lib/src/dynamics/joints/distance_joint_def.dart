@@ -31,17 +31,17 @@ class DistanceJointDef extends JointDef {
   final Vector2 localAnchorB;
 
   /** The equilibrium length between the anchor points. */
-  num length;
+  double length;
 
   /**
    * The mass-spring-damper frequency in Hertz.
    */
-  num frequencyHz;
+  double frequencyHz;
 
   /**
    * The damping ratio. 0 = no damping, 1 = critical damping.
    */
-  num dampingRatio;
+  double dampingRatio;
 
   DistanceJointDef() :
     super(),

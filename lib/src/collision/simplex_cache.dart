@@ -20,7 +20,7 @@ part of box2d;
 
 class SimplexCache {
   /** length or area */
-  num metric;
+  double metric;
 
   int count;
 
@@ -34,7 +34,7 @@ class SimplexCache {
    * Constructs a new SimplexCache.
    */
   SimplexCache() :
-    metric = 0,
+    metric = 0.0,
     count = 0,
     indexA = new List<int>.generate(3, (i) => Settings.MAX_INTEGER),
     indexB = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);

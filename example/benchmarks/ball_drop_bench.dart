@@ -36,7 +36,7 @@ class BallDropBench extends Benchmark {
     // Create the fixture to attach to the ball body.
     final fd = new FixtureDef();
     final cd = new CircleShape();
-    cd.radius = 1;
+    cd.radius = 1.0;
     fd.shape = cd;
 
     // Define and create the ball body. Attach the fixture.

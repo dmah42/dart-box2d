@@ -25,7 +25,7 @@ class DistanceOutput {
   /** Closest point on shapeB */
   final Vector2 pointB;
 
-  num distance;
+  double distance;
 
   /** number of gjk iterations used */
   int iterations;

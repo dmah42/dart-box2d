@@ -20,7 +20,7 @@ part of box2d;
 class DistanceProxy {
   final List<Vector2> vertices;
   int count;
-  num radius;
+  double radius;
 
   /**
    * Constructs a new DistanceProxy.
@@ -28,7 +28,7 @@ class DistanceProxy {
   DistanceProxy() :
     vertices = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
     count = 0,
-    radius = 0 {
+    radius = 0.0 {
 
       for(int i = 0; i < vertices.length; ++i)
         vertices[i] = new Vector2.zero();

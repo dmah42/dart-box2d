@@ -44,7 +44,7 @@ abstract class Contact {
 
   Manifold manifold;
 
-  num toiCount;
+  int toiCount;
 
   DefaultWorldPool pool;
 

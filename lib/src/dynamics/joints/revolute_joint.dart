@@ -29,27 +29,27 @@ class RevoluteJoint extends Joint {
 
   final Vector3 impulse;
 
-  num _motorImpulse;
+  double _motorImpulse;
 
   // Effective mass for point-to-point constraint.
   final Matrix33 mass;
 
   // Effective mass for motor/limit angular constraint.
-  num motorMass;
+  double motorMass;
 
   bool _enableMotor;
 
-  num _maxMotorTorque;
+  double _maxMotorTorque;
 
-  num _motorSpeed;
+  double _motorSpeed;
 
   bool _enableLimit;
 
-  num referenceAngle;
+  double referenceAngle;
 
   /** Limits on the relative rotation of the joint. */
-  num lowerAngle;
-  num upperAngle;
+  double lowerAngle;
+  double upperAngle;
 
   int limitState;
 
@@ -58,13 +58,13 @@ class RevoluteJoint extends Joint {
       localAnchor1 = new Vector2.zero(),
       localAnchor2 = new Vector2.zero(),
       impulse = new Vector3.zero(),
-      _motorImpulse = 0,
+      _motorImpulse = 0.0,
       mass = new Matrix33() {
     localAnchor1.setFrom(def.localAnchorA);
     localAnchor2.setFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
 
-    _motorImpulse = 0;
+    _motorImpulse = 0.0;
 
     lowerAngle = def.lowerAngle;
     upperAngle = def.upperAngle;

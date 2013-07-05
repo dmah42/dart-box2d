@@ -23,7 +23,7 @@ class CircleStress extends Demo {
   RevoluteJoint _joint;
 
   /** Scale of the viewport for this Demo. */
-  static const num _MY_VIEWPORT_SCALE = 4;
+  static const double _MY_VIEWPORT_SCALE = 4.0;
 
   /** The number of columns of balls in the pen. */
   static const int COLUMNS = 8;
@@ -102,7 +102,7 @@ class CircleStress extends Demo {
       sd.setAsBox(50.0, 10.0);
       final topDef = new BodyDef();
       topDef.type = BodyType.STATIC;
-      topDef.angle = 0;
+      topDef.angle = 0.0;
       topDef.position = new Vector2(0.0, 75.0);
       final topBody = world.createBody(topDef);
       bodies.add(topBody);
@@ -125,7 +125,7 @@ class CircleStress extends Demo {
         final cd = new CircleShape();
         cd.radius = 1.2;
         fd.shape = cd;
-        fd.density = 25;
+        fd.density = 25.0;
         fd.friction = .1;
         fd.restitution = .9;
         num xPos = radius * Math.cos(2 * Math.PI * (i / numPieces.toDouble()));
