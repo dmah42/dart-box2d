@@ -5,3 +5,4 @@ author: Dominic Hamon <dominic@google.com>
 homepage: http://github.com/dart-lang/dart-box2d
 dev_dependencies:
   args: any
+  browser: any
