@@ -104,27 +104,19 @@ void Matrix3_solve22ToOut(Matrix3 a, Vector2 b, Vector2 out) {
  * out: the result
  */
 void Matrix3_solve33ToOut(Matrix3 a, Vector3 b, Vector3 out) {
-  Vector3_crossToOut(a.getColumn(1), a.getColumn(2), out);
+  a.getColumn(1).crossInto(a.getColumn(2), out);
   double det = a.getColumn(0).dot(out);
   if (det != 0.0){
     det = 1.0 / det;
   }
 
-  Vector3_crossToOut(a.getColumn(1), a.getColumn(2), out);
+  a.getColumn(1).crossInto(a.getColumn(2), out);
   final double x = det * b.dot(out);
-  Vector3_crossToOut(b, a.getColumn(2), out);
+  b.crossInto(a.getColumn(2), out);
   final double y = det * a.getColumn(0).dot(out);
-  Vector3_crossToOut(a.getColumn(1), b, out);
+  a.getColumn(1).crossInto(b, out);
   double z = det * a.getColumn(0).dot(out);
   out.x = x;
   out.y = y;
   out.z = z;
-}
-
-void Vector3_crossToOut(Vector3 a, Vector3 b, Vector3 out) {
-  final double tempy = a.z * b.x - a.x * b.z;
-  final double tempz = a.x * b.y - a.y * b.x;
-  out.x = a.y * b.z - a.z * b.y;
-  out.y = tempy;
-  out.z = tempz;
 }
