@@ -212,8 +212,8 @@ class RevoluteJoint extends Joint {
       final Vector3 Cdot = new Vector3.zero();
 
       // Solve point-to-point constraint
-      Vector2_crossNumAndVectorToOut(w1, r1, temp);
-      Vector2_crossNumAndVectorToOut(w2, r2, Cdot1);
+      Vector2_crossVectorAndNumToOut(r1, -w1, temp);
+      Vector2_crossVectorAndNumToOut(r2, -w2, Cdot1);
       Cdot1.add(v2).sub(v1).sub(temp);
       num Cdot2 = w2 - w1;
       Cdot.setValues(Cdot1.x, Cdot1.y, Cdot2);
@@ -268,8 +268,8 @@ class RevoluteJoint extends Joint {
       Vector2 Cdot = new Vector2.zero();
       Vector2 imp = new Vector2.zero();
 
-      Vector2_crossNumAndVectorToOut(w1, r1, temp);
-      Vector2_crossNumAndVectorToOut(w2, r2, Cdot);
+      Vector2_crossVectorAndNumToOut(r1, -w1, temp);
+      Vector2_crossVectorAndNumToOut(r2, -w2, Cdot);
       Cdot.add(v2).sub(v1).sub(temp);
       Matrix3_solve22ToOut(mass, Cdot.negate(), imp); // just leave negated
 

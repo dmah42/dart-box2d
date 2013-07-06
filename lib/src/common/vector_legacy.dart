@@ -25,17 +25,6 @@ part of box2d;
 /**
  * Has the effect of swapping the x and y coordinates of the vector,
  * multiplying both by the given number, and then flipping the sign of the new
- * x coordinate. Returns the result through the out parameter.
- */
-void Vector2_crossNumAndVectorToOut(double s, Vector2 a, Vector2 out) {
-  double tempY = s * a.x;
-  out.x = -s * a.y;
-  out.y = tempY;
-}
-
-/**
- * Has the effect of swapping the x and y coordinates of the vector,
- * multiplying both by the given number, and then flipping the sign of the new
  * y coordinate. Returns the result through the out parameter.
  */
 void Vector2_crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {

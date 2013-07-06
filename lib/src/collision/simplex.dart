@@ -119,7 +119,7 @@ class Simplex {
 
         if (sgn > 0) {
           // Origin is left of e12.
-          Vector2_crossNumAndVectorToOut(1.0, e12, out);
+          Vector2_crossVectorAndNumToOut(e12, -1.0, out);
         }
         else {
           // Origin is right of e12.

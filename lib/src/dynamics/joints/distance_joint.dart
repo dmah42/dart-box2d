@@ -151,8 +151,8 @@ class DistanceJoint extends Joint {
     final v1 = new Vector2.zero();
     final v2 = new Vector2.zero();
 
-    Vector2_crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
-    Vector2_crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
+    Vector2_crossVectorAndNumToOut(r1, -b1.angularVelocity, v1);
+    Vector2_crossVectorAndNumToOut(r2, -b2.angularVelocity, v2);
     v1.add(b1.linearVelocity);
     v2.add(b2.linearVelocity);
 
