@@ -192,7 +192,7 @@ class PolygonShape extends Shape {
     Vector2 pLocal = new Vector2.zero();
 
     pLocal.setFrom(p).sub(xf.position);
-    Matrix2_mulTransMatrixAndVectorToOut(xf.rotation, pLocal, pLocal);
+    xf.rotation.transposed().transformed(pLocal, pLocal);
 
     Vector2 temp = new Vector2.zero();
 

@@ -51,17 +51,6 @@ void Vector2_maxToOut(Vector2 a, Vector2 b, Vector2 out) {
   out.y = a.y > b.y ? a.y : b.y;
 }
 
-/**
- * Multiply the given vector by the transpose of the given matrix and store
- * the result in the given parameter out.
- */
-void Matrix2_mulTransMatrixAndVectorToOut(Matrix2 matrix, Vector2 vector,
-                                         Vector2 out) {
-  double outx = vector.x * matrix.getColumn(0).x + vector.y * matrix.getColumn(0).y;
-  out.y = vector.x * matrix.getColumn(1).x + vector.y * matrix.getColumn(1).y;
-  out.x = outx;
-}
-
 void Matrix2_solveToOut(Matrix2 a, Vector2 b, Vector2 out) {
   double a11 = a.getColumn(0).x, a12 = a.getColumn(1).x, a21 = a.getColumn(0).y, a22 = a.getColumn(1).y;
   double det = a11 * a22 - a12 * a21;

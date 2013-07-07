@@ -487,7 +487,7 @@ class Collision {
 
     // Get the normal of the reference edge in poly2's frame.
     xf1.rotation.transformed(normals1[edge1], normal1);
-    Matrix2_mulTransMatrixAndVectorToOut(xf2.rotation, normal1, normal1);
+    xf2.rotation.transposed().transformed(normal1, normal1);
 
     // Find the incident edge on poly2.
     int index = 0;

@@ -672,7 +672,7 @@ class Body {
    * out parameter.
    */
   void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
-    Matrix2_mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
+    originTransform.rotation.transposed().transformed(worldVector,
         out);
   }
 

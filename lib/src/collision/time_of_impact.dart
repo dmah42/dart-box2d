@@ -386,8 +386,8 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
-        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, axis.negate(),
+        xfa.rotation.transposed().transformed(axis, axisA);
+        xfb.rotation.transposed().transformed(axis.negate(),
             axisB);
         axis.negate();
 
@@ -408,7 +408,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPoint, pointA);
 
         normal.negate();
-        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        xfb.rotation.transposed().transformed(normal, axisB);
         normal.negate();
 
         indexes[0] = -1;
@@ -424,7 +424,7 @@ class SeparationFunction {
         xfb.rotation.transformed(axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,
+        xfa.rotation.transposed().transformed(
             normal.negate(), axisA);
         normal.negate();
 
@@ -451,8 +451,8 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationType.POINTS:
-        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation, axis, axisA);
-        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, axis.negate(),
+        xfa.rotation.transposed().transformed(axis, axisA);
+        xfb.rotation.transposed().transformed(axis.negate(),
             axisB);
         axis.negate();
 
@@ -470,7 +470,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPoint, pointA);
 
         normal.negate();
-        Matrix2_mulTransMatrixAndVectorToOut(xfb.rotation, normal, axisB);
+        xfb.rotation.transposed().transformed(normal, axisB);
         normal.negate();
 
         localPointB.setFrom(proxyB.vertices[indexB]);
@@ -482,8 +482,7 @@ class SeparationFunction {
         xfb.rotation.transformed(axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,
-            normal.negate(), axisA);
+        xfa.rotation.transposed().transformed(normal.negate(), axisA);
         normal.negate();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
