@@ -67,8 +67,8 @@ class FrictionJoint extends Joint {
 
     r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
     r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
-    Matrix2_mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-    Matrix2_mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+    bodyA.originTransform.rotation.transformed(r1, r1);
+    bodyB.originTransform.rotation.transformed(r2, r2);
 
     // J = [-I -r1_skew I r2_skew]
     // [ 0 -1 0 1]
@@ -141,8 +141,8 @@ class FrictionJoint extends Joint {
 
       r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
       r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
-      Matrix2_mulMatrixAndVectorToOut(bodyA.originTransform.rotation, r1, r1);
-      Matrix2_mulMatrixAndVectorToOut(bodyB.originTransform.rotation, r2, r2);
+      bodyA.originTransform.rotation.transformed(r1, r1);
+      bodyB.originTransform.rotation.transformed(r2, r2);
 
       Vector2 temp = new Vector2.zero();
       Vector2 Cdot = new Vector2.zero();
@@ -165,7 +165,7 @@ class FrictionJoint extends Joint {
       linearMass.invert();
 
       Vector2 impulse = new Vector2.zero();
-      Matrix2_mulMatrixAndVectorToOut(linearMass, Cdot, impulse);
+      linearMass.transformed(Cdot, impulse);
       impulse.negate();
 
       Vector2 oldImpulse = new Vector2.zero();

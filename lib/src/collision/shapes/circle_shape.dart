@@ -47,7 +47,7 @@ class CircleShape extends Shape {
    */
   bool testPoint(Transform transform, Vector2 point) {
     Vector2 center = new Vector2.zero();
-    Matrix2_mulMatrixAndVectorToOut(transform.rotation, position, center);
+    transform.rotation.transformed(position, center);
     center.add(transform.position);
 
     Vector2 d = center.sub(point).negate();
@@ -60,7 +60,7 @@ class CircleShape extends Shape {
    */
   void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
     Vector2 p = new Vector2.zero();
-    Matrix2_mulMatrixAndVectorToOut(argTransform.rotation, position, p);
+    argTransform.rotation.transformed(position, p);
     p.add(argTransform.position);
 
     argBox.lowerBound.setValues(p.x - radius, p.y - radius);

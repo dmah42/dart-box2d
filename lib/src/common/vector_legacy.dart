@@ -62,17 +62,6 @@ void Matrix2_mulTransMatrixAndVectorToOut(Matrix2 matrix, Vector2 vector,
   out.x = outx;
 }
 
-/**
- * Multiply the given vector by the given matrix and store
- * the result in the given parameter out.
- */
-void Matrix2_mulMatrixAndVectorToOut(Matrix2 matrix, Vector2 vector,
-                                    Vector2 out) {
-  double tempy = matrix.getColumn(0).y * vector.x + matrix.getColumn(1).y * vector.y;
-  out.x = matrix.getColumn(0).x * vector.x + matrix.getColumn(1).x * vector.y;
-  out.y = tempy;
-}
-
 void Matrix2_solveToOut(Matrix2 a, Vector2 b, Vector2 out) {
   double a11 = a.getColumn(0).x, a12 = a.getColumn(1).x, a21 = a.getColumn(0).y, a22 = a.getColumn(1).y;
   double det = a11 * a22 - a12 * a21;

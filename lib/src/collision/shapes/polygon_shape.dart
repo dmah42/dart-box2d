@@ -167,7 +167,7 @@ class PolygonShape extends Shape {
     // Transform vertices and normals.
     for (int i = 0; i < vertexCount; ++i) {
       Transform.mulToOut(xf, vertices[i], vertices[i]);
-      Matrix2_mulMatrixAndVectorToOut(xf.rotation, normals[i], normals[i]);
+      xf.rotation.transformed(normals[i], normals[i]);
     }
   }
 

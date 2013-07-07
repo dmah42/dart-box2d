@@ -631,7 +631,7 @@ class Body {
    * given out paramater.
    */
   void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
-    Matrix2_mulMatrixAndVectorToOut(originTransform.rotation, localVector,
+    originTransform.rotation.transformed(localVector,
         out);
   }
 
@@ -880,7 +880,7 @@ class Body {
   void synchronizeFixtures() {
     final Transform xf1 = _pxf;
     xf1.rotation.setRotation(sweep.angleZero);
-    Matrix2_mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
+    xf1.rotation.transformed(sweep.localCenter,
         xf1.position);
     xf1.position.scale(-1.0);
     xf1.position.add(sweep.centerZero);

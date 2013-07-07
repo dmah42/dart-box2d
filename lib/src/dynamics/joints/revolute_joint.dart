@@ -90,8 +90,8 @@ class RevoluteJoint extends Joint {
     // Compute the effective mass matrix.
     r1.setFrom(localAnchor1).sub(b1.localCenter);
     r2.setFrom(localAnchor2).sub(b2.localCenter);
-    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    b1.originTransform.rotation.transformed(r1, r1);
+    b2.originTransform.rotation.transformed(r2, r2);
 
     num m1 = b1.invMass, m2 = b2.invMass;
     num i1 = b1.invInertia, i2 = b2.invInertia;
@@ -205,8 +205,8 @@ class RevoluteJoint extends Joint {
 
       r1.setFrom(localAnchor1).sub(b1.localCenter);
       r2.setFrom(localAnchor2).sub(b2.localCenter);
-      Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-      Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+      b1.originTransform.rotation.transformed(r1, r1);
+      b2.originTransform.rotation.transformed(r2, r2);
 
       final Vector2 Cdot1 = new Vector2.zero();
       final Vector3 Cdot = new Vector3.zero();
@@ -261,8 +261,8 @@ class RevoluteJoint extends Joint {
     } else {
       r1.setFrom(localAnchor1).sub(b1.localCenter);
       r2.setFrom(localAnchor2).sub(b2.localCenter);
-      Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-      Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+      b1.originTransform.rotation.transformed(r1, r1);
+      b2.originTransform.rotation.transformed(r2, r2);
 
       // Solve point-to-point constraint
       Vector2 Cdot = new Vector2.zero();
@@ -342,8 +342,8 @@ class RevoluteJoint extends Joint {
 
       r1.setFrom(localAnchor1).sub(b1.localCenter);
       r2.setFrom(localAnchor2).sub(b2.localCenter);
-      Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-      Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+      b1.originTransform.rotation.transformed(r1, r1);
+      b2.originTransform.rotation.transformed(r2, r2);
 
       C.setFrom(b2.sweep.center).add(r2);
       C.sub(b1.sweep.center).sub(r1);

@@ -73,8 +73,8 @@ class DistanceJoint extends Joint {
     // Compute the effective mass matrix.
     r1.setFrom(localAnchor1).sub(b1.localCenter);
     r2.setFrom(localAnchor2).sub(b2.localCenter);
-    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    b1.originTransform.rotation.transformed(r1, r1);
+    b2.originTransform.rotation.transformed(r2, r2);
 
     u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
     u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
@@ -145,8 +145,8 @@ class DistanceJoint extends Joint {
 
     r1.setFrom(localAnchor1).sub(b1.localCenter);
     r2.setFrom(localAnchor2).sub(b2.localCenter);
-    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    b1.originTransform.rotation.transformed(r1, r1);
+    b2.originTransform.rotation.transformed(r2, r2);
 
     final v1 = new Vector2.zero();
     final v2 = new Vector2.zero();
@@ -185,8 +185,8 @@ class DistanceJoint extends Joint {
 
     r1.setFrom(localAnchor1).sub(b1.localCenter);
     r2.setFrom(localAnchor2).sub(b2.localCenter);
-    Matrix2_mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-    Matrix2_mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+    b1.originTransform.rotation.transformed(r1, r1);
+    b2.originTransform.rotation.transformed(r2, r2);
 
     d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
     d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;

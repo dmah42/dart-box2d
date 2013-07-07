@@ -328,7 +328,7 @@ class SeparationFunction {
       Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
-      Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+      xfb.rotation.transformed(axis, normal);
 
       localPoint.setFrom(localPointB1);
       localPoint.add(localPointB2);
@@ -359,7 +359,7 @@ class SeparationFunction {
       Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
       axis.normalize();
 
-      Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+      xfa.rotation.transformed(axis, normal);
 
       localPoint.setFrom(localPointA1);
       localPoint.add(localPointA2);
@@ -404,7 +404,7 @@ class SeparationFunction {
         return separation;
 
       case SeparationType.FACE_A:
-        Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+        xfa.rotation.transformed(axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
         normal.negate();
@@ -421,7 +421,7 @@ class SeparationFunction {
         return separation;
 
       case SeparationType.FACE_B:
-        Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+        xfb.rotation.transformed(axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
         Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,
@@ -466,7 +466,7 @@ class SeparationFunction {
         return separation;
 
       case SeparationType.FACE_A:
-        Matrix2_mulMatrixAndVectorToOut(xfa.rotation, axis, normal);
+        xfa.rotation.transformed(axis, normal);
         Transform.mulToOut(xfa, localPoint, pointA);
 
         normal.negate();
@@ -479,7 +479,7 @@ class SeparationFunction {
         return separation;
 
       case SeparationType.FACE_B:
-        Matrix2_mulMatrixAndVectorToOut(xfb.rotation, axis, normal);
+        xfb.rotation.transformed(axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
         Matrix2_mulTransMatrixAndVectorToOut(xfa.rotation,

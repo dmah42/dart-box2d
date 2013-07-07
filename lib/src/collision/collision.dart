@@ -486,7 +486,7 @@ class Collision {
     assert (0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
-    Matrix2_mulMatrixAndVectorToOut(xf1.rotation, normals1[edge1], normal1);
+    xf1.rotation.transformed(normals1[edge1], normal1);
     Matrix2_mulTransMatrixAndVectorToOut(xf2.rotation, normal1, normal1);
 
     // Find the incident edge on poly2.
@@ -577,7 +577,7 @@ class Collision {
     planePoint.setFrom(v11).add(v12).scale(.5);
 
     // Vector2 sideNormal = Mul(xf1.rotation, v12 - v11);
-    Matrix2_mulMatrixAndVectorToOut(xf1.rotation,localTangent, tangent);
+    xf1.rotation.transformed(localTangent, tangent);
 
     // Vector2 frontNormal = Cross(sideNormal, 1.0);
     Vector2_crossVectorAndNumToOut(tangent, 1.0, normal);

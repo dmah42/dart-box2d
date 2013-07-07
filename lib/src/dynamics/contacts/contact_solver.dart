@@ -365,7 +365,7 @@ class ContactSolver {
         b.y -= temp2.y;
 
         while (true) {
-          Matrix2_mulMatrixAndVectorToOut(c.normalMass, b, x);
+          c.normalMass.transformed(b, x);
           x.scale(-1.0);
 
           if (x.x >= 0.0 && x.y >= 0.0){
