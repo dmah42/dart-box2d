@@ -150,14 +150,7 @@ class PolygonShape extends Shape {
    */
   void setAsBoxWithCenterAndAngle(double hx, double hy, Vector2 center, double angle) {
     vertexCount = 4;
-    vertices[0].setValues(-hx, -hy);
-    vertices[1].setValues(hx, -hy);
-    vertices[2].setValues(hx, hy);
-    vertices[3].setValues(-hx, hy);
-    normals[0].setValues(0.0, -1.0);
-    normals[1].setValues(1.0, 0.0);
-    normals[2].setValues(0.0, 1.0);
-    normals[3].setValues(-1.0, 0.0);
+    setAsBox(hx, hy);
     centroid.setFrom(center);
 
     Transform xf = new Transform();
