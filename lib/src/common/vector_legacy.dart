@@ -38,8 +38,8 @@ void Vector2_crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {
  * the result in the given out vector.
  */
 void Vector2_minToOut(Vector2 a, Vector2 b, Vector2 out) {
-  out.x = a.x < b.x ? a.x : b.x;
-  out.y = a.y < b.y ? a.y : b.y;
+  out.x = Math.min(a.x, b.x);
+  out.y = Math.min(a.y, b.y);
 }
 
 /**
@@ -47,8 +47,8 @@ void Vector2_minToOut(Vector2 a, Vector2 b, Vector2 out) {
  * the result in the given out vector.
  */
 void Vector2_maxToOut(Vector2 a, Vector2 b, Vector2 out) {
-  out.x = a.x > b.x ? a.x : b.x;
-  out.y = a.y > b.y ? a.y : b.y;
+  out.x = Math.max(a.x, b.x);
+  out.y = Math.max(a.y, b.y);
 }
 
 void Matrix2_solveToOut(Matrix2 a, Vector2 b, Vector2 out) {
