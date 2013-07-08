@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,13 +58,13 @@ class CircleShape extends Shape {
    * Compute the axis aligned box for this Shape when the given transform is
    * applied. Stores the result in the given box.
    */
-  void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
+  void computeAxisAlignedBox(Aabb2 argBox, Transform argTransform) {
     Vector2 p = new Vector2.zero();
     argTransform.rotation.transformed(position, p);
     p.add(argTransform.position);
 
-    argBox.lowerBound.setValues(p.x - radius, p.y - radius);
-    argBox.upperBound.setValues(p.x + radius, p.y + radius);
+    argBox.min.setValues(p.x - radius, p.y - radius);
+    argBox.max.setValues(p.x + radius, p.y + radius);
   }
 
   /** Returns a clone of this circle. */

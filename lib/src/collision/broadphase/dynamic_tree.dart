@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +47,7 @@ class DynamicTree {
    *  operation.
    */
   final Vector2 _tempVector = new Vector2.zero();
-  final AxisAlignedBox _tempBox = new AxisAlignedBox();
+  final Aabb2 _tempBox = new Aabb2();
   final Vector2 center = new Vector2.zero();
   final Vector2 deltaOne = new Vector2.zero();
   final Vector2 deltaTwo = new Vector2.zero();
@@ -65,14 +65,14 @@ class DynamicTree {
    * Create a proxy. Provides a tight fitting axis aligned box
    * and a userData pointer.
    */
-  DynamicTreeNode createProxy(AxisAlignedBox box, dynamic userData) {
+  DynamicTreeNode createProxy(Aabb2 box, dynamic userData) {
     DynamicTreeNode proxy = _allocateNode();
 
     // Fatten the bounding box.
-    proxy.box.lowerBound.x = box.lowerBound.x - Settings.BOUNDING_BOX_EXTENSION;
-    proxy.box.lowerBound.y = box.lowerBound.y - Settings.BOUNDING_BOX_EXTENSION;
-    proxy.box.upperBound.x = box.upperBound.x + Settings.BOUNDING_BOX_EXTENSION;
-    proxy.box.upperBound.y = box.upperBound.y + Settings.BOUNDING_BOX_EXTENSION;
+    proxy.box.min.x = box.min.x - Settings.BOUNDING_BOX_EXTENSION;
+    proxy.box.min.y = box.min.y - Settings.BOUNDING_BOX_EXTENSION;
+    proxy.box.max.x = box.max.x + Settings.BOUNDING_BOX_EXTENSION;
+    proxy.box.max.y = box.max.y + Settings.BOUNDING_BOX_EXTENSION;
 
     // Assign the given user Data to the proxy node.
     proxy.userData = userData;
@@ -112,7 +112,7 @@ class DynamicTree {
    *
    * Returns true if the given proxy was re-inserted.
    */
-  bool moveProxy(DynamicTreeNode argProxy, AxisAlignedBox argBox,
+  bool moveProxy(DynamicTreeNode argProxy, Aabb2 argBox,
       Vector2 displacement) {
     // The given proxy must not be null and must be a leaf.
     assert (argProxy != null);
@@ -126,23 +126,23 @@ class DynamicTree {
     _removeLeaf(argProxy);
 
     // Extend the bounding box.
-    argBox.lowerBound.x -= Settings.BOUNDING_BOX_EXTENSION;
-    argBox.lowerBound.y -= Settings.BOUNDING_BOX_EXTENSION;
-    argBox.upperBound.x += Settings.BOUNDING_BOX_EXTENSION;
-    argBox.upperBound.y += Settings.BOUNDING_BOX_EXTENSION;
+    argBox.min.x -= Settings.BOUNDING_BOX_EXTENSION;
+    argBox.min.y -= Settings.BOUNDING_BOX_EXTENSION;
+    argBox.max.x += Settings.BOUNDING_BOX_EXTENSION;
+    argBox.max.y += Settings.BOUNDING_BOX_EXTENSION;
 
     // Predict bounding box displacement.
     _tempVector.setFrom(displacement);
     _tempVector.scale(Settings.BOUNDING_BOX_MULTIPLIER);
     if (_tempVector.x < 0)
-      argBox.lowerBound.x += _tempVector.x;
+      argBox.min.x += _tempVector.x;
     else
-      argBox.upperBound.x += _tempVector.x;
+      argBox.max.x += _tempVector.x;
 
     if (_tempVector.y < 0)
-      argBox.lowerBound.y += _tempVector.y;
+      argBox.min.y += _tempVector.y;
     else
-      argBox.upperBound.y += _tempVector.y;
+      argBox.max.y += _tempVector.y;
 
     argProxy.box.setFrom(argBox);
 
@@ -174,18 +174,18 @@ class DynamicTree {
    * Queries a bounding box for overlapping proxies. The callback class is
    * called for each proxy that overlaps the given bounding box.
    */
-  void query(TreeCallback callback, AxisAlignedBox argBox) {
+  void query(TreeCallback callback, Aabb2 argBox) {
     _query(callback, argBox, _root, 1);
   }
 
   // Private recursive query function. Returns true if should proceed.
-  bool _query(TreeCallback callback, AxisAlignedBox argBox, DynamicTreeNode
+  bool _query(TreeCallback callback, Aabb2 argBox, DynamicTreeNode
       node, int count) {
     // If given node is null, get out of here and continue recursing.
     if (node == null)
       return true;
 
-    if (AxisAlignedBox.testOverlap(argBox, node.box)) {
+    if (Aabb2.testOverlap(argBox, node.box)) {
 
       if (node.isLeaf) {
         if (!callback.treeCallback(node))

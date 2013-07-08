@@ -29,7 +29,7 @@ part 'src/callbacks/contact_impulse.dart';
 part 'src/callbacks/contact_listener.dart';
 part 'src/callbacks/query_callback.dart';
 part 'src/callbacks/tree_callback.dart';
-part 'src/collision/axis_aligned_box.dart';
+//part 'src/collision/axis_aligned_box.dart';
 part 'src/collision/collision.dart';
 part 'src/collision/contact_id.dart';
 part 'src/collision/distance.dart';
