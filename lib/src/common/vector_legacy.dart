@@ -52,8 +52,12 @@ void Vector2_maxToOut(Vector2 a, Vector2 b, Vector2 out) {
 }
 
 void Matrix2_solveToOut(Matrix2 a, Vector2 b, Vector2 out) {
-  double a11 = a.getColumn(0).x, a12 = a.getColumn(1).x, a21 = a.getColumn(0).y, a22 = a.getColumn(1).y;
+  final double a11 = a.getColumn(0).x;
+  final double a12 = a.getColumn(1).x;
+  final double a21 = a.getColumn(0).y;
+  final double a22 = a.getColumn(1).y;
   double det = a11 * a22 - a12 * a21;
+
   if (det != 0.0){
     det = 1.0 / det;
   }
@@ -67,8 +71,12 @@ void Matrix2_solveToOut(Matrix2 a, Vector2 b, Vector2 out) {
  * than computing the inverse in one-shot cases.
  */
 void Matrix3_solve22ToOut(Matrix3 a, Vector2 b, Vector2 out) {
-  final double a11 = a.getColumn(0).x, a12 = a.getColumn(1).x, a21 = a.getColumn(0).y, a22 = a.getColumn(1).y;
+  final double a11 = a.getColumn(0).x;
+  final double a12 = a.getColumn(1).x;
+  final double a21 = a.getColumn(0).y;
+  final double a22 = a.getColumn(1).y;
   double det = a11 * a22 - a12 * a21;
+
   if (det != 0.0){
     det = 1.0 / det;
   }
