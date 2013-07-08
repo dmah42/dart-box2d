@@ -20,8 +20,8 @@
 part of box2d;
 
 class ConstantVolumeJointDef extends JointDef {
-  num frequencyHz;
-  num dampingRatio;
+  double frequencyHz;
+  double dampingRatio;
 
   List<Body> bodies;
   List<DistanceJoint> joints;

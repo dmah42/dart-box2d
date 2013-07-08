@@ -22,10 +22,10 @@ class BallCageBench extends Benchmark {
   static const double START_Y = -20.0;
 
   /** The radius of the balls forming the arena. */
-  static const num WALL_BALL_RADIUS = 2;
+  static const double WALL_BALL_RADIUS = 2.0;
 
   /** Radius of the active ball. */
-  static const num ACTIVE_BALL_RADIUS = 1;
+  static const double ACTIVE_BALL_RADIUS = 1.0;
 
   /** Constructs a new BallCage. */
   BallCageBench(List<int> solveLoops, List<int> steps) :
@@ -44,7 +44,7 @@ class BallCageBench extends Benchmark {
     final circleFixtureDef = new FixtureDef();
     circleFixtureDef.shape = circleShape;
     circleFixtureDef.friction = .9;
-    circleFixtureDef.restitution = 1;
+    circleFixtureDef.restitution = 1.0;
 
     // Create a body def.
     final circleBodyDef = new BodyDef();
@@ -84,7 +84,7 @@ class BallCageBench extends Benchmark {
 
     // Create fixture for that ball shape.
     final activeFixtureDef = new FixtureDef();
-    activeFixtureDef.restitution = 1;
+    activeFixtureDef.restitution = 1.0;
     activeFixtureDef.density =  0.05;
     activeFixtureDef.shape = bouncingCircle;
 

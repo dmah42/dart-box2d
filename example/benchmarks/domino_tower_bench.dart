@@ -15,9 +15,9 @@
 part of BenchmarkRunner;
 
 class DominoTowerBench extends Benchmark {
-  static const num DOMINO_WIDTH = .2;
-  static const num DOMINO_FRICTION = 0.1;
-  static const num DOMINO_HEIGHT = 1;
+  static const double DOMINO_WIDTH = .2;
+  static const double DOMINO_FRICTION = 0.1;
+  static const double DOMINO_HEIGHT = 1.0;
   static const num BASE_COUNT = 25;
   static const String NAME = "Domino Tower";
 
@@ -25,7 +25,7 @@ class DominoTowerBench extends Benchmark {
    * The density of the dominos under construction. Varies for different parts
    * of the tower.
    */
-  num dominoDensity;
+  double dominoDensity;
 
   /** Construct a new DominoTower. */
   DominoTowerBench(List<int> solveLoops, List<int> steps) :
@@ -44,7 +44,7 @@ class DominoTowerBench extends Benchmark {
     fd.friction = DOMINO_FRICTION;
     fd.restitution = 0.65;
     bd.position = new Vector2(x, y);
-    bd.angle = horizontal ? (PI / 2.0) : 0;
+    bd.angle = horizontal ? (PI / 2.0) : 0.0;
     Body myBody = world_.createBody(bd);
     myBody.createFixture(fd);
     bodies.add(myBody);
@@ -69,16 +69,16 @@ class DominoTowerBench extends Benchmark {
     }
 
     {
-      dominoDensity = 10;
+      dominoDensity = 10.0;
       // Make bullet
       PolygonShape sd = new PolygonShape();
       sd.setAsBox(.7, .7);
       FixtureDef fd = new FixtureDef();
-      fd.density = 35;
+      fd.density = 35.0;
       BodyDef bd = new BodyDef();
       bd.type = BodyType.DYNAMIC;
       fd.shape = sd;
-      fd.friction = 0;
+      fd.friction = 0.0;
       fd.restitution = 0.85;
       bd.bullet = true;
       bd.position = new Vector2(30.0, 50.0);
@@ -88,7 +88,7 @@ class DominoTowerBench extends Benchmark {
       b.linearVelocity = new Vector2(-25.0, -25.0);
       b.angularVelocity = 6.7;
 
-      fd.density = 25;
+      fd.density = 25.0;
       bd.position = new Vector2(-30.0, 25.0);
       b = world.createBody(bd);
       bodies.add(b);

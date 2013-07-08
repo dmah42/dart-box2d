@@ -42,7 +42,7 @@ class RevoluteJointDef extends JointDef {
   /**
    *  The body2 angle minus body1 angle in the reference state (radians).
    */
-  num referenceAngle;
+  double referenceAngle;
 
   /**
    *  A flag to enable joint limits.
@@ -52,12 +52,12 @@ class RevoluteJointDef extends JointDef {
   /**
    *  The lower angle for the joint limit (radians).
    */
-  num lowerAngle;
+  double lowerAngle;
 
   /**
    *  The upper angle for the joint limit (radians).
    */
-  num upperAngle;
+  double upperAngle;
 
   /**
    *  A flag to enable the joint motor.
@@ -67,13 +67,13 @@ class RevoluteJointDef extends JointDef {
   /**
    *  The desired motor speed. Usually in radians per second.
    */
-  num motorSpeed;
+  double motorSpeed;
 
   /**
    *  The maximum motor torque used to achieve the desired motor speed.
    *  Usually in N-m.
    */
-  num maxMotorTorque;
+  double maxMotorTorque;
 
   RevoluteJointDef() :
     super(),

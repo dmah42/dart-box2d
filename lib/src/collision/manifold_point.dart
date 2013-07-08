@@ -28,10 +28,10 @@ class ManifoldPoint {
   final Vector2 localPoint;
 
   /** The non-penetration impulse. */
-  num normalImpulse;
+  double normalImpulse;
 
   /** The friction impulse. */
-  num tangentImpulse;
+  double tangentImpulse;
 
   /** Unique identifier for a contact point between two shapes. */
   final ContactID id;
@@ -41,8 +41,8 @@ class ManifoldPoint {
    */
   ManifoldPoint() :
     localPoint = new Vector2.zero(),
-    tangentImpulse = 0,
-    normalImpulse = 0,
+    tangentImpulse = 0.0,
+    normalImpulse = 0.0,
     id = new ContactID();
 
   /**

@@ -30,7 +30,7 @@ abstract class Demo {
   static const int CANVAS_HEIGHT = 600;
 
   /** Scale of the viewport. */
-  static const num _VIEWPORT_SCALE = 10;
+  static const double _VIEWPORT_SCALE = 10.0;
 
   /** The gravity vector's y value. */
   static const double GRAVITY = -10.0;
@@ -69,7 +69,7 @@ abstract class Demo {
 
   // TODO(dominich): Make this library-private once optional positional
   // parameters are introduced.
-  num viewportScale;
+  double viewportScale;
 
   // For timing the world.step call. It is kept running but reset and polled
   // every frame to minimize overhead.

@@ -19,7 +19,7 @@ class TimeOfImpactConstraint {
   final Vector2 localNormal;
   final Vector2 localPoint;
   int type;
-  num radius;
+  double radius;
   int pointCount;
   Body bodyA;
   Body bodyB;
@@ -30,7 +30,7 @@ class TimeOfImpactConstraint {
     localNormal = new Vector2.zero(),
     localPoint = new Vector2.zero(),
     type = 0,
-    radius = 0,
+    radius = 0.0,
     pointCount = 0,
     bodyA = null,
     bodyB = null;

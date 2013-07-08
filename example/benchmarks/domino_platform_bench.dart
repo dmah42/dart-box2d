@@ -82,7 +82,7 @@ class DominoPlatformBench extends Benchmark {
             bd.angle = .1;
             bd.position.x -= .1;
           } else {
-            bd.angle = 0;
+            bd.angle = 0.0;
           }
           Body myBody = world.createBody(bd);
           myBody.createFixture(fd);

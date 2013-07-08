@@ -34,7 +34,7 @@ class Body {
 
   ContactEdge contactList;
 
-  num sleepTime;
+  double sleepTime;
 
   /** User can store what they want in here. */
   Object userData;
@@ -133,7 +133,7 @@ class Body {
         oldCenter = new Vector2.zero(),
         tempCenter = new Vector2.zero(),
 
-        sleepTime = 0,
+        sleepTime = 0.0,
 
         _type = bd.type {
     if (bd.bullet) {
@@ -213,7 +213,7 @@ class Body {
    * If the density is non-zero, this function automatically updates the mass
    * of the body.
    */
-  Fixture createFixtureFromShape(Shape shape, [num density = 0]) {
+  Fixture createFixtureFromShape(Shape shape, [double density = 0.0]) {
     _fixDef.shape = shape;
     _fixDef.density = density;
 

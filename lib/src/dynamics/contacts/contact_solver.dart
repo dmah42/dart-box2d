@@ -24,7 +24,7 @@ class ContactSolver {
   /**
    * Ensure a reasonable condition number. For the block solver
    */
-  static const num K_MAX_CONDITION_NUMBER = 100.0;
+  static const double K_MAX_CONDITION_NUMBER = 100.0;
 
   List<ContactConstraint> constraints;
   int constraintCount;
