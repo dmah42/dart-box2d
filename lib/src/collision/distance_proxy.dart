@@ -63,9 +63,9 @@ class DistanceProxy {
    */
   int getSupport(Vector2 direction) {
     int bestIndex = 0;
-    num bestValue = vertices[0].dot(direction);
+    double bestValue = vertices[0].dot(direction);
     for (int i = 1; i < count; ++i) {
-      num value = vertices[i].dot(direction);
+      double value = vertices[i].dot(direction);
       if(value > bestValue) {
         bestIndex = i;
         bestValue = value;
