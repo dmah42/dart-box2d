@@ -63,9 +63,9 @@ class Transform {
    * the result.
    */
   static Vector2 mul(Transform T, Vector2 v) {
-    return new Vector2(T.position.x + T.rotation.getColumn(0).x * v.x +
-        T.rotation.getColumn(1).x * v.y, T.position.y + T.rotation.getColumn(0).y * v.x +
-        T.rotation.getColumn(1).y * v.y);
+    return new Vector2(T.position.x + T.rotation.entry(0,0) * v.x +
+        T.rotation.entry(0,1) * v.y, T.position.y + T.rotation.entry(1,0) * v.x +
+        T.rotation.entry(1,1) * v.y);
   }
 
   /**
@@ -74,20 +74,22 @@ class Transform {
    */
   static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
     assert(out != null);
-    double tempY = transform.position.y + transform.rotation.getColumn(0).y *
-        vector.x + transform.rotation.getColumn(1).y * vector.y;
-    out.x = transform.position.x + transform.rotation.getColumn(0).x * vector.x +
-        transform.rotation.getColumn(1).x * vector.y;
+    double tempY = transform.position.y + transform.rotation.entry(1,0) *
+        vector.x + transform.rotation.entry(1,1) * vector.y;
+    out.x = transform.position.x + transform.rotation.entry(0,0) * vector.x +
+        transform.rotation.entry(0,1) * vector.y;
     out.y = tempY;
   }
 
   static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
     double v1x = v.x - T.position.x;
     double v1y = v.y - T.position.y;
-    Vector2 b = T.rotation.getColumn(0);
-    Vector2 b1 = T.rotation.getColumn(1);
-    double tempy = v1x * b1.x + v1y * b1.y;
-    out.x = v1x * b.x + v1y * b.y;
+    final double bx = T.rotation.entry(0,0);
+    final double by = T.rotation.entry(1,0);
+    final double b1x = T.rotation.entry(0,1);
+    final double b1y = T.rotation.entry(1,1);
+    double tempy = v1x * b1x + v1y * b1y;
+    out.x = v1x * bx + v1y * by;
     out.y = tempy;
   }
 }

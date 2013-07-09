@@ -359,8 +359,8 @@ class ContactSolver {
         num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
         Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
-        temp2.x = c.K.getColumn(0).x * a.x + c.K.getColumn(1).x * a.y;
-        temp2.y = c.K.getColumn(0).y * a.x + c.K.getColumn(1).y * a.y;
+        temp2.x = c.K.entry(0,0) * a.x + c.K.entry(0,1) * a.y;
+        temp2.y = c.K.entry(1,0) * a.x + c.K.entry(1,1) * a.y;
         b.x -= temp2.x;
         b.y -= temp2.y;
 
@@ -400,7 +400,7 @@ class ContactSolver {
           x.x = - cp1.normalMass * b.x;
           x.y = 0.0;
           vn1 = 0.0;
-          vn2 = c.K.getColumn(0).y * x.x + b.y;
+          vn2 = c.K.entry(1,0) * x.x + b.y;
 
           if (x.x >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
@@ -430,7 +430,7 @@ class ContactSolver {
 
           x.x = 0.0;
           x.y = - cp2.normalMass * b.y;
-          vn1 = c.K.getColumn(1).x * x.y + b.x;
+          vn1 = c.K.entry(0,1) * x.y + b.x;
           vn2 = 0.0;
 
           if (x.y >= 0.0 && vn1 >= 0.0) {

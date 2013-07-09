@@ -899,9 +899,9 @@ class Body {
 
     r.setValues(c,s,-s,c);
 
-    p.x = (r.getColumn(0).x * sweep.localCenter.x + r.getColumn(1).x * sweep.localCenter.y) * -1 +
+    p.x = (r.entry(0,0) * sweep.localCenter.x + r.entry(0,1) * sweep.localCenter.y) * -1 +
         sweep.center.x;
-    p.y = (r.getColumn(0).y * sweep.localCenter.x + r.getColumn(1).y * sweep.localCenter.y) * -1 +
+    p.y = (r.entry(1,0) * sweep.localCenter.x + r.entry(1,1) * sweep.localCenter.y) * -1 +
         sweep.center.y;
   }
 

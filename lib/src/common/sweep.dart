@@ -86,9 +86,9 @@ class Sweep {
     xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
 
     // Shift to origin
-    xf.position.x -= xf.rotation.getColumn(0).x * localCenter.x + xf.rotation.getColumn(1).x
+    xf.position.x -= xf.rotation.entry(0,0) * localCenter.x + xf.rotation.entry(0,1)
         * localCenter.y;
-    xf.position.y -= xf.rotation.getColumn(0).y * localCenter.x + xf.rotation.getColumn(1).y
+    xf.position.y -= xf.rotation.entry(1,0) * localCenter.x + xf.rotation.entry(1,1)
         * localCenter.y;
   }
 

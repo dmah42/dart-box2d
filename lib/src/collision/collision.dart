@@ -176,17 +176,17 @@ class Collision {
     manifold.pointCount = 0;
 
     final Vector2 v = circle1.position;
-    final num pAy = xfA.position.y + xfA.rotation.getColumn(0).y *
-        v.x + xfA.rotation.getColumn(1).y * v.y;
+    final num pAy = xfA.position.y + xfA.rotation.entry(1,0) *
+        v.x + xfA.rotation.entry(1,1) * v.y;
 
-    final num pAx = xfA.position.x + xfA.rotation.getColumn(0).x *
-        v.x + xfA.rotation.getColumn(1).x * v.y;
+    final num pAx = xfA.position.x + xfA.rotation.entry(0,0) *
+        v.x + xfA.rotation.entry(0,1) * v.y;
 
     final Vector2 v1 = circle2.position;
-    final num pBy = xfB.position.y + xfB.rotation.getColumn(0).y * v1.x +
-        xfB.rotation.getColumn(1).y * v1.y;
-    final num pBx = xfB.position.x + xfB.rotation.getColumn(0).x * v1.x +
-        xfB.rotation.getColumn(1).x * v1.y;
+    final num pBy = xfB.position.y + xfB.rotation.entry(1,0) * v1.x +
+        xfB.rotation.entry(1,1) * v1.y;
+    final num pBx = xfB.position.x + xfB.rotation.entry(0,0) * v1.x +
+        xfB.rotation.entry(0,1) * v1.y;
 
     final num dx = pBx - pAx;
     final num dy = pBy - pAy;
@@ -214,16 +214,18 @@ class Collision {
     manifold.pointCount = 0;
     Vector2 v = circle.position;
 
-    final num cy = xfB.position.y + xfB.rotation.getColumn(0).y * v.x +
-        xfB.rotation.getColumn(1).y * v.y;
-    final num cx = xfB.position.x + xfB.rotation.getColumn(0).x * v.x +
-        xfB.rotation.getColumn(1).x * v.y;
+    final num cy = xfB.position.y + xfB.rotation.entry(1,0) * v.x +
+        xfB.rotation.entry(1,1) * v.y;
+    final num cx = xfB.position.x + xfB.rotation.entry(0,0) * v.x +
+        xfB.rotation.entry(0,1) * v.y;
     final num v1x = cx - xfA.position.x;
     final num v1y = cy - xfA.position.y;
-    final Vector2 b = xfA.rotation.getColumn(0);
-    final Vector2 b1 = xfA.rotation.getColumn(1);
-    final num cLocaly = v1x * b1.x + v1y * b1.y;
-    final num cLocalx = v1x * b.x + v1y * b.y;
+    final double bx = xfA.rotation.entry(0,0);
+    final double by = xfA.rotation.entry(1,0);
+    final double b1x = xfA.rotation.entry(0,1);
+    final double b1y = xfA.rotation.entry(1,1);
+    final num cLocaly = v1x * b1x + v1y * b1y;
+    final num cLocalx = v1x * bx + v1y * by;
 
     // Find the min separating edge.
     int normalIndex = 0;
@@ -355,11 +357,11 @@ class Collision {
     // Convert normal from poly1's frame into poly2's frame.
     final Matrix2 R = xf1.rotation;
     final Vector2 v = normals1[edge1];
-    final num normal1Worldy = R.getColumn(0).y * v.x + R.getColumn(1).y * v.y;
-    final num normal1Worldx = R.getColumn(0).x * v.x + R.getColumn(1).x * v.y;
+    final num normal1Worldy = R.entry(1,0) * v.x + R.entry(1,1) * v.y;
+    final num normal1Worldx = R.entry(0,0) * v.x + R.entry(0,1) * v.y;
     final Matrix2 R1 = xf2.rotation;
-    final num normal1x = normal1Worldx * R1.getColumn(0).x + normal1Worldy * R1.getColumn(0).y;
-    final num normal1y = normal1Worldx * R1.getColumn(1).x + normal1Worldy * R1.getColumn(1).y;
+    final num normal1x = normal1Worldx * R1.entry(0,0) + normal1Worldy * R1.entry(1,0);
+    final num normal1y = normal1Worldx * R1.entry(0,1) + normal1Worldy * R1.entry(1,1);
     // end inline
 
     // Find support vertex on poly2 for -normal.
@@ -376,11 +378,11 @@ class Collision {
     }
 
     final Vector2 v3 = vertices1[edge1];
-    final num v1y = xf1.position.y + R.getColumn(0).y * v3.x + R.getColumn(1).y * v3.y;
-    final num v1x = xf1.position.x + R.getColumn(0).x * v3.x + R.getColumn(1).x * v3.y;
+    final num v1y = xf1.position.y + R.entry(1,0) * v3.x + R.entry(1,1) * v3.y;
+    final num v1x = xf1.position.x + R.entry(0,0) * v3.x + R.entry(0,1) * v3.y;
     final Vector2 v4 = vertices2[index];
-    final num v2y = xf2.position.y + R1.getColumn(0).y * v4.x + R1.getColumn(1).y * v4.y - v1y;
-    final num v2x = xf2.position.x + R1.getColumn(0).x * v4.x + R1.getColumn(1).x * v4.y - v1x;
+    final num v2y = xf2.position.y + R1.entry(1,0) * v4.x + R1.entry(1,1) * v4.y - v1y;
+    final num v2x = xf2.position.x + R1.entry(0,0) * v4.x + R1.entry(0,1) * v4.y - v1x;
 
     return v2x * normal1Worldx + v2y * normal1Worldy;
   }
@@ -395,21 +397,21 @@ class Collision {
     final List<Vector2> normals1 = poly1.normals;
     Vector2 v = poly2.centroid;
 
-    final num predy = xf2.position.y + xf2.rotation.getColumn(0).y * v.x +
-        xf2.rotation.getColumn(1).y * v.y;
-    final num predx = xf2.position.x + xf2.rotation.getColumn(0).x * v.x +
-        xf2.rotation.getColumn(1).x * v.y;
+    final num predy = xf2.position.y + xf2.rotation.entry(1,0) * v.x +
+        xf2.rotation.entry(1,1) * v.y;
+    final num predx = xf2.position.x + xf2.rotation.entry(0,0) * v.x +
+        xf2.rotation.entry(0,1) * v.y;
     final Vector2 v1 = poly1.centroid;
-    final num tempy = xf1.position.y + xf1.rotation.getColumn(0).y * v1.x +
-        xf1.rotation.getColumn(1).y * v1.y;
-    final num tempx = xf1.position.x + xf1.rotation.getColumn(0).x * v1.x +
-        xf1.rotation.getColumn(1).x * v1.y;
+    final num tempy = xf1.position.y + xf1.rotation.entry(1,0) * v1.x +
+        xf1.rotation.entry(1,1) * v1.y;
+    final num tempx = xf1.position.x + xf1.rotation.entry(0,0) * v1.x +
+        xf1.rotation.entry(0,1) * v1.y;
     final num dx = predx - tempx;
     final num dy = predy - tempy;
 
     final Matrix2 R = xf1.rotation;
-    final num dLocal1x = dx * R.getColumn(0).x + dy * R.getColumn(0).y;
-    final num dLocal1y = dx * R.getColumn(1).x + dy * R.getColumn(1).y;
+    final num dLocal1x = dx * R.entry(0,0) + dy * R.entry(1,0);
+    final num dLocal1y = dx * R.entry(0,1) + dy * R.entry(1,1);
 
     // Find edge normal on poly1 that has the largest projection onto d.
     int edge = 0;
