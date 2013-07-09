@@ -1,0 +1,354 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Aabb3 class / vector_math Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="vector_math" data-type="Aabb3">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../vector_math.html">vector_math</a> &rsaquo; <a href="../vector_math/Aabb3.html">Aabb3</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Aabb3</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class Aabb3 {
+ Vector3 _min;
+ Vector3 _max;
+
+ Vector3 get min =&gt; _min;
+ Vector3 get max =&gt; _max;
+
+ Aabb3() {
+   _min = new Vector3.zero();
+   _max = new Vector3.zero();
+ }
+
+ Aabb3.copy(Aabb3 other) {
+   _min = new Vector3.copy(other._min);
+   _max = new Vector3.copy(other._max);
+ }
+
+ Aabb3.minmax(Vector3 min_, Vector3 max_) {
+   _min = new Vector3.copy(min_);
+   _max = new Vector3.copy(max_);
+ }
+
+ void copyMinMax(Vector3 min_, Vector3 max_) {
+   max_.setFrom(_max);
+   min_.setFrom(_min);
+ }
+
+ void copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
+   center.setFrom(_min);
+   center.add(_max);
+   center.scale(0.5);
+   halfExtents.setFrom(_max);
+   halfExtents.sub(_min);
+   halfExtents.scale(0.5);
+ }
+
+ void copyFrom(Aabb3 o) {
+   _min.setFrom(o._min);
+   _max.setFrom(o._max);
+ }
+
+ void copyInto(Aabb3 o) {
+   o._min.setFrom(_min);
+   o._max.setFrom(_max);
+ }
+
+ Aabb3 transform(Matrix4 T) {
+   Vector3 center = new Vector3.zero();
+   Vector3 halfExtents = new Vector3.zero();
+   copyCenterAndHalfExtents(center, halfExtents);
+   T.transform3(center);
+   T.absoluteRotate(halfExtents);
+   _min.setFrom(center);
+   _max.setFrom(center);
+
+   _min.sub(halfExtents);
+   _max.add(halfExtents);
+   return this;
+ }
+
+ Aabb3 rotate(Matrix4 T) {
+   Vector3 center = new Vector3.zero();
+   Vector3 halfExtents = new Vector3.zero();
+   copyCenterAndHalfExtents(center, halfExtents);
+   T.absoluteRotate(halfExtents);
+   _min.setFrom(center);
+   _max.setFrom(center);
+
+   _min.sub(halfExtents);
+   _max.add(halfExtents);
+   return this;
+ }
+
+ Aabb3 transformed(Matrix4 T, Aabb3 out) {
+   out.copyFrom(this);
+   return out.transform(T);
+ }
+
+ Aabb3 rotated(Matrix4 T, Aabb3 out) {
+   out.copyFrom(this);
+   return out.rotate(T);
+ }
+
+ void getPN(Vector3 planeNormal, Vector3 outP, Vector3 outN) {
+   outP.x = planeNormal.x &lt; 0.0 ? _min.x : _max.x;
+   outP.y = planeNormal.y &lt; 0.0 ? _min.y : _max.y;
+   outP.z = planeNormal.z &lt; 0.0 ? _min.z : _max.z;
+
+   outN.x = planeNormal.x &lt; 0.0 ? _max.x : _min.x;
+   outN.y = planeNormal.y &lt; 0.0 ? _max.y : _min.y;
+   outN.z = planeNormal.z &lt; 0.0 ? _max.z : _min.z;
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="Aabb3">
+<button class="show-code">Code</button>
+new <strong>Aabb3</strong>() <a class="anchor-link" href="#Aabb3"
+              title="Permalink to Aabb3.Aabb3">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3() {
+ _min = new Vector3.zero();
+ _max = new Vector3.zero();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Aabb3.copy">
+<button class="show-code">Code</button>
+new <strong>Aabb3.copy</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> other) <a class="anchor-link" href="#Aabb3.copy"
+              title="Permalink to Aabb3.Aabb3.copy">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3.copy(Aabb3 other) {
+ _min = new Vector3.copy(other._min);
+ _max = new Vector3.copy(other._max);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="Aabb3.minmax">
+<button class="show-code">Code</button>
+new <strong>Aabb3.minmax</strong>(<a href="../vector_math/Vector3.html">Vector3</a> min_, <a href="../vector_math/Vector3.html">Vector3</a> max_) <a class="anchor-link" href="#Aabb3.minmax"
+              title="Permalink to Aabb3.Aabb3.minmax">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3.minmax(Vector3 min_, Vector3 max_) {
+ _min = new Vector3.copy(min_);
+ _max = new Vector3.copy(max_);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="max">
+<button class="show-code">Code</button>
+final <a href="../vector_math/Vector3.html">Vector3</a>         <strong>max</strong> <a class="anchor-link"
+            href="#max"
+            title="Permalink to Aabb3.max">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Vector3 get max =&gt; _max;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="min">
+<button class="show-code">Code</button>
+final <a href="../vector_math/Vector3.html">Vector3</a>         <strong>min</strong> <a class="anchor-link"
+            href="#min"
+            title="Permalink to Aabb3.min">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Vector3 get min =&gt; _min;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="copyCenterAndHalfExtents">
+<button class="show-code">Code</button>
+void <strong>copyCenterAndHalfExtents</strong>(<a href="../vector_math/Vector3.html">Vector3</a> center, <a href="../vector_math/Vector3.html">Vector3</a> halfExtents) <a class="anchor-link" href="#copyCenterAndHalfExtents"
+              title="Permalink to Aabb3.copyCenterAndHalfExtents">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
+ center.setFrom(_min);
+ center.add(_max);
+ center.scale(0.5);
+ halfExtents.setFrom(_max);
+ halfExtents.sub(_min);
+ halfExtents.scale(0.5);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copyFrom">
+<button class="show-code">Code</button>
+void <strong>copyFrom</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> o) <a class="anchor-link" href="#copyFrom"
+              title="Permalink to Aabb3.copyFrom">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyFrom(Aabb3 o) {
+ _min.setFrom(o._min);
+ _max.setFrom(o._max);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copyInto">
+<button class="show-code">Code</button>
+void <strong>copyInto</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> o) <a class="anchor-link" href="#copyInto"
+              title="Permalink to Aabb3.copyInto">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyInto(Aabb3 o) {
+ o._min.setFrom(_min);
+ o._max.setFrom(_max);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copyMinMax">
+<button class="show-code">Code</button>
+void <strong>copyMinMax</strong>(<a href="../vector_math/Vector3.html">Vector3</a> min_, <a href="../vector_math/Vector3.html">Vector3</a> max_) <a class="anchor-link" href="#copyMinMax"
+              title="Permalink to Aabb3.copyMinMax">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyMinMax(Vector3 min_, Vector3 max_) {
+ max_.setFrom(_max);
+ min_.setFrom(_min);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getPN">
+<button class="show-code">Code</button>
+void <strong>getPN</strong>(<a href="../vector_math/Vector3.html">Vector3</a> planeNormal, <a href="../vector_math/Vector3.html">Vector3</a> outP, <a href="../vector_math/Vector3.html">Vector3</a> outN) <a class="anchor-link" href="#getPN"
+              title="Permalink to Aabb3.getPN">#</a></h4>
+<div class="doc">
+<pre class="source">
+void getPN(Vector3 planeNormal, Vector3 outP, Vector3 outN) {
+ outP.x = planeNormal.x &lt; 0.0 ? _min.x : _max.x;
+ outP.y = planeNormal.y &lt; 0.0 ? _min.y : _max.y;
+ outP.z = planeNormal.z &lt; 0.0 ? _min.z : _max.z;
+
+ outN.x = planeNormal.x &lt; 0.0 ? _max.x : _min.x;
+ outN.y = planeNormal.y &lt; 0.0 ? _max.y : _min.y;
+ outN.z = planeNormal.z &lt; 0.0 ? _max.z : _min.z;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="rotate">
+<button class="show-code">Code</button>
+<a href="../vector_math/Aabb3.html">Aabb3</a> <strong>rotate</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> T) <a class="anchor-link" href="#rotate"
+              title="Permalink to Aabb3.rotate">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3 rotate(Matrix4 T) {
+ Vector3 center = new Vector3.zero();
+ Vector3 halfExtents = new Vector3.zero();
+ copyCenterAndHalfExtents(center, halfExtents);
+ T.absoluteRotate(halfExtents);
+ _min.setFrom(center);
+ _max.setFrom(center);
+
+ _min.sub(halfExtents);
+ _max.add(halfExtents);
+ return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="rotated">
+<button class="show-code">Code</button>
+<a href="../vector_math/Aabb3.html">Aabb3</a> <strong>rotated</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> T, <a href="../vector_math/Aabb3.html">Aabb3</a> out) <a class="anchor-link" href="#rotated"
+              title="Permalink to Aabb3.rotated">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3 rotated(Matrix4 T, Aabb3 out) {
+ out.copyFrom(this);
+ return out.rotate(T);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="transform">
+<button class="show-code">Code</button>
+<a href="../vector_math/Aabb3.html">Aabb3</a> <strong>transform</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> T) <a class="anchor-link" href="#transform"
+              title="Permalink to Aabb3.transform">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3 transform(Matrix4 T) {
+ Vector3 center = new Vector3.zero();
+ Vector3 halfExtents = new Vector3.zero();
+ copyCenterAndHalfExtents(center, halfExtents);
+ T.transform3(center);
+ T.absoluteRotate(halfExtents);
+ _min.setFrom(center);
+ _max.setFrom(center);
+
+ _min.sub(halfExtents);
+ _max.add(halfExtents);
+ return this;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="transformed">
+<button class="show-code">Code</button>
+<a href="../vector_math/Aabb3.html">Aabb3</a> <strong>transformed</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> T, <a href="../vector_math/Aabb3.html">Aabb3</a> out) <a class="anchor-link" href="#transformed"
+              title="Permalink to Aabb3.transformed">#</a></h4>
+<div class="doc">
+<pre class="source">
+Aabb3 transformed(Matrix4 T, Aabb3 out) {
+ out.copyFrom(this);
+ return out.transform(T);
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

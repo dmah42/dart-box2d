@@ -37,15 +37,15 @@ class DistanceJoint extends Joint {
  final Vector2 localAnchor1;
  final Vector2 localAnchor2;
  final Vector2 u;
- num impulse;
+ double impulse;
 
  /** Effective mass for the constraint. */
- num mass;
- num length;
- num frequencyHz;
- num dampingRatio;
- num gamma;
- num bias;
+ double mass;
+ double length;
+ double frequencyHz;
+ double dampingRatio;
+ double gamma;
+ double bias;
 
  DistanceJoint(DistanceJointDef def) :
    super(def),
@@ -72,7 +72,7 @@ class DistanceJoint extends Joint {
    argOut.y = impulse * u.y * inv_dt;
  }
 
- num getReactionTorque(num inv_dt) {
+ double getReactionTorque(num inv_dt) {
    return 0.0;
  }
 
@@ -84,10 +84,10 @@ class DistanceJoint extends Joint {
    Vector2 r2 = new Vector2.zero();
 
    // Compute the effective mass matrix.
-   r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-   r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-   Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-   Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+   r1.setFrom(localAnchor1).sub(b1.localCenter);
+   r2.setFrom(localAnchor2).sub(b2.localCenter);
+   b1.originTransform.rotation.transformed(r1, r1);
+   b2.originTransform.rotation.transformed(r2, r2);
 
    u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
    u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
@@ -98,11 +98,11 @@ class DistanceJoint extends Joint {
      u.x *= 1.0 / len;
      u.y *= 1.0 / len;
    } else {
-     u.setCoords(0.0, 0.0);
+     u.setValues(0.0, 0.0);
    }
 
-   num cr1u = Vector2.crossVectors(r1, u);
-   num cr2u = Vector2.crossVectors(r2, u);
+   num cr1u = r1.cross(u);
+   num cr2u = r2.cross(u);
 
    num invMass = b1.invMass + b1.invInertia * cr1u * cr1u + b2.invMass
        + b2.invInertia * cr2u * cr2u;
@@ -135,15 +135,15 @@ class DistanceJoint extends Joint {
      impulse *= step.dtRatio;
 
      Vector2 P = new Vector2.zero();
-     P.setFrom(u).mulLocal(impulse);
+     P.setFrom(u).scale(impulse);
 
      b1.linearVelocity.x -= b1.invMass * P.x;
      b1.linearVelocity.y -= b1.invMass * P.y;
-     b1.angularVelocity -= b1.invInertia * Vector2.crossVectors(r1, P);
+     b1.angularVelocity -= b1.invInertia * r1.cross(P);
 
      b2.linearVelocity.x += b2.invMass * P.x;
      b2.linearVelocity.y += b2.invMass * P.y;
-     b2.angularVelocity += b2.invInertia * Vector2.crossVectors(r2, P);
+     b2.angularVelocity += b2.invInertia * r2.cross(P);
    } else {
      impulse = 0.0;
    }
@@ -156,20 +156,20 @@ class DistanceJoint extends Joint {
    final r1 = new Vector2.zero();
    final r2 = new Vector2.zero();
 
-   r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-   r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-   Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-   Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+   r1.setFrom(localAnchor1).sub(b1.localCenter);
+   r2.setFrom(localAnchor2).sub(b2.localCenter);
+   b1.originTransform.rotation.transformed(r1, r1);
+   b2.originTransform.rotation.transformed(r2, r2);
 
    final v1 = new Vector2.zero();
    final v2 = new Vector2.zero();
 
-   Vector2.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
-   Vector2.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
-   v1.addLocal(b1.linearVelocity);
-   v2.addLocal(b2.linearVelocity);
+   Vector2_crossVectorAndNumToOut(r1, -b1.angularVelocity, v1);
+   Vector2_crossVectorAndNumToOut(r2, -b2.angularVelocity, v2);
+   v1.add(b1.linearVelocity);
+   v2.add(b2.linearVelocity);
 
-   num Cdot = Vector2.dot(u, v2.subLocal(v1));
+   num Cdot = u.dot(v2.sub(v1));
 
    num imp = -mass * (Cdot + bias + gamma * impulse);
    impulse += imp;
@@ -196,15 +196,15 @@ class DistanceJoint extends Joint {
    final r2 = new Vector2.zero();
    final d = new Vector2.zero();
 
-   r1.setFrom(localAnchor1).subLocal(b1.localCenter);
-   r2.setFrom(localAnchor2).subLocal(b2.localCenter);
-   Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
-   Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+   r1.setFrom(localAnchor1).sub(b1.localCenter);
+   r2.setFrom(localAnchor2).sub(b2.localCenter);
+   b1.originTransform.rotation.transformed(r1, r1);
+   b2.originTransform.rotation.transformed(r2, r2);
 
    d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
    d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
 
-   num len = d.normalize();
+   num len = d.normalizeLength();
    num C = len - length;
    C = MathBox.clamp(C, -Settings.MAX_LINEAR_CORRECTION,
        Settings.MAX_LINEAR_CORRECTION);
@@ -273,13 +273,13 @@ bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
 </div>
 <div class="field"><h4 id="bias">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>bias</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>bias</strong> <a class="anchor-link"
             href="#bias"
             title="Permalink to DistanceJoint.bias">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num bias
+double bias
 </pre>
 </div>
 </div>
@@ -321,13 +321,13 @@ bool collideConnected
 </div>
 <div class="field"><h4 id="dampingRatio">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>dampingRatio</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>dampingRatio</strong> <a class="anchor-link"
             href="#dampingRatio"
             title="Permalink to DistanceJoint.dampingRatio">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num dampingRatio
+double dampingRatio
 </pre>
 </div>
 </div>
@@ -357,85 +357,85 @@ JointEdge edgeB
 </div>
 <div class="field"><h4 id="frequencyHz">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>frequencyHz</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>frequencyHz</strong> <a class="anchor-link"
             href="#frequencyHz"
             title="Permalink to DistanceJoint.frequencyHz">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num frequencyHz
+double frequencyHz
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="gamma">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>gamma</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>gamma</strong> <a class="anchor-link"
             href="#gamma"
             title="Permalink to DistanceJoint.gamma">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num gamma
+double gamma
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="impulse">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>impulse</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>impulse</strong> <a class="anchor-link"
             href="#impulse"
             title="Permalink to DistanceJoint.impulse">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num impulse
+double impulse
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invIA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIA</strong> <a class="anchor-link"
             href="#invIA"
             title="Permalink to DistanceJoint.invIA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIA
+double invIA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invIB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIB</strong> <a class="anchor-link"
             href="#invIB"
             title="Permalink to DistanceJoint.invIB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIB
+double invIB
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invMassA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassA</strong> <a class="anchor-link"
             href="#invMassA"
             title="Permalink to DistanceJoint.invMassA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassA
+double invMassA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invMassB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassB</strong> <a class="anchor-link"
             href="#invMassB"
             title="Permalink to DistanceJoint.invMassB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassB
+double invMassB
 </pre>
 </div>
 </div>
@@ -453,19 +453,19 @@ bool islandFlag
 </div>
 <div class="field"><h4 id="length">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>length</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>length</strong> <a class="anchor-link"
             href="#length"
             title="Permalink to DistanceJoint.length">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num length
+double length
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localAnchor1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchor1</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchor1</strong> <a class="anchor-link"
             href="#localAnchor1"
             title="Permalink to DistanceJoint.localAnchor1">#</a>
         </h4>
@@ -477,7 +477,7 @@ final Vector2 localAnchor1
 </div>
 <div class="field"><h4 id="localAnchor2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchor2</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchor2</strong> <a class="anchor-link"
             href="#localAnchor2"
             title="Permalink to DistanceJoint.localAnchor2">#</a>
         </h4>
@@ -489,7 +489,7 @@ final Vector2 localAnchor2
 </div>
 <div class="field inherited"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to DistanceJoint.localCenterA">#</a>
         </h4>
@@ -501,7 +501,7 @@ final Vector2 localCenterA
 </div>
 <div class="field inherited"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to DistanceJoint.localCenterB">#</a>
         </h4>
@@ -513,14 +513,14 @@ final Vector2 localCenterB
 </div>
 <div class="field"><h4 id="mass">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>mass</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>mass</strong> <a class="anchor-link"
             href="#mass"
             title="Permalink to DistanceJoint.mass">#</a>
         </h4>
         <div class="doc">
 <p>Effective mass for the constraint. </p>
 <pre class="source">
-num mass
+double mass
 </pre>
 </div>
 </div>
@@ -538,7 +538,7 @@ int type
 </div>
 <div class="field"><h4 id="u">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>u</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>u</strong> <a class="anchor-link"
             href="#u"
             title="Permalink to DistanceJoint.u">#</a>
         </h4>
@@ -576,7 +576,7 @@ void destructor() { }
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to DistanceJoint.getAnchorA">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -591,7 +591,7 @@ void getAnchorA(Vector2 argOut) {
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to DistanceJoint.getAnchorB">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -606,7 +606,7 @@ void getAnchorB(Vector2 argOut) {
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to DistanceJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -622,14 +622,14 @@ void getReactionForce(num inv_dt, Vector2 argOut) {
 </div>
 <div class="method"><h4 id="getReactionTorque">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a> <strong>getReactionTorque</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>getReactionTorque</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
               title="Permalink to DistanceJoint.getReactionTorque">#</a></h4>
 <div class="doc">
 <div class="inherited">
 <p>Get the reaction torque on body2 in N*m. </p>
 <div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
 <pre class="source">
-num getReactionTorque(num inv_dt) {
+double getReactionTorque(num inv_dt) {
  return 0.0;
 }
 </pre>
@@ -649,10 +649,10 @@ void initVelocityConstraints(TimeStep step) {
  Vector2 r2 = new Vector2.zero();
 
  // Compute the effective mass matrix.
- r1.setFrom(localAnchor1).subLocal(b1.localCenter);
- r2.setFrom(localAnchor2).subLocal(b2.localCenter);
- Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
- Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+ r1.setFrom(localAnchor1).sub(b1.localCenter);
+ r2.setFrom(localAnchor2).sub(b2.localCenter);
+ b1.originTransform.rotation.transformed(r1, r1);
+ b2.originTransform.rotation.transformed(r2, r2);
 
  u.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
  u.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
@@ -663,11 +663,11 @@ void initVelocityConstraints(TimeStep step) {
    u.x *= 1.0 / len;
    u.y *= 1.0 / len;
  } else {
-   u.setCoords(0.0, 0.0);
+   u.setValues(0.0, 0.0);
  }
 
- num cr1u = Vector2.crossVectors(r1, u);
- num cr2u = Vector2.crossVectors(r2, u);
+ num cr1u = r1.cross(u);
+ num cr2u = r2.cross(u);
 
  num invMass = b1.invMass + b1.invInertia * cr1u * cr1u + b2.invMass
      + b2.invInertia * cr2u * cr2u;
@@ -700,15 +700,15 @@ void initVelocityConstraints(TimeStep step) {
    impulse *= step.dtRatio;
 
    Vector2 P = new Vector2.zero();
-   P.setFrom(u).mulLocal(impulse);
+   P.setFrom(u).scale(impulse);
 
    b1.linearVelocity.x -= b1.invMass * P.x;
    b1.linearVelocity.y -= b1.invMass * P.y;
-   b1.angularVelocity -= b1.invInertia * Vector2.crossVectors(r1, P);
+   b1.angularVelocity -= b1.invInertia * r1.cross(P);
 
    b2.linearVelocity.x += b2.invMass * P.x;
    b2.linearVelocity.y += b2.invMass * P.y;
-   b2.angularVelocity += b2.invInertia * Vector2.crossVectors(r2, P);
+   b2.angularVelocity += b2.invInertia * r2.cross(P);
  } else {
    impulse = 0.0;
  }
@@ -737,15 +737,15 @@ bool solvePositionConstraints(num baumgarte) {
  final r2 = new Vector2.zero();
  final d = new Vector2.zero();
 
- r1.setFrom(localAnchor1).subLocal(b1.localCenter);
- r2.setFrom(localAnchor2).subLocal(b2.localCenter);
- Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
- Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+ r1.setFrom(localAnchor1).sub(b1.localCenter);
+ r2.setFrom(localAnchor2).sub(b2.localCenter);
+ b1.originTransform.rotation.transformed(r1, r1);
+ b2.originTransform.rotation.transformed(r2, r2);
 
  d.x = b2.sweep.center.x + r2.x - b1.sweep.center.x - r1.x;
  d.y = b2.sweep.center.y + r2.y - b1.sweep.center.y - r1.y;
 
- num len = d.normalize();
+ num len = d.normalizeLength();
  num C = len - length;
  C = MathBox.clamp(C, -Settings.MAX_LINEAR_CORRECTION,
      Settings.MAX_LINEAR_CORRECTION);
@@ -784,20 +784,20 @@ void solveVelocityConstraints(TimeStep step) {
  final r1 = new Vector2.zero();
  final r2 = new Vector2.zero();
 
- r1.setFrom(localAnchor1).subLocal(b1.localCenter);
- r2.setFrom(localAnchor2).subLocal(b2.localCenter);
- Matrix22.mulMatrixAndVectorToOut(b1.originTransform.rotation, r1, r1);
- Matrix22.mulMatrixAndVectorToOut(b2.originTransform.rotation, r2, r2);
+ r1.setFrom(localAnchor1).sub(b1.localCenter);
+ r2.setFrom(localAnchor2).sub(b2.localCenter);
+ b1.originTransform.rotation.transformed(r1, r1);
+ b2.originTransform.rotation.transformed(r2, r2);
 
  final v1 = new Vector2.zero();
  final v2 = new Vector2.zero();
 
- Vector2.crossNumAndVectorToOut(b1.angularVelocity, r1, v1);
- Vector2.crossNumAndVectorToOut(b2.angularVelocity, r2, v2);
- v1.addLocal(b1.linearVelocity);
- v2.addLocal(b2.linearVelocity);
+ Vector2_crossVectorAndNumToOut(r1, -b1.angularVelocity, v1);
+ Vector2_crossVectorAndNumToOut(r2, -b2.angularVelocity, v2);
+ v1.add(b1.linearVelocity);
+ v2.add(b2.linearVelocity);
 
- num Cdot = Vector2.dot(u, v2.subLocal(v1));
+ num Cdot = u.dot(v2.sub(v1));
 
  num imp = -mass * (Cdot + bias + gamma * impulse);
  impulse += imp;

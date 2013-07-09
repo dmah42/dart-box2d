@@ -43,7 +43,7 @@ class BodyDef {
  /**
   * The world angle of the body in radians.
   */
- num angle;
+ double angle;
 
  /** User can store whatever they wish in here. */
  Object userData;
@@ -55,7 +55,7 @@ class BodyDef {
  Vector2 linearVelocity;
 
  /** Angular velocity of the body. */
- num angularVelocity;
+ double angularVelocity;
 
  /**
   * If true, the body will be allowed to rotate. Otherwise, its rotation will
@@ -84,14 +84,14 @@ class BodyDef {
   * parameter can be larger than 1.0 but the damping effect becomes
   * sensitive to the time step when the damping parameter is large.
   */
- num linearDamping;
+ double linearDamping;
 
  /**
   * Angular damping is used to reduce the angular velocity. The
   * damping parameter can be larger than 1.0 but the damping effect
   * becomes sensitive to time step when the damping parameter is large.
   */
- num angularDamping;
+ double angularDamping;
 
  /** Is this body initially awake or asleep? */
  bool awake;
@@ -107,15 +107,15 @@ class BodyDef {
    bullet = false,
    type = BodyType.STATIC,
    position = new Vector2.zero(),
-   angle = 0,
-   linearDamping = 0,
-   angularDamping = 0,
+   angle = 0.0,
+   linearDamping = 0.0,
+   angularDamping = 0.0,
    allowSleep = true,
    awake = true,
    fixedRotation = false,
    active = true,
    linearVelocity = new Vector2.zero(),
-   angularVelocity = 0;
+   angularVelocity = 0.0;
 }
 </pre>
 </div>
@@ -133,15 +133,15 @@ BodyDef() :
  bullet = false,
  type = BodyType.STATIC,
  position = new Vector2.zero(),
- angle = 0,
- linearDamping = 0,
- angularDamping = 0,
+ angle = 0.0,
+ linearDamping = 0.0,
+ angularDamping = 0.0,
  allowSleep = true,
  awake = true,
  fixedRotation = false,
  active = true,
  linearVelocity = new Vector2.zero(),
- angularVelocity = 0;
+ angularVelocity = 0.0;
 </pre>
 </div>
 </div>
@@ -176,20 +176,20 @@ bool allowSleep
 </div>
 <div class="field"><h4 id="angle">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>angle</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>angle</strong> <a class="anchor-link"
             href="#angle"
             title="Permalink to BodyDef.angle">#</a>
         </h4>
         <div class="doc">
 <p>The world angle of the body in radians.</p>
 <pre class="source">
-num angle
+double angle
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angularDamping">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>angularDamping</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>angularDamping</strong> <a class="anchor-link"
             href="#angularDamping"
             title="Permalink to BodyDef.angularDamping">#</a>
         </h4>
@@ -198,20 +198,20 @@ num angle
 damping parameter can be larger than 1.0 but the damping effect
 becomes sensitive to time step when the damping parameter is large.</p>
 <pre class="source">
-num angularDamping
+double angularDamping
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="angularVelocity">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>angularVelocity</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>angularVelocity</strong> <a class="anchor-link"
             href="#angularVelocity"
             title="Permalink to BodyDef.angularVelocity">#</a>
         </h4>
         <div class="doc">
 <p>Angular velocity of the body. </p>
 <pre class="source">
-num angularVelocity
+double angularVelocity
 </pre>
 </div>
 </div>
@@ -274,7 +274,7 @@ bool isSleeping
 </div>
 <div class="field"><h4 id="linearDamping">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>linearDamping</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>linearDamping</strong> <a class="anchor-link"
             href="#linearDamping"
             title="Permalink to BodyDef.linearDamping">#</a>
         </h4>
@@ -283,13 +283,13 @@ bool isSleeping
 parameter can be larger than 1.0 but the damping effect becomes
 sensitive to the time step when the damping parameter is large.</p>
 <pre class="source">
-num linearDamping
+double linearDamping
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="linearVelocity">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>linearVelocity</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>linearVelocity</strong> <a class="anchor-link"
             href="#linearVelocity"
             title="Permalink to BodyDef.linearVelocity">#</a>
         </h4>
@@ -302,7 +302,7 @@ Vector2 linearVelocity
 </div>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to BodyDef.position">#</a>
         </h4>

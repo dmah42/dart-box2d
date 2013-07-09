@@ -35,20 +35,20 @@
 <pre class="source">
 class MassData {
  /** The mass of the shape, usually in kilograms. */
- num mass;
+ double mass;
 
  /** The position of the shape's centroid relative to the shape's origin. */
  Vector2 center;
 
  /** The rotational inertia of the shape about the local origin. */
- num inertia;
+ double inertia;
 
  /**
   * Constructs a blank mass data.
   */
  MassData() :
-   mass = 0,
-   inertia = 0,
+   mass = 0.0,
+   inertia = 0.0,
    center = new Vector2.zero();
 
  /**
@@ -80,8 +80,8 @@ new <strong>MassData</strong>() <a class="anchor-link" href="#MassData"
 <p>Constructs a blank mass data.</p>
 <pre class="source">
 MassData() :
- mass = 0,
- inertia = 0,
+ mass = 0.0,
+ inertia = 0.0,
  center = new Vector2.zero();
 </pre>
 </div>
@@ -105,7 +105,7 @@ MassData.copy(MassData md) :
 <h3>Properties</h3>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to MassData.center">#</a>
         </h4>
@@ -118,27 +118,27 @@ Vector2 center
 </div>
 <div class="field"><h4 id="inertia">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>inertia</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>inertia</strong> <a class="anchor-link"
             href="#inertia"
             title="Permalink to MassData.inertia">#</a>
         </h4>
         <div class="doc">
 <p>The rotational inertia of the shape about the local origin. </p>
 <pre class="source">
-num inertia
+double inertia
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="mass">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>mass</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>mass</strong> <a class="anchor-link"
             href="#mass"
             title="Permalink to MassData.mass">#</a>
         </h4>
         <div class="doc">
 <p>The mass of the shape, usually in kilograms. </p>
 <pre class="source">
-num mass
+double mass
 </pre>
 </div>
 </div>

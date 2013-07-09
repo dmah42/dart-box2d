@@ -127,14 +127,14 @@ class Island {
      final velocityDelta = new Vector2(
          (b._force.x * b.invMass + gravity.x) * step.dt,
          (b._force.y * b.invMass + gravity.y) * step.dt);
-     b.linearVelocity.addLocal(velocityDelta);
+     b.linearVelocity.add(velocityDelta);
      num newAngularVelocity = b.angularVelocity +
          (step.dt * b.invInertia * b._torque);
      b.angularVelocity = newAngularVelocity;
 
      num a = (1.0 - step.dt * b.linearDamping);
      num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
-     b.linearVelocity.mulLocal(a1);
+     b.linearVelocity.scale(a1);
 
      num a2 = (1.0 - step.dt * b.angularDamping);
      num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
@@ -188,11 +188,11 @@ class Island {
 
      // Check for large velocities.
      _translation.setFrom(b.linearVelocity);
-     _translation.mulLocal(step.dt);
-     if (Vector2.dot(_translation, _translation) &gt;
+     _translation.scale(step.dt);
+     if (_translation.dot(_translation) &gt;
          Settings.MAX_TRANSLATION_SQUARED){
        num ratio = Settings.MAX_TRANSLATION / _translation.length;
-       b.linearVelocity.mulLocal(ratio);
+       b.linearVelocity.scale(ratio);
      }
 
      num rotation = step.dt * b.angularVelocity;
@@ -207,8 +207,8 @@ class Island {
 
      // Integrate
      temp.setFrom(b.linearVelocity);
-     temp.mulLocal(step.dt);
-     b.sweep.center.addLocal(temp);
+     temp.scale(step.dt);
+     b.sweep.center.add(temp);
      b.sweep.angle += step.dt * b.angularVelocity;
 
      // Compute new transform
@@ -259,7 +259,7 @@ class Island {
 
        if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
            b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
-           Vector2.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
+           b.linearVelocity.dot(b.linearVelocity) &gt; linTolSqr){
          b.sleepTime = 0.0;
          minSleepTime = 0.0;
        }
@@ -645,7 +645,7 @@ void report(List&lt;ContactConstraint&gt; constraints){
 </div>
 <div class="method"><h4 id="solve">
 <button class="show-code">Code</button>
-void <strong>solve</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step, <a href="../box2d/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> allowSleep) <a class="anchor-link" href="#solve"
+void <strong>solve</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step, <a href="../vector_math/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> allowSleep) <a class="anchor-link" href="#solve"
               title="Permalink to Island.solve">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -661,14 +661,14 @@ void solve(TimeStep step, Vector2 gravity, bool allowSleep){
    final velocityDelta = new Vector2(
        (b._force.x * b.invMass + gravity.x) * step.dt,
        (b._force.y * b.invMass + gravity.y) * step.dt);
-   b.linearVelocity.addLocal(velocityDelta);
+   b.linearVelocity.add(velocityDelta);
    num newAngularVelocity = b.angularVelocity +
        (step.dt * b.invInertia * b._torque);
    b.angularVelocity = newAngularVelocity;
 
    num a = (1.0 - step.dt * b.linearDamping);
    num a1 = (0.0 &gt; (a &lt; 1.0 ? a : 1.0) ? 0.0 : (a &lt; 1.0 ? a : 1.0));
-   b.linearVelocity.mulLocal(a1);
+   b.linearVelocity.scale(a1);
 
    num a2 = (1.0 - step.dt * b.angularDamping);
    num b1 = (a2 &lt; 1.0 ? a2 : 1.0);
@@ -722,11 +722,11 @@ void solve(TimeStep step, Vector2 gravity, bool allowSleep){
 
    // Check for large velocities.
    _translation.setFrom(b.linearVelocity);
-   _translation.mulLocal(step.dt);
-   if (Vector2.dot(_translation, _translation) &gt;
+   _translation.scale(step.dt);
+   if (_translation.dot(_translation) &gt;
        Settings.MAX_TRANSLATION_SQUARED){
      num ratio = Settings.MAX_TRANSLATION / _translation.length;
-     b.linearVelocity.mulLocal(ratio);
+     b.linearVelocity.scale(ratio);
    }
 
    num rotation = step.dt * b.angularVelocity;
@@ -741,8 +741,8 @@ void solve(TimeStep step, Vector2 gravity, bool allowSleep){
 
    // Integrate
    temp.setFrom(b.linearVelocity);
-   temp.mulLocal(step.dt);
-   b.sweep.center.addLocal(temp);
+   temp.scale(step.dt);
+   b.sweep.center.add(temp);
    b.sweep.angle += step.dt * b.angularVelocity;
 
    // Compute new transform
@@ -793,7 +793,7 @@ void solve(TimeStep step, Vector2 gravity, bool allowSleep){
 
      if ((b.flags &amp; Body.AUTO_SLEEP_FLAG) == 0 ||
          b.angularVelocity * b.angularVelocity &gt; angTolSqr ||
-         Vector2.dot(b.linearVelocity, b.linearVelocity) &gt; linTolSqr){
+         b.linearVelocity.dot(b.linearVelocity) &gt; linTolSqr){
        b.sleepTime = 0.0;
        minSleepTime = 0.0;
      }

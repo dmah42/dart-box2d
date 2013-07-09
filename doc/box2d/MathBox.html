@@ -71,11 +71,6 @@ class MathBox {
    final double res = toMin + mult * (toMax - toMin);
    return res;
  }
-
- /** Convert from [deg] degrees to radians. */
- static double degToRad(double deg) =&gt; (Math.PI / 180.0) * deg;
- /** Convert from [rad] radians to degrees. */
- static double radToDeg(double rad) =&gt; (180.0 / Math.PI) * rad;
 }
 </pre>
 </div>
@@ -98,7 +93,7 @@ static const double TWO_PI = Math.PI * 2.0
 <h3>Static Methods</h3>
 <div class="method"><h4 id="distanceSquared">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceSquared</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distanceSquared"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceSquared</strong>(<a href="../vector_math/Vector2.html">Vector2</a> v1, <a href="../vector_math/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distanceSquared"
               title="Permalink to MathBox.distanceSquared">#</a></h4>
 <div class="doc">
 <p>Return the distance between the two given vectors, but squared.</p>
@@ -113,7 +108,7 @@ static double distanceSquared(Vector2 v1, Vector2 v2) {
 </div>
 <div class="method"><h4 id="distance">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distance</strong>(<a href="../box2d/Vector2.html">Vector2</a> v1, <a href="../box2d/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distance"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distance</strong>(<a href="../vector_math/Vector2.html">Vector2</a> v1, <a href="../vector_math/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#distance"
               title="Permalink to MathBox.distance">#</a></h4>
 <div class="doc">
 <p>Return the distance between the two given vectors.</p>
@@ -161,30 +156,6 @@ static double translateAndScale(double val, double fromMin, double fromMax,
  final double res = toMin + mult * (toMax - toMin);
  return res;
 }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="degToRad">
-<button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>degToRad</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> deg) <a class="anchor-link" href="#degToRad"
-              title="Permalink to MathBox.degToRad">#</a></h4>
-<div class="doc">
-<p>Convert from 
-<span class="param">deg</span> degrees to radians. </p>
-<pre class="source">
-static double degToRad(double deg) =&gt; (Math.PI / 180.0) * deg;
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="radToDeg">
-<button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>radToDeg</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> rad) <a class="anchor-link" href="#radToDeg"
-              title="Permalink to MathBox.radToDeg">#</a></h4>
-<div class="doc">
-<p>Convert from 
-<span class="param">rad</span> radians to degrees. </p>
-<pre class="source">
-static double radToDeg(double rad) =&gt; (180.0 / Math.PI) * rad;
 </pre>
 </div>
 </div>

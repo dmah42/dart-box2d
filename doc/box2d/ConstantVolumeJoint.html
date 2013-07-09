@@ -35,25 +35,25 @@
 <pre class="source">
 class ConstantVolumeJoint extends Joint {
  List&lt;Body&gt; bodies;
- List&lt;num&gt; targetLengths;
- num targetVolume;
+ List&lt;double&gt; targetLengths;
+ double targetVolume;
 
  List&lt;Vector2&gt; normals;
 
  TimeStep step;
 
- num _impulse;
+ double _impulse;
 
  World _world;
 
  List&lt;DistanceJoint&gt; distanceJoints;
 
- num frequencyHz;
- num dampingRatio;
+ double frequencyHz;
+ double dampingRatio;
 
  ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
    super(def),
-   _impulse = 0 {
+   _impulse = 0.0 {
    if (def.bodies.length &lt;= 2) {
      throw new ArgumentError(
          "You cannot create a constant volume joint with less than three "
@@ -64,11 +64,11 @@ class ConstantVolumeJoint extends Joint {
    // in the growable array in the definition.
    bodies = new List.from(def.bodies);
 
-   targetLengths = new List&lt;num&gt;(bodies.length);
+   targetLengths = new List&lt;double&gt;(bodies.length);
    for (int i = 0; i &lt; targetLengths.length; ++i) {
      final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
      Vector2 temp = new Vector2.copy(bodies[i].worldCenter);
-     temp.subLocal(bodies[next].worldCenter);
+     temp.sub(bodies[next].worldCenter);
      num dist = temp.length;
      targetLengths[i] = dist;
    }
@@ -151,11 +151,11 @@ class ConstantVolumeJoint extends Joint {
    bool done = true;
    for (int i = 0; i &lt; bodies.length; ++i) {
      final int next = (i == bodies.length - 1) ? 0 : i + 1;
-     delta.setCoords(toExtrude * (normals[i].x + normals[next].x), toExtrude
+     delta.setValues(toExtrude * (normals[i].x + normals[next].x), toExtrude
          * (normals[i].y + normals[next].y));
      num norm = delta.length;
      if (norm &gt; Settings.MAX_LINEAR_CORRECTION) {
-       delta.mulLocal(Settings.MAX_LINEAR_CORRECTION / norm);
+       delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);
      }
      if (norm &gt; Settings.LINEAR_SLOP) {
        done = false;
@@ -177,7 +177,7 @@ class ConstantVolumeJoint extends Joint {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
      final int next = (i == bodies.length - 1) ? 0 : i + 1;
      d[i].setFrom(bodies[next].worldCenter);
-     d[i].subLocal(bodies[prev].worldCenter);
+     d[i].sub(bodies[prev].worldCenter);
    }
 
    if (step.warmStarting) {
@@ -215,9 +215,9 @@ class ConstantVolumeJoint extends Joint {
      final int prev = (i == 0) ? bodies.length - 1 : i - 1;
      final int next = (i == bodies.length - 1) ? 0 : i + 1;
      d[i].setFrom(bodies[next].worldCenter);
-     d[i].subLocal(bodies[prev].worldCenter);
-     dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
-     crossMassSum += Vector2.crossVectors(bodies[i].linearVelocity, d[i]);
+     d[i].sub(bodies[prev].worldCenter);
+     dotMassSum += (d[i].length2) / bodies[i].mass;
+     crossMassSum += bodies[i].linearVelocity.cross(d[i]);
    }
    num lambda = -2.0 * crossMassSum / dotMassSum;
    _impulse += lambda;
@@ -250,7 +250,7 @@ new <strong>ConstantVolumeJoint</strong>(<a href="../box2d/World.html">World</a>
 <pre class="source">
 ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  super(def),
- _impulse = 0 {
+ _impulse = 0.0 {
  if (def.bodies.length &lt;= 2) {
    throw new ArgumentError(
        "You cannot create a constant volume joint with less than three "
@@ -261,11 +261,11 @@ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
  // in the growable array in the definition.
  bodies = new List.from(def.bodies);
 
- targetLengths = new List&lt;num&gt;(bodies.length);
+ targetLengths = new List&lt;double&gt;(bodies.length);
  for (int i = 0; i &lt; targetLengths.length; ++i) {
    final int next = (i == targetLengths.length - 1) ? 0 : i + 1;
    Vector2 temp = new Vector2.copy(bodies[i].worldCenter);
-   temp.subLocal(bodies[next].worldCenter);
+   temp.sub(bodies[next].worldCenter);
    num dist = temp.length;
    targetLengths[i] = dist;
  }
@@ -393,13 +393,13 @@ bool collideConnected
 </div>
 <div class="field"><h4 id="dampingRatio">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>dampingRatio</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>dampingRatio</strong> <a class="anchor-link"
             href="#dampingRatio"
             title="Permalink to ConstantVolumeJoint.dampingRatio">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num dampingRatio
+double dampingRatio
 </pre>
 </div>
 </div>
@@ -441,61 +441,61 @@ JointEdge edgeB
 </div>
 <div class="field"><h4 id="frequencyHz">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>frequencyHz</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>frequencyHz</strong> <a class="anchor-link"
             href="#frequencyHz"
             title="Permalink to ConstantVolumeJoint.frequencyHz">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num frequencyHz
+double frequencyHz
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invIA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIA</strong> <a class="anchor-link"
             href="#invIA"
             title="Permalink to ConstantVolumeJoint.invIA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIA
+double invIA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invIB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIB</strong> <a class="anchor-link"
             href="#invIB"
             title="Permalink to ConstantVolumeJoint.invIB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invIB
+double invIB
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invMassA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassA</strong> <a class="anchor-link"
             href="#invMassA"
             title="Permalink to ConstantVolumeJoint.invMassA">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassA
+double invMassA
 </pre>
 </div>
 </div>
 <div class="field inherited"><h4 id="invMassB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassB</strong> <a class="anchor-link"
             href="#invMassB"
             title="Permalink to ConstantVolumeJoint.invMassB">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-num invMassB
+double invMassB
 </pre>
 </div>
 </div>
@@ -513,7 +513,7 @@ bool islandFlag
 </div>
 <div class="field inherited"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to ConstantVolumeJoint.localCenterA">#</a>
         </h4>
@@ -525,7 +525,7 @@ final Vector2 localCenterA
 </div>
 <div class="field inherited"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to ConstantVolumeJoint.localCenterB">#</a>
         </h4>
@@ -537,7 +537,7 @@ final Vector2 localCenterB
 </div>
 <div class="field"><h4 id="normals">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>normals</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Vector2.html">Vector2</a>&gt;         <strong>normals</strong> <a class="anchor-link"
             href="#normals"
             title="Permalink to ConstantVolumeJoint.normals">#</a>
         </h4>
@@ -561,25 +561,25 @@ TimeStep step
 </div>
 <div class="field"><h4 id="targetLengths">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/num.html">num</a>&gt;         <strong>targetLengths</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt;         <strong>targetLengths</strong> <a class="anchor-link"
             href="#targetLengths"
             title="Permalink to ConstantVolumeJoint.targetLengths">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;num&gt; targetLengths
+List&lt;double&gt; targetLengths
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="targetVolume">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>targetVolume</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>targetVolume</strong> <a class="anchor-link"
             href="#targetVolume"
             title="Permalink to ConstantVolumeJoint.targetVolume">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num targetVolume
+double targetVolume
 </pre>
 </div>
 </div>
@@ -639,11 +639,11 @@ bool constrainEdges(TimeStep argStep) {
  bool done = true;
  for (int i = 0; i &lt; bodies.length; ++i) {
    final int next = (i == bodies.length - 1) ? 0 : i + 1;
-   delta.setCoords(toExtrude * (normals[i].x + normals[next].x), toExtrude
+   delta.setValues(toExtrude * (normals[i].x + normals[next].x), toExtrude
        * (normals[i].y + normals[next].y));
    num norm = delta.length;
    if (norm &gt; Settings.MAX_LINEAR_CORRECTION) {
-     delta.mulLocal(Settings.MAX_LINEAR_CORRECTION / norm);
+     delta.scale(Settings.MAX_LINEAR_CORRECTION / norm);
    }
    if (norm &gt; Settings.LINEAR_SLOP) {
      done = false;
@@ -677,7 +677,7 @@ void destructor() {
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to ConstantVolumeJoint.getAnchorA">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -690,7 +690,7 @@ void getAnchorA(Vector2 argOut) { throw new UnimplementedError(); }
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to ConstantVolumeJoint.getAnchorB">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -703,7 +703,7 @@ void getAnchorB(Vector2 argOut) { throw new UnimplementedError(); }
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to ConstantVolumeJoint.getReactionForce">#</a></h4>
 <div class="doc">
 <div class="inherited">
@@ -754,7 +754,7 @@ void initVelocityConstraints(TimeStep argStep) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
    final int next = (i == bodies.length - 1) ? 0 : i + 1;
    d[i].setFrom(bodies[next].worldCenter);
-   d[i].subLocal(bodies[prev].worldCenter);
+   d[i].sub(bodies[prev].worldCenter);
  }
 
  if (step.warmStarting) {
@@ -804,9 +804,9 @@ void solveVelocityConstraints(TimeStep argStep) {
    final int prev = (i == 0) ? bodies.length - 1 : i - 1;
    final int next = (i == bodies.length - 1) ? 0 : i + 1;
    d[i].setFrom(bodies[next].worldCenter);
-   d[i].subLocal(bodies[prev].worldCenter);
-   dotMassSum += (d[i].lengthSquared) / bodies[i].mass;
-   crossMassSum += Vector2.crossVectors(bodies[i].linearVelocity, d[i]);
+   d[i].sub(bodies[prev].worldCenter);
+   dotMassSum += (d[i].length2) / bodies[i].mass;
+   crossMassSum += bodies[i].linearVelocity.cross(d[i]);
  }
  num lambda = -2.0 * crossMassSum / dotMassSum;
  _impulse += lambda;

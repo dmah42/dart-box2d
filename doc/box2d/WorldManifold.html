@@ -70,15 +70,15 @@ class WorldManifold {
 
        normal.x = 1.0;
        normal.y = 0.0;
-       pointA.x = xfA.position.x + xfA.rotation.col1.x *
-           manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-       pointA.y = xfA.position.y + xfA.rotation.col1.y *
-           manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
-       pointB.x = xfB.position.x + xfB.rotation.col1.x *
-           manifold.points[0].localPoint.x + xfB.rotation.col2.x *
+       pointA.x = xfA.position.x + xfA.rotation.entry(0,0) *
+           manifold.localPoint.x + xfA.rotation.entry(0,1) * manifold.localPoint.y;
+       pointA.y = xfA.position.y + xfA.rotation.entry(1,0) *
+           manifold.localPoint.x + xfA.rotation.entry(1,1) * manifold.localPoint.y;
+       pointB.x = xfB.position.x + xfB.rotation.entry(0,0) *
+           manifold.points[0].localPoint.x + xfB.rotation.entry(0,1) *
            manifold.points[0].localPoint.y;
-       pointB.y = xfB.position.y + xfB.rotation.col1.y *
-           manifold.points[0].localPoint.x + xfB.rotation.col2.y *
+       pointB.y = xfB.position.y + xfB.rotation.entry(1,0) *
+           manifold.points[0].localPoint.x + xfB.rotation.entry(1,1) *
            manifold.points[0].localPoint.y;
 
        if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON *
@@ -100,23 +100,23 @@ class WorldManifold {
      case ManifoldType.FACE_A:
        final Vector2 planePoint = pool3;
 
-       normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
-           xfA.rotation.col2.x * manifold.localNormal.y;
-       normal.y = xfA.rotation.col1.y * manifold.localNormal.x +
-           xfA.rotation.col2.y * manifold.localNormal.y;
-       planePoint.x = xfA.position.x + xfA.rotation.col1.x *
-           manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-       planePoint.y = xfA.position.y + xfA.rotation.col1.y *
-           manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+       normal.x = xfA.rotation.entry(0,0) * manifold.localNormal.x +
+           xfA.rotation.entry(0,1) * manifold.localNormal.y;
+       normal.y = xfA.rotation.entry(1,0) * manifold.localNormal.x +
+           xfA.rotation.entry(1,1) * manifold.localNormal.y;
+       planePoint.x = xfA.position.x + xfA.rotation.entry(0,0) *
+           manifold.localPoint.x + xfA.rotation.entry(0,1) * manifold.localPoint.y;
+       planePoint.y = xfA.position.y + xfA.rotation.entry(1,0) *
+           manifold.localPoint.x + xfA.rotation.entry(1,1) * manifold.localPoint.y;
 
        final Vector2 clipPoint = pool4;
 
        for (int i = 0; i &lt; manifold.pointCount; ++i) {
-         clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
-             manifold.points[i].localPoint.x + xfB.rotation.col2.x *
+         clipPoint.x = xfB.position.x + xfB.rotation.entry(0,0) *
+             manifold.points[i].localPoint.x + xfB.rotation.entry(0,1) *
              manifold.points[i].localPoint.y;
-         clipPoint.y = xfB.position.y + xfB.rotation.col1.y *
-             manifold.points[i].localPoint.x + xfB.rotation.col2.y *
+         clipPoint.y = xfB.position.y + xfB.rotation.entry(1,0) *
+             manifold.points[i].localPoint.x + xfB.rotation.entry(1,1) *
              manifold.points[i].localPoint.y;
 
          num scalar = radiusA - ((clipPoint.x - planePoint.x) *
@@ -136,26 +136,26 @@ class WorldManifold {
      case ManifoldType.FACE_B :
        final Vector2 planePoint = pool3;
 
-       final Matrix22 R = xfB.rotation;
-       normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
+       final Matrix2 R = xfB.rotation;
+       normal.x = R.entry(0,0) * manifold.localNormal.x + R.entry(0,1) *
            manifold.localNormal.y;
-       normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
+       normal.y = R.entry(1,0) * manifold.localNormal.x + R.entry(1,1) *
            manifold.localNormal.y;
        final Vector2 v = manifold.localPoint;
-       planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
-           xfB.rotation.col2.x * v.y;
-       planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
-           xfB.rotation.col2.y * v.y;
+       planePoint.x = xfB.position.x + xfB.rotation.entry(0,0) * v.x +
+           xfB.rotation.entry(0,1) * v.y;
+       planePoint.y = xfB.position.y + xfB.rotation.entry(1,0) * v.x +
+           xfB.rotation.entry(1,1) * v.y;
 
        final Vector2 clipPoint = pool4;
 
        for (int i = 0; i &lt; manifold.pointCount; ++i) {
 
-         clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
-             manifold.points[i].localPoint.x + xfA.rotation.col2.x *
+         clipPoint.x = xfA.position.x + xfA.rotation.entry(0,0) *
+             manifold.points[i].localPoint.x + xfA.rotation.entry(0,1) *
              manifold.points[i].localPoint.y;
-         clipPoint.y = xfA.position.y + xfA.rotation.col1.y *
-             manifold.points[i].localPoint.x + xfA.rotation.col2.y *
+         clipPoint.y = xfA.position.y + xfA.rotation.entry(1,0) *
+             manifold.points[i].localPoint.x + xfA.rotation.entry(1,1) *
              manifold.points[i].localPoint.y;
 
          num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
@@ -202,7 +202,7 @@ WorldManifold() :
 <h3>Properties</h3>
 <div class="field"><h4 id="normal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>normal</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>normal</strong> <a class="anchor-link"
             href="#normal"
             title="Permalink to WorldManifold.normal">#</a>
         </h4>
@@ -215,7 +215,7 @@ final Vector2 normal
 </div>
 <div class="field"><h4 id="points">
 <button class="show-code">Code</button>
-final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>points</strong> <a class="anchor-link"
+final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Vector2.html">Vector2</a>&gt;         <strong>points</strong> <a class="anchor-link"
             href="#points"
             title="Permalink to WorldManifold.points">#</a>
         </h4>
@@ -228,7 +228,7 @@ final List&lt;Vector2&gt; points
 </div>
 <div class="field"><h4 id="pool3">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pool3</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pool3</strong> <a class="anchor-link"
             href="#pool3"
             title="Permalink to WorldManifold.pool3">#</a>
         </h4>
@@ -242,7 +242,7 @@ final Vector2 pool3
 </div>
 <div class="field"><h4 id="pool4">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>pool4</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pool4</strong> <a class="anchor-link"
             href="#pool4"
             title="Permalink to WorldManifold.pool4">#</a>
         </h4>
@@ -270,15 +270,15 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
 
      normal.x = 1.0;
      normal.y = 0.0;
-     pointA.x = xfA.position.x + xfA.rotation.col1.x *
-         manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-     pointA.y = xfA.position.y + xfA.rotation.col1.y *
-         manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
-     pointB.x = xfB.position.x + xfB.rotation.col1.x *
-         manifold.points[0].localPoint.x + xfB.rotation.col2.x *
+     pointA.x = xfA.position.x + xfA.rotation.entry(0,0) *
+         manifold.localPoint.x + xfA.rotation.entry(0,1) * manifold.localPoint.y;
+     pointA.y = xfA.position.y + xfA.rotation.entry(1,0) *
+         manifold.localPoint.x + xfA.rotation.entry(1,1) * manifold.localPoint.y;
+     pointB.x = xfB.position.x + xfB.rotation.entry(0,0) *
+         manifold.points[0].localPoint.x + xfB.rotation.entry(0,1) *
          manifold.points[0].localPoint.y;
-     pointB.y = xfB.position.y + xfB.rotation.col1.y *
-         manifold.points[0].localPoint.x + xfB.rotation.col2.y *
+     pointB.y = xfB.position.y + xfB.rotation.entry(1,0) *
+         manifold.points[0].localPoint.x + xfB.rotation.entry(1,1) *
          manifold.points[0].localPoint.y;
 
      if (MathBox.distanceSquared(pointA, pointB) &gt; Settings.EPSILON *
@@ -300,23 +300,23 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
    case ManifoldType.FACE_A:
      final Vector2 planePoint = pool3;
 
-     normal.x = xfA.rotation.col1.x * manifold.localNormal.x +
-         xfA.rotation.col2.x * manifold.localNormal.y;
-     normal.y = xfA.rotation.col1.y * manifold.localNormal.x +
-         xfA.rotation.col2.y * manifold.localNormal.y;
-     planePoint.x = xfA.position.x + xfA.rotation.col1.x *
-         manifold.localPoint.x + xfA.rotation.col2.x * manifold.localPoint.y;
-     planePoint.y = xfA.position.y + xfA.rotation.col1.y *
-         manifold.localPoint.x + xfA.rotation.col2.y * manifold.localPoint.y;
+     normal.x = xfA.rotation.entry(0,0) * manifold.localNormal.x +
+         xfA.rotation.entry(0,1) * manifold.localNormal.y;
+     normal.y = xfA.rotation.entry(1,0) * manifold.localNormal.x +
+         xfA.rotation.entry(1,1) * manifold.localNormal.y;
+     planePoint.x = xfA.position.x + xfA.rotation.entry(0,0) *
+         manifold.localPoint.x + xfA.rotation.entry(0,1) * manifold.localPoint.y;
+     planePoint.y = xfA.position.y + xfA.rotation.entry(1,0) *
+         manifold.localPoint.x + xfA.rotation.entry(1,1) * manifold.localPoint.y;
 
      final Vector2 clipPoint = pool4;
 
      for (int i = 0; i &lt; manifold.pointCount; ++i) {
-       clipPoint.x = xfB.position.x + xfB.rotation.col1.x *
-           manifold.points[i].localPoint.x + xfB.rotation.col2.x *
+       clipPoint.x = xfB.position.x + xfB.rotation.entry(0,0) *
+           manifold.points[i].localPoint.x + xfB.rotation.entry(0,1) *
            manifold.points[i].localPoint.y;
-       clipPoint.y = xfB.position.y + xfB.rotation.col1.y *
-           manifold.points[i].localPoint.x + xfB.rotation.col2.y *
+       clipPoint.y = xfB.position.y + xfB.rotation.entry(1,0) *
+           manifold.points[i].localPoint.x + xfB.rotation.entry(1,1) *
            manifold.points[i].localPoint.y;
 
        num scalar = radiusA - ((clipPoint.x - planePoint.x) *
@@ -336,26 +336,26 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
    case ManifoldType.FACE_B :
      final Vector2 planePoint = pool3;
 
-     final Matrix22 R = xfB.rotation;
-     normal.x = R.col1.x * manifold.localNormal.x + R.col2.x *
+     final Matrix2 R = xfB.rotation;
+     normal.x = R.entry(0,0) * manifold.localNormal.x + R.entry(0,1) *
          manifold.localNormal.y;
-     normal.y = R.col1.y * manifold.localNormal.x + R.col2.y *
+     normal.y = R.entry(1,0) * manifold.localNormal.x + R.entry(1,1) *
          manifold.localNormal.y;
      final Vector2 v = manifold.localPoint;
-     planePoint.x = xfB.position.x + xfB.rotation.col1.x * v.x +
-         xfB.rotation.col2.x * v.y;
-     planePoint.y = xfB.position.y + xfB.rotation.col1.y * v.x +
-         xfB.rotation.col2.y * v.y;
+     planePoint.x = xfB.position.x + xfB.rotation.entry(0,0) * v.x +
+         xfB.rotation.entry(0,1) * v.y;
+     planePoint.y = xfB.position.y + xfB.rotation.entry(1,0) * v.x +
+         xfB.rotation.entry(1,1) * v.y;
 
      final Vector2 clipPoint = pool4;
 
      for (int i = 0; i &lt; manifold.pointCount; ++i) {
 
-       clipPoint.x = xfA.position.x + xfA.rotation.col1.x *
-           manifold.points[i].localPoint.x + xfA.rotation.col2.x *
+       clipPoint.x = xfA.position.x + xfA.rotation.entry(0,0) *
+           manifold.points[i].localPoint.x + xfA.rotation.entry(0,1) *
            manifold.points[i].localPoint.y;
-       clipPoint.y = xfA.position.y + xfA.rotation.col1.y *
-           manifold.points[i].localPoint.x + xfA.rotation.col2.y *
+       clipPoint.y = xfA.position.y + xfA.rotation.entry(1,0) *
+           manifold.points[i].localPoint.x + xfA.rotation.entry(1,1) *
            manifold.points[i].localPoint.y;
 
        num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +

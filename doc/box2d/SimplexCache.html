@@ -35,7 +35,7 @@
 <pre class="source">
 class SimplexCache {
  /** length or area */
- num metric;
+ double metric;
 
  int count;
 
@@ -49,7 +49,7 @@ class SimplexCache {
   * Constructs a new SimplexCache.
   */
  SimplexCache() :
-   metric = 0,
+   metric = 0.0,
    count = 0,
    indexA = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER),
    indexB = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
@@ -76,7 +76,7 @@ new <strong>SimplexCache</strong>() <a class="anchor-link" href="#SimplexCache"
 <p>Constructs a new SimplexCache.</p>
 <pre class="source">
 SimplexCache() :
- metric = 0,
+ metric = 0.0,
  count = 0,
  indexA = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER),
  indexB = new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
@@ -126,14 +126,14 @@ final List&lt;int&gt; indexB
 </div>
 <div class="field"><h4 id="metric">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>metric</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>metric</strong> <a class="anchor-link"
             href="#metric"
             title="Permalink to SimplexCache.metric">#</a>
         </h4>
         <div class="doc">
 <p>length or area </p>
 <pre class="source">
-num metric
+double metric
 </pre>
 </div>
 </div>

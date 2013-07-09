@@ -272,42 +272,42 @@ void clearFlags(int value) { flags &amp;= ~value; }
 </div>
 </div>
 <div class="method"><h4 id="drawCircle">
-abstract void <strong>drawCircle</strong>(<a href="../box2d/Vector2.html">Vector2</a> center, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector2.html">Vector2</a> axis]) <a class="anchor-link" href="#drawCircle"
+abstract void <strong>drawCircle</strong>(<a href="../vector_math/Vector2.html">Vector2</a> center, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/Vector2.html">Vector2</a> axis]) <a class="anchor-link" href="#drawCircle"
               title="Permalink to DebugDraw.drawCircle">#</a></h4>
 <div class="doc">
 <p>Draw a circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPoint">
-abstract void <strong>drawPoint</strong>(<a href="../box2d/Vector2.html">Vector2</a> point, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
+abstract void <strong>drawPoint</strong>(<a href="../vector_math/Vector2.html">Vector2</a> point, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radiusOnScreen, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPoint"
               title="Permalink to DebugDraw.drawPoint">#</a></h4>
 <div class="doc">
 <p>Draws the given point with the given radius and color.  </p>
 </div>
 </div>
 <div class="method"><h4 id="drawPolygon">
-abstract void <strong>drawPolygon</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt; vertices, <a href="http://api.dartlang.org/dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
+abstract void <strong>drawPolygon</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Vector2.html">Vector2</a>&gt; vertices, <a href="http://api.dartlang.org/dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawPolygon"
               title="Permalink to DebugDraw.drawPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a closed polygon provided in CCW order. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSegment">
-abstract void <strong>drawSegment</strong>(<a href="../box2d/Vector2.html">Vector2</a> p1, <a href="../box2d/Vector2.html">Vector2</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
+abstract void <strong>drawSegment</strong>(<a href="../vector_math/Vector2.html">Vector2</a> p1, <a href="../vector_math/Vector2.html">Vector2</a> p2, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSegment"
               title="Permalink to DebugDraw.drawSegment">#</a></h4>
 <div class="doc">
 <p>Draw a line segment. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidCircle">
-abstract void <strong>drawSolidCircle</strong>(<a href="../box2d/Vector2.html">Vector2</a> center, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../box2d/Vector2.html">Vector2</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
+abstract void <strong>drawSolidCircle</strong>(<a href="../vector_math/Vector2.html">Vector2</a> center, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radius, <a href="../box2d/Color3.html">Color3</a> color, [<a href="../vector_math/Vector2.html">Vector2</a> axis]) <a class="anchor-link" href="#drawSolidCircle"
               title="Permalink to DebugDraw.drawSolidCircle">#</a></h4>
 <div class="doc">
 <p>Draw a solid circle. </p>
 </div>
 </div>
 <div class="method"><h4 id="drawSolidPolygon">
-abstract void <strong>drawSolidPolygon</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt; vertices, <a href="http://api.dartlang.org/dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
+abstract void <strong>drawSolidPolygon</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Vector2.html">Vector2</a>&gt; vertices, <a href="http://api.dartlang.org/dart_core/int.html">int</a> vertexCount, <a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#drawSolidPolygon"
               title="Permalink to DebugDraw.drawSolidPolygon">#</a></h4>
 <div class="doc">
 <p>Draw a solid closed polygon provided in CCW order. </p>
@@ -329,7 +329,7 @@ abstract void <strong>drawTransform</strong>(<a href="../box2d/Transform.html">T
 </div>
 <div class="method"><h4 id="getScreenToWorldToOut">
 <button class="show-code">Code</button>
-void <strong>getScreenToWorldToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> argScreen, <a href="../box2d/Vector2.html">Vector2</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
+void <strong>getScreenToWorldToOut</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argScreen, <a href="../vector_math/Vector2.html">Vector2</a> argWorld) <a class="anchor-link" href="#getScreenToWorldToOut"
               title="Permalink to DebugDraw.getScreenToWorldToOut">#</a></h4>
 <div class="doc">
 <p>Screen coordinates are specified in argScreen. These coordinates are
@@ -343,7 +343,7 @@ void getScreenToWorldToOut(Vector2 argScreen, Vector2 argWorld) {
 </div>
 <div class="method"><h4 id="getWorldToScreenToOut">
 <button class="show-code">Code</button>
-void <strong>getWorldToScreenToOut</strong>(<a href="../box2d/Vector2.html">Vector2</a> argWorld, <a href="../box2d/Vector2.html">Vector2</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
+void <strong>getWorldToScreenToOut</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argWorld, <a href="../vector_math/Vector2.html">Vector2</a> argScreen) <a class="anchor-link" href="#getWorldToScreenToOut"
               title="Permalink to DebugDraw.getWorldToScreenToOut">#</a></h4>
 <div class="doc">
 <p>World coordinates are specified in argWorld. These coordinates are

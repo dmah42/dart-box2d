@@ -43,7 +43,7 @@ class ContactSolver {
  /**
   * Ensure a reasonable condition number. For the block solver
   */
- static const num K_MAX_CONDITION_NUMBER = 100.0;
+ static const double K_MAX_CONDITION_NUMBER = 100.0;
 
  List&lt;ContactConstraint&gt; constraints;
  int constraintCount;
@@ -212,10 +212,10 @@ class ContactSolver {
        num invMassB = bodyB.invMass;
        num invIB = bodyB.invInertia;
 
-       num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
-       num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
-       num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
-       num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
+       num rn1A = ccp1.rA.cross(cc.normal);
+       num rn1B = ccp1.rB.cross(cc.normal);
+       num rn2A = ccp2.rA.cross(cc.normal);
+       num rn2B = ccp2.rB.cross(cc.normal);
 
        num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
            * rn1B;
@@ -227,15 +227,9 @@ class ContactSolver {
        // Ensure a reasonable condition number.
        if (k11 * k11 &lt; K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
          // K is safe to invert.
-         cc.K.col1.x = k11;
-         cc.K.col1.y = k12;
-         cc.K.col2.x = k12;
-         cc.K.col2.y = k22;
-         cc.normalMass.col1.x = cc.K.col1.x;
-         cc.normalMass.col1.y = cc.K.col1.y;
-         cc.normalMass.col2.x = cc.K.col2.x;
-         cc.normalMass.col2.y = cc.K.col2.y;
-         cc.normalMass.invertLocal();
+         cc.K.setValues(k11,k12,k12,k22);
+         cc.normalMass.setValues(k11,k12,k12,k22);
+         cc.normalMass.invert();
        } else{
          // The constraints are redundant, just use one.
          cc.pointCount = 1;
@@ -256,7 +250,7 @@ class ContactSolver {
      final num invMassB = bodyB.invMass;
      final num invIB = bodyB.invInertia;
      final Vector2 normal = c.normal;
-     Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
+     Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
 
      for (int j = 0; j &lt; c.pointCount; ++j){
        ContactConstraintPoint ccp = c.points[j];
@@ -384,36 +378,36 @@ class ContactSolver {
        num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
        Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
-       temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
-       temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
+       temp2.x = c.K.entry(0,0) * a.x + c.K.entry(0,1) * a.y;
+       temp2.y = c.K.entry(1,0) * a.x + c.K.entry(1,1) * a.y;
        b.x -= temp2.x;
        b.y -= temp2.y;
 
        while (true) {
-         Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-         x.mulLocal(-1.0);
+         c.normalMass.transformed(b, x);
+         x.scale(-1.0);
 
          if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
            // Resubstitute for the incremental impulse
            //Vector2 d = x - a;
-           d.setFrom(x).subLocal(a);
+           d.setFrom(x).sub(a);
 
            // Apply incremental impulse
            // Vector2 P1 = d.x * normal;
            // Vector2 P2 = d.y * normal;
-           P1.setFrom(c.normal).mulLocal(d.x);
-           P2.setFrom(c.normal).mulLocal(d.y);
+           P1.setFrom(c.normal).scale(d.x);
+           P2.setFrom(c.normal).scale(d.y);
 
-           temp1.setFrom(P1).addLocal(P2);
-           temp2.setFrom(temp1).mulLocal(invMassA);
-           vA.subLocal(temp2);
-           temp2.setFrom(temp1).mulLocal(invMassB);
-           vB.addLocal(temp2);
+           temp1.setFrom(P1).add(P2);
+           temp2.setFrom(temp1).scale(invMassA);
+           vA.sub(temp2);
+           temp2.setFrom(temp1).scale(invMassB);
+           vB.add(temp2);
 
-           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-               Vector2.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-               Vector2.crossVectors(cp2.rB, P2));
+           wA -= invIA * (cp1.rA.cross(P1) +
+               cp2.rA.cross(P2));
+           wB += invIB * (cp1.rB.cross(P1) +
+               cp2.rB.cross(P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -425,26 +419,26 @@ class ContactSolver {
          x.x = - cp1.normalMass * b.x;
          x.y = 0.0;
          vn1 = 0.0;
-         vn2 = c.K.col1.y * x.x + b.y;
+         vn2 = c.K.entry(1,0) * x.x + b.y;
 
          if (x.x &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0) {
            // Resubstitute for the incremental impulse
-           d.setFrom(x).subLocal(a);
+           d.setFrom(x).sub(a);
 
            // Apply incremental impulse
-           P1.setFrom(c.normal).mulLocal(d.x);
-           P2.setFrom(c.normal).mulLocal(d.y);
+           P1.setFrom(c.normal).scale(d.x);
+           P2.setFrom(c.normal).scale(d.y);
 
-           temp1.setFrom(P1).addLocal(P2);
-           temp2.setFrom(temp1).mulLocal(invMassA);
-           vA.subLocal(temp2);
-           temp2.setFrom(temp1).mulLocal(invMassB);
-           vB.addLocal(temp2);
+           temp1.setFrom(P1).add(P2);
+           temp2.setFrom(temp1).scale(invMassA);
+           vA.sub(temp2);
+           temp2.setFrom(temp1).scale(invMassB);
+           vB.add(temp2);
 
-           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-               Vector2.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-               Vector2.crossVectors(cp2.rB, P2));
+           wA -= invIA * (cp1.rA.cross(P1) +
+               cp2.rA.cross(P2));
+           wB += invIB * (cp1.rB.cross(P1) +
+               cp2.rB.cross(P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -455,27 +449,27 @@ class ContactSolver {
 
          x.x = 0.0;
          x.y = - cp2.normalMass * b.y;
-         vn1 = c.K.col2.x * x.y + b.x;
+         vn1 = c.K.entry(0,1) * x.y + b.x;
          vn2 = 0.0;
 
          if (x.y &gt;= 0.0 &amp;&amp; vn1 &gt;= 0.0) {
            // Resubstitute for the incremental impulse
-           d.setFrom(x).subLocal(a);
+           d.setFrom(x).sub(a);
 
            // Apply incremental impulse
-           P1.setFrom(c.normal).mulLocal(d.x);
-           P2.setFrom(c.normal).mulLocal(d.y);
+           P1.setFrom(c.normal).scale(d.x);
+           P2.setFrom(c.normal).scale(d.y);
 
-           temp1.setFrom(P1).addLocal(P2);
-           temp2.setFrom(temp1).mulLocal(invMassA);
-           vA.subLocal(temp2);
-           temp2.setFrom(temp1).mulLocal(invMassB);
-           vB.addLocal(temp2);
+           temp1.setFrom(P1).add(P2);
+           temp2.setFrom(temp1).scale(invMassA);
+           vA.sub(temp2);
+           temp2.setFrom(temp1).scale(invMassB);
+           vB.add(temp2);
 
-           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-               Vector2.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-               Vector2.crossVectors(cp2.rB, P2));
+           wA -= invIA * (cp1.rA.cross(P1) +
+               cp2.rA.cross(P2));
+           wB += invIB * (cp1.rB.cross(P1) +
+               cp2.rB.cross(P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -491,22 +485,22 @@ class ContactSolver {
 
          if (vn1 &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0 ) {
            // Resubstitute for the incremental impulse
-           d.setFrom(x).subLocal(a);
+           d.setFrom(x).sub(a);
 
            // Apply incremental impulse
-           P1.setFrom(c.normal).mulLocal(d.x);
-           P2.setFrom(c.normal).mulLocal(d.y);
+           P1.setFrom(c.normal).scale(d.x);
+           P2.setFrom(c.normal).scale(d.y);
 
-           temp1.setFrom(P1).addLocal(P2);
-           temp2.setFrom(temp1).mulLocal(invMassA);
-           vA.subLocal(temp2);
-           temp2.setFrom(temp1).mulLocal(invMassB);
-           vB.addLocal(temp2);
+           temp1.setFrom(P1).add(P2);
+           temp2.setFrom(temp1).scale(invMassA);
+           vA.sub(temp2);
+           temp2.setFrom(temp1).scale(invMassB);
+           vB.add(temp2);
 
-           wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-               Vector2.crossVectors(cp2.rA, P2));
-           wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-               Vector2.crossVectors(cp2.rB, P2));
+           wA -= invIA * (cp1.rA.cross(P1) +
+               cp2.rA.cross(P2));
+           wB += invIB * (cp2.rA.cross(P1) +
+               cp2.rB.cross(P2));
 
            // Accumulate
            cp1.normalImpulse = x.x;
@@ -565,8 +559,8 @@ class ContactSolver {
        Vector2 point = psm.point;
        num separation = psm.separation;
 
-       rA.setFrom(point).subLocal(bodyA.sweep.center);
-       rB.setFrom(point).subLocal(bodyB.sweep.center);
+       rA.setFrom(point).sub(bodyA.sweep.center);
+       rB.setFrom(point).sub(bodyB.sweep.center);
 
        // Track max constraint error.
        minSeparation = Math.min(minSeparation, separation);
@@ -577,23 +571,23 @@ class ContactSolver {
            -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
        // Compute the effective mass.
-       num rnA = Vector2.crossVectors(rA, normal);
-       num rnB = Vector2.crossVectors(rB, normal);
+       num rnA = rA.cross(normal);
+       num rnB = rB.cross(normal);
        num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
        // Compute normal impulse
        num impulse = K &gt; 0.0 ? - C / K : 0.0;
 
-       P.setFrom(normal).mulLocal(impulse);
+       P.setFrom(normal).scale(impulse);
 
-       temp1.setFrom(P).mulLocal(invMassA);
-       bodyA.sweep.center.subLocal(temp1);;
-       bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
+       temp1.setFrom(P).scale(invMassA);
+       bodyA.sweep.center.sub(temp1);;
+       bodyA.sweep.angle -= invIA * rA.cross(P);
        bodyA.synchronizeTransform();
 
-       temp1.setFrom(P).mulLocal(invMassB);
-       bodyB.sweep.center.addLocal(temp1);
-       bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
+       temp1.setFrom(P).scale(invMassB);
+       bodyB.sweep.center.add(temp1);
+       bodyB.sweep.angle += invIB * rB.cross(P);
        bodyB.synchronizeTransform();
      }
    }
@@ -623,14 +617,14 @@ static const int INITIAL_NUM_CONSTRAINTS = 256
 </div>
 <div class="field"><h4 id="K_MAX_CONDITION_NUMBER">
 <button class="show-code">Code</button>
-const <a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
+const <a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>K_MAX_CONDITION_NUMBER</strong> <a class="anchor-link"
             href="#K_MAX_CONDITION_NUMBER"
             title="Permalink to ContactSolver.K_MAX_CONDITION_NUMBER">#</a>
         </h4>
         <div class="doc">
 <p>Ensure a reasonable condition number. For the block solver</p>
 <pre class="source">
-static const num K_MAX_CONDITION_NUMBER = 100.0
+static const double K_MAX_CONDITION_NUMBER = 100.0
 </pre>
 </div>
 </div>
@@ -696,7 +690,7 @@ List&lt;ContactConstraint&gt; constraints
 </div>
 <div class="field"><h4 id="d">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>d</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>d</strong> <a class="anchor-link"
             href="#d"
             title="Permalink to ContactSolver.d">#</a>
         </h4>
@@ -708,7 +702,7 @@ final Vector2 d
 </div>
 <div class="field"><h4 id="dv">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv</strong> <a class="anchor-link"
             href="#dv"
             title="Permalink to ContactSolver.dv">#</a>
         </h4>
@@ -720,7 +714,7 @@ final Vector2 dv
 </div>
 <div class="field"><h4 id="dv1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv1</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv1</strong> <a class="anchor-link"
             href="#dv1"
             title="Permalink to ContactSolver.dv1">#</a>
         </h4>
@@ -732,7 +726,7 @@ final Vector2 dv1
 </div>
 <div class="field"><h4 id="dv2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>dv2</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv2</strong> <a class="anchor-link"
             href="#dv2"
             title="Permalink to ContactSolver.dv2">#</a>
         </h4>
@@ -744,7 +738,7 @@ final Vector2 dv2
 </div>
 <div class="field"><h4 id="P">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P</strong> <a class="anchor-link"
             href="#P"
             title="Permalink to ContactSolver.P">#</a>
         </h4>
@@ -756,7 +750,7 @@ final Vector2 P
 </div>
 <div class="field"><h4 id="P1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P1</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P1</strong> <a class="anchor-link"
             href="#P1"
             title="Permalink to ContactSolver.P1">#</a>
         </h4>
@@ -768,7 +762,7 @@ final Vector2 P1
 </div>
 <div class="field"><h4 id="P2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>P2</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P2</strong> <a class="anchor-link"
             href="#P2"
             title="Permalink to ContactSolver.P2">#</a>
         </h4>
@@ -792,7 +786,7 @@ final PositionSolverManifold psolver
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to ContactSolver.rA">#</a>
         </h4>
@@ -804,7 +798,7 @@ final Vector2 rA
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to ContactSolver.rB">#</a>
         </h4>
@@ -816,7 +810,7 @@ final Vector2 rB
 </div>
 <div class="field"><h4 id="tangent">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>tangent</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>tangent</strong> <a class="anchor-link"
             href="#tangent"
             title="Permalink to ContactSolver.tangent">#</a>
         </h4>
@@ -828,7 +822,7 @@ final Vector2 tangent
 </div>
 <div class="field"><h4 id="temp1">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp1</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp1</strong> <a class="anchor-link"
             href="#temp1"
             title="Permalink to ContactSolver.temp1">#</a>
         </h4>
@@ -840,7 +834,7 @@ final Vector2 temp1
 </div>
 <div class="field"><h4 id="temp2">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>temp2</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp2</strong> <a class="anchor-link"
             href="#temp2"
             title="Permalink to ContactSolver.temp2">#</a>
         </h4>
@@ -865,7 +859,7 @@ final WorldManifold worldManifold
 </div>
 <div class="field"><h4 id="x">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>x</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>x</strong> <a class="anchor-link"
             href="#x"
             title="Permalink to ContactSolver.x">#</a>
         </h4>
@@ -1008,10 +1002,10 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
      num invMassB = bodyB.invMass;
      num invIB = bodyB.invInertia;
 
-     num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
-     num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
-     num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
-     num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
+     num rn1A = ccp1.rA.cross(cc.normal);
+     num rn1B = ccp1.rB.cross(cc.normal);
+     num rn2A = ccp2.rA.cross(cc.normal);
+     num rn2B = ccp2.rB.cross(cc.normal);
 
      num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
          * rn1B;
@@ -1023,15 +1017,9 @@ void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
      // Ensure a reasonable condition number.
      if (k11 * k11 &lt; K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
        // K is safe to invert.
-       cc.K.col1.x = k11;
-       cc.K.col1.y = k12;
-       cc.K.col2.x = k12;
-       cc.K.col2.y = k22;
-       cc.normalMass.col1.x = cc.K.col1.x;
-       cc.normalMass.col1.y = cc.K.col1.y;
-       cc.normalMass.col2.x = cc.K.col2.x;
-       cc.normalMass.col2.y = cc.K.col2.y;
-       cc.normalMass.invertLocal();
+       cc.K.setValues(k11,k12,k12,k22);
+       cc.normalMass.setValues(k11,k12,k12,k22);
+       cc.normalMass.invert();
      } else{
        // The constraints are redundant, just use one.
        cc.pointCount = 1;
@@ -1071,8 +1059,8 @@ bool solvePositionConstraints(num baumgarte) {
      Vector2 point = psm.point;
      num separation = psm.separation;
 
-     rA.setFrom(point).subLocal(bodyA.sweep.center);
-     rB.setFrom(point).subLocal(bodyB.sweep.center);
+     rA.setFrom(point).sub(bodyA.sweep.center);
+     rB.setFrom(point).sub(bodyB.sweep.center);
 
      // Track max constraint error.
      minSeparation = Math.min(minSeparation, separation);
@@ -1083,23 +1071,23 @@ bool solvePositionConstraints(num baumgarte) {
          -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
      // Compute the effective mass.
-     num rnA = Vector2.crossVectors(rA, normal);
-     num rnB = Vector2.crossVectors(rB, normal);
+     num rnA = rA.cross(normal);
+     num rnB = rB.cross(normal);
      num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
      // Compute normal impulse
      num impulse = K &gt; 0.0 ? - C / K : 0.0;
 
-     P.setFrom(normal).mulLocal(impulse);
+     P.setFrom(normal).scale(impulse);
 
-     temp1.setFrom(P).mulLocal(invMassA);
-     bodyA.sweep.center.subLocal(temp1);;
-     bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
+     temp1.setFrom(P).scale(invMassA);
+     bodyA.sweep.center.sub(temp1);;
+     bodyA.sweep.angle -= invIA * rA.cross(P);
      bodyA.synchronizeTransform();
 
-     temp1.setFrom(P).mulLocal(invMassB);
-     bodyB.sweep.center.addLocal(temp1);
-     bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
+     temp1.setFrom(P).scale(invMassB);
+     bodyB.sweep.center.add(temp1);
+     bodyB.sweep.angle += invIB * rB.cross(P);
      bodyB.synchronizeTransform();
    }
  }
@@ -1224,36 +1212,36 @@ void solveVelocityConstraints(){
      num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
      Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
-     temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
-     temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
+     temp2.x = c.K.entry(0,0) * a.x + c.K.entry(0,1) * a.y;
+     temp2.y = c.K.entry(1,0) * a.x + c.K.entry(1,1) * a.y;
      b.x -= temp2.x;
      b.y -= temp2.y;
 
      while (true) {
-       Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-       x.mulLocal(-1.0);
+       c.normalMass.transformed(b, x);
+       x.scale(-1.0);
 
        if (x.x &gt;= 0.0 &amp;&amp; x.y &gt;= 0.0){
          // Resubstitute for the incremental impulse
          //Vector2 d = x - a;
-         d.setFrom(x).subLocal(a);
+         d.setFrom(x).sub(a);
 
          // Apply incremental impulse
          // Vector2 P1 = d.x * normal;
          // Vector2 P2 = d.y * normal;
-         P1.setFrom(c.normal).mulLocal(d.x);
-         P2.setFrom(c.normal).mulLocal(d.y);
+         P1.setFrom(c.normal).scale(d.x);
+         P2.setFrom(c.normal).scale(d.y);
 
-         temp1.setFrom(P1).addLocal(P2);
-         temp2.setFrom(temp1).mulLocal(invMassA);
-         vA.subLocal(temp2);
-         temp2.setFrom(temp1).mulLocal(invMassB);
-         vB.addLocal(temp2);
+         temp1.setFrom(P1).add(P2);
+         temp2.setFrom(temp1).scale(invMassA);
+         vA.sub(temp2);
+         temp2.setFrom(temp1).scale(invMassB);
+         vB.add(temp2);
 
-         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-             Vector2.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-             Vector2.crossVectors(cp2.rB, P2));
+         wA -= invIA * (cp1.rA.cross(P1) +
+             cp2.rA.cross(P2));
+         wB += invIB * (cp1.rB.cross(P1) +
+             cp2.rB.cross(P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1265,26 +1253,26 @@ void solveVelocityConstraints(){
        x.x = - cp1.normalMass * b.x;
        x.y = 0.0;
        vn1 = 0.0;
-       vn2 = c.K.col1.y * x.x + b.y;
+       vn2 = c.K.entry(1,0) * x.x + b.y;
 
        if (x.x &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0) {
          // Resubstitute for the incremental impulse
-         d.setFrom(x).subLocal(a);
+         d.setFrom(x).sub(a);
 
          // Apply incremental impulse
-         P1.setFrom(c.normal).mulLocal(d.x);
-         P2.setFrom(c.normal).mulLocal(d.y);
+         P1.setFrom(c.normal).scale(d.x);
+         P2.setFrom(c.normal).scale(d.y);
 
-         temp1.setFrom(P1).addLocal(P2);
-         temp2.setFrom(temp1).mulLocal(invMassA);
-         vA.subLocal(temp2);
-         temp2.setFrom(temp1).mulLocal(invMassB);
-         vB.addLocal(temp2);
+         temp1.setFrom(P1).add(P2);
+         temp2.setFrom(temp1).scale(invMassA);
+         vA.sub(temp2);
+         temp2.setFrom(temp1).scale(invMassB);
+         vB.add(temp2);
 
-         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-             Vector2.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-             Vector2.crossVectors(cp2.rB, P2));
+         wA -= invIA * (cp1.rA.cross(P1) +
+             cp2.rA.cross(P2));
+         wB += invIB * (cp1.rB.cross(P1) +
+             cp2.rB.cross(P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1295,27 +1283,27 @@ void solveVelocityConstraints(){
 
        x.x = 0.0;
        x.y = - cp2.normalMass * b.y;
-       vn1 = c.K.col2.x * x.y + b.x;
+       vn1 = c.K.entry(0,1) * x.y + b.x;
        vn2 = 0.0;
 
        if (x.y &gt;= 0.0 &amp;&amp; vn1 &gt;= 0.0) {
          // Resubstitute for the incremental impulse
-         d.setFrom(x).subLocal(a);
+         d.setFrom(x).sub(a);
 
          // Apply incremental impulse
-         P1.setFrom(c.normal).mulLocal(d.x);
-         P2.setFrom(c.normal).mulLocal(d.y);
+         P1.setFrom(c.normal).scale(d.x);
+         P2.setFrom(c.normal).scale(d.y);
 
-         temp1.setFrom(P1).addLocal(P2);
-         temp2.setFrom(temp1).mulLocal(invMassA);
-         vA.subLocal(temp2);
-         temp2.setFrom(temp1).mulLocal(invMassB);
-         vB.addLocal(temp2);
+         temp1.setFrom(P1).add(P2);
+         temp2.setFrom(temp1).scale(invMassA);
+         vA.sub(temp2);
+         temp2.setFrom(temp1).scale(invMassB);
+         vB.add(temp2);
 
-         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-             Vector2.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-             Vector2.crossVectors(cp2.rB, P2));
+         wA -= invIA * (cp1.rA.cross(P1) +
+             cp2.rA.cross(P2));
+         wB += invIB * (cp1.rB.cross(P1) +
+             cp2.rB.cross(P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1331,22 +1319,22 @@ void solveVelocityConstraints(){
 
        if (vn1 &gt;= 0.0 &amp;&amp; vn2 &gt;= 0.0 ) {
          // Resubstitute for the incremental impulse
-         d.setFrom(x).subLocal(a);
+         d.setFrom(x).sub(a);
 
          // Apply incremental impulse
-         P1.setFrom(c.normal).mulLocal(d.x);
-         P2.setFrom(c.normal).mulLocal(d.y);
+         P1.setFrom(c.normal).scale(d.x);
+         P2.setFrom(c.normal).scale(d.y);
 
-         temp1.setFrom(P1).addLocal(P2);
-         temp2.setFrom(temp1).mulLocal(invMassA);
-         vA.subLocal(temp2);
-         temp2.setFrom(temp1).mulLocal(invMassB);
-         vB.addLocal(temp2);
+         temp1.setFrom(P1).add(P2);
+         temp2.setFrom(temp1).scale(invMassA);
+         vA.sub(temp2);
+         temp2.setFrom(temp1).scale(invMassB);
+         vB.add(temp2);
 
-         wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-             Vector2.crossVectors(cp2.rA, P2));
-         wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-             Vector2.crossVectors(cp2.rB, P2));
+         wA -= invIA * (cp1.rA.cross(P1) +
+             cp2.rA.cross(P2));
+         wB += invIB * (cp2.rA.cross(P1) +
+             cp2.rB.cross(P2));
 
          // Accumulate
          cp1.normalImpulse = x.x;
@@ -1408,7 +1396,7 @@ void warmStart(){
    final num invMassB = bodyB.invMass;
    final num invIB = bodyB.invInertia;
    final Vector2 normal = c.normal;
-   Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
+   Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
 
    for (int j = 0; j &lt; c.pointCount; ++j){
      ContactConstraintPoint ccp = c.points[j];

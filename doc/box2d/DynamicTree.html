@@ -158,7 +158,7 @@ class DynamicTree {
 
    // Predict bounding box displacement.
    _tempVector.setFrom(displacement);
-   _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
+   _tempVector.scale(Settings.BOUNDING_BOX_MULTIPLIER);
    if (_tempVector.x &lt; 0)
      argBox.lowerBound.x += _tempVector.x;
    else
@@ -262,8 +262,8 @@ class DynamicTree {
        // two children.
        deltaOne.setFrom(childOne.box.center);
        deltaTwo.setFrom(childTwo.box.center);
-       deltaOne.subLocal(center).absLocal();
-       deltaTwo.subLocal(center).absLocal();
+       deltaOne.sub(center).absolute();
+       deltaTwo.sub(center).absolute();
 
        num normOne = deltaOne.x + deltaOne.y;
        num normTwo = deltaTwo.x + deltaTwo.y;
@@ -481,7 +481,7 @@ DynamicTree() :
 <h3>Properties</h3>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to DynamicTree.center">#</a>
         </h4>
@@ -493,7 +493,7 @@ final Vector2 center
 </div>
 <div class="field"><h4 id="deltaOne">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>deltaOne</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>deltaOne</strong> <a class="anchor-link"
             href="#deltaOne"
             title="Permalink to DynamicTree.deltaOne">#</a>
         </h4>
@@ -505,7 +505,7 @@ final Vector2 deltaOne
 </div>
 <div class="field"><h4 id="deltaTwo">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>deltaTwo</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>deltaTwo</strong> <a class="anchor-link"
             href="#deltaTwo"
             title="Permalink to DynamicTree.deltaTwo">#</a>
         </h4>
@@ -589,7 +589,7 @@ void destroyProxy(DynamicTreeNode toDestroy) {
 </div>
 <div class="method"><h4 id="moveProxy">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> argProxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> argBox, <a href="../box2d/Vector2.html">Vector2</a> displacement) <a class="anchor-link" href="#moveProxy"
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> argProxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> argBox, <a href="../vector_math/Vector2.html">Vector2</a> displacement) <a class="anchor-link" href="#moveProxy"
               title="Permalink to DynamicTree.moveProxy">#</a></h4>
 <div class="doc">
 <p>Move a proxy with a swept AABB. If the proxy has moved outside of its
@@ -618,7 +618,7 @@ bool moveProxy(DynamicTreeNode argProxy, AxisAlignedBox argBox,
 
  // Predict bounding box displacement.
  _tempVector.setFrom(displacement);
- _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
+ _tempVector.scale(Settings.BOUNDING_BOX_MULTIPLIER);
  if (_tempVector.x &lt; 0)
    argBox.lowerBound.x += _tempVector.x;
  else

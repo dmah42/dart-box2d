@@ -65,7 +65,7 @@ class World {
   * This is used to compute the time step ratio to
   * support a variable time step.
   */
- num _inverseTimestep;
+ double _inverseTimestep;
 
  /**
   * This is for debugging the solver.
@@ -124,7 +124,7 @@ class World {
 
    _flags = CLEAR_FORCES,
 
-   _inverseTimestep = 0,
+   _inverseTimestep = 0.0,
 
    _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
@@ -497,7 +497,7 @@ class World {
   * param positionIterations
   *   for the position constraint solver.
   */
- void step(num dt, int velocityIterations, int positionIterations) {
+ void step(double dt, int velocityIterations, int positionIterations) {
 
    // If new fixtures were added, we need to find the new contacts.
    if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
@@ -624,10 +624,10 @@ class World {
            vs[i] = new Vector2.zero();
          }
 
-         vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
-         vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
-         vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
-         vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
+         vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
+         vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
+         vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
+         vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
 
          if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
            _debugDraw.drawPolygon(vs, 4, color);
@@ -1084,7 +1084,7 @@ class World {
        // Vector2 center = Mul(xf, circle.p);
        Transform.mulToOut(xf, circle.position, center);
        num radius = circle.radius;
-       axis.setFrom(xf.rotation.col1);
+       axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
 
        if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawCircle(center, radius, color, axis);
@@ -1236,7 +1236,7 @@ static const int WORLD_POOL_SIZE = 100
 <h3>Constructors</h3>
 <div class="method"><h4 id="World">
 <button class="show-code">Code</button>
-new <strong>World</strong>(<a href="../box2d/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
+new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
               title="Permalink to World.World">#</a></h4>
 <div class="doc">
 <p>Constructs a world object.</p>
@@ -1265,7 +1265,7 @@ World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
 
  _flags = CLEAR_FORCES,
 
- _inverseTimestep = 0,
+ _inverseTimestep = 0.0,
 
  _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
 
@@ -1329,7 +1329,7 @@ void set autoClearForces(bool flag) {
 </div>
 <div class="field"><h4 id="axis">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>axis</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>axis</strong> <a class="anchor-link"
             href="#axis"
             title="Permalink to World.axis">#</a>
         </h4>
@@ -1365,7 +1365,7 @@ Body get bodyList =&gt; _bodyList;
 </div>
 <div class="field"><h4 id="cA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>cA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>cA</strong> <a class="anchor-link"
             href="#cA"
             title="Permalink to World.cA">#</a>
         </h4>
@@ -1377,7 +1377,7 @@ final Vector2 cA
 </div>
 <div class="field"><h4 id="cB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>cB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>cB</strong> <a class="anchor-link"
             href="#cB"
             title="Permalink to World.cB">#</a>
         </h4>
@@ -1389,7 +1389,7 @@ final Vector2 cB
 </div>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to World.center">#</a>
         </h4>
@@ -1976,10 +1976,10 @@ void drawDebugData() {
          vs[i] = new Vector2.zero();
        }
 
-       vs[0].setCoords(aabb.lowerBound.x, aabb.lowerBound.y);
-       vs[1].setCoords(aabb.upperBound.x, aabb.lowerBound.y);
-       vs[2].setCoords(aabb.upperBound.x, aabb.upperBound.y);
-       vs[3].setCoords(aabb.lowerBound.x, aabb.upperBound.y);
+       vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
+       vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
+       vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
+       vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
 
        if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawPolygon(vs, 4, color);
@@ -2075,7 +2075,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
      // Vector2 center = Mul(xf, circle.p);
      Transform.mulToOut(xf, circle.position, center);
      num radius = circle.radius;
-     axis.setFrom(xf.rotation.col1);
+     axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
 
      if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
        _debugDraw.drawCircle(center, radius, color, axis);
@@ -2575,7 +2575,7 @@ void solveTimeOfImpactGivenBody(Body body) {
 </div>
 <div class="method"><h4 id="step">
 <button class="show-code">Code</button>
-void <strong>step</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> dt, <a href="http://api.dartlang.org/dart_core/int.html">int</a> velocityIterations, <a href="http://api.dartlang.org/dart_core/int.html">int</a> positionIterations) <a class="anchor-link" href="#step"
+void <strong>step</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> dt, <a href="http://api.dartlang.org/dart_core/int.html">int</a> velocityIterations, <a href="http://api.dartlang.org/dart_core/int.html">int</a> positionIterations) <a class="anchor-link" href="#step"
               title="Permalink to World.step">#</a></h4>
 <div class="doc">
 <p>Take a time step. This performs collision detection, integration,
@@ -2587,7 +2587,7 @@ param velocityIterations
 param positionIterations
   for the position constraint solver.</p>
 <pre class="source">
-void step(num dt, int velocityIterations, int positionIterations) {
+void step(double dt, int velocityIterations, int positionIterations) {
 
  // If new fixtures were added, we need to find the new contacts.
  if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {

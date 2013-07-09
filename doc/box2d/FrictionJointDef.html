@@ -41,10 +41,10 @@ class FrictionJointDef extends JointDef {
  final Vector2 localAnchorB;
 
  /** The maximum friction force in N. */
- num maxForce;
+ double maxForce;
 
  /** The maximum friction torque in N-m. */
- num maxTorque;
+ double maxTorque;
 
  FrictionJointDef()
      : super(),
@@ -130,7 +130,7 @@ bool collideConnected
 </div>
 <div class="field"><h4 id="localAnchorA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
             href="#localAnchorA"
             title="Permalink to FrictionJointDef.localAnchorA">#</a>
         </h4>
@@ -143,7 +143,7 @@ final Vector2 localAnchorA
 </div>
 <div class="field"><h4 id="localAnchorB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
             href="#localAnchorB"
             title="Permalink to FrictionJointDef.localAnchorB">#</a>
         </h4>
@@ -156,27 +156,27 @@ final Vector2 localAnchorB
 </div>
 <div class="field"><h4 id="maxForce">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>maxForce</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>maxForce</strong> <a class="anchor-link"
             href="#maxForce"
             title="Permalink to FrictionJointDef.maxForce">#</a>
         </h4>
         <div class="doc">
 <p>The maximum friction force in N. </p>
 <pre class="source">
-num maxForce
+double maxForce
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="maxTorque">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>maxTorque</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>maxTorque</strong> <a class="anchor-link"
             href="#maxTorque"
             title="Permalink to FrictionJointDef.maxTorque">#</a>
         </h4>
         <div class="doc">
 <p>The maximum friction torque in N-m. </p>
 <pre class="source">
-num maxTorque
+double maxTorque
 </pre>
 </div>
 </div>
@@ -211,7 +211,7 @@ dynamic userData
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> bA, <a href="../box2d/Body.html">Body</a> bB, <a href="../box2d/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> bA, <a href="../box2d/Body.html">Body</a> bB, <a href="../vector_math/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
               title="Permalink to FrictionJointDef.initialize">#</a></h4>
 <div class="doc">
 <pre class="source">

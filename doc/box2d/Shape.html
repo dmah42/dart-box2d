@@ -38,12 +38,12 @@ abstract class Shape {
  int type;
 
  /** Shape radius. */
- num radius;
+ double radius;
 
  /**
   * Constructs a new shape of unknown type.
   */
- Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
+ Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
    type = type,
    radius = radius { }
 
@@ -80,12 +80,12 @@ abstract class Shape {
 <h3>Constructors</h3>
 <div class="method"><h4 id="Shape">
 <button class="show-code">Code</button>
-new <strong>Shape</strong>([<a href="http://api.dartlang.org/dart_core/int.html">int</a> type = ShapeType.UNKNOWN, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radius = 0]) <a class="anchor-link" href="#Shape"
+new <strong>Shape</strong>([<a href="http://api.dartlang.org/dart_core/int.html">int</a> type = ShapeType.UNKNOWN, <a href="http://api.dartlang.org/dart_core/double.html">double</a> radius = 0.0]) <a class="anchor-link" href="#Shape"
               title="Permalink to Shape.Shape">#</a></h4>
 <div class="doc">
 <p>Constructs a new shape of unknown type.</p>
 <pre class="source">
-Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
+Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
  type = type,
  radius = radius { }
 </pre>
@@ -96,14 +96,14 @@ Shape([int type = ShapeType.UNKNOWN, num radius = 0]) :
 <h3>Properties</h3>
 <div class="field"><h4 id="radius">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>radius</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>radius</strong> <a class="anchor-link"
             href="#radius"
             title="Permalink to Shape.radius">#</a>
         </h4>
         <div class="doc">
 <p>Shape radius. </p>
 <pre class="source">
-num radius
+double radius
 </pre>
 </div>
 </div>
@@ -148,7 +148,7 @@ given density. The inertia tensor is computed about the local origin.</p>
 </div>
 </div>
 <div class="method"><h4 id="testPoint">
-abstract <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#testPoint"
+abstract <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../vector_math/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#testPoint"
               title="Permalink to Shape.testPoint">#</a></h4>
 <div class="doc">
 <p>Test a point for containment in this shape. This only works for convex

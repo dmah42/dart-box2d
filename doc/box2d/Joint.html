@@ -55,10 +55,10 @@ class Joint {
  final Vector2 localCenterA;
  final Vector2 localCenterB;
 
- num invMassA;
- num invIA;
- num invMassB;
- num invIB;
+ double invMassA;
+ double invIA;
+ double invMassB;
+ double invIB;
 
  Joint(JointDef def) :
    type = def.type,
@@ -123,7 +123,7 @@ class Joint {
  void getReactionForce(num inv_dt, Vector2 argOut) { }
 
  /** Get the reaction torque on body2 in N*m. */
- num getReactionTorque(num inv_dt) { }
+ double getReactionTorque(num inv_dt) { }
 
  /** Short-cut function to determine if either body is inactive. */
  bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
@@ -301,49 +301,49 @@ JointEdge edgeB
 </div>
 <div class="field"><h4 id="invIA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIA</strong> <a class="anchor-link"
             href="#invIA"
             title="Permalink to Joint.invIA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num invIA
+double invIA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="invIB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invIB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invIB</strong> <a class="anchor-link"
             href="#invIB"
             title="Permalink to Joint.invIB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num invIB
+double invIB
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="invMassA">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassA</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassA</strong> <a class="anchor-link"
             href="#invMassA"
             title="Permalink to Joint.invMassA">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num invMassA
+double invMassA
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="invMassB">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>invMassB</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>invMassB</strong> <a class="anchor-link"
             href="#invMassB"
             title="Permalink to Joint.invMassB">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num invMassB
+double invMassB
 </pre>
 </div>
 </div>
@@ -361,7 +361,7 @@ bool islandFlag
 </div>
 <div class="field"><h4 id="localCenterA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
             href="#localCenterA"
             title="Permalink to Joint.localCenterA">#</a>
         </h4>
@@ -373,7 +373,7 @@ final Vector2 localCenterA
 </div>
 <div class="field"><h4 id="localCenterB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
             href="#localCenterB"
             title="Permalink to Joint.localCenterB">#</a>
         </h4>
@@ -423,7 +423,7 @@ void destructor() { }
 </div>
 <div class="method"><h4 id="getAnchorA">
 <button class="show-code">Code</button>
-void <strong>getAnchorA</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
+void <strong>getAnchorA</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
               title="Permalink to Joint.getAnchorA">#</a></h4>
 <div class="doc">
 <p>Get the anchor point on bodyA in world coordinates. </p>
@@ -434,7 +434,7 @@ void getAnchorA(Vector2 argOut) { }
 </div>
 <div class="method"><h4 id="getAnchorB">
 <button class="show-code">Code</button>
-void <strong>getAnchorB</strong>(<a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
+void <strong>getAnchorB</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
               title="Permalink to Joint.getAnchorB">#</a></h4>
 <div class="doc">
 <p>Get the anchor point on bodyB in world coordinates. </p>
@@ -445,7 +445,7 @@ void getAnchorB(Vector2 argOut) { }
 </div>
 <div class="method"><h4 id="getReactionForce">
 <button class="show-code">Code</button>
-void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../box2d/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt, <a href="../vector_math/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
               title="Permalink to Joint.getReactionForce">#</a></h4>
 <div class="doc">
 <p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
@@ -456,12 +456,12 @@ void getReactionForce(num inv_dt, Vector2 argOut) { }
 </div>
 <div class="method"><h4 id="getReactionTorque">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a> <strong>getReactionTorque</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>getReactionTorque</strong>(<a href="http://api.dartlang.org/dart_core/num.html">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
               title="Permalink to Joint.getReactionTorque">#</a></h4>
 <div class="doc">
 <p>Get the reaction torque on body2 in N*m. </p>
 <pre class="source">
-num getReactionTorque(num inv_dt) { }
+double getReactionTorque(num inv_dt) { }
 </pre>
 </div>
 </div>

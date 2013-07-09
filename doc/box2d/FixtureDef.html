@@ -47,17 +47,17 @@ class FixtureDef {
  /**
   * The friction coefficient, usually in the range [0,1].
   */
- num friction;
+ double friction;
 
  /**
   * The restitution (elasticity) usually in the range [0,1].
   */
- num restitution;
+ double restitution;
 
  /**
   * The density, usually in kg/m^2
   */
- num density;
+ double density;
 
  /**
   * A sensor shape collects contact information but never generates a collision
@@ -77,8 +77,8 @@ class FixtureDef {
    shape = null,
    userData = null,
    friction = 0.2,
-   restitution = 0,
-   density = 0,
+   restitution = 0.0,
+   density = 0.0,
    filter = new Filter(),
    isSensor = false {
    // Setup the filter.
@@ -102,8 +102,8 @@ FixtureDef() :
  shape = null,
  userData = null,
  friction = 0.2,
- restitution = 0,
- density = 0,
+ restitution = 0.0,
+ density = 0.0,
  filter = new Filter(),
  isSensor = false {
  // Setup the filter.
@@ -119,14 +119,14 @@ FixtureDef() :
 <h3>Properties</h3>
 <div class="field"><h4 id="density">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>density</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>density</strong> <a class="anchor-link"
             href="#density"
             title="Permalink to FixtureDef.density">#</a>
         </h4>
         <div class="doc">
 <p>The density, usually in kg/m^2</p>
 <pre class="source">
-num density
+double density
 </pre>
 </div>
 </div>
@@ -145,14 +145,14 @@ Filter filter
 </div>
 <div class="field"><h4 id="friction">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>friction</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>friction</strong> <a class="anchor-link"
             href="#friction"
             title="Permalink to FixtureDef.friction">#</a>
         </h4>
         <div class="doc">
 <p>The friction coefficient, usually in the range <code>0,1</code>.</p>
 <pre class="source">
-num friction
+double friction
 </pre>
 </div>
 </div>
@@ -172,14 +172,14 @@ bool isSensor
 </div>
 <div class="field"><h4 id="restitution">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>restitution</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>restitution</strong> <a class="anchor-link"
             href="#restitution"
             title="Permalink to FixtureDef.restitution">#</a>
         </h4>
         <div class="doc">
 <p>The restitution (elasticity) usually in the range <code>0,1</code>.</p>
 <pre class="source">
-num restitution
+double restitution
 </pre>
 </div>
 </div>

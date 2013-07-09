@@ -38,7 +38,7 @@ class TimeOfImpactConstraint {
  final Vector2 localNormal;
  final Vector2 localPoint;
  int type;
- num radius;
+ double radius;
  int pointCount;
  Body bodyA;
  Body bodyB;
@@ -49,7 +49,7 @@ class TimeOfImpactConstraint {
    localNormal = new Vector2.zero(),
    localPoint = new Vector2.zero(),
    type = 0,
-   radius = 0,
+   radius = 0.0,
    pointCount = 0,
    bodyA = null,
    bodyB = null;
@@ -84,7 +84,7 @@ TimeOfImpactConstraint() :
  localNormal = new Vector2.zero(),
  localPoint = new Vector2.zero(),
  type = 0,
- radius = 0,
+ radius = 0.0,
  pointCount = 0,
  bodyA = null,
  bodyB = null;
@@ -120,7 +120,7 @@ Body bodyB
 </div>
 <div class="field"><h4 id="localNormal">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localNormal</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localNormal</strong> <a class="anchor-link"
             href="#localNormal"
             title="Permalink to TimeOfImpactConstraint.localNormal">#</a>
         </h4>
@@ -132,7 +132,7 @@ final Vector2 localNormal
 </div>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to TimeOfImpactConstraint.localPoint">#</a>
         </h4>
@@ -144,7 +144,7 @@ final Vector2 localPoint
 </div>
 <div class="field"><h4 id="localPoints">
 <button class="show-code">Code</button>
-final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../box2d/Vector2.html">Vector2</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
+final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Vector2.html">Vector2</a>&gt;         <strong>localPoints</strong> <a class="anchor-link"
             href="#localPoints"
             title="Permalink to TimeOfImpactConstraint.localPoints">#</a>
         </h4>
@@ -168,13 +168,13 @@ int pointCount
 </div>
 <div class="field"><h4 id="radius">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>radius</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>radius</strong> <a class="anchor-link"
             href="#radius"
             title="Permalink to TimeOfImpactConstraint.radius">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num radius
+double radius
 </pre>
 </div>
 </div>

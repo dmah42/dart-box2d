@@ -44,7 +44,7 @@ class CircleShape extends Shape {
   * CircleDef.
   */
  CircleShape() :
-   super(ShapeType.CIRCLE, 0),
+   super(ShapeType.CIRCLE, 0.0),
    position = new Vector2.zero();
 
  /**
@@ -62,11 +62,11 @@ class CircleShape extends Shape {
   */
  bool testPoint(Transform transform, Vector2 point) {
    Vector2 center = new Vector2.zero();
-   transform.rotation.multiplyVectorToOut(position, center);
-   center.addLocal(transform.position);
+   transform.rotation.transformed(position, center);
+   center.add(transform.position);
 
-   Vector2 d = center.subLocal(point).negateLocal();
-   return Vector2.dot(d, d) &lt;= radius * radius;
+   Vector2 d = center.sub(point).negate();
+   return d.dot(d) &lt;= radius * radius;
  }
 
  /**
@@ -75,11 +75,11 @@ class CircleShape extends Shape {
   */
  void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
    Vector2 p = new Vector2.zero();
-   Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
-   p.addLocal(argTransform.position);
+   argTransform.rotation.transformed(position, p);
+   p.add(argTransform.position);
 
-   argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
-   argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+   argBox.lowerBound.setValues(p.x - radius, p.y - radius);
+   argBox.upperBound.setValues(p.x + radius, p.y + radius);
  }
 
  /** Returns a clone of this circle. */
@@ -95,7 +95,7 @@ class CircleShape extends Shape {
 
    // Store inertia above the local origin.
    massData.inertia = massData.mass * (.5 * radius * radius +
-       Vector2.dot(position, position));
+       position.dot(position));
  }
 }
 </pre>
@@ -114,7 +114,7 @@ new <strong>CircleShape</strong>() <a class="anchor-link" href="#CircleShape"
 CircleDef.</p>
 <pre class="source">
 CircleShape() :
- super(ShapeType.CIRCLE, 0),
+ super(ShapeType.CIRCLE, 0.0),
  position = new Vector2.zero();
 </pre>
 </div>
@@ -137,7 +137,7 @@ CircleShape.copy(CircleShape other) :
 <h3>Properties</h3>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
             href="#position"
             title="Permalink to CircleShape.position">#</a>
         </h4>
@@ -150,14 +150,14 @@ final Vector2 position
 </div>
 <div class="field inherited"><h4 id="radius">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>radius</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>radius</strong> <a class="anchor-link"
             href="#radius"
             title="Permalink to CircleShape.radius">#</a>
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
 <p>Shape radius. </p>
 <pre class="source">
-num radius
+double radius
 </pre>
 </div>
 </div>
@@ -198,11 +198,11 @@ applied. Stores the result in the given box.</p>
 <pre class="source">
 void computeAxisAlignedBox(AxisAlignedBox argBox, Transform argTransform) {
  Vector2 p = new Vector2.zero();
- Matrix22.mulMatrixAndVectorToOut(argTransform.rotation, position, p);
- p.addLocal(argTransform.position);
+ argTransform.rotation.transformed(position, p);
+ p.add(argTransform.position);
 
- argBox.lowerBound.setCoords(p.x - radius, p.y - radius);
- argBox.upperBound.setCoords(p.x + radius, p.y + radius);
+ argBox.lowerBound.setValues(p.x - radius, p.y - radius);
+ argBox.upperBound.setValues(p.x + radius, p.y + radius);
 }
 </pre>
 </div>
@@ -221,14 +221,14 @@ void computeMass(MassData massData, num density) {
 
  // Store inertia above the local origin.
  massData.inertia = massData.mass * (.5 * radius * radius +
-     Vector2.dot(position, position));
+     position.dot(position));
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="testPoint">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../box2d/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#testPoint"
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> transform, <a href="../vector_math/Vector2.html">Vector2</a> point) <a class="anchor-link" href="#testPoint"
               title="Permalink to CircleShape.testPoint">#</a></h4>
 <div class="doc">
 <p>Returns true if the point is contained in the given shape when the given
@@ -237,11 +237,11 @@ the same name.</p>
 <pre class="source">
 bool testPoint(Transform transform, Vector2 point) {
  Vector2 center = new Vector2.zero();
- transform.rotation.multiplyVectorToOut(position, center);
- center.addLocal(transform.position);
+ transform.rotation.transformed(position, center);
+ center.add(transform.position);
 
- Vector2 d = center.subLocal(point).negateLocal();
- return Vector2.dot(d, d) &lt;= radius * radius;
+ Vector2 d = center.sub(point).negate();
+ return d.dot(d) &lt;= radius * radius;
 }
 </pre>
 </div>

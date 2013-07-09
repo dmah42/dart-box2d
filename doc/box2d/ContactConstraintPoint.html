@@ -39,22 +39,22 @@ class ContactConstraintPoint {
  final Vector2 rA;
  final Vector2 rB;
 
- num normalImpulse;
- num tangentImpulse;
- num normalMass;
- num tangentMass;
- num velocityBias;
+ double normalImpulse;
+ double tangentImpulse;
+ double normalMass;
+ double tangentMass;
+ double velocityBias;
 
  /** Constructs a new ContactConstraintPoint. */
  ContactConstraintPoint()
    : localPoint = new Vector2.zero(),
    rA = new Vector2.zero(),
    rB = new Vector2.zero(),
-   normalImpulse = 0,
-   tangentImpulse = 0,
-   normalMass = 0,
-   tangentMass = 0,
-   velocityBias = 0 {}
+   normalImpulse = 0.0,
+   tangentImpulse = 0.0,
+   normalMass = 0.0,
+   tangentMass = 0.0,
+   velocityBias = 0.0 {}
 
  /** Sets this point equal to the given point. */
  void setFrom(ContactConstraintPoint cp) {
@@ -90,11 +90,11 @@ ContactConstraintPoint()
  : localPoint = new Vector2.zero(),
  rA = new Vector2.zero(),
  rB = new Vector2.zero(),
- normalImpulse = 0,
- tangentImpulse = 0,
- normalMass = 0,
- tangentMass = 0,
- velocityBias = 0 {}
+ normalImpulse = 0.0,
+ tangentImpulse = 0.0,
+ normalMass = 0.0,
+ tangentMass = 0.0,
+ velocityBias = 0.0 {}
 </pre>
 </div>
 </div>
@@ -103,7 +103,7 @@ ContactConstraintPoint()
 <h3>Properties</h3>
 <div class="field"><h4 id="localPoint">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoint</strong> <a class="anchor-link"
             href="#localPoint"
             title="Permalink to ContactConstraintPoint.localPoint">#</a>
         </h4>
@@ -115,31 +115,31 @@ final Vector2 localPoint
 </div>
 <div class="field"><h4 id="normalImpulse">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>normalImpulse</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>normalImpulse</strong> <a class="anchor-link"
             href="#normalImpulse"
             title="Permalink to ContactConstraintPoint.normalImpulse">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num normalImpulse
+double normalImpulse
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="normalMass">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>normalMass</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>normalMass</strong> <a class="anchor-link"
             href="#normalMass"
             title="Permalink to ContactConstraintPoint.normalMass">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num normalMass
+double normalMass
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="rA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rA</strong> <a class="anchor-link"
             href="#rA"
             title="Permalink to ContactConstraintPoint.rA">#</a>
         </h4>
@@ -151,7 +151,7 @@ final Vector2 rA
 </div>
 <div class="field"><h4 id="rB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rB</strong> <a class="anchor-link"
             href="#rB"
             title="Permalink to ContactConstraintPoint.rB">#</a>
         </h4>
@@ -163,37 +163,37 @@ final Vector2 rB
 </div>
 <div class="field"><h4 id="tangentImpulse">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>tangentImpulse</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>tangentImpulse</strong> <a class="anchor-link"
             href="#tangentImpulse"
             title="Permalink to ContactConstraintPoint.tangentImpulse">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num tangentImpulse
+double tangentImpulse
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="tangentMass">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>tangentMass</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>tangentMass</strong> <a class="anchor-link"
             href="#tangentMass"
             title="Permalink to ContactConstraintPoint.tangentMass">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num tangentMass
+double tangentMass
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="velocityBias">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>velocityBias</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>velocityBias</strong> <a class="anchor-link"
             href="#velocityBias"
             title="Permalink to ContactConstraintPoint.velocityBias">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num velocityBias
+double velocityBias
 </pre>
 </div>
 </div>

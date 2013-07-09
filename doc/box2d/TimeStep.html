@@ -35,21 +35,21 @@
 <pre class="source">
 class TimeStep {
  TimeStep() :
-     dt = 0,
-     inv_dt = 0,
-     dtRatio = 0,
+     dt = 0.0,
+     inv_dt = 0.0,
+     dtRatio = 0.0,
      velocityIterations = 0,
      positionIterations = 0,
      warmStarting = true;
 
  /** time step */
- num dt;
+ double dt;
 
  /** inverse time step (0 if dt == 0). */
- num inv_dt;
+ double inv_dt;
 
  /** dt * inv_dt0 */
- num dtRatio;
+ double dtRatio;
 
  int velocityIterations;
 
@@ -68,9 +68,9 @@ new <strong>TimeStep</strong>() <a class="anchor-link" href="#TimeStep"
 <div class="doc">
 <pre class="source">
 TimeStep() :
-   dt = 0,
-   inv_dt = 0,
-   dtRatio = 0,
+   dt = 0.0,
+   inv_dt = 0.0,
+   dtRatio = 0.0,
    velocityIterations = 0,
    positionIterations = 0,
    warmStarting = true;
@@ -82,40 +82,40 @@ TimeStep() :
 <h3>Properties</h3>
 <div class="field"><h4 id="dt">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>dt</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>dt</strong> <a class="anchor-link"
             href="#dt"
             title="Permalink to TimeStep.dt">#</a>
         </h4>
         <div class="doc">
 <p>time step </p>
 <pre class="source">
-num dt
+double dt
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="dtRatio">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>dtRatio</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>dtRatio</strong> <a class="anchor-link"
             href="#dtRatio"
             title="Permalink to TimeStep.dtRatio">#</a>
         </h4>
         <div class="doc">
 <p>dt * inv_dt0 </p>
 <pre class="source">
-num dtRatio
+double dtRatio
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="inv_dt">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>inv_dt</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>inv_dt</strong> <a class="anchor-link"
             href="#inv_dt"
             title="Permalink to TimeStep.inv_dt">#</a>
         </h4>
         <div class="doc">
 <p>inverse time step (0 if dt == 0). </p>
 <pre class="source">
-num inv_dt
+double inv_dt
 </pre>
 </div>
 </div>

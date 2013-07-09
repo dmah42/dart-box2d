@@ -47,7 +47,7 @@ class RevoluteJointDef extends JointDef {
  /**
   *  The body2 angle minus body1 angle in the reference state (radians).
   */
- num referenceAngle;
+ double referenceAngle;
 
  /**
   *  A flag to enable joint limits.
@@ -57,12 +57,12 @@ class RevoluteJointDef extends JointDef {
  /**
   *  The lower angle for the joint limit (radians).
   */
- num lowerAngle;
+ double lowerAngle;
 
  /**
   *  The upper angle for the joint limit (radians).
   */
- num upperAngle;
+ double upperAngle;
 
  /**
   *  A flag to enable the joint motor.
@@ -72,13 +72,13 @@ class RevoluteJointDef extends JointDef {
  /**
   *  The desired motor speed. Usually in radians per second.
   */
- num motorSpeed;
+ double motorSpeed;
 
  /**
   *  The maximum motor torque used to achieve the desired motor speed.
   *  Usually in N-m.
   */
- num maxMotorTorque;
+ double maxMotorTorque;
 
  RevoluteJointDef() :
    super(),
@@ -205,7 +205,7 @@ bool enableMotor
 </div>
 <div class="field"><h4 id="localAnchorA">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
             href="#localAnchorA"
             title="Permalink to RevoluteJointDef.localAnchorA">#</a>
         </h4>
@@ -218,7 +218,7 @@ Vector2 localAnchorA
 </div>
 <div class="field"><h4 id="localAnchorB">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
             href="#localAnchorB"
             title="Permalink to RevoluteJointDef.localAnchorB">#</a>
         </h4>
@@ -231,20 +231,20 @@ Vector2 localAnchorB
 </div>
 <div class="field"><h4 id="lowerAngle">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>lowerAngle</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>lowerAngle</strong> <a class="anchor-link"
             href="#lowerAngle"
             title="Permalink to RevoluteJointDef.lowerAngle">#</a>
         </h4>
         <div class="doc">
 <p> The lower angle for the joint limit (radians).</p>
 <pre class="source">
-num lowerAngle
+double lowerAngle
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="maxMotorTorque">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>maxMotorTorque</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>maxMotorTorque</strong> <a class="anchor-link"
             href="#maxMotorTorque"
             title="Permalink to RevoluteJointDef.maxMotorTorque">#</a>
         </h4>
@@ -252,33 +252,33 @@ num lowerAngle
 <p> The maximum motor torque used to achieve the desired motor speed.
  Usually in N-m.</p>
 <pre class="source">
-num maxMotorTorque
+double maxMotorTorque
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="motorSpeed">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>motorSpeed</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>motorSpeed</strong> <a class="anchor-link"
             href="#motorSpeed"
             title="Permalink to RevoluteJointDef.motorSpeed">#</a>
         </h4>
         <div class="doc">
 <p> The desired motor speed. Usually in radians per second.</p>
 <pre class="source">
-num motorSpeed
+double motorSpeed
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="referenceAngle">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>referenceAngle</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>referenceAngle</strong> <a class="anchor-link"
             href="#referenceAngle"
             title="Permalink to RevoluteJointDef.referenceAngle">#</a>
         </h4>
         <div class="doc">
 <p> The body2 angle minus body1 angle in the reference state (radians).</p>
 <pre class="source">
-num referenceAngle
+double referenceAngle
 </pre>
 </div>
 </div>
@@ -297,14 +297,14 @@ int type
 </div>
 <div class="field"><h4 id="upperAngle">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>upperAngle</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>upperAngle</strong> <a class="anchor-link"
             href="#upperAngle"
             title="Permalink to RevoluteJointDef.upperAngle">#</a>
         </h4>
         <div class="doc">
 <p> The upper angle for the joint limit (radians).</p>
 <pre class="source">
-num upperAngle
+double upperAngle
 </pre>
 </div>
 </div>
@@ -326,7 +326,7 @@ dynamic userData
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../vector_math/Vector2.html">Vector2</a> anchor) <a class="anchor-link" href="#initialize"
               title="Permalink to RevoluteJointDef.initialize">#</a></h4>
 <div class="doc">
 <p>Initialize the bodies, anchors, and reference angle using the world

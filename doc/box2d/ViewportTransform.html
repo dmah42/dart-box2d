@@ -46,7 +46,7 @@ class ViewportTransform {
 
  /**
   * This is the half-width and half-height.
-  * This should be the actual half-width and 
+  * This should be the actual half-width and
   * half-height, not anything transformed or scaled.
   */
  Vector2 extents;
@@ -56,7 +56,7 @@ class ViewportTransform {
   * sizes.
   */
  double scale;
- 
+
  /**
   * center of the viewport.
   */
@@ -67,7 +67,7 @@ class ViewportTransform {
   * and using the given scale.
   */
  void setCamera(double x, double y, double s) {
-   center.setCoords(x, y);
+   center.setValues(x, y);
    scale = s;
  }
  /**
@@ -78,13 +78,13 @@ class ViewportTransform {
   */
  Vector2 get translation {
    Vector2 result = new Vector2.copy(extents);
-   result.subLocal(center);
+   result.sub(center);
    return result;
  }
 
  void set translation(Vector2 translation) {
    center.setFrom(extents);
-   center.subLocal(translation);
+   center.sub(translation);
  }
 
 
@@ -99,7 +99,7 @@ class ViewportTransform {
    double gridCorrectedX = (argWorld.x * scale) + extents.x;
    double gridCorrectedY = extents.y - (argWorld.y * scale);
 
-   argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+   argScreen.setValues(gridCorrectedX + translation.x, gridCorrectedY +
        -translation.y);
  }
 
@@ -114,7 +114,7 @@ class ViewportTransform {
 
    double gridCorrectedX = (translationCorrectedX - extents.x) / scale;
    double gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-   argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+   argWorld.setValues(gridCorrectedX, gridCorrectedY);
  }
 }
 </pre>
@@ -123,7 +123,7 @@ class ViewportTransform {
 <h3>Constructors</h3>
 <div class="method"><h4 id="ViewportTransform">
 <button class="show-code">Code</button>
-new <strong>ViewportTransform</strong>(<a href="../box2d/Vector2.html">Vector2</a> e, <a href="../box2d/Vector2.html">Vector2</a> c, <a href="http://api.dartlang.org/dart_core/double.html">double</a> s) <a class="anchor-link" href="#ViewportTransform"
+new <strong>ViewportTransform</strong>(<a href="../vector_math/Vector2.html">Vector2</a> e, <a href="../vector_math/Vector2.html">Vector2</a> c, <a href="http://api.dartlang.org/dart_core/double.html">double</a> s) <a class="anchor-link" href="#ViewportTransform"
               title="Permalink to ViewportTransform.ViewportTransform">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -139,7 +139,7 @@ ViewportTransform(Vector2 e, Vector2 c, double s) :
 <h3>Properties</h3>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to ViewportTransform.center">#</a>
         </h4>
@@ -152,13 +152,13 @@ Vector2 center
 </div>
 <div class="field"><h4 id="extents">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>extents</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>extents</strong> <a class="anchor-link"
             href="#extents"
             title="Permalink to ViewportTransform.extents">#</a>
         </h4>
         <div class="doc">
 <p>This is the half-width and half-height.
-This should be the actual half-width and 
+This should be the actual half-width and
 half-height, not anything transformed or scaled.</p>
 <pre class="source">
 Vector2 extents
@@ -181,7 +181,7 @@ double scale
 </div>
 <div class="field"><h4 id="translation">
 <button class="show-code">Code</button>
-<a href="../box2d/Vector2.html">Vector2</a>         <strong>translation</strong> <a class="anchor-link"
+<a href="../vector_math/Vector2.html">Vector2</a>         <strong>translation</strong> <a class="anchor-link"
             href="#translation"
             title="Permalink to ViewportTransform.translation">#</a>
         </h4>
@@ -193,14 +193,14 @@ example, if the actual canvas center is (5, 5) but the current center is
 <pre class="source">
 Vector2 get translation {
  Vector2 result = new Vector2.copy(extents);
- result.subLocal(center);
+ result.sub(center);
  return result;
 }
 </pre>
 <pre class="source">
 void set translation(Vector2 translation) {
  center.setFrom(extents);
- center.subLocal(translation);
+ center.sub(translation);
 }
 </pre>
 </div>
@@ -223,7 +223,7 @@ bool yFlip
 <h3>Methods</h3>
 <div class="method"><h4 id="getScreenToWorld">
 <button class="show-code">Code</button>
-void <strong>getScreenToWorld</strong>(<a href="../box2d/Vector2.html">Vector2</a> argScreen, <a href="../box2d/Vector2.html">Vector2</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
+void <strong>getScreenToWorld</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argScreen, <a href="../vector_math/Vector2.html">Vector2</a> argWorld) <a class="anchor-link" href="#getScreenToWorld"
               title="Permalink to ViewportTransform.getScreenToWorld">#</a></h4>
 <div class="doc">
 <p>Takes the screen coordinates (argScreen) and puts the
@@ -236,14 +236,14 @@ void getScreenToWorld(Vector2 argScreen, Vector2 argWorld) {
 
  double gridCorrectedX = (translationCorrectedX - extents.x) / scale;
  double gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
- argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+ argWorld.setValues(gridCorrectedX, gridCorrectedY);
 }
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="getWorldToScreen">
 <button class="show-code">Code</button>
-void <strong>getWorldToScreen</strong>(<a href="../box2d/Vector2.html">Vector2</a> argWorld, <a href="../box2d/Vector2.html">Vector2</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
+void <strong>getWorldToScreen</strong>(<a href="../vector_math/Vector2.html">Vector2</a> argWorld, <a href="../vector_math/Vector2.html">Vector2</a> argScreen) <a class="anchor-link" href="#getWorldToScreen"
               title="Permalink to ViewportTransform.getWorldToScreen">#</a></h4>
 <div class="doc">
 <p>Takes the world coordinate (argWorld) puts the corresponding
@@ -256,7 +256,7 @@ void getWorldToScreen(Vector2 argWorld, Vector2 argScreen) {
  double gridCorrectedX = (argWorld.x * scale) + extents.x;
  double gridCorrectedY = extents.y - (argWorld.y * scale);
 
- argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+ argScreen.setValues(gridCorrectedX + translation.x, gridCorrectedY +
      -translation.y);
 }
 </pre>
@@ -271,7 +271,7 @@ void <strong>setCamera</strong>(<a href="http://api.dartlang.org/dart_core/doubl
 and using the given scale.</p>
 <pre class="source">
 void setCamera(double x, double y, double s) {
- center.setCoords(x, y);
+ center.setValues(x, y);
  scale = s;
 }
 </pre>

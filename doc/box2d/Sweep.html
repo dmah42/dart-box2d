@@ -102,12 +102,12 @@ class Sweep {
 
    xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
    xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
-   xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
+   xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
 
    // Shift to origin
-   xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+   xf.position.x -= xf.rotation.entry(0,0) * localCenter.x + xf.rotation.entry(0,1)
        * localCenter.y;
-   xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+   xf.position.y -= xf.rotation.entry(1,0) * localCenter.x + xf.rotation.entry(1,1)
        * localCenter.y;
  }
 
@@ -188,7 +188,7 @@ double angleZero
 </div>
 <div class="field"><h4 id="center">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</strong> <a class="anchor-link"
             href="#center"
             title="Permalink to Sweep.center">#</a>
         </h4>
@@ -200,7 +200,7 @@ final Vector2 center
 </div>
 <div class="field"><h4 id="centerZero">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>centerZero</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>centerZero</strong> <a class="anchor-link"
             href="#centerZero"
             title="Permalink to Sweep.centerZero">#</a>
         </h4>
@@ -213,7 +213,7 @@ final Vector2 centerZero
 </div>
 <div class="field"><h4 id="localCenter">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localCenter</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCenter</strong> <a class="anchor-link"
             href="#localCenter"
             title="Permalink to Sweep.localCenter">#</a>
         </h4>
@@ -275,12 +275,12 @@ void getTransform(Transform xf, double alpha) {
 
  xf.position.x = (1.0 - alpha) * centerZero.x + alpha * center.x;
  xf.position.y = (1.0 - alpha) * centerZero.y + alpha * center.y;
- xf.rotation.setAngle((1.0 - alpha) * angleZero + alpha * angle);
+ xf.rotation.setRotation((1.0 - alpha) * angleZero + alpha * angle);
 
  // Shift to origin
- xf.position.x -= xf.rotation.col1.x * localCenter.x + xf.rotation.col2.x
+ xf.position.x -= xf.rotation.entry(0,0) * localCenter.x + xf.rotation.entry(0,1)
      * localCenter.y;
- xf.position.y -= xf.rotation.col1.y * localCenter.x + xf.rotation.col2.y
+ xf.position.y -= xf.rotation.entry(1,0) * localCenter.x + xf.rotation.entry(1,1)
      * localCenter.y;
 }
 </pre>

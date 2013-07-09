@@ -41,17 +41,17 @@ class DistanceJointDef extends JointDef {
  final Vector2 localAnchorB;
 
  /** The equilibrium length between the anchor points. */
- num length;
+ double length;
 
  /**
   * The mass-spring-damper frequency in Hertz.
   */
- num frequencyHz;
+ double frequencyHz;
 
  /**
   * The damping ratio. 0 = no damping, 1 = critical damping.
   */
- num dampingRatio;
+ double dampingRatio;
 
  DistanceJointDef() :
    super(),
@@ -77,7 +77,7 @@ class DistanceJointDef extends JointDef {
    localAnchorA.setFrom(bodyA.getLocalPoint(anchor1));
    localAnchorB.setFrom(bodyB.getLocalPoint(anchor2));
    Vector2 d = new Vector2.copy(anchor2);
-   d.subLocal(anchor1);
+   d.sub(anchor1);
    length = d.length;
  }
 }
@@ -150,46 +150,46 @@ bool collideConnected
 </div>
 <div class="field"><h4 id="dampingRatio">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>dampingRatio</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>dampingRatio</strong> <a class="anchor-link"
             href="#dampingRatio"
             title="Permalink to DistanceJointDef.dampingRatio">#</a>
         </h4>
         <div class="doc">
 <p>The damping ratio. 0 = no damping, 1 = critical damping.</p>
 <pre class="source">
-num dampingRatio
+double dampingRatio
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="frequencyHz">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>frequencyHz</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>frequencyHz</strong> <a class="anchor-link"
             href="#frequencyHz"
             title="Permalink to DistanceJointDef.frequencyHz">#</a>
         </h4>
         <div class="doc">
 <p>The mass-spring-damper frequency in Hertz.</p>
 <pre class="source">
-num frequencyHz
+double frequencyHz
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="length">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>length</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>length</strong> <a class="anchor-link"
             href="#length"
             title="Permalink to DistanceJointDef.length">#</a>
         </h4>
         <div class="doc">
 <p>The equilibrium length between the anchor points. </p>
 <pre class="source">
-num length
+double length
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="localAnchorA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorA</strong> <a class="anchor-link"
             href="#localAnchorA"
             title="Permalink to DistanceJointDef.localAnchorA">#</a>
         </h4>
@@ -202,7 +202,7 @@ final Vector2 localAnchorA
 </div>
 <div class="field"><h4 id="localAnchorB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnchorB</strong> <a class="anchor-link"
             href="#localAnchorB"
             title="Permalink to DistanceJointDef.localAnchorB">#</a>
         </h4>
@@ -244,7 +244,7 @@ dynamic userData
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../box2d/Vector2.html">Vector2</a> anchor1, <a href="../box2d/Vector2.html">Vector2</a> anchor2) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Body.html">Body</a> b1, <a href="../box2d/Body.html">Body</a> b2, <a href="../vector_math/Vector2.html">Vector2</a> anchor1, <a href="../vector_math/Vector2.html">Vector2</a> anchor2) <a class="anchor-link" href="#initialize"
               title="Permalink to DistanceJointDef.initialize">#</a></h4>
 <div class="doc">
 <p>Initialize the bodies, anchors, and length using the world
@@ -260,7 +260,7 @@ void initialize(Body b1, Body b2, Vector2 anchor1, Vector2 anchor2) {
  localAnchorA.setFrom(bodyA.getLocalPoint(anchor1));
  localAnchorB.setFrom(bodyB.getLocalPoint(anchor2));
  Vector2 d = new Vector2.copy(anchor2);
- d.subLocal(anchor1);
+ d.sub(anchor1);
  length = d.length;
 }
 </pre>

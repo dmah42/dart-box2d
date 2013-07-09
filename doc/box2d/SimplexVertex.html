@@ -37,7 +37,7 @@ class SimplexVertex {
  final Vector2 wA; // support point in shapeA
  final Vector2 wB; // support point in shapeB
  final Vector2 w; // wB - wA
- num a; // barycentric coordinate for closest point
+ double a; // barycentric coordinate for closest point
  int indexA; // wA index
  int indexB; // wB index
 
@@ -45,7 +45,7 @@ class SimplexVertex {
    wA = new Vector2.zero(),
    wB = new Vector2.zero(),
    w = new Vector2.zero(),
-   a = 0,
+   a = 0.0,
    indexA = 0,
    indexB = 0;
 
@@ -74,7 +74,7 @@ SimplexVertex() :
  wA = new Vector2.zero(),
  wB = new Vector2.zero(),
  w = new Vector2.zero(),
- a = 0,
+ a = 0.0,
  indexA = 0,
  indexB = 0;
 </pre>
@@ -85,13 +85,13 @@ SimplexVertex() :
 <h3>Properties</h3>
 <div class="field"><h4 id="a">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>a</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>a</strong> <a class="anchor-link"
             href="#a"
             title="Permalink to SimplexVertex.a">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num a
+double a
 </pre>
 </div>
 </div>
@@ -121,7 +121,7 @@ int indexB
 </div>
 <div class="field"><h4 id="w">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>w</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>w</strong> <a class="anchor-link"
             href="#w"
             title="Permalink to SimplexVertex.w">#</a>
         </h4>
@@ -133,7 +133,7 @@ final Vector2 w
 </div>
 <div class="field"><h4 id="wA">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>wA</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>wA</strong> <a class="anchor-link"
             href="#wA"
             title="Permalink to SimplexVertex.wA">#</a>
         </h4>
@@ -145,7 +145,7 @@ final Vector2 wA
 </div>
 <div class="field"><h4 id="wB">
 <button class="show-code">Code</button>
-final <a href="../box2d/Vector2.html">Vector2</a>         <strong>wB</strong> <a class="anchor-link"
+final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>wB</strong> <a class="anchor-link"
             href="#wB"
             title="Permalink to SimplexVertex.wB">#</a>
         </h4>
