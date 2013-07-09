@@ -121,7 +121,7 @@ class CircleStressBench extends Benchmark {
         fd.restitution = .9;
         num xPos = radius * cos(2 * PI * (i / numPieces.toDouble()));
         num yPos = radius * sin(2 * PI * (i / numPieces.toDouble()));
-        cd.position.setCoords(xPos, yPos);
+        cd.position.setValues(xPos, yPos);
 
         body.createFixture(fd);
       }

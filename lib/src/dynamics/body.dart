@@ -153,7 +153,7 @@ class Body {
     }
 
     originTransform.position.setFrom(bd.position);
-    originTransform.rotation.setAngle(bd.angle);
+    originTransform.rotation.setRotation(bd.angle);
     sweep.localCenter.setZero();
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
     sweep.center.setFrom(sweep.centerZero);
@@ -306,7 +306,7 @@ class Body {
       return;
     }
 
-    originTransform.rotation.setAngle(argAngle);
+    originTransform.rotation.setRotation(argAngle);
     originTransform.position.setFrom(argPosition);
 
     Transform.mulToOut(originTransform, sweep.localCenter, sweep.centerZero);
@@ -336,28 +336,28 @@ class Body {
   /**
    * Get the world position of the center of mass. Do not modify.
    */
-  Vector2 get worldCenter => sweep.center; 
+  Vector2 get worldCenter => sweep.center;
 
   /**
    * Get the local position of the center of mass. Do not modify.
    */
-  Vector2 get localCenter => sweep.localCenter; 
+  Vector2 get localCenter => sweep.localCenter;
 
-  Vector2 get linearVelocity => _linearVelocity; 
+  Vector2 get linearVelocity => _linearVelocity;
 
   void set linearVelocity(Vector2 v) {
     if (_type == BodyType.STATIC) {
       return;
     }
 
-    if (Vector2.dot(v, v) > 0.0) {
+    if (v.dot(v) > 0.0) {
       awake = true;
     }
 
     _linearVelocity.setFrom(v);
   }
 
-  double get angularVelocity => _angularVelocity; 
+  double get angularVelocity => _angularVelocity;
 
   void set angularVelocity(double w) {
     if (_type != BodyType.STATIC) {
@@ -469,7 +469,7 @@ class Body {
   void getMassData(MassData data) {
     data.mass = mass;
     final Vector2 lc = sweep.localCenter;
-    data.inertia = _inertia + mass * lc.lengthSquared;
+    data.inertia = _inertia + mass * lc.length2;
     data.center.x = lc.x;
     data.center.y = lc.y;
   }
@@ -504,8 +504,7 @@ class Body {
     invMass = 1.0 / mass;
 
     if (data.inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
-      _inertia = data.inertia - mass * Vector2.dot(data.center,
-          data.center);
+      _inertia = data.inertia - mass * data.center.dot(data.center);
       assert (_inertia > 0.0);
       invInertia = 1.0 / _inertia;
     }
@@ -518,9 +517,9 @@ class Body {
 
     // Update center of mass velocity.
     final Vector2 temp = new Vector2.copy(sweep.center);
-    temp.subLocal(oldCenter);
-    Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.addLocal(temp);
+    temp.sub(oldCenter);
+    Vector2_crossVectorAndNumToOut(temp, -_angularVelocity, temp);
+    _linearVelocity.add(temp);
   }
 
   /**
@@ -556,15 +555,15 @@ class Body {
       f.getMassData(massData);
       mass += massData.mass;
       final temp = new Vector2.copy(massData.center);
-      temp.mulLocal(massData.mass);
-      tempCenter.addLocal(temp);
+      temp.scale(massData.mass);
+      tempCenter.add(temp);
       _inertia += massData.inertia;
     }
 
     // Compute center of mass.
     if (mass > 0.0) {
       invMass = 1.0 / mass;
-      tempCenter.mulLocal(invMass);
+      tempCenter.scale(invMass);
     } else {
       // Force all dynamic bodies to have a positive mass.
       mass = 1.0;
@@ -573,7 +572,7 @@ class Body {
 
     if (_inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
       // Center the inertia about the center of mass.
-      _inertia -= mass * Vector2.dot(tempCenter, tempCenter);
+      _inertia -= mass * tempCenter.dot(tempCenter);
       assert (_inertia > 0.0);
       invInertia = 1.0 / _inertia;
     } else {
@@ -589,9 +588,9 @@ class Body {
 
     // Update center of mass velocity.
     final Vector2 temp = new Vector2.copy(sweep.center);
-    temp.subLocal(oldCenter);
-    Vector2.crossNumAndVectorToOut(_angularVelocity, temp, temp);
-    _linearVelocity.addLocal(temp);
+    temp.sub(oldCenter);
+    Vector2_crossVectorAndNumToOut(temp, -_angularVelocity, temp);
+    _linearVelocity.add(temp);
   }
 
   /**
@@ -632,7 +631,7 @@ class Body {
    * given out paramater.
    */
   void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
-    Matrix22.mulMatrixAndVectorToOut(originTransform.rotation, localVector,
+    originTransform.rotation.transformed(localVector,
         out);
   }
 
@@ -673,7 +672,7 @@ class Body {
    * out parameter.
    */
   void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
-    Matrix22.mulTransMatrixAndVectorToOut(originTransform.rotation, worldVector,
+    originTransform.rotation.transposed().transformed(worldVector,
         out);
   }
 
@@ -690,9 +689,9 @@ class Body {
   }
 
   void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
-    out.setFrom(worldPoint).subLocal(sweep.center);
-    Vector2.crossNumAndVectorToOut(_angularVelocity, out, out);
-    out.addLocal(_linearVelocity);
+    out.setFrom(worldPoint).sub(sweep.center);
+    Vector2_crossVectorAndNumToOut(out, -_angularVelocity, out);
+    out.add(_linearVelocity);
   }
 
   /**
@@ -719,7 +718,7 @@ class Body {
   /**
    * The type of this body. Either dynamic, static, or kinematic.
    */
-  int get type => _type; 
+  int get type => _type;
 
   /**
    * The type of this body. This may alter the mass and velocity.
@@ -750,7 +749,7 @@ class Body {
   }
 
   /** Is this body treated like a bullet for continuous collision detection? */
-  bool get bullet => (flags & BULLET_FLAG) == BULLET_FLAG; 
+  bool get bullet => (flags & BULLET_FLAG) == BULLET_FLAG;
 
   /**
    * Should this body be treated like a bullet for continuous collision
@@ -779,7 +778,7 @@ class Body {
   /**
    * Is this body allowed to sleep?
    */
-  bool get sleepingAllowed => (flags & AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG; 
+  bool get sleepingAllowed => (flags & AUTO_SLEEP_FLAG) == AUTO_SLEEP_FLAG;
 
   /**
    * The sleep state of the body. A sleeping body has very
@@ -801,7 +800,7 @@ class Body {
     }
   }
 
-  bool get awake => (flags & AWAKE_FLAG) == AWAKE_FLAG; 
+  bool get awake => (flags & AWAKE_FLAG) == AWAKE_FLAG;
 
   /**
    * Set the active state of the body. An inactive body is not
@@ -856,7 +855,7 @@ class Body {
   /**
    * Get the active state of the body.
    */
-  bool get active => (flags & ACTIVE_FLAG) == ACTIVE_FLAG; 
+  bool get active => (flags & ACTIVE_FLAG) == ACTIVE_FLAG;
 
   /**
    * Set this body to have fixed rotation. This causes the mass
@@ -880,11 +879,11 @@ class Body {
 
   void synchronizeFixtures() {
     final Transform xf1 = _pxf;
-    xf1.rotation.setAngle(sweep.angleZero);
-    Matrix22.mulMatrixAndVectorToOut(xf1.rotation, sweep.localCenter,
+    xf1.rotation.setRotation(sweep.angleZero);
+    xf1.rotation.transformed(sweep.localCenter,
         xf1.position);
-    xf1.position.mulLocal(-1.0);
-    xf1.position.addLocal(sweep.centerZero);
+    xf1.position.scale(-1.0);
+    xf1.position.add(sweep.centerZero);
 
     BroadPhase broadPhase = world._contactManager.broadPhase;
     for (Fixture f = fixtureList; f != null; f = f.next)
@@ -895,16 +894,14 @@ class Body {
     final double c = Math.cos(sweep.angle);
     final double s = Math.sin(sweep.angle);
     final Transform t = originTransform;
-    final Matrix22 r = t.rotation;
+    final Matrix2 r = t.rotation;
     final Vector2 p = t.position;
 
-    r.col1.x = c;
-    r.col2.x = -s;
-    r.col1.y = s;
-    r.col2.y = c;
-    p.x = (r.col1.x * sweep.localCenter.x + r.col2.x * sweep.localCenter.y) * -1 +
+    r.setValues(c,s,-s,c);
+
+    p.x = (r.entry(0,0) * sweep.localCenter.x + r.entry(0,1) * sweep.localCenter.y) * -1 +
         sweep.center.x;
-    p.y = (r.col1.y * sweep.localCenter.x + r.col2.y * sweep.localCenter.y) * -1 +
+    p.y = (r.entry(1,0) * sweep.localCenter.x + r.entry(1,1) * sweep.localCenter.y) * -1 +
         sweep.center.y;
   }
 

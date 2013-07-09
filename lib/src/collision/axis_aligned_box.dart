@@ -62,14 +62,15 @@ class AxisAlignedBox {
    * Returns true if the lower bound is strictly less than the upper bound and
    * both bounds are themselves valid (Vector2.isValid() returns true).
    */
-  bool isValid() => lowerBound.isValid() && upperBound.isValid() &&
+  bool isValid() => !lowerBound.isInfinite && !upperBound.isInfinite &&
+                    !lowerBound.isNaN && !upperBound.isNaN &&
                     lowerBound.x < upperBound.x && lowerBound.y < upperBound.y;
 
   /** Returns the center of this box. */
   Vector2 get center {
     Vector2 c = new Vector2.copy(lowerBound);
-    c.addLocal(upperBound);
-    c.mulLocal(.5);
+    c.add(upperBound);
+    c.scale(.5);
     return c;
   }
 

@@ -17,6 +17,10 @@ library box2d;
 import 'dart:collection';
 import 'dart:math' as Math;
 import 'dart:typed_data';
+import 'package:vector_math/vector_math.dart';
+
+export 'package:vector_math/vector_math.dart';
+
 
 part 'src/callbacks/debug_draw.dart';
 part 'src/callbacks/destruction_listener.dart';
@@ -51,15 +55,12 @@ part 'src/collision/shapes/mass_data.dart';
 part 'src/collision/shapes/polygon_shape.dart';
 part 'src/collision/shapes/shape.dart';
 part 'src/collision/shapes/shape_type.dart';
+part 'src/common/vector_legacy.dart';
 part 'src/common/color3.dart';
 part 'src/common/math_box.dart';
-part 'src/common/matrix22.dart';
-part 'src/common/matrix33.dart';
 part 'src/common/settings.dart';
 part 'src/common/sweep.dart';
 part 'src/common/transform.dart';
-part 'src/common/vector2.dart';
-part 'src/common/vector3.dart';
 part 'src/common/viewport_transform.dart';
 part 'src/dynamics/body.dart';
 part 'src/dynamics/body_def.dart';

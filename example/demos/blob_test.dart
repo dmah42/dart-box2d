@@ -37,7 +37,7 @@ class BlobTest extends Demo {
       sd.setAsBox(50.0, 0.4);
 
       BodyDef bd = new BodyDef();
-      bd.position.setCoords(0.0, 0.0);
+      bd.position.setValues(0.0, 0.0);
       assert(world != null);
       ground = world.createBody(bd);
       bodies.add(ground);
