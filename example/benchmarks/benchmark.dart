@@ -115,8 +115,8 @@ abstract class Benchmark {
     final positionSum = new Vector2.zero();
     final velocitySum = new Vector2.zero();
     for (Body b in bodies) {
-      positionSum.addLocal(b.position);
-      velocitySum.addLocal(b.linearVelocity);
+      positionSum.add(b.position);
+      velocitySum.add(b.linearVelocity);
     }
 
     return positionSum.x + positionSum.y + velocitySum.x + velocitySum.y;

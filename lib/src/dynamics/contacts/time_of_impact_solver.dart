@@ -123,8 +123,8 @@ class TimeOfImpactSolver {
         Vector2 point = psm.point;
         num separation = psm.separation;
 
-        rA.setFrom(point).subLocal(bodyA.sweep.center);
-        rB.setFrom(point).subLocal(bodyB.sweep.center);
+        rA.setFrom(point).sub(bodyA.sweep.center);
+        rB.setFrom(point).sub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -134,23 +134,23 @@ class TimeOfImpactSolver {
             Settings.LINEAR_SLOP), -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
         // Compute the effective mass.
-        num rnA = Vector2.crossVectors(rA, normal);
-        num rnB = Vector2.crossVectors(rB, normal);
+        num rnA = rA.cross(normal);
+        num rnB = rB.cross(normal);
         num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.setFrom(normal).mulLocal(impulse);
+        P.setFrom(normal).scale(impulse);
 
-        temp.setFrom(P).mulLocal(invMassA);
-        bodyA.sweep.center.subLocal(temp);
-        bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
+        temp.setFrom(P).scale(invMassA);
+        bodyA.sweep.center.sub(temp);
+        bodyA.sweep.angle -= invIA * rA.cross(P);
         bodyA.synchronizeTransform();
 
-        temp.setFrom(P).mulLocal(invMassB);
-        bodyB.sweep.center.addLocal(temp);
-        bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
+        temp.setFrom(P).scale(invMassB);
+        bodyB.sweep.center.add(temp);
+        bodyB.sweep.angle += invIB * rB.cross(P);
         bodyB.synchronizeTransform();
       }
     }
@@ -193,15 +193,15 @@ class TimeOfImpactSolverManifold {
         pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
         if (MathBox.distanceSquared(pointA, pointB) > Settings.EPSILON
             * Settings.EPSILON) {
-          normal.setFrom(pointB).subLocal(pointA);
+          normal.setFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
-          normal.setCoords(1.0, 0.0);
+          normal.setValues(1.0, 0.0);
         }
 
-        point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-        temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        point.setFrom(pointA).add(pointB).scale(.5);
+        temp.setFrom(pointB).sub(pointA);
+        separation = temp.dot(normal) - cc.radius;
         break;
 
       case ManifoldType.FACE_A:
@@ -209,8 +209,8 @@ class TimeOfImpactSolverManifold {
         planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
         clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        temp.setFrom(clipPoint).sub(planePoint);
+        separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
         break;
 
@@ -219,12 +219,12 @@ class TimeOfImpactSolverManifold {
         planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
         clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        temp.setFrom(clipPoint).sub(planePoint);
+        separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
 
         // Ensure normal points from A to B
-        normal.negateLocal();
+        normal.negate();
         break;
     }
   }

@@ -24,19 +24,19 @@ class Transform {
   final Vector2 position;
 
   /** A matrix representing a rotation. */
-  final Matrix22 rotation;
+  final Matrix2 rotation;
 
   /**
    * Constructs a new transform with a vector at the origin and no rotation.
    */
-  Transform() : position = new Vector2.zero(), rotation = new Matrix22();
+  Transform() : position = new Vector2.zero(), rotation = new Matrix2.zero();
 
   /**
    * Constructs a new transform equal to the given transform.
    */
   Transform.copy(Transform other)
       : position = new Vector2.copy(other.position),
-        rotation = new Matrix22.copy(other.rotation);
+        rotation = new Matrix2.copy(other.rotation);
 
   bool operator ==(other) {
     return position == other.position && rotation == other.rotation;
@@ -45,7 +45,7 @@ class Transform {
   /**
    * Sets this transform with the given position and rotation.
    */
-  void setFromPositionAndRotation(Vector2 argPosition, Matrix22 argRotation) {
+  void setFromPositionAndRotation(Vector2 argPosition, Matrix2 argRotation) {
     position.setFrom(argPosition);
     rotation.setFrom(argRotation);
   }
@@ -63,9 +63,9 @@ class Transform {
    * the result.
    */
   static Vector2 mul(Transform T, Vector2 v) {
-    return new Vector2(T.position.x + T.rotation.col1.x * v.x +
-        T.rotation.col2.x * v.y, T.position.y + T.rotation.col1.y * v.x +
-        T.rotation.col2.y * v.y);
+    return new Vector2(T.position.x + T.rotation.entry(0,0) * v.x +
+        T.rotation.entry(0,1) * v.y, T.position.y + T.rotation.entry(1,0) * v.x +
+        T.rotation.entry(1,1) * v.y);
   }
 
   /**
@@ -74,20 +74,22 @@ class Transform {
    */
   static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
     assert(out != null);
-    double tempY = transform.position.y + transform.rotation.col1.y *
-        vector.x + transform.rotation.col2.y * vector.y;
-    out.x = transform.position.x + transform.rotation.col1.x * vector.x +
-        transform.rotation.col2.x * vector.y;
+    double tempY = transform.position.y + transform.rotation.entry(1,0) *
+        vector.x + transform.rotation.entry(1,1) * vector.y;
+    out.x = transform.position.x + transform.rotation.entry(0,0) * vector.x +
+        transform.rotation.entry(0,1) * vector.y;
     out.y = tempY;
   }
 
   static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
     double v1x = v.x - T.position.x;
     double v1y = v.y - T.position.y;
-    Vector2 b = T.rotation.col1;
-    Vector2 b1 = T.rotation.col2;
-    double tempy = v1x * b1.x + v1y * b1.y;
-    out.x = v1x * b.x + v1y * b.y;
+    final double bx = T.rotation.entry(0,0);
+    final double by = T.rotation.entry(1,0);
+    final double b1x = T.rotation.entry(0,1);
+    final double b1y = T.rotation.entry(1,1);
+    double tempy = v1x * b1x + v1y * b1y;
+    out.x = v1x * bx + v1y * by;
     out.y = tempy;
   }
 }

@@ -47,25 +47,25 @@ class Car {
     _blTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _blTire._body;
-    jointDef.localAnchorA.setCoords(-3.0, 0.75);
+    jointDef.localAnchorA.setValues(-3.0, 0.75);
     world.createJoint(jointDef);
 
     _brTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _backTireMaxDriveForce, _backTireMaxLateralImpulse);
     jointDef.bodyB = _brTire._body;
-    jointDef.localAnchorA.setCoords(3.0, 0.75);
+    jointDef.localAnchorA.setValues(3.0, 0.75);
     world.createJoint(jointDef);
 
     _flTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _flTire._body;
-    jointDef.localAnchorA.setCoords(-3.0, 8.5);
+    jointDef.localAnchorA.setValues(-3.0, 8.5);
     _flJoint = world.createJoint(jointDef);
 
     _frTire = new Tire(world, _maxForwardSpeed, _maxBackwardSpeed,
         _frontTireMaxDriveForce, _frontTireMaxLateralImpulse);
     jointDef.bodyB = _frTire._body;
-    jointDef.localAnchorA.setCoords(3.0, 8.5);
+    jointDef.localAnchorA.setValues(3.0, 8.5);
     _frJoint = world.createJoint(jointDef);
   }
 

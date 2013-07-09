@@ -83,12 +83,12 @@ class Racer extends Demo implements ContactListener {
 
     fixtureDef.userData = new GroundArea(0.001, false);
     shape.setAsBoxWithCenterAndAngle(
-        27.0, 21.0, new Vector2(-30.0, 30.0), MathBox.degToRad(20.0));
+        27.0, 21.0, new Vector2(-30.0, 30.0), radians(20.0));
     _groundBody.createFixture(fixtureDef);
 
     fixtureDef.userData = new GroundArea(0.2, false);
     shape.setAsBoxWithCenterAndAngle(
-        27.0, 15.0, new Vector2(20.0, 40.0), MathBox.degToRad(-40.0));
+        27.0, 15.0, new Vector2(20.0, 40.0), radians(-40.0));
     _groundBody.createFixture(fixtureDef);
   }
 

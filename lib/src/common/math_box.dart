@@ -52,9 +52,4 @@ class MathBox {
     final double res = toMin + mult * (toMax - toMin);
     return res;
   }
-
-  /** Convert from [deg] degrees to radians. */
-  static double degToRad(double deg) => (Math.PI / 180.0) * deg;
-  /** Convert from [rad] radians to degrees. */
-  static double radToDeg(double rad) => (180.0 / Math.PI) * rad;
 }

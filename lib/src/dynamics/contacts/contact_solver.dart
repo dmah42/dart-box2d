@@ -193,10 +193,10 @@ class ContactSolver {
         num invMassB = bodyB.invMass;
         num invIB = bodyB.invInertia;
 
-        num rn1A = Vector2.crossVectors(ccp1.rA, cc.normal);
-        num rn1B = Vector2.crossVectors(ccp1.rB, cc.normal);
-        num rn2A = Vector2.crossVectors(ccp2.rA, cc.normal);
-        num rn2B = Vector2.crossVectors(ccp2.rB, cc.normal);
+        num rn1A = ccp1.rA.cross(cc.normal);
+        num rn1B = ccp1.rB.cross(cc.normal);
+        num rn2A = ccp2.rA.cross(cc.normal);
+        num rn2B = ccp2.rB.cross(cc.normal);
 
         num k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
             * rn1B;
@@ -208,15 +208,9 @@ class ContactSolver {
         // Ensure a reasonable condition number.
         if (k11 * k11 < K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
           // K is safe to invert.
-          cc.K.col1.x = k11;
-          cc.K.col1.y = k12;
-          cc.K.col2.x = k12;
-          cc.K.col2.y = k22;
-          cc.normalMass.col1.x = cc.K.col1.x;
-          cc.normalMass.col1.y = cc.K.col1.y;
-          cc.normalMass.col2.x = cc.K.col2.x;
-          cc.normalMass.col2.y = cc.K.col2.y;
-          cc.normalMass.invertLocal();
+          cc.K.setValues(k11,k12,k12,k22);
+          cc.normalMass.setValues(k11,k12,k12,k22);
+          cc.normalMass.invert();
         } else{
           // The constraints are redundant, just use one.
           cc.pointCount = 1;
@@ -237,7 +231,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final Vector2 normal = c.normal;
-      Vector2.crossVectorAndNumToOut(normal, 1.0, tangent);
+      Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
@@ -365,36 +359,36 @@ class ContactSolver {
         num vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
         Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
-        temp2.x = c.K.col1.x * a.x + c.K.col2.x * a.y;
-        temp2.y = c.K.col1.y * a.x + c.K.col2.y * a.y;
+        temp2.x = c.K.entry(0,0) * a.x + c.K.entry(0,1) * a.y;
+        temp2.y = c.K.entry(1,0) * a.x + c.K.entry(1,1) * a.y;
         b.x -= temp2.x;
         b.y -= temp2.y;
 
         while (true) {
-          Matrix22.mulMatrixAndVectorToOut(c.normalMass, b, x);
-          x.mulLocal(-1.0);
+          c.normalMass.transformed(b, x);
+          x.scale(-1.0);
 
           if (x.x >= 0.0 && x.y >= 0.0){
             // Resubstitute for the incremental impulse
             //Vector2 d = x - a;
-            d.setFrom(x).subLocal(a);
+            d.setFrom(x).sub(a);
 
             // Apply incremental impulse
             // Vector2 P1 = d.x * normal;
             // Vector2 P2 = d.y * normal;
-            P1.setFrom(c.normal).mulLocal(d.x);
-            P2.setFrom(c.normal).mulLocal(d.y);
+            P1.setFrom(c.normal).scale(d.x);
+            P2.setFrom(c.normal).scale(d.y);
 
-            temp1.setFrom(P1).addLocal(P2);
-            temp2.setFrom(temp1).mulLocal(invMassA);
-            vA.subLocal(temp2);
-            temp2.setFrom(temp1).mulLocal(invMassB);
-            vB.addLocal(temp2);
+            temp1.setFrom(P1).add(P2);
+            temp2.setFrom(temp1).scale(invMassA);
+            vA.sub(temp2);
+            temp2.setFrom(temp1).scale(invMassB);
+            vB.add(temp2);
 
-            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-                Vector2.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-                Vector2.crossVectors(cp2.rB, P2));
+            wA -= invIA * (cp1.rA.cross(P1) +
+                cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) +
+                cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -406,26 +400,26 @@ class ContactSolver {
           x.x = - cp1.normalMass * b.x;
           x.y = 0.0;
           vn1 = 0.0;
-          vn2 = c.K.col1.y * x.x + b.y;
+          vn2 = c.K.entry(1,0) * x.x + b.y;
 
           if (x.x >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).subLocal(a);
+            d.setFrom(x).sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).mulLocal(d.x);
-            P2.setFrom(c.normal).mulLocal(d.y);
+            P1.setFrom(c.normal).scale(d.x);
+            P2.setFrom(c.normal).scale(d.y);
 
-            temp1.setFrom(P1).addLocal(P2);
-            temp2.setFrom(temp1).mulLocal(invMassA);
-            vA.subLocal(temp2);
-            temp2.setFrom(temp1).mulLocal(invMassB);
-            vB.addLocal(temp2);
+            temp1.setFrom(P1).add(P2);
+            temp2.setFrom(temp1).scale(invMassA);
+            vA.sub(temp2);
+            temp2.setFrom(temp1).scale(invMassB);
+            vB.add(temp2);
 
-            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-                Vector2.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-                Vector2.crossVectors(cp2.rB, P2));
+            wA -= invIA * (cp1.rA.cross(P1) +
+                cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) +
+                cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -436,27 +430,27 @@ class ContactSolver {
 
           x.x = 0.0;
           x.y = - cp2.normalMass * b.y;
-          vn1 = c.K.col2.x * x.y + b.x;
+          vn1 = c.K.entry(0,1) * x.y + b.x;
           vn2 = 0.0;
 
           if (x.y >= 0.0 && vn1 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).subLocal(a);
+            d.setFrom(x).sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).mulLocal(d.x);
-            P2.setFrom(c.normal).mulLocal(d.y);
+            P1.setFrom(c.normal).scale(d.x);
+            P2.setFrom(c.normal).scale(d.y);
 
-            temp1.setFrom(P1).addLocal(P2);
-            temp2.setFrom(temp1).mulLocal(invMassA);
-            vA.subLocal(temp2);
-            temp2.setFrom(temp1).mulLocal(invMassB);
-            vB.addLocal(temp2);
+            temp1.setFrom(P1).add(P2);
+            temp2.setFrom(temp1).scale(invMassA);
+            vA.sub(temp2);
+            temp2.setFrom(temp1).scale(invMassB);
+            vB.add(temp2);
 
-            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-                Vector2.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-                Vector2.crossVectors(cp2.rB, P2));
+            wA -= invIA * (cp1.rA.cross(P1) +
+                cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) +
+                cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -472,22 +466,22 @@ class ContactSolver {
 
           if (vn1 >= 0.0 && vn2 >= 0.0 ) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).subLocal(a);
+            d.setFrom(x).sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).mulLocal(d.x);
-            P2.setFrom(c.normal).mulLocal(d.y);
+            P1.setFrom(c.normal).scale(d.x);
+            P2.setFrom(c.normal).scale(d.y);
 
-            temp1.setFrom(P1).addLocal(P2);
-            temp2.setFrom(temp1).mulLocal(invMassA);
-            vA.subLocal(temp2);
-            temp2.setFrom(temp1).mulLocal(invMassB);
-            vB.addLocal(temp2);
+            temp1.setFrom(P1).add(P2);
+            temp2.setFrom(temp1).scale(invMassA);
+            vA.sub(temp2);
+            temp2.setFrom(temp1).scale(invMassB);
+            vB.add(temp2);
 
-            wA -= invIA * (Vector2.crossVectors(cp1.rA, P1) +
-                Vector2.crossVectors(cp2.rA, P2));
-            wB += invIB * (Vector2.crossVectors(cp1.rB, P1) +
-                Vector2.crossVectors(cp2.rB, P2));
+            wA -= invIA * (cp1.rA.cross(P1) +
+                cp2.rA.cross(P2));
+            wB += invIB * (cp2.rA.cross(P1) +
+                cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -546,8 +540,8 @@ class ContactSolver {
         Vector2 point = psm.point;
         num separation = psm.separation;
 
-        rA.setFrom(point).subLocal(bodyA.sweep.center);
-        rB.setFrom(point).subLocal(bodyB.sweep.center);
+        rA.setFrom(point).sub(bodyA.sweep.center);
+        rB.setFrom(point).sub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -558,23 +552,23 @@ class ContactSolver {
             -Settings.MAX_LINEAR_CORRECTION, 0.0);
 
         // Compute the effective mass.
-        num rnA = Vector2.crossVectors(rA, normal);
-        num rnB = Vector2.crossVectors(rB, normal);
+        num rnA = rA.cross(normal);
+        num rnB = rB.cross(normal);
         num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
         num impulse = K > 0.0 ? - C / K : 0.0;
 
-        P.setFrom(normal).mulLocal(impulse);
+        P.setFrom(normal).scale(impulse);
 
-        temp1.setFrom(P).mulLocal(invMassA);
-        bodyA.sweep.center.subLocal(temp1);;
-        bodyA.sweep.angle -= invIA * Vector2.crossVectors(rA, P);
+        temp1.setFrom(P).scale(invMassA);
+        bodyA.sweep.center.sub(temp1);;
+        bodyA.sweep.angle -= invIA * rA.cross(P);
         bodyA.synchronizeTransform();
 
-        temp1.setFrom(P).mulLocal(invMassB);
-        bodyB.sweep.center.addLocal(temp1);
-        bodyB.sweep.angle += invIB * Vector2.crossVectors(rB, P);
+        temp1.setFrom(P).scale(invMassB);
+        bodyB.sweep.center.add(temp1);
+        bodyB.sweep.angle += invIB * rB.cross(P);
         bodyB.synchronizeTransform();
       }
     }
@@ -618,15 +612,15 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
         if (MathBox.distanceSquared(pointA, pointB) >
             Settings.EPSILON * Settings.EPSILON){
-          normal.setFrom(pointB).subLocal(pointA);
+          normal.setFrom(pointB).sub(pointA);
           normal.normalize();
         } else {
-          normal.setCoords(1.0, 0.0);
+          normal.setValues(1.0, 0.0);
         }
 
-        point.setFrom(pointA).addLocal(pointB).mulLocal(.5);
-        temp.setFrom(pointB).subLocal(pointA);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        point.setFrom(pointA).add(pointB).scale(.5);
+        temp.setFrom(pointB).sub(pointA);
+        separation = temp.dot(normal) - cc.radius;
         break;
 
       case ManifoldType.FACE_A:
@@ -635,8 +629,8 @@ class PositionSolverManifold {
 
         cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
             clipPoint);
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        temp.setFrom(clipPoint).sub(planePoint);
+        separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
         break;
 
@@ -645,12 +639,12 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
         cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-        temp.setFrom(clipPoint).subLocal(planePoint);
-        separation = Vector2.dot(temp, normal) - cc.radius;
+        temp.setFrom(clipPoint).sub(planePoint);
+        separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
 
         // Ensure normal points from A to B
-        normal.negateLocal();
+        normal.negate();
         break;
     }
   }

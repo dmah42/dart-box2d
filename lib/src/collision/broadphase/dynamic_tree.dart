@@ -148,7 +148,7 @@ class DynamicTree {
 
     // Predict bounding box displacement.
     _tempVector.setFrom(displacement);
-    _tempVector.mulLocal(Settings.BOUNDING_BOX_MULTIPLIER);
+    _tempVector.scale(Settings.BOUNDING_BOX_MULTIPLIER);
     if (_tempVector.x < 0)
       argBox.lowerBound.x += _tempVector.x;
     else
@@ -252,8 +252,8 @@ class DynamicTree {
         // two children.
         deltaOne.setFrom(childOne.box.center);
         deltaTwo.setFrom(childTwo.box.center);
-        deltaOne.subLocal(center).absLocal();
-        deltaTwo.subLocal(center).absLocal();
+        deltaOne.sub(center).absolute();
+        deltaTwo.sub(center).absolute();
 
         num normOne = deltaOne.x + deltaOne.y;
         num normTwo = deltaTwo.x + deltaTwo.y;

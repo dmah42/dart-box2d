@@ -32,7 +32,7 @@ class ViewportTransform {
 
   /**
    * This is the half-width and half-height.
-   * This should be the actual half-width and 
+   * This should be the actual half-width and
    * half-height, not anything transformed or scaled.
    */
   Vector2 extents;
@@ -42,7 +42,7 @@ class ViewportTransform {
    * sizes.
    */
   double scale;
-  
+
   /**
    * center of the viewport.
    */
@@ -53,7 +53,7 @@ class ViewportTransform {
    * and using the given scale.
    */
   void setCamera(double x, double y, double s) {
-    center.setCoords(x, y);
+    center.setValues(x, y);
     scale = s;
   }
   /**
@@ -64,13 +64,13 @@ class ViewportTransform {
    */
   Vector2 get translation {
     Vector2 result = new Vector2.copy(extents);
-    result.subLocal(center);
+    result.sub(center);
     return result;
   }
 
   void set translation(Vector2 translation) {
     center.setFrom(extents);
-    center.subLocal(translation);
+    center.sub(translation);
   }
 
 
@@ -85,7 +85,7 @@ class ViewportTransform {
     double gridCorrectedX = (argWorld.x * scale) + extents.x;
     double gridCorrectedY = extents.y - (argWorld.y * scale);
 
-    argScreen.setCoords(gridCorrectedX + translation.x, gridCorrectedY +
+    argScreen.setValues(gridCorrectedX + translation.x, gridCorrectedY +
         -translation.y);
   }
 
@@ -100,6 +100,6 @@ class ViewportTransform {
 
     double gridCorrectedX = (translationCorrectedX - extents.x) / scale;
     double gridCorrectedY = ((translationCorrectedY - extents.y) * -1) / scale;
-    argWorld.setCoords(gridCorrectedX, gridCorrectedY);
+    argWorld.setValues(gridCorrectedX, gridCorrectedY);
   }
 }
