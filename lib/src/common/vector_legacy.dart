@@ -21,18 +21,6 @@ part of box2d;
  * Since we use the vector_math library these methods are not available anymore.
  */
 
-
-/**
- * Has the effect of swapping the x and y coordinates of the vector,
- * multiplying both by the given number, and then flipping the sign of the new
- * y coordinate. Returns the result through the out parameter.
- */
-void Vector2_crossVectorAndNumToOut(Vector2 a, double s, Vector2 out) {
-  double tempy = -s * a.x;
-  out.x = s * a.y;
-  out.y = tempy;
-}
-
 /**
  * Take the minimum of each coordinate from the two given vectors and store
  * the result in the given out vector.

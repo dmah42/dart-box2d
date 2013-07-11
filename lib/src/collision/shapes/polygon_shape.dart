@@ -121,7 +121,7 @@ class PolygonShape extends Shape {
       edge.setFrom(vertices[i2]).sub(vertices[i1]);
 
       assert (edge.length2 > Settings.EPSILON * Settings.EPSILON);
-      Vector2_crossVectorAndNumToOut(edge, 1.0, normals[i]);
+      edge.scaleOrthogonalInto(-1.0, normals[i]);
       normals[i].normalize();
     }
 
@@ -176,7 +176,7 @@ class PolygonShape extends Shape {
     vertices[1].setFrom(v2);
     centroid.setFrom(v1).add(v2).scale(0.5);
     normals[0].setFrom(v2).sub(v1);
-    Vector2_crossVectorAndNumToOut(normals[0], 1.0, normals[0]);
+    normals[0].scaleOrthogonalInto(-1.0, normals[0]);
     normals[0].normalize();
     normals[1].setFrom(normals[0]).negate();
   }

@@ -213,7 +213,7 @@ class ContactSolver {
       final num invMassB = bodyB.invMass;
       final num invIB = bodyB.invInertia;
       final Vector2 normal = c.normal;
-      Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
+      normal.scaleOrthogonalInto(-1.0, tangent);
 
       for (int j = 0; j < c.pointCount; ++j){
         ContactConstraintPoint ccp = c.points[j];
