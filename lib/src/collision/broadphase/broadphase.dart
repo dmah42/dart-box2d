@@ -94,7 +94,7 @@ class BroadPhase implements TreeCallback {
   bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
     final Aabb2 a = proxyA.box;
     final Aabb2 b = proxyB.box;
-    return Aabb2_testOverlap(a, b);
+    return a.intersectsWith(b);
   }
 
   /**

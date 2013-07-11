@@ -186,7 +186,7 @@ class DynamicTree {
     if (node == null)
       return true;
 
-    if (Aabb2_testOverlap(argBox, node.box)) {
+    if (argBox.intersectsWith(node.box)) {
 
       if (node.isLeaf) {
         if (!callback.treeCallback(node))

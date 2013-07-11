@@ -107,12 +107,6 @@ void Matrix3_solve33ToOut(Matrix3 a, Vector3 b, Vector3 out) {
   out.z = z;
 }
 
-Aabb2_testOverlap(Aabb2 a, Aabb2 b) {
-  return !((b.min.x > a.max.x || b.min.y > a.max.y) ||
-      (a.min.x > b.max.x || a.min.y > b.max.y));
-
-}
-
 Aabb2_setFrom(Aabb2 a, Aabb2 b) {
   a.min.setFrom(b.min);
   a.max.setFrom(b.max);
