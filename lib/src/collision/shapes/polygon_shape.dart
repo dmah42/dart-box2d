@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -204,7 +204,7 @@ class PolygonShape extends Shape {
   /**
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */
-  void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
+  void computeAxisAlignedBox(Aabb2 argAabb, Transform argXf) {
     final Vector2 lower = new Vector2.zero();
     final Vector2 upper = new Vector2.zero();
     final Vector2 v = new Vector2.zero();
@@ -218,10 +218,10 @@ class PolygonShape extends Shape {
       Vector2_maxToOut(upper, v, upper);
     }
 
-    argAabb.lowerBound.x = lower.x - radius;
-    argAabb.lowerBound.y = lower.y - radius;
-    argAabb.upperBound.x = upper.x + radius;
-    argAabb.upperBound.y = upper.y + radius;
+    argAabb.min.x = lower.x - radius;
+    argAabb.min.y = lower.y - radius;
+    argAabb.max.x = upper.x + radius;
+    argAabb.max.y = upper.y + radius;
   }
 
   /**

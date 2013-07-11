@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,7 +63,7 @@ class BroadPhase implements TreeCallback {
    * Creates a proxy with an initial bounding box. Pairs are not reported until
    * updatePairs is called.
    */
-  DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
+  DynamicTreeNode createProxy(Aabb2 box, userData) {
     DynamicTreeNode node = _tree.createProxy(box, userData);
     ++proxyCount;
     _bufferMove(node);
@@ -83,7 +83,7 @@ class BroadPhase implements TreeCallback {
    * Call MoveProxy as many times as you like, then when you are done
    * call UpdatePairs to constize the proxy pairs (for your time step).
    */
-  void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) {
+  void moveProxy(DynamicTreeNode proxy, Aabb2 box, Vector2 displacement) {
     if (_tree.moveProxy(proxy, box, displacement))
       _bufferMove(proxy);
   }
@@ -92,9 +92,9 @@ class BroadPhase implements TreeCallback {
    * Returns true if the bounding boxes of the given proxies overlap.
    */
   bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
-    final AxisAlignedBox a = proxyA.box;
-    final AxisAlignedBox b = proxyB.box;
-    return AxisAlignedBox.testOverlap(a, b);
+    final Aabb2 a = proxyA.box;
+    final Aabb2 b = proxyB.box;
+    return a.intersectsWith(b);
   }
 
   /**
@@ -202,7 +202,7 @@ class BroadPhase implements TreeCallback {
    * Query an axis aligned box for overlapping proxies. The callback funciton is
    * called for each proxy that overlaps the supplied box.
    */
-  void query(TreeCallback callback, AxisAlignedBox box) {
+  void query(TreeCallback callback, Aabb2 box) {
     _tree.query(callback, box);
   }
 

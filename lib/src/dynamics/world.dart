@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -569,17 +569,17 @@ class World {
         }
 
         for (Fixture f = b.fixtureList; f != null; f = f.next) {
-          AxisAlignedBox aabb = f.proxy.box;
+          Aabb2 aabb = f.proxy.box;
 
           List<Vector2> vs = new List<Vector2>(4);
           for (int i = 0; i < vs.length; i++) {
             vs[i] = new Vector2.zero();
           }
 
-          vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
-          vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
-          vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
-          vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
+          vs[0].setValues(aabb.min.x, aabb.min.y);
+          vs[1].setValues(aabb.max.x, aabb.min.y);
+          vs[2].setValues(aabb.max.x, aabb.max.y);
+          vs[3].setValues(aabb.min.x, aabb.max.y);
 
           if (0 != (drawFlags & DebugDraw.e_lineDrawingBit)) {
             _debugDraw.drawPolygon(vs, 4, color);
@@ -611,7 +611,7 @@ class World {
    * param aabb
    *   the query box.
    */
-  void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
+  void queryAABB(QueryCallback callback, Aabb2 aabb) {
     wqwrapper.broadPhase = _contactManager.broadPhase;
     wqwrapper.callback = callback;
     _contactManager.broadPhase.query(wqwrapper, aabb);

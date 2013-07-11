@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@
 part of box2d;
 
 class Fixture {
-  final AxisAlignedBox box = new AxisAlignedBox();
+  final Aabb2 box = new Aabb2();
 
   double density;
 
@@ -42,8 +42,8 @@ class Fixture {
 
   dynamic userData;
 
-  final AxisAlignedBox _poolOne = new AxisAlignedBox();
-  final AxisAlignedBox _poolTwo = new AxisAlignedBox();
+  final Aabb2 _poolOne = new Aabb2();
+  final Aabb2 _poolTwo = new Aabb2();
 
   /** Constructs a new Fixture with default values. */
   Fixture();
@@ -109,16 +109,16 @@ class Fixture {
     // Compute an Axis Aligned Box that covers the swept shape.
     shape.computeAxisAlignedBox(_poolOne, transformOne);
     shape.computeAxisAlignedBox(_poolTwo, transformTwo);
-    box.lowerBound.x = _poolOne.lowerBound.x < _poolTwo.lowerBound.x ?
-        _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
-    box.lowerBound.y = _poolOne.lowerBound.y < _poolTwo.lowerBound.y ?
-        _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
-    box.upperBound.x = _poolOne.upperBound.x > _poolTwo.upperBound.x ?
-        _poolOne.upperBound.x : _poolTwo.upperBound.x;
-    box.upperBound.y = _poolOne.upperBound.y > _poolTwo.upperBound.y ?
-        _poolOne.upperBound.y : _poolTwo.upperBound.y;
+    box.min.x = _poolOne.min.x < _poolTwo.min.x ?
+        _poolOne.min.x : _poolTwo.min.x;
+    box.min.y = _poolOne.min.y < _poolTwo.min.y ?
+        _poolOne.min.y : _poolTwo.min.y;
+    box.max.x = _poolOne.max.x > _poolTwo.max.x ?
+        _poolOne.max.x : _poolTwo.max.x;
+    box.max.y = _poolOne.max.y > _poolTwo.max.y ?
+        _poolOne.max.y : _poolTwo.max.y;
 
-    Vector2 disp = _poolOne.lowerBound;
+    Vector2 disp = _poolOne.min;
     disp.x = transformTwo.position.x - transformOne.position.x;
     disp.y = transformTwo.position.y - transformOne.position.y;
 
