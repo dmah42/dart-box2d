@@ -17,38 +17,26 @@
 part of box2d;
 
 class Simplex {
-  final SimplexVertex v1;
-  final SimplexVertex v2;
-  final SimplexVertex v3;
-  final List<SimplexVertex> vertices;
-  int count;
+  final SimplexVertex v1 = new SimplexVertex();
+  final SimplexVertex v2 = new SimplexVertex();
+  final SimplexVertex v3 = new SimplexVertex();
+  final List<SimplexVertex> vertices = new List<SimplexVertex>(3);
+  int count = 0;
 
-  Simplex() :
-      count = 0,
-      v1 = new SimplexVertex(),
-      v2 = new SimplexVertex(),
-      v3 = new SimplexVertex(),
-      vertices = new List<SimplexVertex>(3),
-      e13 = new Vector2.zero(),
-      e12 = new Vector2.zero(),
-      e23 = new Vector2.zero(),
-      case2 = new Vector2.zero(),
-      case22 = new Vector2.zero(),
-      case3 = new Vector2.zero(),
-      case33 = new Vector2.zero() {
+  Simplex() {
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
   }
 
   /** Pooling. */
-  final Vector2 e13;
-  final Vector2 e23;
-  final Vector2 e12;
-  final Vector2 case2;
-  final Vector2 case22;
-  final Vector2 case3;
-  final Vector2 case33;
+  final Vector2 e13 = new Vector2.zero();
+  final Vector2 e23 = new Vector2.zero();
+  final Vector2 e12 = new Vector2.zero();
+  final Vector2 case2 = new Vector2.zero();
+  final Vector2 case22 = new Vector2.zero();
+  final Vector2 case3 = new Vector2.zero();
+  final Vector2 case33 = new Vector2.zero();
 
   void readCache(SimplexCache cache, DistanceProxy proxyA,
       Transform transformA, DistanceProxy proxyB,

@@ -25,31 +25,25 @@ part of box2d;
 
 class DistanceJointDef extends JointDef {
   /** The local anchor point relative to body1's origin. */
-  final Vector2 localAnchorA;
+  final Vector2 localAnchorA = new Vector2.zero();
 
   /** The local anchor point relative to body2's origin. */
-  final Vector2 localAnchorB;
+  final Vector2 localAnchorB = new Vector2.zero();
 
   /** The equilibrium length between the anchor points. */
-  double length;
+  double length = 1.0;
 
   /**
    * The mass-spring-damper frequency in Hertz.
    */
-  double frequencyHz;
+  double frequencyHz = 0.0;
 
   /**
    * The damping ratio. 0 = no damping, 1 = critical damping.
    */
-  double dampingRatio;
+  double dampingRatio = 0.0;
 
-  DistanceJointDef() :
-    super(),
-    localAnchorA = new Vector2(0.0, 0.0),
-    localAnchorB = new Vector2(0.0, 0.0),
-    length = 1.0,
-    frequencyHz = 0.0,
-    dampingRatio = 0.0 {
+  DistanceJointDef() : super() {
     type = JointType.DISTANCE;
   }
 

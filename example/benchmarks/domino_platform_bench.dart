@@ -21,7 +21,7 @@ class DominoPlatformBench extends Benchmark {
   static const String NAME = "Domino Platforms";
 
   DominoPlatformBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+    super(solveLoops, steps);
 
   String get name => NAME;
 

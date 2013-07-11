@@ -37,22 +37,25 @@ class PolygonShape extends Shape {
    */
   final List<Vector2> normals;
 
-  int vertexCount;
+
+  int vertexCount = 0;
 
   /**
    * Constructs a new PolygonShape.
    */
   PolygonShape() :
-      super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
-      vertexCount = 0,
-      vertices = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
-      normals = new List<Vector2>(Settings.MAX_POLYGON_VERTICES),
-      centroid = new Vector2.zero() {
-    for (int i = 0; i < vertices.length; ++i)
-      vertices[i] = new Vector2.zero();
-    for (int i = 0; i < normals.length; ++i)
-      normals[i] = new Vector2.zero();
-  }
+    super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+    centroid = new Vector2.zero(),
+    vertices = new List<Vector2>.generate(
+        Settings.MAX_POLYGON_VERTICES,
+        (_) => new Vector2.zero(),
+        growable: false
+      ),
+    normals = new List<Vector2>.generate(
+        Settings.MAX_POLYGON_VERTICES,
+        (_) => new Vector2.zero(),
+        growable: false
+      );
 
   /**
    * Constructs a new PolygonShape equal to the given shape.

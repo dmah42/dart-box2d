@@ -20,10 +20,9 @@
 part of box2d;
 
 class ViewportTransform {
-  ViewportTransform(Vector2 e, Vector2 c, double s) :
+  ViewportTransform(Vector2 e, Vector2 c, this.scale) :
     extents = new Vector2.copy(e),
-    center = new Vector2.copy(c),
-    scale = s;
+    center = new Vector2.copy(c);
 
   /**
    * if we flip the y axis when transforming.

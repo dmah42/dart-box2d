@@ -20,34 +20,24 @@
 part of box2d;
 
 class Distance {
-  int calls;
-  int iters;
-  int maxIters;
+  int calls = 0;
+  int iters = 0;
+  int maxIters = 20;
 
   /** Pool variables for use in distance calculation. */
-  Simplex simplex;
-  List<int> saveA;
-  List<int> saveB;
-  Vector2 closestPoint;
-  Vector2 searchDirection;
-  Vector2 temp;
-  Vector2 normal;
+  Simplex simplex = new Simplex();
+  List<int> saveA = new List<int>(3);
+  List<int> saveB = new List<int>(3);
+  Vector2 closestPoint = new Vector2.zero();
+  Vector2 searchDirection = new Vector2.zero();
+  Vector2 temp = new Vector2.zero();
+  Vector2 normal = new Vector2.zero();
 
   /**
    * Construct a new Distance object. For internal use only. Don't directly
    * invoke.
    */
-  Distance._construct() :
-    simplex = new Simplex(),
-    saveA = new List<int>(3),
-    saveB = new List<int>(3),
-    closestPoint = new Vector2.zero(),
-    searchDirection = new Vector2.zero(),
-    temp = new Vector2.zero(),
-    normal = new Vector2.zero(),
-    calls = 0,
-    iters = 0,
-    maxIters = 20 { }
+  Distance._construct();
 
   /**
    * Compute the closest points between two shapes. Supports any combination of:

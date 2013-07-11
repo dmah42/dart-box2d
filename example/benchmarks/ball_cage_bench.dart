@@ -29,7 +29,7 @@ class BallCageBench extends Benchmark {
 
   /** Constructs a new BallCage. */
   BallCageBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+    super(solveLoops, steps);
 
   String get name => NAME;
 

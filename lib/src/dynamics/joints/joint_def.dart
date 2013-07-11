@@ -19,17 +19,12 @@
 part of box2d;
 
 class JointDef {
-  JointDef() :
-    type = JointType.UNKNOWN,
-    userData = null,
-    bodyA = null,
-    bodyB = null,
-    collideConnected = false { }
+  JointDef();
 
   /**
    * The joint type is set automatically for concrete joint types.
    */
-  int type;
+  int type = JointType.UNKNOWN;
 
   /**
    * Use this to attach application specific data to your joints.
@@ -49,5 +44,5 @@ class JointDef {
   /**
    * Set this flag to true if the attached bodies should collide.
    */
-  bool collideConnected;
+  bool collideConnected = false;
 }

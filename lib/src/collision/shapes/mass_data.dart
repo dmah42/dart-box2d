@@ -18,21 +18,18 @@ part of box2d;
 
 class MassData {
   /** The mass of the shape, usually in kilograms. */
-  double mass;
+  double mass = 0.0;
 
   /** The position of the shape's centroid relative to the shape's origin. */
-  Vector2 center;
+  Vector2 center = new Vector2.zero();
 
   /** The rotational inertia of the shape about the local origin. */
-  double inertia;
+  double inertia = 0.0;
 
   /**
    * Constructs a blank mass data.
    */
-  MassData() :
-    mass = 0.0,
-    inertia = 0.0,
-    center = new Vector2.zero();
+  MassData();
 
   /**
    * Copies from the given mass data.
@@ -40,7 +37,7 @@ class MassData {
   MassData.copy(MassData md) :
     mass = md.mass,
     inertia = md.inertia,
-    center = new Vector2.copy(md.center) { }
+    center = new Vector2.copy(md.center);
 
   /**
    * Sets this mass data equal to the given mass data.

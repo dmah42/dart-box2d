@@ -15,7 +15,7 @@
 part of box2d;
 
 class CircleContact extends Contact {
-  CircleContact(DefaultWorldPool argPool) : super(argPool) { }
+  CircleContact(DefaultWorldPool argPool) : super(argPool);
 
   void init(Fixture fA, Fixture fB) {
     assert(ShapeType.CIRCLE == fA.type);

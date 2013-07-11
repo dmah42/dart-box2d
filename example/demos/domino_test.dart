@@ -20,7 +20,7 @@ import 'demo.dart';
 
 /** Demonstration of dominoes being knocked over. */
 class DominoTest extends Demo {
-  DominoTest() : super("Domino test") { }
+  DominoTest() : super("Domino test");
 
   void initialize() {
     { // Floor

@@ -18,15 +18,14 @@ class FrictionJoint extends Joint {
   final Vector2 _localAnchorA;
   final Vector2 _localAnchorB;
 
-  Vector2 _linearImpulse;
-  double _angularImpulse;
+  Vector2 _linearImpulse = new Vector2.zero();
+  double _angularImpulse = 0.0;
   double _maxForce;
   double _maxTorque;
 
   FrictionJoint(FrictionJointDef def)
       : _localAnchorA = new Vector2.copy(def.localAnchorA),
         _localAnchorB = new Vector2.copy(def.localAnchorB),
-        _linearImpulse = new Vector2.zero(),
         _angularImpulse = 0.0,
         _maxForce = def.maxForce,
         _maxTorque = def.maxTorque,

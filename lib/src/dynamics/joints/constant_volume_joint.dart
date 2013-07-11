@@ -30,7 +30,7 @@ class ConstantVolumeJoint extends Joint {
 
   TimeStep step;
 
-  double _impulse;
+  double _impulse = 0.0;
 
   World _world;
 
@@ -39,9 +39,7 @@ class ConstantVolumeJoint extends Joint {
   double frequencyHz;
   double dampingRatio;
 
-  ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
-    super(def),
-    _impulse = 0.0 {
+  ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) : super(def) {
     if (def.bodies.length <= 2) {
       throw new ArgumentError(
           "You cannot create a constant volume joint with less than three "

@@ -32,60 +32,50 @@ class RevoluteJointDef extends JointDef {
   /**
    *  The local anchor point relative to body1's origin.
    */
-  Vector2 localAnchorA;
+  Vector2 localAnchorA = new Vector2.zero();
 
   /**
    *  The local anchor point relative to body2's origin.
    */
-  Vector2 localAnchorB;
+  Vector2 localAnchorB = new Vector2.zero();
 
   /**
    *  The body2 angle minus body1 angle in the reference state (radians).
    */
-  double referenceAngle;
+  double referenceAngle = 0.0;
 
   /**
    *  A flag to enable joint limits.
    */
-  bool enableLimit;
+  bool enableLimit = false;
 
   /**
    *  The lower angle for the joint limit (radians).
    */
-  double lowerAngle;
+  double lowerAngle = 0.0;
 
   /**
    *  The upper angle for the joint limit (radians).
    */
-  double upperAngle;
+  double upperAngle = 0.0;
 
   /**
    *  A flag to enable the joint motor.
    */
-  bool enableMotor;
+  bool enableMotor = false;
 
   /**
    *  The desired motor speed. Usually in radians per second.
    */
-  double motorSpeed;
+  double motorSpeed = 0.0;
 
   /**
    *  The maximum motor torque used to achieve the desired motor speed.
    *  Usually in N-m.
    */
-  double maxMotorTorque;
+  double maxMotorTorque = 0.0;
 
-  RevoluteJointDef() :
-    super(),
-    localAnchorA = new Vector2(0.0, 0.0),
-    localAnchorB = new Vector2(0.0, 0.0),
-    referenceAngle = 0.0,
-    lowerAngle = 0.0,
-    upperAngle = 0.0,
-    maxMotorTorque = 0.0,
-    motorSpeed = 0.0,
-    enableLimit = false,
-    enableMotor = false {
+  RevoluteJointDef() : super() {
     type = JointType.REVOLUTE;
   }
 

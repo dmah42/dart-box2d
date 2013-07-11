@@ -18,32 +18,28 @@ part of box2d;
 
 class Features {
   /** The edge that defines the outward contact normal. */
-  int referenceEdge;
+  int referenceEdge = 0;
 
   /** The edge most anti-parallel to the reference edge. */
-  int incidentEdge;
+  int incidentEdge = 0;
 
   /** The vertex (0 or 1) on the incident edge that was clipped. */
-  int incidentVertex;
+  int incidentVertex = 0;
 
   /** A value of 1 indicates that the reference edge is on shape2. */
-  int flip;
+  int flip = 0;
 
   /**
    * Constructs a new features with zero values for all fields.
    */
-  Features() :
-    referenceEdge = 0,
-    incidentEdge = 0,
-    incidentVertex = 0,
-    flip = 0 { }
+  Features();
 
   // Constructs a new Features that is a copy of the given features.
   Features.copy(Features f) :
     referenceEdge = f.referenceEdge,
     incidentEdge = f.incidentEdge,
     incidentVertex = f.incidentVertex,
-    flip = f.flip { }
+    flip = f.flip;
 
   // Set this feature to be a copy of the given feature.
   void setFrom(Features f) {

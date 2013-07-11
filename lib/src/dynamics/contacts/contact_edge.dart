@@ -37,9 +37,5 @@ class ContactEdge {
   /**
    * Constructs a new ContactEdge with all fields set to null.
    */
-  ContactEdge() :
-    other = null,
-    contact = null,
-    prev = null,
-    next = null {}
+  ContactEdge();
 }

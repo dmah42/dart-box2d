@@ -46,7 +46,7 @@ abstract class Benchmark {
    * Constructs a new Benchmark that will run a loop for the given number of
    * iterations.
    */
-  Benchmark(List<int> this.solveLoops, List<int> this._steps) { }
+  Benchmark(this.solveLoops, this._steps);
 
   /** Sets up the physics world. */
   void initialize();

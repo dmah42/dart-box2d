@@ -26,48 +26,30 @@ class ContactSolver {
    */
   static const double K_MAX_CONDITION_NUMBER = 100.0;
 
-  List<ContactConstraint> constraints;
+  List<ContactConstraint> constraints = new List<ContactConstraint>.generate(
+        INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint());
   int constraintCount;
 
   /** Pooling */
   //TODO(gregbglw): What do many of these names mean? What is rA, for example?
-  final WorldManifold worldManifold;
-  final Vector2 tangent;
-  final Vector2 temp1;
-  final Vector2 temp2;
-  final Vector2 P;
-  final Vector2 dv;
-  final Vector2 dv1;
-  final Vector2 dv2;
-  final Vector2 x;
-  final Vector2 d;
-  final Vector2 P1;
-  final Vector2 P2;
-  final PositionSolverManifold psolver;
-  final Vector2 rA;
-  final Vector2 rB;
+  final WorldManifold worldManifold = new WorldManifold();
+  final Vector2 tangent = new Vector2.zero();
+  final Vector2 temp1 = new Vector2.zero();
+  final Vector2 temp2 = new Vector2.zero();
+  final Vector2 P = new Vector2.zero();
+  final Vector2 dv = new Vector2.zero();
+  final Vector2 dv1 = new Vector2.zero();
+  final Vector2 dv2 = new Vector2.zero();
+  final Vector2 x = new Vector2.zero();
+  final Vector2 d = new Vector2.zero();
+  final Vector2 P1 = new Vector2.zero();
+  final Vector2 P2 = new Vector2.zero();
+  final PositionSolverManifold psolver  = new PositionSolverManifold();
+  final Vector2 rA = new Vector2.zero();
+  final Vector2 rB = new Vector2.zero();
 
   /** Constructs a new ContactSolver. */
-  ContactSolver() :
-    constraints = new List<ContactConstraint>.generate(
-        INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint()),
-
-    // Setup pool variables.
-    worldManifold = new WorldManifold(),
-    tangent = new Vector2.zero(),
-    temp1 = new Vector2.zero(),
-    temp2 = new Vector2.zero(),
-    P = new Vector2.zero(),
-    dv = new Vector2.zero(),
-    dv1 = new Vector2.zero(),
-    dv2 = new Vector2.zero(),
-    x = new Vector2.zero(),
-    d = new Vector2.zero(),
-    P1 = new Vector2.zero(),
-    P2 = new Vector2.zero(),
-    psolver = new PositionSolverManifold(),
-    rA = new Vector2.zero(),
-    rB = new Vector2.zero();
+  ContactSolver();
 
   void init(List<Contact> contacts, int contactCount, num impulseRatio){
     constraintCount = contactCount;
@@ -580,28 +562,18 @@ class ContactSolver {
 }
 
 class PositionSolverManifold {
-  Vector2 normal;
-  Vector2 point;
-  num separation;
+  Vector2 normal = new Vector2.zero();
+  Vector2 point = new Vector2.zero();
+  num separation = 0;
 
   /** Pooling */
-  Vector2 pointA;
-  Vector2 pointB;
-  Vector2 temp;
-  Vector2 planePoint;
-  Vector2 clipPoint;
+  Vector2 pointA = new Vector2.zero();
+  Vector2 pointB = new Vector2.zero();
+  Vector2 temp = new Vector2.zero();
+  Vector2 planePoint = new Vector2.zero();
+  Vector2 clipPoint = new Vector2.zero();
 
-  PositionSolverManifold() :
-    normal = new Vector2.zero(),
-    point = new Vector2.zero(),
-    separation = 0,
-
-    // Initialize pool variables.
-    pointA = new Vector2.zero(),
-    pointB = new Vector2.zero(),
-    temp = new Vector2.zero(),
-    planePoint = new Vector2.zero(),
-    clipPoint = new Vector2.zero();
+  PositionSolverManifold();
 
   void initialize(ContactConstraint cc, int index) {
     assert(cc.pointCount > 0);

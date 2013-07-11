@@ -20,7 +20,7 @@ import 'demo.dart';
 
 class BlobTest extends Demo {
   /** Constructs a new BlobTest. */
-  BlobTest() : super("Blob test") { }
+  BlobTest() : super("Blob test");
 
   /** Entrypoint. */
   static void main() {

@@ -18,15 +18,18 @@
 part of box2d;
 
 class ContactConstraint {
-  List<ContactConstraintPoint> points;
+  List<ContactConstraintPoint> points =
+    new List<ContactConstraintPoint>.generate(
+      Settings.MAX_MANIFOLD_POINTS,
+      (i) => new ContactConstraintPoint());
 
-  final Vector2 localNormal;
-  final Vector2 localPoint;
-  final Vector2 normal;
+  final Vector2 localNormal = new Vector2.zero();
+  final Vector2 localPoint = new Vector2.zero();
+  final Vector2 normal = new Vector2.zero();
 
-  final Matrix2 normalMass;
+  final Matrix2 normalMass = new Matrix2.zero();
   //TODO(gregbglw): What does K mean? Find out and change the name.
-  final Matrix2 K;
+  final Matrix2 K = new Matrix2.zero();
 
   Body bodyA;
   Body bodyB;
@@ -36,20 +39,11 @@ class ContactConstraint {
   double radius;
   double friction;
   double restitution;
-  int pointCount;
+  int pointCount = 0;
 
   Manifold manifold;
 
-  ContactConstraint() :
-    points = new List<ContactConstraintPoint>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new ContactConstraintPoint()),
-    pointCount = 0,
-    manifold = null,
-    localNormal = new Vector2.zero(),
-    localPoint = new Vector2.zero(),
-    normal = new Vector2.zero(),
-    normalMass = new Matrix2.zero(),
-    K = new Matrix2.zero();
+  ContactConstraint();
 
   void setFrom(ContactConstraint cp) {
     pointCount = cp.pointCount;

@@ -20,7 +20,7 @@
 part of box2d;
 
 class Fixture {
-  final AxisAlignedBox box;
+  final AxisAlignedBox box = new AxisAlignedBox();
 
   double density;
 
@@ -36,25 +36,17 @@ class Fixture {
 
   DynamicTreeNode proxy;
 
-  final Filter filter;
+  final Filter filter = new Filter();
 
   bool isSensor;
 
   dynamic userData;
 
-  final AxisAlignedBox _poolOne;
-  final AxisAlignedBox _poolTwo;
+  final AxisAlignedBox _poolOne = new AxisAlignedBox();
+  final AxisAlignedBox _poolTwo = new AxisAlignedBox();
 
   /** Constructs a new Fixture with default values. */
-  Fixture()
-      : box = new AxisAlignedBox(),
-        body = null,
-        next = null,
-        proxy = null,
-        shape = null,
-        filter = new Filter(),
-        _poolOne = new AxisAlignedBox(),
-        _poolTwo = new AxisAlignedBox();
+  Fixture();
 
   /** Sets this fixture according to the given body and definition. */
   void create(Body b, FixtureDef def) {
@@ -117,7 +109,7 @@ class Fixture {
     // Compute an Axis Aligned Box that covers the swept shape.
     shape.computeAxisAlignedBox(_poolOne, transformOne);
     shape.computeAxisAlignedBox(_poolTwo, transformTwo);
-    box.lowerBound.x = _poolOne.lowerBound.x < _poolTwo.lowerBound.x ? 
+    box.lowerBound.x = _poolOne.lowerBound.x < _poolTwo.lowerBound.x ?
         _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
     box.lowerBound.y = _poolOne.lowerBound.y < _poolTwo.lowerBound.y ?
         _poolOne.lowerBound.y : _poolTwo.lowerBound.y;

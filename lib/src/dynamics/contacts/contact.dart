@@ -36,29 +36,22 @@ abstract class Contact {
   Contact next;
 
   /** Nodes for connecting bodies. */
-  ContactEdge edge1;
-  ContactEdge edge2;
+  ContactEdge edge1 = new ContactEdge();
+  ContactEdge edge2 = new ContactEdge();
 
   Fixture fixtureA;
   Fixture fixtureB;
 
-  Manifold manifold;
+  Manifold manifold = new Manifold();
 
   int toiCount;
 
   DefaultWorldPool pool;
 
   /** Pool manifold for internal use. */
-  final Manifold _oldManifold;
+  final Manifold _oldManifold = new Manifold();
 
-  Contact(DefaultWorldPool pool) :
-    manifold = new Manifold(),
-    fixtureA = null,
-    fixtureB = null,
-    edge1 = new ContactEdge(),
-    edge2 = new ContactEdge(),
-    pool = pool,
-    _oldManifold = new Manifold() { }
+  Contact(this.pool);
 
   /**
    * Initialization for pooling.
