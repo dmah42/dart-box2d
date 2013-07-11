@@ -19,26 +19,20 @@
 part of box2d;
 
 class TimeStep {
-  TimeStep() :
-      dt = 0.0,
-      inv_dt = 0.0,
-      dtRatio = 0.0,
-      velocityIterations = 0,
-      positionIterations = 0,
-      warmStarting = true;
+  TimeStep();
 
   /** time step */
-  double dt;
+  double dt = 0.0;
 
   /** inverse time step (0 if dt == 0). */
-  double inv_dt;
+  double inv_dt = 0.0;
 
   /** dt * inv_dt0 */
-  double dtRatio;
+  double dtRatio = 0.0;
 
-  int velocityIterations;
+  int velocityIterations = 0;
 
-  int positionIterations;
+  int positionIterations = 0;
 
-  bool warmStarting;
+  bool warmStarting = true;
 }

@@ -23,28 +23,24 @@ part of box2d;
 class DistanceJoint extends Joint {
   final Vector2 localAnchor1;
   final Vector2 localAnchor2;
-  final Vector2 u;
-  double impulse;
+  final Vector2 u = new Vector2.zero();
+  double impulse = 0.0;
 
   /** Effective mass for the constraint. */
   double mass;
   double length;
   double frequencyHz;
   double dampingRatio;
-  double gamma;
-  double bias;
+  double gamma = 0.0;
+  double bias = 0.0;
 
   DistanceJoint(DistanceJointDef def) :
     super(def),
     localAnchor1 = new Vector2.copy(def.localAnchorA),
     localAnchor2 = new Vector2.copy(def.localAnchorB),
     length = def.length,
-    impulse = 0.0,
-    u = new Vector2.zero(),
     frequencyHz = def.frequencyHz,
-    dampingRatio = def.dampingRatio,
-    gamma = 0.0,
-    bias = 0.0 { }
+    dampingRatio = def.dampingRatio;
 
   void getAnchorA(Vector2 argOut) {
     bodyA.getWorldPointToOut(localAnchor1, argOut);

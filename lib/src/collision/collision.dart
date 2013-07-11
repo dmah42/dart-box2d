@@ -25,56 +25,37 @@ class Collision {
   final DefaultWorldPool _pool;
 
   /** Cache used to help warmstart distance. */
-  final SimplexCache cache;
+  final SimplexCache cache = new SimplexCache();
 
   /** Distance input and output. */
-  final DistanceInput input;
-  final DistanceOutput output;
+  final DistanceInput input = new DistanceInput();
+  final DistanceOutput output = new DistanceOutput();
 
   /** A pool of already constructed objects. */
-  final EdgeResults results1;
-  final EdgeResults results2;
-  final List<ClipVertex> incidentEdge;
-  final Vector2 localTangent;
-  final Vector2 localNormal;
-  final Vector2 planePoint;
-  final Vector2 tangent;
-  final Vector2 normal;
-  final Vector2 normal1;
-  final Vector2 v11;
-  final Vector2 v12;
-  final List<ClipVertex> clipPoints1;
-  final List<ClipVertex> clipPoints2;
+  final EdgeResults results1 = new EdgeResults();
+  final EdgeResults results2 = new EdgeResults();
+  final List<ClipVertex> incidentEdge =
+    new List<ClipVertex>.generate(2, (_) => new ClipVertex(), growable: false);
+
+  final Vector2 localTangent = new Vector2.zero();
+  final Vector2 localNormal = new Vector2.zero();
+  final Vector2 planePoint = new Vector2.zero();
+  final Vector2 tangent = new Vector2.zero();
+  final Vector2 normal = new Vector2.zero();
+  final Vector2 normal1 = new Vector2.zero();
+  final Vector2 v11 = new Vector2.zero();
+  final Vector2 v12 = new Vector2.zero();
+  final List<ClipVertex> clipPoints1 =
+    new List<ClipVertex>.generate(2, (_) => new ClipVertex(), growable: false);
+
+  final List<ClipVertex> clipPoints2 =
+    new List<ClipVertex>.generate(2, (_) => new ClipVertex(), growable: false);
 
   /**
    * Constructs a new Collision object. Should only be constructed once (in the
    * pool). Retrieve from the pool to use.
    */
-  Collision._construct(DefaultWorldPool pool) :
-    _pool = pool,
-    input = new DistanceInput(),
-    cache = new SimplexCache(),
-    output = new DistanceOutput(),
-    results1 = new EdgeResults(),
-    results2 = new EdgeResults(),
-    incidentEdge = new List<ClipVertex>(2),
-    localTangent = new Vector2.zero(),
-    localNormal = new Vector2.zero(),
-    planePoint = new Vector2.zero(),
-    tangent = new Vector2.zero(),
-    normal = new Vector2.zero(),
-    normal1 = new Vector2.zero(),
-    v11 = new Vector2.zero(),
-    v12 = new Vector2.zero(),
-    clipPoints1 = new List<ClipVertex>(2),
-    clipPoints2 = new List<ClipVertex>(2) {
-    incidentEdge[0] = new ClipVertex();
-    incidentEdge[1] = new ClipVertex();
-    clipPoints1[0] = new ClipVertex();
-    clipPoints1[1] = new ClipVertex();
-    clipPoints2[0] = new ClipVertex();
-    clipPoints2[1] = new ClipVertex();
-  }
+  Collision._construct(this._pool);
 
   /**
    * Returns true if the two given shapes overlap.
@@ -643,12 +624,10 @@ class Collision {
  * Used for computing contact manifolds.
  */
 class ClipVertex {
-  Vector2 v;
-  ContactID id;
+  Vector2 v = new Vector2.zero();
+  ContactID id = new ContactID();
 
-  ClipVertex() :
-    v = new Vector2.zero(),
-    id = new ContactID() { }
+  ClipVertex();
 
   void setFrom(ClipVertex cv){
     v.setFrom(cv.v);
@@ -660,10 +639,8 @@ class ClipVertex {
  * Class for returning edge results
  */
 class EdgeResults {
-  num separation;
-  int edgeIndex;
+  num separation = 0;
+  int edgeIndex = 0;
 
-  EdgeResults() :
-    separation = 0,
-    edgeIndex = 0 { }
+  EdgeResults();
 }

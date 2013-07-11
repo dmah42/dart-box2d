@@ -33,19 +33,17 @@ abstract class DebugDraw {
   static const int e_aabbBit = 0x0004;
   /// draw axis aligned boxes
   static const int e_pairBit = 0x0008;
-  /// draw center of mass 
+  /// draw center of mass
   static const int e_centerOfMassBit = 0x0010;
   /// draw dynamic tree.
   static const int e_dynamicTreeBit = 0x0020;
   /// draw with lines (vs. default filled polygons).
   static const int e_lineDrawingBit = 0x0040;
 
-  int flags;
+  int flags = e_shapeBit;
   ViewportTransform viewportTransform;
 
-  DebugDraw(ViewportTransform viewport)
-      : flags = e_shapeBit,
-        viewportTransform = viewport;
+  DebugDraw(this.viewportTransform);
 
   void appendFlags(int value) { flags |= value; }
   void clearFlags(int value) { flags &= ~value; }

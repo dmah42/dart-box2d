@@ -30,11 +30,11 @@ class Body {
 
   World world;
 
-  int flags;
+  int flags = 0;
 
-  ContactEdge contactList;
+  ContactEdge contactList = null;
 
-  double sleepTime;
+  double sleepTime = 0.0;
 
   /** User can store what they want in here. */
   Object userData;
@@ -43,7 +43,7 @@ class Body {
   final Vector2 _linearVelocity;
 
   /** The angular velocity of this body. */
-  double _angularVelocity;
+  double _angularVelocity = 0.0;
 
   /** This body's mass. */
   double mass;
@@ -52,24 +52,24 @@ class Body {
   double invMass;
 
   /** For mantaining the linked list of bodies. */
-  Body next;
-  Body prev;
+  Body next = null;
+  Body prev = null;
 
-  Fixture fixtureList;
-  int fixtureCount;
+  Fixture fixtureList = null;
+  int fixtureCount = 0;
 
-  JointEdge jointList;
+  JointEdge jointList = null;
 
   /** Forces applied on the body. */
-  final Vector2 _force;
+  final Vector2 _force = new Vector2.zero();
 
-  double _torque;
+  double _torque = 0.0;
 
   /** Rotational intertia about the center of mass. */
-  double _inertia;
+  double _inertia = 0.0;
 
   /** The inverse of the intertia about the center of mass. */
-  double invInertia;
+  double invInertia = 0.0;
 
   double linearDamping;
 
@@ -81,61 +81,25 @@ class Body {
   int islandIndex;
 
   /** The body origin transform. */
-  final Transform originTransform;
+  final Transform originTransform = new Transform();
 
   /** The swept motion for CCD. */
-  final Sweep sweep;
+  final Sweep sweep = new Sweep();
 
   /** Private pool of objects for internal use. */
-  FixtureDef _fixDef;
-  MassData _pmd;
-  Transform _pxf;
-  Vector2 oldCenter;
-  Vector2 tempCenter;
+  FixtureDef _fixDef = new FixtureDef();
+  MassData _pmd = new MassData();
+  Transform _pxf = new Transform();
+  Vector2 oldCenter = new Vector2.zero();
+  Vector2 tempCenter = new Vector2.zero();
 
-  Body(BodyDef bd, this.world)
-      : flags = 0,
-        // Set the origin transform.
-        originTransform = new Transform(),
-
-        // Set the sweep.
-        sweep = new Sweep(),
-
-        jointList = null,
-        contactList = null,
-        prev = null,
-        next = null,
-
-        // Set the linear and angular velocities.
-        _linearVelocity = new Vector2.copy(bd.linearVelocity),
-        _angularVelocity = 0.0,
-
-        // Set the linear and angular damping.
-        linearDamping = bd.linearDamping,
-        angularDamping = bd.angularDamping,
-
-        // Set force and torque.
-        _force = new Vector2.zero(),
-        _torque = 0.0,
-
-        _inertia = 0.0,
-        invInertia = 0.0,
-
-        userData = bd.userData,
-
-        fixtureList = null,
-        fixtureCount = 0,
-
-        // Initialize pool objects.
-        _fixDef = new FixtureDef(),
-        _pmd = new MassData(),
-        _pxf = new Transform(),
-        oldCenter = new Vector2.zero(),
-        tempCenter = new Vector2.zero(),
-
-        sleepTime = 0.0,
-
-        _type = bd.type {
+  Body(BodyDef bd, this.world) :
+    _linearVelocity = new Vector2.copy(bd.linearVelocity),
+    linearDamping = bd.linearDamping,
+    angularDamping = bd.angularDamping,
+    userData = bd.userData,
+    _type = bd.type
+  {
     if (bd.bullet) {
       flags |= BULLET_FLAG;
     }

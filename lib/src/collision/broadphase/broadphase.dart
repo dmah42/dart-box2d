@@ -33,30 +33,24 @@ class BroadPhase implements TreeCallback {
   static const int NULL_PROXY = -1;
   static const int PAIR_CAPACITY = 16;
 
-  final DynamicTree _tree;
+  final DynamicTree _tree = new DynamicTree();
 
-  int proxyCount;
+  int proxyCount = 0;
 
-  List<DynamicTreeNode> moveBuffer;
+  List<DynamicTreeNode> moveBuffer = new List<DynamicTreeNode>();
 
   List<Pair> _pairBuffer;
 
-  int _pairCapacity;
+  int _pairCapacity = PAIR_CAPACITY;
 
-  int _pairCount;
+  int _pairCount = 0;
 
-  DynamicTreeNode queryProxy;
+  DynamicTreeNode queryProxy = null;
 
   /**
    * Constructs a new BroadPhase.
    */
-  BroadPhase() :
-    proxyCount = 0,
-    _pairCapacity = PAIR_CAPACITY,
-    _pairCount = 0,
-    _tree = new DynamicTree(),
-    queryProxy = null {
-    moveBuffer = new List<DynamicTreeNode>();
+  BroadPhase() {
     // Put a bunch of pairs into the pair buffer.
     // TODO(dominich): Do a benchmark to see how preallocating the pairs
     // performs against allocating them as we go.

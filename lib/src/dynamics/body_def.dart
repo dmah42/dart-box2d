@@ -24,30 +24,30 @@ class BodyDef {
    * The body type: static, kinematic, or dynamic.
    * Note: if a dynamic body would have zero mass, the mass is set to one.
    */
-  int type;
+  int type = BodyType.STATIC;
 
   /**
    * The world angle of the body in radians.
    */
-  double angle;
+  double angle = 0.0;
 
   /** User can store whatever they wish in here. */
-  Object userData;
+  Object userData = null;
 
   /** The world position of the body. */
-  Vector2 position;
+  Vector2 position = new Vector2.zero();
 
   /** Linear velocity of the body in world coordinates. */
-  Vector2 linearVelocity;
+  Vector2 linearVelocity = new Vector2.zero();
 
   /** Angular velocity of the body. */
-  double angularVelocity;
+  double angularVelocity = 0.0;
 
   /**
    * If true, the body will be allowed to rotate. Otherwise, its rotation will
    * be fixed.
    */
-  bool fixedRotation;
+  bool fixedRotation = false;
 
   /** If true, this body is initially sleeping. */
   bool isSleeping;
@@ -60,46 +60,33 @@ class BodyDef {
    *
    * You should use this flag sparingly since it increases processing time.
    */
-  bool bullet;
+  bool bullet = false;
 
   /** Set to false to prevent a body from ever falling asleep. */
-  bool allowSleep;
+  bool allowSleep = true;
 
   /**
    * Linear damping is used to reduce the linear velocity. The damping
    * parameter can be larger than 1.0 but the damping effect becomes
    * sensitive to the time step when the damping parameter is large.
    */
-  double linearDamping;
+  double linearDamping = 0.0;
 
   /**
    * Angular damping is used to reduce the angular velocity. The
    * damping parameter can be larger than 1.0 but the damping effect
    * becomes sensitive to time step when the damping parameter is large.
    */
-  double angularDamping;
+  double angularDamping = 0.0;
 
   /** Is this body initially awake or asleep? */
-  bool awake;
+  bool awake = true;
 
   /** If true, this body starts out active. */
-  bool active;
+  bool active = true;
 
   /**
    * Constructs a new BodyDef with default values.
    */
-  BodyDef() :
-    userData = null,
-    bullet = false,
-    type = BodyType.STATIC,
-    position = new Vector2.zero(),
-    angle = 0.0,
-    linearDamping = 0.0,
-    angularDamping = 0.0,
-    allowSleep = true,
-    awake = true,
-    fixedRotation = false,
-    active = true,
-    linearVelocity = new Vector2.zero(),
-    angularVelocity = 0.0;
+  BodyDef();
 }

@@ -22,25 +22,25 @@ class Filter {
   /**
    * Collision category bits.
    */
-  int categoryBits;
+  int categoryBits = 0;
 
   /**
    * Collision mask bits. These are the categories that this shape would accept
    * for collision.
    */
-  int maskBits;
+  int maskBits = 0;
 
   /**
    * Collision groups allow a certain group of objects to never collide
    * (negative) or always collide (positive). A groupIndex value of 0 means no
    * collision group.
    */
-  int groupIndex;
+  int groupIndex = 0;
 
   /**
    * Constructs a new filter with everything set to 0.
    */
-  Filter() : categoryBits = 0, maskBits = 0, groupIndex = 0 { }
+  Filter();
 
   /**
    * Constructs a new Filter that is a copy of the other filter.
@@ -48,7 +48,7 @@ class Filter {
   Filter.copy(Filter other) :
     categoryBits = other.categoryBits,
     maskBits = other.maskBits,
-    groupIndex = other.groupIndex { }
+    groupIndex = other.groupIndex;
 
   /**
    * Sets this filter equal to the given filter.

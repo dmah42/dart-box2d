@@ -17,7 +17,7 @@
 part of box2d;
 
 class DynamicTreeNode {
-  AxisAlignedBox box;
+  AxisAlignedBox box = new AxisAlignedBox();
 
   DynamicTreeNode parent;
 
@@ -34,12 +34,7 @@ class DynamicTreeNode {
   int key;
 
   /** Should never be constructed outside the engine. */
-  DynamicTreeNode._construct()
-    : box = new AxisAlignedBox(),
-      parent = null,
-      next = null,
-      childOne = null,
-      childTwo = null;
+  DynamicTreeNode._construct();
 
   /** Returns true if this node is a leaf. */
   bool get isLeaf => childOne == null;

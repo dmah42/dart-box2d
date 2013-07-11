@@ -20,24 +20,20 @@ part of box2d;
 
 class SimplexCache {
   /** length or area */
-  double metric;
+  double metric = 0.0;
 
-  int count;
+  int count = 0;
 
   /** vertices on shape A */
-  final List<int> indexA;
+  final List<int> indexA = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
 
   /** vertices on shape B */
-  final List<int> indexB;
+  final List<int> indexB = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
 
   /**
    * Constructs a new SimplexCache.
    */
-  SimplexCache() :
-    metric = 0.0,
-    count = 0,
-    indexA = new List<int>.generate(3, (i) => Settings.MAX_INTEGER),
-    indexB = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
+  SimplexCache();
 
   /**
    * Sets this cache equal to the given cache.

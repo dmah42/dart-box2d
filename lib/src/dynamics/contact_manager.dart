@@ -17,21 +17,15 @@
 part of box2d;
 
 class ContactManager {
-  BroadPhase broadPhase;
-  Contact contactList;
-  int contactCount;
-  ContactFilter contactFilter;
-  ContactListener contactListener;
+  BroadPhase broadPhase = new BroadPhase();
+  Contact contactList = null;
+  int contactCount = 0;
+  ContactFilter contactFilter = new ContactFilter();
+  ContactListener contactListener = null;
 
   final World pool;
 
-  ContactManager(World argPool) :
-    contactList = null,
-    contactCount = 0,
-    contactFilter = new ContactFilter(),
-    contactListener = null,
-    broadPhase = new BroadPhase(),
-    pool = argPool { }
+  ContactManager(this.pool);
 
   /**
    * Broad-phase callback.
@@ -71,7 +65,7 @@ class ContactManager {
     }
 
     // Check user filtering.
-    if (contactFilter != null && 
+    if (contactFilter != null &&
         contactFilter.shouldCollide(fixtureA, fixtureB) == false) {
       return;
     }

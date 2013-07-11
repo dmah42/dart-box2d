@@ -20,17 +20,15 @@ part of box2d;
 
 class DistanceOutput {
   /** Closest point on shapeA */
-  final Vector2 pointA;
+  final Vector2 pointA = new Vector2.zero();
 
   /** Closest point on shapeB */
-  final Vector2 pointB;
+  final Vector2 pointB = new Vector2.zero();
 
   double distance;
 
   /** number of gjk iterations used */
   int iterations;
 
-  DistanceOutput() :
-    pointA = new Vector2.zero(),
-    pointB = new Vector2.zero();
+  DistanceOutput();
 }

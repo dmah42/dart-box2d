@@ -22,29 +22,25 @@ class WorldManifold {
   /**
    * World vector pointing from A to B
    */
-  final Vector2 normal;
+  final Vector2 normal = new Vector2.zero();
 
   /**
    * World contact points (points of intersection)
    */
-  final List<Vector2> points;
+  final List<Vector2> points = new List<Vector2>.generate(
+        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector2.zero());
 
   /**
    * Temporary Vectors that are constructed on construction. Used to prevent
    * object construction while stepping.
    */
-  final Vector2 pool3;
-  final Vector2 pool4;
+  final Vector2 pool3 = new Vector2.zero();
+  final Vector2 pool4 = new Vector2.zero();
 
   /**
    * Constructs a new WorldManifold.
    */
-  WorldManifold() :
-    normal = new Vector2.zero(),
-    pool3 = new Vector2.zero(),
-    pool4 = new Vector2.zero(),
-    points = new List<Vector2>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector2.zero());
+  WorldManifold();
 
   void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
       num radiusB) {

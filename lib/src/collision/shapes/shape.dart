@@ -30,9 +30,7 @@ abstract class Shape {
   /**
    * Constructs a new shape of unknown type.
    */
-  Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
-    type = type,
-    radius = radius { }
+  Shape([this.type = ShapeType.UNKNOWN, this.radius = 0.0]);
 
   /**
    * Test a point for containment in this shape. This only works for convex

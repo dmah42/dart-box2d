@@ -16,9 +16,7 @@ part of box2d;
 
 class ContactRegister {
   Queue<Contact> creator;
-  bool primary;
+  bool primary = false;
 
-  ContactRegister() :
-    creator = null,
-    primary = false { }
+  ContactRegister();
 }

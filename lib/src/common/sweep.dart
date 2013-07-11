@@ -23,8 +23,8 @@ class Sweep {
   final Vector2 center;
 
   /** World angles. */
-  double angleZero;
-  double angle;
+  double angleZero = 0.0;
+  double angle = 0.0;
 
   /**
    * Constructs a new Sweep with centers initialized to the origin and angles
@@ -33,9 +33,7 @@ class Sweep {
   Sweep()
       : localCenter = new Vector2.zero(),
         centerZero = new Vector2.zero(),
-        center = new Vector2.zero(),
-        angleZero = 0.0,
-        angle = 0.0;
+        center = new Vector2.zero();
 
   /**
    * Constructs a new sweep that is a copy of the given Sweep.
