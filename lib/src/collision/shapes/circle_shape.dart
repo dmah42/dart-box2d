@@ -37,7 +37,7 @@ class CircleShape extends Shape {
    */
   CircleShape.copy(CircleShape other) :
     super(other.type, other.radius),
-    position = new Vector2.copy(other.position) { }
+    position = new Vector2.copy(other.position);
 
 
   /**

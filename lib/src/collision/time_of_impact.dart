@@ -22,44 +22,27 @@ part of box2d;
 class TimeOfImpact {
   static const int MAX_ITERATIONS = 1000;
 
-  static int toiCalls;
-  static int toiIters;
-  static int toiMaxIters;
-  static int toiRootIters;
-  static int toiMaxRootIters;
+  static int toiCalls = 0;
+  static int toiIters = 0;
+  static int toiMaxIters = 0;
+  static int toiRootIters = 0;
+  static int toiMaxRootIters = 0;
 
   /** Pool variables */
-  final SimplexCache cache;
-  final DistanceInput distanceInput;
-  final Transform xfA;
-  final Transform xfB;
-  final DistanceOutput distanceOutput;
-  final SeparationFunction fcn;
-  final List<int> indexes;
-  final Sweep sweepA;
-  final Sweep sweepB;
+  final SimplexCache cache = new SimplexCache();
+  final DistanceInput distanceInput = new DistanceInput();
+  final Transform xfA = new Transform();
+  final Transform xfB = new Transform();
+  final DistanceOutput distanceOutput = new DistanceOutput();
+  final SeparationFunction fcn = new SeparationFunction();
+  final List<int> indexes =
+    new List<int>.generate(2, (_) => 0, growable: false);
+  final Sweep sweepA = new Sweep();
+  final Sweep sweepB = new Sweep();
 
   DefaultWorldPool pool;
 
-  TimeOfImpact._construct(DefaultWorldPool argPool) :
-    pool = argPool,
-    cache = new SimplexCache(),
-    distanceInput = new DistanceInput(),
-    xfA = new Transform(),
-    xfB = new Transform(),
-    distanceOutput = new DistanceOutput(),
-    fcn = new SeparationFunction(),
-    indexes = new List<int>(2),
-    sweepA = new Sweep(),
-    sweepB = new Sweep() {
-    indexes[0] = 0;
-    indexes[1] = 0;
-    toiCalls = 0;
-    toiIters = 0;
-    toiMaxIters = 0;
-    toiRootIters = 0;
-    toiMaxRootIters = 0;
-  }
+  TimeOfImpact._construct(this.pool);
 
   /**
    * Compute the upper bound on time before two shapes penetrate. Time is
@@ -248,52 +231,31 @@ class TimeOfImpact {
 }
 
 class SeparationFunction {
-  DistanceProxy proxyA;
-  DistanceProxy proxyB;
-  int type;
-  final Vector2 localPoint;
-  final Vector2 axis;
-  Sweep sweepA;
-  Sweep sweepB;
+  DistanceProxy proxyA = new DistanceProxy();
+  DistanceProxy proxyB = new DistanceProxy();
+  int type = SeparationType.POINTS;
+  final Vector2 localPoint = new Vector2.zero();
+  final Vector2 axis = new Vector2.zero();
+  Sweep sweepA = new Sweep();
+  Sweep sweepB = new Sweep();
 
   /** Pooling */
-  final Vector2 localPointA;
-  final Vector2 localPointB;
-  final Vector2 pointA;
-  final Vector2 pointB;
-  final Vector2 localPointA1;
-  final Vector2 localPointA2;
-  final Vector2 normal;
-  final Vector2 localPointB1;
-  final Vector2 localPointB2;
-  final Vector2 axisA;
-  final Vector2 axisB;
-  final Vector2 temp;
-  final Transform xfa;
-  final Transform xfb;
+  final Vector2 localPointA = new Vector2.zero();
+  final Vector2 localPointB = new Vector2.zero();
+  final Vector2 pointA = new Vector2.zero();
+  final Vector2 pointB = new Vector2.zero();
+  final Vector2 localPointA1 = new Vector2.zero();
+  final Vector2 localPointA2 = new Vector2.zero();
+  final Vector2 normal = new Vector2.zero();
+  final Vector2 localPointB1 = new Vector2.zero();
+  final Vector2 localPointB2 = new Vector2.zero();
+  final Vector2 axisA = new Vector2.zero();
+  final Vector2 axisB = new Vector2.zero();
+  final Vector2 temp = new Vector2.zero();
+  final Transform xfa = new Transform();
+  final Transform xfb = new Transform();
 
-  SeparationFunction() :
-    proxyA = new DistanceProxy(),
-    proxyB = new DistanceProxy(),
-    type = SeparationType.POINTS,
-    localPoint = new Vector2.zero(),
-    axis = new Vector2.zero(),
-    sweepA = new Sweep(),
-    sweepB = new Sweep(),
-    localPointA = new Vector2.zero(),
-    localPointB = new Vector2.zero(),
-    pointA = new Vector2.zero(),
-    pointB = new Vector2.zero(),
-    localPointA1 = new Vector2.zero(),
-    localPointA2 = new Vector2.zero(),
-    normal = new Vector2.zero(),
-    localPointB1 = new Vector2.zero(),
-    localPointB2 = new Vector2.zero(),
-    temp = new Vector2.zero(),
-    xfa = new Transform(),
-    xfb = new Transform(),
-    axisA = new Vector2.zero(),
-    axisB = new Vector2.zero();
+  SeparationFunction();
 
   num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
       argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -502,22 +464,17 @@ class SeparationFunction {
  * Input parameters for TimeOfImpact.
  */
 class TimeOfImpactInput {
-  final DistanceProxy proxyA;
-  final DistanceProxy proxyB;
-  final Sweep sweepA;
-  final Sweep sweepB;
+  final DistanceProxy proxyA = new DistanceProxy();
+  final DistanceProxy proxyB = new DistanceProxy();
+  final Sweep sweepA = new Sweep();
+  final Sweep sweepB = new Sweep();
 
   /**
    * defines sweep interval [0, tMax]
    */
-  num tMax;
+  num tMax = 0;
 
-  TimeOfImpactInput() :
-    proxyA = new DistanceProxy(),
-    proxyB = new DistanceProxy(),
-    sweepA = new Sweep(),
-    sweepB = new Sweep(),
-    tMax = 0 { }
+  TimeOfImpactInput();
 }
 
 /** Enum for TimeOfImpact output. */
@@ -533,12 +490,10 @@ class TimeOfImpactOutputState {
  * Output parameters for TimeOfImpact
  */
 class TimeOfImpactOutput {
-  int state;
-  num t;
+  int state = TimeOfImpactOutputState.UNKNOWN;
+  num t = 0;
 
-  TimeOfImpactOutput() :
-    state = TimeOfImpactOutputState.UNKNOWN,
-    t = 0 { }
+  TimeOfImpactOutput();
 }
 
 class SeparationType {

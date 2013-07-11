@@ -29,48 +29,33 @@ class DynamicTree {
   /** The number of nodes to add to the node stack if its empty. */
   static const int _DEFAULT_NODE_ADDITION = 6;
 
-  DynamicTreeNode _root;
+  DynamicTreeNode _root = null;
   /** Current number of active nodes */
-  int _nodeCount;
-  DynamicTreeNode _lastLeaf;
-  int _insertionCount;
-  int _path;
+  int _nodeCount = 0;
+  DynamicTreeNode _lastLeaf = null;
+  int _insertionCount = 0;
+  int _path = 0;
 
-  final Queue<DynamicTreeNode> _nodeStack;
-  final List<Vector2> _drawVectors;
+  final Queue<DynamicTreeNode> _nodeStack = new Queue<DynamicTreeNode>();
+  final List<Vector2> _drawVectors = new List<Vector2>(4);
   /** Monotonically increasing count used to uniquely identify nodes. */
-  int _nodeCounter;
+  int _nodeCounter = 0;
 
   /**
    *  Temporary objects that are used privately and are initialized at
    *  construction. These are used instead of creating new objects during tree
    *  operation.
    */
-  final Vector2 _tempVector;
-  final AxisAlignedBox _tempBox;
-  final Vector2 center;
-  final Vector2 deltaOne;
-  final Vector2 deltaTwo;
+  final Vector2 _tempVector = new Vector2.zero();
+  final AxisAlignedBox _tempBox = new AxisAlignedBox();
+  final Vector2 center = new Vector2.zero();
+  final Vector2 deltaOne = new Vector2.zero();
+  final Vector2 deltaTwo = new Vector2.zero();
 
   /**
    * Constructs a new DynamicTree.
    */
-  DynamicTree() :
-    _root = null,
-    _nodeCount = 0,
-    _insertionCount = 0,
-    _path = 0,
-    _lastLeaf = null,
-    _drawVectors = new List<Vector2>(4),
-    _nodeCounter = 0,
-    _tempVector = new Vector2.zero(),
-    _tempBox = new AxisAlignedBox(),
-    _nodeStack = new Queue<DynamicTreeNode>(),
-    // Pool objects.
-    center = new Vector2.zero(),
-    deltaOne = new Vector2.zero(),
-    deltaTwo = new Vector2.zero() {
-
+  DynamicTree() {
     // Place new vectors in the draw vectors array.
     for (int i = 0; i < _drawVectors.length; ++i)
       _drawVectors[i] = new Vector2.zero();
@@ -95,7 +80,7 @@ class DynamicTree {
     // Insert the proxy node on the tree.
     _insertLeaf(proxy);
 
-    // TODO(dominich): The iteration count should be enough to hit all nodes in the 
+    // TODO(dominich): The iteration count should be enough to hit all nodes in the
     // tree but not too large such that it wastes time. This could be tuned.
     int iterationCount = _nodeCount >> 4;
     int tryCount = 0;

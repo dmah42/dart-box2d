@@ -23,7 +23,7 @@ import 'package:box2d/box2d_browser.dart';
  */
 abstract class Demo {
   /** All of the bodies in a simulation. */
-  List<Body> bodies;
+  List<Body> bodies = new List<Body>();
 
   /** The default canvas width and height. */
   static const int CANVAS_WIDTH = 900;
@@ -75,8 +75,7 @@ abstract class Demo {
   // every frame to minimize overhead.
   Stopwatch _stopwatch;
 
-  Demo(String name, [Vector2 gravity, this.viewportScale = _VIEWPORT_SCALE])
-      : bodies = new List<Body>() {
+  Demo(String name, [Vector2 gravity, this.viewportScale = _VIEWPORT_SCALE]) {
     _stopwatch = new Stopwatch()..start();
     query("#title").innerHtml = name;
     bool doSleep = true;

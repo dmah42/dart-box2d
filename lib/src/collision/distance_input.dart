@@ -20,16 +20,11 @@
 part of box2d;
 
 class DistanceInput {
-    DistanceProxy proxyA;
-    DistanceProxy proxyB;
-    Transform transformA;
-    Transform transformB;
-    bool useRadii;
+    DistanceProxy proxyA = new DistanceProxy();
+    DistanceProxy proxyB = new DistanceProxy();
+    Transform transformA = new Transform();
+    Transform transformB = new Transform();
+    bool useRadii = false;
 
-    DistanceInput() :
-      proxyA = new DistanceProxy(),
-      proxyB = new DistanceProxy(),
-      transformA = new Transform(),
-      transformB = new Transform(),
-      useRadii = false { }
+    DistanceInput();
 }

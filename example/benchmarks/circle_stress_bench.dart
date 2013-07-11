@@ -28,7 +28,7 @@ class CircleStressBench extends Benchmark {
 
   /** Construct a new Circle Stress Demo. */
   CircleStressBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+    super(solveLoops, steps);
 
   String get name => NAME;
 

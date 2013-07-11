@@ -24,21 +24,21 @@ class Joint {
   Joint _prev;
   Joint _next;
 
-  JointEdge edgeA;
-  JointEdge edgeB;
+  JointEdge edgeA = new JointEdge();
+  JointEdge edgeB = new JointEdge();
 
   Body bodyA;
   Body bodyB;
 
-  bool islandFlag;
+  bool islandFlag = false;
 
   bool collideConnected;
 
   Object userData;
 
   // Cache here per time step to reduce cache misses.
-  final Vector2 localCenterA;
-  final Vector2 localCenterB;
+  final Vector2 localCenterA = new Vector2.zero();
+  final Vector2 localCenterB = new Vector2.zero();
 
   double invMassA;
   double invIA;
@@ -47,18 +47,10 @@ class Joint {
 
   Joint(JointDef def) :
     type = def.type,
-    _prev = null,
-    _next = null,
     bodyA = def.bodyA,
     bodyB = def.bodyB,
     collideConnected = def.collideConnected,
-    islandFlag = false,
-    userData = def.userData,
-
-    localCenterA = new Vector2.zero(),
-    localCenterB = new Vector2.zero(),
-    edgeA = new JointEdge(),
-    edgeB = new JointEdge();
+    userData = def.userData;
 
   // TODO(dominich): use 'is' to create the right type of Joint and remove the
   // *Def.type.

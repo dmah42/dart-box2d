@@ -27,7 +27,7 @@ class BallDropBench extends Benchmark {
   static const double Y_START = 0.0;
 
   BallDropBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+    super(solveLoops, steps);
 
   /** Runs the test and records the results. */
   void initialize() {

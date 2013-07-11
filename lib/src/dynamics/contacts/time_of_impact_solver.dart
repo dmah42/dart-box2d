@@ -20,29 +20,20 @@
 part of box2d;
 
 class TimeOfImpactSolver {
-  List<TimeOfImpactConstraint> constraints;
-  int count;
+  List<TimeOfImpactConstraint> constraints =
+    new List.generate(4, (i) => new TimeOfImpactConstraint());
+
+  int count = 0;
   Body toiBody;
 
   /** Pooling. */
-  final TimeOfImpactSolverManifold psm;
-  final Vector2 rA;
-  final Vector2 rB;
-  final Vector2 P;
-  final Vector2 temp;
+  final TimeOfImpactSolverManifold psm = new TimeOfImpactSolverManifold();
+  final Vector2 rA = new Vector2.zero();
+  final Vector2 rB = new Vector2.zero();
+  final Vector2 P = new Vector2.zero();
+  final Vector2 temp = new Vector2.zero();
 
-  TimeOfImpactSolver() :
-    count = 0,
-    toiBody = null,
-    constraints = new List<TimeOfImpactConstraint>.generate(
-        4, (i) => new TimeOfImpactConstraint()),
-
-    // Initialize pool variables.
-    psm = new TimeOfImpactSolverManifold(),
-    rA = new Vector2.zero(),
-    rB = new Vector2.zero(),
-    P = new Vector2.zero(),
-    temp = new Vector2.zero();
+  TimeOfImpactSolver();
 
   void initialize(List<Contact> contacts, int argCount, Body argToiBody) {
     count = argCount;
@@ -162,27 +153,19 @@ class TimeOfImpactSolver {
 }
 
 class TimeOfImpactSolverManifold {
-  final Vector2 normal;
-  final Vector2 point;
-  num separation;
+  final Vector2 normal = new Vector2.zero();
+  final Vector2 point = new Vector2.zero();
+  double separation = 0.0;
 
   /** Pooling */
-  final Vector2 pointA;
-  final Vector2 pointB;
-  final Vector2 temp;
-  final Vector2 planePoint;
-  final Vector2 clipPoint;
+  final Vector2 pointA = new Vector2.zero();
+  final Vector2 pointB = new Vector2.zero();
+  final Vector2 temp = new Vector2.zero();
+  final Vector2 planePoint = new Vector2.zero();
+  final Vector2 clipPoint = new Vector2.zero();
 
   /** constructor that initiliazes everything. */
-  TimeOfImpactSolverManifold() :
-    normal = new Vector2.zero(),
-    point = new Vector2.zero(),
-    separation = 0,
-    pointA = new Vector2.zero(),
-    pointB = new Vector2.zero(),
-    temp = new Vector2.zero(),
-    planePoint = new Vector2.zero(),
-    clipPoint = new Vector2.zero();
+  TimeOfImpactSolverManifold();
 
   void initialize(TimeOfImpactConstraint cc, int index) {
     assert(cc.pointCount > 0);

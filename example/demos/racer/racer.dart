@@ -35,7 +35,7 @@ class Racer extends Demo implements ContactListener {
     racer.runAnimation();
   }
 
-  Racer() : super("Racer", new Vector2.zero(), 2.5), _lastTime = 0;
+  Racer() : super("Racer", new Vector2.zero(), 2.5);
 
   void initialize() {
     _createGround();
@@ -57,7 +57,7 @@ class Racer extends Demo implements ContactListener {
     _lastTime = time;
     super.step(time);
   }
- 
+
   // ContactListener overrides.
   void beginContact(Contact contact) {
     _handleContact(contact, true);
@@ -167,7 +167,7 @@ class Racer extends Demo implements ContactListener {
   int _controlState;
   Body _groundBody;
   Car _car;
-  num _lastTime;
+  num _lastTime = 0;
 }
 
 main() {

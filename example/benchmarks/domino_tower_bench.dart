@@ -29,7 +29,7 @@ class DominoTowerBench extends Benchmark {
 
   /** Construct a new DominoTower. */
   DominoTowerBench(List<int> solveLoops, List<int> steps) :
-    super(solveLoops, steps) { }
+    super(solveLoops, steps);
 
   String get name => NAME;
 

@@ -30,15 +30,15 @@ class World {
   static const int LOCKED = 0x0002;
   static const int CLEAR_FORCES = 0x0004;
 
-  int _flags;
+  int _flags = CLEAR_FORCES;
 
   ContactManager _contactManager;
 
   Body _bodyList;
   Joint _jointList;
 
-  int _bodyCount;
-  int _jointCount;
+  int _bodyCount = 0;
+  int _jointCount = 0;
 
   final Vector2 _gravity;
   bool _allowSleep;
@@ -54,36 +54,40 @@ class World {
    * This is used to compute the time step ratio to
    * support a variable time step.
    */
-  double _inverseTimestep;
+  double _inverseTimestep = 0.0;
 
   /**
    * This is for debugging the solver.
    */
-  bool _warmStarting;
+  bool _warmStarting = true;
 
   /**
    * This is for debugging the solver.
    */
-  bool _continuousPhysics;
+  bool _continuousPhysics = true;
 
-  List<List<ContactRegister>> _contactStacks;
+  List<List<ContactRegister>>  _contactStacks =
+      new List<List<ContactRegister>>.generate(ShapeType.TYPE_COUNT, (_) {
+        return new List<ContactRegister>(ShapeType.TYPE_COUNT);
+      }, growable: false);
 
   /** Pooling */
-  final Vector2 center;
-  final Vector2 axis;
+  final Vector2 center = new Vector2.zero();
+  final Vector2 axis = new Vector2.zero();
 
-  final TimeStep timestep;
-  final Vector2 cA;
-  final Vector2 cB;
-  final WorldQueryWrapper wqwrapper;
+  final TimeStep timestep = new TimeStep();
+  final Vector2 cA = new Vector2.zero();
+  final Vector2 cB = new Vector2.zero();
+  final WorldQueryWrapper wqwrapper = new WorldQueryWrapper();
 
-  final TimeOfImpactInput toiInput;
-  final TimeOfImpactOutput toiOutput;
-  final Sweep backup;
-  final TimeOfImpactSolver toiSolver;
-  List<Contact> contacts;
-  final Island island;
-  List<Body> stack;
+  final TimeOfImpactInput toiInput = new TimeOfImpactInput();
+  final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput();
+  final Sweep backup = new Sweep();
+  final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver();
+  List<Contact> contacts =
+    new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+  final Island island = new Island();
+  List<Body> stack = new List<Body>(10);
 
   /**
    * Constructs a world object.
@@ -93,51 +97,10 @@ class World {
    * doSleep
    *   improve performance by not simulating inactive bodies.
    */
-  World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
-    _pool = argPool,
-    _jointDestructionListener = null,
-    _fixtureDestructionListener = null,
-    _debugDraw = null,
-
-    _bodyList = null,
-    _jointList = null,
-
-    _bodyCount = 0,
-    _jointCount = 0,
-
-    _warmStarting = true,
-    _continuousPhysics = true,
-
-    _allowSleep = doSleep,
-    _gravity = gravity,
-
-    _flags = CLEAR_FORCES,
-
-    _inverseTimestep = 0.0,
-
-    _contactStacks = new List<List<ContactRegister>>(ShapeType.TYPE_COUNT),
-
-    // Initialize Pool Objects.
-    center = new Vector2.zero(),
-    axis = new Vector2.zero(),
-    timestep = new TimeStep(),
-    cA = new Vector2.zero(),
-    cB = new Vector2.zero(),
-    wqwrapper = new WorldQueryWrapper(),
-    toiInput = new TimeOfImpactInput(),
-    toiOutput = new TimeOfImpactOutput(),
-    backup = new Sweep(),
-    toiSolver = new TimeOfImpactSolver(),
-    contacts = new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
-    island = new Island(),
-    stack = new List<Body>(10) {
+  World(this._gravity, this._allowSleep, this._pool) {
 
     _contactManager = new ContactManager(this);
 
-    // Initialize settings.
-    for (int i = 0; i < _contactStacks.length; i++) {
-      _contactStacks[i] = new List<ContactRegister>(ShapeType.TYPE_COUNT);
-    }
     _initializeRegisters();
   }
 
@@ -1161,7 +1124,7 @@ class WorldQueryWrapper implements TreeCallback {
   BroadPhase broadPhase;
   QueryCallback callback;
 
-  WorldQueryWrapper() { }
+  WorldQueryWrapper();
 
   bool treeCallback(DynamicTreeNode node) {
     Fixture fixture = node.userData;

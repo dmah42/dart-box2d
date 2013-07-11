@@ -20,18 +20,13 @@
 part of box2d;
 
 class ConstantVolumeJointDef extends JointDef {
-  double frequencyHz;
-  double dampingRatio;
+  double frequencyHz = 0.0;
+  double dampingRatio = 0.0;
 
-  List<Body> bodies;
+  List<Body> bodies = new List<Body>();
   List<DistanceJoint> joints;
 
-  ConstantVolumeJointDef() :
-    super(),
-    bodies = new List<Body>(),
-    joints = null,
-    frequencyHz = 0.0,
-    dampingRatio = 0.0 {
+  ConstantVolumeJointDef() {
     type = JointType.CONSTANT_VOLUME;
     collideConnected = false;
   }

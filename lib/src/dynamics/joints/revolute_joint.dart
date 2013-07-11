@@ -24,15 +24,15 @@
 part of box2d;
 
 class RevoluteJoint extends Joint {
-  final Vector2 localAnchor1;
-  final Vector2 localAnchor2;
+  final Vector2 localAnchor1 = new Vector2.zero();
+  final Vector2 localAnchor2 = new Vector2.zero();
 
-  final Vector3 impulse;
+  final Vector3 impulse = new Vector3.zero();
 
-  double _motorImpulse;
+  double _motorImpulse = 0.0;
 
   // Effective mass for point-to-point constraint.
-  final Matrix3 mass;
+  final Matrix3 mass = new Matrix3.zero();
 
   // Effective mass for motor/limit angular constraint.
   double motorMass;
@@ -53,19 +53,10 @@ class RevoluteJoint extends Joint {
 
   int limitState;
 
-  RevoluteJoint(RevoluteJointDef def) :
-      super(def),
-      localAnchor1 = new Vector2.zero(),
-      localAnchor2 = new Vector2.zero(),
-      impulse = new Vector3.zero(),
-      _motorImpulse = 0.0,
-      mass = new Matrix3.zero() {
+  RevoluteJoint(RevoluteJointDef def) : super(def) {
     localAnchor1.setFrom(def.localAnchorA);
     localAnchor2.setFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
-
-    _motorImpulse = 0.0;
-
     lowerAngle = def.lowerAngle;
     upperAngle = def.upperAngle;
     _maxMotorTorque = def.maxMotorTorque;

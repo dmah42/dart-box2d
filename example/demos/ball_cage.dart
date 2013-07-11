@@ -30,7 +30,7 @@ class BallCage extends Demo {
   static const num ACTIVE_BALL_RADIUS = 1.0;
 
   /** Constructs a new BallCage. */
-  BallCage() : super("Ball cage") { }
+  BallCage() : super("Ball cage");
 
   /** Entrypoint. */
   static void main() {

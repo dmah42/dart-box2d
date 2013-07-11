@@ -35,22 +35,18 @@ class BenchmarkRunner {
    * function and determine how many times to solve for velocity and position on
    * each step.
    */
-  List<int> _solveLoops;
+  List<int> _solveLoops = const [10, 30];
 
   /** The different values for number of steps that one wishes to benchmark. */
-  List<int> _steps;
+  List<int> _steps = const [10, 100, 500, 2000];
 
   /** The benchmarks to be run. Initialized in [setupBenchmarks]. */
-  List<Benchmark> _benchmarks;
+  List<Benchmark> _benchmarks = new List<Benchmark>();
 
   /** Buffer results here before dumping out on the page. */
-  StringBuffer _resultsWriter;
+  StringBuffer _resultsWriter = new StringBuffer();
 
-  BenchmarkRunner()
-      : _resultsWriter = new StringBuffer(),
-        _benchmarks = new List<Benchmark>(),
-        _solveLoops = const [10, 30],
-        _steps = const [10, 100, 500, 2000];
+  BenchmarkRunner();
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method

@@ -25,7 +25,7 @@ class Pair implements Comparable {
   /**
    * Constructs a new pair.
    */
-  Pair() : proxyA = null, proxyB = null { }
+  Pair();
 
   /**
    * Compares this pair to the other pair. Returns a negative number if this
