@@ -106,8 +106,3 @@ void Matrix3_solve33ToOut(Matrix3 a, Vector3 b, Vector3 out) {
   out.y = y;
   out.z = z;
 }
-
-Aabb2_setFrom(Aabb2 a, Aabb2 b) {
-  a.min.setFrom(b.min);
-  a.max.setFrom(b.max);
-}

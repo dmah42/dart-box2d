@@ -145,7 +145,7 @@ class DynamicTree {
       argBox.max.y += _tempVector.y;
 
     //argProxy.box.setFrom(argBox);
-    Aabb2_setFrom(argProxy.box, argBox);
+    argProxy.box.copyFrom(argBox);
 
     // Insert the argument proxy and return true.
     _insertLeaf(argProxy);
@@ -334,7 +334,7 @@ class DynamicTree {
         // boxes.
 
         //_tempBox.setFrom(node1.box);
-        Aabb2_setFrom(_tempBox, node1.box);
+        _tempBox.copyFrom(node1.box);
 
         node1.box..copyFrom(node1.childOne.box)..hull(node1.childTwo.box);
         if (_tempBox.contains(node1.box)) {
