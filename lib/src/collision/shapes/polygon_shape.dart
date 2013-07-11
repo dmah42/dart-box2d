@@ -214,8 +214,8 @@ class PolygonShape extends Shape {
 
     for (int i = 1; i < vertexCount; ++i) {
       Transform.mulToOut(argXf, vertices[i], v);
-      Vector2_minToOut(lower, v, lower);
-      Vector2_maxToOut(upper, v, upper);
+      Vector2.min(lower, v, lower);
+      Vector2.max(upper, v, upper);
     }
 
     argAabb.lowerBound.x = lower.x - radius;

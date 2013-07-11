@@ -210,14 +210,14 @@ class RevoluteJoint extends Joint {
       Cdot.setValues(Cdot1.x, Cdot1.y, Cdot2);
 
       Vector3 imp = new Vector3.zero();
-      Matrix3_solve33ToOut(mass, Cdot.negate(), imp);
+      Matrix3.solve(mass, imp, Cdot.negate());
 
       if (limitState == LimitState.EQUAL) {
         impulse.add(imp);
       } else if (limitState == LimitState.AT_LOWER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse < 0.0) {
-          Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+          Matrix3.solve2(mass, temp, Cdot1.negate());
           imp.x = temp.x;
           imp.y = temp.y;
           imp.z = -impulse.z;
@@ -228,7 +228,7 @@ class RevoluteJoint extends Joint {
       } else if (limitState == LimitState.AT_UPPER) {
         num newImpulse = impulse.z + imp.z;
         if (newImpulse > 0.0) {
-          Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+          Matrix3.solve2(mass, temp, Cdot1.negate());
           imp.x = temp.x;
           imp.y = temp.y;
           imp.z = -impulse.z;
@@ -262,7 +262,7 @@ class RevoluteJoint extends Joint {
       r1.scaleOrthogonalInto(w1, temp);
       r2.scaleOrthogonalInto(w2, Cdot);
       Cdot.add(v2).sub(v1).sub(temp);
-      Matrix3_solve22ToOut(mass, Cdot.negate(), imp); // just leave negated
+      Matrix3.solve2(mass, imp, Cdot.negate()); // just leave negated
 
       impulse.x += imp.x;
       impulse.y += imp.y;
@@ -384,7 +384,7 @@ class RevoluteJoint extends Joint {
        invI2 * r2.x * r2.x);
 
       K1.add(K2).add(K3);
-      Matrix2_solveToOut(K1, C.negate(), imp); // just leave c negated
+      Matrix2.solve(K1, imp, C.negate()); // just leave c negated
 
       // using C as temp variable
       C.setFrom(imp).scale(b1.invMass);
