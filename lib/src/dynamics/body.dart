@@ -87,11 +87,11 @@ class Body {
   final Sweep sweep = new Sweep();
 
   /** Private pool of objects for internal use. */
-  FixtureDef _fixDef = new FixtureDef();
-  MassData _pmd = new MassData();
-  Transform _pxf = new Transform();
-  Vector2 oldCenter = new Vector2.zero();
-  Vector2 tempCenter = new Vector2.zero();
+  final FixtureDef _fixDef = new FixtureDef();
+  final MassData _pmd = new MassData();
+  final Transform _pxf = new Transform();
+  final Vector2 oldCenter = new Vector2.zero();
+  final Vector2 tempCenter = new Vector2.zero();
 
   Body(BodyDef bd, this.world) :
     _linearVelocity = new Vector2.copy(bd.linearVelocity),
