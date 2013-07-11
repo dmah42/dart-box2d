@@ -255,8 +255,7 @@ class DynamicTree {
     DynamicTreeNode node2 = _allocateNode();
     node2.parent = node1;
     node2.userData = null;
-    //node2.box.setFromCombination(node.box, sibling.box);
-    Aabb2_setFromCombination(node2.box, node.box, sibling.box);
+    node2.box..copyFrom(node.box)..hull(sibling.box);
 
     // If the old parent wasn't the root node...
     if (node1 != null) {
@@ -281,8 +280,7 @@ class DynamicTree {
 
         // Set the old parent's box to the combination of it's new
         // children's boxes.
-        //node1.box.setFromCombination(node1.childOne.box, node1.childTwo.box);
-        Aabb2_setFromCombination(node1.box, node1.childOne.box, node1.childTwo.box);
+        node1.box..copyFrom(node1.childOne.box)..hull(node1.childTwo.box);
         node2 = node1;
         node1 = node1.parent;
       } while (node1 != null);
@@ -338,8 +336,7 @@ class DynamicTree {
         //_tempBox.setFrom(node1.box);
         Aabb2_setFrom(_tempBox, node1.box);
 
-        //node1.box.setFromCombination(node1.childOne.box, node1.childTwo.box);
-        Aabb2_setFromCombination(node1.box, node1.childOne.box, node1.childTwo.box);
+        node1.box..copyFrom(node1.childOne.box)..hull(node1.childTwo.box);
         if (_tempBox.contains(node1.box)) {
           break;
         }
