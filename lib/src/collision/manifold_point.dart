@@ -50,7 +50,7 @@ class ManifoldPoint {
     localPoint = new Vector2.copy(other.localPoint),
     normalImpulse = other.normalImpulse,
     tangentImpulse = other.tangentImpulse,
-    id = new ContactID.copy(other.id) { }
+    id = new ContactID.copy(other.id);
 
   /**
    * Sets this ManifoldPoint to be equal to the given point.

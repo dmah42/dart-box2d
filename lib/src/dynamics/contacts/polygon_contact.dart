@@ -17,7 +17,7 @@ part of box2d;
 class PolygonContact extends Contact {
 
   PolygonContact(DefaultWorldPool argPool) :
-    super(argPool) { }
+    super(argPool);
 
   void init(Fixture fA, Fixture fB) {
     assert(ShapeType.POLYGON == fA.type);

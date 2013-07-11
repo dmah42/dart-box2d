@@ -32,7 +32,7 @@ class DominoTower extends Demo {
   double dominoDensity;
 
   /** Construct a new DominoTower. */
-  DominoTower() : super("Domino tower") { }
+  DominoTower() : super("Domino tower");
 
   /** Entrypoint. */
   static void main() {

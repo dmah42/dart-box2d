@@ -39,7 +39,7 @@ class Features {
     referenceEdge = f.referenceEdge,
     incidentEdge = f.incidentEdge,
     incidentVertex = f.incidentVertex,
-    flip = f.flip { }
+    flip = f.flip;
 
   // Set this feature to be a copy of the given feature.
   void setFrom(Features f) {

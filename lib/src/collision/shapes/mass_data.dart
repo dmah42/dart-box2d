@@ -37,7 +37,7 @@ class MassData {
   MassData.copy(MassData md) :
     mass = md.mass,
     inertia = md.inertia,
-    center = new Vector2.copy(md.center) { }
+    center = new Vector2.copy(md.center);
 
   /**
    * Sets this mass data equal to the given mass data.

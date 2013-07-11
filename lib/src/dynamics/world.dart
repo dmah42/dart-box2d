@@ -1123,7 +1123,7 @@ class WorldQueryWrapper implements TreeCallback {
   BroadPhase broadPhase;
   QueryCallback callback;
 
-  WorldQueryWrapper() { }
+  WorldQueryWrapper();
 
   bool treeCallback(DynamicTreeNode node) {
     Fixture fixture = node.userData;

@@ -26,7 +26,7 @@ class JointEdge {
   /**
    * Constructs a new joint edge with everything set to null.
    */
-  JointEdge() { }
+  JointEdge();
 
   /**
    * Provides quick access to the other body attached.
