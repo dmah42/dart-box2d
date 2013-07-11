@@ -119,7 +119,7 @@ class DynamicTree {
     assert (argProxy.isLeaf);
 
     // If the given proxies box contains the given box, then return right away.
-    if (argProxy.box.contains(argBox))
+    if (argBox.contains(argProxy.box))
       return false;
 
     // Remove the proxy from the tree.
@@ -275,7 +275,7 @@ class DynamicTree {
       // Build up the axis-aligned boxes in case we expanded them out.
       do {
         // If the old parent's box contains the new parent's box, leave.
-        if (node1.box.contains(node2.box))
+        if (node2.box.contains(node1.box))
           break;
 
         // Set the old parent's box to the combination of it's new
@@ -337,7 +337,7 @@ class DynamicTree {
         _tempBox.copyFrom(node1.box);
 
         node1.box..copyFrom(node1.childOne.box)..hull(node1.childTwo.box);
-        if (_tempBox.contains(node1.box)) {
+        if (node1.box.contains(_tempBox)) {
           break;
         }
 
