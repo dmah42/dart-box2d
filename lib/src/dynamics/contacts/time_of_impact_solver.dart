@@ -20,8 +20,9 @@
 part of box2d;
 
 class TimeOfImpactSolver {
-  List<TimeOfImpactConstraint> constraints = new List<TimeOfImpactConstraint>.generate(
-        4, (i) => new TimeOfImpactConstraint());
+  List<TimeOfImpactConstraint> constraints =
+    new List.generate(4, (i) => new TimeOfImpactConstraint());
+
   int count = 0;
   Body toiBody;
 

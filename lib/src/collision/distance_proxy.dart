@@ -19,7 +19,11 @@ part of box2d;
 
 class DistanceProxy {
   final List<Vector2> vertices =
-    new List<Vector2>.generate(Settings.MAX_POLYGON_VERTICES, (_) => new Vector2.zero(), growable: false);
+    new List<Vector2>.generate(
+      Settings.MAX_POLYGON_VERTICES,
+      (_) => new Vector2.zero(),
+      growable: false);
+
   int count = 0;
   double radius = 0.0;
 

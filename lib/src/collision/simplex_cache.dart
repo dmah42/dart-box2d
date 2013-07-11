@@ -25,10 +25,12 @@ class SimplexCache {
   int count = 0;
 
   /** vertices on shape A */
-  final List<int> indexA = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
+  final List<int> indexA =
+    new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
 
   /** vertices on shape B */
-  final List<int> indexB = new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
+  final List<int> indexB =
+    new List<int>.generate(3, (i) => Settings.MAX_INTEGER);
 
   /**
    * Constructs a new SimplexCache.

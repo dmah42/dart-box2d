@@ -84,7 +84,8 @@ class World {
   final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput();
   final Sweep backup = new Sweep();
   final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver();
-  List<Contact> contacts = new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+  List<Contact> contacts =
+    new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
   final Island island = new Island();
   List<Body> stack = new List<Body>(10);
 

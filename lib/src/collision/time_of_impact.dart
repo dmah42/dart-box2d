@@ -35,7 +35,8 @@ class TimeOfImpact {
   final Transform xfB = new Transform();
   final DistanceOutput distanceOutput = new DistanceOutput();
   final SeparationFunction fcn = new SeparationFunction();
-  final List<int> indexes = new List<int>.generate(2, (_) => 0, growable: false);
+  final List<int> indexes =
+    new List<int>.generate(2, (_) => 0, growable: false);
   final Sweep sweepA = new Sweep();
   final Sweep sweepB = new Sweep();
 
