@@ -7,7 +7,7 @@ dependencies:
   vector_math:
     git:
       ref: master
-      url: git@github.com:johnmccutchan/vector_math.git
+      url: git://github.com/johnmccutchan/vector_math.git
 dev_dependencies:
   args: any
   browser: any
