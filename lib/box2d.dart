@@ -54,7 +54,6 @@ part 'src/collision/shapes/mass_data.dart';
 part 'src/collision/shapes/polygon_shape.dart';
 part 'src/collision/shapes/shape.dart';
 part 'src/collision/shapes/shape_type.dart';
-part 'src/common/vector_legacy.dart';
 part 'src/common/color3.dart';
 part 'src/common/math_box.dart';
 part 'src/common/settings.dart';

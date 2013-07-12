@@ -287,7 +287,7 @@ class SeparationFunction {
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
       temp.setFrom(localPointB2).sub(localPointB1);
-      Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+      temp.scaleOrthogonalInto(-1.0, axis);
       axis.normalize();
 
       xfb.rotation.transformed(axis, normal);
@@ -318,7 +318,7 @@ class SeparationFunction {
 
       temp.setFrom(localPointA2);
       temp.sub(localPointA1);
-      Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+      temp.scaleOrthogonalInto(-1.0, axis);
       axis.normalize();
 
       xfa.rotation.transformed(axis, normal);

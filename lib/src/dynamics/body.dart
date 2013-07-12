@@ -482,7 +482,7 @@ class Body {
     // Update center of mass velocity.
     final Vector2 temp = new Vector2.copy(sweep.center);
     temp.sub(oldCenter);
-    Vector2_crossVectorAndNumToOut(temp, -_angularVelocity, temp);
+    temp.scaleOrthogonalInto(_angularVelocity, temp);
     _linearVelocity.add(temp);
   }
 
@@ -553,7 +553,7 @@ class Body {
     // Update center of mass velocity.
     final Vector2 temp = new Vector2.copy(sweep.center);
     temp.sub(oldCenter);
-    Vector2_crossVectorAndNumToOut(temp, -_angularVelocity, temp);
+    temp.scaleOrthogonalInto(_angularVelocity, temp);
     _linearVelocity.add(temp);
   }
 
@@ -654,7 +654,7 @@ class Body {
 
   void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
     out.setFrom(worldPoint).sub(sweep.center);
-    Vector2_crossVectorAndNumToOut(out, -_angularVelocity, out);
+    out.scaleOrthogonalInto(_angularVelocity, out);
     out.add(_linearVelocity);
   }
 
