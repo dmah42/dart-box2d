@@ -1,11 +1,11 @@
-// Copyright 2012 Google Inc. All Rights Reserved.
-// 
+// Copyright 2013 Google Inc. All Rights Reserved.
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,18 +35,16 @@ class BenchmarkRunner {
    * function and determine how many times to solve for velocity and position on
    * each step.
    */
-  List<int> _solveLoops = const [10, 30];
+  static const _solveLoops = const [10, 30];
 
   /** The different values for number of steps that one wishes to benchmark. */
-  List<int> _steps = const [10, 100, 500, 2000];
+  static const _steps = const [10, 100, 500, 2000];
 
   /** The benchmarks to be run. Initialized in [setupBenchmarks]. */
-  List<Benchmark> _benchmarks = new List<Benchmark>();
+  final List<Benchmark> _benchmarks = new List<Benchmark>();
 
   /** Buffer results here before dumping out on the page. */
-  StringBuffer _resultsWriter = new StringBuffer();
-
-  BenchmarkRunner();
+  final StringBuffer _resultsWriter = new StringBuffer();
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method
@@ -62,13 +60,19 @@ class BenchmarkRunner {
       new DominoTowerBench(_solveLoops, _steps),
     ];
 
+    _benchmarks.clear();
+
     if (filter == null || filter.isEmpty) {
-      _benchmarks = benchmarks;
+      _benchmarks.addAll(benchmarks);
     } else {
-      List<String> filterList = filter.split(",").map((e) => e.trim());
+      List<String> filterList = filter.split(",")
+          .map((e) => e.trim())
+          .toList(growable: false);
+
       benchmarks.forEach((benchmark) {
-          if (filterList.indexOf(benchmark.name) != -1)
+          if (filterList.contains(benchmark.name)) {
             _benchmarks.add(benchmark);
+          }
       });
     }
   }
@@ -77,6 +81,11 @@ class BenchmarkRunner {
    * Runs and records the results of each benchmark included in [setupBenchmarks].
    */
   void runBenchmarks() {
+    if(_benchmarks.isEmpty) {
+      print('No benchmarks to run.');
+      print('Did you provide a valid filter?');
+      exit(1);
+    }
     for (Benchmark benchmark in _benchmarks) {
       print('Running ${benchmark.name}');
       _resultsWriter.clear();
@@ -84,11 +93,6 @@ class BenchmarkRunner {
       print("$_resultsWriter------------------------------------------------");
     }
   }
-
-  /**
-   * Initializes the given benchmark and adds to the end of the queue of
-   * benchmarks to run.
-   */
 }
 
 void main() {
