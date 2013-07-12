@@ -35,19 +35,17 @@
 <pre class="source">
 class DistanceOutput {
  /** Closest point on shapeA */
- final Vector2 pointA;
+ final Vector2 pointA = new Vector2.zero();
 
  /** Closest point on shapeB */
- final Vector2 pointB;
+ final Vector2 pointB = new Vector2.zero();
 
  double distance;
 
  /** number of gjk iterations used */
  int iterations;
 
- DistanceOutput() :
-   pointA = new Vector2.zero(),
-   pointB = new Vector2.zero();
+ DistanceOutput();
 }
 </pre>
 </div>
@@ -59,9 +57,7 @@ new <strong>DistanceOutput</strong>() <a class="anchor-link" href="#DistanceOutp
               title="Permalink to DistanceOutput.DistanceOutput">#</a></h4>
 <div class="doc">
 <pre class="source">
-DistanceOutput() :
- pointA = new Vector2.zero(),
- pointB = new Vector2.zero();
+DistanceOutput();
 </pre>
 </div>
 </div>
@@ -102,7 +98,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointA</
         <div class="doc">
 <p>Closest point on shapeA </p>
 <pre class="source">
-final Vector2 pointA
+final Vector2 pointA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -115,7 +111,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointB</
         <div class="doc">
 <p>Closest point on shapeB </p>
 <pre class="source">
-final Vector2 pointB
+final Vector2 pointB = new Vector2.zero()
 </pre>
 </div>
 </div>

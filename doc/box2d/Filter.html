@@ -37,25 +37,25 @@ class Filter {
  /**
   * Collision category bits.
   */
- int categoryBits;
+ int categoryBits = 0;
 
  /**
   * Collision mask bits. These are the categories that this shape would accept
   * for collision.
   */
- int maskBits;
+ int maskBits = 0;
 
  /**
   * Collision groups allow a certain group of objects to never collide
   * (negative) or always collide (positive). A groupIndex value of 0 means no
   * collision group.
   */
- int groupIndex;
+ int groupIndex = 0;
 
  /**
   * Constructs a new filter with everything set to 0.
   */
- Filter() : categoryBits = 0, maskBits = 0, groupIndex = 0 { }
+ Filter();
 
  /**
   * Constructs a new Filter that is a copy of the other filter.
@@ -63,7 +63,7 @@ class Filter {
  Filter.copy(Filter other) :
    categoryBits = other.categoryBits,
    maskBits = other.maskBits,
-   groupIndex = other.groupIndex { }
+   groupIndex = other.groupIndex;
 
  /**
   * Sets this filter equal to the given filter.
@@ -85,7 +85,7 @@ new <strong>Filter</strong>() <a class="anchor-link" href="#Filter"
 <div class="doc">
 <p>Constructs a new filter with everything set to 0.</p>
 <pre class="source">
-Filter() : categoryBits = 0, maskBits = 0, groupIndex = 0 { }
+Filter();
 </pre>
 </div>
 </div>
@@ -99,7 +99,7 @@ new <strong>Filter.copy</strong>(<a href="../box2d/Filter.html">Filter</a> other
 Filter.copy(Filter other) :
  categoryBits = other.categoryBits,
  maskBits = other.maskBits,
- groupIndex = other.groupIndex { }
+ groupIndex = other.groupIndex;
 </pre>
 </div>
 </div>
@@ -115,7 +115,7 @@ Filter.copy(Filter other) :
         <div class="doc">
 <p>Collision category bits.</p>
 <pre class="source">
-int categoryBits
+int categoryBits = 0
 </pre>
 </div>
 </div>
@@ -130,7 +130,7 @@ int categoryBits
 (negative) or always collide (positive). A groupIndex value of 0 means no
 collision group.</p>
 <pre class="source">
-int groupIndex
+int groupIndex = 0
 </pre>
 </div>
 </div>
@@ -144,7 +144,7 @@ int groupIndex
 <p>Collision mask bits. These are the categories that this shape would accept
 for collision.</p>
 <pre class="source">
-int maskBits
+int maskBits = 0
 </pre>
 </div>
 </div>

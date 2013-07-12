@@ -37,30 +37,24 @@ class BroadPhase implements TreeCallback {
  static const int NULL_PROXY = -1;
  static const int PAIR_CAPACITY = 16;
 
- final DynamicTree _tree;
+ final DynamicTree _tree = new DynamicTree();
 
- int proxyCount;
+ int proxyCount = 0;
 
- List&lt;DynamicTreeNode&gt; moveBuffer;
+ List&lt;DynamicTreeNode&gt; moveBuffer = new List&lt;DynamicTreeNode&gt;();
 
  List&lt;Pair&gt; _pairBuffer;
 
- int _pairCapacity;
+ int _pairCapacity = PAIR_CAPACITY;
 
- int _pairCount;
+ int _pairCount = 0;
 
- DynamicTreeNode queryProxy;
+ DynamicTreeNode queryProxy = null;
 
  /**
   * Constructs a new BroadPhase.
   */
- BroadPhase() :
-   proxyCount = 0,
-   _pairCapacity = PAIR_CAPACITY,
-   _pairCount = 0,
-   _tree = new DynamicTree(),
-   queryProxy = null {
-   moveBuffer = new List&lt;DynamicTreeNode&gt;();
+ BroadPhase() {
    // Put a bunch of pairs into the pair buffer.
    // TODO(dominich): Do a benchmark to see how preallocating the pairs
    // performs against allocating them as we go.
@@ -73,7 +67,7 @@ class BroadPhase implements TreeCallback {
   * Creates a proxy with an initial bounding box. Pairs are not reported until
   * updatePairs is called.
   */
- DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
+ DynamicTreeNode createProxy(Aabb2 box, userData) {
    DynamicTreeNode node = _tree.createProxy(box, userData);
    ++proxyCount;
    _bufferMove(node);
@@ -93,7 +87,7 @@ class BroadPhase implements TreeCallback {
   * Call MoveProxy as many times as you like, then when you are done
   * call UpdatePairs to constize the proxy pairs (for your time step).
   */
- void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) {
+ void moveProxy(DynamicTreeNode proxy, Aabb2 box, Vector2 displacement) {
    if (_tree.moveProxy(proxy, box, displacement))
      _bufferMove(proxy);
  }
@@ -102,9 +96,9 @@ class BroadPhase implements TreeCallback {
   * Returns true if the bounding boxes of the given proxies overlap.
   */
  bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
-   final AxisAlignedBox a = proxyA.box;
-   final AxisAlignedBox b = proxyB.box;
-   return AxisAlignedBox.testOverlap(a, b);
+   final Aabb2 a = proxyA.box;
+   final Aabb2 b = proxyB.box;
+   return a.intersectsWith(b);
  }
 
  /**
@@ -212,7 +206,7 @@ class BroadPhase implements TreeCallback {
   * Query an axis aligned box for overlapping proxies. The callback funciton is
   * called for each proxy that overlaps the supplied box.
   */
- void query(TreeCallback callback, AxisAlignedBox box) {
+ void query(TreeCallback callback, Aabb2 box) {
    _tree.query(callback, box);
  }
 
@@ -270,13 +264,7 @@ new <strong>BroadPhase</strong>() <a class="anchor-link" href="#BroadPhase"
 <div class="doc">
 <p>Constructs a new BroadPhase.</p>
 <pre class="source">
-BroadPhase() :
- proxyCount = 0,
- _pairCapacity = PAIR_CAPACITY,
- _pairCount = 0,
- _tree = new DynamicTree(),
- queryProxy = null {
- moveBuffer = new List&lt;DynamicTreeNode&gt;();
+BroadPhase() {
  // Put a bunch of pairs into the pair buffer.
  // TODO(dominich): Do a benchmark to see how preallocating the pairs
  // performs against allocating them as we go.
@@ -298,7 +286,7 @@ BroadPhase() :
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;DynamicTreeNode&gt; moveBuffer
+List&lt;DynamicTreeNode&gt; moveBuffer = new List&lt;DynamicTreeNode&gt;()
 </pre>
 </div>
 </div>
@@ -310,7 +298,7 @@ List&lt;DynamicTreeNode&gt; moveBuffer
         </h4>
         <div class="doc">
 <pre class="source">
-int proxyCount
+int proxyCount = 0
 </pre>
 </div>
 </div>
@@ -322,7 +310,7 @@ int proxyCount
         </h4>
         <div class="doc">
 <pre class="source">
-DynamicTreeNode queryProxy
+DynamicTreeNode queryProxy = null
 </pre>
 </div>
 </div>
@@ -342,13 +330,13 @@ int computeHeight() =&gt; _tree.computeHeightFromRoot();
 </div>
 <div class="method"><h4 id="createProxy">
 <button class="show-code">Code</button>
-<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, userData) <a class="anchor-link" href="#createProxy"
+<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> <strong>createProxy</strong>(<a href="../vector_math/Aabb2.html">Aabb2</a> box, userData) <a class="anchor-link" href="#createProxy"
               title="Permalink to BroadPhase.createProxy">#</a></h4>
 <div class="doc">
 <p>Creates a proxy with an initial bounding box. Pairs are not reported until
 updatePairs is called.</p>
 <pre class="source">
-DynamicTreeNode createProxy(AxisAlignedBox box, userData) {
+DynamicTreeNode createProxy(Aabb2 box, userData) {
  DynamicTreeNode node = _tree.createProxy(box, userData);
  ++proxyCount;
  _bufferMove(node);
@@ -374,13 +362,13 @@ void destroyProxy(DynamicTreeNode proxy) {
 </div>
 <div class="method"><h4 id="moveProxy">
 <button class="show-code">Code</button>
-void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../vector_math/Vector2.html">Vector2</a> displacement) <a class="anchor-link" href="#moveProxy"
+void <strong>moveProxy</strong>(<a href="../box2d/DynamicTreeNode.html">DynamicTreeNode</a> proxy, <a href="../vector_math/Aabb2.html">Aabb2</a> box, <a href="../vector_math/Vector2.html">Vector2</a> displacement) <a class="anchor-link" href="#moveProxy"
               title="Permalink to BroadPhase.moveProxy">#</a></h4>
 <div class="doc">
 <p>Call MoveProxy as many times as you like, then when you are done
 call UpdatePairs to constize the proxy pairs (for your time step).</p>
 <pre class="source">
-void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) {
+void moveProxy(DynamicTreeNode proxy, Aabb2 box, Vector2 displacement) {
  if (_tree.moveProxy(proxy, box, displacement))
    _bufferMove(proxy);
 }
@@ -389,13 +377,13 @@ void moveProxy(DynamicTreeNode proxy, AxisAlignedBox box, Vector2 displacement) 
 </div>
 <div class="method"><h4 id="query">
 <button class="show-code">Code</button>
-void <strong>query</strong>(<a href="../box2d/TreeCallback.html">TreeCallback</a> callback, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box) <a class="anchor-link" href="#query"
+void <strong>query</strong>(<a href="../box2d/TreeCallback.html">TreeCallback</a> callback, <a href="../vector_math/Aabb2.html">Aabb2</a> box) <a class="anchor-link" href="#query"
               title="Permalink to BroadPhase.query">#</a></h4>
 <div class="doc">
 <p>Query an axis aligned box for overlapping proxies. The callback funciton is
 called for each proxy that overlaps the supplied box.</p>
 <pre class="source">
-void query(TreeCallback callback, AxisAlignedBox box) {
+void query(TreeCallback callback, Aabb2 box) {
  _tree.query(callback, box);
 }
 </pre>
@@ -409,9 +397,9 @@ void query(TreeCallback callback, AxisAlignedBox box) {
 <p>Returns true if the bounding boxes of the given proxies overlap.</p>
 <pre class="source">
 bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
- final AxisAlignedBox a = proxyA.box;
- final AxisAlignedBox b = proxyB.box;
- return AxisAlignedBox.testOverlap(a, b);
+ final Aabb2 a = proxyA.box;
+ final Aabb2 b = proxyB.box;
+ return a.intersectsWith(b);
 }
 </pre>
 </div>

@@ -35,32 +35,28 @@
 <pre class="source">
 class Features {
  /** The edge that defines the outward contact normal. */
- int referenceEdge;
+ int referenceEdge = 0;
 
  /** The edge most anti-parallel to the reference edge. */
- int incidentEdge;
+ int incidentEdge = 0;
 
  /** The vertex (0 or 1) on the incident edge that was clipped. */
- int incidentVertex;
+ int incidentVertex = 0;
 
  /** A value of 1 indicates that the reference edge is on shape2. */
- int flip;
+ int flip = 0;
 
  /**
   * Constructs a new features with zero values for all fields.
   */
- Features() :
-   referenceEdge = 0,
-   incidentEdge = 0,
-   incidentVertex = 0,
-   flip = 0 { }
+ Features();
 
  // Constructs a new Features that is a copy of the given features.
  Features.copy(Features f) :
    referenceEdge = f.referenceEdge,
    incidentEdge = f.incidentEdge,
    incidentVertex = f.incidentVertex,
-   flip = f.flip { }
+   flip = f.flip;
 
  // Set this feature to be a copy of the given feature.
  void setFrom(Features f) {
@@ -106,11 +102,7 @@ new <strong>Features</strong>() <a class="anchor-link" href="#Features"
 <div class="doc">
 <p>Constructs a new features with zero values for all fields.</p>
 <pre class="source">
-Features() :
- referenceEdge = 0,
- incidentEdge = 0,
- incidentVertex = 0,
- flip = 0 { }
+Features();
 </pre>
 </div>
 </div>
@@ -124,7 +116,7 @@ Features.copy(Features f) :
  referenceEdge = f.referenceEdge,
  incidentEdge = f.incidentEdge,
  incidentVertex = f.incidentVertex,
- flip = f.flip { }
+ flip = f.flip;
 </pre>
 </div>
 </div>
@@ -140,7 +132,7 @@ Features.copy(Features f) :
         <div class="doc">
 <p>A value of 1 indicates that the reference edge is on shape2. </p>
 <pre class="source">
-int flip
+int flip = 0
 </pre>
 </div>
 </div>
@@ -153,7 +145,7 @@ int flip
         <div class="doc">
 <p>The edge most anti-parallel to the reference edge. </p>
 <pre class="source">
-int incidentEdge
+int incidentEdge = 0
 </pre>
 </div>
 </div>
@@ -166,7 +158,7 @@ int incidentEdge
         <div class="doc">
 <p>The vertex (0 or 1) on the incident edge that was clipped. </p>
 <pre class="source">
-int incidentVertex
+int incidentVertex = 0
 </pre>
 </div>
 </div>
@@ -179,7 +171,7 @@ int incidentVertex
         <div class="doc">
 <p>The edge that defines the outward contact normal. </p>
 <pre class="source">
-int referenceEdge
+int referenceEdge = 0
 </pre>
 </div>
 </div>

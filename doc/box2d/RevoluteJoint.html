@@ -34,15 +34,15 @@
 <div class="doc">
 <pre class="source">
 class RevoluteJoint extends Joint {
- final Vector2 localAnchor1;
- final Vector2 localAnchor2;
+ final Vector2 localAnchor1 = new Vector2.zero();
+ final Vector2 localAnchor2 = new Vector2.zero();
 
- final Vector3 impulse;
+ final Vector3 impulse = new Vector3.zero();
 
- double _motorImpulse;
+ double _motorImpulse = 0.0;
 
  // Effective mass for point-to-point constraint.
- final Matrix3 mass;
+ final Matrix3 mass = new Matrix3.zero();
 
  // Effective mass for motor/limit angular constraint.
  double motorMass;
@@ -63,19 +63,10 @@ class RevoluteJoint extends Joint {
 
  int limitState;
 
- RevoluteJoint(RevoluteJointDef def) :
-     super(def),
-     localAnchor1 = new Vector2.zero(),
-     localAnchor2 = new Vector2.zero(),
-     impulse = new Vector3.zero(),
-     _motorImpulse = 0.0,
-     mass = new Matrix3.zero() {
+ RevoluteJoint(RevoluteJointDef def) : super(def) {
    localAnchor1.setFrom(def.localAnchorA);
    localAnchor2.setFrom(def.localAnchorB);
    referenceAngle = def.referenceAngle;
-
-   _motorImpulse = 0.0;
-
    lowerAngle = def.lowerAngle;
    upperAngle = def.upperAngle;
    _maxMotorTorque = def.maxMotorTorque;
@@ -222,21 +213,21 @@ class RevoluteJoint extends Joint {
      final Vector3 Cdot = new Vector3.zero();
 
      // Solve point-to-point constraint
-     Vector2_crossVectorAndNumToOut(r1, -w1, temp);
-     Vector2_crossVectorAndNumToOut(r2, -w2, Cdot1);
+     r1.scaleOrthogonalInto(w1, temp);
+     r2.scaleOrthogonalInto(w2, Cdot1);
      Cdot1.add(v2).sub(v1).sub(temp);
      num Cdot2 = w2 - w1;
      Cdot.setValues(Cdot1.x, Cdot1.y, Cdot2);
 
      Vector3 imp = new Vector3.zero();
-     Matrix3_solve33ToOut(mass, Cdot.negate(), imp);
+     Matrix3.solve(mass, imp, Cdot.negate());
 
      if (limitState == LimitState.EQUAL) {
        impulse.add(imp);
      } else if (limitState == LimitState.AT_LOWER) {
        num newImpulse = impulse.z + imp.z;
        if (newImpulse &lt; 0.0) {
-         Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+         Matrix3.solve2(mass, temp, Cdot1.negate());
          imp.x = temp.x;
          imp.y = temp.y;
          imp.z = -impulse.z;
@@ -247,7 +238,7 @@ class RevoluteJoint extends Joint {
      } else if (limitState == LimitState.AT_UPPER) {
        num newImpulse = impulse.z + imp.z;
        if (newImpulse &gt; 0.0) {
-         Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+         Matrix3.solve2(mass, temp, Cdot1.negate());
          imp.x = temp.x;
          imp.y = temp.y;
          imp.z = -impulse.z;
@@ -278,10 +269,10 @@ class RevoluteJoint extends Joint {
      Vector2 Cdot = new Vector2.zero();
      Vector2 imp = new Vector2.zero();
 
-     Vector2_crossVectorAndNumToOut(r1, -w1, temp);
-     Vector2_crossVectorAndNumToOut(r2, -w2, Cdot);
+     r1.scaleOrthogonalInto(w1, temp);
+     r2.scaleOrthogonalInto(w2, Cdot);
      Cdot.add(v2).sub(v1).sub(temp);
-     Matrix3_solve22ToOut(mass, Cdot.negate(), imp); // just leave negated
+     Matrix3.solve2(mass, imp, Cdot.negate()); // just leave negated
 
      impulse.x += imp.x;
      impulse.y += imp.y;
@@ -403,7 +394,7 @@ class RevoluteJoint extends Joint {
       invI2 * r2.x * r2.x);
 
      K1.add(K2).add(K3);
-     Matrix2_solveToOut(K1, C.negate(), imp); // just leave c negated
+     Matrix2.solve(K1, imp, C.negate()); // just leave c negated
 
      // using C as temp variable
      C.setFrom(imp).scale(b1.invMass);
@@ -505,19 +496,10 @@ new <strong>RevoluteJoint</strong>(<a href="../box2d/RevoluteJointDef.html">Revo
               title="Permalink to RevoluteJoint.RevoluteJoint">#</a></h4>
 <div class="doc">
 <pre class="source">
-RevoluteJoint(RevoluteJointDef def) :
-   super(def),
-   localAnchor1 = new Vector2.zero(),
-   localAnchor2 = new Vector2.zero(),
-   impulse = new Vector3.zero(),
-   _motorImpulse = 0.0,
-   mass = new Matrix3.zero() {
+RevoluteJoint(RevoluteJointDef def) : super(def) {
  localAnchor1.setFrom(def.localAnchorA);
  localAnchor2.setFrom(def.localAnchorB);
  referenceAngle = def.referenceAngle;
-
- _motorImpulse = 0.0;
-
  lowerAngle = def.lowerAngle;
  upperAngle = def.upperAngle;
  _maxMotorTorque = def.maxMotorTorque;
@@ -588,7 +570,7 @@ bool collideConnected
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeA
+JointEdge edgeA = new JointEdge()
 </pre>
 </div>
 </div>
@@ -600,7 +582,7 @@ JointEdge edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeB
+JointEdge edgeB = new JointEdge()
 </pre>
 </div>
 </div>
@@ -612,7 +594,7 @@ final <a href="../vector_math/Vector3.html">Vector3</a>         <strong>impulse<
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector3 impulse
+final Vector3 impulse = new Vector3.zero()
 </pre>
 </div>
 </div>
@@ -672,7 +654,7 @@ double invMassB
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool islandFlag
+bool islandFlag = false
 </pre>
 </div>
 </div>
@@ -747,7 +729,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localAnchor1
+final Vector2 localAnchor1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -759,7 +741,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localAnchor2
+final Vector2 localAnchor2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -771,7 +753,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterA
+final Vector2 localCenterA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -783,7 +765,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterB
+final Vector2 localCenterB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -808,7 +790,7 @@ final <a href="../vector_math/Matrix3.html">Matrix3</a>         <strong>mass</st
         </h4>
         <div class="doc">
 <pre class="source">
-final Matrix3 mass
+final Matrix3 mass = new Matrix3.zero()
 </pre>
 </div>
 </div>
@@ -1248,7 +1230,7 @@ bool solvePositionConstraints(num baumgarte) {
     invI2 * r2.x * r2.x);
 
    K1.add(K2).add(K3);
-   Matrix2_solveToOut(K1, C.negate(), imp); // just leave c negated
+   Matrix2.solve(K1, imp, C.negate()); // just leave c negated
 
    // using C as temp variable
    C.setFrom(imp).scale(b1.invMass);
@@ -1317,21 +1299,21 @@ void solveVelocityConstraints(final TimeStep step) {
    final Vector3 Cdot = new Vector3.zero();
 
    // Solve point-to-point constraint
-   Vector2_crossVectorAndNumToOut(r1, -w1, temp);
-   Vector2_crossVectorAndNumToOut(r2, -w2, Cdot1);
+   r1.scaleOrthogonalInto(w1, temp);
+   r2.scaleOrthogonalInto(w2, Cdot1);
    Cdot1.add(v2).sub(v1).sub(temp);
    num Cdot2 = w2 - w1;
    Cdot.setValues(Cdot1.x, Cdot1.y, Cdot2);
 
    Vector3 imp = new Vector3.zero();
-   Matrix3_solve33ToOut(mass, Cdot.negate(), imp);
+   Matrix3.solve(mass, imp, Cdot.negate());
 
    if (limitState == LimitState.EQUAL) {
      impulse.add(imp);
    } else if (limitState == LimitState.AT_LOWER) {
      num newImpulse = impulse.z + imp.z;
      if (newImpulse &lt; 0.0) {
-       Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+       Matrix3.solve2(mass, temp, Cdot1.negate());
        imp.x = temp.x;
        imp.y = temp.y;
        imp.z = -impulse.z;
@@ -1342,7 +1324,7 @@ void solveVelocityConstraints(final TimeStep step) {
    } else if (limitState == LimitState.AT_UPPER) {
      num newImpulse = impulse.z + imp.z;
      if (newImpulse &gt; 0.0) {
-       Matrix3_solve22ToOut(mass, Cdot1.negate(), temp);
+       Matrix3.solve2(mass, temp, Cdot1.negate());
        imp.x = temp.x;
        imp.y = temp.y;
        imp.z = -impulse.z;
@@ -1373,10 +1355,10 @@ void solveVelocityConstraints(final TimeStep step) {
    Vector2 Cdot = new Vector2.zero();
    Vector2 imp = new Vector2.zero();
 
-   Vector2_crossVectorAndNumToOut(r1, -w1, temp);
-   Vector2_crossVectorAndNumToOut(r2, -w2, Cdot);
+   r1.scaleOrthogonalInto(w1, temp);
+   r2.scaleOrthogonalInto(w2, Cdot);
    Cdot.add(v2).sub(v1).sub(temp);
-   Matrix3_solve22ToOut(mass, Cdot.negate(), imp); // just leave negated
+   Matrix3.solve2(mass, imp, Cdot.negate()); // just leave negated
 
    impulse.x += imp.x;
    impulse.y += imp.y;

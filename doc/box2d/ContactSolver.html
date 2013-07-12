@@ -45,48 +45,30 @@ class ContactSolver {
   */
  static const double K_MAX_CONDITION_NUMBER = 100.0;
 
- List&lt;ContactConstraint&gt; constraints;
+ List&lt;ContactConstraint&gt; constraints = new List&lt;ContactConstraint&gt;.generate(
+       INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint());
  int constraintCount;
 
  /** Pooling */
  //TODO(gregbglw): What do many of these names mean? What is rA, for example?
- final WorldManifold worldManifold;
- final Vector2 tangent;
- final Vector2 temp1;
- final Vector2 temp2;
- final Vector2 P;
- final Vector2 dv;
- final Vector2 dv1;
- final Vector2 dv2;
- final Vector2 x;
- final Vector2 d;
- final Vector2 P1;
- final Vector2 P2;
- final PositionSolverManifold psolver;
- final Vector2 rA;
- final Vector2 rB;
+ final WorldManifold worldManifold = new WorldManifold();
+ final Vector2 tangent = new Vector2.zero();
+ final Vector2 temp1 = new Vector2.zero();
+ final Vector2 temp2 = new Vector2.zero();
+ final Vector2 P = new Vector2.zero();
+ final Vector2 dv = new Vector2.zero();
+ final Vector2 dv1 = new Vector2.zero();
+ final Vector2 dv2 = new Vector2.zero();
+ final Vector2 x = new Vector2.zero();
+ final Vector2 d = new Vector2.zero();
+ final Vector2 P1 = new Vector2.zero();
+ final Vector2 P2 = new Vector2.zero();
+ final PositionSolverManifold psolver  = new PositionSolverManifold();
+ final Vector2 rA = new Vector2.zero();
+ final Vector2 rB = new Vector2.zero();
 
  /** Constructs a new ContactSolver. */
- ContactSolver() :
-   constraints = new List&lt;ContactConstraint&gt;.generate(
-       INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
-
-   // Setup pool variables.
-   worldManifold = new WorldManifold(),
-   tangent = new Vector2.zero(),
-   temp1 = new Vector2.zero(),
-   temp2 = new Vector2.zero(),
-   P = new Vector2.zero(),
-   dv = new Vector2.zero(),
-   dv1 = new Vector2.zero(),
-   dv2 = new Vector2.zero(),
-   x = new Vector2.zero(),
-   d = new Vector2.zero(),
-   P1 = new Vector2.zero(),
-   P2 = new Vector2.zero(),
-   psolver = new PositionSolverManifold(),
-   rA = new Vector2.zero(),
-   rB = new Vector2.zero();
+ ContactSolver();
 
  void init(List&lt;Contact&gt; contacts, int contactCount, num impulseRatio){
    constraintCount = contactCount;
@@ -250,7 +232,7 @@ class ContactSolver {
      final num invMassB = bodyB.invMass;
      final num invIB = bodyB.invInertia;
      final Vector2 normal = c.normal;
-     Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
+     normal.scaleOrthogonalInto(-1.0, tangent);
 
      for (int j = 0; j &lt; c.pointCount; ++j){
        ContactConstraintPoint ccp = c.points[j];
@@ -638,26 +620,7 @@ new <strong>ContactSolver</strong>() <a class="anchor-link" href="#ContactSolver
 <div class="doc">
 <p>Constructs a new ContactSolver. </p>
 <pre class="source">
-ContactSolver() :
- constraints = new List&lt;ContactConstraint&gt;.generate(
-     INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint()),
-
- // Setup pool variables.
- worldManifold = new WorldManifold(),
- tangent = new Vector2.zero(),
- temp1 = new Vector2.zero(),
- temp2 = new Vector2.zero(),
- P = new Vector2.zero(),
- dv = new Vector2.zero(),
- dv1 = new Vector2.zero(),
- dv2 = new Vector2.zero(),
- x = new Vector2.zero(),
- d = new Vector2.zero(),
- P1 = new Vector2.zero(),
- P2 = new Vector2.zero(),
- psolver = new PositionSolverManifold(),
- rA = new Vector2.zero(),
- rB = new Vector2.zero();
+ContactSolver();
 </pre>
 </div>
 </div>
@@ -684,7 +647,8 @@ int constraintCount
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;ContactConstraint&gt; constraints
+List&lt;ContactConstraint&gt; constraints = new List&lt;ContactConstraint&gt;.generate(
+     INITIAL_NUM_CONSTRAINTS, (i) =&gt; new ContactConstraint())
 </pre>
 </div>
 </div>
@@ -696,7 +660,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>d</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 d
+final Vector2 d = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -708,7 +672,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 dv
+final Vector2 dv = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -720,7 +684,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv1</str
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 dv1
+final Vector2 dv1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -732,7 +696,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>dv2</str
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 dv2
+final Vector2 dv2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -744,7 +708,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 P
+final Vector2 P = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -756,7 +720,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P1</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 P1
+final Vector2 P1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -768,7 +732,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>P2</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 P2
+final Vector2 P2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -780,7 +744,7 @@ final <a href="../box2d/PositionSolverManifold.html">PositionSolverManifold</a> 
         </h4>
         <div class="doc">
 <pre class="source">
-final PositionSolverManifold psolver
+final PositionSolverManifold psolver  = new PositionSolverManifold()
 </pre>
 </div>
 </div>
@@ -792,7 +756,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rA</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 rA
+final Vector2 rA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -804,7 +768,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rB</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 rB
+final Vector2 rB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -816,7 +780,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>tangent<
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 tangent
+final Vector2 tangent = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -828,7 +792,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp1</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 temp1
+final Vector2 temp1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -840,7 +804,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp2</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 temp2
+final Vector2 temp2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -853,7 +817,7 @@ final <a href="../box2d/WorldManifold.html">WorldManifold</a>         <strong>wo
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final WorldManifold worldManifold
+final WorldManifold worldManifold = new WorldManifold()
 </pre>
 </div>
 </div>
@@ -865,7 +829,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>x</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 x
+final Vector2 x = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -1396,7 +1360,7 @@ void warmStart(){
    final num invMassB = bodyB.invMass;
    final num invIB = bodyB.invInertia;
    final Vector2 normal = c.normal;
-   Vector2_crossVectorAndNumToOut(normal, 1.0, tangent);
+   normal.scaleOrthogonalInto(-1.0, tangent);
 
    for (int j = 0; j &lt; c.pointCount; ++j){
      ContactConstraintPoint ccp = c.points[j];

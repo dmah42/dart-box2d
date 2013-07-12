@@ -37,60 +37,50 @@ class RevoluteJointDef extends JointDef {
  /**
   *  The local anchor point relative to body1's origin.
   */
- Vector2 localAnchorA;
+ Vector2 localAnchorA = new Vector2.zero();
 
  /**
   *  The local anchor point relative to body2's origin.
   */
- Vector2 localAnchorB;
+ Vector2 localAnchorB = new Vector2.zero();
 
  /**
   *  The body2 angle minus body1 angle in the reference state (radians).
   */
- double referenceAngle;
+ double referenceAngle = 0.0;
 
  /**
   *  A flag to enable joint limits.
   */
- bool enableLimit;
+ bool enableLimit = false;
 
  /**
   *  The lower angle for the joint limit (radians).
   */
- double lowerAngle;
+ double lowerAngle = 0.0;
 
  /**
   *  The upper angle for the joint limit (radians).
   */
- double upperAngle;
+ double upperAngle = 0.0;
 
  /**
   *  A flag to enable the joint motor.
   */
- bool enableMotor;
+ bool enableMotor = false;
 
  /**
   *  The desired motor speed. Usually in radians per second.
   */
- double motorSpeed;
+ double motorSpeed = 0.0;
 
  /**
   *  The maximum motor torque used to achieve the desired motor speed.
   *  Usually in N-m.
   */
- double maxMotorTorque;
+ double maxMotorTorque = 0.0;
 
- RevoluteJointDef() :
-   super(),
-   localAnchorA = new Vector2(0.0, 0.0),
-   localAnchorB = new Vector2(0.0, 0.0),
-   referenceAngle = 0.0,
-   lowerAngle = 0.0,
-   upperAngle = 0.0,
-   maxMotorTorque = 0.0,
-   motorSpeed = 0.0,
-   enableLimit = false,
-   enableMotor = false {
+ RevoluteJointDef() : super() {
    type = JointType.REVOLUTE;
  }
 
@@ -119,17 +109,7 @@ new <strong>RevoluteJointDef</strong>() <a class="anchor-link" href="#RevoluteJo
               title="Permalink to RevoluteJointDef.RevoluteJointDef">#</a></h4>
 <div class="doc">
 <pre class="source">
-RevoluteJointDef() :
- super(),
- localAnchorA = new Vector2(0.0, 0.0),
- localAnchorB = new Vector2(0.0, 0.0),
- referenceAngle = 0.0,
- lowerAngle = 0.0,
- upperAngle = 0.0,
- maxMotorTorque = 0.0,
- motorSpeed = 0.0,
- enableLimit = false,
- enableMotor = false {
+RevoluteJointDef() : super() {
  type = JointType.REVOLUTE;
 }
 </pre>
@@ -173,7 +153,7 @@ Body bodyB
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-bool collideConnected
+bool collideConnected = false
 </pre>
 </div>
 </div>
@@ -186,7 +166,7 @@ bool collideConnected
         <div class="doc">
 <p> A flag to enable joint limits.</p>
 <pre class="source">
-bool enableLimit
+bool enableLimit = false
 </pre>
 </div>
 </div>
@@ -199,7 +179,7 @@ bool enableLimit
         <div class="doc">
 <p> A flag to enable the joint motor.</p>
 <pre class="source">
-bool enableMotor
+bool enableMotor = false
 </pre>
 </div>
 </div>
@@ -212,7 +192,7 @@ bool enableMotor
         <div class="doc">
 <p> The local anchor point relative to body1's origin.</p>
 <pre class="source">
-Vector2 localAnchorA
+Vector2 localAnchorA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -225,7 +205,7 @@ Vector2 localAnchorA
         <div class="doc">
 <p> The local anchor point relative to body2's origin.</p>
 <pre class="source">
-Vector2 localAnchorB
+Vector2 localAnchorB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -238,7 +218,7 @@ Vector2 localAnchorB
         <div class="doc">
 <p> The lower angle for the joint limit (radians).</p>
 <pre class="source">
-double lowerAngle
+double lowerAngle = 0.0
 </pre>
 </div>
 </div>
@@ -252,7 +232,7 @@ double lowerAngle
 <p> The maximum motor torque used to achieve the desired motor speed.
  Usually in N-m.</p>
 <pre class="source">
-double maxMotorTorque
+double maxMotorTorque = 0.0
 </pre>
 </div>
 </div>
@@ -265,7 +245,7 @@ double maxMotorTorque
         <div class="doc">
 <p> The desired motor speed. Usually in radians per second.</p>
 <pre class="source">
-double motorSpeed
+double motorSpeed = 0.0
 </pre>
 </div>
 </div>
@@ -278,7 +258,7 @@ double motorSpeed
         <div class="doc">
 <p> The body2 angle minus body1 angle in the reference state (radians).</p>
 <pre class="source">
-double referenceAngle
+double referenceAngle = 0.0
 </pre>
 </div>
 </div>
@@ -291,7 +271,7 @@ double referenceAngle
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-int type
+int type = JointType.UNKNOWN
 </pre>
 </div>
 </div>
@@ -304,7 +284,7 @@ int type
         <div class="doc">
 <p> The upper angle for the joint limit (radians).</p>
 <pre class="source">
-double upperAngle
+double upperAngle = 0.0
 </pre>
 </div>
 </div>

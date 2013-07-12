@@ -34,38 +34,26 @@
 <div class="doc">
 <pre class="source">
 class Simplex {
- final SimplexVertex v1;
- final SimplexVertex v2;
- final SimplexVertex v3;
- final List&lt;SimplexVertex&gt; vertices;
- int count;
+ final SimplexVertex v1 = new SimplexVertex();
+ final SimplexVertex v2 = new SimplexVertex();
+ final SimplexVertex v3 = new SimplexVertex();
+ final List&lt;SimplexVertex&gt; vertices = new List&lt;SimplexVertex&gt;(3);
+ int count = 0;
 
- Simplex() :
-     count = 0,
-     v1 = new SimplexVertex(),
-     v2 = new SimplexVertex(),
-     v3 = new SimplexVertex(),
-     vertices = new List&lt;SimplexVertex&gt;(3),
-     e13 = new Vector2.zero(),
-     e12 = new Vector2.zero(),
-     e23 = new Vector2.zero(),
-     case2 = new Vector2.zero(),
-     case22 = new Vector2.zero(),
-     case3 = new Vector2.zero(),
-     case33 = new Vector2.zero() {
+ Simplex() {
    vertices[0] = v1;
    vertices[1] = v2;
    vertices[2] = v3;
  }
 
  /** Pooling. */
- final Vector2 e13;
- final Vector2 e23;
- final Vector2 e12;
- final Vector2 case2;
- final Vector2 case22;
- final Vector2 case3;
- final Vector2 case33;
+ final Vector2 e13 = new Vector2.zero();
+ final Vector2 e23 = new Vector2.zero();
+ final Vector2 e12 = new Vector2.zero();
+ final Vector2 case2 = new Vector2.zero();
+ final Vector2 case22 = new Vector2.zero();
+ final Vector2 case3 = new Vector2.zero();
+ final Vector2 case33 = new Vector2.zero();
 
  void readCache(SimplexCache cache, DistanceProxy proxyA,
      Transform transformA, DistanceProxy proxyB,
@@ -136,11 +124,11 @@ class Simplex {
 
        if (sgn &gt; 0) {
          // Origin is left of e12.
-         Vector2_crossVectorAndNumToOut(e12, -1.0, out);
+         e12.scaleOrthogonalInto(1.0, out);
        }
        else {
          // Origin is right of e12.
-         Vector2_crossVectorAndNumToOut(e12, 1.0, out);
+         e12.scaleOrthogonalInto(1.0, out);
        }
        break;
      default :
@@ -380,19 +368,7 @@ new <strong>Simplex</strong>() <a class="anchor-link" href="#Simplex"
               title="Permalink to Simplex.Simplex">#</a></h4>
 <div class="doc">
 <pre class="source">
-Simplex() :
-   count = 0,
-   v1 = new SimplexVertex(),
-   v2 = new SimplexVertex(),
-   v3 = new SimplexVertex(),
-   vertices = new List&lt;SimplexVertex&gt;(3),
-   e13 = new Vector2.zero(),
-   e12 = new Vector2.zero(),
-   e23 = new Vector2.zero(),
-   case2 = new Vector2.zero(),
-   case22 = new Vector2.zero(),
-   case3 = new Vector2.zero(),
-   case33 = new Vector2.zero() {
+Simplex() {
  vertices[0] = v1;
  vertices[1] = v2;
  vertices[2] = v3;
@@ -411,7 +387,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>case2</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 case2
+final Vector2 case2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -423,7 +399,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>case22</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 case22
+final Vector2 case22 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -435,7 +411,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>case3</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 case3
+final Vector2 case3 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -447,7 +423,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>case33</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 case33
+final Vector2 case33 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -459,7 +435,7 @@ final Vector2 case33
         </h4>
         <div class="doc">
 <pre class="source">
-int count
+int count = 0
 </pre>
 </div>
 </div>
@@ -471,7 +447,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>e12</str
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 e12
+final Vector2 e12 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -484,7 +460,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>e13</str
         <div class="doc">
 <p>Pooling. </p>
 <pre class="source">
-final Vector2 e13
+final Vector2 e13 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -496,7 +472,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>e23</str
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 e23
+final Vector2 e23 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -508,7 +484,7 @@ final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v1
         </h4>
         <div class="doc">
 <pre class="source">
-final SimplexVertex v1
+final SimplexVertex v1 = new SimplexVertex()
 </pre>
 </div>
 </div>
@@ -520,7 +496,7 @@ final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v2
         </h4>
         <div class="doc">
 <pre class="source">
-final SimplexVertex v2
+final SimplexVertex v2 = new SimplexVertex()
 </pre>
 </div>
 </div>
@@ -532,7 +508,7 @@ final <a href="../box2d/SimplexVertex.html">SimplexVertex</a>         <strong>v3
         </h4>
         <div class="doc">
 <pre class="source">
-final SimplexVertex v3
+final SimplexVertex v3 = new SimplexVertex()
 </pre>
 </div>
 </div>
@@ -544,7 +520,7 @@ final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href=
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;SimplexVertex&gt; vertices
+final List&lt;SimplexVertex&gt; vertices = new List&lt;SimplexVertex&gt;(3)
 </pre>
 </div>
 </div>
@@ -634,11 +610,11 @@ void getSearchDirection(Vector2 out) {
 
      if (sgn &gt; 0) {
        // Origin is left of e12.
-       Vector2_crossVectorAndNumToOut(e12, -1.0, out);
+       e12.scaleOrthogonalInto(1.0, out);
      }
      else {
        // Origin is right of e12.
-       Vector2_crossVectorAndNumToOut(e12, 1.0, out);
+       e12.scaleOrthogonalInto(1.0, out);
      }
      break;
    default :

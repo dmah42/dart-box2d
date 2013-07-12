@@ -36,28 +36,24 @@
 class DistanceJoint extends Joint {
  final Vector2 localAnchor1;
  final Vector2 localAnchor2;
- final Vector2 u;
- double impulse;
+ final Vector2 u = new Vector2.zero();
+ double impulse = 0.0;
 
  /** Effective mass for the constraint. */
  double mass;
  double length;
  double frequencyHz;
  double dampingRatio;
- double gamma;
- double bias;
+ double gamma = 0.0;
+ double bias = 0.0;
 
  DistanceJoint(DistanceJointDef def) :
    super(def),
    localAnchor1 = new Vector2.copy(def.localAnchorA),
    localAnchor2 = new Vector2.copy(def.localAnchorB),
    length = def.length,
-   impulse = 0.0,
-   u = new Vector2.zero(),
    frequencyHz = def.frequencyHz,
-   dampingRatio = def.dampingRatio,
-   gamma = 0.0,
-   bias = 0.0 { }
+   dampingRatio = def.dampingRatio;
 
  void getAnchorA(Vector2 argOut) {
    bodyA.getWorldPointToOut(localAnchor1, argOut);
@@ -164,8 +160,8 @@ class DistanceJoint extends Joint {
    final v1 = new Vector2.zero();
    final v2 = new Vector2.zero();
 
-   Vector2_crossVectorAndNumToOut(r1, -b1.angularVelocity, v1);
-   Vector2_crossVectorAndNumToOut(r2, -b2.angularVelocity, v2);
+   r1.scaleOrthogonalInto(b1.angularVelocity, v1);
+   r2.scaleOrthogonalInto(b2.angularVelocity, v2);
    v1.add(b1.linearVelocity);
    v2.add(b2.linearVelocity);
 
@@ -246,12 +242,8 @@ DistanceJoint(DistanceJointDef def) :
  localAnchor1 = new Vector2.copy(def.localAnchorA),
  localAnchor2 = new Vector2.copy(def.localAnchorB),
  length = def.length,
- impulse = 0.0,
- u = new Vector2.zero(),
  frequencyHz = def.frequencyHz,
- dampingRatio = def.dampingRatio,
- gamma = 0.0,
- bias = 0.0 { }
+ dampingRatio = def.dampingRatio;
 </pre>
 </div>
 </div>
@@ -279,7 +271,7 @@ bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
         </h4>
         <div class="doc">
 <pre class="source">
-double bias
+double bias = 0.0
 </pre>
 </div>
 </div>
@@ -339,7 +331,7 @@ double dampingRatio
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeA
+JointEdge edgeA = new JointEdge()
 </pre>
 </div>
 </div>
@@ -351,7 +343,7 @@ JointEdge edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeB
+JointEdge edgeB = new JointEdge()
 </pre>
 </div>
 </div>
@@ -375,7 +367,7 @@ double frequencyHz
         </h4>
         <div class="doc">
 <pre class="source">
-double gamma
+double gamma = 0.0
 </pre>
 </div>
 </div>
@@ -387,7 +379,7 @@ double gamma
         </h4>
         <div class="doc">
 <pre class="source">
-double impulse
+double impulse = 0.0
 </pre>
 </div>
 </div>
@@ -447,7 +439,7 @@ double invMassB
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool islandFlag
+bool islandFlag = false
 </pre>
 </div>
 </div>
@@ -495,7 +487,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterA
+final Vector2 localCenterA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -507,7 +499,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterB
+final Vector2 localCenterB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -544,7 +536,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>u</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 u
+final Vector2 u = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -792,8 +784,8 @@ void solveVelocityConstraints(TimeStep step) {
  final v1 = new Vector2.zero();
  final v2 = new Vector2.zero();
 
- Vector2_crossVectorAndNumToOut(r1, -b1.angularVelocity, v1);
- Vector2_crossVectorAndNumToOut(r2, -b2.angularVelocity, v2);
+ r1.scaleOrthogonalInto(b1.angularVelocity, v1);
+ r2.scaleOrthogonalInto(b2.angularVelocity, v2);
  v1.add(b1.linearVelocity);
  v2.add(b2.linearVelocity);
 

@@ -34,21 +34,19 @@
 <div class="doc">
 <pre class="source">
 class DistanceProxy {
- final List&lt;Vector2&gt; vertices;
- int count;
- double radius;
+ final List&lt;Vector2&gt; vertices =
+   new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false);
+
+ int count = 0;
+ double radius = 0.0;
 
  /**
   * Constructs a new DistanceProxy.
   */
- DistanceProxy() :
-   vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
-   count = 0,
-   radius = 0.0 {
-
-     for(int i = 0; i &lt; vertices.length; ++i)
-       vertices[i] = new Vector2.zero();
-   }
+ DistanceProxy();
 
  /**
   * Initialize the proxy using the given shape. The shape
@@ -107,14 +105,7 @@ new <strong>DistanceProxy</strong>() <a class="anchor-link" href="#DistanceProxy
 <div class="doc">
 <p>Constructs a new DistanceProxy.</p>
 <pre class="source">
-DistanceProxy() :
- vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
- count = 0,
- radius = 0.0 {
-
-   for(int i = 0; i &lt; vertices.length; ++i)
-     vertices[i] = new Vector2.zero();
- }
+DistanceProxy();
 </pre>
 </div>
 </div>
@@ -129,7 +120,7 @@ DistanceProxy() :
         </h4>
         <div class="doc">
 <pre class="source">
-int count
+int count = 0
 </pre>
 </div>
 </div>
@@ -141,7 +132,7 @@ int count
         </h4>
         <div class="doc">
 <pre class="source">
-double radius
+double radius = 0.0
 </pre>
 </div>
 </div>
@@ -153,7 +144,11 @@ final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href=
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;Vector2&gt; vertices
+final List&lt;Vector2&gt; vertices =
+ new List&lt;Vector2&gt;.generate(
+   Settings.MAX_POLYGON_VERTICES,
+   (_) =&gt; new Vector2.zero(),
+   growable: false)
 </pre>
 </div>
 </div>

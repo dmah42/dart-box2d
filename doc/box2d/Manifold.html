@@ -59,20 +59,18 @@ class Manifold {
  int type;
 
  /** The number of manifold points. */
- int pointCount;
+ int pointCount = 0;
 
  /**
   * Creates a manifold with 0 points. It's point array should be full of
   * already instantiated ManifoldPoints.
   */
  Manifold() :
-     points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-     localNormal = new Vector2.zero(),
-     localPoint = new Vector2.zero(),
-     pointCount = 0 {
-   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-     points[i] = new ManifoldPoint();
- }
+   localNormal = new Vector2.zero(),
+   localPoint = new Vector2.zero(),
+   points = new List&lt;ManifoldPoint&gt;.generate(Settings.MAX_MANIFOLD_POINTS,
+           (_) =&gt; new ManifoldPoint(), growable: false);
+
 
  /**
   * Creates a new manifold that is a copy of the given manifold.
@@ -83,8 +81,9 @@ class Manifold {
      localPoint = new Vector2.copy(other.localPoint),
      pointCount = other.pointCount,
      type = other.type {
-   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+   for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i) {
      points[i] = new ManifoldPoint.copy(other.points[i]);
+   }
  }
 
  /**
@@ -113,13 +112,10 @@ new <strong>Manifold</strong>() <a class="anchor-link" href="#Manifold"
 already instantiated ManifoldPoints.</p>
 <pre class="source">
 Manifold() :
-   points = new List&lt;ManifoldPoint&gt;(Settings.MAX_MANIFOLD_POINTS),
-   localNormal = new Vector2.zero(),
-   localPoint = new Vector2.zero(),
-   pointCount = 0 {
- for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
-   points[i] = new ManifoldPoint();
-}
+ localNormal = new Vector2.zero(),
+ localPoint = new Vector2.zero(),
+ points = new List&lt;ManifoldPoint&gt;.generate(Settings.MAX_MANIFOLD_POINTS,
+         (_) =&gt; new ManifoldPoint(), growable: false);
 </pre>
 </div>
 </div>
@@ -136,8 +132,9 @@ Manifold.copy(Manifold other) :
    localPoint = new Vector2.copy(other.localPoint),
    pointCount = other.pointCount,
    type = other.type {
- for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i)
+ for (int i = 0; i &lt; Settings.MAX_MANIFOLD_POINTS; ++i) {
    points[i] = new ManifoldPoint.copy(other.points[i]);
+ }
 }
 </pre>
 </div>
@@ -188,7 +185,7 @@ final Vector2 localPoint
         <div class="doc">
 <p>The number of manifold points. </p>
 <pre class="source">
-int pointCount
+int pointCount = 0
 </pre>
 </div>
 </div>

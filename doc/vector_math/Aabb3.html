@@ -34,26 +34,28 @@
 <div class="doc">
 <pre class="source">
 class Aabb3 {
- Vector3 _min;
- Vector3 _max;
+ final Vector3 _min;
+ final Vector3 _max;
 
  Vector3 get min =&gt; _min;
  Vector3 get max =&gt; _max;
 
- Aabb3() {
-   _min = new Vector3.zero();
-   _max = new Vector3.zero();
+ Vector3 get center {
+   Vector3 c = new Vector3.copy(_min);
+   return c.add(_max).scale(.5);
  }
 
- Aabb3.copy(Aabb3 other) {
-   _min = new Vector3.copy(other._min);
-   _max = new Vector3.copy(other._max);
- }
+ Aabb3() :
+   _min = new Vector3.zero(),
+   _max = new Vector3.zero() {}
 
- Aabb3.minmax(Vector3 min_, Vector3 max_) {
-   _min = new Vector3.copy(min_);
-   _max = new Vector3.copy(max_);
- }
+ Aabb3.copy(Aabb3 other) :
+   _min = new Vector3.copy(other._min),
+   _max = new Vector3.copy(other._max) {}
+
+ Aabb3.minmax(Vector3 min_, Vector3 max_) :
+   _min = new Vector3.copy(min_),
+   _max = new Vector3.copy(max_) {}
 
  void copyMinMax(Vector3 min_, Vector3 max_) {
    max_.setFrom(_max);
@@ -125,6 +127,36 @@ class Aabb3 {
    outN.y = planeNormal.y &lt; 0.0 ? _max.y : _min.y;
    outN.z = planeNormal.z &lt; 0.0 ? _max.z : _min.z;
  }
+
+ /// Set the min and max of [this] so that [this] is a hull of [this] and [other].
+ void hull(Aabb3 other) {
+   min.x = Math.min(_min.x, other.min.x);
+   min.y = Math.min(_min.y, other.min.y);
+   min.z = Math.min(_min.z, other.min.z);
+   max.x = Math.max(_max.x, other.max.x);
+   max.y = Math.max(_max.y, other.max.y);
+   max.z = Math.max(_max.z, other.max.y);
+ }
+
+ /// Return if [this] contains [other].
+ bool contains(Aabb3 other) {
+   return min.x &lt; other.min.x &amp;&amp;
+          min.y &lt; other.min.y &amp;&amp;
+          min.z &lt; other.min.z &amp;&amp;
+          max.x &gt; other.max.x &amp;&amp;
+          max.y &gt; other.max.y &amp;&amp;
+          max.z &gt; other.max.z;
+ }
+
+ /// Return if [this] intersects with [other].
+ bool intersectsWith(Aabb3 other) {
+   return min.x &lt;= other.max.x &amp;&amp;
+          min.y &lt;= other.max.y &amp;&amp;
+          min.z &lt;= other.max.z &amp;&amp;
+          max.x &gt;= other.min.x &amp;&amp;
+          max.y &gt;= other.min.y &amp;&amp;
+          max.z &gt;= other.min.z;
+ }
 }
 </pre>
 </div>
@@ -136,10 +168,9 @@ new <strong>Aabb3</strong>() <a class="anchor-link" href="#Aabb3"
               title="Permalink to Aabb3.Aabb3">#</a></h4>
 <div class="doc">
 <pre class="source">
-Aabb3() {
- _min = new Vector3.zero();
- _max = new Vector3.zero();
-}
+Aabb3() :
+ _min = new Vector3.zero(),
+ _max = new Vector3.zero() {}
 </pre>
 </div>
 </div>
@@ -149,10 +180,9 @@ new <strong>Aabb3.copy</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> ot
               title="Permalink to Aabb3.Aabb3.copy">#</a></h4>
 <div class="doc">
 <pre class="source">
-Aabb3.copy(Aabb3 other) {
- _min = new Vector3.copy(other._min);
- _max = new Vector3.copy(other._max);
-}
+Aabb3.copy(Aabb3 other) :
+ _min = new Vector3.copy(other._min),
+ _max = new Vector3.copy(other._max) {}
 </pre>
 </div>
 </div>
@@ -162,16 +192,30 @@ new <strong>Aabb3.minmax</strong>(<a href="../vector_math/Vector3.html">Vector3<
               title="Permalink to Aabb3.Aabb3.minmax">#</a></h4>
 <div class="doc">
 <pre class="source">
-Aabb3.minmax(Vector3 min_, Vector3 max_) {
- _min = new Vector3.copy(min_);
- _max = new Vector3.copy(max_);
-}
+Aabb3.minmax(Vector3 min_, Vector3 max_) :
+ _min = new Vector3.copy(min_),
+ _max = new Vector3.copy(max_) {}
 </pre>
 </div>
 </div>
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="center">
+<button class="show-code">Code</button>
+final <a href="../vector_math/Vector3.html">Vector3</a>         <strong>center</strong> <a class="anchor-link"
+            href="#center"
+            title="Permalink to Aabb3.center">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+Vector3 get center {
+ Vector3 c = new Vector3.copy(_min);
+ return c.add(_max).scale(.5);
+}
+</pre>
+</div>
+</div>
 <div class="field"><h4 id="max">
 <button class="show-code">Code</button>
 final <a href="../vector_math/Vector3.html">Vector3</a>         <strong>max</strong> <a class="anchor-link"
@@ -199,6 +243,25 @@ Vector3 get min =&gt; _min;
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="contains">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>contains</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> other) <a class="anchor-link" href="#contains"
+              title="Permalink to Aabb3.contains">#</a></h4>
+<div class="doc">
+<p>Return if <code>this</code> contains 
+<span class="param">other</span>.</p>
+<pre class="source">
+bool contains(Aabb3 other) {
+ return min.x &lt; other.min.x &amp;&amp;
+        min.y &lt; other.min.y &amp;&amp;
+        min.z &lt; other.min.z &amp;&amp;
+        max.x &gt; other.max.x &amp;&amp;
+        max.y &gt; other.max.y &amp;&amp;
+        max.z &gt; other.max.z;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="copyCenterAndHalfExtents">
 <button class="show-code">Code</button>
 void <strong>copyCenterAndHalfExtents</strong>(<a href="../vector_math/Vector3.html">Vector3</a> center, <a href="../vector_math/Vector3.html">Vector3</a> halfExtents) <a class="anchor-link" href="#copyCenterAndHalfExtents"
@@ -269,6 +332,44 @@ void getPN(Vector3 planeNormal, Vector3 outP, Vector3 outN) {
  outN.x = planeNormal.x &lt; 0.0 ? _max.x : _min.x;
  outN.y = planeNormal.y &lt; 0.0 ? _max.y : _min.y;
  outN.z = planeNormal.z &lt; 0.0 ? _max.z : _min.z;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="hull">
+<button class="show-code">Code</button>
+void <strong>hull</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> other) <a class="anchor-link" href="#hull"
+              title="Permalink to Aabb3.hull">#</a></h4>
+<div class="doc">
+<p>Set the min and max of <code>this</code> so that <code>this</code> is a hull of <code>this</code> and 
+<span class="param">other</span>.</p>
+<pre class="source">
+void hull(Aabb3 other) {
+ min.x = Math.min(_min.x, other.min.x);
+ min.y = Math.min(_min.y, other.min.y);
+ min.z = Math.min(_min.z, other.min.z);
+ max.x = Math.max(_max.x, other.max.x);
+ max.y = Math.max(_max.y, other.max.y);
+ max.z = Math.max(_max.z, other.max.y);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="intersectsWith">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>intersectsWith</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> other) <a class="anchor-link" href="#intersectsWith"
+              title="Permalink to Aabb3.intersectsWith">#</a></h4>
+<div class="doc">
+<p>Return if <code>this</code> intersects with 
+<span class="param">other</span>.</p>
+<pre class="source">
+bool intersectsWith(Aabb3 other) {
+ return min.x &lt;= other.max.x &amp;&amp;
+        min.y &lt;= other.max.y &amp;&amp;
+        min.z &lt;= other.max.z &amp;&amp;
+        max.x &gt;= other.min.x &amp;&amp;
+        max.y &gt;= other.min.y &amp;&amp;
+        max.z &gt;= other.min.z;
 }
 </pre>
 </div>

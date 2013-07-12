@@ -45,19 +45,17 @@ abstract class DebugDraw {
  static const int e_aabbBit = 0x0004;
  /// draw axis aligned boxes
  static const int e_pairBit = 0x0008;
- /// draw center of mass 
+ /// draw center of mass
  static const int e_centerOfMassBit = 0x0010;
  /// draw dynamic tree.
  static const int e_dynamicTreeBit = 0x0020;
  /// draw with lines (vs. default filled polygons).
  static const int e_lineDrawingBit = 0x0040;
 
- int flags;
+ int flags = e_shapeBit;
  ViewportTransform viewportTransform;
 
- DebugDraw(ViewportTransform viewport)
-     : flags = e_shapeBit,
-       viewportTransform = viewport;
+ DebugDraw(this.viewportTransform);
 
  void appendFlags(int value) { flags |= value; }
  void clearFlags(int value) { flags &amp;= ~value; }
@@ -135,7 +133,7 @@ const <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <stro
             title="Permalink to DebugDraw.e_centerOfMassBit">#</a>
         </h4>
         <div class="doc">
-<p>draw center of mass </p>
+<p>draw center of mass</p>
 <pre class="source">
 static const int e_centerOfMassBit = 0x0010
 </pre>
@@ -211,13 +209,11 @@ static const int e_shapeBit = 0x0001
 <h3>Constructors</h3>
 <div class="method"><h4 id="DebugDraw">
 <button class="show-code">Code</button>
-new <strong>DebugDraw</strong>(<a href="../box2d/ViewportTransform.html">ViewportTransform</a> viewport) <a class="anchor-link" href="#DebugDraw"
+new <strong>DebugDraw</strong>(<a href="../box2d/ViewportTransform.html">ViewportTransform</a> viewportTransform) <a class="anchor-link" href="#DebugDraw"
               title="Permalink to DebugDraw.DebugDraw">#</a></h4>
 <div class="doc">
 <pre class="source">
-DebugDraw(ViewportTransform viewport)
-   : flags = e_shapeBit,
-     viewportTransform = viewport;
+DebugDraw(this.viewportTransform);
 </pre>
 </div>
 </div>
@@ -232,7 +228,7 @@ DebugDraw(ViewportTransform viewport)
         </h4>
         <div class="doc">
 <pre class="source">
-int flags
+int flags = e_shapeBit
 </pre>
 </div>
 </div>

@@ -34,7 +34,7 @@
 <div class="doc">
 <pre class="source">
 class CircleContact extends Contact {
- CircleContact(DefaultWorldPool argPool) : super(argPool) { }
+ CircleContact(DefaultWorldPool argPool) : super(argPool);
 
  void init(Fixture fA, Fixture fB) {
    assert(ShapeType.CIRCLE == fA.type);
@@ -60,7 +60,7 @@ new <strong>CircleContact</strong>(<a href="../box2d/DefaultWorldPool.html">Defa
               title="Permalink to CircleContact.CircleContact">#</a></h4>
 <div class="doc">
 <pre class="source">
-CircleContact(DefaultWorldPool argPool) : super(argPool) { }
+CircleContact(DefaultWorldPool argPool) : super(argPool);
 </pre>
 </div>
 </div>
@@ -76,7 +76,7 @@ CircleContact(DefaultWorldPool argPool) : super(argPool) { }
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <p>Nodes for connecting bodies. </p>
 <pre class="source">
-ContactEdge edge1
+ContactEdge edge1 = new ContactEdge()
 </pre>
 </div>
 </div>
@@ -88,7 +88,7 @@ ContactEdge edge1
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-ContactEdge edge2
+ContactEdge edge2 = new ContactEdge()
 </pre>
 </div>
 </div>
@@ -161,7 +161,7 @@ int flags
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-Manifold manifold
+Manifold manifold = new Manifold()
 </pre>
 </div>
 </div>

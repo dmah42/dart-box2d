@@ -37,29 +37,25 @@ class WorldManifold {
  /**
   * World vector pointing from A to B
   */
- final Vector2 normal;
+ final Vector2 normal = new Vector2.zero();
 
  /**
   * World contact points (points of intersection)
   */
- final List&lt;Vector2&gt; points;
+ final List&lt;Vector2&gt; points = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero());
 
  /**
   * Temporary Vectors that are constructed on construction. Used to prevent
   * object construction while stepping.
   */
- final Vector2 pool3;
- final Vector2 pool4;
+ final Vector2 pool3 = new Vector2.zero();
+ final Vector2 pool4 = new Vector2.zero();
 
  /**
   * Constructs a new WorldManifold.
   */
- WorldManifold() :
-   normal = new Vector2.zero(),
-   pool3 = new Vector2.zero(),
-   pool4 = new Vector2.zero(),
-   points = new List&lt;Vector2&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero());
+ WorldManifold();
 
  void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
      num radiusB) {
@@ -188,12 +184,7 @@ new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold
 <div class="doc">
 <p>Constructs a new WorldManifold.</p>
 <pre class="source">
-WorldManifold() :
- normal = new Vector2.zero(),
- pool3 = new Vector2.zero(),
- pool4 = new Vector2.zero(),
- points = new List&lt;Vector2&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero());
+WorldManifold();
 </pre>
 </div>
 </div>
@@ -209,7 +200,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>normal</
         <div class="doc">
 <p>World vector pointing from A to B</p>
 <pre class="source">
-final Vector2 normal
+final Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -222,7 +213,8 @@ final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href=
         <div class="doc">
 <p>World contact points (points of intersection)</p>
 <pre class="source">
-final List&lt;Vector2&gt; points
+final List&lt;Vector2&gt; points = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero())
 </pre>
 </div>
 </div>
@@ -236,7 +228,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pool3</s
 <p>Temporary Vectors that are constructed on construction. Used to prevent
 object construction while stepping.</p>
 <pre class="source">
-final Vector2 pool3
+final Vector2 pool3 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -248,7 +240,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pool4</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 pool4
+final Vector2 pool4 = new Vector2.zero()
 </pre>
 </div>
 </div>

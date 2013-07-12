@@ -43,9 +43,7 @@ abstract class Shape {
  /**
   * Constructs a new shape of unknown type.
   */
- Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
-   type = type,
-   radius = radius { }
+ Shape([this.type = ShapeType.UNKNOWN, this.radius = 0.0]);
 
  /**
   * Test a point for containment in this shape. This only works for convex
@@ -59,7 +57,7 @@ abstract class Shape {
   * Computes the associated axis aligned bounding box for a child shape
   * given a transform. Returns through the given out paramater.
   */
- void computeAxisAlignedBox(AxisAlignedBox box, Transform transform);
+ void computeAxisAlignedBox(Aabb2 box, Transform transform);
 
  /**
   * Computes (and returns through the given out parameter massData) the mass
@@ -85,9 +83,7 @@ new <strong>Shape</strong>([<a href="http://api.dartlang.org/dart_core/int.html"
 <div class="doc">
 <p>Constructs a new shape of unknown type.</p>
 <pre class="source">
-Shape([int type = ShapeType.UNKNOWN, double radius = 0.0]) :
- type = type,
- radius = radius { }
+Shape([this.type = ShapeType.UNKNOWN, this.radius = 0.0]);
 </pre>
 </div>
 </div>
@@ -131,7 +127,7 @@ abstract <a href="../box2d/Shape.html">Shape</a> <strong>clone</strong>() <a cla
 </div>
 </div>
 <div class="method"><h4 id="computeAxisAlignedBox">
-abstract void <strong>computeAxisAlignedBox</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> box, <a href="../box2d/Transform.html">Transform</a> transform) <a class="anchor-link" href="#computeAxisAlignedBox"
+abstract void <strong>computeAxisAlignedBox</strong>(<a href="../vector_math/Aabb2.html">Aabb2</a> box, <a href="../box2d/Transform.html">Transform</a> transform) <a class="anchor-link" href="#computeAxisAlignedBox"
               title="Permalink to Shape.computeAxisAlignedBox">#</a></h4>
 <div class="doc">
 <p>Computes the associated axis aligned bounding box for a child shape

@@ -35,31 +35,25 @@
 <pre class="source">
 class DistanceJointDef extends JointDef {
  /** The local anchor point relative to body1's origin. */
- final Vector2 localAnchorA;
+ final Vector2 localAnchorA = new Vector2.zero();
 
  /** The local anchor point relative to body2's origin. */
- final Vector2 localAnchorB;
+ final Vector2 localAnchorB = new Vector2.zero();
 
  /** The equilibrium length between the anchor points. */
- double length;
+ double length = 1.0;
 
  /**
   * The mass-spring-damper frequency in Hertz.
   */
- double frequencyHz;
+ double frequencyHz = 0.0;
 
  /**
   * The damping ratio. 0 = no damping, 1 = critical damping.
   */
- double dampingRatio;
+ double dampingRatio = 0.0;
 
- DistanceJointDef() :
-   super(),
-   localAnchorA = new Vector2(0.0, 0.0),
-   localAnchorB = new Vector2(0.0, 0.0),
-   length = 1.0,
-   frequencyHz = 0.0,
-   dampingRatio = 0.0 {
+ DistanceJointDef() : super() {
    type = JointType.DISTANCE;
  }
 
@@ -94,13 +88,7 @@ new <strong>DistanceJointDef</strong>() <a class="anchor-link" href="#DistanceJo
               title="Permalink to DistanceJointDef.DistanceJointDef">#</a></h4>
 <div class="doc">
 <pre class="source">
-DistanceJointDef() :
- super(),
- localAnchorA = new Vector2(0.0, 0.0),
- localAnchorB = new Vector2(0.0, 0.0),
- length = 1.0,
- frequencyHz = 0.0,
- dampingRatio = 0.0 {
+DistanceJointDef() : super() {
  type = JointType.DISTANCE;
 }
 </pre>
@@ -144,7 +132,7 @@ Body bodyB
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-bool collideConnected
+bool collideConnected = false
 </pre>
 </div>
 </div>
@@ -157,7 +145,7 @@ bool collideConnected
         <div class="doc">
 <p>The damping ratio. 0 = no damping, 1 = critical damping.</p>
 <pre class="source">
-double dampingRatio
+double dampingRatio = 0.0
 </pre>
 </div>
 </div>
@@ -170,7 +158,7 @@ double dampingRatio
         <div class="doc">
 <p>The mass-spring-damper frequency in Hertz.</p>
 <pre class="source">
-double frequencyHz
+double frequencyHz = 0.0
 </pre>
 </div>
 </div>
@@ -183,7 +171,7 @@ double frequencyHz
         <div class="doc">
 <p>The equilibrium length between the anchor points. </p>
 <pre class="source">
-double length
+double length = 1.0
 </pre>
 </div>
 </div>
@@ -196,7 +184,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         <div class="doc">
 <p>The local anchor point relative to body1's origin. </p>
 <pre class="source">
-final Vector2 localAnchorA
+final Vector2 localAnchorA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -209,7 +197,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         <div class="doc">
 <p>The local anchor point relative to body2's origin. </p>
 <pre class="source">
-final Vector2 localAnchorB
+final Vector2 localAnchorB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -222,7 +210,7 @@ final Vector2 localAnchorB
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-int type
+int type = JointType.UNKNOWN
 </pre>
 </div>
 </div>

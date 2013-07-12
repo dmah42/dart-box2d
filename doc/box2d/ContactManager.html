@@ -34,21 +34,15 @@
 <div class="doc">
 <pre class="source">
 class ContactManager {
- BroadPhase broadPhase;
- Contact contactList;
- int contactCount;
- ContactFilter contactFilter;
- ContactListener contactListener;
+ BroadPhase broadPhase = new BroadPhase();
+ Contact contactList = null;
+ int contactCount = 0;
+ ContactFilter contactFilter = new ContactFilter();
+ ContactListener contactListener = null;
 
  final World pool;
 
- ContactManager(World argPool) :
-   contactList = null,
-   contactCount = 0,
-   contactFilter = new ContactFilter(),
-   contactListener = null,
-   broadPhase = new BroadPhase(),
-   pool = argPool { }
+ ContactManager(this.pool);
 
  /**
   * Broad-phase callback.
@@ -88,7 +82,7 @@ class ContactManager {
    }
 
    // Check user filtering.
-   if (contactFilter != null &amp;&amp; 
+   if (contactFilter != null &amp;&amp;
        contactFilter.shouldCollide(fixtureA, fixtureB) == false) {
      return;
    }
@@ -251,17 +245,11 @@ class ContactManager {
 <h3>Constructors</h3>
 <div class="method"><h4 id="ContactManager">
 <button class="show-code">Code</button>
-new <strong>ContactManager</strong>(<a href="../box2d/World.html">World</a> argPool) <a class="anchor-link" href="#ContactManager"
+new <strong>ContactManager</strong>(<a href="../box2d/World.html">World</a> pool) <a class="anchor-link" href="#ContactManager"
               title="Permalink to ContactManager.ContactManager">#</a></h4>
 <div class="doc">
 <pre class="source">
-ContactManager(World argPool) :
- contactList = null,
- contactCount = 0,
- contactFilter = new ContactFilter(),
- contactListener = null,
- broadPhase = new BroadPhase(),
- pool = argPool { }
+ContactManager(this.pool);
 </pre>
 </div>
 </div>
@@ -276,7 +264,7 @@ ContactManager(World argPool) :
         </h4>
         <div class="doc">
 <pre class="source">
-BroadPhase broadPhase
+BroadPhase broadPhase = new BroadPhase()
 </pre>
 </div>
 </div>
@@ -288,7 +276,7 @@ BroadPhase broadPhase
         </h4>
         <div class="doc">
 <pre class="source">
-int contactCount
+int contactCount = 0
 </pre>
 </div>
 </div>
@@ -300,7 +288,7 @@ int contactCount
         </h4>
         <div class="doc">
 <pre class="source">
-ContactFilter contactFilter
+ContactFilter contactFilter = new ContactFilter()
 </pre>
 </div>
 </div>
@@ -312,7 +300,7 @@ ContactFilter contactFilter
         </h4>
         <div class="doc">
 <pre class="source">
-Contact contactList
+Contact contactList = null
 </pre>
 </div>
 </div>
@@ -324,7 +312,7 @@ Contact contactList
         </h4>
         <div class="doc">
 <pre class="source">
-ContactListener contactListener
+ContactListener contactListener = null
 </pre>
 </div>
 </div>

@@ -34,27 +34,19 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactSolverManifold {
- final Vector2 normal;
- final Vector2 point;
- num separation;
+ final Vector2 normal = new Vector2.zero();
+ final Vector2 point = new Vector2.zero();
+ double separation = 0.0;
 
  /** Pooling */
- final Vector2 pointA;
- final Vector2 pointB;
- final Vector2 temp;
- final Vector2 planePoint;
- final Vector2 clipPoint;
+ final Vector2 pointA = new Vector2.zero();
+ final Vector2 pointB = new Vector2.zero();
+ final Vector2 temp = new Vector2.zero();
+ final Vector2 planePoint = new Vector2.zero();
+ final Vector2 clipPoint = new Vector2.zero();
 
  /** constructor that initiliazes everything. */
- TimeOfImpactSolverManifold() :
-   normal = new Vector2.zero(),
-   point = new Vector2.zero(),
-   separation = 0,
-   pointA = new Vector2.zero(),
-   pointB = new Vector2.zero(),
-   temp = new Vector2.zero(),
-   planePoint = new Vector2.zero(),
-   clipPoint = new Vector2.zero();
+ TimeOfImpactSolverManifold();
 
  void initialize(TimeOfImpactConstraint cc, int index) {
    assert(cc.pointCount &gt; 0);
@@ -112,15 +104,7 @@ new <strong>TimeOfImpactSolverManifold</strong>() <a class="anchor-link" href="#
 <div class="doc">
 <p>constructor that initiliazes everything. </p>
 <pre class="source">
-TimeOfImpactSolverManifold() :
- normal = new Vector2.zero(),
- point = new Vector2.zero(),
- separation = 0,
- pointA = new Vector2.zero(),
- pointB = new Vector2.zero(),
- temp = new Vector2.zero(),
- planePoint = new Vector2.zero(),
- clipPoint = new Vector2.zero();
+TimeOfImpactSolverManifold();
 </pre>
 </div>
 </div>
@@ -135,7 +119,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>clipPoin
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 clipPoint
+final Vector2 clipPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -147,7 +131,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>normal</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 normal
+final Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -159,7 +143,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>planePoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 planePoint
+final Vector2 planePoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -171,7 +155,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>point</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 point
+final Vector2 point = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -184,7 +168,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointA</
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final Vector2 pointA
+final Vector2 pointA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -196,19 +180,19 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointB</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 pointB
+final Vector2 pointB = new Vector2.zero()
 </pre>
 </div>
 </div>
 <div class="field"><h4 id="separation">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a>         <strong>separation</strong> <a class="anchor-link"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a>         <strong>separation</strong> <a class="anchor-link"
             href="#separation"
             title="Permalink to TimeOfImpactSolverManifold.separation">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-num separation
+double separation = 0.0
 </pre>
 </div>
 </div>
@@ -220,7 +204,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp</st
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 temp
+final Vector2 temp = new Vector2.zero()
 </pre>
 </div>
 </div>

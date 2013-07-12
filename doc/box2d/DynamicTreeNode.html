@@ -34,7 +34,7 @@
 <div class="doc">
 <pre class="source">
 class DynamicTreeNode {
- AxisAlignedBox box;
+ Aabb2 box = new Aabb2();
 
  DynamicTreeNode parent;
 
@@ -51,12 +51,7 @@ class DynamicTreeNode {
  int key;
 
  /** Should never be constructed outside the engine. */
- DynamicTreeNode._construct()
-   : box = new AxisAlignedBox(),
-     parent = null,
-     next = null,
-     childOne = null,
-     childTwo = null;
+ DynamicTreeNode._construct();
 
  /** Returns true if this node is a leaf. */
  bool get isLeaf =&gt; childOne == null;
@@ -69,13 +64,13 @@ class DynamicTreeNode {
 <h3>Properties</h3>
 <div class="field"><h4 id="box">
 <button class="show-code">Code</button>
-<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a>         <strong>box</strong> <a class="anchor-link"
+<a href="../vector_math/Aabb2.html">Aabb2</a>         <strong>box</strong> <a class="anchor-link"
             href="#box"
             title="Permalink to DynamicTreeNode.box">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-AxisAlignedBox box
+Aabb2 box = new Aabb2()
 </pre>
 </div>
 </div>

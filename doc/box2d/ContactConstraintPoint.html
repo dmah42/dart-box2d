@@ -34,27 +34,19 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraintPoint {
- final Vector2 localPoint;
+ final Vector2 localPoint = new Vector2.zero();
  //TODO(gregbglw): Find out what rA and rB mean and change the names.
- final Vector2 rA;
- final Vector2 rB;
+ final Vector2 rA = new Vector2.zero();
+ final Vector2 rB = new Vector2.zero();
 
- double normalImpulse;
- double tangentImpulse;
- double normalMass;
- double tangentMass;
- double velocityBias;
+ double normalImpulse = 0.0;
+ double tangentImpulse = 0.0;
+ double normalMass = 0.0;
+ double tangentMass = 0.0;
+ double velocityBias = 0.0;
 
  /** Constructs a new ContactConstraintPoint. */
- ContactConstraintPoint()
-   : localPoint = new Vector2.zero(),
-   rA = new Vector2.zero(),
-   rB = new Vector2.zero(),
-   normalImpulse = 0.0,
-   tangentImpulse = 0.0,
-   normalMass = 0.0,
-   tangentMass = 0.0,
-   velocityBias = 0.0 {}
+ ContactConstraintPoint();
 
  /** Sets this point equal to the given point. */
  void setFrom(ContactConstraintPoint cp) {
@@ -86,15 +78,7 @@ new <strong>ContactConstraintPoint</strong>() <a class="anchor-link" href="#Cont
 <div class="doc">
 <p>Constructs a new ContactConstraintPoint. </p>
 <pre class="source">
-ContactConstraintPoint()
- : localPoint = new Vector2.zero(),
- rA = new Vector2.zero(),
- rB = new Vector2.zero(),
- normalImpulse = 0.0,
- tangentImpulse = 0.0,
- normalMass = 0.0,
- tangentMass = 0.0,
- velocityBias = 0.0 {}
+ContactConstraintPoint();
 </pre>
 </div>
 </div>
@@ -109,7 +93,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPoint
+final Vector2 localPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -121,7 +105,7 @@ final Vector2 localPoint
         </h4>
         <div class="doc">
 <pre class="source">
-double normalImpulse
+double normalImpulse = 0.0
 </pre>
 </div>
 </div>
@@ -133,7 +117,7 @@ double normalImpulse
         </h4>
         <div class="doc">
 <pre class="source">
-double normalMass
+double normalMass = 0.0
 </pre>
 </div>
 </div>
@@ -145,7 +129,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rA</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 rA
+final Vector2 rA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -157,7 +141,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>rB</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 rB
+final Vector2 rB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -169,7 +153,7 @@ final Vector2 rB
         </h4>
         <div class="doc">
 <pre class="source">
-double tangentImpulse
+double tangentImpulse = 0.0
 </pre>
 </div>
 </div>
@@ -181,7 +165,7 @@ double tangentImpulse
         </h4>
         <div class="doc">
 <pre class="source">
-double tangentMass
+double tangentMass = 0.0
 </pre>
 </div>
 </div>
@@ -193,7 +177,7 @@ double tangentMass
         </h4>
         <div class="doc">
 <pre class="source">
-double velocityBias
+double velocityBias = 0.0
 </pre>
 </div>
 </div>

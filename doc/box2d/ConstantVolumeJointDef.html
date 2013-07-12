@@ -34,18 +34,13 @@
 <div class="doc">
 <pre class="source">
 class ConstantVolumeJointDef extends JointDef {
- double frequencyHz;
- double dampingRatio;
+ double frequencyHz = 0.0;
+ double dampingRatio = 0.0;
 
- List&lt;Body&gt; bodies;
+ List&lt;Body&gt; bodies = new List&lt;Body&gt;();
  List&lt;DistanceJoint&gt; joints;
 
- ConstantVolumeJointDef() :
-   super(),
-   bodies = new List&lt;Body&gt;(),
-   joints = null,
-   frequencyHz = 0.0,
-   dampingRatio = 0.0 {
+ ConstantVolumeJointDef() {
    type = JointType.CONSTANT_VOLUME;
    collideConnected = false;
  }
@@ -87,12 +82,7 @@ new <strong>ConstantVolumeJointDef</strong>() <a class="anchor-link" href="#Cons
               title="Permalink to ConstantVolumeJointDef.ConstantVolumeJointDef">#</a></h4>
 <div class="doc">
 <pre class="source">
-ConstantVolumeJointDef() :
- super(),
- bodies = new List&lt;Body&gt;(),
- joints = null,
- frequencyHz = 0.0,
- dampingRatio = 0.0 {
+ConstantVolumeJointDef() {
  type = JointType.CONSTANT_VOLUME;
  collideConnected = false;
 }
@@ -110,7 +100,7 @@ ConstantVolumeJointDef() :
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;Body&gt; bodies
+List&lt;Body&gt; bodies = new List&lt;Body&gt;()
 </pre>
 </div>
 </div>
@@ -149,7 +139,7 @@ Body bodyB
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-bool collideConnected
+bool collideConnected = false
 </pre>
 </div>
 </div>
@@ -161,7 +151,7 @@ bool collideConnected
         </h4>
         <div class="doc">
 <pre class="source">
-double dampingRatio
+double dampingRatio = 0.0
 </pre>
 </div>
 </div>
@@ -173,7 +163,7 @@ double dampingRatio
         </h4>
         <div class="doc">
 <pre class="source">
-double frequencyHz
+double frequencyHz = 0.0
 </pre>
 </div>
 </div>
@@ -198,7 +188,7 @@ List&lt;DistanceJoint&gt; joints
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-int type
+int type = JointType.UNKNOWN
 </pre>
 </div>
 </div>

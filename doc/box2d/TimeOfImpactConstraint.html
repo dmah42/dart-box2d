@@ -34,25 +34,17 @@
 <div class="doc">
 <pre class="source">
 class TimeOfImpactConstraint {
- final List&lt;Vector2&gt; localPoints;
- final Vector2 localNormal;
- final Vector2 localPoint;
- int type;
- double radius;
- int pointCount;
+ final List&lt;Vector2&gt; localPoints = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero());
+ final Vector2 localNormal = new Vector2.zero();
+ final Vector2 localPoint = new Vector2.zero();
+ int type = 0;
+ double radius = 0.0;
+ int pointCount = 0;
  Body bodyA;
  Body bodyB;
 
- TimeOfImpactConstraint() :
-   localPoints = new List&lt;Vector2&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero()),
-   localNormal = new Vector2.zero(),
-   localPoint = new Vector2.zero(),
-   type = 0,
-   radius = 0.0,
-   pointCount = 0,
-   bodyA = null,
-   bodyB = null;
+ TimeOfImpactConstraint();
 
  void setFrom(TimeOfImpactConstraint argOther){
    assert(argOther.localPoints.length == localPoints.length);
@@ -78,16 +70,7 @@ new <strong>TimeOfImpactConstraint</strong>() <a class="anchor-link" href="#Time
               title="Permalink to TimeOfImpactConstraint.TimeOfImpactConstraint">#</a></h4>
 <div class="doc">
 <pre class="source">
-TimeOfImpactConstraint() :
- localPoints = new List&lt;Vector2&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero()),
- localNormal = new Vector2.zero(),
- localPoint = new Vector2.zero(),
- type = 0,
- radius = 0.0,
- pointCount = 0,
- bodyA = null,
- bodyB = null;
+TimeOfImpactConstraint();
 </pre>
 </div>
 </div>
@@ -126,7 +109,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localNor
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localNormal
+final Vector2 localNormal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -138,7 +121,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPoint
+final Vector2 localPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -150,7 +133,8 @@ final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href=
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;Vector2&gt; localPoints
+final List&lt;Vector2&gt; localPoints = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new Vector2.zero())
 </pre>
 </div>
 </div>
@@ -162,7 +146,7 @@ final List&lt;Vector2&gt; localPoints
         </h4>
         <div class="doc">
 <pre class="source">
-int pointCount
+int pointCount = 0
 </pre>
 </div>
 </div>
@@ -174,7 +158,7 @@ int pointCount
         </h4>
         <div class="doc">
 <pre class="source">
-double radius
+double radius = 0.0
 </pre>
 </div>
 </div>
@@ -186,7 +170,7 @@ double radius
         </h4>
         <div class="doc">
 <pre class="source">
-int type
+int type = 0
 </pre>
 </div>
 </div>

@@ -51,22 +51,25 @@ class PolygonShape extends Shape {
   */
  final List&lt;Vector2&gt; normals;
 
- int vertexCount;
+
+ int vertexCount = 0;
 
  /**
   * Constructs a new PolygonShape.
   */
  PolygonShape() :
-     super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
-     vertexCount = 0,
-     vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
-     normals = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
-     centroid = new Vector2.zero() {
-   for (int i = 0; i &lt; vertices.length; ++i)
-     vertices[i] = new Vector2.zero();
-   for (int i = 0; i &lt; normals.length; ++i)
-     normals[i] = new Vector2.zero();
- }
+   super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+   centroid = new Vector2.zero(),
+   vertices = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES,
+       (_) =&gt; new Vector2.zero(),
+       growable: false
+     ),
+   normals = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES,
+       (_) =&gt; new Vector2.zero(),
+       growable: false
+     );
 
  /**
   * Constructs a new PolygonShape equal to the given shape.
@@ -132,7 +135,7 @@ class PolygonShape extends Shape {
      edge.setFrom(vertices[i2]).sub(vertices[i1]);
 
      assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
-     Vector2_crossVectorAndNumToOut(edge, 1.0, normals[i]);
+     edge.scaleOrthogonalInto(-1.0, normals[i]);
      normals[i].normalize();
    }
 
@@ -187,7 +190,7 @@ class PolygonShape extends Shape {
    vertices[1].setFrom(v2);
    centroid.setFrom(v1).add(v2).scale(0.5);
    normals[0].setFrom(v2).sub(v1);
-   Vector2_crossVectorAndNumToOut(normals[0], 1.0, normals[0]);
+   normals[0].scaleOrthogonalInto(-1.0, normals[0]);
    normals[0].normalize();
    normals[1].setFrom(normals[0]).negate();
  }
@@ -215,7 +218,7 @@ class PolygonShape extends Shape {
  /**
   * See Shape.computeAxisAlignedBox(AABB, Transform).
   */
- void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
+ void computeAxisAlignedBox(Aabb2 argAabb, Transform argXf) {
    final Vector2 lower = new Vector2.zero();
    final Vector2 upper = new Vector2.zero();
    final Vector2 v = new Vector2.zero();
@@ -225,14 +228,14 @@ class PolygonShape extends Shape {
 
    for (int i = 1; i &lt; vertexCount; ++i) {
      Transform.mulToOut(argXf, vertices[i], v);
-     Vector2_minToOut(lower, v, lower);
-     Vector2_maxToOut(upper, v, upper);
+     Vector2.min(lower, v, lower);
+     Vector2.max(upper, v, upper);
    }
 
-   argAabb.lowerBound.x = lower.x - radius;
-   argAabb.lowerBound.y = lower.y - radius;
-   argAabb.upperBound.x = upper.x + radius;
-   argAabb.upperBound.y = upper.y + radius;
+   argAabb.min.x = lower.x - radius;
+   argAabb.min.y = lower.y - radius;
+   argAabb.max.x = upper.x + radius;
+   argAabb.max.y = upper.y + radius;
  }
 
  /**
@@ -418,16 +421,18 @@ new <strong>PolygonShape</strong>() <a class="anchor-link" href="#PolygonShape"
 <p>Constructs a new PolygonShape.</p>
 <pre class="source">
 PolygonShape() :
-   super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
-   vertexCount = 0,
-   vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
-   normals = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
-   centroid = new Vector2.zero() {
- for (int i = 0; i &lt; vertices.length; ++i)
-   vertices[i] = new Vector2.zero();
- for (int i = 0; i &lt; normals.length; ++i)
-   normals[i] = new Vector2.zero();
-}
+ super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+ centroid = new Vector2.zero(),
+ vertices = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false
+   ),
+ normals = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false
+   );
 </pre>
 </div>
 </div>
@@ -518,7 +523,7 @@ int type
         </h4>
         <div class="doc">
 <pre class="source">
-int vertexCount
+int vertexCount = 0
 </pre>
 </div>
 </div>
@@ -580,12 +585,12 @@ Shape clone() =&gt; new PolygonShape.copy(this);
 </div>
 <div class="method"><h4 id="computeAxisAlignedBox">
 <button class="show-code">Code</button>
-void <strong>computeAxisAlignedBox</strong>(<a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> argAabb, <a href="../box2d/Transform.html">Transform</a> argXf) <a class="anchor-link" href="#computeAxisAlignedBox"
+void <strong>computeAxisAlignedBox</strong>(<a href="../vector_math/Aabb2.html">Aabb2</a> argAabb, <a href="../box2d/Transform.html">Transform</a> argXf) <a class="anchor-link" href="#computeAxisAlignedBox"
               title="Permalink to PolygonShape.computeAxisAlignedBox">#</a></h4>
 <div class="doc">
 <p>See Shape.computeAxisAlignedBox(AABB, Transform).</p>
 <pre class="source">
-void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
+void computeAxisAlignedBox(Aabb2 argAabb, Transform argXf) {
  final Vector2 lower = new Vector2.zero();
  final Vector2 upper = new Vector2.zero();
  final Vector2 v = new Vector2.zero();
@@ -595,14 +600,14 @@ void computeAxisAlignedBox(AxisAlignedBox argAabb, Transform argXf) {
 
  for (int i = 1; i &lt; vertexCount; ++i) {
    Transform.mulToOut(argXf, vertices[i], v);
-   Vector2_minToOut(lower, v, lower);
-   Vector2_maxToOut(upper, v, upper);
+   Vector2.min(lower, v, lower);
+   Vector2.max(upper, v, upper);
  }
 
- argAabb.lowerBound.x = lower.x - radius;
- argAabb.lowerBound.y = lower.y - radius;
- argAabb.upperBound.x = upper.x + radius;
- argAabb.upperBound.y = upper.y + radius;
+ argAabb.min.x = lower.x - radius;
+ argAabb.min.y = lower.y - radius;
+ argAabb.max.x = upper.x + radius;
+ argAabb.max.y = upper.y + radius;
 }
 </pre>
 </div>
@@ -875,7 +880,7 @@ void setAsEdge(Vector2 v1, Vector2 v2) {
  vertices[1].setFrom(v2);
  centroid.setFrom(v1).add(v2).scale(0.5);
  normals[0].setFrom(v2).sub(v1);
- Vector2_crossVectorAndNumToOut(normals[0], 1.0, normals[0]);
+ normals[0].scaleOrthogonalInto(-1.0, normals[0]);
  normals[0].normalize();
  normals[1].setFrom(normals[0]).negate();
 }
@@ -911,7 +916,7 @@ void setFrom(List&lt;Vector2&gt; otherVertices, int count) {
    edge.setFrom(vertices[i2]).sub(vertices[i1]);
 
    assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
-   Vector2_crossVectorAndNumToOut(edge, 1.0, normals[i]);
+   edge.scaleOrthogonalInto(-1.0, normals[i]);
    normals[i].normalize();
  }
 

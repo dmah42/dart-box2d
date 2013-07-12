@@ -34,10 +34,9 @@
 <div class="doc">
 <pre class="source">
 class ViewportTransform {
- ViewportTransform(Vector2 e, Vector2 c, double s) :
+ ViewportTransform(Vector2 e, Vector2 c, this.scale) :
    extents = new Vector2.copy(e),
-   center = new Vector2.copy(c),
-   scale = s;
+   center = new Vector2.copy(c);
 
  /**
   * if we flip the y axis when transforming.
@@ -123,14 +122,13 @@ class ViewportTransform {
 <h3>Constructors</h3>
 <div class="method"><h4 id="ViewportTransform">
 <button class="show-code">Code</button>
-new <strong>ViewportTransform</strong>(<a href="../vector_math/Vector2.html">Vector2</a> e, <a href="../vector_math/Vector2.html">Vector2</a> c, <a href="http://api.dartlang.org/dart_core/double.html">double</a> s) <a class="anchor-link" href="#ViewportTransform"
+new <strong>ViewportTransform</strong>(<a href="../vector_math/Vector2.html">Vector2</a> e, <a href="../vector_math/Vector2.html">Vector2</a> c, <a href="http://api.dartlang.org/dart_core/double.html">double</a> scale) <a class="anchor-link" href="#ViewportTransform"
               title="Permalink to ViewportTransform.ViewportTransform">#</a></h4>
 <div class="doc">
 <pre class="source">
-ViewportTransform(Vector2 e, Vector2 c, double s) :
+ViewportTransform(Vector2 e, Vector2 c, this.scale) :
  extents = new Vector2.copy(e),
- center = new Vector2.copy(c),
- scale = s;
+ center = new Vector2.copy(c);
 </pre>
 </div>
 </div>

@@ -36,44 +36,27 @@
 class TimeOfImpact {
  static const int MAX_ITERATIONS = 1000;
 
- static int toiCalls;
- static int toiIters;
- static int toiMaxIters;
- static int toiRootIters;
- static int toiMaxRootIters;
+ static int toiCalls = 0;
+ static int toiIters = 0;
+ static int toiMaxIters = 0;
+ static int toiRootIters = 0;
+ static int toiMaxRootIters = 0;
 
  /** Pool variables */
- final SimplexCache cache;
- final DistanceInput distanceInput;
- final Transform xfA;
- final Transform xfB;
- final DistanceOutput distanceOutput;
- final SeparationFunction fcn;
- final List&lt;int&gt; indexes;
- final Sweep sweepA;
- final Sweep sweepB;
+ final SimplexCache cache = new SimplexCache();
+ final DistanceInput distanceInput = new DistanceInput();
+ final Transform xfA = new Transform();
+ final Transform xfB = new Transform();
+ final DistanceOutput distanceOutput = new DistanceOutput();
+ final SeparationFunction fcn = new SeparationFunction();
+ final List&lt;int&gt; indexes =
+   new List&lt;int&gt;.generate(2, (_) =&gt; 0, growable: false);
+ final Sweep sweepA = new Sweep();
+ final Sweep sweepB = new Sweep();
 
  DefaultWorldPool pool;
 
- TimeOfImpact._construct(DefaultWorldPool argPool) :
-   pool = argPool,
-   cache = new SimplexCache(),
-   distanceInput = new DistanceInput(),
-   xfA = new Transform(),
-   xfB = new Transform(),
-   distanceOutput = new DistanceOutput(),
-   fcn = new SeparationFunction(),
-   indexes = new List&lt;int&gt;(2),
-   sweepA = new Sweep(),
-   sweepB = new Sweep() {
-   indexes[0] = 0;
-   indexes[1] = 0;
-   toiCalls = 0;
-   toiIters = 0;
-   toiMaxIters = 0;
-   toiRootIters = 0;
-   toiMaxRootIters = 0;
- }
+ TimeOfImpact._construct(this.pool);
 
  /**
   * Compute the upper bound on time before two shapes penetrate. Time is
@@ -284,7 +267,7 @@ static const int MAX_ITERATIONS = 1000
         </h4>
         <div class="doc">
 <pre class="source">
-static int toiCalls
+static int toiCalls = 0
 </pre>
 </div>
 </div>
@@ -296,7 +279,7 @@ static int toiCalls
         </h4>
         <div class="doc">
 <pre class="source">
-static int toiIters
+static int toiIters = 0
 </pre>
 </div>
 </div>
@@ -308,7 +291,7 @@ static int toiIters
         </h4>
         <div class="doc">
 <pre class="source">
-static int toiMaxIters
+static int toiMaxIters = 0
 </pre>
 </div>
 </div>
@@ -320,7 +303,7 @@ static int toiMaxIters
         </h4>
         <div class="doc">
 <pre class="source">
-static int toiMaxRootIters
+static int toiMaxRootIters = 0
 </pre>
 </div>
 </div>
@@ -332,7 +315,7 @@ static int toiMaxRootIters
         </h4>
         <div class="doc">
 <pre class="source">
-static int toiRootIters
+static int toiRootIters = 0
 </pre>
 </div>
 </div>
@@ -348,7 +331,7 @@ final <a href="../box2d/SimplexCache.html">SimplexCache</a>         <strong>cach
         <div class="doc">
 <p>Pool variables </p>
 <pre class="source">
-final SimplexCache cache
+final SimplexCache cache = new SimplexCache()
 </pre>
 </div>
 </div>
@@ -360,7 +343,7 @@ final <a href="../box2d/DistanceInput.html">DistanceInput</a>         <strong>di
         </h4>
         <div class="doc">
 <pre class="source">
-final DistanceInput distanceInput
+final DistanceInput distanceInput = new DistanceInput()
 </pre>
 </div>
 </div>
@@ -372,7 +355,7 @@ final <a href="../box2d/DistanceOutput.html">DistanceOutput</a>         <strong>
         </h4>
         <div class="doc">
 <pre class="source">
-final DistanceOutput distanceOutput
+final DistanceOutput distanceOutput = new DistanceOutput()
 </pre>
 </div>
 </div>
@@ -384,7 +367,7 @@ final <a href="../box2d/SeparationFunction.html">SeparationFunction</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-final SeparationFunction fcn
+final SeparationFunction fcn = new SeparationFunction()
 </pre>
 </div>
 </div>
@@ -396,7 +379,8 @@ final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href=
         </h4>
         <div class="doc">
 <pre class="source">
-final List&lt;int&gt; indexes
+final List&lt;int&gt; indexes =
+ new List&lt;int&gt;.generate(2, (_) =&gt; 0, growable: false)
 </pre>
 </div>
 </div>
@@ -420,7 +404,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepA</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final Sweep sweepA
+final Sweep sweepA = new Sweep()
 </pre>
 </div>
 </div>
@@ -432,7 +416,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>sweepB</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final Sweep sweepB
+final Sweep sweepB = new Sweep()
 </pre>
 </div>
 </div>
@@ -444,7 +428,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfA</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfA
+final Transform xfA = new Transform()
 </pre>
 </div>
 </div>
@@ -456,7 +440,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfB</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfB
+final Transform xfB = new Transform()
 </pre>
 </div>
 </div>

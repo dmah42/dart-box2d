@@ -34,15 +34,18 @@
 <div class="doc">
 <pre class="source">
 class ContactConstraint {
- List&lt;ContactConstraintPoint&gt; points;
+ List&lt;ContactConstraintPoint&gt; points =
+   new List&lt;ContactConstraintPoint&gt;.generate(
+     Settings.MAX_MANIFOLD_POINTS,
+     (i) =&gt; new ContactConstraintPoint());
 
- final Vector2 localNormal;
- final Vector2 localPoint;
- final Vector2 normal;
+ final Vector2 localNormal = new Vector2.zero();
+ final Vector2 localPoint = new Vector2.zero();
+ final Vector2 normal = new Vector2.zero();
 
- final Matrix2 normalMass;
+ final Matrix2 normalMass = new Matrix2.zero();
  //TODO(gregbglw): What does K mean? Find out and change the name.
- final Matrix2 K;
+ final Matrix2 K = new Matrix2.zero();
 
  Body bodyA;
  Body bodyB;
@@ -52,20 +55,11 @@ class ContactConstraint {
  double radius;
  double friction;
  double restitution;
- int pointCount;
+ int pointCount = 0;
 
  Manifold manifold;
 
- ContactConstraint() :
-   points = new List&lt;ContactConstraintPoint&gt;.generate(
-       Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
-   pointCount = 0,
-   manifold = null,
-   localNormal = new Vector2.zero(),
-   localPoint = new Vector2.zero(),
-   normal = new Vector2.zero(),
-   normalMass = new Matrix2.zero(),
-   K = new Matrix2.zero();
+ ContactConstraint();
 
  void setFrom(ContactConstraint cp) {
    pointCount = cp.pointCount;
@@ -103,16 +97,7 @@ new <strong>ContactConstraint</strong>() <a class="anchor-link" href="#ContactCo
               title="Permalink to ContactConstraint.ContactConstraint">#</a></h4>
 <div class="doc">
 <pre class="source">
-ContactConstraint() :
- points = new List&lt;ContactConstraintPoint&gt;.generate(
-     Settings.MAX_MANIFOLD_POINTS, (i) =&gt; new ContactConstraintPoint()),
- pointCount = 0,
- manifold = null,
- localNormal = new Vector2.zero(),
- localPoint = new Vector2.zero(),
- normal = new Vector2.zero(),
- normalMass = new Matrix2.zero(),
- K = new Matrix2.zero();
+ContactConstraint();
 </pre>
 </div>
 </div>
@@ -163,7 +148,7 @@ final <a href="../vector_math/Matrix2.html">Matrix2</a>         <strong>K</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Matrix2 K
+final Matrix2 K = new Matrix2.zero()
 </pre>
 </div>
 </div>
@@ -175,7 +160,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localNor
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localNormal
+final Vector2 localNormal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -187,7 +172,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPoint
+final Vector2 localPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -211,7 +196,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>normal</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 normal
+final Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -223,7 +208,7 @@ final <a href="../vector_math/Matrix2.html">Matrix2</a>         <strong>normalMa
         </h4>
         <div class="doc">
 <pre class="source">
-final Matrix2 normalMass
+final Matrix2 normalMass = new Matrix2.zero()
 </pre>
 </div>
 </div>
@@ -235,7 +220,7 @@ final Matrix2 normalMass
         </h4>
         <div class="doc">
 <pre class="source">
-int pointCount
+int pointCount = 0
 </pre>
 </div>
 </div>
@@ -247,7 +232,10 @@ int pointCount
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;ContactConstraintPoint&gt; points
+List&lt;ContactConstraintPoint&gt; points =
+ new List&lt;ContactConstraintPoint&gt;.generate(
+   Settings.MAX_MANIFOLD_POINTS,
+   (i) =&gt; new ContactConstraintPoint())
 </pre>
 </div>
 </div>

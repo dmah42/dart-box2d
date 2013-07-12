@@ -34,18 +34,13 @@
 <div class="doc">
 <pre class="source">
 class DistanceInput {
-   DistanceProxy proxyA;
-   DistanceProxy proxyB;
-   Transform transformA;
-   Transform transformB;
-   bool useRadii;
+   DistanceProxy proxyA = new DistanceProxy();
+   DistanceProxy proxyB = new DistanceProxy();
+   Transform transformA = new Transform();
+   Transform transformB = new Transform();
+   bool useRadii = false;
 
-   DistanceInput() :
-     proxyA = new DistanceProxy(),
-     proxyB = new DistanceProxy(),
-     transformA = new Transform(),
-     transformB = new Transform(),
-     useRadii = false { }
+   DistanceInput();
 }
 </pre>
 </div>
@@ -57,12 +52,7 @@ new <strong>DistanceInput</strong>() <a class="anchor-link" href="#DistanceInput
               title="Permalink to DistanceInput.DistanceInput">#</a></h4>
 <div class="doc">
 <pre class="source">
-DistanceInput() :
- proxyA = new DistanceProxy(),
- proxyB = new DistanceProxy(),
- transformA = new Transform(),
- transformB = new Transform(),
- useRadii = false { }
+DistanceInput();
 </pre>
 </div>
 </div>
@@ -77,7 +67,7 @@ DistanceInput() :
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyA
+DistanceProxy proxyA = new DistanceProxy()
 </pre>
 </div>
 </div>
@@ -89,7 +79,7 @@ DistanceProxy proxyA
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyB
+DistanceProxy proxyB = new DistanceProxy()
 </pre>
 </div>
 </div>
@@ -101,7 +91,7 @@ DistanceProxy proxyB
         </h4>
         <div class="doc">
 <pre class="source">
-Transform transformA
+Transform transformA = new Transform()
 </pre>
 </div>
 </div>
@@ -113,7 +103,7 @@ Transform transformA
         </h4>
         <div class="doc">
 <pre class="source">
-Transform transformB
+Transform transformB = new Transform()
 </pre>
 </div>
 </div>
@@ -125,7 +115,7 @@ Transform transformB
         </h4>
         <div class="doc">
 <pre class="source">
-bool useRadii
+bool useRadii = false
 </pre>
 </div>
 </div>

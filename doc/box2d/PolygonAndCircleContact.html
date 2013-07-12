@@ -36,7 +36,7 @@
 class PolygonAndCircleContact extends Contact {
 
  PolygonAndCircleContact(DefaultWorldPool argPool) :
-   super(argPool) { }
+   super(argPool);
 
  void init(Fixture fA, Fixture fB) {
    assert(ShapeType.POLYGON == fA.type);
@@ -63,7 +63,7 @@ new <strong>PolygonAndCircleContact</strong>(<a href="../box2d/DefaultWorldPool.
 <div class="doc">
 <pre class="source">
 PolygonAndCircleContact(DefaultWorldPool argPool) :
- super(argPool) { }
+ super(argPool);
 </pre>
 </div>
 </div>
@@ -79,7 +79,7 @@ PolygonAndCircleContact(DefaultWorldPool argPool) :
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <p>Nodes for connecting bodies. </p>
 <pre class="source">
-ContactEdge edge1
+ContactEdge edge1 = new ContactEdge()
 </pre>
 </div>
 </div>
@@ -91,7 +91,7 @@ ContactEdge edge1
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-ContactEdge edge2
+ContactEdge edge2 = new ContactEdge()
 </pre>
 </div>
 </div>
@@ -164,7 +164,7 @@ int flags
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Contact.html">Contact</a> </div><div class="doc">
 <pre class="source">
-Manifold manifold
+Manifold manifold = new Manifold()
 </pre>
 </div>
 </div>

@@ -35,23 +35,18 @@
 <pre class="source">
 class FrictionJointDef extends JointDef {
  /** The local anchor point relative to bodyA's origin. */
- final Vector2 localAnchorA;
+ final Vector2 localAnchorA = new Vector2.zero();
 
  /** The local anchor point relative to bodyB's origin. */
- final Vector2 localAnchorB;
+ final Vector2 localAnchorB = new Vector2.zero();
 
  /** The maximum friction force in N. */
- double maxForce;
+ double maxForce = 0.0;
 
  /** The maximum friction torque in N-m. */
- double maxTorque;
+ double maxTorque = 0.0;
 
- FrictionJointDef()
-     : super(),
-       localAnchorA = new Vector2(0.0, 0.0),
-       localAnchorB = new Vector2(0.0, 0.0),
-       maxForce = 0.0,
-       maxTorque = 0.0 {
+ FrictionJointDef() : super() {
    type = JointType.FRICTION;
  }
 
@@ -75,12 +70,7 @@ new <strong>FrictionJointDef</strong>() <a class="anchor-link" href="#FrictionJo
               title="Permalink to FrictionJointDef.FrictionJointDef">#</a></h4>
 <div class="doc">
 <pre class="source">
-FrictionJointDef()
-   : super(),
-     localAnchorA = new Vector2(0.0, 0.0),
-     localAnchorB = new Vector2(0.0, 0.0),
-     maxForce = 0.0,
-     maxTorque = 0.0 {
+FrictionJointDef() : super() {
  type = JointType.FRICTION;
 }
 </pre>
@@ -124,7 +114,7 @@ Body bodyB
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-bool collideConnected
+bool collideConnected = false
 </pre>
 </div>
 </div>
@@ -137,7 +127,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         <div class="doc">
 <p>The local anchor point relative to bodyA's origin. </p>
 <pre class="source">
-final Vector2 localAnchorA
+final Vector2 localAnchorA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -150,7 +140,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localAnc
         <div class="doc">
 <p>The local anchor point relative to bodyB's origin. </p>
 <pre class="source">
-final Vector2 localAnchorB
+final Vector2 localAnchorB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -163,7 +153,7 @@ final Vector2 localAnchorB
         <div class="doc">
 <p>The maximum friction force in N. </p>
 <pre class="source">
-double maxForce
+double maxForce = 0.0
 </pre>
 </div>
 </div>
@@ -176,7 +166,7 @@ double maxForce
         <div class="doc">
 <p>The maximum friction torque in N-m. </p>
 <pre class="source">
-double maxTorque
+double maxTorque = 0.0
 </pre>
 </div>
 </div>
@@ -189,7 +179,7 @@ double maxTorque
         <div class="inherited-from">inherited from <a href="../box2d/JointDef.html">JointDef</a> </div><div class="doc">
 <p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-int type
+int type = JointType.UNKNOWN
 </pre>
 </div>
 </div>

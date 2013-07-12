@@ -37,15 +37,14 @@ class FrictionJoint extends Joint {
  final Vector2 _localAnchorA;
  final Vector2 _localAnchorB;
 
- Vector2 _linearImpulse;
- double _angularImpulse;
+ Vector2 _linearImpulse = new Vector2.zero();
+ double _angularImpulse = 0.0;
  double _maxForce;
  double _maxTorque;
 
  FrictionJoint(FrictionJointDef def)
      : _localAnchorA = new Vector2.copy(def.localAnchorA),
        _localAnchorB = new Vector2.copy(def.localAnchorB),
-       _linearImpulse = new Vector2.zero(),
        _angularImpulse = 0.0,
        _maxForce = def.maxForce,
        _maxTorque = def.maxTorque,
@@ -166,8 +165,8 @@ class FrictionJoint extends Joint {
      Vector2 temp = new Vector2.zero();
      Vector2 Cdot = new Vector2.zero();
 
-     Vector2_crossVectorAndNumToOut(r1, -bodyA.angularVelocity, temp);
-     Vector2_crossVectorAndNumToOut(r2, -bodyB.angularVelocity, Cdot);
+     r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
+     r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
 
      Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 
@@ -227,7 +226,6 @@ new <strong>FrictionJoint</strong>(<a href="../box2d/FrictionJointDef.html">Fric
 FrictionJoint(FrictionJointDef def)
    : _localAnchorA = new Vector2.copy(def.localAnchorA),
      _localAnchorB = new Vector2.copy(def.localAnchorB),
-     _linearImpulse = new Vector2.zero(),
      _angularImpulse = 0.0,
      _maxForce = def.maxForce,
      _maxTorque = def.maxTorque,
@@ -295,7 +293,7 @@ bool collideConnected
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeA
+JointEdge edgeA = new JointEdge()
 </pre>
 </div>
 </div>
@@ -307,7 +305,7 @@ JointEdge edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeB
+JointEdge edgeB = new JointEdge()
 </pre>
 </div>
 </div>
@@ -367,7 +365,7 @@ double invMassB
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool islandFlag
+bool islandFlag = false
 </pre>
 </div>
 </div>
@@ -379,7 +377,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterA
+final Vector2 localCenterA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -391,7 +389,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterB
+final Vector2 localCenterB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -657,8 +655,8 @@ void solveVelocityConstraints(TimeStep step) {
    Vector2 temp = new Vector2.zero();
    Vector2 Cdot = new Vector2.zero();
 
-   Vector2_crossVectorAndNumToOut(r1, -bodyA.angularVelocity, temp);
-   Vector2_crossVectorAndNumToOut(r2, -bodyB.angularVelocity, Cdot);
+   r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
+   r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
 
    Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 

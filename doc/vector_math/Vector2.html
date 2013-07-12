@@ -37,6 +37,18 @@
 class Vector2 {
  final Float32List storage;
 
+ /// Set the values of [result] to the minimum of [a] and [b] for each line.
+ static void min(Vector2 a, Vector2 b, Vector2 result) {
+   result.x = Math.min(a.x, b.x);
+   result.y = Math.min(a.y, b.y);
+ }
+
+ /// Set the values of [result] to the maximum of [a] and [b] for each line.
+ static void max(Vector2 a, Vector2 b, Vector2 result) {
+   result.x = Math.max(a.x, b.x);
+   result.y = Math.max(a.y, b.y);
+ }
+
  /// Construct a new vector with the specified values.
  Vector2(double x_, double y_) :
    storage = new Float32List(2) {
@@ -184,6 +196,12 @@ class Vector2 {
  /// Cross product.
  double cross(Vector2 other) {
    return storage[0] * other.storage[1] - storage[1] * other.storage[0];
+ }
+
+ /// Rotate [this] by 90 degrees then scale it. Store result in [out]. Return [out].
+ Vector2 scaleOrthogonalInto(double scale, Vector2 out) {
+   out.setValues(-scale * storage[1], scale * storage[0]);
+   return out;
  }
 
  /// Reflect [this].
@@ -424,6 +442,43 @@ class Vector2 {
  Vector4 get tttt =&gt; new Vector4(storage[1], storage[1], storage[1], storage[1]);
 }
 </pre>
+</div>
+<div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="min">
+<button class="show-code">Code</button>
+void <strong>min</strong>(<a href="../vector_math/Vector2.html">Vector2</a> a, <a href="../vector_math/Vector2.html">Vector2</a> b, <a href="../vector_math/Vector2.html">Vector2</a> result) <a class="anchor-link" href="#min"
+              title="Permalink to Vector2.min">#</a></h4>
+<div class="doc">
+<p>Set the values of 
+<span class="param">result</span> to the minimum of 
+<span class="param">a</span> and 
+<span class="param">b</span> for each line.</p>
+<pre class="source">
+static void min(Vector2 a, Vector2 b, Vector2 result) {
+ result.x = Math.min(a.x, b.x);
+ result.y = Math.min(a.y, b.y);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="max">
+<button class="show-code">Code</button>
+void <strong>max</strong>(<a href="../vector_math/Vector2.html">Vector2</a> a, <a href="../vector_math/Vector2.html">Vector2</a> b, <a href="../vector_math/Vector2.html">Vector2</a> result) <a class="anchor-link" href="#max"
+              title="Permalink to Vector2.max">#</a></h4>
+<div class="doc">
+<p>Set the values of 
+<span class="param">result</span> to the maximum of 
+<span class="param">a</span> and 
+<span class="param">b</span> for each line.</p>
+<pre class="source">
+static void max(Vector2 a, Vector2 b, Vector2 result) {
+ result.x = Math.max(a.x, b.x);
+ result.y = Math.max(a.y, b.y);
+}
+</pre>
+</div>
+</div>
 </div>
 <div>
 <h3>Constructors</h3>
@@ -2125,6 +2180,22 @@ Vector2 scale(double arg) {
 <pre class="source">
 Vector2 scaled(double arg) {
  return clone().scale(arg);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="scaleOrthogonalInto">
+<button class="show-code">Code</button>
+<a href="../vector_math/Vector2.html">Vector2</a> <strong>scaleOrthogonalInto</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> scale, <a href="../vector_math/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#scaleOrthogonalInto"
+              title="Permalink to Vector2.scaleOrthogonalInto">#</a></h4>
+<div class="doc">
+<p>Rotate <code>this</code> by 90 degrees then scale it. Store result in 
+<span class="param">out</span>. Return 
+<span class="param">out</span>.</p>
+<pre class="source">
+Vector2 scaleOrthogonalInto(double scale, Vector2 out) {
+ out.setValues(-scale * storage[1], scale * storage[0]);
+ return out;
 }
 </pre>
 </div>

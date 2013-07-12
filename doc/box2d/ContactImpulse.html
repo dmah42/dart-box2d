@@ -34,12 +34,10 @@
 <div class="doc">
 <pre class="source">
 class ContactImpulse {
- List&lt;double&gt; normalImpulses;
- List&lt;double&gt; tangentImpulses;
+ List&lt;double&gt; normalImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS);
+ List&lt;double&gt; tangentImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS);
 
- ContactImpulse() :
-   normalImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS),
-   tangentImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS);
+ ContactImpulse();
 }
 </pre>
 </div>
@@ -51,9 +49,7 @@ new <strong>ContactImpulse</strong>() <a class="anchor-link" href="#ContactImpul
               title="Permalink to ContactImpulse.ContactImpulse">#</a></h4>
 <div class="doc">
 <pre class="source">
-ContactImpulse() :
- normalImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS),
- tangentImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS);
+ContactImpulse();
 </pre>
 </div>
 </div>
@@ -68,7 +64,7 @@ ContactImpulse() :
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;double&gt; normalImpulses
+List&lt;double&gt; normalImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS)
 </pre>
 </div>
 </div>
@@ -80,7 +76,7 @@ List&lt;double&gt; normalImpulses
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;double&gt; tangentImpulses
+List&lt;double&gt; tangentImpulses = new List&lt;double&gt;(Settings.MAX_MANIFOLD_POINTS)
 </pre>
 </div>
 </div>

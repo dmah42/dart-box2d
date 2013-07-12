@@ -54,14 +54,11 @@ class Island {
  int positionIterationCount;
 
  // Pool objects to cut down on object creation.
- ContactSolver _contactSolver;
- Vector2 _translation;
- ContactImpulse impulse;
+ ContactSolver _contactSolver = new ContactSolver();
+ Vector2 _translation = new Vector2.zero();
+ ContactImpulse impulse = new ContactImpulse();
 
- Island() :
-   _contactSolver = new ContactSolver(),
-   _translation = new Vector2.zero(),
-   impulse = new ContactImpulse();
+ Island();
 
  //TODO(gregbglw): No need to keep capacity, count and array for these items as
  // in C. Simply measure the length of the array, for example, in order to
@@ -327,10 +324,7 @@ new <strong>Island</strong>() <a class="anchor-link" href="#Island"
               title="Permalink to Island.Island">#</a></h4>
 <div class="doc">
 <pre class="source">
-Island() :
- _contactSolver = new ContactSolver(),
- _translation = new Vector2.zero(),
- impulse = new ContactImpulse();
+Island();
 </pre>
 </div>
 </div>
@@ -417,7 +411,7 @@ List&lt;Contact&gt; contacts
         </h4>
         <div class="doc">
 <pre class="source">
-ContactImpulse impulse
+ContactImpulse impulse = new ContactImpulse()
 </pre>
 </div>
 </div>

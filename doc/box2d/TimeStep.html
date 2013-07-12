@@ -34,28 +34,22 @@
 <div class="doc">
 <pre class="source">
 class TimeStep {
- TimeStep() :
-     dt = 0.0,
-     inv_dt = 0.0,
-     dtRatio = 0.0,
-     velocityIterations = 0,
-     positionIterations = 0,
-     warmStarting = true;
+ TimeStep();
 
  /** time step */
- double dt;
+ double dt = 0.0;
 
  /** inverse time step (0 if dt == 0). */
- double inv_dt;
+ double inv_dt = 0.0;
 
  /** dt * inv_dt0 */
- double dtRatio;
+ double dtRatio = 0.0;
 
- int velocityIterations;
+ int velocityIterations = 0;
 
- int positionIterations;
+ int positionIterations = 0;
 
- bool warmStarting;
+ bool warmStarting = true;
 }
 </pre>
 </div>
@@ -67,13 +61,7 @@ new <strong>TimeStep</strong>() <a class="anchor-link" href="#TimeStep"
               title="Permalink to TimeStep.TimeStep">#</a></h4>
 <div class="doc">
 <pre class="source">
-TimeStep() :
-   dt = 0.0,
-   inv_dt = 0.0,
-   dtRatio = 0.0,
-   velocityIterations = 0,
-   positionIterations = 0,
-   warmStarting = true;
+TimeStep();
 </pre>
 </div>
 </div>
@@ -89,7 +77,7 @@ TimeStep() :
         <div class="doc">
 <p>time step </p>
 <pre class="source">
-double dt
+double dt = 0.0
 </pre>
 </div>
 </div>
@@ -102,7 +90,7 @@ double dt
         <div class="doc">
 <p>dt * inv_dt0 </p>
 <pre class="source">
-double dtRatio
+double dtRatio = 0.0
 </pre>
 </div>
 </div>
@@ -115,7 +103,7 @@ double dtRatio
         <div class="doc">
 <p>inverse time step (0 if dt == 0). </p>
 <pre class="source">
-double inv_dt
+double inv_dt = 0.0
 </pre>
 </div>
 </div>
@@ -127,7 +115,7 @@ double inv_dt
         </h4>
         <div class="doc">
 <pre class="source">
-int positionIterations
+int positionIterations = 0
 </pre>
 </div>
 </div>
@@ -139,7 +127,7 @@ int positionIterations
         </h4>
         <div class="doc">
 <pre class="source">
-int velocityIterations
+int velocityIterations = 0
 </pre>
 </div>
 </div>
@@ -151,7 +139,7 @@ int velocityIterations
         </h4>
         <div class="doc">
 <pre class="source">
-bool warmStarting
+bool warmStarting = true
 </pre>
 </div>
 </div>

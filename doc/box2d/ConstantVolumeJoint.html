@@ -42,7 +42,7 @@ class ConstantVolumeJoint extends Joint {
 
  TimeStep step;
 
- double _impulse;
+ double _impulse = 0.0;
 
  World _world;
 
@@ -51,9 +51,7 @@ class ConstantVolumeJoint extends Joint {
  double frequencyHz;
  double dampingRatio;
 
- ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
-   super(def),
-   _impulse = 0.0 {
+ ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) : super(def) {
    if (def.bodies.length &lt;= 2) {
      throw new ArgumentError(
          "You cannot create a constant volume joint with less than three "
@@ -248,9 +246,7 @@ new <strong>ConstantVolumeJoint</strong>(<a href="../box2d/World.html">World</a>
               title="Permalink to ConstantVolumeJoint.ConstantVolumeJoint">#</a></h4>
 <div class="doc">
 <pre class="source">
-ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) :
- super(def),
- _impulse = 0.0 {
+ConstantVolumeJoint(this._world, ConstantVolumeJointDef def) : super(def) {
  if (def.bodies.length &lt;= 2) {
    throw new ArgumentError(
        "You cannot create a constant volume joint with less than three "
@@ -423,7 +419,7 @@ List&lt;DistanceJoint&gt; distanceJoints
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeA
+JointEdge edgeA = new JointEdge()
 </pre>
 </div>
 </div>
@@ -435,7 +431,7 @@ JointEdge edgeA
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-JointEdge edgeB
+JointEdge edgeB = new JointEdge()
 </pre>
 </div>
 </div>
@@ -507,7 +503,7 @@ double invMassB
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-bool islandFlag
+bool islandFlag = false
 </pre>
 </div>
 </div>
@@ -519,7 +515,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterA
+final Vector2 localCenterA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -531,7 +527,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localCen
         </h4>
         <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
 <pre class="source">
-final Vector2 localCenterB
+final Vector2 localCenterB = new Vector2.zero()
 </pre>
 </div>
 </div>

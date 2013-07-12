@@ -34,7 +34,7 @@
 <div class="doc">
 <pre class="source">
 class Fixture {
- final AxisAlignedBox box;
+ final Aabb2 box = new Aabb2();
 
  double density;
 
@@ -50,25 +50,17 @@ class Fixture {
 
  DynamicTreeNode proxy;
 
- final Filter filter;
+ final Filter filter = new Filter();
 
  bool isSensor;
 
  dynamic userData;
 
- final AxisAlignedBox _poolOne;
- final AxisAlignedBox _poolTwo;
+ final Aabb2 _poolOne = new Aabb2();
+ final Aabb2 _poolTwo = new Aabb2();
 
  /** Constructs a new Fixture with default values. */
- Fixture()
-     : box = new AxisAlignedBox(),
-       body = null,
-       next = null,
-       proxy = null,
-       shape = null,
-       filter = new Filter(),
-       _poolOne = new AxisAlignedBox(),
-       _poolTwo = new AxisAlignedBox();
+ Fixture();
 
  /** Sets this fixture according to the given body and definition. */
  void create(Body b, FixtureDef def) {
@@ -131,16 +123,16 @@ class Fixture {
    // Compute an Axis Aligned Box that covers the swept shape.
    shape.computeAxisAlignedBox(_poolOne, transformOne);
    shape.computeAxisAlignedBox(_poolTwo, transformTwo);
-   box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
-       _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
-   box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
-       _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
-   box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
-       _poolOne.upperBound.x : _poolTwo.upperBound.x;
-   box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
-       _poolOne.upperBound.y : _poolTwo.upperBound.y;
+   box.min.x = _poolOne.min.x &lt; _poolTwo.min.x ?
+       _poolOne.min.x : _poolTwo.min.x;
+   box.min.y = _poolOne.min.y &lt; _poolTwo.min.y ?
+       _poolOne.min.y : _poolTwo.min.y;
+   box.max.x = _poolOne.max.x &gt; _poolTwo.max.x ?
+       _poolOne.max.x : _poolTwo.max.x;
+   box.max.y = _poolOne.max.y &gt; _poolTwo.max.y ?
+       _poolOne.max.y : _poolTwo.max.y;
 
-   Vector2 disp = _poolOne.lowerBound;
+   Vector2 disp = _poolOne.min;
    disp.x = transformTwo.position.x - transformOne.position.x;
    disp.y = transformTwo.position.y - transformOne.position.y;
 
@@ -169,15 +161,7 @@ new <strong>Fixture</strong>() <a class="anchor-link" href="#Fixture"
 <div class="doc">
 <p>Constructs a new Fixture with default values. </p>
 <pre class="source">
-Fixture()
-   : box = new AxisAlignedBox(),
-     body = null,
-     next = null,
-     proxy = null,
-     shape = null,
-     filter = new Filter(),
-     _poolOne = new AxisAlignedBox(),
-     _poolTwo = new AxisAlignedBox();
+Fixture();
 </pre>
 </div>
 </div>
@@ -198,13 +182,13 @@ Body body
 </div>
 <div class="field"><h4 id="box">
 <button class="show-code">Code</button>
-final <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a>         <strong>box</strong> <a class="anchor-link"
+final <a href="../vector_math/Aabb2.html">Aabb2</a>         <strong>box</strong> <a class="anchor-link"
             href="#box"
             title="Permalink to Fixture.box">#</a>
         </h4>
         <div class="doc">
 <pre class="source">
-final AxisAlignedBox box
+final Aabb2 box = new Aabb2()
 </pre>
 </div>
 </div>
@@ -228,7 +212,7 @@ final <a href="../box2d/Filter.html">Filter</a>         <strong>filter</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-final Filter filter
+final Filter filter = new Filter()
 </pre>
 </div>
 </div>
@@ -442,16 +426,16 @@ void synchronize(BroadPhase broadPhase, Transform transformOne,
  // Compute an Axis Aligned Box that covers the swept shape.
  shape.computeAxisAlignedBox(_poolOne, transformOne);
  shape.computeAxisAlignedBox(_poolTwo, transformTwo);
- box.lowerBound.x = _poolOne.lowerBound.x &lt; _poolTwo.lowerBound.x ? 
-     _poolOne.lowerBound.x : _poolTwo.lowerBound.x;
- box.lowerBound.y = _poolOne.lowerBound.y &lt; _poolTwo.lowerBound.y ?
-     _poolOne.lowerBound.y : _poolTwo.lowerBound.y;
- box.upperBound.x = _poolOne.upperBound.x &gt; _poolTwo.upperBound.x ?
-     _poolOne.upperBound.x : _poolTwo.upperBound.x;
- box.upperBound.y = _poolOne.upperBound.y &gt; _poolTwo.upperBound.y ?
-     _poolOne.upperBound.y : _poolTwo.upperBound.y;
+ box.min.x = _poolOne.min.x &lt; _poolTwo.min.x ?
+     _poolOne.min.x : _poolTwo.min.x;
+ box.min.y = _poolOne.min.y &lt; _poolTwo.min.y ?
+     _poolOne.min.y : _poolTwo.min.y;
+ box.max.x = _poolOne.max.x &gt; _poolTwo.max.x ?
+     _poolOne.max.x : _poolTwo.max.x;
+ box.max.y = _poolOne.max.y &gt; _poolTwo.max.y ?
+     _poolOne.max.y : _poolTwo.max.y;
 
- Vector2 disp = _poolOne.lowerBound;
+ Vector2 disp = _poolOne.min;
  disp.x = transformTwo.position.x - transformOne.position.x;
  disp.y = transformTwo.position.y - transformOne.position.y;
 

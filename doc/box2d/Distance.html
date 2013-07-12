@@ -34,34 +34,24 @@
 <div class="doc">
 <pre class="source">
 class Distance {
- int calls;
- int iters;
- int maxIters;
+ int calls = 0;
+ int iters = 0;
+ int maxIters = 20;
 
  /** Pool variables for use in distance calculation. */
- Simplex simplex;
- List&lt;int&gt; saveA;
- List&lt;int&gt; saveB;
- Vector2 closestPoint;
- Vector2 searchDirection;
- Vector2 temp;
- Vector2 normal;
+ Simplex simplex = new Simplex();
+ List&lt;int&gt; saveA = new List&lt;int&gt;(3);
+ List&lt;int&gt; saveB = new List&lt;int&gt;(3);
+ Vector2 closestPoint = new Vector2.zero();
+ Vector2 searchDirection = new Vector2.zero();
+ Vector2 temp = new Vector2.zero();
+ Vector2 normal = new Vector2.zero();
 
  /**
   * Construct a new Distance object. For internal use only. Don't directly
   * invoke.
   */
- Distance._construct() :
-   simplex = new Simplex(),
-   saveA = new List&lt;int&gt;(3),
-   saveB = new List&lt;int&gt;(3),
-   closestPoint = new Vector2.zero(),
-   searchDirection = new Vector2.zero(),
-   temp = new Vector2.zero(),
-   normal = new Vector2.zero(),
-   calls = 0,
-   iters = 0,
-   maxIters = 20 { }
+ Distance._construct();
 
  /**
   * Compute the closest points between two shapes. Supports any combination of:
@@ -228,7 +218,7 @@ class Distance {
         </h4>
         <div class="doc">
 <pre class="source">
-int calls
+int calls = 0
 </pre>
 </div>
 </div>
@@ -240,7 +230,7 @@ int calls
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 closestPoint
+Vector2 closestPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -252,7 +242,7 @@ Vector2 closestPoint
         </h4>
         <div class="doc">
 <pre class="source">
-int iters
+int iters = 0
 </pre>
 </div>
 </div>
@@ -264,7 +254,7 @@ int iters
         </h4>
         <div class="doc">
 <pre class="source">
-int maxIters
+int maxIters = 20
 </pre>
 </div>
 </div>
@@ -276,7 +266,7 @@ int maxIters
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 normal
+Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -288,7 +278,7 @@ Vector2 normal
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;int&gt; saveA
+List&lt;int&gt; saveA = new List&lt;int&gt;(3)
 </pre>
 </div>
 </div>
@@ -300,7 +290,7 @@ List&lt;int&gt; saveA
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;int&gt; saveB
+List&lt;int&gt; saveB = new List&lt;int&gt;(3)
 </pre>
 </div>
 </div>
@@ -312,7 +302,7 @@ List&lt;int&gt; saveB
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 searchDirection
+Vector2 searchDirection = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -325,7 +315,7 @@ Vector2 searchDirection
         <div class="doc">
 <p>Pool variables for use in distance calculation. </p>
 <pre class="source">
-Simplex simplex
+Simplex simplex = new Simplex()
 </pre>
 </div>
 </div>
@@ -337,7 +327,7 @@ Simplex simplex
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 temp
+Vector2 temp = new Vector2.zero()
 </pre>
 </div>
 </div>

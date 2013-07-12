@@ -34,17 +34,12 @@
 <div class="doc">
 <pre class="source">
 class JointDef {
- JointDef() :
-   type = JointType.UNKNOWN,
-   userData = null,
-   bodyA = null,
-   bodyB = null,
-   collideConnected = false { }
+ JointDef();
 
  /**
   * The joint type is set automatically for concrete joint types.
   */
- int type;
+ int type = JointType.UNKNOWN;
 
  /**
   * Use this to attach application specific data to your joints.
@@ -64,7 +59,7 @@ class JointDef {
  /**
   * Set this flag to true if the attached bodies should collide.
   */
- bool collideConnected;
+ bool collideConnected = false;
 }
 </pre>
 </div>
@@ -79,12 +74,7 @@ new <strong>JointDef</strong>() <a class="anchor-link" href="#JointDef"
               title="Permalink to JointDef.JointDef">#</a></h4>
 <div class="doc">
 <pre class="source">
-JointDef() :
- type = JointType.UNKNOWN,
- userData = null,
- bodyA = null,
- bodyB = null,
- collideConnected = false { }
+JointDef();
 </pre>
 </div>
 </div>
@@ -126,7 +116,7 @@ Body bodyB
         <div class="doc">
 <p>Set this flag to true if the attached bodies should collide.</p>
 <pre class="source">
-bool collideConnected
+bool collideConnected = false
 </pre>
 </div>
 </div>
@@ -139,7 +129,7 @@ bool collideConnected
         <div class="doc">
 <p>The joint type is set automatically for concrete joint types.</p>
 <pre class="source">
-int type
+int type = JointType.UNKNOWN
 </pre>
 </div>
 </div>

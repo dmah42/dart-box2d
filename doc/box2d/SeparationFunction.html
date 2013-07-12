@@ -34,52 +34,31 @@
 <div class="doc">
 <pre class="source">
 class SeparationFunction {
- DistanceProxy proxyA;
- DistanceProxy proxyB;
- int type;
- final Vector2 localPoint;
- final Vector2 axis;
- Sweep sweepA;
- Sweep sweepB;
+ DistanceProxy proxyA = new DistanceProxy();
+ DistanceProxy proxyB = new DistanceProxy();
+ int type = SeparationType.POINTS;
+ final Vector2 localPoint = new Vector2.zero();
+ final Vector2 axis = new Vector2.zero();
+ Sweep sweepA = new Sweep();
+ Sweep sweepB = new Sweep();
 
  /** Pooling */
- final Vector2 localPointA;
- final Vector2 localPointB;
- final Vector2 pointA;
- final Vector2 pointB;
- final Vector2 localPointA1;
- final Vector2 localPointA2;
- final Vector2 normal;
- final Vector2 localPointB1;
- final Vector2 localPointB2;
- final Vector2 axisA;
- final Vector2 axisB;
- final Vector2 temp;
- final Transform xfa;
- final Transform xfb;
+ final Vector2 localPointA = new Vector2.zero();
+ final Vector2 localPointB = new Vector2.zero();
+ final Vector2 pointA = new Vector2.zero();
+ final Vector2 pointB = new Vector2.zero();
+ final Vector2 localPointA1 = new Vector2.zero();
+ final Vector2 localPointA2 = new Vector2.zero();
+ final Vector2 normal = new Vector2.zero();
+ final Vector2 localPointB1 = new Vector2.zero();
+ final Vector2 localPointB2 = new Vector2.zero();
+ final Vector2 axisA = new Vector2.zero();
+ final Vector2 axisB = new Vector2.zero();
+ final Vector2 temp = new Vector2.zero();
+ final Transform xfa = new Transform();
+ final Transform xfb = new Transform();
 
- SeparationFunction() :
-   proxyA = new DistanceProxy(),
-   proxyB = new DistanceProxy(),
-   type = SeparationType.POINTS,
-   localPoint = new Vector2.zero(),
-   axis = new Vector2.zero(),
-   sweepA = new Sweep(),
-   sweepB = new Sweep(),
-   localPointA = new Vector2.zero(),
-   localPointB = new Vector2.zero(),
-   pointA = new Vector2.zero(),
-   pointB = new Vector2.zero(),
-   localPointA1 = new Vector2.zero(),
-   localPointA2 = new Vector2.zero(),
-   normal = new Vector2.zero(),
-   localPointB1 = new Vector2.zero(),
-   localPointB2 = new Vector2.zero(),
-   temp = new Vector2.zero(),
-   xfa = new Transform(),
-   xfb = new Transform(),
-   axisA = new Vector2.zero(),
-   axisB = new Vector2.zero();
+ SeparationFunction();
 
  num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
      argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
@@ -111,7 +90,7 @@ class SeparationFunction {
      localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
      temp.setFrom(localPointB2).sub(localPointB1);
-     Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+     temp.scaleOrthogonalInto(-1.0, axis);
      axis.normalize();
 
      xfb.rotation.transformed(axis, normal);
@@ -142,7 +121,7 @@ class SeparationFunction {
 
      temp.setFrom(localPointA2);
      temp.sub(localPointA1);
-     Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+     temp.scaleOrthogonalInto(-1.0, axis);
      axis.normalize();
 
      xfa.rotation.transformed(axis, normal);
@@ -293,28 +272,7 @@ new <strong>SeparationFunction</strong>() <a class="anchor-link" href="#Separati
               title="Permalink to SeparationFunction.SeparationFunction">#</a></h4>
 <div class="doc">
 <pre class="source">
-SeparationFunction() :
- proxyA = new DistanceProxy(),
- proxyB = new DistanceProxy(),
- type = SeparationType.POINTS,
- localPoint = new Vector2.zero(),
- axis = new Vector2.zero(),
- sweepA = new Sweep(),
- sweepB = new Sweep(),
- localPointA = new Vector2.zero(),
- localPointB = new Vector2.zero(),
- pointA = new Vector2.zero(),
- pointB = new Vector2.zero(),
- localPointA1 = new Vector2.zero(),
- localPointA2 = new Vector2.zero(),
- normal = new Vector2.zero(),
- localPointB1 = new Vector2.zero(),
- localPointB2 = new Vector2.zero(),
- temp = new Vector2.zero(),
- xfa = new Transform(),
- xfb = new Transform(),
- axisA = new Vector2.zero(),
- axisB = new Vector2.zero();
+SeparationFunction();
 </pre>
 </div>
 </div>
@@ -329,7 +287,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>axis</st
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 axis
+final Vector2 axis = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -341,7 +299,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>axisA</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 axisA
+final Vector2 axisA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -353,7 +311,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>axisB</s
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 axisB
+final Vector2 axisB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -365,7 +323,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPoint
+final Vector2 localPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -378,7 +336,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final Vector2 localPointA
+final Vector2 localPointA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -390,7 +348,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPointA1
+final Vector2 localPointA1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -402,7 +360,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPointA2
+final Vector2 localPointA2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -414,7 +372,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPointB
+final Vector2 localPointB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -426,7 +384,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPointB1
+final Vector2 localPointB1 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -438,7 +396,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>localPoi
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 localPointB2
+final Vector2 localPointB2 = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -450,7 +408,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>normal</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 normal
+final Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -462,7 +420,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointA</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 pointA
+final Vector2 pointA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -474,7 +432,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>pointB</
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 pointB
+final Vector2 pointB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -486,7 +444,7 @@ final Vector2 pointB
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyA
+DistanceProxy proxyA = new DistanceProxy()
 </pre>
 </div>
 </div>
@@ -498,7 +456,7 @@ DistanceProxy proxyA
         </h4>
         <div class="doc">
 <pre class="source">
-DistanceProxy proxyB
+DistanceProxy proxyB = new DistanceProxy()
 </pre>
 </div>
 </div>
@@ -510,7 +468,7 @@ DistanceProxy proxyB
         </h4>
         <div class="doc">
 <pre class="source">
-Sweep sweepA
+Sweep sweepA = new Sweep()
 </pre>
 </div>
 </div>
@@ -522,7 +480,7 @@ Sweep sweepA
         </h4>
         <div class="doc">
 <pre class="source">
-Sweep sweepB
+Sweep sweepB = new Sweep()
 </pre>
 </div>
 </div>
@@ -534,7 +492,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>temp</st
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 temp
+final Vector2 temp = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -546,7 +504,7 @@ final Vector2 temp
         </h4>
         <div class="doc">
 <pre class="source">
-int type
+int type = SeparationType.POINTS
 </pre>
 </div>
 </div>
@@ -558,7 +516,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfa</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfa
+final Transform xfa = new Transform()
 </pre>
 </div>
 </div>
@@ -570,7 +528,7 @@ final <a href="../box2d/Transform.html">Transform</a>         <strong>xfb</stron
         </h4>
         <div class="doc">
 <pre class="source">
-final Transform xfb
+final Transform xfb = new Transform()
 </pre>
 </div>
 </div>
@@ -746,7 +704,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
    temp.setFrom(localPointB2).sub(localPointB1);
-   Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+   temp.scaleOrthogonalInto(-1.0, axis);
    axis.normalize();
 
    xfb.rotation.transformed(axis, normal);
@@ -777,7 +735,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(localPointA2);
    temp.sub(localPointA1);
-   Vector2_crossVectorAndNumToOut(temp, 1.0, axis);
+   temp.scaleOrthogonalInto(-1.0, axis);
    axis.normalize();
 
    xfa.rotation.transformed(axis, normal);

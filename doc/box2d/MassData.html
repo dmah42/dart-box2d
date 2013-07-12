@@ -35,21 +35,18 @@
 <pre class="source">
 class MassData {
  /** The mass of the shape, usually in kilograms. */
- double mass;
+ double mass = 0.0;
 
  /** The position of the shape's centroid relative to the shape's origin. */
- Vector2 center;
+ Vector2 center = new Vector2.zero();
 
  /** The rotational inertia of the shape about the local origin. */
- double inertia;
+ double inertia = 0.0;
 
  /**
   * Constructs a blank mass data.
   */
- MassData() :
-   mass = 0.0,
-   inertia = 0.0,
-   center = new Vector2.zero();
+ MassData();
 
  /**
   * Copies from the given mass data.
@@ -57,7 +54,7 @@ class MassData {
  MassData.copy(MassData md) :
    mass = md.mass,
    inertia = md.inertia,
-   center = new Vector2.copy(md.center) { }
+   center = new Vector2.copy(md.center);
 
  /**
   * Sets this mass data equal to the given mass data.
@@ -79,10 +76,7 @@ new <strong>MassData</strong>() <a class="anchor-link" href="#MassData"
 <div class="doc">
 <p>Constructs a blank mass data.</p>
 <pre class="source">
-MassData() :
- mass = 0.0,
- inertia = 0.0,
- center = new Vector2.zero();
+MassData();
 </pre>
 </div>
 </div>
@@ -96,7 +90,7 @@ new <strong>MassData.copy</strong>(<a href="../box2d/MassData.html">MassData</a>
 MassData.copy(MassData md) :
  mass = md.mass,
  inertia = md.inertia,
- center = new Vector2.copy(md.center) { }
+ center = new Vector2.copy(md.center);
 </pre>
 </div>
 </div>
@@ -112,7 +106,7 @@ MassData.copy(MassData md) :
         <div class="doc">
 <p>The position of the shape's centroid relative to the shape's origin. </p>
 <pre class="source">
-Vector2 center
+Vector2 center = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -125,7 +119,7 @@ Vector2 center
         <div class="doc">
 <p>The rotational inertia of the shape about the local origin. </p>
 <pre class="source">
-double inertia
+double inertia = 0.0
 </pre>
 </div>
 </div>
@@ -138,7 +132,7 @@ double inertia
         <div class="doc">
 <p>The mass of the shape, usually in kilograms. </p>
 <pre class="source">
-double mass
+double mass = 0.0
 </pre>
 </div>
 </div>

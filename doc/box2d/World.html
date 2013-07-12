@@ -41,15 +41,15 @@ class World {
  static const int LOCKED = 0x0002;
  static const int CLEAR_FORCES = 0x0004;
 
- int _flags;
+ int _flags = CLEAR_FORCES;
 
  ContactManager _contactManager;
 
  Body _bodyList;
  Joint _jointList;
 
- int _bodyCount;
- int _jointCount;
+ int _bodyCount = 0;
+ int _jointCount = 0;
 
  final Vector2 _gravity;
  bool _allowSleep;
@@ -65,36 +65,40 @@ class World {
   * This is used to compute the time step ratio to
   * support a variable time step.
   */
- double _inverseTimestep;
+ double _inverseTimestep = 0.0;
 
  /**
   * This is for debugging the solver.
   */
- bool _warmStarting;
+ bool _warmStarting = true;
 
  /**
   * This is for debugging the solver.
   */
- bool _continuousPhysics;
+ bool _continuousPhysics = true;
 
- List&lt;List&lt;ContactRegister&gt;&gt; _contactStacks;
+ List&lt;List&lt;ContactRegister&gt;&gt;  _contactStacks =
+     new List&lt;List&lt;ContactRegister&gt;&gt;.generate(ShapeType.TYPE_COUNT, (_) {
+       return new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
+     }, growable: false);
 
  /** Pooling */
- final Vector2 center;
- final Vector2 axis;
+ final Vector2 center = new Vector2.zero();
+ final Vector2 axis = new Vector2.zero();
 
- final TimeStep timestep;
- final Vector2 cA;
- final Vector2 cB;
- final WorldQueryWrapper wqwrapper;
+ final TimeStep timestep = new TimeStep();
+ final Vector2 cA = new Vector2.zero();
+ final Vector2 cB = new Vector2.zero();
+ final WorldQueryWrapper wqwrapper = new WorldQueryWrapper();
 
- final TimeOfImpactInput toiInput;
- final TimeOfImpactOutput toiOutput;
- final Sweep backup;
- final TimeOfImpactSolver toiSolver;
- List&lt;Contact&gt; contacts;
- final Island island;
- List&lt;Body&gt; stack;
+ final TimeOfImpactInput toiInput = new TimeOfImpactInput();
+ final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput();
+ final Sweep backup = new Sweep();
+ final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver();
+ List&lt;Contact&gt; contacts =
+   new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+ final Island island = new Island();
+ List&lt;Body&gt; stack = new List&lt;Body&gt;(10);
 
  /**
   * Constructs a world object.
@@ -104,51 +108,10 @@ class World {
   * doSleep
   *   improve performance by not simulating inactive bodies.
   */
- World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
-   _pool = argPool,
-   _jointDestructionListener = null,
-   _fixtureDestructionListener = null,
-   _debugDraw = null,
-
-   _bodyList = null,
-   _jointList = null,
-
-   _bodyCount = 0,
-   _jointCount = 0,
-
-   _warmStarting = true,
-   _continuousPhysics = true,
-
-   _allowSleep = doSleep,
-   _gravity = gravity,
-
-   _flags = CLEAR_FORCES,
-
-   _inverseTimestep = 0.0,
-
-   _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
-
-   // Initialize Pool Objects.
-   center = new Vector2.zero(),
-   axis = new Vector2.zero(),
-   timestep = new TimeStep(),
-   cA = new Vector2.zero(),
-   cB = new Vector2.zero(),
-   wqwrapper = new WorldQueryWrapper(),
-   toiInput = new TimeOfImpactInput(),
-   toiOutput = new TimeOfImpactOutput(),
-   backup = new Sweep(),
-   toiSolver = new TimeOfImpactSolver(),
-   contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
-   island = new Island(),
-   stack = new List&lt;Body&gt;(10) {
+ World(this._gravity, this._allowSleep, this._pool) {
 
    _contactManager = new ContactManager(this);
 
-   // Initialize settings.
-   for (int i = 0; i &lt; _contactStacks.length; i++) {
-     _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
-   }
    _initializeRegisters();
  }
 
@@ -617,17 +580,17 @@ class World {
        }
 
        for (Fixture f = b.fixtureList; f != null; f = f.next) {
-         AxisAlignedBox aabb = f.proxy.box;
+         Aabb2 aabb = f.proxy.box;
 
          List&lt;Vector2&gt; vs = new List&lt;Vector2&gt;(4);
          for (int i = 0; i &lt; vs.length; i++) {
            vs[i] = new Vector2.zero();
          }
 
-         vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
-         vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
-         vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
-         vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
+         vs[0].setValues(aabb.min.x, aabb.min.y);
+         vs[1].setValues(aabb.max.x, aabb.min.y);
+         vs[2].setValues(aabb.max.x, aabb.max.y);
+         vs[3].setValues(aabb.min.x, aabb.max.y);
 
          if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
            _debugDraw.drawPolygon(vs, 4, color);
@@ -659,7 +622,7 @@ class World {
   * param aabb
   *   the query box.
   */
- void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
+ void queryAABB(QueryCallback callback, Aabb2 aabb) {
    wqwrapper.broadPhase = _contactManager.broadPhase;
    wqwrapper.callback = callback;
    _contactManager.broadPhase.query(wqwrapper, aabb);
@@ -1236,7 +1199,7 @@ static const int WORLD_POOL_SIZE = 100
 <h3>Constructors</h3>
 <div class="method"><h4 id="World">
 <button class="show-code">Code</button>
-new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> doSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> argPool) <a class="anchor-link" href="#World"
+new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> _gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> _allowSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> _pool) <a class="anchor-link" href="#World"
               title="Permalink to World.World">#</a></h4>
 <div class="doc">
 <p>Constructs a world object.</p>
@@ -1245,51 +1208,10 @@ new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> gra
 doSleep
   improve performance by not simulating inactive bodies.</p>
 <pre class="source">
-World(Vector2 gravity, bool doSleep, DefaultWorldPool argPool) :
- _pool = argPool,
- _jointDestructionListener = null,
- _fixtureDestructionListener = null,
- _debugDraw = null,
-
- _bodyList = null,
- _jointList = null,
-
- _bodyCount = 0,
- _jointCount = 0,
-
- _warmStarting = true,
- _continuousPhysics = true,
-
- _allowSleep = doSleep,
- _gravity = gravity,
-
- _flags = CLEAR_FORCES,
-
- _inverseTimestep = 0.0,
-
- _contactStacks = new List&lt;List&lt;ContactRegister&gt;&gt;(ShapeType.TYPE_COUNT),
-
- // Initialize Pool Objects.
- center = new Vector2.zero(),
- axis = new Vector2.zero(),
- timestep = new TimeStep(),
- cA = new Vector2.zero(),
- cB = new Vector2.zero(),
- wqwrapper = new WorldQueryWrapper(),
- toiInput = new TimeOfImpactInput(),
- toiOutput = new TimeOfImpactOutput(),
- backup = new Sweep(),
- toiSolver = new TimeOfImpactSolver(),
- contacts = new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS),
- island = new Island(),
- stack = new List&lt;Body&gt;(10) {
+World(this._gravity, this._allowSleep, this._pool) {
 
  _contactManager = new ContactManager(this);
 
- // Initialize settings.
- for (int i = 0; i &lt; _contactStacks.length; i++) {
-   _contactStacks[i] = new List&lt;ContactRegister&gt;(ShapeType.TYPE_COUNT);
- }
  _initializeRegisters();
 }
 </pre>
@@ -1335,7 +1257,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>axis</st
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 axis
+final Vector2 axis = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -1347,7 +1269,7 @@ final <a href="../box2d/Sweep.html">Sweep</a>         <strong>backup</strong> <a
         </h4>
         <div class="doc">
 <pre class="source">
-final Sweep backup
+final Sweep backup = new Sweep()
 </pre>
 </div>
 </div>
@@ -1371,7 +1293,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>cA</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 cA
+final Vector2 cA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -1383,7 +1305,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>cB</stro
         </h4>
         <div class="doc">
 <pre class="source">
-final Vector2 cB
+final Vector2 cB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -1396,7 +1318,7 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>center</
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-final Vector2 center
+final Vector2 center = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -1472,7 +1394,8 @@ void set contactListener(ContactListener listener) {
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;Contact&gt; contacts
+List&lt;Contact&gt; contacts =
+ new List&lt;Contact&gt;(Settings.MAX_TIME_OF_IMPACT_CONTACTS)
 </pre>
 </div>
 </div>
@@ -1499,7 +1422,7 @@ final <a href="../box2d/Island.html">Island</a>         <strong>island</strong> 
         </h4>
         <div class="doc">
 <pre class="source">
-final Island island
+final Island island = new Island()
 </pre>
 </div>
 </div>
@@ -1561,7 +1484,7 @@ int get proxyCount =&gt; _contactManager.broadPhase.proxyCount;
         </h4>
         <div class="doc">
 <pre class="source">
-List&lt;Body&gt; stack
+List&lt;Body&gt; stack = new List&lt;Body&gt;(10)
 </pre>
 </div>
 </div>
@@ -1573,7 +1496,7 @@ final <a href="../box2d/TimeStep.html">TimeStep</a>         <strong>timestep</st
         </h4>
         <div class="doc">
 <pre class="source">
-final TimeStep timestep
+final TimeStep timestep = new TimeStep()
 </pre>
 </div>
 </div>
@@ -1585,7 +1508,7 @@ final <a href="../box2d/TimeOfImpactInput.html">TimeOfImpactInput</a>         <s
         </h4>
         <div class="doc">
 <pre class="source">
-final TimeOfImpactInput toiInput
+final TimeOfImpactInput toiInput = new TimeOfImpactInput()
 </pre>
 </div>
 </div>
@@ -1597,7 +1520,7 @@ final <a href="../box2d/TimeOfImpactOutput.html">TimeOfImpactOutput</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-final TimeOfImpactOutput toiOutput
+final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput()
 </pre>
 </div>
 </div>
@@ -1609,7 +1532,7 @@ final <a href="../box2d/TimeOfImpactSolver.html">TimeOfImpactSolver</a>         
         </h4>
         <div class="doc">
 <pre class="source">
-final TimeOfImpactSolver toiSolver
+final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver()
 </pre>
 </div>
 </div>
@@ -1621,7 +1544,7 @@ final <a href="../box2d/WorldQueryWrapper.html">WorldQueryWrapper</a>         <s
         </h4>
         <div class="doc">
 <pre class="source">
-final WorldQueryWrapper wqwrapper
+final WorldQueryWrapper wqwrapper = new WorldQueryWrapper()
 </pre>
 </div>
 </div>
@@ -1969,17 +1892,17 @@ void drawDebugData() {
      }
 
      for (Fixture f = b.fixtureList; f != null; f = f.next) {
-       AxisAlignedBox aabb = f.proxy.box;
+       Aabb2 aabb = f.proxy.box;
 
        List&lt;Vector2&gt; vs = new List&lt;Vector2&gt;(4);
        for (int i = 0; i &lt; vs.length; i++) {
          vs[i] = new Vector2.zero();
        }
 
-       vs[0].setValues(aabb.lowerBound.x, aabb.lowerBound.y);
-       vs[1].setValues(aabb.upperBound.x, aabb.lowerBound.y);
-       vs[2].setValues(aabb.upperBound.x, aabb.upperBound.y);
-       vs[3].setValues(aabb.lowerBound.x, aabb.upperBound.y);
+       vs[0].setValues(aabb.min.x, aabb.min.y);
+       vs[1].setValues(aabb.max.x, aabb.min.y);
+       vs[2].setValues(aabb.max.x, aabb.max.y);
+       vs[3].setValues(aabb.min.x, aabb.max.y);
 
        if (0 != (drawFlags &amp; DebugDraw.e_lineDrawingBit)) {
          _debugDraw.drawPolygon(vs, 4, color);
@@ -2168,7 +2091,7 @@ void pushContact(Contact contact) {
 </div>
 <div class="method"><h4 id="queryAABB">
 <button class="show-code">Code</button>
-void <strong>queryAABB</strong>(<a href="../box2d/QueryCallback.html">QueryCallback</a> callback, <a href="../box2d/AxisAlignedBox.html">AxisAlignedBox</a> aabb) <a class="anchor-link" href="#queryAABB"
+void <strong>queryAABB</strong>(<a href="../box2d/QueryCallback.html">QueryCallback</a> callback, <a href="../vector_math/Aabb2.html">Aabb2</a> aabb) <a class="anchor-link" href="#queryAABB"
               title="Permalink to World.queryAABB">#</a></h4>
 <div class="doc">
 <p>Query the world for all fixtures that potentially overlap the
@@ -2178,7 +2101,7 @@ provided AABB.</p>
 param aabb
   the query box.</p>
 <pre class="source">
-void queryAABB(QueryCallback callback, AxisAlignedBox aabb) {
+void queryAABB(QueryCallback callback, Aabb2 aabb) {
  wqwrapper.broadPhase = _contactManager.broadPhase;
  wqwrapper.callback = callback;
  _contactManager.broadPhase.query(wqwrapper, aabb);

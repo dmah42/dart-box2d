@@ -34,28 +34,18 @@
 <div class="doc">
 <pre class="source">
 class PositionSolverManifold {
- Vector2 normal;
- Vector2 point;
- num separation;
+ Vector2 normal = new Vector2.zero();
+ Vector2 point = new Vector2.zero();
+ num separation = 0;
 
  /** Pooling */
- Vector2 pointA;
- Vector2 pointB;
- Vector2 temp;
- Vector2 planePoint;
- Vector2 clipPoint;
+ Vector2 pointA = new Vector2.zero();
+ Vector2 pointB = new Vector2.zero();
+ Vector2 temp = new Vector2.zero();
+ Vector2 planePoint = new Vector2.zero();
+ Vector2 clipPoint = new Vector2.zero();
 
- PositionSolverManifold() :
-   normal = new Vector2.zero(),
-   point = new Vector2.zero(),
-   separation = 0,
-
-   // Initialize pool variables.
-   pointA = new Vector2.zero(),
-   pointB = new Vector2.zero(),
-   temp = new Vector2.zero(),
-   planePoint = new Vector2.zero(),
-   clipPoint = new Vector2.zero();
+ PositionSolverManifold();
 
  void initialize(ContactConstraint cc, int index) {
    assert(cc.pointCount &gt; 0);
@@ -113,17 +103,7 @@ new <strong>PositionSolverManifold</strong>() <a class="anchor-link" href="#Posi
               title="Permalink to PositionSolverManifold.PositionSolverManifold">#</a></h4>
 <div class="doc">
 <pre class="source">
-PositionSolverManifold() :
- normal = new Vector2.zero(),
- point = new Vector2.zero(),
- separation = 0,
-
- // Initialize pool variables.
- pointA = new Vector2.zero(),
- pointB = new Vector2.zero(),
- temp = new Vector2.zero(),
- planePoint = new Vector2.zero(),
- clipPoint = new Vector2.zero();
+PositionSolverManifold();
 </pre>
 </div>
 </div>
@@ -138,7 +118,7 @@ PositionSolverManifold() :
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 clipPoint
+Vector2 clipPoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -150,7 +130,7 @@ Vector2 clipPoint
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 normal
+Vector2 normal = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -162,7 +142,7 @@ Vector2 normal
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 planePoint
+Vector2 planePoint = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -174,7 +154,7 @@ Vector2 planePoint
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 point
+Vector2 point = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -187,7 +167,7 @@ Vector2 point
         <div class="doc">
 <p>Pooling </p>
 <pre class="source">
-Vector2 pointA
+Vector2 pointA = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -199,7 +179,7 @@ Vector2 pointA
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 pointB
+Vector2 pointB = new Vector2.zero()
 </pre>
 </div>
 </div>
@@ -211,7 +191,7 @@ Vector2 pointB
         </h4>
         <div class="doc">
 <pre class="source">
-num separation
+num separation = 0
 </pre>
 </div>
 </div>
@@ -223,7 +203,7 @@ num separation
         </h4>
         <div class="doc">
 <pre class="source">
-Vector2 temp
+Vector2 temp = new Vector2.zero()
 </pre>
 </div>
 </div>

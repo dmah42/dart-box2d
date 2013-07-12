@@ -38,6 +38,71 @@ Values are stored in column major order.</p>
 class Matrix3 {
  final Float32List storage = new Float32List(9);
 
+ /// Solve [A] * [x] = [b].
+ static void solve2(Matrix3 A, Vector2 x, Vector2 b) {
+   final double a11 = A.entry(0,0);
+   final double a12 = A.entry(0,1);
+   final double a21 = A.entry(1,0);
+   final double a22 = A.entry(1,1);
+   final double bx = b.x - A.storage[6];
+   final double by = b.y - A.storage[7];
+   double det = a11 * a22 - a12 * a21;
+
+   if (det != 0.0){
+     det = 1.0 / det;
+   }
+
+   x.x = det * (a22 * bx - a12 * by);
+   x.y = det * (a11 * by - a21 * bx);
+ }
+
+ /// Solve [A] * [x] = [b].
+ static void solve(Matrix3 A, Vector3 x, Vector3 b) {
+   final double A0x = A.entry(0, 0);
+   final double A0y = A.entry(1, 0);
+   final double A0z = A.entry(2, 0);
+   final double A1x = A.entry(0, 1);
+   final double A1y = A.entry(1, 1);
+   final double A1z = A.entry(2, 1);
+   final double A2x = A.entry(0, 2);
+   final double A2y = A.entry(1, 2);
+   final double A2z = A.entry(2, 2);
+   double rx, ry, rz;
+   double det;
+
+   // Column1 cross Column 2
+   rx = A1y * A2z - A1z * A2y;
+   ry = A1z * A2x - A1x * A2z;
+   rz = A1x * A2y - A1y * A2x;
+
+   // A.getColumn(0).dot(x)
+   det = A0x * rx + A0y * ry + A0z * rz;
+   if (det != 0.0){
+     det = 1.0 / det;
+   }
+
+   // b dot [Column1 cross Column 2]
+   final double x_ = det * (b.x * rx + b.y * ry + b.z * rz);
+
+   // Column2 cross b
+   rx = -(A2y * b.z - A2z * b.y);
+   ry = -(A2z * b.x - A2x * b.z);
+   rz = -(A2x * b.y - A2y * b.x);
+   // Column0 dot -[Column2 cross b (Column3)]
+   final double y_ = det * (A0x * rx + A0y * ry + A0z * rz);
+
+   // b cross Column 1
+   rx = -(b.y * A1z - b.z * A1y);
+   ry = -(b.z * A1x - b.x * A1z);
+   rz = -(b.x * A1y - b.y * A1x);
+   // Column0 dot -[b cross Column 1]
+   final double z_ = det * (A0x * rx + A0y * ry + A0z * rz);
+
+   x.x = x_;
+   x.y = y_;
+   x.z = z_;
+ }
+
  /// Return index in storage for [row], [col] value.
  int index(int row, int col) =&gt; (col * 3) + row;
 
@@ -452,6 +517,20 @@ class Matrix3 {
    return x - y + z;
  }
 
+ /// Returns the dot product of row [i] and [v].
+ double dotRow(int i, Vector3 v) {
+   return storage[i] * v.storage[0]
+        + storage[3+i] * v.storage[1]
+        + storage[6+i] * v.storage[2];
+ }
+
+ /// Returns the dot product of column [j] and [v].
+ double dotColumn(int j, Vector3 v) {
+   return storage[j*3] * v.storage[0]
+        + storage[j*3+1] * v.storage[1]
+        + storage[j*3+2] * v.storage[2];
+ }
+
  /// Returns the trace of the matrix. The trace of a matrix is the sum of
  /// the diagonal entries.
  double trace() {
@@ -661,6 +740,30 @@ class Matrix3 {
    return arg;
  }
 
+ /// Rotates [arg] by the absolute rotation of [this]
+ /// Returns [arg].
+ /// Primarily used by AABB transformation code.
+ Vector2 absoluteRotate2(Vector2 arg) {
+   double m00 = storage[0].abs();
+   double m01 = storage[3].abs();
+   double m10 = storage[1].abs();
+   double m11 = storage[4].abs();
+   double x = arg.x;
+   double y = arg.y;
+   arg.x = x * m00 + y * m01;
+   arg.y = x * m10 + y * m11;
+   return arg;
+ }
+
+ /// Transforms [arg] with [this].
+ Vector2 transform2(Vector2 arg) {
+   double x_ =  (storage[0] * arg.storage[0]) + (storage[3] * arg.storage[1]) + storage[6];
+   double y_ =  (storage[1] * arg.storage[0]) + (storage[4] * arg.storage[1]) + storage[7];
+   arg.x = x_;
+   arg.y = y_;
+   return arg;
+ }
+
  Matrix3 add(Matrix3 o) {
    storage[0] = storage[0] + o.storage[0];
    storage[1] = storage[1] + o.storage[1];
@@ -867,6 +970,96 @@ class Matrix3 {
  }
 }
 </pre>
+</div>
+<div>
+<h3>Static Methods</h3>
+<div class="method"><h4 id="solve2">
+<button class="show-code">Code</button>
+void <strong>solve2</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> A, <a href="../vector_math/Vector2.html">Vector2</a> x, <a href="../vector_math/Vector2.html">Vector2</a> b) <a class="anchor-link" href="#solve2"
+              title="Permalink to Matrix3.solve2">#</a></h4>
+<div class="doc">
+<p>Solve 
+<span class="param">A</span> * 
+<span class="param">x</span> = 
+<span class="param">b</span>.</p>
+<pre class="source">
+static void solve2(Matrix3 A, Vector2 x, Vector2 b) {
+ final double a11 = A.entry(0,0);
+ final double a12 = A.entry(0,1);
+ final double a21 = A.entry(1,0);
+ final double a22 = A.entry(1,1);
+ final double bx = b.x - A.storage[6];
+ final double by = b.y - A.storage[7];
+ double det = a11 * a22 - a12 * a21;
+
+ if (det != 0.0){
+   det = 1.0 / det;
+ }
+
+ x.x = det * (a22 * bx - a12 * by);
+ x.y = det * (a11 * by - a21 * bx);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solve">
+<button class="show-code">Code</button>
+void <strong>solve</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> A, <a href="../vector_math/Vector3.html">Vector3</a> x, <a href="../vector_math/Vector3.html">Vector3</a> b) <a class="anchor-link" href="#solve"
+              title="Permalink to Matrix3.solve">#</a></h4>
+<div class="doc">
+<p>Solve 
+<span class="param">A</span> * 
+<span class="param">x</span> = 
+<span class="param">b</span>.</p>
+<pre class="source">
+static void solve(Matrix3 A, Vector3 x, Vector3 b) {
+ final double A0x = A.entry(0, 0);
+ final double A0y = A.entry(1, 0);
+ final double A0z = A.entry(2, 0);
+ final double A1x = A.entry(0, 1);
+ final double A1y = A.entry(1, 1);
+ final double A1z = A.entry(2, 1);
+ final double A2x = A.entry(0, 2);
+ final double A2y = A.entry(1, 2);
+ final double A2z = A.entry(2, 2);
+ double rx, ry, rz;
+ double det;
+
+ // Column1 cross Column 2
+ rx = A1y * A2z - A1z * A2y;
+ ry = A1z * A2x - A1x * A2z;
+ rz = A1x * A2y - A1y * A2x;
+
+ // A.getColumn(0).dot(x)
+ det = A0x * rx + A0y * ry + A0z * rz;
+ if (det != 0.0){
+   det = 1.0 / det;
+ }
+
+ // b dot [Column1 cross Column 2]
+ final double x_ = det * (b.x * rx + b.y * ry + b.z * rz);
+
+ // Column2 cross b
+ rx = -(A2y * b.z - A2z * b.y);
+ ry = -(A2z * b.x - A2x * b.z);
+ rz = -(A2x * b.y - A2y * b.x);
+ // Column0 dot -[Column2 cross b (Column3)]
+ final double y_ = det * (A0x * rx + A0y * ry + A0z * rz);
+
+ // b cross Column 1
+ rx = -(b.y * A1z - b.z * A1y);
+ ry = -(b.z * A1x - b.x * A1z);
+ rz = -(b.x * A1y - b.y * A1x);
+ // Column0 dot -[b cross Column 1]
+ final double z_ = det * (A0x * rx + A0y * ry + A0z * rz);
+
+ x.x = x_;
+ x.y = y_;
+ x.z = z_;
+}
+</pre>
+</div>
+</div>
 </div>
 <div>
 <h3>Constructors</h3>
@@ -1335,6 +1528,31 @@ Vector3 absoluteRotate(Vector3 arg) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="absoluteRotate2">
+<button class="show-code">Code</button>
+<a href="../vector_math/Vector2.html">Vector2</a> <strong>absoluteRotate2</strong>(<a href="../vector_math/Vector2.html">Vector2</a> arg) <a class="anchor-link" href="#absoluteRotate2"
+              title="Permalink to Matrix3.absoluteRotate2">#</a></h4>
+<div class="doc">
+<p>Rotates 
+<span class="param">arg</span> by the absolute rotation of <code>this</code>
+Returns 
+<span class="param">arg</span>.
+Primarily used by AABB transformation code.</p>
+<pre class="source">
+Vector2 absoluteRotate2(Vector2 arg) {
+ double m00 = storage[0].abs();
+ double m01 = storage[3].abs();
+ double m10 = storage[1].abs();
+ double m11 = storage[4].abs();
+ double x = arg.x;
+ double y = arg.y;
+ arg.x = x * m00 + y * m01;
+ arg.y = x * m10 + y * m11;
+ return arg;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="add">
 <button class="show-code">Code</button>
 <a href="../vector_math/Matrix3.html">Matrix3</a> <strong>add</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> o) <a class="anchor-link" href="#add"
@@ -1502,6 +1720,40 @@ double determinant() {
  double z = storage[2] *
             ((storage[3] * storage[7]) - (storage[4] * storage[6]));
  return x - y + z;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="dotColumn">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>dotColumn</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> j, <a href="../vector_math/Vector3.html">Vector3</a> v) <a class="anchor-link" href="#dotColumn"
+              title="Permalink to Matrix3.dotColumn">#</a></h4>
+<div class="doc">
+<p>Returns the dot product of column 
+<span class="param">j</span> and 
+<span class="param">v</span>.</p>
+<pre class="source">
+double dotColumn(int j, Vector3 v) {
+ return storage[j*3] * v.storage[0]
+      + storage[j*3+1] * v.storage[1]
+      + storage[j*3+2] * v.storage[2];
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="dotRow">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>dotRow</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> i, <a href="../vector_math/Vector3.html">Vector3</a> v) <a class="anchor-link" href="#dotRow"
+              title="Permalink to Matrix3.dotRow">#</a></h4>
+<div class="doc">
+<p>Returns the dot product of row 
+<span class="param">i</span> and 
+<span class="param">v</span>.</p>
+<pre class="source">
+double dotRow(int i, Vector3 v) {
+ return storage[i] * v.storage[0]
+      + storage[3+i] * v.storage[1]
+      + storage[6+i] * v.storage[2];
 }
 </pre>
 </div>
@@ -2147,6 +2399,24 @@ Vector3 transform(Vector3 arg) {
  arg.x = x_;
  arg.y = y_;
  arg.z = z_;
+ return arg;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="transform2">
+<button class="show-code">Code</button>
+<a href="../vector_math/Vector2.html">Vector2</a> <strong>transform2</strong>(<a href="../vector_math/Vector2.html">Vector2</a> arg) <a class="anchor-link" href="#transform2"
+              title="Permalink to Matrix3.transform2">#</a></h4>
+<div class="doc">
+<p>Transforms 
+<span class="param">arg</span> with <code>this</code>.</p>
+<pre class="source">
+Vector2 transform2(Vector2 arg) {
+ double x_ =  (storage[0] * arg.storage[0]) + (storage[3] * arg.storage[1]) + storage[6];
+ double y_ =  (storage[1] * arg.storage[0]) + (storage[4] * arg.storage[1]) + storage[7];
+ arg.x = x_;
+ arg.y = y_;
  return arg;
 }
 </pre>
