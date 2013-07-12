@@ -7,8 +7,7 @@ present in the original source files.
 * lib/         	        Contains the DartBox2d library .dart files
 * doc/                  Contains the generated documentation
 
-![drone.io status](https://drone.io/github.com/dart-lang/dart-box2d/status.png)
-
+[![](https://drone.io/github.com/dart-lang/dart-box2d/status.png)](https://drone.io/github.com/dart-lang/dart-box2d/latest)
 
 ```
 Copyright (c) 2011, Daniel Murphy
