@@ -146,8 +146,8 @@ class FrictionJoint extends Joint {
       Vector2 temp = new Vector2.zero();
       Vector2 Cdot = new Vector2.zero();
 
-      Vector2_crossVectorAndNumToOut(r1, -bodyA.angularVelocity, temp);
-      Vector2_crossVectorAndNumToOut(r2, -bodyB.angularVelocity, Cdot);
+      r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
+      r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
 
       Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
 
