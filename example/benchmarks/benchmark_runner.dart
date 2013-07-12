@@ -35,18 +35,16 @@ class BenchmarkRunner {
    * function and determine how many times to solve for velocity and position on
    * each step.
    */
-  List<int> _solveLoops = const [10, 30];
+  static const _solveLoops = const [10, 30];
 
   /** The different values for number of steps that one wishes to benchmark. */
-  List<int> _steps = const [10, 100, 500, 2000];
+  static const _steps = const [10, 100, 500, 2000];
 
   /** The benchmarks to be run. Initialized in [setupBenchmarks]. */
-  List<Benchmark> _benchmarks = new List<Benchmark>();
+  final List<Benchmark> _benchmarks = new List<Benchmark>();
 
   /** Buffer results here before dumping out on the page. */
-  StringBuffer _resultsWriter = new StringBuffer();
-
-  BenchmarkRunner();
+  final StringBuffer _resultsWriter = new StringBuffer();
 
   /**
    * Adds the specified benchmarks to the benchmark suite. Modify this method
@@ -62,8 +60,10 @@ class BenchmarkRunner {
       new DominoTowerBench(_solveLoops, _steps),
     ];
 
+    _benchmarks.clear();
+
     if (filter == null || filter.isEmpty) {
-      _benchmarks = benchmarks;
+      _benchmarks.addAll(benchmarks);
     } else {
       List<String> filterList = filter.split(",")
           .map((e) => e.trim())
