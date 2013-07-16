@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,8 +42,8 @@ class WorldManifold {
    */
   WorldManifold();
 
-  void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
-      num radiusB) {
+  void initialize(Manifold manifold, Transform xfA, double radiusA, Transform xfB,
+      double radiusB) {
     switch (manifold.type) {
       case ManifoldType.CIRCLES:
         final Vector2 pointA = pool3;
@@ -69,11 +69,11 @@ class WorldManifold {
           normal.normalize();
         }
 
-        num cAx = normal.x * radiusA + pointA.x;
-        num cAy = normal.y * radiusA + pointA.y;
+        double cAx = normal.x * radiusA + pointA.x;
+        double cAy = normal.y * radiusA + pointA.y;
 
-        num cBx = -normal.x * radiusB + pointB.x;
-        num cBy = -normal.y * radiusB + pointB.y;
+        double cBx = -normal.x * radiusB + pointB.x;
+        double cBy = -normal.y * radiusB + pointB.y;
 
         points[0].x = (cAx + cBx) *.5;
         points[0].y = (cAy + cBy) *.5;
@@ -100,14 +100,14 @@ class WorldManifold {
               manifold.points[i].localPoint.x + xfB.rotation.entry(1,1) *
               manifold.points[i].localPoint.y;
 
-          num scalar = radiusA - ((clipPoint.x - planePoint.x) *
+          double scalar = radiusA - ((clipPoint.x - planePoint.x) *
               normal.x + (clipPoint.y - planePoint.y) * normal.y);
 
-          num cAx = normal.x * scalar + clipPoint.x;
-          num cAy = normal.y * scalar + clipPoint.y;
+          double cAx = normal.x * scalar + clipPoint.x;
+          double cAy = normal.y * scalar + clipPoint.y;
 
-          num cBx = - normal.x * radiusB + clipPoint.x;
-          num cBy = - normal.y * radiusB + clipPoint.y;
+          double cBx = - normal.x * radiusB + clipPoint.x;
+          double cBy = - normal.y * radiusB + clipPoint.y;
 
           points[i].x = (cAx + cBx)*.5;
           points[i].y = (cAy + cBy)*.5;
@@ -139,14 +139,14 @@ class WorldManifold {
               manifold.points[i].localPoint.x + xfA.rotation.entry(1,1) *
               manifold.points[i].localPoint.y;
 
-          num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
+          double scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
               (clipPoint.y - planePoint.y) * normal.y);
 
-          num cBx =  normal.x * scalar + clipPoint.x;
-          num cBy =  normal.y * scalar + clipPoint.y;
+          double cBx =  normal.x * scalar + clipPoint.x;
+          double cBy =  normal.y * scalar + clipPoint.y;
 
-          num cAx = - normal.x * radiusA + clipPoint.x;
-          num cAy = - normal.y * radiusA + clipPoint.y;
+          double cAx = - normal.x * radiusA + clipPoint.x;
+          double cAy = - normal.y * radiusA + clipPoint.y;
 
           points[i].x = (cAx + cBx) *.5;
           points[i].y = (cAy + cBy) *.5;
