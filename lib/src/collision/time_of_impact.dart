@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -103,7 +103,7 @@ class TimeOfImpact {
       if (distanceOutput.distance <= 0) {
         // Failure!
         output.state = TimeOfImpactOutputState.OVERLAPPED;
-        output.t = 0;
+        output.t = 0.0;
         break;
       }
 
@@ -121,12 +121,12 @@ class TimeOfImpact {
       // resolving the deepest point. This loop is bounded by the number of
       // vertices.
       bool done = false;
-      num t2 = tMax;
+      double t2 = tMax;
       int pushBackIter = 0;
       while (true) {
 
         // Find the deepest point at t2. Store the witness point indices.
-        num s2 = fcn.findMinSeparation(indexes, t2);
+        double s2 = fcn.findMinSeparation(indexes, t2);
         // Is the configuration separated?
         if (s2 > target + tolerance) {
           // Victory!
@@ -144,7 +144,7 @@ class TimeOfImpact {
         }
 
         // Compute the initial separation of the witness points.
-        num s1 = fcn.evaluate(indexes[0], indexes[1], t1);
+        double s1 = fcn.evaluate(indexes[0], indexes[1], t1);
         // Check for initial overlap. This might happen if the root finder
         // runs out of iterations.
         if (s1 < target - tolerance) {
@@ -165,10 +165,10 @@ class TimeOfImpact {
 
         // Compute 1D root of: f(x) - target = 0
         int rootIterCount = 0;
-        num a1 = t1, a2 = t2;
+        double a1 = t1, a2 = t2;
         while (true) {
           // Use a mix of the secant rule and bisection.
-          num t;
+          double t;
           if ((rootIterCount & 1) == 1) {
             // Secant rule to improve convergence.
             t = a1 + (target - s1) * (a2 - a1) / (s2 - s1);
@@ -177,7 +177,7 @@ class TimeOfImpact {
             t = 0.5 * (a1 + a2);
           }
 
-          num s = fcn.evaluate(indexes[0], indexes[1], t);
+          double s = fcn.evaluate(indexes[0], indexes[1], t);
 
           if ((s - target).abs() < tolerance) {
             // t2 holds a tentative value for t1
@@ -257,8 +257,8 @@ class SeparationFunction {
 
   SeparationFunction();
 
-  num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
-      argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+  double initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+      argSweepA, DistanceProxy argProxyB, Sweep argSweepB, double t1) {
     proxyA = argProxyA;
     proxyB = argProxyB;
     int count = cache.count;
@@ -277,7 +277,7 @@ class SeparationFunction {
       Transform.mulToOut(xfa, localPointA, pointA);
       Transform.mulToOut(xfb, localPointB, pointB);
       axis.setFrom(pointB).sub(pointA);
-      num s = axis.normalizeLength();
+      double s = axis.normalizeLength();
       return s;
     } else if (cache.indexA[0] == cache.indexA[1]) {
       // Two points on B and one on A.
@@ -302,7 +302,7 @@ class SeparationFunction {
 
       temp.setFrom(pointA);
       temp.sub(pointB);
-      num s = temp.dot(normal);
+      double s = temp.dot(normal);
       if (s < 0.0) {
         axis.negate();
         s = -s;
@@ -333,7 +333,7 @@ class SeparationFunction {
 
       temp.setFrom(pointB);
       temp.sub(pointA);
-      num s = temp.dot(normal);
+      double s = temp.dot(normal);
       if (s < 0.0) {
         axis.negate();
         s = -s;
@@ -342,7 +342,7 @@ class SeparationFunction {
     }
   }
 
-  num findMinSeparation(List<int> indexes, num t) {
+  double findMinSeparation(List<int> indexes, double t) {
     sweepA.getTransform(xfa, t);
     sweepB.getTransform(xfb, t);
 
@@ -362,7 +362,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = pointB.sub(pointA).dot(axis);
+        double separation = pointB.sub(pointA).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -379,7 +379,7 @@ class SeparationFunction {
         localPointB.setFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = pointB.sub(pointA).dot(normal);
+        double separation = pointB.sub(pointA).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
@@ -396,18 +396,18 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = pointA.sub(pointB).dot(normal);
+        double separation = pointA.sub(pointB).dot(normal);
         return separation;
 
       default:
         assert (false);
         indexes[0] = -1;
         indexes[1] = -1;
-        return 0;
+        return 0.0;
     }
   }
 
-  num evaluate(int indexA, int indexB, num t) {
+  double evaluate(int indexA, int indexB, double t) {
     sweepA.getTransform(xfa, t);
     sweepB.getTransform(xfb, t);
 
@@ -424,7 +424,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        num separation = pointB.sub(pointA).dot(axis);
+        double separation = pointB.sub(pointA).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -437,7 +437,7 @@ class SeparationFunction {
 
         localPointB.setFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        num separation = pointB.sub(pointA).dot(normal);
+        double separation = pointB.sub(pointA).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
@@ -450,12 +450,12 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        num separation = pointA.sub(pointB).dot(normal);
+        double separation = pointA.sub(pointB).dot(normal);
         return separation;
 
       default:
         assert (false);
-        return 0;
+        return 0.0;
     }
   }
 }
@@ -472,12 +472,12 @@ class TimeOfImpactInput {
   /**
    * defines sweep interval [0, tMax]
    */
-  num tMax = 0;
+  double tMax = 0.0;
 
   TimeOfImpactInput();
 }
 
-/** Enum for TimeOfImpact output. */
+/** Edouble for TimeOfImpact output. */
 class TimeOfImpactOutputState {
   static const int UNKNOWN = 0;
   static const int FAILED = 1;
@@ -491,7 +491,7 @@ class TimeOfImpactOutputState {
  */
 class TimeOfImpactOutput {
   int state = TimeOfImpactOutputState.UNKNOWN;
-  num t = 0;
+  double t = 0.0;
 
   TimeOfImpactOutput();
 }

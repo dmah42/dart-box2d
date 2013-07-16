@@ -74,7 +74,7 @@ class CircleShape extends Shape {
    * Computes the mass properties of this Circle at the given density and stores
    * the result in the given MassData object.
    */
-  void computeMass(MassData massData, num density) {
+  void computeMass(MassData massData, double density) {
     massData.mass = density * Math.PI * radius * radius;
     massData.center.setFrom(position);
 

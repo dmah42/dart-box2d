@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,8 +61,8 @@ class Simplex {
     // Compute the new simplex metric, if it is substantially different than
     // old metric then flush the simplex.
     if (count > 1) {
-      num metric1 = cache.metric;
-      num metric2 = getMetric();
+      double metric1 = cache.metric;
+      double metric2 = getMetric();
       if (metric2 < 0.5 * metric1 || 2.0 * metric1 < metric2 || metric2 <
           Settings.EPSILON) {
         // Reset the simplex.
@@ -103,9 +103,9 @@ class Simplex {
         e12.setFrom(v2.w).sub(v1.w);
         // use out for a temp variable real quick
         out.setFrom(v1.w).negate();
-        num sgn = e12.cross(out);
+        double sgn = e12.cross(out);
 
-        if (sgn > 0) {
+        if (sgn > 0.0) {
           // Origin is left of e12.
           e12.scaleOrthogonalInto(1.0, out);
         }
@@ -183,7 +183,7 @@ class Simplex {
     }
   }
 
-  num getMetric() {
+  double getMetric() {
     switch (count) {
       case 0 :
         assert (false);
@@ -215,7 +215,7 @@ class Simplex {
     e12.setFrom(w2).sub(w1);
 
     // w1 region
-    num d12_2 = -w1.dot(e12);
+    double d12_2 = -w1.dot(e12);
     if (d12_2 <= 0.0) {
       // a2 <= 0, so we clamp it to 0
       v1.a = 1.0;
@@ -224,7 +224,7 @@ class Simplex {
     }
 
     // w2 region
-    num d12_1 = w2.dot(e12);
+    double d12_1 = w2.dot(e12);
     if (d12_1 <= 0.0) {
       // a1 <= 0, so we clamp it to 0
       v2.a = 1.0;
@@ -234,7 +234,7 @@ class Simplex {
     }
 
     // Must be in e12 region.
-    num inv_d12 = 1.0 / (d12_1 + d12_2);
+    double inv_d12 = 1.0 / (d12_1 + d12_2);
     v1.a = d12_1 * inv_d12;
     v2.a = d12_2 * inv_d12;
     count = 2;
@@ -255,31 +255,31 @@ class Simplex {
 
     // Edge12
     e12.setFrom(w2).sub(w1);
-    num w1e12 = w1.dot(e12);
-    num w2e12 = w2.dot(e12);
-    num d12_1 = w2e12;
-    num d12_2 = -w1e12;
+    double w1e12 = w1.dot(e12);
+    double w2e12 = w2.dot(e12);
+    double d12_1 = w2e12;
+    double d12_2 = -w1e12;
 
     // Edge13
     e13.setFrom(w3).sub(w1);
-    num w1e13 = w1.dot(e13);
-    num w3e13 = w3.dot(e13);
-    num d13_1 = w3e13;
-    num d13_2 = -w1e13;
+    double w1e13 = w1.dot(e13);
+    double w3e13 = w3.dot(e13);
+    double d13_1 = w3e13;
+    double d13_2 = -w1e13;
 
     // Edge23
     e23.setFrom(w3).sub(w2);
-    num w2e23 = w2.dot(e23);
-    num w3e23 = w3.dot(e23);
-    num d23_1 = w3e23;
-    num d23_2 = -w2e23;
+    double w2e23 = w2.dot(e23);
+    double w3e23 = w3.dot(e23);
+    double d23_1 = w3e23;
+    double d23_2 = -w2e23;
 
     // Triangle123
-    num n123 = e12.cross(e13);
+    double n123 = e12.cross(e13);
 
-    num d123_1 = n123 * w2.cross(w3);
-    num d123_2 = n123 * w3.cross(w1);
-    num d123_3 = n123 * w1.cross(w2);
+    double d123_1 = n123 * w2.cross(w3);
+    double d123_2 = n123 * w3.cross(w1);
+    double d123_3 = n123 * w1.cross(w2);
 
     // w1 region
     if (d12_2 <= 0.0 && d13_2 <= 0.0) {
@@ -290,7 +290,7 @@ class Simplex {
 
     // e12
     if (d12_1 > 0.0 && d12_2 > 0.0 && d123_3 <= 0.0) {
-      num inv_d12 = 1.0 / (d12_1 + d12_2);
+      double inv_d12 = 1.0 / (d12_1 + d12_2);
       v1.a = d12_1 * inv_d12;
       v2.a = d12_2 * inv_d12;
       count = 2;
@@ -299,7 +299,7 @@ class Simplex {
 
     // e13
     if (d13_1 > 0.0 && d13_2 > 0.0 && d123_2 <= 0.0) {
-      num inv_d13 = 1.0 / (d13_1 + d13_2);
+      double inv_d13 = 1.0 / (d13_1 + d13_2);
       v1.a = d13_1 * inv_d13;
       v3.a = d13_2 * inv_d13;
       count = 2;
@@ -325,7 +325,7 @@ class Simplex {
 
     // e23
     if (d23_1 > 0.0 && d23_2 > 0.0 && d123_1 <= 0.0) {
-      num inv_d23 = 1.0 / (d23_1 + d23_2);
+      double inv_d23 = 1.0 / (d23_1 + d23_2);
       v2.a = d23_1 * inv_d23;
       v3.a = d23_2 * inv_d23;
       count = 2;
@@ -334,7 +334,7 @@ class Simplex {
     }
 
     // Must be in triangle123
-    num inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
+    double inv_d123 = 1.0 / (d123_1 + d123_2 + d123_3);
     v1.a = d123_1 * inv_d123;
     v2.a = d123_2 * inv_d123;
     v3.a = d123_3 * inv_d123;
