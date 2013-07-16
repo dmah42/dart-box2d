@@ -867,7 +867,7 @@ class World {
   void solveTimeOfImpactGivenBody(Body body) {
     // Find the minimum contact.
     Contact toiContact = null;
-    num toi = 1.0;
+    double toi = 1.0;
     Body toiOther = null;
     bool found;
     int count;
@@ -1014,7 +1014,7 @@ class World {
     // Reduce the TimeOfImpact body's overlap with the contact island.
     toiSolver.initialize(contacts, count, body);
 
-    num k_toiBaumgarte = 0.75;
+    double k_toiBaumgarte = 0.75;
     // bool solved = false;
     for (int i = 0; i < 20; ++i) {
       if (toiSolver.solve(k_toiBaumgarte)) {
@@ -1035,7 +1035,7 @@ class World {
 
         // Vector2 center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
-        num radius = circle.radius;
+        double radius = circle.radius;
         axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {

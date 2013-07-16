@@ -51,7 +51,7 @@ abstract class Shape {
    * properties of this shape using its dimensions and the
    * given density. The inertia tensor is computed about the local origin.
    */
-  void computeMass(MassData massData, num density);
+  void computeMass(MassData massData, double density);
 
   /** Returns a clone of this shape. */
   Shape clone();

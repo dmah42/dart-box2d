@@ -236,7 +236,7 @@ class PolygonShape extends Shape {
     assert (count >= 3);
 
     out.setValues(0.0, 0.0);
-    num area = 0.0;
+    double area = 0.0;
 
     if (count == 2) {
       out.setFrom(vs[0]).add(vs[1]).scale(.5);
@@ -251,7 +251,7 @@ class PolygonShape extends Shape {
     final Vector2 e1 = new Vector2.zero();
     final Vector2 e2 = new Vector2.zero();
 
-    final num inv3 = 1.0 / 3.0;
+    final double inv3 = 1.0 / 3.0;
 
     for (int i = 0; i < count; ++i) {
       // Triangle vertices.
@@ -262,9 +262,9 @@ class PolygonShape extends Shape {
       e1.setFrom(p2).sub(p1);
       e2.setFrom(p3).sub(p1);
 
-      final num D = e1.cross(e2);
+      final double D = e1.cross(e2);
 
-      final num triangleArea = 0.5 * D;
+      final double triangleArea = 0.5 * D;
       area += triangleArea;
 
       // Area weighted centroid
@@ -279,7 +279,7 @@ class PolygonShape extends Shape {
   /**
    * See Shape.computeMass(MassData)
    */
-  void computeMass(MassData massData, num density) {
+  void computeMass(MassData massData, double density) {
     // Polygon mass, centroid, and inertia.
     // Let rho be the polygon density in mass per unit area.
     // Then:
@@ -317,15 +317,15 @@ class PolygonShape extends Shape {
 
     final Vector2 center = new Vector2.zero();
     center.setZero();
-    num area = 0.0;
-    num I = 0.0;
+    double area = 0.0;
+    double I = 0.0;
 
     // pRef is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
     final Vector2 pRef = new Vector2.zero();
     pRef.setZero();
 
-    final num k_inv3 = 1.0 / 3.0;
+    final double k_inv3 = 1.0 / 3.0;
 
     final Vector2 e1 = new Vector2.zero();
     final Vector2 e2 = new Vector2.zero();
@@ -342,25 +342,25 @@ class PolygonShape extends Shape {
       e2.setFrom(p3);
       e2.sub(p1);
 
-      final num D = e1.cross(e2);
+      final double D = e1.cross(e2);
 
-      final num triangleArea = 0.5 * D;
+      final double triangleArea = 0.5 * D;
       area += triangleArea;
 
       // Area weighted centroid
       center.x += triangleArea * k_inv3 * (p1.x + p2.x + p3.x);
       center.y += triangleArea * k_inv3 * (p1.y + p2.y + p3.y);
 
-      final num px = p1.x;
-      final num py = p1.y;
-      final num ex1 = e1.x;
-      final num ey1 = e1.y;
-      final num ex2 = e2.x;
-      final num ey2 = e2.y;
+      final double px = p1.x;
+      final double py = p1.y;
+      final double ex1 = e1.x;
+      final double ey1 = e1.y;
+      final double ex2 = e2.x;
+      final double ey2 = e2.y;
 
-      final num intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
+      final double intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
           (px * ex1 + px * ex2)) + 0.5 * px * px;
-      final num inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
+      final double inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
           (py * ey1 + py * ey2)) + 0.5 * py * py;
 
       I += D * (intx2 + inty2);
