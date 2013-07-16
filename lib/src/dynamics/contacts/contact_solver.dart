@@ -16,7 +16,7 @@ part of box2d;
 
 class ContactSolver {
   /**
-   * For each solver, this is the initial doubleber of constraints
+   * For each solver, this is the initial number of constraints
    * in the array, which expands as needed.
    */
   static const int INITIAL_NUM_CONSTRAINTS = 256;
@@ -187,7 +187,7 @@ class ContactSolver {
         double k12 = invMassA + invMassB + invIA * rn1A * rn2A + invIB * rn1B
             * rn2B;
 
-        // Ensure a reasonable condition doubleber.
+        // Ensure a reasonable condition number.
         if (k11 * k11 < K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
           // K is safe to invert.
           cc.K.setValues(k11,k12,k12,k22);
