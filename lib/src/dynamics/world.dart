@@ -98,9 +98,7 @@ class World {
    *   improve performance by not simulating inactive bodies.
    */
   World(this._gravity, this._allowSleep, this._pool) {
-
     _contactManager = new ContactManager(this);
-
     _initializeRegisters();
   }
 
@@ -205,26 +203,30 @@ class World {
     _debugDraw = debugDraw;
   }
 
+  /** Add a rigid body to the world. */
+  void addBody(Body body) {
+    assert (locked == false);
+    if (locked) {
+      return null;
+    }
+
+    // add to world doubly linked list
+    body.prev = null;
+    body.next = _bodyList;
+    if (_bodyList != null) {
+      _bodyList.prev = body;
+    }
+    _bodyList = body;
+    ++_bodyCount;
+  }
+
   /**
    * Create a rigid body given a definition. No reference to the definition
    * is retained.
    */
   Body createBody(BodyDef def) {
-    assert (locked == false);
-    if (locked) {
-      return null;
-    }
     Body b = new Body(def, this);
-
-    // add to world doubly linked list
-    b.prev = null;
-    b.next = _bodyList;
-    if (_bodyList != null) {
-      _bodyList.prev = b;
-    }
-    _bodyList = b;
-    ++_bodyCount;
-
+    addBody(b);
     return b;
   }
 
@@ -450,7 +452,6 @@ class World {
    *   for the position constraint solver.
    */
   void step(double dt, int velocityIterations, int positionIterations) {
-
     // If new fixtures were added, we need to find the new contacts.
     if ((_flags & NEW_FIXTURE) == NEW_FIXTURE) {
       _contactManager.findNewContacts();
