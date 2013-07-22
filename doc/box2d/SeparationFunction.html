@@ -60,8 +60,8 @@ class SeparationFunction {
 
  SeparationFunction();
 
- num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
-     argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+ double initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+     argSweepA, DistanceProxy argProxyB, Sweep argSweepB, double t1) {
    proxyA = argProxyA;
    proxyB = argProxyB;
    int count = cache.count;
@@ -80,7 +80,7 @@ class SeparationFunction {
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
      axis.setFrom(pointB).sub(pointA);
-     num s = axis.normalizeLength();
+     double s = axis.normalizeLength();
      return s;
    } else if (cache.indexA[0] == cache.indexA[1]) {
      // Two points on B and one on A.
@@ -105,7 +105,7 @@ class SeparationFunction {
 
      temp.setFrom(pointA);
      temp.sub(pointB);
-     num s = temp.dot(normal);
+     double s = temp.dot(normal);
      if (s &lt; 0.0) {
        axis.negate();
        s = -s;
@@ -136,7 +136,7 @@ class SeparationFunction {
 
      temp.setFrom(pointB);
      temp.sub(pointA);
-     num s = temp.dot(normal);
+     double s = temp.dot(normal);
      if (s &lt; 0.0) {
        axis.negate();
        s = -s;
@@ -145,7 +145,7 @@ class SeparationFunction {
    }
  }
 
- num findMinSeparation(List&lt;int&gt; indexes, num t) {
+ double findMinSeparation(List&lt;int&gt; indexes, double t) {
    sweepA.getTransform(xfa, t);
    sweepB.getTransform(xfb, t);
 
@@ -165,7 +165,7 @@ class SeparationFunction {
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = pointB.sub(pointA).dot(axis);
+       double separation = pointB.sub(pointA).dot(axis);
        return separation;
 
      case SeparationType.FACE_A:
@@ -182,7 +182,7 @@ class SeparationFunction {
        localPointB.setFrom(proxyB.vertices[indexes[1]]);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = pointB.sub(pointA).dot(normal);
+       double separation = pointB.sub(pointA).dot(normal);
        return separation;
 
      case SeparationType.FACE_B:
@@ -199,18 +199,18 @@ class SeparationFunction {
        localPointA.setFrom(proxyA.vertices[indexes[0]]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
-       num separation = pointA.sub(pointB).dot(normal);
+       double separation = pointA.sub(pointB).dot(normal);
        return separation;
 
      default:
        assert (false);
        indexes[0] = -1;
        indexes[1] = -1;
-       return 0;
+       return 0.0;
    }
  }
 
- num evaluate(int indexA, int indexB, num t) {
+ double evaluate(int indexA, int indexB, double t) {
    sweepA.getTransform(xfa, t);
    sweepB.getTransform(xfb, t);
 
@@ -227,7 +227,7 @@ class SeparationFunction {
        Transform.mulToOut(xfa, localPointA, pointA);
        Transform.mulToOut(xfb, localPointB, pointB);
 
-       num separation = pointB.sub(pointA).dot(axis);
+       double separation = pointB.sub(pointA).dot(axis);
        return separation;
 
      case SeparationType.FACE_A:
@@ -240,7 +240,7 @@ class SeparationFunction {
 
        localPointB.setFrom(proxyB.vertices[indexB]);
        Transform.mulToOut(xfb, localPointB, pointB);
-       num separation = pointB.sub(pointA).dot(normal);
+       double separation = pointB.sub(pointA).dot(normal);
        return separation;
 
      case SeparationType.FACE_B:
@@ -253,12 +253,12 @@ class SeparationFunction {
        localPointA.setFrom(proxyA.vertices[indexA]);
        Transform.mulToOut(xfa, localPointA, pointA);
 
-       num separation = pointA.sub(pointB).dot(normal);
+       double separation = pointA.sub(pointB).dot(normal);
        return separation;
 
      default:
        assert (false);
-       return 0;
+       return 0.0;
    }
  }
 }
@@ -537,11 +537,11 @@ final Transform xfb = new Transform()
 <h3>Methods</h3>
 <div class="method"><h4 id="evaluate">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a> <strong>evaluate</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> indexA, <a href="http://api.dartlang.org/dart_core/int.html">int</a> indexB, <a href="http://api.dartlang.org/dart_core/num.html">num</a> t) <a class="anchor-link" href="#evaluate"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>evaluate</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> indexA, <a href="http://api.dartlang.org/dart_core/int.html">int</a> indexB, <a href="http://api.dartlang.org/dart_core/double.html">double</a> t) <a class="anchor-link" href="#evaluate"
               title="Permalink to SeparationFunction.evaluate">#</a></h4>
 <div class="doc">
 <pre class="source">
-num evaluate(int indexA, int indexB, num t) {
+double evaluate(int indexA, int indexB, double t) {
  sweepA.getTransform(xfa, t);
  sweepB.getTransform(xfb, t);
 
@@ -558,7 +558,7 @@ num evaluate(int indexA, int indexB, num t) {
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = pointB.sub(pointA).dot(axis);
+     double separation = pointB.sub(pointA).dot(axis);
      return separation;
 
    case SeparationType.FACE_A:
@@ -571,7 +571,7 @@ num evaluate(int indexA, int indexB, num t) {
 
      localPointB.setFrom(proxyB.vertices[indexB]);
      Transform.mulToOut(xfb, localPointB, pointB);
-     num separation = pointB.sub(pointA).dot(normal);
+     double separation = pointB.sub(pointA).dot(normal);
      return separation;
 
    case SeparationType.FACE_B:
@@ -584,12 +584,12 @@ num evaluate(int indexA, int indexB, num t) {
      localPointA.setFrom(proxyA.vertices[indexA]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     num separation = pointA.sub(pointB).dot(normal);
+     double separation = pointA.sub(pointB).dot(normal);
      return separation;
 
    default:
      assert (false);
-     return 0;
+     return 0.0;
  }
 }
 </pre>
@@ -597,11 +597,11 @@ num evaluate(int indexA, int indexB, num t) {
 </div>
 <div class="method"><h4 id="findMinSeparation">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a> <strong>findMinSeparation</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/int.html">int</a>&gt; indexes, <a href="http://api.dartlang.org/dart_core/num.html">num</a> t) <a class="anchor-link" href="#findMinSeparation"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>findMinSeparation</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/int.html">int</a>&gt; indexes, <a href="http://api.dartlang.org/dart_core/double.html">double</a> t) <a class="anchor-link" href="#findMinSeparation"
               title="Permalink to SeparationFunction.findMinSeparation">#</a></h4>
 <div class="doc">
 <pre class="source">
-num findMinSeparation(List&lt;int&gt; indexes, num t) {
+double findMinSeparation(List&lt;int&gt; indexes, double t) {
  sweepA.getTransform(xfa, t);
  sweepB.getTransform(xfb, t);
 
@@ -621,7 +621,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      Transform.mulToOut(xfa, localPointA, pointA);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = pointB.sub(pointA).dot(axis);
+     double separation = pointB.sub(pointA).dot(axis);
      return separation;
 
    case SeparationType.FACE_A:
@@ -638,7 +638,7 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      localPointB.setFrom(proxyB.vertices[indexes[1]]);
      Transform.mulToOut(xfb, localPointB, pointB);
 
-     num separation = pointB.sub(pointA).dot(normal);
+     double separation = pointB.sub(pointA).dot(normal);
      return separation;
 
    case SeparationType.FACE_B:
@@ -655,14 +655,14 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
      localPointA.setFrom(proxyA.vertices[indexes[0]]);
      Transform.mulToOut(xfa, localPointA, pointA);
 
-     num separation = pointA.sub(pointB).dot(normal);
+     double separation = pointA.sub(pointB).dot(normal);
      return separation;
 
    default:
      assert (false);
      indexes[0] = -1;
      indexes[1] = -1;
-     return 0;
+     return 0.0;
  }
 }
 </pre>
@@ -670,12 +670,12 @@ num findMinSeparation(List&lt;int&gt; indexes, num t) {
 </div>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-<a href="http://api.dartlang.org/dart_core/num.html">num</a> <strong>initialize</strong>(<a href="../box2d/SimplexCache.html">SimplexCache</a> cache, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyA, <a href="../box2d/Sweep.html">Sweep</a> argSweepA, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyB, <a href="../box2d/Sweep.html">Sweep</a> argSweepB, <a href="http://api.dartlang.org/dart_core/num.html">num</a> t1) <a class="anchor-link" href="#initialize"
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>initialize</strong>(<a href="../box2d/SimplexCache.html">SimplexCache</a> cache, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyA, <a href="../box2d/Sweep.html">Sweep</a> argSweepA, <a href="../box2d/DistanceProxy.html">DistanceProxy</a> argProxyB, <a href="../box2d/Sweep.html">Sweep</a> argSweepB, <a href="http://api.dartlang.org/dart_core/double.html">double</a> t1) <a class="anchor-link" href="#initialize"
               title="Permalink to SeparationFunction.initialize">#</a></h4>
 <div class="doc">
 <pre class="source">
-num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
-   argSweepA, DistanceProxy argProxyB, Sweep argSweepB, num t1) {
+double initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
+   argSweepA, DistanceProxy argProxyB, Sweep argSweepB, double t1) {
  proxyA = argProxyA;
  proxyB = argProxyB;
  int count = cache.count;
@@ -694,7 +694,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
    Transform.mulToOut(xfa, localPointA, pointA);
    Transform.mulToOut(xfb, localPointB, pointB);
    axis.setFrom(pointB).sub(pointA);
-   num s = axis.normalizeLength();
+   double s = axis.normalizeLength();
    return s;
  } else if (cache.indexA[0] == cache.indexA[1]) {
    // Two points on B and one on A.
@@ -719,7 +719,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(pointA);
    temp.sub(pointB);
-   num s = temp.dot(normal);
+   double s = temp.dot(normal);
    if (s &lt; 0.0) {
      axis.negate();
      s = -s;
@@ -750,7 +750,7 @@ num initialize(SimplexCache cache, DistanceProxy argProxyA, Sweep
 
    temp.setFrom(pointB);
    temp.sub(pointA);
-   num s = temp.dot(normal);
+   double s = temp.dot(normal);
    if (s &lt; 0.0) {
      axis.negate();
      s = -s;

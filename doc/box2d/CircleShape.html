@@ -89,7 +89,7 @@ class CircleShape extends Shape {
   * Computes the mass properties of this Circle at the given density and stores
   * the result in the given MassData object.
   */
- void computeMass(MassData massData, num density) {
+ void computeMass(MassData massData, double density) {
    massData.mass = density * Math.PI * radius * radius;
    massData.center.setFrom(position);
 
@@ -209,13 +209,13 @@ void computeAxisAlignedBox(Aabb2 argBox, Transform argTransform) {
 </div>
 <div class="method"><h4 id="computeMass">
 <button class="show-code">Code</button>
-void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/num.html">num</a> density) <a class="anchor-link" href="#computeMass"
+void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/double.html">double</a> density) <a class="anchor-link" href="#computeMass"
               title="Permalink to CircleShape.computeMass">#</a></h4>
 <div class="doc">
 <p>Computes the mass properties of this Circle at the given density and stores
 the result in the given MassData object.</p>
 <pre class="source">
-void computeMass(MassData massData, num density) {
+void computeMass(MassData massData, double density) {
  massData.mass = density * Math.PI * radius * radius;
  massData.center.setFrom(position);
 

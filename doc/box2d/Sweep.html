@@ -86,7 +86,7 @@ class Sweep {
  }
 
  void normalize() {
-   double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+   double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floorToDouble();
    angleZero -= d;
    angle -= d;
  }
@@ -289,7 +289,7 @@ void <strong>normalize</strong>() <a class="anchor-link" href="#normalize"
 <div class="doc">
 <pre class="source">
 void normalize() {
- double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floor();
+ double d = MathBox.TWO_PI * (angleZero / MathBox.TWO_PI).floorToDouble();
  angleZero -= d;
  angle -= d;
 }

@@ -64,7 +64,7 @@ abstract class Shape {
   * properties of this shape using its dimensions and the
   * given density. The inertia tensor is computed about the local origin.
   */
- void computeMass(MassData massData, num density);
+ void computeMass(MassData massData, double density);
 
  /** Returns a clone of this shape. */
  Shape clone();
@@ -135,7 +135,7 @@ given a transform. Returns through the given out paramater.</p>
 </div>
 </div>
 <div class="method"><h4 id="computeMass">
-abstract void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/num.html">num</a> density) <a class="anchor-link" href="#computeMass"
+abstract void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/double.html">double</a> density) <a class="anchor-link" href="#computeMass"
               title="Permalink to Shape.computeMass">#</a></h4>
 <div class="doc">
 <p>Computes (and returns through the given out parameter massData) the mass
