@@ -36,7 +36,7 @@
 Values are stored in column major order.</p>
 <pre class="source">
 class Matrix4 {
- final Float32List storage = new Float32List(16);
+ final Float32List storage;
 
  /// Solve [A] * [x] = [b].
  static void solve2(Matrix4 A, Vector2 x, Vector2 b) {
@@ -187,31 +187,31 @@ class Matrix4 {
  Matrix4(double arg0, double arg1, double arg2, double arg3,
          double arg4, double arg5, double arg6, double arg7,
          double arg8, double arg9, double arg10, double arg11,
-         double arg12, double arg13, double arg14, double arg15) {
+         double arg12, double arg13, double arg14, double arg15) : storage = new Float32List(16) {
    setValues(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,
              arg11, arg12, arg13, arg14, arg15);
  }
 
  /// Zero matrix.
- Matrix4.zero();
+ Matrix4.zero() : storage = new Float32List(16);
 
  /// Identity matrix.
- Matrix4.identity() {
+ Matrix4.identity() : storage = new Float32List(16) {
    setIdentity();
  }
 
  /// Copies values from [other].
- Matrix4.copy(Matrix4 other) {
+ Matrix4.copy(Matrix4 other) : storage = new Float32List(16) {
    setFrom(other);
  }
 
  /// Constructs a new mat4 from columns.
- Matrix4.columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3) {
+ Matrix4.columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3) : storage = new Float32List(16) {
    setColumns(arg0, arg1, arg2, arg3);
  }
 
  /// Outer product of [u] and [v].
- Matrix4.outer(Vector4 u, Vector4 v) {
+ Matrix4.outer(Vector4 u, Vector4 v) : storage = new Float32List(16) {
    storage[0] = u.storage[0] * v.storage[0];
    storage[1] = u.storage[0] * v.storage[1];
    storage[2] = u.storage[0] * v.storage[2];
@@ -232,37 +232,37 @@ class Matrix4 {
 
 
  /// Rotation of [radians_] around X.
- Matrix4.rotationX(double radians_) {
+ Matrix4.rotationX(double radians_) : storage = new Float32List(16) {
    storage[15] = 1.0;
    setRotationX(radians_);
  }
 
  /// Rotation of [radians_] around Y.
- Matrix4.rotationY(double radians_) {
+ Matrix4.rotationY(double radians_) : storage = new Float32List(16) {
    storage[15] = 1.0;
    setRotationY(radians_);
  }
 
  /// Rotation of [radians_] around Z.
- Matrix4.rotationZ(double radians_) {
+ Matrix4.rotationZ(double radians_) : storage = new Float32List(16) {
    storage[15] = 1.0;
    setRotationZ(radians_);
  }
 
  /// Translation matrix.
- Matrix4.translation(Vector3 translation) {
+ Matrix4.translation(Vector3 translation) : storage = new Float32List(16) {
    setIdentity();
    setTranslation(translation);
  }
 
  /// Translation matrix.
- Matrix4.translationValues(double x, double y, double z) {
+ Matrix4.translationValues(double x, double y, double z) : storage = new Float32List(16) {
    setIdentity();
    setTranslationRaw(x, y, z);
  }
 
  /// Scale matrix.
- Matrix4.diagonal3(Vector3 scale_) {
+ Matrix4.diagonal3(Vector3 scale_) : storage = new Float32List(16) {
    storage[15] = 1.0;
    storage[10] = scale_.storage[2];
    storage[5] = scale_.storage[1];
@@ -270,12 +270,19 @@ class Matrix4 {
  }
 
  /// Scale matrix.
- Matrix4.diagonal3Values(double x, double y, double z) {
+ Matrix4.diagonal3Values(double x, double y, double z) : storage = new Float32List(16) {
    storage[15] = 1.0;
    storage[10] = z;
    storage[5] = y;
    storage[0] = x;
  }
+
+ /// Constructs Matrix4 with given Float32List as [storage].
+ Matrix4.fromFloat32List(Float32List this.storage);
+
+ /// Constructs Matrix4 with a [storage] that views given [buffer] starting at [offset].
+ /// [offset] has to be multiple of [Float32List.BYTES_PER_ELEMENT].
+ Matrix4.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 16);
 
  /// Sets the diagonal to [arg].
  Matrix4 splatDiagonal(double arg) {
@@ -1837,9 +1844,9 @@ static void solve(Matrix4 A, Vector4 x, Vector4 b) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Matrix4">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Matrix4</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> arg0, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg1, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg2, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg3, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg4, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg5, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg6, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg7, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg8, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg9, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg10, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg11, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg12, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg13, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg14, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg15) <a class="anchor-link" href="#Matrix4"
+new <strong>Matrix4</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> arg0, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg1, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg2, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg3, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg4, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg5, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg6, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg7, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg8, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg9, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg10, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg11, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg12, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg13, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg14, <a href="http://api.dartlang.org/dart_core/double.html">double</a> arg15) <a class="anchor-link" href="#"
               title="Permalink to Matrix4.Matrix4">#</a></h4>
 <div class="doc">
 <p>Constructs a new mat4.</p>
@@ -1847,48 +1854,48 @@ new <strong>Matrix4</strong>(<a href="http://api.dartlang.org/dart_core/double.h
 Matrix4(double arg0, double arg1, double arg2, double arg3,
        double arg4, double arg5, double arg6, double arg7,
        double arg8, double arg9, double arg10, double arg11,
-       double arg12, double arg13, double arg14, double arg15) {
+       double arg12, double arg13, double arg14, double arg15) : storage = new Float32List(16) {
  setValues(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,
            arg11, arg12, arg13, arg14, arg15);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.columns">
+<div class="method"><h4 id="columns">
 <button class="show-code">Code</button>
-new <strong>Matrix4.columns</strong>(<a href="../vector_math/Vector4.html">Vector4</a> arg0, <a href="../vector_math/Vector4.html">Vector4</a> arg1, <a href="../vector_math/Vector4.html">Vector4</a> arg2, <a href="../vector_math/Vector4.html">Vector4</a> arg3) <a class="anchor-link" href="#Matrix4.columns"
+new <strong>Matrix4.columns</strong>(<a href="../vector_math/Vector4.html">Vector4</a> arg0, <a href="../vector_math/Vector4.html">Vector4</a> arg1, <a href="../vector_math/Vector4.html">Vector4</a> arg2, <a href="../vector_math/Vector4.html">Vector4</a> arg3) <a class="anchor-link" href="#columns"
               title="Permalink to Matrix4.Matrix4.columns">#</a></h4>
 <div class="doc">
 <p>Constructs a new mat4 from columns.</p>
 <pre class="source">
-Matrix4.columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3) {
+Matrix4.columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3) : storage = new Float32List(16) {
  setColumns(arg0, arg1, arg2, arg3);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Matrix4.copy</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> other) <a class="anchor-link" href="#Matrix4.copy"
+new <strong>Matrix4.copy</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Matrix4.Matrix4.copy">#</a></h4>
 <div class="doc">
 <p>Copies values from 
 <span class="param">other</span>.</p>
 <pre class="source">
-Matrix4.copy(Matrix4 other) {
+Matrix4.copy(Matrix4 other) : storage = new Float32List(16) {
  setFrom(other);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.diagonal3">
+<div class="method"><h4 id="diagonal3">
 <button class="show-code">Code</button>
-new <strong>Matrix4.diagonal3</strong>(<a href="../vector_math/Vector3.html">Vector3</a> scale_) <a class="anchor-link" href="#Matrix4.diagonal3"
+new <strong>Matrix4.diagonal3</strong>(<a href="../vector_math/Vector3.html">Vector3</a> scale_) <a class="anchor-link" href="#diagonal3"
               title="Permalink to Matrix4.Matrix4.diagonal3">#</a></h4>
 <div class="doc">
 <p>Scale matrix.</p>
 <pre class="source">
-Matrix4.diagonal3(Vector3 scale_) {
+Matrix4.diagonal3(Vector3 scale_) : storage = new Float32List(16) {
  storage[15] = 1.0;
  storage[10] = scale_.storage[2];
  storage[5] = scale_.storage[1];
@@ -1897,14 +1904,14 @@ Matrix4.diagonal3(Vector3 scale_) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.diagonal3Values">
+<div class="method"><h4 id="diagonal3Values">
 <button class="show-code">Code</button>
-new <strong>Matrix4.diagonal3Values</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z) <a class="anchor-link" href="#Matrix4.diagonal3Values"
+new <strong>Matrix4.diagonal3Values</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z) <a class="anchor-link" href="#diagonal3Values"
               title="Permalink to Matrix4.Matrix4.diagonal3Values">#</a></h4>
 <div class="doc">
 <p>Scale matrix.</p>
 <pre class="source">
-Matrix4.diagonal3Values(double x, double y, double z) {
+Matrix4.diagonal3Values(double x, double y, double z) : storage = new Float32List(16) {
  storage[15] = 1.0;
  storage[10] = z;
  storage[5] = y;
@@ -1913,29 +1920,56 @@ Matrix4.diagonal3Values(double x, double y, double z) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.identity">
+<div class="method"><h4 id="fromBuffer">
 <button class="show-code">Code</button>
-new <strong>Matrix4.identity</strong>() <a class="anchor-link" href="#Matrix4.identity"
+new <strong>Matrix4.fromBuffer</strong>(<a href="http://api.dartlang.org/dart_typed_data/ByteBuffer.html">ByteBuffer</a> buffer, <a href="http://api.dartlang.org/dart_core/int.html">int</a> offset) <a class="anchor-link" href="#fromBuffer"
+              title="Permalink to Matrix4.Matrix4.fromBuffer">#</a></h4>
+<div class="doc">
+<p>Constructs Matrix4 with a <a class="crossref" href="../vector_math/Matrix4.html#storage">storage</a> that views given 
+<span class="param">buffer</span> starting at 
+<span class="param">offset</span>.
+
+<span class="param">offset</span> has to be multiple of [Float32List.BYTES_PER_ELEMENT].</p>
+<pre class="source">
+Matrix4.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 16);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="fromFloat32List">
+<button class="show-code">Code</button>
+new <strong>Matrix4.fromFloat32List</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#fromFloat32List"
+              title="Permalink to Matrix4.Matrix4.fromFloat32List">#</a></h4>
+<div class="doc">
+<p>Constructs Matrix4 with given Float32List as 
+<span class="param">storage</span>.</p>
+<pre class="source">
+Matrix4.fromFloat32List(Float32List this.storage);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="identity">
+<button class="show-code">Code</button>
+new <strong>Matrix4.identity</strong>() <a class="anchor-link" href="#identity"
               title="Permalink to Matrix4.Matrix4.identity">#</a></h4>
 <div class="doc">
 <p>Identity matrix.</p>
 <pre class="source">
-Matrix4.identity() {
+Matrix4.identity() : storage = new Float32List(16) {
  setIdentity();
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.outer">
+<div class="method"><h4 id="outer">
 <button class="show-code">Code</button>
-new <strong>Matrix4.outer</strong>(<a href="../vector_math/Vector4.html">Vector4</a> u, <a href="../vector_math/Vector4.html">Vector4</a> v) <a class="anchor-link" href="#Matrix4.outer"
+new <strong>Matrix4.outer</strong>(<a href="../vector_math/Vector4.html">Vector4</a> u, <a href="../vector_math/Vector4.html">Vector4</a> v) <a class="anchor-link" href="#outer"
               title="Permalink to Matrix4.Matrix4.outer">#</a></h4>
 <div class="doc">
 <p>Outer product of 
 <span class="param">u</span> and 
 <span class="param">v</span>.</p>
 <pre class="source">
-Matrix4.outer(Vector4 u, Vector4 v) {
+Matrix4.outer(Vector4 u, Vector4 v) : storage = new Float32List(16) {
  storage[0] = u.storage[0] * v.storage[0];
  storage[1] = u.storage[0] * v.storage[1];
  storage[2] = u.storage[0] * v.storage[2];
@@ -1956,87 +1990,87 @@ Matrix4.outer(Vector4 u, Vector4 v) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.rotationX">
+<div class="method"><h4 id="rotationX">
 <button class="show-code">Code</button>
-new <strong>Matrix4.rotationX</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#Matrix4.rotationX"
+new <strong>Matrix4.rotationX</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#rotationX"
               title="Permalink to Matrix4.Matrix4.rotationX">#</a></h4>
 <div class="doc">
 <p>Rotation of 
 <span class="param">radians_</span> around X.</p>
 <pre class="source">
-Matrix4.rotationX(double radians_) {
+Matrix4.rotationX(double radians_) : storage = new Float32List(16) {
  storage[15] = 1.0;
  setRotationX(radians_);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.rotationY">
+<div class="method"><h4 id="rotationY">
 <button class="show-code">Code</button>
-new <strong>Matrix4.rotationY</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#Matrix4.rotationY"
+new <strong>Matrix4.rotationY</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#rotationY"
               title="Permalink to Matrix4.Matrix4.rotationY">#</a></h4>
 <div class="doc">
 <p>Rotation of 
 <span class="param">radians_</span> around Y.</p>
 <pre class="source">
-Matrix4.rotationY(double radians_) {
+Matrix4.rotationY(double radians_) : storage = new Float32List(16) {
  storage[15] = 1.0;
  setRotationY(radians_);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.rotationZ">
+<div class="method"><h4 id="rotationZ">
 <button class="show-code">Code</button>
-new <strong>Matrix4.rotationZ</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#Matrix4.rotationZ"
+new <strong>Matrix4.rotationZ</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> radians_) <a class="anchor-link" href="#rotationZ"
               title="Permalink to Matrix4.Matrix4.rotationZ">#</a></h4>
 <div class="doc">
 <p>Rotation of 
 <span class="param">radians_</span> around Z.</p>
 <pre class="source">
-Matrix4.rotationZ(double radians_) {
+Matrix4.rotationZ(double radians_) : storage = new Float32List(16) {
  storage[15] = 1.0;
  setRotationZ(radians_);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.translation">
+<div class="method"><h4 id="translation">
 <button class="show-code">Code</button>
-new <strong>Matrix4.translation</strong>(<a href="../vector_math/Vector3.html">Vector3</a> translation) <a class="anchor-link" href="#Matrix4.translation"
+new <strong>Matrix4.translation</strong>(<a href="../vector_math/Vector3.html">Vector3</a> translation) <a class="anchor-link" href="#translation"
               title="Permalink to Matrix4.Matrix4.translation">#</a></h4>
 <div class="doc">
 <p>Translation matrix.</p>
 <pre class="source">
-Matrix4.translation(Vector3 translation) {
+Matrix4.translation(Vector3 translation) : storage = new Float32List(16) {
  setIdentity();
  setTranslation(translation);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.translationValues">
+<div class="method"><h4 id="translationValues">
 <button class="show-code">Code</button>
-new <strong>Matrix4.translationValues</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z) <a class="anchor-link" href="#Matrix4.translationValues"
+new <strong>Matrix4.translationValues</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z) <a class="anchor-link" href="#translationValues"
               title="Permalink to Matrix4.Matrix4.translationValues">#</a></h4>
 <div class="doc">
 <p>Translation matrix.</p>
 <pre class="source">
-Matrix4.translationValues(double x, double y, double z) {
+Matrix4.translationValues(double x, double y, double z) : storage = new Float32List(16) {
  setIdentity();
  setTranslationRaw(x, y, z);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Matrix4.zero">
+<div class="method"><h4 id="zero">
 <button class="show-code">Code</button>
-new <strong>Matrix4.zero</strong>() <a class="anchor-link" href="#Matrix4.zero"
+new <strong>Matrix4.zero</strong>() <a class="anchor-link" href="#zero"
               title="Permalink to Matrix4.Matrix4.zero">#</a></h4>
 <div class="doc">
 <p>Zero matrix.</p>
 <pre class="source">
-Matrix4.zero();
+Matrix4.zero() : storage = new Float32List(16);
 </pre>
 </div>
 </div>
@@ -2190,7 +2224,7 @@ final <a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32
         </h4>
         <div class="doc">
 <pre class="source">
-final Float32List storage = new Float32List(16)
+final Float32List storage
 </pre>
 </div>
 </div>

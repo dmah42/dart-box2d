@@ -55,6 +55,19 @@ class Sweep {
         angle == other.angle;
   }
 
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + localCenter.x.hashCode;
+    result = 37 * result + localCenter.y.hashCode;
+    result = 37 * result + centerZero.x.hashCode;
+    result = 37 * result + centerZero.y.hashCode;
+    result = 37 * result + center.x.hashCode;
+    result = 37 * result + center.y.hashCode;
+    result = 37 * result + angleZero.hashCode;
+    result = 37 * result + angle.hashCode;
+    return result;
+  }
+
   /**
    * Sets this Sweep equal to the given Sweep.
    */

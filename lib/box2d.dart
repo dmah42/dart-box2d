@@ -16,7 +16,6 @@ library box2d;
 
 import 'dart:collection';
 import 'dart:math' as Math;
-import 'dart:typed_data';
 import 'package:vector_math/vector_math.dart';
 
 export 'package:vector_math/vector_math.dart';

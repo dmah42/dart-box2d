@@ -52,6 +52,12 @@ class ContactID {
   */
  bool operator ==(other) =&gt; other.features == features;
 
+ int get hashCode {
+   int result = 17;
+   result = 37 * result + features.hashCode;
+   return result;
+ }
+
  /**
   * Sets this contactID to be equal to the given ContactID.
   */
@@ -71,9 +77,9 @@ class ContactID {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="ContactID">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>ContactID</strong>() <a class="anchor-link" href="#ContactID"
+new <strong>ContactID</strong>() <a class="anchor-link" href="#"
               title="Permalink to ContactID.ContactID">#</a></h4>
 <div class="doc">
 <p>Constructs a new ContactID. </p>
@@ -82,9 +88,9 @@ ContactID() : features = new Features();
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="ContactID.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>ContactID.copy</strong>(<a href="../box2d/ContactID.html">ContactID</a> other) <a class="anchor-link" href="#ContactID.copy"
+new <strong>ContactID.copy</strong>(<a href="../box2d/ContactID.html">ContactID</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to ContactID.ContactID.copy">#</a></h4>
 <div class="doc">
 <p>Constructs a ContactID that is a copy of the given ContactID.</p>
@@ -107,6 +113,32 @@ final <a href="../box2d/Features.html">Features</a>         <strong>features</st
 <p>The features that intersect to form the contact point </p>
 <pre class="source">
 final Features features
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="hashCode">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>hashCode</strong> <a class="anchor-link"
+            href="#hashCode"
+            title="Permalink to ContactID.hashCode">#</a>
+        </h4>
+        <div class="doc">
+<div class="inherited">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <a class="crossref" href="../box2d/ContactID.html#hashCode">hashCode</a> it should override the
+equality operator as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+int get hashCode {
+ int result = 17;
+ result = 37 * result + features.hashCode;
+ return result;
+}
 </pre>
 </div>
 </div>

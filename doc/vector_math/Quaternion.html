@@ -33,8 +33,7 @@
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
 <pre class="source">
-class Quaternion
-{
+class Quaternion {
  final Float32List storage;
 
  double get x =&gt; storage[0];
@@ -47,8 +46,7 @@ class Quaternion
  set w(double w) { storage[3] = w; }
 
  /// Constructs a quaternion using the raw values [x], [y], [z], and [w]
- Quaternion(double x, double y, double z, double w) :
-     storage = new Float32List(4) {
+ Quaternion(double x, double y, double z, double w) : storage = new Float32List(4) {
    storage[0] = x;
    storage[1] = y;
    storage[2] = z;
@@ -56,8 +54,7 @@ class Quaternion
  }
 
  /// From a rotation matrix [rotationMatrix].
- Quaternion.fromRotation(Matrix3 rotationMatrix) : 
-     storage = new Float32List(4) {
+ Quaternion.fromRotation(Matrix3 rotationMatrix) : storage = new Float32List(4) {
    double trace = rotationMatrix.trace();
    if (trace &gt; 0.0) {
      double s = Math.sqrt(trace + 1.0);
@@ -88,8 +85,7 @@ class Quaternion
  }
 
  /// Rotation of [angle] around [axis].
- Quaternion.axisAngle(Vector3 axis, double angle) :
-     storage = new Float32List(4) {
+ Quaternion.axisAngle(Vector3 axis, double angle) : storage = new Float32List(4) {
    setAxisAngle(axis, angle);
  }
 
@@ -102,7 +98,7 @@ class Quaternion
  }
 
  /// Random rotation.
- Quaternion.random(Math.Random rn)  : storage = new Float32List(4) {
+ Quaternion.random(Math.Random rn) : storage = new Float32List(4) {
    // From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
    // pg. 124-132.
    double x0 = rn.nextDouble();
@@ -144,9 +140,14 @@ class Quaternion
    storage[3] = _w * 0.5;
  }
 
- /// Quaternion view of [storage].
- Quaternion.view(this.storage);
- 
+
+ /// Constructs Quaternion with given Float32List as [storage].
+ Quaternion.fromFloat32List(Float32List this.storage);
+
+ /// Constructs Quaternion with a [storage] that views given [buffer] starting at [offset].
+ /// [offset] has to be multiple of [Float32List.BYTES_PER_ELEMENT].
+ Quaternion.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 4);
+
  /// Returns a new copy of this
  Quaternion clone() {
    return new Quaternion.copy(this);
@@ -415,9 +416,9 @@ class Quaternion
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Quaternion">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Quaternion</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z, <a href="http://api.dartlang.org/dart_core/double.html">double</a> w) <a class="anchor-link" href="#Quaternion"
+new <strong>Quaternion</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z, <a href="http://api.dartlang.org/dart_core/double.html">double</a> w) <a class="anchor-link" href="#"
               title="Permalink to Quaternion.Quaternion">#</a></h4>
 <div class="doc">
 <p>Constructs a quaternion using the raw values 
@@ -426,8 +427,7 @@ new <strong>Quaternion</strong>(<a href="http://api.dartlang.org/dart_core/doubl
 <span class="param">z</span>, and 
 <span class="param">w</span></p>
 <pre class="source">
-Quaternion(double x, double y, double z, double w) :
-   storage = new Float32List(4) {
+Quaternion(double x, double y, double z, double w) : storage = new Float32List(4) {
  storage[0] = x;
  storage[1] = y;
  storage[2] = z;
@@ -436,25 +436,24 @@ Quaternion(double x, double y, double z, double w) :
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.axisAngle">
+<div class="method"><h4 id="axisAngle">
 <button class="show-code">Code</button>
-new <strong>Quaternion.axisAngle</strong>(<a href="../vector_math/Vector3.html">Vector3</a> axis, <a href="http://api.dartlang.org/dart_core/double.html">double</a> angle) <a class="anchor-link" href="#Quaternion.axisAngle"
+new <strong>Quaternion.axisAngle</strong>(<a href="../vector_math/Vector3.html">Vector3</a> axis, <a href="http://api.dartlang.org/dart_core/double.html">double</a> angle) <a class="anchor-link" href="#axisAngle"
               title="Permalink to Quaternion.Quaternion.axisAngle">#</a></h4>
 <div class="doc">
 <p>Rotation of 
 <span class="param">angle</span> around 
 <span class="param">axis</span>.</p>
 <pre class="source">
-Quaternion.axisAngle(Vector3 axis, double angle) :
-   storage = new Float32List(4) {
+Quaternion.axisAngle(Vector3 axis, double angle) : storage = new Float32List(4) {
  setAxisAngle(axis, angle);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Quaternion.copy</strong>(<a href="../vector_math/Quaternion.html">Quaternion</a> original) <a class="anchor-link" href="#Quaternion.copy"
+new <strong>Quaternion.copy</strong>(<a href="../vector_math/Quaternion.html">Quaternion</a> original) <a class="anchor-link" href="#copy"
               title="Permalink to Quaternion.Quaternion.copy">#</a></h4>
 <div class="doc">
 <p>Copies 
@@ -469,9 +468,9 @@ Quaternion.copy(Quaternion original) : storage = new Float32List(4) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.dq">
+<div class="method"><h4 id="dq">
 <button class="show-code">Code</button>
-new <strong>Quaternion.dq</strong>(<a href="../vector_math/Quaternion.html">Quaternion</a> q, <a href="../vector_math/Vector3.html">Vector3</a> omega) <a class="anchor-link" href="#Quaternion.dq"
+new <strong>Quaternion.dq</strong>(<a href="../vector_math/Quaternion.html">Quaternion</a> q, <a href="../vector_math/Vector3.html">Vector3</a> omega) <a class="anchor-link" href="#dq"
               title="Permalink to Quaternion.Quaternion.dq">#</a></h4>
 <div class="doc">
 <p>Time derivative of 
@@ -498,16 +497,42 @@ Quaternion.dq(Quaternion q, Vector3 omega) : storage = new Float32List(4) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.fromRotation">
+<div class="method"><h4 id="fromBuffer">
 <button class="show-code">Code</button>
-new <strong>Quaternion.fromRotation</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> rotationMatrix) <a class="anchor-link" href="#Quaternion.fromRotation"
+new <strong>Quaternion.fromBuffer</strong>(<a href="http://api.dartlang.org/dart_typed_data/ByteBuffer.html">ByteBuffer</a> buffer, <a href="http://api.dartlang.org/dart_core/int.html">int</a> offset) <a class="anchor-link" href="#fromBuffer"
+              title="Permalink to Quaternion.Quaternion.fromBuffer">#</a></h4>
+<div class="doc">
+<p>Constructs Quaternion with a <a class="crossref" href="../vector_math/Quaternion.html#storage">storage</a> that views given 
+<span class="param">buffer</span> starting at 
+<span class="param">offset</span>.
+
+<span class="param">offset</span> has to be multiple of [Float32List.BYTES_PER_ELEMENT].</p>
+<pre class="source">
+Quaternion.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 4);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="fromFloat32List">
+<button class="show-code">Code</button>
+new <strong>Quaternion.fromFloat32List</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#fromFloat32List"
+              title="Permalink to Quaternion.Quaternion.fromFloat32List">#</a></h4>
+<div class="doc">
+<p>Constructs Quaternion with given Float32List as 
+<span class="param">storage</span>.</p>
+<pre class="source">
+Quaternion.fromFloat32List(Float32List this.storage);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="fromRotation">
+<button class="show-code">Code</button>
+new <strong>Quaternion.fromRotation</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> rotationMatrix) <a class="anchor-link" href="#fromRotation"
               title="Permalink to Quaternion.Quaternion.fromRotation">#</a></h4>
 <div class="doc">
 <p>From a rotation matrix 
 <span class="param">rotationMatrix</span>.</p>
 <pre class="source">
-Quaternion.fromRotation(Matrix3 rotationMatrix) : 
-   storage = new Float32List(4) {
+Quaternion.fromRotation(Matrix3 rotationMatrix) : storage = new Float32List(4) {
  double trace = rotationMatrix.trace();
  if (trace &gt; 0.0) {
    double s = Math.sqrt(trace + 1.0);
@@ -539,9 +564,9 @@ Quaternion.fromRotation(Matrix3 rotationMatrix) :
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.identity">
+<div class="method"><h4 id="identity">
 <button class="show-code">Code</button>
-new <strong>Quaternion.identity</strong>() <a class="anchor-link" href="#Quaternion.identity"
+new <strong>Quaternion.identity</strong>() <a class="anchor-link" href="#identity"
               title="Permalink to Quaternion.Quaternion.identity">#</a></h4>
 <div class="doc">
 <p>Constructs the identity quaternion</p>
@@ -552,14 +577,14 @@ Quaternion.identity() : storage = new Float32List(4) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Quaternion.random">
+<div class="method"><h4 id="random">
 <button class="show-code">Code</button>
-new <strong>Quaternion.random</strong>(<a href="http://api.dartlang.org/dart_math/Random.html">Random</a> rn) <a class="anchor-link" href="#Quaternion.random"
+new <strong>Quaternion.random</strong>(<a href="http://api.dartlang.org/dart_math/Random.html">Random</a> rn) <a class="anchor-link" href="#random"
               title="Permalink to Quaternion.Quaternion.random">#</a></h4>
 <div class="doc">
 <p>Random rotation.</p>
 <pre class="source">
-Quaternion.random(Math.Random rn)  : storage = new Float32List(4) {
+Quaternion.random(Math.Random rn) : storage = new Float32List(4) {
  // From: "Uniform Random Rotations", Ken Shoemake, Graphics Gems III,
  // pg. 124-132.
  double x0 = rn.nextDouble();
@@ -576,18 +601,6 @@ Quaternion.random(Math.Random rn)  : storage = new Float32List(4) {
  storage[2] = s2 * r2;
  storage[3] = c2 * r2;
 }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Quaternion.view">
-<button class="show-code">Code</button>
-new <strong>Quaternion.view</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#Quaternion.view"
-              title="Permalink to Quaternion.Quaternion.view">#</a></h4>
-<div class="doc">
-<p>Quaternion view of 
-<span class="param">storage</span>.</p>
-<pre class="source">
-Quaternion.view(this.storage);
 </pre>
 </div>
 </div>

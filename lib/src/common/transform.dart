@@ -42,6 +42,17 @@ class Transform {
     return position == other.position && rotation == other.rotation;
   }
 
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + position.x.hashCode;
+    result = 37 * result + position.y.hashCode;
+    result = 37 * result + rotation.entry(0, 0).hashCode;
+    result = 37 * result + rotation.entry(0, 1).hashCode;
+    result = 37 * result + rotation.entry(1, 0).hashCode;
+    result = 37 * result + rotation.entry(1, 1).hashCode;
+    return result;
+  }
+
   /**
    * Sets this transform with the given position and rotation.
    */

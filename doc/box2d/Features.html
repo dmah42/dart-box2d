@@ -74,6 +74,14 @@ class Features {
    incidentEdge == other.incidentEdge &amp;&amp;
    incidentVertex == other.incidentVertex &amp;&amp; flip == other.flip;
 
+ int get hashCode {
+   int result = 17;
+   result = 37 * result + referenceEdge.hashCode;
+   result = 37 * result + incidentEdge.hashCode;
+   result = 37 * result + incidentVertex.hashCode;
+   result = 37 * result + flip.hashCode;
+   return result;
+ }
  /**
   * Returns a String representation of this Features.
   */
@@ -95,9 +103,9 @@ class Features {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Features">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Features</strong>() <a class="anchor-link" href="#Features"
+new <strong>Features</strong>() <a class="anchor-link" href="#"
               title="Permalink to Features.Features">#</a></h4>
 <div class="doc">
 <p>Constructs a new features with zero values for all fields.</p>
@@ -106,9 +114,9 @@ Features();
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Features.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Features.copy</strong>(<a href="../box2d/Features.html">Features</a> f) <a class="anchor-link" href="#Features.copy"
+new <strong>Features.copy</strong>(<a href="../box2d/Features.html">Features</a> f) <a class="anchor-link" href="#copy"
               title="Permalink to Features.Features.copy">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -133,6 +141,35 @@ Features.copy(Features f) :
 <p>A value of 1 indicates that the reference edge is on shape2. </p>
 <pre class="source">
 int flip = 0
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="hashCode">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>hashCode</strong> <a class="anchor-link"
+            href="#hashCode"
+            title="Permalink to Features.hashCode">#</a>
+        </h4>
+        <div class="doc">
+<div class="inherited">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <a class="crossref" href="../box2d/Features.html#hashCode">hashCode</a> it should override the
+equality operator as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+int get hashCode {
+ int result = 17;
+ result = 37 * result + referenceEdge.hashCode;
+ result = 37 * result + incidentEdge.hashCode;
+ result = 37 * result + incidentVertex.hashCode;
+ result = 37 * result + flip.hashCode;
+ return result;
+}
 </pre>
 </div>
 </div>

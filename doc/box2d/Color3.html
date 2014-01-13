@@ -66,24 +66,38 @@ class Color3 {
  bool operator ==(final other) {
    return other is Color3 &amp;&amp; x == other.x &amp;&amp; y == other.y &amp;&amp; z == other.z;
  }
+
+ int get hashCode {
+   int result = 17;
+   result = 37 * result + x.hashCode;
+   result = 37 * result + y.hashCode;
+   result = 37 * result + z.hashCode;
+   return result;
+ }
 }
 </pre>
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Color3">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Color3</strong>() <a class="anchor-link" href="#Color3"
+new <strong>Color3</strong>() <a class="anchor-link" href="#"
               title="Permalink to Color3.Color3">#</a></h4>
 <div class="doc">
+<div class="inherited">
+<p>Creates a new <a class="crossref" href="../dart_core/Object.html">Object</a> instance.</p>
+<p><a class="crossref" href="../dart_core/Object.html">Object</a> instances have no meaningful state, and are only useful
+through their identity. An <a class="crossref" href="../dart_core/Object.html">Object</a> instance is equal to itself
+only.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
 <pre class="source">
 Color3() : x = 0, y = 0, z = 0;
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Color3.fromColor3">
+<div class="method"><h4 id="fromColor3">
 <button class="show-code">Code</button>
-new <strong>Color3.fromColor3</strong>(<a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#Color3.fromColor3"
+new <strong>Color3.fromColor3</strong>(<a href="../box2d/Color3.html">Color3</a> color) <a class="anchor-link" href="#fromColor3"
               title="Permalink to Color3.Color3.fromColor3">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -92,9 +106,9 @@ Color3.fromColor3(Color3 color)
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Color3.fromRGB">
+<div class="method"><h4 id="fromRGB">
 <button class="show-code">Code</button>
-new <strong>Color3.fromRGB</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> r, <a href="http://api.dartlang.org/dart_core/int.html">int</a> g, <a href="http://api.dartlang.org/dart_core/int.html">int</a> b) <a class="anchor-link" href="#Color3.fromRGB"
+new <strong>Color3.fromRGB</strong>(<a href="http://api.dartlang.org/dart_core/int.html">int</a> r, <a href="http://api.dartlang.org/dart_core/int.html">int</a> g, <a href="http://api.dartlang.org/dart_core/int.html">int</a> b) <a class="anchor-link" href="#fromRGB"
               title="Permalink to Color3.Color3.fromRGB">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -102,9 +116,9 @@ Color3.fromRGB(int r, int g, int b) : x = r, y = g, z = b;
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Color3.fromRGBF">
+<div class="method"><h4 id="fromRGBF">
 <button class="show-code">Code</button>
-new <strong>Color3.fromRGBF</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> r, <a href="http://api.dartlang.org/dart_core/double.html">double</a> g, <a href="http://api.dartlang.org/dart_core/double.html">double</a> b) <a class="anchor-link" href="#Color3.fromRGBF"
+new <strong>Color3.fromRGBF</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> r, <a href="http://api.dartlang.org/dart_core/double.html">double</a> g, <a href="http://api.dartlang.org/dart_core/double.html">double</a> b) <a class="anchor-link" href="#fromRGBF"
               title="Permalink to Color3.Color3.fromRGBF">#</a></h4>
 <div class="doc">
 <pre class="source">
@@ -118,6 +132,34 @@ Color3.fromRGBF(double r, double g, double b)
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="hashCode">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>hashCode</strong> <a class="anchor-link"
+            href="#hashCode"
+            title="Permalink to Color3.hashCode">#</a>
+        </h4>
+        <div class="doc">
+<div class="inherited">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <a class="crossref" href="../box2d/Color3.html#hashCode">hashCode</a> it should override the
+equality operator as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+int get hashCode {
+ int result = 17;
+ result = 37 * result + x.hashCode;
+ result = 37 * result + y.hashCode;
+ result = 37 * result + z.hashCode;
+ return result;
+}
+</pre>
+</div>
+</div>
 <div class="field"><h4 id="x">
 <button class="show-code">Code</button>
 <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>x</strong> <a class="anchor-link"
@@ -164,11 +206,24 @@ int z
 <div class="doc">
 <div class="inherited">
 <p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
+<p>The default behavior for all <a class="crossref" href="../dart_core/Object.html">Object</a>s is to return true if and
 only if <code>this</code> and 
 <span class="param">other</span> are the same object.</p>
+<p>Override this method to specify a different equality relation on
+a class. The overriding method must still be an equivalence relation.
+That is, it must be:</p><ul><li>
+<p>Total: It must return a boolean for all arguments. It should never throw
+   or return <code>null</code>.</p></li><li>
+<p>Reflexive: For all objects <code>o</code>, <code>o == o</code> must be true.</p></li><li>
+<p>Symmetric: For all objects <code>o1</code> and <code>o2</code>, <code>o1 == o2</code> and <code>o2 == o1</code> must
+   either both be true, or both be false.</p></li><li>
+<p>Transitive: For all objects <code>o1</code>, <code>o2</code>, and <code>o3</code>, if <code>o1 == o2</code> and
+   <code>o2 == o3</code> are true, then <code>o1 == o3</code> must be true.</p></li></ul>
+<p>The method should also be consistent over time, so equality of two objects
+should not change over time, or at least only change if one of the objects
+was modified.</p>
 <p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
+the <a class="crossref" href="../box2d/Color3.html#hashCode">hashCode</a> method as well to maintain consistency.</p>
 <div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
 <pre class="source">
 bool operator ==(final other) {

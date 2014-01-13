@@ -119,7 +119,7 @@ class DynamicTree {
     assert (argProxy.isLeaf);
 
     // If the given proxies box contains the given box, then return right away.
-    if (argBox.contains(argProxy.box))
+    if (argBox.containsAabb2(argProxy.box))
       return false;
 
     // Remove the proxy from the tree.
@@ -186,8 +186,7 @@ class DynamicTree {
     if (node == null)
       return true;
 
-    if (argBox.intersectsWith(node.box)) {
-
+    if (argBox.intersectsWithAabb2(node.box)) {
       if (node.isLeaf) {
         if (!callback.treeCallback(node))
           return false;
@@ -275,7 +274,7 @@ class DynamicTree {
       // Build up the axis-aligned boxes in case we expanded them out.
       do {
         // If the old parent's box contains the new parent's box, leave.
-        if (node2.box.contains(node1.box))
+        if (node2.box.containsAabb2(node1.box))
           break;
 
         // Set the old parent's box to the combination of it's new
@@ -337,7 +336,7 @@ class DynamicTree {
         _tempBox.copyFrom(node1.box);
 
         node1.box..copyFrom(node1.childOne.box)..hull(node1.childTwo.box);
-        if (node1.box.contains(_tempBox)) {
+        if (node1.box.containsAabb2(_tempBox)) {
           break;
         }
 

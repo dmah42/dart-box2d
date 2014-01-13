@@ -49,4 +49,12 @@ class Color3 {
   bool operator ==(final other) {
     return other is Color3 && x == other.x && y == other.y && z == other.z;
   }
+
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + x.hashCode;
+    result = 37 * result + y.hashCode;
+    result = 37 * result + z.hashCode;
+    return result;
+  }
 }

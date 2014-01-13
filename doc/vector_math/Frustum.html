@@ -1,0 +1,334 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Frustum class / vector_math Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="vector_math" data-type="Frustum">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../vector_math.html">vector_math</a> &rsaquo; <a href="../vector_math/Frustum.html">Frustum</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Frustum</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class Frustum {
+ final List&lt;Plane&gt; _planes;
+
+ List&lt;Plane&gt; get planes =&gt; _planes;
+
+ Frustum() :
+   _planes = &lt;Plane&gt;[new Plane(), new Plane(), new Plane(), new Plane(),
+                     new Plane(), new Plane()].toList(growable: false) {}
+
+ Frustum.copy(Frustum other) :
+   _planes = other.planes.map((p) =&gt; new Plane.copy(p))
+                         .toList(growable: false) {}
+
+ Frustum.matrix(Matrix4 matrix) :
+   _planes = &lt;Plane&gt;[new Plane(), new Plane(), new Plane(), new Plane(),
+                     new Plane(), new Plane()].toList(growable: false) {
+   setFromMatrix(matrix);
+ }
+
+ void copyFrom(Frustum o) {
+   for(var i = 0; i &lt; 6; ++i) {
+     _planes[i].copyFrom(o._planes[i]);
+   }
+ }
+
+ void setFromMatrix(Matrix4 matrix) {
+   var me = matrix.storage;
+   var me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
+   var me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
+   var me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
+   var me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
+
+   _planes[0]
+     ..setFromComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12)
+     ..normalize();
+   _planes[1]
+     ..setFromComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12)
+     ..normalize();
+   _planes[2]
+     ..setFromComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13)
+     ..normalize();
+   _planes[3]
+     ..setFromComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13)
+     ..normalize();
+   _planes[4]
+     ..setFromComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14)
+     ..normalize();
+   _planes[5]
+     ..setFromComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14)
+     ..normalize();
+ }
+
+ bool containsVector3(Vector3 point) {
+   for(var i = 0; i &lt; 6; ++i) {
+     if(_planes[ i ].distanceToVector3(point) &lt; 0.0) {
+       return false;
+     }
+   }
+
+   return true;
+ }
+
+ bool intersectsWithAabb3(Aabb3 aabb) {
+   final p1 = new Vector3.zero();
+   final p2 = new Vector3.zero();
+
+   for(var i = 0; i &lt; 6 ; ++i) {
+     var plane = _planes[i];
+
+     p1.x = plane.normal.x &gt; 0 ? aabb.min.x : aabb.max.x;
+     p2.x = plane.normal.x &gt; 0 ? aabb.max.x : aabb.min.x;
+     p1.y = plane.normal.y &gt; 0 ? aabb.min.y : aabb.max.y;
+     p2.y = plane.normal.y &gt; 0 ? aabb.max.y : aabb.min.y;
+     p1.z = plane.normal.z &gt; 0 ? aabb.min.z : aabb.max.z;
+     p2.z = plane.normal.z &gt; 0 ? aabb.max.z : aabb.min.z;
+
+     double d1 = plane.distanceToVector3(p1);
+     double d2 = plane.distanceToVector3(p2);
+
+     if (d1 &lt; 0 &amp;&amp; d2 &lt; 0) {
+       return false;
+     }
+   }
+
+   return true;
+ }
+
+ bool intersectsWithSphere(Sphere sphere) {
+   var negativeRadius = -sphere.radius;
+
+   for(var i = 0; i &lt; 6; ++i) {
+     double distance = _planes[i].distanceToVector3(sphere.center);
+
+     if (distance &lt; negativeRadius) {
+       return false;
+     }
+   }
+
+   return true;
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>Frustum</strong>() <a class="anchor-link" href="#"
+              title="Permalink to Frustum.Frustum">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Creates a new <a class="crossref" href="../dart_core/Object.html">Object</a> instance.</p>
+<p><a class="crossref" href="../dart_core/Object.html">Object</a> instances have no meaningful state, and are only useful
+through their identity. An <a class="crossref" href="../dart_core/Object.html">Object</a> instance is equal to itself
+only.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+Frustum() :
+ _planes = &lt;Plane&gt;[new Plane(), new Plane(), new Plane(), new Plane(),
+                   new Plane(), new Plane()].toList(growable: false) {}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copy">
+<button class="show-code">Code</button>
+new <strong>Frustum.copy</strong>(<a href="../vector_math/Frustum.html">Frustum</a> other) <a class="anchor-link" href="#copy"
+              title="Permalink to Frustum.Frustum.copy">#</a></h4>
+<div class="doc">
+<pre class="source">
+Frustum.copy(Frustum other) :
+ _planes = other.planes.map((p) =&gt; new Plane.copy(p))
+                       .toList(growable: false) {}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="matrix">
+<button class="show-code">Code</button>
+new <strong>Frustum.matrix</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> matrix) <a class="anchor-link" href="#matrix"
+              title="Permalink to Frustum.Frustum.matrix">#</a></h4>
+<div class="doc">
+<pre class="source">
+Frustum.matrix(Matrix4 matrix) :
+ _planes = &lt;Plane&gt;[new Plane(), new Plane(), new Plane(), new Plane(),
+                   new Plane(), new Plane()].toList(growable: false) {
+ setFromMatrix(matrix);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="planes">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="../vector_math/Plane.html">Plane</a>&gt;         <strong>planes</strong> <a class="anchor-link"
+            href="#planes"
+            title="Permalink to Frustum.planes">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+List&lt;Plane&gt; get planes =&gt; _planes;
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="containsVector3">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>containsVector3</strong>(<a href="../vector_math/Vector3.html">Vector3</a> point) <a class="anchor-link" href="#containsVector3"
+              title="Permalink to Frustum.containsVector3">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool containsVector3(Vector3 point) {
+ for(var i = 0; i &lt; 6; ++i) {
+   if(_planes[ i ].distanceToVector3(point) &lt; 0.0) {
+     return false;
+   }
+ }
+
+ return true;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copyFrom">
+<button class="show-code">Code</button>
+void <strong>copyFrom</strong>(<a href="../vector_math/Frustum.html">Frustum</a> o) <a class="anchor-link" href="#copyFrom"
+              title="Permalink to Frustum.copyFrom">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyFrom(Frustum o) {
+ for(var i = 0; i &lt; 6; ++i) {
+   _planes[i].copyFrom(o._planes[i]);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="intersectsWithAabb3">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>intersectsWithAabb3</strong>(<a href="../vector_math/Aabb3.html">Aabb3</a> aabb) <a class="anchor-link" href="#intersectsWithAabb3"
+              title="Permalink to Frustum.intersectsWithAabb3">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool intersectsWithAabb3(Aabb3 aabb) {
+ final p1 = new Vector3.zero();
+ final p2 = new Vector3.zero();
+
+ for(var i = 0; i &lt; 6 ; ++i) {
+   var plane = _planes[i];
+
+   p1.x = plane.normal.x &gt; 0 ? aabb.min.x : aabb.max.x;
+   p2.x = plane.normal.x &gt; 0 ? aabb.max.x : aabb.min.x;
+   p1.y = plane.normal.y &gt; 0 ? aabb.min.y : aabb.max.y;
+   p2.y = plane.normal.y &gt; 0 ? aabb.max.y : aabb.min.y;
+   p1.z = plane.normal.z &gt; 0 ? aabb.min.z : aabb.max.z;
+   p2.z = plane.normal.z &gt; 0 ? aabb.max.z : aabb.min.z;
+
+   double d1 = plane.distanceToVector3(p1);
+   double d2 = plane.distanceToVector3(p2);
+
+   if (d1 &lt; 0 &amp;&amp; d2 &lt; 0) {
+     return false;
+   }
+ }
+
+ return true;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="intersectsWithSphere">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>intersectsWithSphere</strong>(<a href="../vector_math/Sphere.html">Sphere</a> sphere) <a class="anchor-link" href="#intersectsWithSphere"
+              title="Permalink to Frustum.intersectsWithSphere">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool intersectsWithSphere(Sphere sphere) {
+ var negativeRadius = -sphere.radius;
+
+ for(var i = 0; i &lt; 6; ++i) {
+   double distance = _planes[i].distanceToVector3(sphere.center);
+
+   if (distance &lt; negativeRadius) {
+     return false;
+   }
+ }
+
+ return true;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFromMatrix">
+<button class="show-code">Code</button>
+void <strong>setFromMatrix</strong>(<a href="../vector_math/Matrix4.html">Matrix4</a> matrix) <a class="anchor-link" href="#setFromMatrix"
+              title="Permalink to Frustum.setFromMatrix">#</a></h4>
+<div class="doc">
+<pre class="source">
+void setFromMatrix(Matrix4 matrix) {
+ var me = matrix.storage;
+ var me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
+ var me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
+ var me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
+ var me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
+
+ _planes[0]
+   ..setFromComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12)
+   ..normalize();
+ _planes[1]
+   ..setFromComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12)
+   ..normalize();
+ _planes[2]
+   ..setFromComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13)
+   ..normalize();
+ _planes[3]
+   ..setFromComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13)
+   ..normalize();
+ _planes[4]
+   ..setFromComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14)
+   ..normalize();
+ _planes[5]
+   ..setFromComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14)
+   ..normalize();
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

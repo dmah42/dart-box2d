@@ -215,6 +215,16 @@ class Vector4 {
    return out.normalize();
  }
 
+ /// Distance from [this] to [arg]
+ double distanceTo(Vector4 arg) {
+   return this.clone().sub(arg).length;
+ }
+
+ /// Squared distance from [this] to [arg]
+ double distanceToSquared(Vector4 arg) {
+   return this.clone().sub(arg).length2;
+ }
+
  /// Inner product.
  double dot(Vector4 other) {
    double sum;
@@ -2359,9 +2369,9 @@ static void max(Vector4 a, Vector4 b, Vector4 result) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Vector4">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Vector4</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> w_) <a class="anchor-link" href="#Vector4"
+new <strong>Vector4</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> w_) <a class="anchor-link" href="#"
               title="Permalink to Vector4.Vector4">#</a></h4>
 <div class="doc">
 <p>Constructs a new vector with the specified values.</p>
@@ -2372,9 +2382,9 @@ Vector4(double x_, double y_, double z_, double w_) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector4.array">
+<div class="method"><h4 id="array">
 <button class="show-code">Code</button>
-new <strong>Vector4.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#Vector4.array"
+new <strong>Vector4.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#array"
               title="Permalink to Vector4.Vector4.array">#</a></h4>
 <div class="doc">
 <p>Initialized with values from 
@@ -2391,9 +2401,9 @@ Vector4.array(List&lt;double&gt; array, [int offset=0]) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector4.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Vector4.copy</strong>(<a href="../vector_math/Vector4.html">Vector4</a> other) <a class="anchor-link" href="#Vector4.copy"
+new <strong>Vector4.copy</strong>(<a href="../vector_math/Vector4.html">Vector4</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Vector4.Vector4.copy">#</a></h4>
 <div class="doc">
 <p>Copy of 
@@ -2405,9 +2415,9 @@ Vector4.copy(Vector4 other) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector4.identity">
+<div class="method"><h4 id="identity">
 <button class="show-code">Code</button>
-new <strong>Vector4.identity</strong>() <a class="anchor-link" href="#Vector4.identity"
+new <strong>Vector4.identity</strong>() <a class="anchor-link" href="#identity"
               title="Permalink to Vector4.Vector4.identity">#</a></h4>
 <div class="doc">
 <p>Constructs the identity vector.</p>
@@ -2418,9 +2428,9 @@ Vector4.identity() {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector4.zero">
+<div class="method"><h4 id="zero">
 <button class="show-code">Code</button>
-new <strong>Vector4.zero</strong>() <a class="anchor-link" href="#Vector4.zero"
+new <strong>Vector4.zero</strong>() <a class="anchor-link" href="#zero"
               title="Permalink to Vector4.Vector4.zero">#</a></h4>
 <div class="doc">
 <p>/ Zero vector.</p>
@@ -16298,6 +16308,34 @@ void copyIntoArray(List&lt;double&gt; array, [int offset=0]) {
  array[offset+1] = storage[1];
  array[offset+2] = storage[2];
  array[offset+3] = storage[3];
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distanceTo">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceTo</strong>(<a href="../vector_math/Vector4.html">Vector4</a> arg) <a class="anchor-link" href="#distanceTo"
+              title="Permalink to Vector4.distanceTo">#</a></h4>
+<div class="doc">
+<p>Distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceTo(Vector4 arg) {
+ return this.clone().sub(arg).length;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distanceToSquared">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceToSquared</strong>(<a href="../vector_math/Vector4.html">Vector4</a> arg) <a class="anchor-link" href="#distanceToSquared"
+              title="Permalink to Vector4.distanceToSquared">#</a></h4>
+<div class="doc">
+<p>Squared distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceToSquared(Vector4 arg) {
+ return this.clone().sub(arg).length2;
 }
 </pre>
 </div>

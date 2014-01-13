@@ -74,6 +74,19 @@ class Sweep {
        angle == other.angle;
  }
 
+ int get hashCode {
+   int result = 17;
+   result = 37 * result + localCenter.x.hashCode;
+   result = 37 * result + localCenter.y.hashCode;
+   result = 37 * result + centerZero.x.hashCode;
+   result = 37 * result + centerZero.y.hashCode;
+   result = 37 * result + center.x.hashCode;
+   result = 37 * result + center.y.hashCode;
+   result = 37 * result + angleZero.hashCode;
+   result = 37 * result + angle.hashCode;
+   return result;
+ }
+
  /**
   * Sets this Sweep equal to the given Sweep.
   */
@@ -123,9 +136,9 @@ class Sweep {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Sweep">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Sweep</strong>() <a class="anchor-link" href="#Sweep"
+new <strong>Sweep</strong>() <a class="anchor-link" href="#"
               title="Permalink to Sweep.Sweep">#</a></h4>
 <div class="doc">
 <p>Constructs a new Sweep with centers initialized to the origin and angles
@@ -138,9 +151,9 @@ Sweep()
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Sweep.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Sweep.copy</strong>(<a href="../box2d/Sweep.html">Sweep</a> other) <a class="anchor-link" href="#Sweep.copy"
+new <strong>Sweep.copy</strong>(<a href="../box2d/Sweep.html">Sweep</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Sweep.Sweep.copy">#</a></h4>
 <div class="doc">
 <p>Constructs a new sweep that is a copy of the given Sweep.</p>
@@ -204,6 +217,39 @@ final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>centerZe
 <p>Center world positions. </p>
 <pre class="source">
 final Vector2 centerZero
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="hashCode">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>hashCode</strong> <a class="anchor-link"
+            href="#hashCode"
+            title="Permalink to Sweep.hashCode">#</a>
+        </h4>
+        <div class="doc">
+<div class="inherited">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <a class="crossref" href="../box2d/Sweep.html#hashCode">hashCode</a> it should override the
+equality operator as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+int get hashCode {
+ int result = 17;
+ result = 37 * result + localCenter.x.hashCode;
+ result = 37 * result + localCenter.y.hashCode;
+ result = 37 * result + centerZero.x.hashCode;
+ result = 37 * result + centerZero.y.hashCode;
+ result = 37 * result + center.x.hashCode;
+ result = 37 * result + center.y.hashCode;
+ result = 37 * result + angleZero.hashCode;
+ result = 37 * result + angle.hashCode;
+ return result;
+}
 </pre>
 </div>
 </div>
