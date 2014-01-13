@@ -215,6 +215,60 @@ class PolygonShape extends Shape {
    return true;
  }
 
+ bool raycast(RayCastOutput output, RayCastInput input, Transform xf,
+     int childIndex) {
+   Vector2 p1 = new Vector2.zero();
+   Vector2 p2 = new Vector2.zero();
+
+   p1.setFrom(input.p1).sub(xf.position);
+   xf.rotation.transposed().transformed(p1, p1);
+
+   p2.setFrom(input.p2).sub(xf.position);
+   xf.rotation.transposed().transformed(p2, p2);
+
+   Vector2 d = p2.sub(p1);
+
+   double lower = 0.0;
+   double upper = input.maxFraction;
+
+   int index = -1;
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     Vector2 normal = normals[i];
+     Vector2 vertex = vertices[i];
+
+     Vector2 temp = vertex.sub(p1);
+     double numerator = normal.dot(temp);
+     double denominator = normal.dot(d);
+
+     if (denominator == 0.0) {
+       if (numerator &lt; 0.0)
+         return false;
+     } else {
+       if (denominator &lt; 0.0 &amp;&amp; numerator &lt; lower * denominator) {
+         lower = numerator / denominator;
+         index = i;
+       } else if (denominator &gt; 0.0 &amp;&amp; numerator &lt; upper * denominator) {
+         upper = numerator / denominator;
+       }
+     }
+
+     if (upper &lt; lower)
+       return false;
+   }
+
+   assert(0.0 &lt;= lower &amp;&amp; lower &lt;= input.maxFraction);
+
+   if (index &gt;= 0) {
+     output.fraction = lower;
+     Vector2 normal = normals[index];
+     Vector2 out = output.normal;
+     xf.rotation.transformed(normal, out);
+     return true;
+   }
+   return false;
+ }
+
  /**
   * See Shape.computeAxisAlignedBox(AABB, Transform).
   */
@@ -814,6 +868,75 @@ Vector2 getSupportVertex(Vector2 d) =&gt; vertices[getSupport(d)];
 <p>Get a vertex by index.</p>
 <pre class="source">
 Vector2 getVertex(int index) =&gt; vertices[index];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="raycast">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>raycast</strong>(<a href="../box2d/RayCastOutput.html">RayCastOutput</a> output, <a href="../box2d/RayCastInput.html">RayCastInput</a> input, <a href="../box2d/Transform.html">Transform</a> xf, <a href="http://api.dartlang.org/dart_core/int.html">int</a> childIndex) <a class="anchor-link" href="#raycast"
+              title="Permalink to PolygonShape.raycast">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Cast a ray against a child shape</p>
+<p>output: the raycast results.
+input: the raycast input parameters.
+transform: the transform to be applied to the shape.
+childIndex: the child shape index.</p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Shape.html">Shape</a> </div></div>
+<pre class="source">
+bool raycast(RayCastOutput output, RayCastInput input, Transform xf,
+   int childIndex) {
+ Vector2 p1 = new Vector2.zero();
+ Vector2 p2 = new Vector2.zero();
+
+ p1.setFrom(input.p1).sub(xf.position);
+ xf.rotation.transposed().transformed(p1, p1);
+
+ p2.setFrom(input.p2).sub(xf.position);
+ xf.rotation.transposed().transformed(p2, p2);
+
+ Vector2 d = p2.sub(p1);
+
+ double lower = 0.0;
+ double upper = input.maxFraction;
+
+ int index = -1;
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   Vector2 normal = normals[i];
+   Vector2 vertex = vertices[i];
+
+   Vector2 temp = vertex.sub(p1);
+   double numerator = normal.dot(temp);
+   double denominator = normal.dot(d);
+
+   if (denominator == 0.0) {
+     if (numerator &lt; 0.0)
+       return false;
+   } else {
+     if (denominator &lt; 0.0 &amp;&amp; numerator &lt; lower * denominator) {
+       lower = numerator / denominator;
+       index = i;
+     } else if (denominator &gt; 0.0 &amp;&amp; numerator &lt; upper * denominator) {
+       upper = numerator / denominator;
+     }
+   }
+
+   if (upper &lt; lower)
+     return false;
+ }
+
+ assert(0.0 &lt;= lower &amp;&amp; lower &lt;= input.maxFraction);
+
+ if (index &gt;= 0) {
+   output.fraction = lower;
+   Vector2 normal = normals[index];
+   Vector2 out = output.normal;
+   xf.rotation.transformed(normal, out);
+   return true;
+ }
+ return false;
+}
 </pre>
 </div>
 </div>

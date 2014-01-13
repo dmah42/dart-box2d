@@ -151,6 +151,10 @@ class Fixture {
    return shape.testPoint(body.originTransform, p);
  }
 
+ bool raycast(RayCastOutput output, RayCastInput input, int childIndex) {
+   return shape.raycast(output, input, body.originTransform, childIndex);
+ }
+
  /** Get the type of the child shape. */
  int get type =&gt; shape.type;
 }
@@ -411,6 +415,18 @@ and the shape. The rotational inertia is about the shape's origin.</p>
 <pre class="source">
 void getMassData(MassData massData) {
  shape.computeMass(massData, density);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="raycast">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>raycast</strong>(<a href="../box2d/RayCastOutput.html">RayCastOutput</a> output, <a href="../box2d/RayCastInput.html">RayCastInput</a> input, <a href="http://api.dartlang.org/dart_core/int.html">int</a> childIndex) <a class="anchor-link" href="#raycast"
+              title="Permalink to Fixture.raycast">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool raycast(RayCastOutput output, RayCastInput input, int childIndex) {
+ return shape.raycast(output, input, body.originTransform, childIndex);
 }
 </pre>
 </div>

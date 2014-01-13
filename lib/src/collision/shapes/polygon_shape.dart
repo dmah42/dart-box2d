@@ -201,6 +201,60 @@ class PolygonShape extends Shape {
     return true;
   }
 
+  bool raycast(RayCastOutput output, RayCastInput input, Transform xf,
+      int childIndex) {
+    Vector2 p1 = new Vector2.zero();
+    Vector2 p2 = new Vector2.zero();
+
+    p1.setFrom(input.p1).sub(xf.position);
+    xf.rotation.transposed().transformed(p1, p1);
+
+    p2.setFrom(input.p2).sub(xf.position);
+    xf.rotation.transposed().transformed(p2, p2);
+
+    Vector2 d = p2.sub(p1);
+
+    double lower = 0.0;
+    double upper = input.maxFraction;
+
+    int index = -1;
+
+    for (int i = 0; i < vertexCount; ++i) {
+      Vector2 normal = normals[i];
+      Vector2 vertex = vertices[i];
+
+      Vector2 temp = vertex.sub(p1);
+      double numerator = normal.dot(temp);
+      double denominator = normal.dot(d);
+
+      if (denominator == 0.0) {
+        if (numerator < 0.0)
+          return false;
+      } else {
+        if (denominator < 0.0 && numerator < lower * denominator) {
+          lower = numerator / denominator;
+          index = i;
+        } else if (denominator > 0.0 && numerator < upper * denominator) {
+          upper = numerator / denominator;
+        }
+      }
+
+      if (upper < lower)
+        return false;
+    }
+
+    assert(0.0 <= lower && lower <= input.maxFraction);
+
+    if (index >= 0) {
+      output.fraction = lower;
+      Vector2 normal = normals[index];
+      Vector2 out = output.normal;
+      xf.rotation.transformed(normal, out);
+      return true;
+    }
+    return false;
+  }
+
   /**
    * See Shape.computeAxisAlignedBox(AABB, Transform).
    */

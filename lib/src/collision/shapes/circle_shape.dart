@@ -54,6 +54,36 @@ class CircleShape extends Shape {
     return d.dot(d) <= radius * radius;
   }
 
+  bool raycast(RayCastOutput output, RayCastInput input, Transform transform,
+      int childIndex) {
+    Vector2 center = new Vector2.zero();
+    transform.rotation.transformed(position, center);
+    center.add(transform.position);
+
+    Vector2 s = input.p1.sub(center);
+    double b = s.dot(s) - (radius * radius);
+
+    // Solve quadratic equation
+    Vector2 r = input.p2.sub(input.p1);
+    double c = s.dot(r);
+    double rr = r.dot(r);
+    double sigma = c * c - rr * b;
+
+    if (sigma < 0.0 || rr < Settings.EPSILON)
+      return false;
+
+    double a = -(c + Math.sqrt(sigma));
+
+    if (0.0 <= a && a <= input.maxFraction * rr) {
+      a /= rr;
+      output.fraction = a;
+      output.normal = (r.scale(a)).add(s);
+      output.normal.normalize();
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Compute the axis aligned box for this Shape when the given transform is
    * applied. Stores the result in the given box.

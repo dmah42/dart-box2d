@@ -65,6 +65,7 @@ class Features {
     result = 37 * result + flip.hashCode;
     return result;
   }
+
   /**
    * Returns a String representation of this Features.
    */

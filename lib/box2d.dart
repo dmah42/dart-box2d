@@ -39,6 +39,8 @@ part 'src/collision/manifold.dart';
 part 'src/collision/manifold_point.dart';
 part 'src/collision/manifold_type.dart';
 part 'src/collision/point_state.dart';
+part 'src/collision/raycast_input.dart';
+part 'src/collision/raycast_output.dart';
 part 'src/collision/simplex.dart';
 part 'src/collision/simplex_cache.dart';
 part 'src/collision/simplex_vertex.dart';
