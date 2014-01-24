@@ -42,6 +42,17 @@ class Transform {
     return position == other.position && rotation == other.rotation;
   }
 
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + position.x.hashCode;
+    result = 37 * result + position.y.hashCode;
+    result = 37 * result + rotation.entry(0, 0).hashCode;
+    result = 37 * result + rotation.entry(0, 1).hashCode;
+    result = 37 * result + rotation.entry(1, 0).hashCode;
+    result = 37 * result + rotation.entry(1, 1).hashCode;
+    return result;
+  }
+
   /**
    * Sets this transform with the given position and rotation.
    */
@@ -63,9 +74,7 @@ class Transform {
    * the result.
    */
   static Vector2 mul(Transform T, Vector2 v) {
-    return new Vector2(T.position.x + T.rotation.entry(0,0) * v.x +
-        T.rotation.entry(0,1) * v.y, T.position.y + T.rotation.entry(1,0) * v.x +
-        T.rotation.entry(1,1) * v.y);
+    return T.position + T.rotation * v;
   }
 
   /**
@@ -74,22 +83,18 @@ class Transform {
    */
   static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
     assert(out != null);
-    double tempY = transform.position.y + transform.rotation.entry(1,0) *
-        vector.x + transform.rotation.entry(1,1) * vector.y;
-    out.x = transform.position.x + transform.rotation.entry(0,0) * vector.x +
-        transform.rotation.entry(0,1) * vector.y;
-    out.y = tempY;
+    final Vector2 v1 = mul(transform, vector);
+    // Set values, don't copy the reference.
+    out.x = v1.x;
+    out.y = v1.y;
   }
 
   static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
-    double v1x = v.x - T.position.x;
-    double v1y = v.y - T.position.y;
-    final double bx = T.rotation.entry(0,0);
-    final double by = T.rotation.entry(1,0);
-    final double b1x = T.rotation.entry(0,1);
-    final double b1y = T.rotation.entry(1,1);
-    double tempy = v1x * b1x + v1y * b1y;
-    out.x = v1x * bx + v1y * by;
+    final Vector2 v1 = v - T.position;
+    final Vector2 b = T.rotation.getColumn(0);
+    final Vector2 b1 = T.rotation.getColumn(1);
+    double tempy = v1.dot(b1);
+    out.x = v1.dot(b);
     out.y = tempy;
   }
 }

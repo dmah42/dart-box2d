@@ -77,7 +77,7 @@ abstract class Demo {
 
   Demo(String name, [Vector2 gravity, this.viewportScale = _VIEWPORT_SCALE]) {
     _stopwatch = new Stopwatch()..start();
-    query("#title").innerHtml = name;
+    querySelector("#title").innerHtml = name;
     bool doSleep = true;
     if (null == gravity) gravity = new Vector2(0.0, GRAVITY);
     world = new World(gravity, doSleep, new DefaultWorldPool());
@@ -121,8 +121,8 @@ abstract class Demo {
     world.debugDraw = debugDraw;
 
     frameCount = 0;
-    fpsCounter = query("#fps-counter");
-    worldStepTime = query("#world-step-time");
+    fpsCounter = querySelector("#fps-counter");
+    worldStepTime = querySelector("#world-step-time");
     new Timer.periodic(new Duration(seconds: 1), (Timer t) {
         fpsCounter.innerHtml = frameCount.toString();
         frameCount = 0;

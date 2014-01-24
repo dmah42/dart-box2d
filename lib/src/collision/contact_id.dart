@@ -38,6 +38,12 @@ class ContactID {
    */
   bool operator ==(other) => other.features == features;
 
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + features.hashCode;
+    return result;
+  }
+
   /**
    * Sets this contactID to be equal to the given ContactID.
    */

@@ -16,7 +16,6 @@ library box2d;
 
 import 'dart:collection';
 import 'dart:math' as Math;
-import 'dart:typed_data';
 import 'package:vector_math/vector_math_64.dart';
 
 export 'package:vector_math/vector_math_64.dart';
@@ -40,6 +39,8 @@ part 'src/collision/manifold.dart';
 part 'src/collision/manifold_point.dart';
 part 'src/collision/manifold_type.dart';
 part 'src/collision/point_state.dart';
+part 'src/collision/raycast_input.dart';
+part 'src/collision/raycast_output.dart';
 part 'src/collision/simplex.dart';
 part 'src/collision/simplex_cache.dart';
 part 'src/collision/simplex_vertex.dart';

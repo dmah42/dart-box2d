@@ -41,6 +41,17 @@ abstract class Shape {
   bool testPoint(Transform transform, Vector2 point);
 
   /**
+   * Cast a ray against a child shape
+   *
+   * output: the raycast results.
+   * input: the raycast input parameters.
+   * transform: the transform to be applied to the shape.
+   * childIndex: the child shape index.
+   */
+  bool raycast(RayCastOutput output, RayCastInput input, Transform transform,
+      int childIndex);
+
+  /**
    * Computes the associated axis aligned bounding box for a child shape
    * given a transform. Returns through the given out paramater.
    */

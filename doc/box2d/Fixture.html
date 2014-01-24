@@ -147,6 +147,14 @@ class Fixture {
    shape.computeMass(massData, density);
  }
 
+ bool testPoint(Vector2 p) {
+   return shape.testPoint(body.originTransform, p);
+ }
+
+ bool raycast(RayCastOutput output, RayCastInput input, int childIndex) {
+   return shape.raycast(output, input, body.originTransform, childIndex);
+ }
+
  /** Get the type of the child shape. */
  int get type =&gt; shape.type;
 }
@@ -154,9 +162,9 @@ class Fixture {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Fixture">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Fixture</strong>() <a class="anchor-link" href="#Fixture"
+new <strong>Fixture</strong>() <a class="anchor-link" href="#"
               title="Permalink to Fixture.Fixture">#</a></h4>
 <div class="doc">
 <p>Constructs a new Fixture with default values. </p>
@@ -411,6 +419,18 @@ void getMassData(MassData massData) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="raycast">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>raycast</strong>(<a href="../box2d/RayCastOutput.html">RayCastOutput</a> output, <a href="../box2d/RayCastInput.html">RayCastInput</a> input, <a href="http://api.dartlang.org/dart_core/int.html">int</a> childIndex) <a class="anchor-link" href="#raycast"
+              title="Permalink to Fixture.raycast">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool raycast(RayCastOutput output, RayCastInput input, int childIndex) {
+ return shape.raycast(output, input, body.originTransform, childIndex);
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="synchronize">
 <button class="show-code">Code</button>
 void <strong>synchronize</strong>(<a href="../box2d/BroadPhase.html">BroadPhase</a> broadPhase, <a href="../box2d/Transform.html">Transform</a> transformOne, <a href="../box2d/Transform.html">Transform</a> transformTwo) <a class="anchor-link" href="#synchronize"
@@ -440,6 +460,18 @@ void synchronize(BroadPhase broadPhase, Transform transformOne,
  disp.y = transformTwo.position.y - transformOne.position.y;
 
  broadPhase.moveProxy(proxy, box, disp);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="testPoint">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>testPoint</strong>(<a href="../vector_math/Vector2.html">Vector2</a> p) <a class="anchor-link" href="#testPoint"
+              title="Permalink to Fixture.testPoint">#</a></h4>
+<div class="doc">
+<pre class="source">
+bool testPoint(Vector2 p) {
+ return shape.testPoint(body.originTransform, p);
 }
 </pre>
 </div>

@@ -187,7 +187,6 @@ class DynamicTree {
       return true;
 
     if (argBox.intersectsWithAabb2(node.box)) {
-
       if (node.isLeaf) {
         if (!callback.treeCallback(node))
           return false;

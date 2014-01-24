@@ -57,6 +57,15 @@ class Features {
     incidentEdge == other.incidentEdge &&
     incidentVertex == other.incidentVertex && flip == other.flip;
 
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + referenceEdge.hashCode;
+    result = 37 * result + incidentEdge.hashCode;
+    result = 37 * result + incidentVertex.hashCode;
+    result = 37 * result + flip.hashCode;
+    return result;
+  }
+
   /**
    * Returns a String representation of this Features.
    */

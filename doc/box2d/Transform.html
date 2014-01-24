@@ -56,6 +56,17 @@ class Transform {
    return position == other.position &amp;&amp; rotation == other.rotation;
  }
 
+ int get hashCode {
+   int result = 17;
+   result = 37 * result + position.x.hashCode;
+   result = 37 * result + position.y.hashCode;
+   result = 37 * result + rotation.entry(0, 0).hashCode;
+   result = 37 * result + rotation.entry(0, 1).hashCode;
+   result = 37 * result + rotation.entry(1, 0).hashCode;
+   result = 37 * result + rotation.entry(1, 1).hashCode;
+   return result;
+ }
+
  /**
   * Sets this transform with the given position and rotation.
   */
@@ -77,9 +88,7 @@ class Transform {
   * the result.
   */
  static Vector2 mul(Transform T, Vector2 v) {
-   return new Vector2(T.position.x + T.rotation.entry(0,0) * v.x +
-       T.rotation.entry(0,1) * v.y, T.position.y + T.rotation.entry(1,0) * v.x +
-       T.rotation.entry(1,1) * v.y);
+   return T.position + T.rotation * v;
  }
 
  /**
@@ -88,22 +97,18 @@ class Transform {
   */
  static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
    assert(out != null);
-   double tempY = transform.position.y + transform.rotation.entry(1,0) *
-       vector.x + transform.rotation.entry(1,1) * vector.y;
-   out.x = transform.position.x + transform.rotation.entry(0,0) * vector.x +
-       transform.rotation.entry(0,1) * vector.y;
-   out.y = tempY;
+   final Vector2 v1 = mul(transform, vector);
+   // Set values, don't copy the reference.
+   out.x = v1.x;
+   out.y = v1.y;
  }
 
  static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
-   double v1x = v.x - T.position.x;
-   double v1y = v.y - T.position.y;
-   final double bx = T.rotation.entry(0,0);
-   final double by = T.rotation.entry(1,0);
-   final double b1x = T.rotation.entry(0,1);
-   final double b1y = T.rotation.entry(1,1);
-   double tempy = v1x * b1x + v1y * b1y;
-   out.x = v1x * bx + v1y * by;
+   final Vector2 v1 = v - T.position;
+   final Vector2 b = T.rotation.getColumn(0);
+   final Vector2 b1 = T.rotation.getColumn(1);
+   double tempy = v1.dot(b1);
+   out.x = v1.dot(b);
    out.y = tempy;
  }
 }
@@ -120,9 +125,7 @@ class Transform {
 the result.</p>
 <pre class="source">
 static Vector2 mul(Transform T, Vector2 v) {
- return new Vector2(T.position.x + T.rotation.entry(0,0) * v.x +
-     T.rotation.entry(0,1) * v.y, T.position.y + T.rotation.entry(1,0) * v.x +
-     T.rotation.entry(1,1) * v.y);
+ return T.position + T.rotation * v;
 }
 </pre>
 </div>
@@ -137,11 +140,10 @@ in the given out parameter.</p>
 <pre class="source">
 static void mulToOut(Transform transform, Vector2 vector, Vector2 out) {
  assert(out != null);
- double tempY = transform.position.y + transform.rotation.entry(1,0) *
-     vector.x + transform.rotation.entry(1,1) * vector.y;
- out.x = transform.position.x + transform.rotation.entry(0,0) * vector.x +
-     transform.rotation.entry(0,1) * vector.y;
- out.y = tempY;
+ final Vector2 v1 = mul(transform, vector);
+ // Set values, don't copy the reference.
+ out.x = v1.x;
+ out.y = v1.y;
 }
 </pre>
 </div>
@@ -153,14 +155,11 @@ void <strong>mulTransToOut</strong>(<a href="../box2d/Transform.html">Transform<
 <div class="doc">
 <pre class="source">
 static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
- double v1x = v.x - T.position.x;
- double v1y = v.y - T.position.y;
- final double bx = T.rotation.entry(0,0);
- final double by = T.rotation.entry(1,0);
- final double b1x = T.rotation.entry(0,1);
- final double b1y = T.rotation.entry(1,1);
- double tempy = v1x * b1x + v1y * b1y;
- out.x = v1x * bx + v1y * by;
+ final Vector2 v1 = v - T.position;
+ final Vector2 b = T.rotation.getColumn(0);
+ final Vector2 b1 = T.rotation.getColumn(1);
+ double tempy = v1.dot(b1);
+ out.x = v1.dot(b);
  out.y = tempy;
 }
 </pre>
@@ -169,9 +168,9 @@ static void mulTransToOut(Transform T, Vector2 v, Vector2 out) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Transform">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Transform</strong>() <a class="anchor-link" href="#Transform"
+new <strong>Transform</strong>() <a class="anchor-link" href="#"
               title="Permalink to Transform.Transform">#</a></h4>
 <div class="doc">
 <p>Constructs a new transform with a vector at the origin and no rotation.</p>
@@ -180,9 +179,9 @@ Transform() : position = new Vector2.zero(), rotation = new Matrix2.zero();
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Transform.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Transform.copy</strong>(<a href="../box2d/Transform.html">Transform</a> other) <a class="anchor-link" href="#Transform.copy"
+new <strong>Transform.copy</strong>(<a href="../box2d/Transform.html">Transform</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Transform.Transform.copy">#</a></h4>
 <div class="doc">
 <p>Constructs a new transform equal to the given transform.</p>
@@ -196,6 +195,37 @@ Transform.copy(Transform other)
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="hashCode">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/int.html">int</a>         <strong>hashCode</strong> <a class="anchor-link"
+            href="#hashCode"
+            title="Permalink to Transform.hashCode">#</a>
+        </h4>
+        <div class="doc">
+<div class="inherited">
+<p>Get a hash code for this object.</p>
+<p>All objects have hash codes. Hash codes are guaranteed to be the
+same for objects that are equal when compared using the equality
+operator <code>==</code>. Other than that there are no guarantees about
+the hash codes. They will not be consistent between runs and
+there are no distribution guarantees.</p>
+<p>If a subclass overrides <a class="crossref" href="../box2d/Transform.html#hashCode">hashCode</a> it should override the
+equality operator as well to maintain consistency.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
+<pre class="source">
+int get hashCode {
+ int result = 17;
+ result = 37 * result + position.x.hashCode;
+ result = 37 * result + position.y.hashCode;
+ result = 37 * result + rotation.entry(0, 0).hashCode;
+ result = 37 * result + rotation.entry(0, 1).hashCode;
+ result = 37 * result + rotation.entry(1, 0).hashCode;
+ result = 37 * result + rotation.entry(1, 1).hashCode;
+ return result;
+}
+</pre>
+</div>
+</div>
 <div class="field"><h4 id="position">
 <button class="show-code">Code</button>
 final <a href="../vector_math/Vector2.html">Vector2</a>         <strong>position</strong> <a class="anchor-link"
@@ -232,11 +262,24 @@ final Matrix2 rotation
 <div class="doc">
 <div class="inherited">
 <p>The equality operator.</p>
-<p>The default behavior for all <code>Object</code>s is to return true if and
+<p>The default behavior for all <a class="crossref" href="../dart_core/Object.html">Object</a>s is to return true if and
 only if <code>this</code> and 
 <span class="param">other</span> are the same object.</p>
+<p>Override this method to specify a different equality relation on
+a class. The overriding method must still be an equivalence relation.
+That is, it must be:</p><ul><li>
+<p>Total: It must return a boolean for all arguments. It should never throw
+   or return <code>null</code>.</p></li><li>
+<p>Reflexive: For all objects <code>o</code>, <code>o == o</code> must be true.</p></li><li>
+<p>Symmetric: For all objects <code>o1</code> and <code>o2</code>, <code>o1 == o2</code> and <code>o2 == o1</code> must
+   either both be true, or both be false.</p></li><li>
+<p>Transitive: For all objects <code>o1</code>, <code>o2</code>, and <code>o3</code>, if <code>o1 == o2</code> and
+   <code>o2 == o3</code> are true, then <code>o1 == o3</code> must be true.</p></li></ul>
+<p>The method should also be consistent over time, so equality of two objects
+should not change over time, or at least only change if one of the objects
+was modified.</p>
 <p>If a subclass overrides the equality operator it should override
-the <code>hashCode</code> method as well to maintain consistency.</p>
+the <a class="crossref" href="../box2d/Transform.html#hashCode">hashCode</a> method as well to maintain consistency.</p>
 <div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html">Object</a> </div></div>
 <pre class="source">
 bool operator ==(other) {

@@ -57,8 +57,8 @@ class WorldManifold {
   */
  WorldManifold();
 
- void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
-     num radiusB) {
+ void initialize(Manifold manifold, Transform xfA, double radiusA, Transform xfB,
+     double radiusB) {
    switch (manifold.type) {
      case ManifoldType.CIRCLES:
        final Vector2 pointA = pool3;
@@ -84,11 +84,11 @@ class WorldManifold {
          normal.normalize();
        }
 
-       num cAx = normal.x * radiusA + pointA.x;
-       num cAy = normal.y * radiusA + pointA.y;
+       double cAx = normal.x * radiusA + pointA.x;
+       double cAy = normal.y * radiusA + pointA.y;
 
-       num cBx = -normal.x * radiusB + pointB.x;
-       num cBy = -normal.y * radiusB + pointB.y;
+       double cBx = -normal.x * radiusB + pointB.x;
+       double cBy = -normal.y * radiusB + pointB.y;
 
        points[0].x = (cAx + cBx) *.5;
        points[0].y = (cAy + cBy) *.5;
@@ -115,14 +115,14 @@ class WorldManifold {
              manifold.points[i].localPoint.x + xfB.rotation.entry(1,1) *
              manifold.points[i].localPoint.y;
 
-         num scalar = radiusA - ((clipPoint.x - planePoint.x) *
+         double scalar = radiusA - ((clipPoint.x - planePoint.x) *
              normal.x + (clipPoint.y - planePoint.y) * normal.y);
 
-         num cAx = normal.x * scalar + clipPoint.x;
-         num cAy = normal.y * scalar + clipPoint.y;
+         double cAx = normal.x * scalar + clipPoint.x;
+         double cAy = normal.y * scalar + clipPoint.y;
 
-         num cBx = - normal.x * radiusB + clipPoint.x;
-         num cBy = - normal.y * radiusB + clipPoint.y;
+         double cBx = - normal.x * radiusB + clipPoint.x;
+         double cBy = - normal.y * radiusB + clipPoint.y;
 
          points[i].x = (cAx + cBx)*.5;
          points[i].y = (cAy + cBy)*.5;
@@ -154,14 +154,14 @@ class WorldManifold {
              manifold.points[i].localPoint.x + xfA.rotation.entry(1,1) *
              manifold.points[i].localPoint.y;
 
-         num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
+         double scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
              (clipPoint.y - planePoint.y) * normal.y);
 
-         num cBx =  normal.x * scalar + clipPoint.x;
-         num cBy =  normal.y * scalar + clipPoint.y;
+         double cBx =  normal.x * scalar + clipPoint.x;
+         double cBy =  normal.y * scalar + clipPoint.y;
 
-         num cAx = - normal.x * radiusA + clipPoint.x;
-         num cAy = - normal.y * radiusA + clipPoint.y;
+         double cAx = - normal.x * radiusA + clipPoint.x;
+         double cAy = - normal.y * radiusA + clipPoint.y;
 
          points[i].x = (cAx + cBx) *.5;
          points[i].y = (cAy + cBy) *.5;
@@ -177,9 +177,9 @@ class WorldManifold {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="WorldManifold">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>WorldManifold</strong>() <a class="anchor-link" href="#WorldManifold"
+new <strong>WorldManifold</strong>() <a class="anchor-link" href="#"
               title="Permalink to WorldManifold.WorldManifold">#</a></h4>
 <div class="doc">
 <p>Constructs a new WorldManifold.</p>
@@ -249,12 +249,12 @@ final Vector2 pool4 = new Vector2.zero()
 <h3>Methods</h3>
 <div class="method"><h4 id="initialize">
 <button class="show-code">Code</button>
-void <strong>initialize</strong>(<a href="../box2d/Manifold.html">Manifold</a> manifold, <a href="../box2d/Transform.html">Transform</a> xfA, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radiusA, <a href="../box2d/Transform.html">Transform</a> xfB, <a href="http://api.dartlang.org/dart_core/num.html">num</a> radiusB) <a class="anchor-link" href="#initialize"
+void <strong>initialize</strong>(<a href="../box2d/Manifold.html">Manifold</a> manifold, <a href="../box2d/Transform.html">Transform</a> xfA, <a href="http://api.dartlang.org/dart_core/double.html">double</a> radiusA, <a href="../box2d/Transform.html">Transform</a> xfB, <a href="http://api.dartlang.org/dart_core/double.html">double</a> radiusB) <a class="anchor-link" href="#initialize"
               title="Permalink to WorldManifold.initialize">#</a></h4>
 <div class="doc">
 <pre class="source">
-void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
-   num radiusB) {
+void initialize(Manifold manifold, Transform xfA, double radiusA, Transform xfB,
+   double radiusB) {
  switch (manifold.type) {
    case ManifoldType.CIRCLES:
      final Vector2 pointA = pool3;
@@ -280,11 +280,11 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
        normal.normalize();
      }
 
-     num cAx = normal.x * radiusA + pointA.x;
-     num cAy = normal.y * radiusA + pointA.y;
+     double cAx = normal.x * radiusA + pointA.x;
+     double cAy = normal.y * radiusA + pointA.y;
 
-     num cBx = -normal.x * radiusB + pointB.x;
-     num cBy = -normal.y * radiusB + pointB.y;
+     double cBx = -normal.x * radiusB + pointB.x;
+     double cBy = -normal.y * radiusB + pointB.y;
 
      points[0].x = (cAx + cBx) *.5;
      points[0].y = (cAy + cBy) *.5;
@@ -311,14 +311,14 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
            manifold.points[i].localPoint.x + xfB.rotation.entry(1,1) *
            manifold.points[i].localPoint.y;
 
-       num scalar = radiusA - ((clipPoint.x - planePoint.x) *
+       double scalar = radiusA - ((clipPoint.x - planePoint.x) *
            normal.x + (clipPoint.y - planePoint.y) * normal.y);
 
-       num cAx = normal.x * scalar + clipPoint.x;
-       num cAy = normal.y * scalar + clipPoint.y;
+       double cAx = normal.x * scalar + clipPoint.x;
+       double cAy = normal.y * scalar + clipPoint.y;
 
-       num cBx = - normal.x * radiusB + clipPoint.x;
-       num cBy = - normal.y * radiusB + clipPoint.y;
+       double cBx = - normal.x * radiusB + clipPoint.x;
+       double cBy = - normal.y * radiusB + clipPoint.y;
 
        points[i].x = (cAx + cBx)*.5;
        points[i].y = (cAy + cBy)*.5;
@@ -350,14 +350,14 @@ void initialize(Manifold manifold, Transform xfA, num radiusA, Transform xfB,
            manifold.points[i].localPoint.x + xfA.rotation.entry(1,1) *
            manifold.points[i].localPoint.y;
 
-       num scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
+       double scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
            (clipPoint.y - planePoint.y) * normal.y);
 
-       num cBx =  normal.x * scalar + clipPoint.x;
-       num cBy =  normal.y * scalar + clipPoint.y;
+       double cBx =  normal.x * scalar + clipPoint.x;
+       double cBy =  normal.y * scalar + clipPoint.y;
 
-       num cAx = - normal.x * radiusA + clipPoint.x;
-       num cAy = - normal.y * radiusA + clipPoint.y;
+       double cAx = - normal.x * radiusA + clipPoint.x;
+       double cAy = - normal.y * radiusA + clipPoint.y;
 
        points[i].x = (cAx + cBx) *.5;
        points[i].y = (cAy + cBy) *.5;

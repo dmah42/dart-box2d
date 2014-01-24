@@ -133,6 +133,14 @@ class Fixture {
     shape.computeMass(massData, density);
   }
 
+  bool testPoint(Vector2 p) {
+    return shape.testPoint(body.originTransform, p);
+  }
+
+  bool raycast(RayCastOutput output, RayCastInput input, int childIndex) {
+    return shape.raycast(output, input, body.originTransform, childIndex);
+  }
+
   /** Get the type of the child shape. */
   int get type => shape.type;
 }

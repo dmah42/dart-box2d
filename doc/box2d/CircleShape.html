@@ -69,6 +69,36 @@ class CircleShape extends Shape {
    return d.dot(d) &lt;= radius * radius;
  }
 
+ bool raycast(RayCastOutput output, RayCastInput input, Transform transform,
+     int childIndex) {
+   Vector2 center = new Vector2.zero();
+   transform.rotation.transformed(position, center);
+   center.add(transform.position);
+
+   Vector2 s = input.p1.sub(center);
+   double b = s.dot(s) - (radius * radius);
+
+   // Solve quadratic equation
+   Vector2 r = input.p2.sub(input.p1);
+   double c = s.dot(r);
+   double rr = r.dot(r);
+   double sigma = c * c - rr * b;
+
+   if (sigma &lt; 0.0 || rr &lt; Settings.EPSILON)
+     return false;
+
+   double a = -(c + Math.sqrt(sigma));
+
+   if (0.0 &lt;= a &amp;&amp; a &lt;= input.maxFraction * rr) {
+     a /= rr;
+     output.fraction = a;
+     output.normal = (r.scale(a)).add(s);
+     output.normal.normalize();
+     return true;
+   }
+   return false;
+ }
+
  /**
   * Compute the axis aligned box for this Shape when the given transform is
   * applied. Stores the result in the given box.
@@ -89,7 +119,7 @@ class CircleShape extends Shape {
   * Computes the mass properties of this Circle at the given density and stores
   * the result in the given MassData object.
   */
- void computeMass(MassData massData, num density) {
+ void computeMass(MassData massData, double density) {
    massData.mass = density * Math.PI * radius * radius;
    massData.center.setFrom(position);
 
@@ -105,9 +135,9 @@ class CircleShape extends Shape {
 <span class="type-box"><span class="icon-class"></span><a href="../box2d/Shape.html">Shape</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>CircleShape</strong></span></p>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="CircleShape">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>CircleShape</strong>() <a class="anchor-link" href="#CircleShape"
+new <strong>CircleShape</strong>() <a class="anchor-link" href="#"
               title="Permalink to CircleShape.CircleShape">#</a></h4>
 <div class="doc">
 <p>A constructor for internal use only. Instead use Body.createShape with a
@@ -119,9 +149,9 @@ CircleShape() :
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="CircleShape.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>CircleShape.copy</strong>(<a href="../box2d/CircleShape.html">CircleShape</a> other) <a class="anchor-link" href="#CircleShape.copy"
+new <strong>CircleShape.copy</strong>(<a href="../box2d/CircleShape.html">CircleShape</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to CircleShape.CircleShape.copy">#</a></h4>
 <div class="doc">
 <p>Constructs a new CircleShape equal to the given CircleShape.</p>
@@ -209,19 +239,64 @@ void computeAxisAlignedBox(Aabb2 argBox, Transform argTransform) {
 </div>
 <div class="method"><h4 id="computeMass">
 <button class="show-code">Code</button>
-void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/num.html">num</a> density) <a class="anchor-link" href="#computeMass"
+void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/double.html">double</a> density) <a class="anchor-link" href="#computeMass"
               title="Permalink to CircleShape.computeMass">#</a></h4>
 <div class="doc">
 <p>Computes the mass properties of this Circle at the given density and stores
 the result in the given MassData object.</p>
 <pre class="source">
-void computeMass(MassData massData, num density) {
+void computeMass(MassData massData, double density) {
  massData.mass = density * Math.PI * radius * radius;
  massData.center.setFrom(position);
 
  // Store inertia above the local origin.
  massData.inertia = massData.mass * (.5 * radius * radius +
      position.dot(position));
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="raycast">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html">bool</a> <strong>raycast</strong>(<a href="../box2d/RayCastOutput.html">RayCastOutput</a> output, <a href="../box2d/RayCastInput.html">RayCastInput</a> input, <a href="../box2d/Transform.html">Transform</a> transform, <a href="http://api.dartlang.org/dart_core/int.html">int</a> childIndex) <a class="anchor-link" href="#raycast"
+              title="Permalink to CircleShape.raycast">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Cast a ray against a child shape</p>
+<p>output: the raycast results.
+input: the raycast input parameters.
+transform: the transform to be applied to the shape.
+childIndex: the child shape index.</p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Shape.html">Shape</a> </div></div>
+<pre class="source">
+bool raycast(RayCastOutput output, RayCastInput input, Transform transform,
+   int childIndex) {
+ Vector2 center = new Vector2.zero();
+ transform.rotation.transformed(position, center);
+ center.add(transform.position);
+
+ Vector2 s = input.p1.sub(center);
+ double b = s.dot(s) - (radius * radius);
+
+ // Solve quadratic equation
+ Vector2 r = input.p2.sub(input.p1);
+ double c = s.dot(r);
+ double rr = r.dot(r);
+ double sigma = c * c - rr * b;
+
+ if (sigma &lt; 0.0 || rr &lt; Settings.EPSILON)
+   return false;
+
+ double a = -(c + Math.sqrt(sigma));
+
+ if (0.0 &lt;= a &amp;&amp; a &lt;= input.maxFraction * rr) {
+   a /= rr;
+   output.fraction = a;
+   output.normal = (r.scale(a)).add(s);
+   output.normal.normalize();
+   return true;
+ }
+ return false;
 }
 </pre>
 </div>

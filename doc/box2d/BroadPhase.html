@@ -98,7 +98,7 @@ class BroadPhase implements TreeCallback {
  bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
    final Aabb2 a = proxyA.box;
    final Aabb2 b = proxyB.box;
-   return a.intersectsWith(b);
+   return a.intersectsWithAabb2(b);
  }
 
  /**
@@ -257,9 +257,9 @@ static const int PAIR_CAPACITY = 16
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="BroadPhase">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>BroadPhase</strong>() <a class="anchor-link" href="#BroadPhase"
+new <strong>BroadPhase</strong>() <a class="anchor-link" href="#"
               title="Permalink to BroadPhase.BroadPhase">#</a></h4>
 <div class="doc">
 <p>Constructs a new BroadPhase.</p>
@@ -399,7 +399,7 @@ void query(TreeCallback callback, Aabb2 box) {
 bool testOverlap(DynamicTreeNode proxyA, DynamicTreeNode proxyB) {
  final Aabb2 a = proxyA.box;
  final Aabb2 b = proxyB.box;
- return a.intersectsWith(b);
+ return a.intersectsWithAabb2(b);
 }
 </pre>
 </div>

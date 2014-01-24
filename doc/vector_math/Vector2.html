@@ -35,7 +35,7 @@
 <p>2D column vector.</p>
 <pre class="source">
 class Vector2 {
- final Float32List storage;
+ final Float32List storage = new Float32List(2);
 
  /// Set the values of [result] to the minimum of [a] and [b] for each line.
  static void min(Vector2 a, Vector2 b, Vector2 result) {
@@ -50,30 +50,24 @@ class Vector2 {
  }
 
  /// Construct a new vector with the specified values.
- Vector2(double x_, double y_) :
-   storage = new Float32List(2) {
+ Vector2(double x_, double y_) {
    setValues(x_, y_);
  }
 
  /// Initialized with values from [array] starting at [offset].
- Vector2.array(List&lt;double&gt; array, [int offset=0]) :
-   storage = new Float32List(2) {
+ Vector2.array(List&lt;double&gt; array, [int offset=0]) {
    int i = offset;
    storage[1] = array[i+1];
    storage[0] = array[i+0];
  }
 
  /// Zero vector.
- Vector2.zero() : storage = new Float32List(2);
+ Vector2.zero();
 
  /// Copy of [other].
- Vector2.copy(Vector2 other) :
-   storage = new Float32List(2) {
+ Vector2.copy(Vector2 other) {
    setFrom(other);
  }
-
- /// View of [storage].
- Vector2.view(this.storage);
 
  /// Set the values of the vector.
  Vector2 setValues(double x_, double y_) {
@@ -185,12 +179,37 @@ class Vector2 {
    return out.normalize();
  }
 
+ /// Distance from [this] to [arg]
+ double distanceTo(Vector2 arg) {
+   return this.clone().sub(arg).length;
+ }
+
+ /// Squared distance from [this] to [arg]
+ double distanceToSquared(Vector2 arg) {
+   return this.clone().sub(arg).length2;
+ }
+
  /// Inner product.
  double dot(Vector2 other) {
    double sum;
    sum = storage[0] * other.storage[0];
    sum += storage[1] * other.storage[1];
    return sum;
+ }
+ 
+ /**
+  * Transforms [this] into the product of [this] as a row vector,
+  * postmultiplied by matrix, [arg].
+  * If [arg] is a rotation matrix, this is a computational shortcut for applying,
+  * the inverse of the transformation.
+  */
+ Vector2 postmultiply(Matrix2 arg) {
+   double v0 = storage[0];
+   double v1 = storage[1];
+   storage[0] = v0*arg.storage[0]+v1*arg.storage[1];
+   storage[1] = v0*arg.storage[2]+v1*arg.storage[3];
+   
+   return this;
  }
 
  /// Cross product.
@@ -482,31 +501,29 @@ static void max(Vector2 a, Vector2 b, Vector2 result) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Vector2">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Vector2</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_) <a class="anchor-link" href="#Vector2"
+new <strong>Vector2</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_) <a class="anchor-link" href="#"
               title="Permalink to Vector2.Vector2">#</a></h4>
 <div class="doc">
 <p>Construct a new vector with the specified values.</p>
 <pre class="source">
-Vector2(double x_, double y_) :
- storage = new Float32List(2) {
+Vector2(double x_, double y_) {
  setValues(x_, y_);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector2.array">
+<div class="method"><h4 id="array">
 <button class="show-code">Code</button>
-new <strong>Vector2.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#Vector2.array"
+new <strong>Vector2.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#array"
               title="Permalink to Vector2.Vector2.array">#</a></h4>
 <div class="doc">
 <p>Initialized with values from 
 <span class="param">array</span> starting at 
 <span class="param">offset</span>.</p>
 <pre class="source">
-Vector2.array(List&lt;double&gt; array, [int offset=0]) :
- storage = new Float32List(2) {
+Vector2.array(List&lt;double&gt; array, [int offset=0]) {
  int i = offset;
  storage[1] = array[i+1];
  storage[0] = array[i+0];
@@ -514,41 +531,28 @@ Vector2.array(List&lt;double&gt; array, [int offset=0]) :
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector2.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Vector2.copy</strong>(<a href="../vector_math/Vector2.html">Vector2</a> other) <a class="anchor-link" href="#Vector2.copy"
+new <strong>Vector2.copy</strong>(<a href="../vector_math/Vector2.html">Vector2</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Vector2.Vector2.copy">#</a></h4>
 <div class="doc">
 <p>Copy of 
 <span class="param">other</span>.</p>
 <pre class="source">
-Vector2.copy(Vector2 other) :
- storage = new Float32List(2) {
+Vector2.copy(Vector2 other) {
  setFrom(other);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector2.view">
+<div class="method"><h4 id="zero">
 <button class="show-code">Code</button>
-new <strong>Vector2.view</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#Vector2.view"
-              title="Permalink to Vector2.Vector2.view">#</a></h4>
-<div class="doc">
-<p>View of 
-<span class="param">storage</span>.</p>
-<pre class="source">
-Vector2.view(this.storage);
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="Vector2.zero">
-<button class="show-code">Code</button>
-new <strong>Vector2.zero</strong>() <a class="anchor-link" href="#Vector2.zero"
+new <strong>Vector2.zero</strong>() <a class="anchor-link" href="#zero"
               title="Permalink to Vector2.Vector2.zero">#</a></h4>
 <div class="doc">
 <p>Zero vector.</p>
 <pre class="source">
-Vector2.zero() : storage = new Float32List(2);
+Vector2.zero();
 </pre>
 </div>
 </div>
@@ -1130,7 +1134,7 @@ final <a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32
         </h4>
         <div class="doc">
 <pre class="source">
-final Float32List storage
+final Float32List storage = new Float32List(2)
 </pre>
 </div>
 </div>
@@ -1982,6 +1986,34 @@ double cross(Vector2 other) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="distanceTo">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceTo</strong>(<a href="../vector_math/Vector2.html">Vector2</a> arg) <a class="anchor-link" href="#distanceTo"
+              title="Permalink to Vector2.distanceTo">#</a></h4>
+<div class="doc">
+<p>Distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceTo(Vector2 arg) {
+ return this.clone().sub(arg).length;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distanceToSquared">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceToSquared</strong>(<a href="../vector_math/Vector2.html">Vector2</a> arg) <a class="anchor-link" href="#distanceToSquared"
+              title="Permalink to Vector2.distanceToSquared">#</a></h4>
+<div class="doc">
+<p>Squared distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceToSquared(Vector2 arg) {
+ return this.clone().sub(arg).length2;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="divide">
 <button class="show-code">Code</button>
 <a href="../vector_math/Vector2.html">Vector2</a> <strong>divide</strong>(<a href="../vector_math/Vector2.html">Vector2</a> arg) <a class="anchor-link" href="#divide"
@@ -2110,6 +2142,29 @@ double normalizeLength() {
  storage[0] *= l;
  storage[1] *= l;
  return l;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="postmultiply">
+<button class="show-code">Code</button>
+<a href="../vector_math/Vector2.html">Vector2</a> <strong>postmultiply</strong>(<a href="../vector_math/Matrix2.html">Matrix2</a> arg) <a class="anchor-link" href="#postmultiply"
+              title="Permalink to Vector2.postmultiply">#</a></h4>
+<div class="doc">
+<p>Transforms <code>this</code> into the product of <code>this</code> as a row vector,
+postmultiplied by matrix, 
+<span class="param">arg</span>.
+If 
+<span class="param">arg</span> is a rotation matrix, this is a computational shortcut for applying,
+the inverse of the transformation.</p>
+<pre class="source">
+Vector2 postmultiply(Matrix2 arg) {
+ double v0 = storage[0];
+ double v1 = storage[1];
+ storage[0] = v0*arg.storage[0]+v1*arg.storage[1];
+ storage[1] = v0*arg.storage[2]+v1*arg.storage[3];
+ 
+ return this;
 }
 </pre>
 </div>

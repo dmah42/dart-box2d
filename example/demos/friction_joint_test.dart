@@ -13,7 +13,6 @@
 // limitations under the License.
 
 library FrictionJointTest;
-import 'dart:html';
 import 'dart:math' as Math;
 import 'package:box2d/box2d_browser.dart';
 

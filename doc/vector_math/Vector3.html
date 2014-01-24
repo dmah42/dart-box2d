@@ -52,14 +52,12 @@ class Vector3 {
  }
 
  /// Construct a new vector with the specified values.
- Vector3(double x_, double y_, double z_) :
-   storage = new Float32List(3) {
+ Vector3(double x_, double y_, double z_) : storage = new Float32List(3) {
    setValues(x_, y_, z_);
  }
 
  /// Initialized with values from [array] starting at [offset].
- Vector3.array(List&lt;double&gt; array, [int offset=0]) :
-   storage = new Float32List(3) {
+ Vector3.array(List&lt;double&gt; array, [int offset=0]) : storage = new Float32List(3) {
    int i = offset;
    storage[2] = array[i+2];
    storage[1] = array[i+1];
@@ -70,13 +68,16 @@ class Vector3 {
  Vector3.zero() : storage = new Float32List(3);
 
  /// Copy of [other].
- Vector3.copy(Vector3 other) :
-   storage = new Float32List(3) {
+ Vector3.copy(Vector3 other) : storage = new Float32List(3) {
    setFrom(other);
  }
 
- /// View of [storage].
- Vector3.view(this.storage);
+ /// Constructs Vector3 with given Float32List as [storage].
+ Vector3.fromFloat32List(Float32List this.storage);
+
+ /// Constructs Vector3 with a [storage] that views given [buffer] starting at [offset].
+ /// [offset] has to be multiple of [Float32List.BYTES_PER_ELEMENT].
+ Vector3.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 3);
 
  /// Set the values of the vector.
  Vector3 setValues(double x_, double y_, double z_) {
@@ -196,6 +197,16 @@ class Vector3 {
    return out.normalize();
  }
 
+ /// Distance from [this] to [arg]
+ double distanceTo(Vector3 arg) {
+   return this.clone().sub(arg).length;
+ }
+
+ /// Squared distance from [this] to [arg]
+ double distanceToSquared(Vector3 arg) {
+   return this.clone().sub(arg).length2;
+ }
+
  /// Inner product.
  double dot(Vector3 other) {
    double sum;
@@ -203,6 +214,23 @@ class Vector3 {
    sum += storage[1] * other.storage[1];
    sum += storage[2] * other.storage[2];
    return sum;
+ }
+
+ /**
+  * Transforms [this] into the product of [this] as a row vector,
+  * postmultiplied by matrix, [arg].
+  * If [arg] is a rotation matrix, this is a computational shortcut for applying,
+  * the inverse of the transformation.
+  */
+ Vector3 postmultiply(Matrix3 arg) {
+   double v0 = storage[0];
+   double v1 = storage[1];
+   double v2 = storage[2];
+   storage[0] = v0*arg.storage[0]+v1*arg.storage[1]+v2*arg.storage[2];
+   storage[1] = v0*arg.storage[3]+v1*arg.storage[4]+v2*arg.storage[5];
+   storage[2] = v0*arg.storage[6]+v1*arg.storage[7]+v2*arg.storage[8];
+
+   return this;
  }
 
  /// Cross product.
@@ -947,31 +975,29 @@ static void max(Vector3 a, Vector3 b, Vector3 result) {
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="Vector3">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>Vector3</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z_) <a class="anchor-link" href="#Vector3"
+new <strong>Vector3</strong>(<a href="http://api.dartlang.org/dart_core/double.html">double</a> x_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> y_, <a href="http://api.dartlang.org/dart_core/double.html">double</a> z_) <a class="anchor-link" href="#"
               title="Permalink to Vector3.Vector3">#</a></h4>
 <div class="doc">
 <p>Construct a new vector with the specified values.</p>
 <pre class="source">
-Vector3(double x_, double y_, double z_) :
- storage = new Float32List(3) {
+Vector3(double x_, double y_, double z_) : storage = new Float32List(3) {
  setValues(x_, y_, z_);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector3.array">
+<div class="method"><h4 id="array">
 <button class="show-code">Code</button>
-new <strong>Vector3.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#Vector3.array"
+new <strong>Vector3.array</strong>(<a href="http://api.dartlang.org/dart_core/List.html">List</a>&lt;<a href="http://api.dartlang.org/dart_core/double.html">double</a>&gt; array, [<a href="http://api.dartlang.org/dart_core/int.html">int</a> offset = 0]) <a class="anchor-link" href="#array"
               title="Permalink to Vector3.Vector3.array">#</a></h4>
 <div class="doc">
 <p>Initialized with values from 
 <span class="param">array</span> starting at 
 <span class="param">offset</span>.</p>
 <pre class="source">
-Vector3.array(List&lt;double&gt; array, [int offset=0]) :
- storage = new Float32List(3) {
+Vector3.array(List&lt;double&gt; array, [int offset=0]) : storage = new Float32List(3) {
  int i = offset;
  storage[2] = array[i+2];
  storage[1] = array[i+1];
@@ -980,36 +1006,50 @@ Vector3.array(List&lt;double&gt; array, [int offset=0]) :
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector3.copy">
+<div class="method"><h4 id="copy">
 <button class="show-code">Code</button>
-new <strong>Vector3.copy</strong>(<a href="../vector_math/Vector3.html">Vector3</a> other) <a class="anchor-link" href="#Vector3.copy"
+new <strong>Vector3.copy</strong>(<a href="../vector_math/Vector3.html">Vector3</a> other) <a class="anchor-link" href="#copy"
               title="Permalink to Vector3.Vector3.copy">#</a></h4>
 <div class="doc">
 <p>Copy of 
 <span class="param">other</span>.</p>
 <pre class="source">
-Vector3.copy(Vector3 other) :
- storage = new Float32List(3) {
+Vector3.copy(Vector3 other) : storage = new Float32List(3) {
  setFrom(other);
 }
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector3.view">
+<div class="method"><h4 id="fromBuffer">
 <button class="show-code">Code</button>
-new <strong>Vector3.view</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#Vector3.view"
-              title="Permalink to Vector3.Vector3.view">#</a></h4>
+new <strong>Vector3.fromBuffer</strong>(<a href="http://api.dartlang.org/dart_typed_data/ByteBuffer.html">ByteBuffer</a> buffer, <a href="http://api.dartlang.org/dart_core/int.html">int</a> offset) <a class="anchor-link" href="#fromBuffer"
+              title="Permalink to Vector3.Vector3.fromBuffer">#</a></h4>
 <div class="doc">
-<p>View of 
-<span class="param">storage</span>.</p>
+<p>Constructs Vector3 with a <a class="crossref" href="../vector_math/Vector3.html#storage">storage</a> that views given 
+<span class="param">buffer</span> starting at 
+<span class="param">offset</span>.
+
+<span class="param">offset</span> has to be multiple of [Float32List.BYTES_PER_ELEMENT].</p>
 <pre class="source">
-Vector3.view(this.storage);
+Vector3.fromBuffer(ByteBuffer buffer, int offset) : storage = new Float32List.view(buffer, offset, 3);
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="Vector3.zero">
+<div class="method"><h4 id="fromFloat32List">
 <button class="show-code">Code</button>
-new <strong>Vector3.zero</strong>() <a class="anchor-link" href="#Vector3.zero"
+new <strong>Vector3.fromFloat32List</strong>(<a href="http://api.dartlang.org/dart_typed_data/Float32List.html">Float32List</a> storage) <a class="anchor-link" href="#fromFloat32List"
+              title="Permalink to Vector3.Vector3.fromFloat32List">#</a></h4>
+<div class="doc">
+<p>Constructs Vector3 with given Float32List as 
+<span class="param">storage</span>.</p>
+<pre class="source">
+Vector3.fromFloat32List(Float32List this.storage);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="zero">
+<button class="show-code">Code</button>
+new <strong>Vector3.zero</strong>() <a class="anchor-link" href="#zero"
               title="Permalink to Vector3.Vector3.zero">#</a></h4>
 <div class="doc">
 <p>/ Zero vector.</p>
@@ -5957,6 +5997,34 @@ Vector3 crossInto(Vector3 other, Vector3 out) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="distanceTo">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceTo</strong>(<a href="../vector_math/Vector3.html">Vector3</a> arg) <a class="anchor-link" href="#distanceTo"
+              title="Permalink to Vector3.distanceTo">#</a></h4>
+<div class="doc">
+<p>Distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceTo(Vector3 arg) {
+ return this.clone().sub(arg).length;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="distanceToSquared">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html">double</a> <strong>distanceToSquared</strong>(<a href="../vector_math/Vector3.html">Vector3</a> arg) <a class="anchor-link" href="#distanceToSquared"
+              title="Permalink to Vector3.distanceToSquared">#</a></h4>
+<div class="doc">
+<p>Squared distance from <code>this</code> to 
+<span class="param">arg</span></p>
+<pre class="source">
+double distanceToSquared(Vector3 arg) {
+ return this.clone().sub(arg).length2;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="divide">
 <button class="show-code">Code</button>
 <a href="../vector_math/Vector3.html">Vector3</a> <strong>divide</strong>(<a href="../vector_math/Vector3.html">Vector3</a> arg) <a class="anchor-link" href="#divide"
@@ -6089,6 +6157,31 @@ double normalizeLength() {
  storage[1] *= l;
  storage[2] *= l;
  return l;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="postmultiply">
+<button class="show-code">Code</button>
+<a href="../vector_math/Vector3.html">Vector3</a> <strong>postmultiply</strong>(<a href="../vector_math/Matrix3.html">Matrix3</a> arg) <a class="anchor-link" href="#postmultiply"
+              title="Permalink to Vector3.postmultiply">#</a></h4>
+<div class="doc">
+<p>Transforms <code>this</code> into the product of <code>this</code> as a row vector,
+postmultiplied by matrix, 
+<span class="param">arg</span>.
+If 
+<span class="param">arg</span> is a rotation matrix, this is a computational shortcut for applying,
+the inverse of the transformation.</p>
+<pre class="source">
+Vector3 postmultiply(Matrix3 arg) {
+ double v0 = storage[0];
+ double v1 = storage[1];
+ double v2 = storage[2];
+ storage[0] = v0*arg.storage[0]+v1*arg.storage[1]+v2*arg.storage[2];
+ storage[1] = v0*arg.storage[3]+v1*arg.storage[4]+v2*arg.storage[5];
+ storage[2] = v0*arg.storage[6]+v1*arg.storage[7]+v2*arg.storage[8];
+
+ return this;
 }
 </pre>
 </div>

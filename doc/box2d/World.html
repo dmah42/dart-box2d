@@ -109,9 +109,7 @@ class World {
   *   improve performance by not simulating inactive bodies.
   */
  World(this._gravity, this._allowSleep, this._pool) {
-
    _contactManager = new ContactManager(this);
-
    _initializeRegisters();
  }
 
@@ -216,26 +214,30 @@ class World {
    _debugDraw = debugDraw;
  }
 
+ /** Add a rigid body to the world. */
+ void addBody(Body body) {
+   assert (locked == false);
+   if (locked) {
+     return null;
+   }
+
+   // add to world doubly linked list
+   body.prev = null;
+   body.next = _bodyList;
+   if (_bodyList != null) {
+     _bodyList.prev = body;
+   }
+   _bodyList = body;
+   ++_bodyCount;
+ }
+
  /**
   * Create a rigid body given a definition. No reference to the definition
   * is retained.
   */
  Body createBody(BodyDef def) {
-   assert (locked == false);
-   if (locked) {
-     return null;
-   }
    Body b = new Body(def, this);
-
-   // add to world doubly linked list
-   b.prev = null;
-   b.next = _bodyList;
-   if (_bodyList != null) {
-     _bodyList.prev = b;
-   }
-   _bodyList = b;
-   ++_bodyCount;
-
+   addBody(b);
    return b;
  }
 
@@ -461,7 +463,6 @@ class World {
   *   for the position constraint solver.
   */
  void step(double dt, int velocityIterations, int positionIterations) {
-
    // If new fixtures were added, we need to find the new contacts.
    if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
      _contactManager.findNewContacts();
@@ -878,7 +879,7 @@ class World {
  void solveTimeOfImpactGivenBody(Body body) {
    // Find the minimum contact.
    Contact toiContact = null;
-   num toi = 1.0;
+   double toi = 1.0;
    Body toiOther = null;
    bool found;
    int count;
@@ -1025,7 +1026,7 @@ class World {
    // Reduce the TimeOfImpact body's overlap with the contact island.
    toiSolver.initialize(contacts, count, body);
 
-   num k_toiBaumgarte = 0.75;
+   double k_toiBaumgarte = 0.75;
    // bool solved = false;
    for (int i = 0; i &lt; 20; ++i) {
      if (toiSolver.solve(k_toiBaumgarte)) {
@@ -1046,7 +1047,7 @@ class World {
 
        // Vector2 center = Mul(xf, circle.p);
        Transform.mulToOut(xf, circle.position, center);
-       num radius = circle.radius;
+       double radius = circle.radius;
        axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
 
        if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
@@ -1197,9 +1198,9 @@ static const int WORLD_POOL_SIZE = 100
 </div>
 <div>
 <h3>Constructors</h3>
-<div class="method"><h4 id="World">
+<div class="method"><h4 id="">
 <button class="show-code">Code</button>
-new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> _gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> _allowSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> _pool) <a class="anchor-link" href="#World"
+new <strong>World</strong>(<a href="../vector_math/Vector2.html">Vector2</a> _gravity, <a href="http://api.dartlang.org/dart_core/bool.html">bool</a> _allowSleep, <a href="../box2d/DefaultWorldPool.html">DefaultWorldPool</a> _pool) <a class="anchor-link" href="#"
               title="Permalink to World.World">#</a></h4>
 <div class="doc">
 <p>Constructs a world object.</p>
@@ -1209,9 +1210,7 @@ doSleep
   improve performance by not simulating inactive bodies.</p>
 <pre class="source">
 World(this._gravity, this._allowSleep, this._pool) {
-
  _contactManager = new ContactManager(this);
-
  _initializeRegisters();
 }
 </pre>
@@ -1551,6 +1550,31 @@ final WorldQueryWrapper wqwrapper = new WorldQueryWrapper()
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="addBody">
+<button class="show-code">Code</button>
+void <strong>addBody</strong>(<a href="../box2d/Body.html">Body</a> body) <a class="anchor-link" href="#addBody"
+              title="Permalink to World.addBody">#</a></h4>
+<div class="doc">
+<p>Add a rigid body to the world. </p>
+<pre class="source">
+void addBody(Body body) {
+ assert (locked == false);
+ if (locked) {
+   return null;
+ }
+
+ // add to world doubly linked list
+ body.prev = null;
+ body.next = _bodyList;
+ if (_bodyList != null) {
+   _bodyList.prev = body;
+ }
+ _bodyList = body;
+ ++_bodyCount;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="clearForces">
 <button class="show-code">Code</button>
 void <strong>clearForces</strong>() <a class="anchor-link" href="#clearForces"
@@ -1580,21 +1604,8 @@ void clearForces() {
 is retained.</p>
 <pre class="source">
 Body createBody(BodyDef def) {
- assert (locked == false);
- if (locked) {
-   return null;
- }
  Body b = new Body(def, this);
-
- // add to world doubly linked list
- b.prev = null;
- b.next = _bodyList;
- if (_bodyList != null) {
-   _bodyList.prev = b;
- }
- _bodyList = b;
- ++_bodyCount;
-
+ addBody(b);
  return b;
 }
 </pre>
@@ -1997,7 +2008,7 @@ void drawShape(Fixture fixture, Transform xf, Color3 color) {
 
      // Vector2 center = Mul(xf, circle.p);
      Transform.mulToOut(xf, circle.position, center);
-     num radius = circle.radius;
+     double radius = circle.radius;
      axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
 
      if (0 != (_debugDraw.flags &amp; DebugDraw.e_lineDrawingBit)) {
@@ -2333,7 +2344,7 @@ void <strong>solveTimeOfImpactGivenBody</strong>(<a href="../box2d/Body.html">Bo
 void solveTimeOfImpactGivenBody(Body body) {
  // Find the minimum contact.
  Contact toiContact = null;
- num toi = 1.0;
+ double toi = 1.0;
  Body toiOther = null;
  bool found;
  int count;
@@ -2480,7 +2491,7 @@ void solveTimeOfImpactGivenBody(Body body) {
  // Reduce the TimeOfImpact body's overlap with the contact island.
  toiSolver.initialize(contacts, count, body);
 
- num k_toiBaumgarte = 0.75;
+ double k_toiBaumgarte = 0.75;
  // bool solved = false;
  for (int i = 0; i &lt; 20; ++i) {
    if (toiSolver.solve(k_toiBaumgarte)) {
@@ -2511,7 +2522,6 @@ param positionIterations
   for the position constraint solver.</p>
 <pre class="source">
 void step(double dt, int velocityIterations, int positionIterations) {
-
  // If new fixtures were added, we need to find the new contacts.
  if ((_flags &amp; NEW_FIXTURE) == NEW_FIXTURE) {
    _contactManager.findNewContacts();
