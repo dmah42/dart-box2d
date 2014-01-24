@@ -16,9 +16,9 @@ library box2d;
 
 import 'dart:collection';
 import 'dart:math' as Math;
-import 'package:vector_math/vector_math.dart';
+import 'package:vector_math/vector_math_64.dart';
 
-export 'package:vector_math/vector_math.dart';
+export 'package:vector_math/vector_math_64.dart';
 
 
 part 'src/callbacks/debug_draw.dart';
