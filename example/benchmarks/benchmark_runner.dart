@@ -95,7 +95,6 @@ class BenchmarkRunner {
   }
 }
 
-
 void main(List<String> args) {
   // TODO(dominich): args for step sizes.
   final runner = new BenchmarkRunner();
