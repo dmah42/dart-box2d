@@ -95,13 +95,13 @@ class BenchmarkRunner {
   }
 }
 
-void main() {
+void main(List<String> arguments) {
   // TODO(dominich): Options for step sizes.
   final runner = new BenchmarkRunner();
 
   var parser = new ArgParser();
   parser.addOption('filter', abbr: 'f');
-  var results = parser.parse(new Options().arguments);
+  var results = parser.parse(arguments);
   runner.setupBenchmarks(results['filter']);
   runner.runBenchmarks();
 }
