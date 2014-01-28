@@ -5,6 +5,7 @@ description: A port of the popular Box2D physics engine to Dart.
 homepage: http://github.com/dart-lang/dart-box2d
 dependencies:
   hop: '>=0.28.3+2'
+  path: '>=1.0.0'
   vector_math: '>= 1.4.2'
 dev_dependencies:
   args: any

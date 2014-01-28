@@ -54,40 +54,6 @@
     </sequential>
   </macrodef>
 
-  <macrodef name="dart2js">
-    <attribute name="file" />
-    <attribute name="withChecks" default="false" />
-    <attribute name="minify" default="true" />
-
-    <sequential>
-      <local name="dart2js.check_arg" />
-      <if>
-        <istrue value="@{withChecks}" />
-        <then>
-          <property name="dart2js.check_arg" value="-c" />
-        </then>
-        <else>
-          <property name="dart2js.check_arg" value="" />
-        </else>
-      </if>
-
-      <local name="dart2js.min_arg" />
-      <if>
-        <istrue value="@{minify}" />
-        <then>
-          <property name="dart2js.min_arg" value="--minify" />
-        </then>
-        <else>
-          <property name="dart2js.min_arg" value="" />
-        </else>
-      </if>
-      <echo>Generating JS "@{file}.js" from "@{file}"</echo>
-      <exec executable="${dart.sdk.dir}/bin/dart2js" failonerror="true">
-        <arg line="${dart2js.check_arg} ${dart2js.min_arg} -o@{file}.js @{file}"/>
-      </exec>
-    </sequential>
-  </macrodef>
-
   <!-- MAIN -->
   <target name="default"
     depends="pub-install, analyze, generate-JS, generate-docs"
@@ -131,14 +97,6 @@
     </exec>
   </target>
 
-  <target name="generate-JS" description="Run dart2js on all demos.">
-    <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
-      <path refid="demos" />
-      <sequential>
-        <dart2js file="@{file}" withChecks="${withChecks}" minify="${minify}"/>
-      </sequential>
-    </for>
-  </target>
 
 </project>
 
