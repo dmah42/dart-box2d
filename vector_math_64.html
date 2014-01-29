@@ -37,7 +37,7 @@ const <a href="http://api.dartlang.org/dart_core/double.html" ref="external">dou
         </h4>
         <div class="doc">
 <pre class="source">
-const double degrees2radians = Math.PI/180.0
+const double degrees2radians = Math.PI / 180.0
 </pre>
 </div>
 </div>
@@ -49,7 +49,7 @@ const <a href="http://api.dartlang.org/dart_core/double.html" ref="external">dou
         </h4>
         <div class="doc">
 <pre class="source">
-const double radians2degrees = 180.0/Math.PI
+const double radians2degrees = 180.0 / Math.PI
 </pre>
 </div>
 </div>
@@ -82,24 +82,24 @@ void <strong>buildPlaneVectors</strong>(<a href="vector_math_64/Vector3.html">Ve
 void buildPlaneVectors(final Vector3 planeNormal, Vector3 u, Vector3 v) {
  if (planeNormal.z.abs() &gt; sqrtOneHalf) {
    // choose u in y-z plane
-   double a = planeNormal.y*planeNormal.y + planeNormal.z*planeNormal.z;
-   double k = 1.0/Math.sqrt(a);
+   double a = planeNormal.y * planeNormal.y + planeNormal.z * planeNormal.z;
+   double k = 1.0 / Math.sqrt(a);
    u.x = 0.0;
-   u.y = -planeNormal.z*k;
-   u.z = planeNormal.y*k;
-   v.x = a*k;
-   v.y = -planeNormal[0]*(planeNormal[1]*k);
-   v.z = planeNormal[0]*(-planeNormal[2]*k);
+   u.y = -planeNormal.z * k;
+   u.z = planeNormal.y * k;
+   v.x = a * k;
+   v.y = -planeNormal[0] * (planeNormal[1] * k);
+   v.z = planeNormal[0] * (-planeNormal[2] * k);
  } else {
    // choose u in x-y plane
-   double a = planeNormal.x*planeNormal.x + planeNormal.y*planeNormal.y;
-   double k = 1.0/Math.sqrt(a);
-   u.x = -planeNormal[1]*k;
-   u.y = planeNormal[0]*k;
+   double a = planeNormal.x * planeNormal.x + planeNormal.y * planeNormal.y;
+   double k = 1.0 / Math.sqrt(a);
+   u.x = -planeNormal[1] * k;
+   u.y = planeNormal[0] * k;
    u.z = 0.0;
-   v.x = -planeNormal[2]*(planeNormal[0]*k);
-   v.y = planeNormal[2]*(-planeNormal[1]*k);
-   v.z = a*k;
+   v.x = -planeNormal[2] * (planeNormal[0] * k);
+   v.y = planeNormal[2] * (-planeNormal[1] * k);
+   v.z = a * k;
  }
 }
 </pre>
@@ -658,7 +658,7 @@ be any vector, matrix, or quaternion.</p>
 double relativeError(dynamic calculated, dynamic correct) {
  if (calculated is double &amp;&amp; correct is double) {
    double diff = (calculated - correct).abs();
-   return diff/correct;
+   return diff / correct;
  }
  return calculated.relativeError(correct);
 }
