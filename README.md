@@ -13,9 +13,9 @@ present in the original source files.
 
 Build instructions
 ==================
-Dart-Box2D now uses the excellent hop package. To build, just try
+Dart-Box2D now uses the [Hop package](https://github.com/dart-lang/hop). To build, just try
 
-    $ dart tool/hop_runner
+    $ dart tool/hop_runner.dart dart2js
 
 
 License
