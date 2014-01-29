@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,9 +36,18 @@ abstract class Demo {
   static const double GRAVITY = -10.0;
 
   /** The timestep and iteration numbers. */
-  static const num TIME_STEP = 1/60;
+  static const num TIME_STEP = 1 / 60;
   static const int VELOCITY_ITERATIONS = 10;
   static const int POSITION_ITERATIONS = 10;
+
+  /** The physics world. */
+  final World world;
+
+  // For timing the world.step call. It is kept running but reset and polled
+  // every frame to minimize overhead.
+  final Stopwatch _stopwatch;
+
+  final double _viewportScale;
 
   /** The drawing canvas. */
   CanvasElement canvas;
@@ -52,9 +61,6 @@ abstract class Demo {
   /** The debug drawing tool. */
   DebugDraw debugDraw;
 
-  /** The physics world. */
-  World world;
-
   /** Frame count for fps */
   int frameCount;
 
@@ -67,20 +73,12 @@ abstract class Demo {
   /** HTML element used to display the world step time */
   Element worldStepTime;
 
-  // TODO(dominich): Make this library-private once optional positional
-  // parameters are introduced.
-  double viewportScale;
-
-  // For timing the world.step call. It is kept running but reset and polled
-  // every frame to minimize overhead.
-  Stopwatch _stopwatch;
-
-  Demo(String name, [Vector2 gravity, this.viewportScale = _VIEWPORT_SCALE]) {
-    _stopwatch = new Stopwatch()..start();
+  Demo(String name, [Vector2 gravity, this._viewportScale = _VIEWPORT_SCALE])
+      : this.world = new World((gravity == null) ? new Vector2(0.0, GRAVITY) :
+          gravity, true, new DefaultWorldPool()),
+        _stopwatch = new Stopwatch()
+          ..start() {
     querySelector("#title").innerHtml = name;
-    bool doSleep = true;
-    if (null == gravity) gravity = new Vector2(0.0, GRAVITY);
-    world = new World(gravity, doSleep, new DefaultWorldPool());
   }
 
   /** Advances the world forward by timestep seconds. */
@@ -92,9 +90,9 @@ abstract class Demo {
     // Clear the animation panel and draw new frame.
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     world.drawDebugData();
-    ++frameCount;
+    frameCount++;
 
-    window.requestAnimationFrame((num time) { step(time); });
+    window.requestAnimationFrame(step);
   }
 
   /**
@@ -103,16 +101,16 @@ abstract class Demo {
    */
   void initializeAnimation() {
     // Setup the canvas.
-    canvas = new Element.tag('canvas');
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
+    canvas = new Element.tag('canvas') as CanvasElement
+        ..width = CANVAS_WIDTH
+        ..height = CANVAS_HEIGHT;
     document.body.nodes.add(canvas);
     ctx = canvas.getContext("2d");
 
     // Create the viewport transform with the center at extents.
-    final extents = new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-    viewport = new CanvasViewportTransform(extents, extents);
-    viewport.scale = viewportScale;
+    var extents = new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    viewport = new CanvasViewportTransform(extents, extents)
+        ..scale = _viewportScale;
 
     // Create our canvas drawing tool to give to the world.
     debugDraw = new CanvasDraw(viewport, ctx);
@@ -124,11 +122,12 @@ abstract class Demo {
     fpsCounter = querySelector("#fps-counter");
     worldStepTime = querySelector("#world-step-time");
     new Timer.periodic(new Duration(seconds: 1), (Timer t) {
-        fpsCounter.innerHtml = frameCount.toString();
-        frameCount = 0;
+      fpsCounter.innerHtml = frameCount.toString();
+      frameCount = 0;
     });
     new Timer.periodic(new Duration(milliseconds: 200), (Timer t) {
-        worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
+      if (elapsedUs == null) return;
+      worldStepTime.innerHtml = "${elapsedUs / 1000} ms";
     });
   }
 
@@ -138,7 +137,7 @@ abstract class Demo {
    * Starts running the demo as an animation using an animation scheduler.
    */
   void runAnimation() {
-    window.requestAnimationFrame((num time) { step(time); });
+    window.requestAnimationFrame(step);
   }
 }
 

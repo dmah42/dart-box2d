@@ -34,5 +34,5 @@ Future<List<String>> _getDemos() =>
     .where((FileSystemEntity fse) => fse is File)
     .map((File f) => f.path)
     .where((String path) => pathos.extension(path) == '.dart')
-    .where((String path) => pathos.basename(path) != 'demo_harness.dart')
+    .where((String path) => pathos.basename(path) != 'demo.dart')
     .toList();
