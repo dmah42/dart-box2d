@@ -17,6 +17,8 @@ void main(List<String> args) {
 
   addTask('dart2js', createDartCompilerTask(_getDemos, liveTypeAnalysis: true));
 
+  addTask('docs', createDartDocTask(_getLibs, linkApi: true));
+
   runHop(args);
 }
 
