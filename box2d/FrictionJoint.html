@@ -1,0 +1,718 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>FrictionJoint class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="FrictionJoint">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/FrictionJoint.html">FrictionJoint</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>FrictionJoint</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class FrictionJoint extends Joint {
+ final Vector2 _localAnchorA;
+ final Vector2 _localAnchorB;
+
+ Vector2 _linearImpulse = new Vector2.zero();
+ double _angularImpulse = 0.0;
+ double _maxForce;
+ double _maxTorque;
+
+ FrictionJoint(FrictionJointDef def)
+     : _localAnchorA = new Vector2.copy(def.localAnchorA),
+       _localAnchorB = new Vector2.copy(def.localAnchorB),
+       _angularImpulse = 0.0,
+       _maxForce = def.maxForce,
+       _maxTorque = def.maxTorque,
+       super(def);
+
+ Vector2 getLocalAnchorA(Vector2 argOut) {
+   bodyA.getWorldPointToOut(_localAnchorA, argOut);
+ }
+
+ Vector2 getLocalAnchorB(Vector2 argOut) {
+   bodyB.getWorldPointToOut(_localAnchorB, argOut);
+ }
+
+ void getReactionForce(num inv_dt, Vector2 argOut) {
+   argOut.setFrom(_linearImpulse).scale(inv_dt);
+ }
+
+ double getReactionTorque(num inv_dt) =&gt; inv_dt * _angularImpulse;
+
+ void set maxForce(num force) {
+   assert(force &gt;= 0.0);
+   _maxForce = force;
+ }
+
+ double get maxForce =&gt; _maxForce;
+
+ void set maxTorque(num torque) {
+   assert(torque &gt;= 0.0);
+   _maxTorque = torque;
+ }
+
+ double get maxTorque =&gt; _maxTorque;
+
+ void initVelocityConstraints(TimeStep step) {
+   // Compute the effective mass matrix.
+   Vector2 r1 = new Vector2.zero();
+   Vector2 r2 = new Vector2.zero();
+
+   r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
+   r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+   bodyA.originTransform.rotation.transformed(r1, r1);
+   bodyB.originTransform.rotation.transformed(r2, r2);
+
+   // J = [-I -r1_skew I r2_skew]
+   // [ 0 -1 0 1]
+   // r_skew = [-ry; rx]
+
+   // Matlab
+   // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
+   // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
+   // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
+
+   Matrix2 K = new Matrix2(bodyA.invMass + bodyB.invMass +
+       bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+       -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+       -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+       bodyA.invMass + bodyB.invMass +
+       bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x);
+
+   Matrix2 linearMass = new Matrix2.copy(K);
+   linearMass.invert();
+
+   num angularMass = bodyA.invInertia + bodyB.invInertia;
+   if (angularMass &gt; 0.0) {
+     angularMass = 1.0 / angularMass;
+   }
+
+   if (step.warmStarting) {
+     // Scale impulses.
+     _linearImpulse.scale(step.dtRatio);
+     _angularImpulse *= step.dtRatio;
+
+     Vector2 P = new Vector2.zero();
+     P.setFrom(_linearImpulse);
+
+     bodyA.linearVelocity.x -= bodyA.invMass * P.x;
+     bodyA.linearVelocity.y -= bodyA.invMass * P.y;
+     bodyA.angularVelocity -= bodyA.invInertia * (r1.cross(P) + _angularImpulse);
+
+     bodyB.linearVelocity.x += bodyB.invMass * P.x;
+     bodyB.linearVelocity.y += bodyB.invMass * P.y;
+     bodyB.angularVelocity += bodyB.invInertia * (r2.cross(P) + _angularImpulse);
+   } else {
+     _linearImpulse.setZero();
+     _angularImpulse = 0.0;
+   }
+ }
+
+ void solveVelocityConstraints(TimeStep step) {
+   // Solve angular friction
+   {
+     final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
+     num angularMass = bodyA.invInertia + bodyB.invInertia;
+     if (angularMass &gt; 0.0) {
+       angularMass = 1.0 / angularMass;
+     }
+     num impulse = -angularMass * Cdot;
+
+     final num oldImpulse = _angularImpulse;
+     final num maxImpulse = step.dt * _maxTorque;
+     _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
+     impulse = _angularImpulse - oldImpulse;
+
+     bodyA.angularVelocity -= bodyA.invInertia * impulse;
+     bodyB.angularVelocity += bodyB.invInertia * impulse;
+   }
+
+   // Solve linear friction
+   {
+     Vector2 r1 = new Vector2.zero();
+     Vector2 r2 = new Vector2.zero();
+
+     r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
+     r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+     bodyA.originTransform.rotation.transformed(r1, r1);
+     bodyB.originTransform.rotation.transformed(r2, r2);
+
+     Vector2 temp = new Vector2.zero();
+     Vector2 Cdot = new Vector2.zero();
+
+     r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
+     r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
+
+     Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
+
+     Matrix2 K = new Matrix2(
+         bodyA.invMass + bodyB.invMass +
+         bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+         -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+         -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+         bodyA.invMass + bodyB.invMass +
+         bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x
+     );
+
+     Matrix2 linearMass = new Matrix2.copy(K);
+     linearMass.invert();
+
+     Vector2 impulse = new Vector2.zero();
+     linearMass.transformed(Cdot, impulse);
+     impulse.negate();
+
+     Vector2 oldImpulse = new Vector2.zero();
+     oldImpulse.setFrom(_linearImpulse);
+     _linearImpulse.add(impulse);
+
+     num maxImpulse = step.dt * _maxForce;
+     if (_linearImpulse.length2 &gt; maxImpulse * maxImpulse) {
+       _linearImpulse.normalize();
+       _linearImpulse.scale(maxImpulse);
+     }
+
+     impulse.setFrom(_linearImpulse).sub(oldImpulse);
+
+     bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
+     bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
+     bodyA.angularVelocity -= bodyA.invInertia * r1.cross(impulse);
+
+     bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
+     bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
+     bodyB.angularVelocity += bodyB.invInertia * r2.cross(impulse);
+   }
+ }
+
+ bool solvePositionConstraints(num baumgarte) =&gt; true;
+}
+</pre>
+</div>
+<h3>Extends</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/Joint.html">Joint</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>FrictionJoint</strong></span></p>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>FrictionJoint</strong>(<a href="../box2d/FrictionJointDef.html">FrictionJointDef</a> def) <a class="anchor-link" href="#"
+              title="Permalink to FrictionJoint.FrictionJoint">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Creates a new <a class="crossref" href="http://api.dartlang.org/dart_core/Object.html">Object</a> instance.</p>
+<p><a class="crossref" href="http://api.dartlang.org/dart_core/Object.html">Object</a> instances have no meaningful state, and are only useful
+through their identity. An <a class="crossref" href="http://api.dartlang.org/dart_core/Object.html">Object</a> instance is equal to itself
+only.</p>
+<div class="docs-inherited-from">docs inherited from <a href="http://api.dartlang.org/dart_core/Object.html" ref="external">Object</a> </div></div>
+<pre class="source">
+FrictionJoint(FrictionJointDef def)
+   : _localAnchorA = new Vector2.copy(def.localAnchorA),
+     _localAnchorB = new Vector2.copy(def.localAnchorB),
+     _angularImpulse = 0.0,
+     _maxForce = def.maxForce,
+     _maxTorque = def.maxTorque,
+     super(def);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field inherited"><h4 id="active">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a>         <strong>active</strong> <a class="anchor-link"
+            href="#active"
+            title="Permalink to FrictionJoint.active">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<p>Short-cut function to determine if either body is inactive. </p>
+<pre class="source">
+bool get active =&gt; bodyA.active &amp;&amp; bodyB.active;
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="bodyA">
+<button class="show-code">Code</button>
+<a href="../box2d/Body.html">Body</a>         <strong>bodyA</strong> <a class="anchor-link"
+            href="#bodyA"
+            title="Permalink to FrictionJoint.bodyA">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+Body bodyA
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="bodyB">
+<button class="show-code">Code</button>
+<a href="../box2d/Body.html">Body</a>         <strong>bodyB</strong> <a class="anchor-link"
+            href="#bodyB"
+            title="Permalink to FrictionJoint.bodyB">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+Body bodyB
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="collideConnected">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a>         <strong>collideConnected</strong> <a class="anchor-link"
+            href="#collideConnected"
+            title="Permalink to FrictionJoint.collideConnected">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+bool collideConnected
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="edgeA">
+<button class="show-code">Code</button>
+<a href="../box2d/JointEdge.html">JointEdge</a>         <strong>edgeA</strong> <a class="anchor-link"
+            href="#edgeA"
+            title="Permalink to FrictionJoint.edgeA">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+JointEdge edgeA = new JointEdge()
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="edgeB">
+<button class="show-code">Code</button>
+<a href="../box2d/JointEdge.html">JointEdge</a>         <strong>edgeB</strong> <a class="anchor-link"
+            href="#edgeB"
+            title="Permalink to FrictionJoint.edgeB">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+JointEdge edgeB = new JointEdge()
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="invIA">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>invIA</strong> <a class="anchor-link"
+            href="#invIA"
+            title="Permalink to FrictionJoint.invIA">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+double invIA
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="invIB">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>invIB</strong> <a class="anchor-link"
+            href="#invIB"
+            title="Permalink to FrictionJoint.invIB">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+double invIB
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="invMassA">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>invMassA</strong> <a class="anchor-link"
+            href="#invMassA"
+            title="Permalink to FrictionJoint.invMassA">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+double invMassA
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="invMassB">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>invMassB</strong> <a class="anchor-link"
+            href="#invMassB"
+            title="Permalink to FrictionJoint.invMassB">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+double invMassB
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="islandFlag">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a>         <strong>islandFlag</strong> <a class="anchor-link"
+            href="#islandFlag"
+            title="Permalink to FrictionJoint.islandFlag">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+bool islandFlag = false
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="localCenterA">
+<button class="show-code">Code</button>
+final <a href="../vector_math_64/Vector2.html">Vector2</a>         <strong>localCenterA</strong> <a class="anchor-link"
+            href="#localCenterA"
+            title="Permalink to FrictionJoint.localCenterA">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+final Vector2 localCenterA = new Vector2.zero()
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="localCenterB">
+<button class="show-code">Code</button>
+final <a href="../vector_math_64/Vector2.html">Vector2</a>         <strong>localCenterB</strong> <a class="anchor-link"
+            href="#localCenterB"
+            title="Permalink to FrictionJoint.localCenterB">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+final Vector2 localCenterB = new Vector2.zero()
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="maxForce">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>maxForce</strong> <a class="anchor-link"
+            href="#maxForce"
+            title="Permalink to FrictionJoint.maxForce">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+double get maxForce =&gt; _maxForce;
+</pre>
+<pre class="source">
+void set maxForce(num force) {
+ assert(force &gt;= 0.0);
+ _maxForce = force;
+}
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="maxTorque">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>maxTorque</strong> <a class="anchor-link"
+            href="#maxTorque"
+            title="Permalink to FrictionJoint.maxTorque">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+double get maxTorque =&gt; _maxTorque;
+</pre>
+<pre class="source">
+void set maxTorque(num torque) {
+ assert(torque &gt;= 0.0);
+ _maxTorque = torque;
+}
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="type">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to FrictionJoint.type">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+int type
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="userData">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/Object.html" ref="external">Object</a>         <strong>userData</strong> <a class="anchor-link"
+            href="#userData"
+            title="Permalink to FrictionJoint.userData">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<pre class="source">
+Object userData
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method inherited"><h4 id="destructor">
+<button class="show-code">Code</button>
+void <strong>destructor</strong>() <a class="anchor-link" href="#destructor"
+              title="Permalink to FrictionJoint.destructor">#</a></h4>
+<div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<p>Override to handle destruction of joint. </p>
+<pre class="source">
+void destructor() { }
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="getAnchorA">
+<button class="show-code">Code</button>
+void <strong>getAnchorA</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorA"
+              title="Permalink to FrictionJoint.getAnchorA">#</a></h4>
+<div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<p>Get the anchor point on bodyA in world coordinates. </p>
+<pre class="source">
+void getAnchorA(Vector2 argOut) { }
+</pre>
+</div>
+</div>
+<div class="method inherited"><h4 id="getAnchorB">
+<button class="show-code">Code</button>
+void <strong>getAnchorB</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getAnchorB"
+              title="Permalink to FrictionJoint.getAnchorB">#</a></h4>
+<div class="inherited-from">inherited from <a href="../box2d/Joint.html">Joint</a> </div><div class="doc">
+<p>Get the anchor point on bodyB in world coordinates. </p>
+<pre class="source">
+void getAnchorB(Vector2 argOut) { }
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getLocalAnchorA">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>getLocalAnchorA</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getLocalAnchorA"
+              title="Permalink to FrictionJoint.getLocalAnchorA">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector2 getLocalAnchorA(Vector2 argOut) {
+ bodyA.getWorldPointToOut(_localAnchorA, argOut);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getLocalAnchorB">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>getLocalAnchorB</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getLocalAnchorB"
+              title="Permalink to FrictionJoint.getLocalAnchorB">#</a></h4>
+<div class="doc">
+<pre class="source">
+Vector2 getLocalAnchorB(Vector2 argOut) {
+ bodyB.getWorldPointToOut(_localAnchorB, argOut);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getReactionForce">
+<button class="show-code">Code</button>
+void <strong>getReactionForce</strong>(<a href="http://api.dartlang.org/dart_core/num.html" ref="external">num</a> inv_dt, <a href="../vector_math_64/Vector2.html">Vector2</a> argOut) <a class="anchor-link" href="#getReactionForce"
+              title="Permalink to FrictionJoint.getReactionForce">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Get the reaction force on body2 at the joint anchor in Newtons. </p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
+<pre class="source">
+void getReactionForce(num inv_dt, Vector2 argOut) {
+ argOut.setFrom(_linearImpulse).scale(inv_dt);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getReactionTorque">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> <strong>getReactionTorque</strong>(<a href="http://api.dartlang.org/dart_core/num.html" ref="external">num</a> inv_dt) <a class="anchor-link" href="#getReactionTorque"
+              title="Permalink to FrictionJoint.getReactionTorque">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Get the reaction torque on body2 in N*m. </p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
+<pre class="source">
+double getReactionTorque(num inv_dt) =&gt; inv_dt * _angularImpulse;
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="initVelocityConstraints">
+<button class="show-code">Code</button>
+void <strong>initVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#initVelocityConstraints"
+              title="Permalink to FrictionJoint.initVelocityConstraints">#</a></h4>
+<div class="doc">
+<pre class="source">
+void initVelocityConstraints(TimeStep step) {
+ // Compute the effective mass matrix.
+ Vector2 r1 = new Vector2.zero();
+ Vector2 r2 = new Vector2.zero();
+
+ r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
+ r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+ bodyA.originTransform.rotation.transformed(r1, r1);
+ bodyB.originTransform.rotation.transformed(r2, r2);
+
+ // J = [-I -r1_skew I r2_skew]
+ // [ 0 -1 0 1]
+ // r_skew = [-ry; rx]
+
+ // Matlab
+ // K = [ mA+r1y^2*iA+mB+r2y^2*iB, -r1y*iA*r1x-r2y*iB*r2x, -r1y*iA-r2y*iB]
+ // [ -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB, r1x*iA+r2x*iB]
+ // [ -r1y*iA-r2y*iB, r1x*iA+r2x*iB, iA+iB]
+
+ Matrix2 K = new Matrix2(bodyA.invMass + bodyB.invMass +
+     bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+     -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+     -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+     bodyA.invMass + bodyB.invMass +
+     bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x);
+
+ Matrix2 linearMass = new Matrix2.copy(K);
+ linearMass.invert();
+
+ num angularMass = bodyA.invInertia + bodyB.invInertia;
+ if (angularMass &gt; 0.0) {
+   angularMass = 1.0 / angularMass;
+ }
+
+ if (step.warmStarting) {
+   // Scale impulses.
+   _linearImpulse.scale(step.dtRatio);
+   _angularImpulse *= step.dtRatio;
+
+   Vector2 P = new Vector2.zero();
+   P.setFrom(_linearImpulse);
+
+   bodyA.linearVelocity.x -= bodyA.invMass * P.x;
+   bodyA.linearVelocity.y -= bodyA.invMass * P.y;
+   bodyA.angularVelocity -= bodyA.invInertia * (r1.cross(P) + _angularImpulse);
+
+   bodyB.linearVelocity.x += bodyB.invMass * P.x;
+   bodyB.linearVelocity.y += bodyB.invMass * P.y;
+   bodyB.angularVelocity += bodyB.invInertia * (r2.cross(P) + _angularImpulse);
+ } else {
+   _linearImpulse.setZero();
+   _angularImpulse = 0.0;
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solvePositionConstraints">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a> <strong>solvePositionConstraints</strong>(<a href="http://api.dartlang.org/dart_core/num.html" ref="external">num</a> baumgarte) <a class="anchor-link" href="#solvePositionConstraints"
+              title="Permalink to FrictionJoint.solvePositionConstraints">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>This returns true if the position errors are within tolerance. </p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Joint.html">Joint</a> </div></div>
+<pre class="source">
+bool solvePositionConstraints(num baumgarte) =&gt; true;
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="solveVelocityConstraints">
+<button class="show-code">Code</button>
+void <strong>solveVelocityConstraints</strong>(<a href="../box2d/TimeStep.html">TimeStep</a> step) <a class="anchor-link" href="#solveVelocityConstraints"
+              title="Permalink to FrictionJoint.solveVelocityConstraints">#</a></h4>
+<div class="doc">
+<pre class="source">
+void solveVelocityConstraints(TimeStep step) {
+ // Solve angular friction
+ {
+   final num Cdot = bodyB.angularVelocity - bodyA.angularVelocity;
+   num angularMass = bodyA.invInertia + bodyB.invInertia;
+   if (angularMass &gt; 0.0) {
+     angularMass = 1.0 / angularMass;
+   }
+   num impulse = -angularMass * Cdot;
+
+   final num oldImpulse = _angularImpulse;
+   final num maxImpulse = step.dt * _maxTorque;
+   _angularImpulse = MathBox.clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
+   impulse = _angularImpulse - oldImpulse;
+
+   bodyA.angularVelocity -= bodyA.invInertia * impulse;
+   bodyB.angularVelocity += bodyB.invInertia * impulse;
+ }
+
+ // Solve linear friction
+ {
+   Vector2 r1 = new Vector2.zero();
+   Vector2 r2 = new Vector2.zero();
+
+   r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
+   r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+   bodyA.originTransform.rotation.transformed(r1, r1);
+   bodyB.originTransform.rotation.transformed(r2, r2);
+
+   Vector2 temp = new Vector2.zero();
+   Vector2 Cdot = new Vector2.zero();
+
+   r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
+   r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
+
+   Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
+
+   Matrix2 K = new Matrix2(
+       bodyA.invMass + bodyB.invMass +
+       bodyA.invInertia * r1.y * r1.y + bodyB.invInertia * r2.y * r2.y,
+       -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+       -bodyA.invInertia * r1.x * r1.y - bodyB.invInertia * r2.x * r2.y,
+       bodyA.invMass + bodyB.invMass +
+       bodyA.invInertia * r1.x * r1.x + bodyB.invInertia * r2.x * r2.x
+   );
+
+   Matrix2 linearMass = new Matrix2.copy(K);
+   linearMass.invert();
+
+   Vector2 impulse = new Vector2.zero();
+   linearMass.transformed(Cdot, impulse);
+   impulse.negate();
+
+   Vector2 oldImpulse = new Vector2.zero();
+   oldImpulse.setFrom(_linearImpulse);
+   _linearImpulse.add(impulse);
+
+   num maxImpulse = step.dt * _maxForce;
+   if (_linearImpulse.length2 &gt; maxImpulse * maxImpulse) {
+     _linearImpulse.normalize();
+     _linearImpulse.scale(maxImpulse);
+   }
+
+   impulse.setFrom(_linearImpulse).sub(oldImpulse);
+
+   bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
+   bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;
+   bodyA.angularVelocity -= bodyA.invInertia * r1.cross(impulse);
+
+   bodyB.linearVelocity.x += impulse.x * bodyB.invMass;
+   bodyB.linearVelocity.y += impulse.y * bodyB.invMass;
+   bodyB.angularVelocity += bodyB.invInertia * r2.cross(impulse);
+ }
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

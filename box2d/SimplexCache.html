@@ -1,0 +1,164 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>SimplexCache class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="SimplexCache">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/SimplexCache.html">SimplexCache</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>SimplexCache</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class SimplexCache {
+ /** length or area */
+ double metric = 0.0;
+
+ int count = 0;
+
+ /** vertices on shape A */
+ final List&lt;int&gt; indexA =
+   new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
+
+ /** vertices on shape B */
+ final List&lt;int&gt; indexB =
+   new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER);
+
+ /**
+  * Constructs a new SimplexCache.
+  */
+ SimplexCache();
+
+ /**
+  * Sets this cache equal to the given cache.
+  */
+ void setFrom(SimplexCache sc) {
+   indexA.setRange(0, indexA.length, sc.indexA);
+   indexB.setRange(0, indexB.length, sc.indexB);
+   metric = sc.metric;
+   count = sc.count;
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>SimplexCache</strong>() <a class="anchor-link" href="#"
+              title="Permalink to SimplexCache.SimplexCache">#</a></h4>
+<div class="doc">
+<p>Constructs a new SimplexCache.</p>
+<pre class="source">
+SimplexCache();
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="count">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>         <strong>count</strong> <a class="anchor-link"
+            href="#count"
+            title="Permalink to SimplexCache.count">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int count = 0
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="indexA">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>&gt;         <strong>indexA</strong> <a class="anchor-link"
+            href="#indexA"
+            title="Permalink to SimplexCache.indexA">#</a>
+        </h4>
+        <div class="doc">
+<p>vertices on shape A </p>
+<pre class="source">
+final List&lt;int&gt; indexA =
+ new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER)
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="indexB">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>&gt;         <strong>indexB</strong> <a class="anchor-link"
+            href="#indexB"
+            title="Permalink to SimplexCache.indexB">#</a>
+        </h4>
+        <div class="doc">
+<p>vertices on shape B </p>
+<pre class="source">
+final List&lt;int&gt; indexB =
+ new List&lt;int&gt;.generate(3, (i) =&gt; Settings.MAX_INTEGER)
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="metric">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>metric</strong> <a class="anchor-link"
+            href="#metric"
+            title="Permalink to SimplexCache.metric">#</a>
+        </h4>
+        <div class="doc">
+<p>length or area </p>
+<pre class="source">
+double metric = 0.0
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(<a href="../box2d/SimplexCache.html">SimplexCache</a> sc) <a class="anchor-link" href="#setFrom"
+              title="Permalink to SimplexCache.setFrom">#</a></h4>
+<div class="doc">
+<p>Sets this cache equal to the given cache.</p>
+<pre class="source">
+void setFrom(SimplexCache sc) {
+ indexA.setRange(0, indexA.length, sc.indexA);
+ indexB.setRange(0, indexB.length, sc.indexB);
+ metric = sc.metric;
+ count = sc.count;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

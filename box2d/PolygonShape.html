@@ -1,0 +1,1087 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>PolygonShape class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="PolygonShape">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/PolygonShape.html">PolygonShape</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>PolygonShape</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class PolygonShape extends Shape {
+ /**
+  * Local position of the shape centroid in parent body frame.
+  */
+ final Vector2 centroid;
+
+ /**
+  * The vertices of the shape. Note: Use getVertexCount() rather than
+  * vertices.length to get the number of active vertices.
+  */
+ final List&lt;Vector2&gt; vertices;
+
+ /**
+  * The normals of the shape. Note: Use getVertexCount() rather than
+  * normals.length to get the number of active normals.
+  */
+ final List&lt;Vector2&gt; normals;
+
+
+ int vertexCount = 0;
+
+ /**
+  * Constructs a new PolygonShape.
+  */
+ PolygonShape() :
+   super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+   centroid = new Vector2.zero(),
+   vertices = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES,
+       (_) =&gt; new Vector2.zero(),
+       growable: false
+     ),
+   normals = new List&lt;Vector2&gt;.generate(
+       Settings.MAX_POLYGON_VERTICES,
+       (_) =&gt; new Vector2.zero(),
+       growable: false
+     );
+
+ /**
+  * Constructs a new PolygonShape equal to the given shape.
+  */
+ PolygonShape.copy(PolygonShape other) :
+     super(ShapeType.POLYGON, other.radius),
+     vertexCount = other.vertexCount,
+     vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
+     normals = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
+     centroid = new Vector2.copy(other.centroid) {
+   // Copy the vertices and normals from the other polygon shape.
+   for (int i = 0; i &lt; other.vertices.length; ++i)
+     vertices[i] = new Vector2.copy(other.vertices[i]);
+
+   for (int i = 0; i &lt; other.normals.length; ++i)
+     normals[i] = new Vector2.copy(other.normals[i]);
+ }
+
+ /**
+  * Get the supporting vertex index in the given direction.
+  */
+ int getSupport(Vector2 d) {
+   int bestIndex = 0;
+   num bestValue = vertices[0].dot(d);
+   for (int i = 1; i &lt; vertexCount; ++i) {
+     num value = vertices[i].dot(d);
+     if (value &gt; bestValue) {
+       bestIndex = i;
+       bestValue = value;
+     }
+   }
+   return bestIndex;
+ }
+
+ Shape clone() =&gt; new PolygonShape.copy(this);
+
+ /**
+  * Get the supporting vertex in the given direction.
+  */
+ Vector2 getSupportVertex(Vector2 d) =&gt; vertices[getSupport(d)];
+
+ /**
+  * Copy vertices. This assumes the vertices define a convex polygon.
+  * It is assumed that the exterior is the the right of each edge.
+  * TODO(dominich): Consider removing [count].
+  */
+ void setFrom(List&lt;Vector2&gt; otherVertices, int count) {
+   assert (2 &lt;= count &amp;&amp; count &lt;= Settings.MAX_POLYGON_VERTICES);
+   vertexCount = count;
+
+   // Copy vertices.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     assert(vertices[i] != null);
+     vertices[i].setFrom(otherVertices[i]);
+   }
+
+   Vector2 edge = new Vector2.zero();
+
+   // Compute normals. Ensure the edges have non-zero length.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     final int i1 = i;
+     final int i2 = i + 1 &lt; vertexCount ? i + 1 : 0;
+     edge.setFrom(vertices[i2]).sub(vertices[i1]);
+
+     assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
+     edge.scaleOrthogonalInto(-1.0, normals[i]);
+     normals[i].normalize();
+   }
+
+   // Compute the polygon centroid.
+   computeCentroidToOut(vertices, vertexCount, centroid);
+ }
+
+ /**
+  * Build vertices to represent an axis-aligned box.
+  * hx is the half-width of the body and hy is the half height.
+  */
+ void setAsBox(double hx, double hy) {
+   vertexCount = 4;
+   vertices[0].setValues(-hx, -hy);
+   vertices[1].setValues(hx, -hy);
+   vertices[2].setValues(hx, hy);
+   vertices[3].setValues(-hx, hy);
+   normals[0].setValues(0.0, -1.0);
+   normals[1].setValues(1.0, 0.0);
+   normals[2].setValues(0.0, 1.0);
+   normals[3].setValues(-1.0, 0.0);
+   centroid.setZero();
+ }
+
+ /**
+  * Build vertices to represent an oriented box. hx is the halfwidth, hy the
+  * half-height, center is the center of the box in local coordinates and angle
+  * is the rotation of the box in local coordinates.
+  */
+ void setAsBoxWithCenterAndAngle(double hx, double hy, Vector2 center, double angle) {
+   vertexCount = 4;
+   setAsBox(hx, hy);
+   centroid.setFrom(center);
+
+   Transform xf = new Transform();
+   xf.position.setFrom(center);
+   xf.rotation.setRotation(angle);
+
+   // Transform vertices and normals.
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     Transform.mulToOut(xf, vertices[i], vertices[i]);
+     xf.rotation.transformed(normals[i], normals[i]);
+   }
+ }
+
+ /**
+  * Set this as a single edge.
+  */
+ void setAsEdge(Vector2 v1, Vector2 v2) {
+   vertexCount = 2;
+   vertices[0].setFrom(v1);
+   vertices[1].setFrom(v2);
+   centroid.setFrom(v1).add(v2).scale(0.5);
+   normals[0].setFrom(v2).sub(v1);
+   normals[0].scaleOrthogonalInto(-1.0, normals[0]);
+   normals[0].normalize();
+   normals[1].setFrom(normals[0]).negate();
+ }
+
+ /**
+  * See Shape.testPoint(Transform, Vector).
+  */
+ bool testPoint(Transform xf, Vector2 p) {
+   Vector2 pLocal = new Vector2.zero();
+
+   pLocal.setFrom(p).sub(xf.position);
+   xf.rotation.transposed().transformed(pLocal, pLocal);
+
+   Vector2 temp = new Vector2.zero();
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     temp.setFrom(pLocal).sub(vertices[i]);
+     if (normals[i].dot(temp) &gt; 0)
+       return false;
+   }
+
+   return true;
+ }
+
+ bool raycast(RayCastOutput output, RayCastInput input, Transform xf,
+     int childIndex) {
+   Vector2 p1 = new Vector2.zero();
+   Vector2 p2 = new Vector2.zero();
+
+   p1.setFrom(input.p1).sub(xf.position);
+   xf.rotation.transposed().transformed(p1, p1);
+
+   p2.setFrom(input.p2).sub(xf.position);
+   xf.rotation.transposed().transformed(p2, p2);
+
+   Vector2 d = p2.sub(p1);
+
+   double lower = 0.0;
+   double upper = input.maxFraction;
+
+   int index = -1;
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     Vector2 normal = normals[i];
+     Vector2 vertex = vertices[i];
+
+     Vector2 temp = vertex.sub(p1);
+     double numerator = normal.dot(temp);
+     double denominator = normal.dot(d);
+
+     if (denominator == 0.0) {
+       if (numerator &lt; 0.0)
+         return false;
+     } else {
+       if (denominator &lt; 0.0 &amp;&amp; numerator &lt; lower * denominator) {
+         lower = numerator / denominator;
+         index = i;
+       } else if (denominator &gt; 0.0 &amp;&amp; numerator &lt; upper * denominator) {
+         upper = numerator / denominator;
+       }
+     }
+
+     if (upper &lt; lower)
+       return false;
+   }
+
+   assert(0.0 &lt;= lower &amp;&amp; lower &lt;= input.maxFraction);
+
+   if (index &gt;= 0) {
+     output.fraction = lower;
+     Vector2 normal = normals[index];
+     Vector2 out = output.normal;
+     xf.rotation.transformed(normal, out);
+     return true;
+   }
+   return false;
+ }
+
+ /**
+  * See Shape.computeAxisAlignedBox(AABB, Transform).
+  */
+ void computeAxisAlignedBox(Aabb2 argAabb, Transform argXf) {
+   final Vector2 lower = new Vector2.zero();
+   final Vector2 upper = new Vector2.zero();
+   final Vector2 v = new Vector2.zero();
+
+   Transform.mulToOut(argXf, vertices[0], lower);
+   upper.setFrom(lower);
+
+   for (int i = 1; i &lt; vertexCount; ++i) {
+     Transform.mulToOut(argXf, vertices[i], v);
+     Vector2.min(lower, v, lower);
+     Vector2.max(upper, v, upper);
+   }
+
+   argAabb.min.x = lower.x - radius;
+   argAabb.min.y = lower.y - radius;
+   argAabb.max.x = upper.x + radius;
+   argAabb.max.y = upper.y + radius;
+ }
+
+ /**
+  * Get a vertex by index.
+  */
+ Vector2 getVertex(int index) =&gt; vertices[index];
+
+ /**
+  * Compute the centroid and store the value in the given out parameter.
+  */
+ void computeCentroidToOut(List&lt;Vector2&gt; vs, int count, Vector2 out) {
+   assert (count &gt;= 3);
+
+   out.setValues(0.0, 0.0);
+   double area = 0.0;
+
+   if (count == 2) {
+     out.setFrom(vs[0]).add(vs[1]).scale(.5);
+     return;
+   }
+
+   // pRef is the reference point for forming triangles.
+   // It's location doesn't change the result (except for rounding error).
+   final Vector2 pRef = new Vector2.zero();
+   pRef.setZero();
+
+   final Vector2 e1 = new Vector2.zero();
+   final Vector2 e2 = new Vector2.zero();
+
+   final double inv3 = 1.0 / 3.0;
+
+   for (int i = 0; i &lt; count; ++i) {
+     // Triangle vertices.
+     final Vector2 p1 = pRef;
+     final Vector2 p2 = vs[i];
+     final Vector2 p3 = i + 1 &lt; count ? vs[i + 1] : vs[0];
+
+     e1.setFrom(p2).sub(p1);
+     e2.setFrom(p3).sub(p1);
+
+     final double D = e1.cross(e2);
+
+     final double triangleArea = 0.5 * D;
+     area += triangleArea;
+
+     // Area weighted centroid
+     out.add(p1).add(p2).add(p3).scale(triangleArea * inv3);
+   }
+
+   // Centroid
+   assert (area &gt; Settings.EPSILON);
+   out.scale(1.0 / area);
+ }
+
+ /**
+  * See Shape.computeMass(MassData)
+  */
+ void computeMass(MassData massData, double density) {
+   // Polygon mass, centroid, and inertia.
+   // Let rho be the polygon density in mass per unit area.
+   // Then:
+   // mass = rho * int(dA)
+   // centroid.x = (1/mass) * rho * int(x * dA)
+   // centroid.y = (1/mass) * rho * int(y * dA)
+   // I = rho * int((x*x + y*y) * dA)
+   //
+   // We can compute these integrals by summing all the integrals
+   // for each triangle of the polygon. To evaluate the integral
+   // for a single triangle, we make a change of variables to
+   // the (u,v) coordinates of the triangle:
+   // x = x0 + e1x * u + e2x * v
+   // y = y0 + e1y * u + e2y * v
+   // where 0 &lt;= u &amp;&amp; 0 &lt;= v &amp;&amp; u + v &lt;= 1.
+   //
+   // We integrate u from [0,1-v] and then v from [0,1].
+   // We also need to use the Jacobian of the transformation:
+   // D = cross(e1, e2)
+   //
+   // Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
+   //
+   // The rest of the derivation is handled by computer algebra.
+
+   assert (vertexCount &gt;= 2);
+
+   // A line segment has zero mass.
+   if (vertexCount == 2) {
+     // massData.center = 0.5 * (vertices[0] + vertices[1]);
+     massData.center.setFrom(vertices[0]).add(vertices[1]).scale(0.5);
+     massData.mass = 0.0;
+     massData.inertia = 0.0;
+     return;
+   }
+
+   final Vector2 center = new Vector2.zero();
+   center.setZero();
+   double area = 0.0;
+   double I = 0.0;
+
+   // pRef is the reference point for forming triangles.
+   // It's location doesn't change the result (except for rounding error).
+   final Vector2 pRef = new Vector2.zero();
+   pRef.setZero();
+
+   final double k_inv3 = 1.0 / 3.0;
+
+   final Vector2 e1 = new Vector2.zero();
+   final Vector2 e2 = new Vector2.zero();
+
+   for (int i = 0; i &lt; vertexCount; ++i) {
+     // Triangle vertices.
+     final Vector2 p1 = pRef;
+     final Vector2 p2 = vertices[i];
+     final Vector2 p3 = i + 1 &lt; vertexCount ? vertices[i + 1] : vertices[0];
+
+     e1.setFrom(p2);
+     e1.sub(p1);
+
+     e2.setFrom(p3);
+     e2.sub(p1);
+
+     final double D = e1.cross(e2);
+
+     final double triangleArea = 0.5 * D;
+     area += triangleArea;
+
+     // Area weighted centroid
+     center.x += triangleArea * k_inv3 * (p1.x + p2.x + p3.x);
+     center.y += triangleArea * k_inv3 * (p1.y + p2.y + p3.y);
+
+     final double px = p1.x;
+     final double py = p1.y;
+     final double ex1 = e1.x;
+     final double ey1 = e1.y;
+     final double ex2 = e2.x;
+     final double ey2 = e2.y;
+
+     final double intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
+         (px * ex1 + px * ex2)) + 0.5 * px * px;
+     final double inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
+         (py * ey1 + py * ey2)) + 0.5 * py * py;
+
+     I += D * (intx2 + inty2);
+   }
+
+   // Total mass
+   massData.mass = density * area;
+
+   // Center of mass
+   assert (area &gt; Settings.EPSILON);
+   center.scale(1.0 / area);
+   massData.center.setFrom(center);
+
+   // Inertia tensor relative to the local origin.
+   massData.inertia = I * density;
+ }
+
+ /**
+  * Get the centroid and apply the supplied transform.
+  */
+ Vector2 applyTransformToCentroid(Transform xf) =&gt; Transform.mul(xf, centroid);
+
+ /**
+  * Get the centroid and apply the supplied transform. Return the result
+  * through the return parameter out.
+  */
+ Vector2 centroidToOut(Transform xf, Vector2 out) {
+   Transform.mulToOut(xf, centroid, out);
+   return out;
+ }
+}
+</pre>
+</div>
+<h3>Extends</h3>
+<p>
+<span class="type-box"><span class="icon-class"></span><a href="../box2d/Shape.html">Shape</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>PolygonShape</strong></span></p>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>PolygonShape</strong>() <a class="anchor-link" href="#"
+              title="Permalink to PolygonShape.PolygonShape">#</a></h4>
+<div class="doc">
+<p>Constructs a new PolygonShape.</p>
+<pre class="source">
+PolygonShape() :
+ super(ShapeType.POLYGON, Settings.POLYGON_RADIUS),
+ centroid = new Vector2.zero(),
+ vertices = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false
+   ),
+ normals = new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false
+   );
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copy">
+<button class="show-code">Code</button>
+new <strong>PolygonShape.copy</strong>(<a href="../box2d/PolygonShape.html">PolygonShape</a> other) <a class="anchor-link" href="#copy"
+              title="Permalink to PolygonShape.PolygonShape.copy">#</a></h4>
+<div class="doc">
+<p>Constructs a new PolygonShape equal to the given shape.</p>
+<pre class="source">
+PolygonShape.copy(PolygonShape other) :
+   super(ShapeType.POLYGON, other.radius),
+   vertexCount = other.vertexCount,
+   vertices = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
+   normals = new List&lt;Vector2&gt;(Settings.MAX_POLYGON_VERTICES),
+   centroid = new Vector2.copy(other.centroid) {
+ // Copy the vertices and normals from the other polygon shape.
+ for (int i = 0; i &lt; other.vertices.length; ++i)
+   vertices[i] = new Vector2.copy(other.vertices[i]);
+
+ for (int i = 0; i &lt; other.normals.length; ++i)
+   normals[i] = new Vector2.copy(other.normals[i]);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="centroid">
+<button class="show-code">Code</button>
+final <a href="../vector_math_64/Vector2.html">Vector2</a>         <strong>centroid</strong> <a class="anchor-link"
+            href="#centroid"
+            title="Permalink to PolygonShape.centroid">#</a>
+        </h4>
+        <div class="doc">
+<p>Local position of the shape centroid in parent body frame.</p>
+<pre class="source">
+final Vector2 centroid
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="normals">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="../vector_math_64/Vector2.html">Vector2</a>&gt;         <strong>normals</strong> <a class="anchor-link"
+            href="#normals"
+            title="Permalink to PolygonShape.normals">#</a>
+        </h4>
+        <div class="doc">
+<p>The normals of the shape. Note: Use getVertexCount() rather than
+normals.length to get the number of active normals.</p>
+<pre class="source">
+final List&lt;Vector2&gt; normals
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="radius">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>radius</strong> <a class="anchor-link"
+            href="#radius"
+            title="Permalink to PolygonShape.radius">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
+<p>Shape radius. </p>
+<pre class="source">
+double radius
+</pre>
+</div>
+</div>
+<div class="field inherited"><h4 id="type">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>         <strong>type</strong> <a class="anchor-link"
+            href="#type"
+            title="Permalink to PolygonShape.type">#</a>
+        </h4>
+        <div class="inherited-from">inherited from <a href="../box2d/Shape.html">Shape</a> </div><div class="doc">
+<p>The type of shape. Either circle or polygon. </p>
+<pre class="source">
+int type
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="vertexCount">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>         <strong>vertexCount</strong> <a class="anchor-link"
+            href="#vertexCount"
+            title="Permalink to PolygonShape.vertexCount">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int vertexCount = 0
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="vertices">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="../vector_math_64/Vector2.html">Vector2</a>&gt;         <strong>vertices</strong> <a class="anchor-link"
+            href="#vertices"
+            title="Permalink to PolygonShape.vertices">#</a>
+        </h4>
+        <div class="doc">
+<p>The vertices of the shape. Note: Use getVertexCount() rather than
+vertices.length to get the number of active vertices.</p>
+<pre class="source">
+final List&lt;Vector2&gt; vertices
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="applyTransformToCentroid">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>applyTransformToCentroid</strong>(<a href="../box2d/Transform.html">Transform</a> xf) <a class="anchor-link" href="#applyTransformToCentroid"
+              title="Permalink to PolygonShape.applyTransformToCentroid">#</a></h4>
+<div class="doc">
+<p>Get the centroid and apply the supplied transform.</p>
+<pre class="source">
+Vector2 applyTransformToCentroid(Transform xf) =&gt; Transform.mul(xf, centroid);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="centroidToOut">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>centroidToOut</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../vector_math_64/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#centroidToOut"
+              title="Permalink to PolygonShape.centroidToOut">#</a></h4>
+<div class="doc">
+<p>Get the centroid and apply the supplied transform. Return the result
+through the return parameter out.</p>
+<pre class="source">
+Vector2 centroidToOut(Transform xf, Vector2 out) {
+ Transform.mulToOut(xf, centroid, out);
+ return out;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="clone">
+<button class="show-code">Code</button>
+<a href="../box2d/Shape.html">Shape</a> <strong>clone</strong>() <a class="anchor-link" href="#clone"
+              title="Permalink to PolygonShape.clone">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a clone of this shape. </p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Shape.html">Shape</a> </div></div>
+<pre class="source">
+Shape clone() =&gt; new PolygonShape.copy(this);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeAxisAlignedBox">
+<button class="show-code">Code</button>
+void <strong>computeAxisAlignedBox</strong>(<a href="../vector_math_64/Aabb2.html">Aabb2</a> argAabb, <a href="../box2d/Transform.html">Transform</a> argXf) <a class="anchor-link" href="#computeAxisAlignedBox"
+              title="Permalink to PolygonShape.computeAxisAlignedBox">#</a></h4>
+<div class="doc">
+<p>See Shape.computeAxisAlignedBox(AABB, Transform).</p>
+<pre class="source">
+void computeAxisAlignedBox(Aabb2 argAabb, Transform argXf) {
+ final Vector2 lower = new Vector2.zero();
+ final Vector2 upper = new Vector2.zero();
+ final Vector2 v = new Vector2.zero();
+
+ Transform.mulToOut(argXf, vertices[0], lower);
+ upper.setFrom(lower);
+
+ for (int i = 1; i &lt; vertexCount; ++i) {
+   Transform.mulToOut(argXf, vertices[i], v);
+   Vector2.min(lower, v, lower);
+   Vector2.max(upper, v, upper);
+ }
+
+ argAabb.min.x = lower.x - radius;
+ argAabb.min.y = lower.y - radius;
+ argAabb.max.x = upper.x + radius;
+ argAabb.max.y = upper.y + radius;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeCentroidToOut">
+<button class="show-code">Code</button>
+void <strong>computeCentroidToOut</strong>(<a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="../vector_math_64/Vector2.html">Vector2</a>&gt; vs, <a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> count, <a href="../vector_math_64/Vector2.html">Vector2</a> out) <a class="anchor-link" href="#computeCentroidToOut"
+              title="Permalink to PolygonShape.computeCentroidToOut">#</a></h4>
+<div class="doc">
+<p>Compute the centroid and store the value in the given out parameter.</p>
+<pre class="source">
+void computeCentroidToOut(List&lt;Vector2&gt; vs, int count, Vector2 out) {
+ assert (count &gt;= 3);
+
+ out.setValues(0.0, 0.0);
+ double area = 0.0;
+
+ if (count == 2) {
+   out.setFrom(vs[0]).add(vs[1]).scale(.5);
+   return;
+ }
+
+ // pRef is the reference point for forming triangles.
+ // It's location doesn't change the result (except for rounding error).
+ final Vector2 pRef = new Vector2.zero();
+ pRef.setZero();
+
+ final Vector2 e1 = new Vector2.zero();
+ final Vector2 e2 = new Vector2.zero();
+
+ final double inv3 = 1.0 / 3.0;
+
+ for (int i = 0; i &lt; count; ++i) {
+   // Triangle vertices.
+   final Vector2 p1 = pRef;
+   final Vector2 p2 = vs[i];
+   final Vector2 p3 = i + 1 &lt; count ? vs[i + 1] : vs[0];
+
+   e1.setFrom(p2).sub(p1);
+   e2.setFrom(p3).sub(p1);
+
+   final double D = e1.cross(e2);
+
+   final double triangleArea = 0.5 * D;
+   area += triangleArea;
+
+   // Area weighted centroid
+   out.add(p1).add(p2).add(p3).scale(triangleArea * inv3);
+ }
+
+ // Centroid
+ assert (area &gt; Settings.EPSILON);
+ out.scale(1.0 / area);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="computeMass">
+<button class="show-code">Code</button>
+void <strong>computeMass</strong>(<a href="../box2d/MassData.html">MassData</a> massData, <a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> density) <a class="anchor-link" href="#computeMass"
+              title="Permalink to PolygonShape.computeMass">#</a></h4>
+<div class="doc">
+<p>See Shape.computeMass(MassData)</p>
+<pre class="source">
+void computeMass(MassData massData, double density) {
+ // Polygon mass, centroid, and inertia.
+ // Let rho be the polygon density in mass per unit area.
+ // Then:
+ // mass = rho * int(dA)
+ // centroid.x = (1/mass) * rho * int(x * dA)
+ // centroid.y = (1/mass) * rho * int(y * dA)
+ // I = rho * int((x*x + y*y) * dA)
+ //
+ // We can compute these integrals by summing all the integrals
+ // for each triangle of the polygon. To evaluate the integral
+ // for a single triangle, we make a change of variables to
+ // the (u,v) coordinates of the triangle:
+ // x = x0 + e1x * u + e2x * v
+ // y = y0 + e1y * u + e2y * v
+ // where 0 &lt;= u &amp;&amp; 0 &lt;= v &amp;&amp; u + v &lt;= 1.
+ //
+ // We integrate u from [0,1-v] and then v from [0,1].
+ // We also need to use the Jacobian of the transformation:
+ // D = cross(e1, e2)
+ //
+ // Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
+ //
+ // The rest of the derivation is handled by computer algebra.
+
+ assert (vertexCount &gt;= 2);
+
+ // A line segment has zero mass.
+ if (vertexCount == 2) {
+   // massData.center = 0.5 * (vertices[0] + vertices[1]);
+   massData.center.setFrom(vertices[0]).add(vertices[1]).scale(0.5);
+   massData.mass = 0.0;
+   massData.inertia = 0.0;
+   return;
+ }
+
+ final Vector2 center = new Vector2.zero();
+ center.setZero();
+ double area = 0.0;
+ double I = 0.0;
+
+ // pRef is the reference point for forming triangles.
+ // It's location doesn't change the result (except for rounding error).
+ final Vector2 pRef = new Vector2.zero();
+ pRef.setZero();
+
+ final double k_inv3 = 1.0 / 3.0;
+
+ final Vector2 e1 = new Vector2.zero();
+ final Vector2 e2 = new Vector2.zero();
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   // Triangle vertices.
+   final Vector2 p1 = pRef;
+   final Vector2 p2 = vertices[i];
+   final Vector2 p3 = i + 1 &lt; vertexCount ? vertices[i + 1] : vertices[0];
+
+   e1.setFrom(p2);
+   e1.sub(p1);
+
+   e2.setFrom(p3);
+   e2.sub(p1);
+
+   final double D = e1.cross(e2);
+
+   final double triangleArea = 0.5 * D;
+   area += triangleArea;
+
+   // Area weighted centroid
+   center.x += triangleArea * k_inv3 * (p1.x + p2.x + p3.x);
+   center.y += triangleArea * k_inv3 * (p1.y + p2.y + p3.y);
+
+   final double px = p1.x;
+   final double py = p1.y;
+   final double ex1 = e1.x;
+   final double ey1 = e1.y;
+   final double ex2 = e2.x;
+   final double ey2 = e2.y;
+
+   final double intx2 = k_inv3 * (0.25 * (ex1 * ex1 + ex2 * ex1 + ex2 * ex2) +
+       (px * ex1 + px * ex2)) + 0.5 * px * px;
+   final double inty2 = k_inv3 * (0.25 * (ey1 * ey1 + ey2 * ey1 + ey2 * ey2) +
+       (py * ey1 + py * ey2)) + 0.5 * py * py;
+
+   I += D * (intx2 + inty2);
+ }
+
+ // Total mass
+ massData.mass = density * area;
+
+ // Center of mass
+ assert (area &gt; Settings.EPSILON);
+ center.scale(1.0 / area);
+ massData.center.setFrom(center);
+
+ // Inertia tensor relative to the local origin.
+ massData.inertia = I * density;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getSupport">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> <strong>getSupport</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> d) <a class="anchor-link" href="#getSupport"
+              title="Permalink to PolygonShape.getSupport">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex index in the given direction.</p>
+<pre class="source">
+int getSupport(Vector2 d) {
+ int bestIndex = 0;
+ num bestValue = vertices[0].dot(d);
+ for (int i = 1; i &lt; vertexCount; ++i) {
+   num value = vertices[i].dot(d);
+   if (value &gt; bestValue) {
+     bestIndex = i;
+     bestValue = value;
+   }
+ }
+ return bestIndex;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getSupportVertex">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>getSupportVertex</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> d) <a class="anchor-link" href="#getSupportVertex"
+              title="Permalink to PolygonShape.getSupportVertex">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex in the given direction.</p>
+<pre class="source">
+Vector2 getSupportVertex(Vector2 d) =&gt; vertices[getSupport(d)];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getVertex">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>getVertex</strong>(<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> index) <a class="anchor-link" href="#getVertex"
+              title="Permalink to PolygonShape.getVertex">#</a></h4>
+<div class="doc">
+<p>Get a vertex by index.</p>
+<pre class="source">
+Vector2 getVertex(int index) =&gt; vertices[index];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="raycast">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a> <strong>raycast</strong>(<a href="../box2d/RayCastOutput.html">RayCastOutput</a> output, <a href="../box2d/RayCastInput.html">RayCastInput</a> input, <a href="../box2d/Transform.html">Transform</a> xf, <a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> childIndex) <a class="anchor-link" href="#raycast"
+              title="Permalink to PolygonShape.raycast">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Cast a ray against a child shape</p>
+<p>output: the raycast results.
+input: the raycast input parameters.
+transform: the transform to be applied to the shape.
+childIndex: the child shape index.</p>
+<div class="docs-inherited-from">docs inherited from <a href="../box2d/Shape.html">Shape</a> </div></div>
+<pre class="source">
+bool raycast(RayCastOutput output, RayCastInput input, Transform xf,
+   int childIndex) {
+ Vector2 p1 = new Vector2.zero();
+ Vector2 p2 = new Vector2.zero();
+
+ p1.setFrom(input.p1).sub(xf.position);
+ xf.rotation.transposed().transformed(p1, p1);
+
+ p2.setFrom(input.p2).sub(xf.position);
+ xf.rotation.transposed().transformed(p2, p2);
+
+ Vector2 d = p2.sub(p1);
+
+ double lower = 0.0;
+ double upper = input.maxFraction;
+
+ int index = -1;
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   Vector2 normal = normals[i];
+   Vector2 vertex = vertices[i];
+
+   Vector2 temp = vertex.sub(p1);
+   double numerator = normal.dot(temp);
+   double denominator = normal.dot(d);
+
+   if (denominator == 0.0) {
+     if (numerator &lt; 0.0)
+       return false;
+   } else {
+     if (denominator &lt; 0.0 &amp;&amp; numerator &lt; lower * denominator) {
+       lower = numerator / denominator;
+       index = i;
+     } else if (denominator &gt; 0.0 &amp;&amp; numerator &lt; upper * denominator) {
+       upper = numerator / denominator;
+     }
+   }
+
+   if (upper &lt; lower)
+     return false;
+ }
+
+ assert(0.0 &lt;= lower &amp;&amp; lower &lt;= input.maxFraction);
+
+ if (index &gt;= 0) {
+   output.fraction = lower;
+   Vector2 normal = normals[index];
+   Vector2 out = output.normal;
+   xf.rotation.transformed(normal, out);
+   return true;
+ }
+ return false;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsBox">
+<button class="show-code">Code</button>
+void <strong>setAsBox</strong>(<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> hx, <a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> hy) <a class="anchor-link" href="#setAsBox"
+              title="Permalink to PolygonShape.setAsBox">#</a></h4>
+<div class="doc">
+<p>Build vertices to represent an axis-aligned box.
+hx is the half-width of the body and hy is the half height.</p>
+<pre class="source">
+void setAsBox(double hx, double hy) {
+ vertexCount = 4;
+ vertices[0].setValues(-hx, -hy);
+ vertices[1].setValues(hx, -hy);
+ vertices[2].setValues(hx, hy);
+ vertices[3].setValues(-hx, hy);
+ normals[0].setValues(0.0, -1.0);
+ normals[1].setValues(1.0, 0.0);
+ normals[2].setValues(0.0, 1.0);
+ normals[3].setValues(-1.0, 0.0);
+ centroid.setZero();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsBoxWithCenterAndAngle">
+<button class="show-code">Code</button>
+void <strong>setAsBoxWithCenterAndAngle</strong>(<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> hx, <a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> hy, <a href="../vector_math_64/Vector2.html">Vector2</a> center, <a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a> angle) <a class="anchor-link" href="#setAsBoxWithCenterAndAngle"
+              title="Permalink to PolygonShape.setAsBoxWithCenterAndAngle">#</a></h4>
+<div class="doc">
+<p>Build vertices to represent an oriented box. hx is the halfwidth, hy the
+half-height, center is the center of the box in local coordinates and angle
+is the rotation of the box in local coordinates.</p>
+<pre class="source">
+void setAsBoxWithCenterAndAngle(double hx, double hy, Vector2 center, double angle) {
+ vertexCount = 4;
+ setAsBox(hx, hy);
+ centroid.setFrom(center);
+
+ Transform xf = new Transform();
+ xf.position.setFrom(center);
+ xf.rotation.setRotation(angle);
+
+ // Transform vertices and normals.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   Transform.mulToOut(xf, vertices[i], vertices[i]);
+   xf.rotation.transformed(normals[i], normals[i]);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setAsEdge">
+<button class="show-code">Code</button>
+void <strong>setAsEdge</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> v1, <a href="../vector_math_64/Vector2.html">Vector2</a> v2) <a class="anchor-link" href="#setAsEdge"
+              title="Permalink to PolygonShape.setAsEdge">#</a></h4>
+<div class="doc">
+<p>Set this as a single edge.</p>
+<pre class="source">
+void setAsEdge(Vector2 v1, Vector2 v2) {
+ vertexCount = 2;
+ vertices[0].setFrom(v1);
+ vertices[1].setFrom(v2);
+ centroid.setFrom(v1).add(v2).scale(0.5);
+ normals[0].setFrom(v2).sub(v1);
+ normals[0].scaleOrthogonalInto(-1.0, normals[0]);
+ normals[0].normalize();
+ normals[1].setFrom(normals[0]).negate();
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFrom">
+<button class="show-code">Code</button>
+void <strong>setFrom</strong>(<a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="../vector_math_64/Vector2.html">Vector2</a>&gt; otherVertices, <a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> count) <a class="anchor-link" href="#setFrom"
+              title="Permalink to PolygonShape.setFrom">#</a></h4>
+<div class="doc">
+<p>Copy vertices. This assumes the vertices define a convex polygon.
+It is assumed that the exterior is the the right of each edge.
+TODO(dominich): Consider removing 
+<span class="param">count</span>.</p>
+<pre class="source">
+void setFrom(List&lt;Vector2&gt; otherVertices, int count) {
+ assert (2 &lt;= count &amp;&amp; count &lt;= Settings.MAX_POLYGON_VERTICES);
+ vertexCount = count;
+
+ // Copy vertices.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   assert(vertices[i] != null);
+   vertices[i].setFrom(otherVertices[i]);
+ }
+
+ Vector2 edge = new Vector2.zero();
+
+ // Compute normals. Ensure the edges have non-zero length.
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   final int i1 = i;
+   final int i2 = i + 1 &lt; vertexCount ? i + 1 : 0;
+   edge.setFrom(vertices[i2]).sub(vertices[i1]);
+
+   assert (edge.length2 &gt; Settings.EPSILON * Settings.EPSILON);
+   edge.scaleOrthogonalInto(-1.0, normals[i]);
+   normals[i].normalize();
+ }
+
+ // Compute the polygon centroid.
+ computeCentroidToOut(vertices, vertexCount, centroid);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="testPoint">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/bool.html" ref="external">bool</a> <strong>testPoint</strong>(<a href="../box2d/Transform.html">Transform</a> xf, <a href="../vector_math_64/Vector2.html">Vector2</a> p) <a class="anchor-link" href="#testPoint"
+              title="Permalink to PolygonShape.testPoint">#</a></h4>
+<div class="doc">
+<p>See Shape.testPoint(Transform, Vector).</p>
+<pre class="source">
+bool testPoint(Transform xf, Vector2 p) {
+ Vector2 pLocal = new Vector2.zero();
+
+ pLocal.setFrom(p).sub(xf.position);
+ xf.rotation.transposed().transformed(pLocal, pLocal);
+
+ Vector2 temp = new Vector2.zero();
+
+ for (int i = 0; i &lt; vertexCount; ++i) {
+   temp.setFrom(pLocal).sub(vertices[i]);
+   if (normals[i].dot(temp) &gt; 0)
+     return false;
+ }
+
+ return true;
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

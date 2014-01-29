@@ -1,0 +1,231 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>DistanceProxy class / box2d Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="box2d" data-type="DistanceProxy">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../box2d.html">box2d</a> &rsaquo; <a href="../box2d/DistanceProxy.html">DistanceProxy</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>DistanceProxy</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<pre class="source">
+class DistanceProxy {
+ final List&lt;Vector2&gt; vertices =
+   new List&lt;Vector2&gt;.generate(
+     Settings.MAX_POLYGON_VERTICES,
+     (_) =&gt; new Vector2.zero(),
+     growable: false);
+
+ int count = 0;
+ double radius = 0.0;
+
+ /**
+  * Constructs a new DistanceProxy.
+  */
+ DistanceProxy();
+
+ /**
+  * Initialize the proxy using the given shape. The shape
+  * must remain in scope while the proxy is in use.
+  */
+ void setFromShape(shape) {
+   // If the shape is a circle...
+   if (shape.type == ShapeType.CIRCLE) {
+     vertices[0].setFrom(shape.position);
+     count = 1;
+     radius = shape.radius;
+
+     // If the shape is a polygon...
+   } else if (shape.type == ShapeType.POLYGON) {
+     count = shape.vertexCount;
+     radius = shape.radius;
+     for(int i = 0; i &lt; count; i++) {
+       vertices[i].setFrom(shape.vertices[i]);
+     }
+   } else {
+     // Should always be a circle or a polygon.
+     assert(false);
+   }
+ }
+
+ /**
+  * Get the supporting vertex index in the given direction.
+  */
+ int getSupport(Vector2 direction) {
+   int bestIndex = 0;
+   double bestValue = vertices[0].dot(direction);
+   for (int i = 1; i &lt; count; ++i) {
+     double value = vertices[i].dot(direction);
+     if(value &gt; bestValue) {
+       bestIndex = i;
+       bestValue = value;
+     }
+   }
+
+   return bestIndex;
+ }
+
+ /**
+  * Get the supporting vertex in the given direction.
+  */
+ Vector2 getSupportVertex(Vector2 direction) =&gt; vertices[getSupport(direction)];
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>DistanceProxy</strong>() <a class="anchor-link" href="#"
+              title="Permalink to DistanceProxy.DistanceProxy">#</a></h4>
+<div class="doc">
+<p>Constructs a new DistanceProxy.</p>
+<pre class="source">
+DistanceProxy();
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="count">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a>         <strong>count</strong> <a class="anchor-link"
+            href="#count"
+            title="Permalink to DistanceProxy.count">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+int count = 0
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="radius">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/double.html" ref="external">double</a>         <strong>radius</strong> <a class="anchor-link"
+            href="#radius"
+            title="Permalink to DistanceProxy.radius">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+double radius = 0.0
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="vertices">
+<button class="show-code">Code</button>
+final <a href="http://api.dartlang.org/dart_core/List.html" ref="external">List</a>&lt;<a href="../vector_math_64/Vector2.html">Vector2</a>&gt;         <strong>vertices</strong> <a class="anchor-link"
+            href="#vertices"
+            title="Permalink to DistanceProxy.vertices">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+final List&lt;Vector2&gt; vertices =
+ new List&lt;Vector2&gt;.generate(
+   Settings.MAX_POLYGON_VERTICES,
+   (_) =&gt; new Vector2.zero(),
+   growable: false)
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="getSupport">
+<button class="show-code">Code</button>
+<a href="http://api.dartlang.org/dart_core/int.html" ref="external">int</a> <strong>getSupport</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> direction) <a class="anchor-link" href="#getSupport"
+              title="Permalink to DistanceProxy.getSupport">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex index in the given direction.</p>
+<pre class="source">
+int getSupport(Vector2 direction) {
+ int bestIndex = 0;
+ double bestValue = vertices[0].dot(direction);
+ for (int i = 1; i &lt; count; ++i) {
+   double value = vertices[i].dot(direction);
+   if(value &gt; bestValue) {
+     bestIndex = i;
+     bestValue = value;
+   }
+ }
+
+ return bestIndex;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getSupportVertex">
+<button class="show-code">Code</button>
+<a href="../vector_math_64/Vector2.html">Vector2</a> <strong>getSupportVertex</strong>(<a href="../vector_math_64/Vector2.html">Vector2</a> direction) <a class="anchor-link" href="#getSupportVertex"
+              title="Permalink to DistanceProxy.getSupportVertex">#</a></h4>
+<div class="doc">
+<p>Get the supporting vertex in the given direction.</p>
+<pre class="source">
+Vector2 getSupportVertex(Vector2 direction) =&gt; vertices[getSupport(direction)];
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="setFromShape">
+<button class="show-code">Code</button>
+void <strong>setFromShape</strong>(shape) <a class="anchor-link" href="#setFromShape"
+              title="Permalink to DistanceProxy.setFromShape">#</a></h4>
+<div class="doc">
+<p>Initialize the proxy using the given shape. The shape
+must remain in scope while the proxy is in use.</p>
+<pre class="source">
+void setFromShape(shape) {
+ // If the shape is a circle...
+ if (shape.type == ShapeType.CIRCLE) {
+   vertices[0].setFrom(shape.position);
+   count = 1;
+   radius = shape.radius;
+
+   // If the shape is a polygon...
+ } else if (shape.type == ShapeType.POLYGON) {
+   count = shape.vertexCount;
+   radius = shape.radius;
+   for(int i = 0; i &lt; count; i++) {
+     vertices[i].setFrom(shape.vertices[i]);
+   }
+ } else {
+   // Should always be a circle or a polygon.
+   assert(false);
+ }
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
