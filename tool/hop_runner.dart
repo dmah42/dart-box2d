@@ -22,12 +22,11 @@ void main(List<String> args) {
   runHop(args);
 }
 
-Future<List<String>> _getLibs() {
-  return new Directory('lib').list()
+Future<List<String>> _getLibs() =>
+    new Directory('lib').list()
       .where((FileSystemEntity fse) => fse is File)
       .map((File file) => file.path)
       .toList();
-}
 
 Future<List<String>> _getDemos() =>
   new Directory('example/demos')
