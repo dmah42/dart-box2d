@@ -6,6 +6,8 @@ present in the original source files.
 * example/demos/        Contains demo .dart files
 * lib/         	        Contains the Dart-Box2d library .dart files
 
+[Library documentation](http://dart-lang.github.io/dart-box2d/)
+
 
 [![](https://drone.io/github.com/dart-lang/dart-box2d/status.png)](https://drone.io/github.com/dart-lang/dart-box2d/latest)
 
@@ -14,6 +16,7 @@ Build instructions
 Dart-Box2D now uses the excellent hop package. To build, just try
 
     $ dart tool/hop_runner
+
 
 License
 =======
