@@ -8,8 +8,14 @@ import 'package:path/path.dart' as pathos;
 
 void main(List<String> args) {
   addTask('analyze_libs', createAnalyzerTask(_getLibs));
+  addTask('analyze_demos', createAnalyzerTask(_getDemos));
+  addTask('analyze_benchmark',
+      createAnalyzerTask(['example/benchmarks/benchmark_runner.dart']));
 
-  addTask('dart2js', createDartCompilerTask(_getDemos(), liveTypeAnalysis: true));
+  addChainedTask('analyze_all',
+      ['analyze_libs', 'analyze_demos', 'analyze_benchmark']);
+
+  addTask('dart2js', createDartCompilerTask(_getDemos, liveTypeAnalysis: true));
 
   runHop(args);
 }

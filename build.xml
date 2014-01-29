@@ -37,27 +37,10 @@
   </condition>
   <property name="threadCount" value="1" />
 
-  <path id="demos">
-    <fileset dir="example/demos">
-      <include name="*.dart" />
-      <exclude name="demo.dart" />
-      <include name="racer/racer.dart" />
-    </fileset>
-  </path>
-
-  <macrodef name="dart_analyze">
-    <attribute name="file" />
-    <sequential>
-      <exec executable="${dart_analyzer}" failonerror="true">
-        <arg line="${dart_analyzer.args} @{file}" />
-      </exec>
-    </sequential>
-  </macrodef>
-
   <!-- MAIN -->
   <target name="default"
-    depends="pub-install, analyze, generate-JS, generate-docs"
-    description="Analyze, generate JS and library's DartDoc." />
+    depends="pub-install, generate-docs"
+    description="pub install, library's DartDoc." />
 
   <target name="pub-install">
     <exec executable="${pub.dart}" failonerror="true">
@@ -66,28 +49,6 @@
     <exec executable="${pub.dart}" failonerror="true">
       <arg line="update"/>
     </exec>
-  </target>
-
-  <target name="analyze"
-    depends="analyze-libs, analyze-demos, analyze-benchmarks"
-    description="Run dart_analyzer over library and all demos." />
-
-  <target name="analyze-libs">
-    <dart_analyze file="lib/box2d.dart" />
-    <dart_analyze file="lib/box2d_browser.dart" />
-  </target>
-
-  <target name="analyze-demos">
-    <for param="file" trim="true" parallel="true" threadCount="${threadCount}">
-      <path refid="demos" />
-      <sequential>
-        <dart_analyze file="@{file}" />
-      </sequential>
-    </for>
-  </target>
-
-  <target name="analyze-benchmarks">
-    <dart_analyze file="example/benchmarks/benchmark_runner.dart" />
   </target>
 
   <target name="generate-docs" description="Generate DartDoc for library.">
