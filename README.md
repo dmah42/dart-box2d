@@ -4,10 +4,20 @@ present in the original source files.
 
 * example/benchmarks/   Contains benchmark .dart files
 * example/demos/        Contains demo .dart files
-* lib/         	        Contains the DartBox2d library .dart files
-* doc/                  Contains the generated documentation
+* lib/         	        Contains the Dart-Box2d library .dart files
+
 
 [![](https://drone.io/github.com/dart-lang/dart-box2d/status.png)](https://drone.io/github.com/dart-lang/dart-box2d/latest)
+
+Build instructions
+==================
+Dart-Box2D now uses the excellent hop package. To build, just try
+
+    $ dart tool/hop_runner
+
+License
+=======
+
 
 ```
 Copyright (c) 2011, Daniel Murphy
