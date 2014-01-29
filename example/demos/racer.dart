@@ -18,12 +18,12 @@ import 'dart:async';
 import 'dart:html';
 import 'dart:math';
 import 'package:box2d/box2d_browser.dart';
-import '../demo.dart';
+import 'demo.dart';
 
-part 'car.dart';
-part 'control_state.dart';
-part 'ground_area.dart';
-part 'tire.dart';
+part 'racer/car.dart';
+part 'racer/control_state.dart';
+part 'racer/ground_area.dart';
+part 'racer/tire.dart';
 
 class Racer extends Demo implements ContactListener {
   static void main() {
