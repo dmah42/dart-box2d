@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ class BlobTest extends Demo {
 
       sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector2(-10.0, 0.0), 0.0);
       ground.createFixtureFromShape(sd);
-      sd.setAsBoxWithCenterAndAngle(0.4,50.0,new Vector2(10.0,0.0), 0.0);
+      sd.setAsBoxWithCenterAndAngle(0.4, 50.0, new Vector2(10.0, 0.0), 0.0);
       ground.createFixtureFromShape(sd);
     }
 
@@ -63,7 +63,7 @@ class BlobTest extends Demo {
 
       double x = cx + rx * Math.sin(angle);
       double y = cy + ry * Math.cos(angle);
-      bd.position.setFrom(new Vector2(x,y));
+      bd.position.setFrom(new Vector2(x, y));
       bd.type = BodyType.DYNAMIC;
       Body body = world.createBody(bd);
       bodies.add(body);
@@ -85,8 +85,8 @@ class BlobTest extends Demo {
     BodyDef bd2 = new BodyDef();
     bd2.type = BodyType.DYNAMIC;
     PolygonShape psd = new PolygonShape();
-    psd.setAsBoxWithCenterAndAngle(3.0,1.5,new Vector2(cx,cy+15.0),0.0);
-    bd2.position = new Vector2(cx,cy+15.0);
+    psd.setAsBoxWithCenterAndAngle(3.0, 1.5, new Vector2(cx, cy + 15.0), 0.0);
+    bd2.position = new Vector2(cx, cy + 15.0);
     Body fallingBox = world.createBody(bd2);
     bodies.add(fallingBox);
     fallingBox.createFixtureFromShape(psd, 1.0);

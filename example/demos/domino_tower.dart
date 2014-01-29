@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -117,8 +117,7 @@ class DominoTower extends Demo {
 
       // Make 'I's
       for (int j = 1; j < BASE_COUNT; ++j) {
-        if (j > 3)
-          dominoDensity *= .8;
+        if (j > 3) dominoDensity *= .8;
 
         // The y at the center of the I structure.
         num currY = DOMINO_HEIGHT * .5 + (DOMINO_HEIGHT + 2 * DOMINO_WIDTH) *

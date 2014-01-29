@@ -86,10 +86,10 @@ class CircleStress extends Demo {
 
       // top
       sd.setAsBox(50.0, 10.0);
-      final topDef = new BodyDef();
-      topDef.type = BodyType.STATIC;
-      topDef.angle = 0.0;
-      topDef.position = new Vector2(0.0, 75.0);
+      var topDef = new BodyDef()
+          ..type = BodyType.STATIC
+          ..angle = 0.0
+          ..position = new Vector2(0.0, 75.0);
       final topBody = world.createBody(topDef);
       bodies.add(topBody);
       fd.shape = sd;
@@ -98,27 +98,29 @@ class CircleStress extends Demo {
     }
 
     {
-      final bd = new BodyDef();
-      bd.type = BodyType.DYNAMIC;
+      var bd = new BodyDef()
+          ..type = BodyType.DYNAMIC
+          ..position = new Vector2(0.0, 10.0);
       int numPieces = 5;
       num radius = 6;
-      bd.position = new Vector2(0.0, 10.0);
-      final body = world.createBody(bd);
+      var body = world.createBody(bd);
       bodies.add(body);
 
       for (int i = 0; i < numPieces; i++) {
-        final fd = new FixtureDef();
-        final cd = new CircleShape();
-        cd.radius = 1.2;
-        fd.shape = cd;
-        fd.density = 25.0;
-        fd.friction = .1;
-        fd.restitution = .9;
         num xPos = radius * Math.cos(2 * Math.PI * (i /
             numPieces.toDouble()));
         num yPos = radius * Math.sin(2 * Math.PI * (i /
             numPieces.toDouble()));
-        cd.position.setValues(xPos, yPos);
+
+        var cd = new CircleShape()
+            ..radius = 1.2
+            ..position.setValues(xPos, yPos);
+
+        final fd = new FixtureDef()
+            ..shape = cd
+            ..density = 25.0
+            ..friction = .1
+            ..restitution = .9;
 
         body.createFixture(fd);
       }
@@ -139,25 +141,24 @@ class CircleStress extends Demo {
 
       for (int j = 0; j < COLUMNS; j++) {
         for (int i = 0; i < LOAD_SIZE; i++) {
-          CircleShape circ = new CircleShape();
-          BodyDef bod = new BodyDef();
-          bod.type = BodyType.DYNAMIC;
-          circ.radius = 1.0 + (i % 2 == 0 ? 1.0 : -1.0) * .5 * .75;
-          FixtureDef fd2 = new FixtureDef();
-          fd2.shape = circ;
-          fd2.density = circ.radius * 1.5;
-          fd2.friction = 0.5;
-          fd2.restitution = 0.7;
+          CircleShape circ = new CircleShape()
+              ..radius = 1.0 + (i % 2 == 0 ? 1.0 : -1.0) * .5 * .75;
+          var fd2 = new FixtureDef()
+              ..shape = circ
+              ..density = circ.radius * 1.5
+              ..friction = 0.5
+              ..restitution = 0.7;
           double xPos = -39.0 + 2 * i;
           double yPos = 50.0 + j;
-          bod.position = new Vector2(xPos, yPos);
+          var bod = new BodyDef()
+              ..type = BodyType.DYNAMIC
+              ..position = new Vector2(xPos, yPos);
           Body myBody = world.createBody(bod);
           bodies.add(myBody);
           myBody.createFixture(fd2);
         }
       }
     }
-
   }
 }
 
