@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,7 +53,7 @@ class RevoluteJoint extends Joint {
 
   int limitState;
 
-  RevoluteJoint(RevoluteJointDef def) : super(def) {
+  RevoluteJoint(RevoluteJointDef def): super(def) {
     localAnchor1.setFrom(def.localAnchorA);
     localAnchor2.setFrom(def.localAnchorB);
     referenceAngle = def.referenceAngle;
@@ -72,7 +72,7 @@ class RevoluteJoint extends Joint {
     if (_enableMotor || _enableLimit) {
       // You cannot create a rotation limit between bodies that
       // both have fixed rotation.
-      assert (b1.invInertia > 0.0 || b2.invInertia > 0.0);
+      assert(b1.invInertia > 0.0 || b2.invInertia > 0.0);
     }
 
     final Vector2 r1 = new Vector2.zero();
@@ -114,25 +114,21 @@ class RevoluteJoint extends Joint {
       num jointAngle = b2.sweep.angle - b1.sweep.angle - referenceAngle;
       if ((upperAngle - lowerAngle).abs() < 2.0 * Settings.ANGULAR_SLOP) {
         limitState = LimitState.EQUAL;
-      }
-      else if (jointAngle <= lowerAngle) {
+      } else if (jointAngle <= lowerAngle) {
         if (limitState != LimitState.AT_LOWER) {
           impulse.z = 0.0;
         }
         limitState = LimitState.AT_LOWER;
-      }
-      else if (jointAngle >= upperAngle) {
+      } else if (jointAngle >= upperAngle) {
         if (limitState != LimitState.AT_UPPER) {
           impulse.z = 0.0;
         }
         limitState = LimitState.AT_UPPER;
-      }
-      else {
+      } else {
         limitState = LimitState.INACTIVE;
         impulse.z = 0.0;
       }
-    }
-    else {
+    } else {
       limitState = LimitState.INACTIVE;
     }
 
@@ -147,13 +143,11 @@ class RevoluteJoint extends Joint {
 
       temp.setFrom(P).scale(m1);
       b1.linearVelocity.sub(temp);
-      b1.angularVelocity -= i1 * (r1.cross(P) + _motorImpulse +
-          impulse.z);
+      b1.angularVelocity -= i1 * (r1.cross(P) + _motorImpulse + impulse.z);
 
       temp.setFrom(P).scale(m2);
       b2.linearVelocity.add(temp);
-      b2.angularVelocity += i2 * (r2.cross(P) + _motorImpulse +
-          impulse.z);
+      b2.angularVelocity += i2 * (r2.cross(P) + _motorImpulse + impulse.z);
 
     } else {
       impulse.setZero();
@@ -466,7 +460,7 @@ class RevoluteJoint extends Joint {
   }
 
   void setLimits(final num lower, final num upper) {
-    assert (lower <= upper);
+    assert(lower <= upper);
     bodyA.awake = true;
     bodyB.awake = true;
     lowerAngle = lower;

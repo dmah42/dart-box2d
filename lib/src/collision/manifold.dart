@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,22 +52,22 @@ class Manifold {
    * Creates a manifold with 0 points. It's point array should be full of
    * already instantiated ManifoldPoints.
    */
-  Manifold() :
-    localNormal = new Vector2.zero(),
-    localPoint = new Vector2.zero(),
-    points = new List<ManifoldPoint>.generate(Settings.MAX_MANIFOLD_POINTS,
-            (_) => new ManifoldPoint(), growable: false);
+  Manifold()
+      : localNormal = new Vector2.zero(),
+        localPoint = new Vector2.zero(),
+        points = new List<ManifoldPoint>.generate(Settings.MAX_MANIFOLD_POINTS,
+          (_) => new ManifoldPoint(), growable: false);
 
 
   /**
    * Creates a new manifold that is a copy of the given manifold.
    */
-  Manifold.copy(Manifold other) :
-      points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
-      localNormal = new Vector2.copy(other.localNormal),
-      localPoint = new Vector2.copy(other.localPoint),
-      pointCount = other.pointCount,
-      type = other.type {
+  Manifold.copy(Manifold other)
+      : points = new List<ManifoldPoint>(Settings.MAX_MANIFOLD_POINTS),
+        localNormal = new Vector2.copy(other.localNormal),
+        localPoint = new Vector2.copy(other.localPoint),
+        pointCount = other.pointCount,
+        type = other.type {
     for (int i = 0; i < Settings.MAX_MANIFOLD_POINTS; ++i) {
       points[i] = new ManifoldPoint.copy(other.points[i]);
     }

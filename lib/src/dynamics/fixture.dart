@@ -79,7 +79,7 @@ class Fixture {
   }
 
   /** These support body activation/deactivation. */
-  void createProxy(BroadPhase broadPhase, Transform xf){
+  void createProxy(BroadPhase broadPhase, Transform xf) {
     assert(proxy == null);
 
     // Create proxy in the broad-phase.

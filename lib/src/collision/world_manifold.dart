@@ -28,7 +28,7 @@ class WorldManifold {
    * World contact points (points of intersection)
    */
   final List<Vector2> points = new List<Vector2>.generate(
-        Settings.MAX_MANIFOLD_POINTS, (i) => new Vector2.zero());
+      Settings.MAX_MANIFOLD_POINTS, (i) => new Vector2.zero());
 
   /**
    * Temporary Vectors that are constructed on construction. Used to prevent
@@ -75,8 +75,8 @@ class WorldManifold {
         double cBx = -normal.x * radiusB + pointB.x;
         double cBy = -normal.y * radiusB + pointB.y;
 
-        points[0].x = (cAx + cBx) *.5;
-        points[0].y = (cAy + cBy) *.5;
+        points[0].x = (cAx + cBx) * .5;
+        points[0].y = (cAy + cBy) * .5;
         return;
       case ManifoldType.FACE_A:
         final Vector2 planePoint = pool3;
@@ -106,21 +106,21 @@ class WorldManifold {
           double cAx = normal.x * scalar + clipPoint.x;
           double cAy = normal.y * scalar + clipPoint.y;
 
-          double cBx = - normal.x * radiusB + clipPoint.x;
-          double cBy = - normal.y * radiusB + clipPoint.y;
+          double cBx = -normal.x * radiusB + clipPoint.x;
+          double cBy = -normal.y * radiusB + clipPoint.y;
 
-          points[i].x = (cAx + cBx)*.5;
-          points[i].y = (cAy + cBy)*.5;
+          points[i].x = (cAx + cBx) * .5;
+          points[i].y = (cAy + cBy) * .5;
         }
 
         return;
-      case ManifoldType.FACE_B :
+      case ManifoldType.FACE_B:
         final Vector2 planePoint = pool3;
 
         final Matrix2 R = xfB.rotation;
-        normal.x = R.entry(0,0) * manifold.localNormal.x + R.entry(0,1) *
+        normal.x = R.entry(0, 0) * manifold.localNormal.x + R.entry(0, 1) *
             manifold.localNormal.y;
-        normal.y = R.entry(1,0) * manifold.localNormal.x + R.entry(1,1) *
+        normal.y = R.entry(1, 0) * manifold.localNormal.x + R.entry(1, 1) *
             manifold.localNormal.y;
         final Vector2 v = manifold.localPoint;
         planePoint.x = xfB.position.x + xfB.rotation.entry(0,0) * v.x +
@@ -142,19 +142,19 @@ class WorldManifold {
           double scalar = radiusB - ((clipPoint.x - planePoint.x) * normal.x +
               (clipPoint.y - planePoint.y) * normal.y);
 
-          double cBx =  normal.x * scalar + clipPoint.x;
-          double cBy =  normal.y * scalar + clipPoint.y;
+          double cBx = normal.x * scalar + clipPoint.x;
+          double cBy = normal.y * scalar + clipPoint.y;
 
-          double cAx = - normal.x * radiusA + clipPoint.x;
-          double cAy = - normal.y * radiusA + clipPoint.y;
+          double cAx = -normal.x * radiusA + clipPoint.x;
+          double cAy = -normal.y * radiusA + clipPoint.y;
 
-          points[i].x = (cAx + cBx) *.5;
-          points[i].y = (cAy + cBy) *.5;
+          points[i].x = (cAx + cBx) * .5;
+          points[i].y = (cAy + cBy) * .5;
         }
         // Ensure normal points from A to B.
         normal.x = -normal.x;
         normal.y = -normal.y;
         break;
-     }
+    }
   }
 }

@@ -112,15 +112,13 @@ class DynamicTree {
    *
    * Returns true if the given proxy was re-inserted.
    */
-  bool moveProxy(DynamicTreeNode argProxy, Aabb2 argBox,
-      Vector2 displacement) {
+  bool moveProxy(DynamicTreeNode argProxy, Aabb2 argBox, Vector2 displacement) {
     // The given proxy must not be null and must be a leaf.
-    assert (argProxy != null);
-    assert (argProxy.isLeaf);
+    assert(argProxy != null);
+    assert(argProxy.isLeaf);
 
     // If the given proxies box contains the given box, then return right away.
-    if (argBox.containsAabb2(argProxy.box))
-      return false;
+    if (argBox.containsAabb2(argProxy.box)) return false;
 
     // Remove the proxy from the tree.
     _removeLeaf(argProxy);
@@ -183,24 +181,20 @@ class DynamicTree {
   bool _query(TreeCallback callback, Aabb2 argBox, DynamicTreeNode
       node, int count) {
     // If given node is null, get out of here and continue recursing.
-    if (node == null)
-      return true;
+    if (node == null) return true;
 
     if (argBox.intersectsWithAabb2(node.box)) {
       if (node.isLeaf) {
-        if (!callback.treeCallback(node))
-          return false;
+        if (!callback.treeCallback(node)) return false;
       } else {
         if (count < MAX_STACK_SIZE) {
           ++count;
-          if (!_query(callback, argBox, node.childOne, count))
-            return false;
+          if (!_query(callback, argBox, node.childOne, count)) return false;
         }
 
         if (count < MAX_STACK_SIZE) {
           ++count;
-          if (!_query(callback, argBox, node.childTwo, count))
-            return false;
+          if (!_query(callback, argBox, node.childTwo, count)) return false;
         }
       }
     }
@@ -274,8 +268,7 @@ class DynamicTree {
       // Build up the axis-aligned boxes in case we expanded them out.
       do {
         // If the old parent's box contains the new parent's box, leave.
-        if (node2.box.containsAabb2(node1.box))
-          break;
+        if (node2.box.containsAabb2(node1.box)) break;
 
         // Set the old parent's box to the combination of it's new
         // children's boxes.
@@ -360,8 +353,7 @@ class DynamicTree {
 
   /** Computes the height of the given tree. */
   int _computeHeight(DynamicTreeNode node) {
-    if (node == null)
-      return 0;
+    if (node == null) return 0;
 
     int heightOne = _computeHeight(node.childOne);
     int heightTwo = _computeHeight(node.childTwo);
@@ -375,8 +367,7 @@ class DynamicTree {
    * the tree. Starts at the last reinserted leaf.
    */
   void rebalance(int iterations) {
-    if (_root == null)
-      return;
+    if (_root == null) return;
 
     DynamicTreeNode current;
     for (int i = 0; i < iterations; ++i) {

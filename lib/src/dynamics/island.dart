@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -75,7 +75,7 @@ class Island {
           new List<Velocity>(0) : velocities;
       velocities = new List<Velocity>(bodyCapacity);
       velocities.setRange(0, old.length, old);
-      for (int i=old.length; i<velocities.length; i++) {
+      for (int i = old.length; i < velocities.length; i++) {
         velocities[i] = new Velocity();
       }
     }
@@ -86,7 +86,7 @@ class Island {
           new List<Position>(0) : positions;
       positions = new List<Position>(bodyCapacity);
       positions.setRange(0, old.length, old);
-      for (int i=old.length; i<positions.length; i++) {
+      for (int i = old.length; i < positions.length; i++) {
         positions[i] = new Position();
       }
     }
@@ -98,12 +98,12 @@ class Island {
     jointCount = 0;
   }
 
-  void solve(TimeStep step, Vector2 gravity, bool allowSleep){
+  void solve(TimeStep step, Vector2 gravity, bool allowSleep) {
     // Integrate velocities and apply damping.
-    for (int i = 0; i < bodyCount; ++i){
+    for (int i = 0; i < bodyCount; ++i) {
       Body b = bodies[i];
 
-      if (b.type != BodyType.DYNAMIC){
+      if (b.type != BodyType.DYNAMIC) {
         continue;
       }
 
@@ -146,12 +146,12 @@ class Island {
     _contactSolver.init(contacts, contactCount, step.dtRatio);
     _contactSolver.warmStart();
 
-    for (int i = 0; i < jointCount; ++i){
+    for (int i = 0; i < jointCount; ++i) {
       joints[i].initVelocityConstraints(step);
     }
 
     for (int i = 0; i < step.velocityIterations; ++i) {
-      for (int j = 0; j < jointCount; ++j){
+      for (int j = 0; j < jointCount; ++j) {
         joints[j].solveVelocityConstraints(step);
       }
       _contactSolver.solveVelocityConstraints();
@@ -162,18 +162,17 @@ class Island {
 
     // Integrate positions.
     Vector2 temp = new Vector2.zero();
-    for (int i = 0; i < bodyCount; ++i){
+    for (int i = 0; i < bodyCount; ++i) {
       Body b = bodies[i];
 
-      if (b.type == BodyType.STATIC){
+      if (b.type == BodyType.STATIC) {
         continue;
       }
 
       // Check for large velocities.
       _translation.setFrom(b.linearVelocity);
       _translation.scale(step.dt);
-      if (_translation.dot(_translation) >
-          Settings.MAX_TRANSLATION_SQUARED){
+      if (_translation.dot(_translation) > Settings.MAX_TRANSLATION_SQUARED) {
         num ratio = Settings.MAX_TRANSLATION / _translation.length;
         b.linearVelocity.scale(ratio);
       }
@@ -212,7 +211,7 @@ class Island {
         jointsOkay = jointsOkay && jointOkay;
       }
 
-      if (contactsOkay && jointsOkay){
+      if (contactsOkay && jointsOkay) {
         // Exit early if the position errors are small.
         break;
       }
@@ -221,7 +220,7 @@ class Island {
     report(_contactSolver.constraints);
 
 
-    if (allowSleep){
+    if (allowSleep) {
       num minSleepTime = Settings.BIG_NUMBER;
 
       num linTolSqr = Settings.LINEAR_SLEEP_TOLERANCE
@@ -229,13 +228,13 @@ class Island {
       num angTolSqr = Settings.ANGULAR_SLEEP_TOLERANCE
           * Settings.ANGULAR_SLEEP_TOLERANCE;
 
-      for (int i = 0; i < bodyCount; ++i){
+      for (int i = 0; i < bodyCount; ++i) {
         Body b = bodies[i];
-        if (b.type == BodyType.STATIC){
+        if (b.type == BodyType.STATIC) {
           continue;
         }
 
-        if ((b.flags & Body.AUTO_SLEEP_FLAG) == 0){
+        if ((b.flags & Body.AUTO_SLEEP_FLAG) == 0) {
           b.sleepTime = 0.0;
           minSleepTime = 0.0;
         }
@@ -245,15 +244,14 @@ class Island {
             b.linearVelocity.dot(b.linearVelocity) > linTolSqr){
           b.sleepTime = 0.0;
           minSleepTime = 0.0;
-        }
-        else{
+        } else {
           b.sleepTime += step.dt;
           minSleepTime = Math.min(minSleepTime, b.sleepTime);
         }
       }
 
-      if (minSleepTime >= Settings.TIME_TO_SLEEP){
-        for (int i = 0; i < bodyCount; ++i){
+      if (minSleepTime >= Settings.TIME_TO_SLEEP) {
+        for (int i = 0; i < bodyCount; ++i) {
           Body b = bodies[i];
           b.awake = false;
         }
@@ -263,7 +261,7 @@ class Island {
   }
 
   /** Adds a body to the Island. */
-  void addBody(Body body){
+  void addBody(Body body) {
     assert(bodyCount < bodyCapacity);
     body.islandIndex = bodyCount;
     bodies[bodyCount++] = body;
@@ -281,17 +279,17 @@ class Island {
     joints[jointCount++] = joint;
   }
 
-  void report(List<ContactConstraint> constraints){
-    if (listener == null){
+  void report(List<ContactConstraint> constraints) {
+    if (listener == null) {
       return;
     }
 
-    for (int i = 0; i < contactCount; ++i){
+    for (int i = 0; i < contactCount; ++i) {
       Contact c = contacts[i];
 
       ContactConstraint cc = constraints[i];
 
-      for (int j = 0; j < cc.pointCount; ++j){
+      for (int j = 0; j < cc.pointCount; ++j) {
         impulse.normalImpulses[j] = cc.points[j].normalImpulse;
         impulse.tangentImpulses[j] = cc.points[j].tangentImpulse;
       }

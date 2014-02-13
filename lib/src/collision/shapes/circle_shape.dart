@@ -28,16 +28,16 @@ class CircleShape extends Shape {
    * A constructor for internal use only. Instead use Body.createShape with a
    * CircleDef.
    */
-  CircleShape() :
-    super(ShapeType.CIRCLE, 0.0),
-    position = new Vector2.zero();
+  CircleShape()
+      : super(ShapeType.CIRCLE, 0.0),
+        position = new Vector2.zero();
 
   /**
    * Constructs a new CircleShape equal to the given CircleShape.
    */
-  CircleShape.copy(CircleShape other) :
-    super(other.type, other.radius),
-    position = new Vector2.copy(other.position);
+  CircleShape.copy(CircleShape other)
+      : super(other.type, other.radius),
+        position = new Vector2.copy(other.position);
 
 
   /**
@@ -69,8 +69,7 @@ class CircleShape extends Shape {
     double rr = r.dot(r);
     double sigma = c * c - rr * b;
 
-    if (sigma < 0.0 || rr < Settings.EPSILON)
-      return false;
+    if (sigma < 0.0 || rr < Settings.EPSILON) return false;
 
     double a = -(c + Math.sqrt(sigma));
 

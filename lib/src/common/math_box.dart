@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,8 +46,8 @@ class MathBox {
    * from [toMin] and [toMax]. For example, given a [val] of 2 in the
    * "from range" of 0-4, and a "to range" of 10-20, would return 15.
    */
-  static double translateAndScale(double val, double fromMin, double fromMax,
-                                  double toMin, double toMax) {
+  static double translateAndScale(double val, double fromMin, double
+      fromMax, double toMin, double toMax) {
     final double mult = (val - fromMin) / (fromMax - fromMin);
     final double res = toMin + mult * (toMax - toMin);
     return res;

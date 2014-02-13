@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -93,13 +93,12 @@ class Body {
   final Vector2 oldCenter = new Vector2.zero();
   final Vector2 tempCenter = new Vector2.zero();
 
-  Body(BodyDef bd, this.world) :
-    _linearVelocity = new Vector2.copy(bd.linearVelocity),
-    linearDamping = bd.linearDamping,
-    angularDamping = bd.angularDamping,
-    userData = bd.userData,
-    _type = bd.type
-  {
+  Body(BodyDef bd, this.world)
+      : _linearVelocity = new Vector2.copy(bd.linearVelocity),
+        linearDamping = bd.linearDamping,
+        angularDamping = bd.angularDamping,
+        userData = bd.userData,
+        _type = bd.type {
     if (bd.bullet) {
       flags |= BULLET_FLAG;
     }
@@ -142,7 +141,7 @@ class Body {
    * Contacts are not created until the next time step.
    */
   Fixture createFixture(FixtureDef def) {
-    assert (world.locked == false);
+    assert(world.locked == false);
 
     Fixture fixture = new Fixture();
     fixture.create(this, def);
@@ -193,15 +192,15 @@ class Body {
    * destroyed.
    */
   void destroyFixture(Fixture fixture) {
-    assert (world.locked == false);
+    assert(world.locked == false);
     if (world.locked == true) {
       return;
     }
 
-    assert (fixture.body == this);
+    assert(fixture.body == this);
 
     // Remove the fixture from this body's singly linked list.
-    assert (fixtureCount > 0);
+    assert(fixtureCount > 0);
     Fixture node = fixtureList;
     Fixture last = null; // java change
     bool found = false;
@@ -216,7 +215,7 @@ class Body {
     }
 
     // You tried to remove a shape that is not attached to this body.
-    assert (found);
+    assert(found);
 
     if (last == null) {
       fixtureList = fixture.next;
@@ -241,11 +240,11 @@ class Body {
     }
 
     if ((flags & ACTIVE_FLAG) == ACTIVE_FLAG) {
-      assert (fixture.proxy != null);
+      assert(fixture.proxy != null);
       BroadPhase broadPhase = world._contactManager.broadPhase;
       fixture.destroyProxy(broadPhase);
     } else {
-      assert (fixture.proxy == null);
+      assert(fixture.proxy == null);
     }
 
     fixture.destroy();
@@ -462,14 +461,13 @@ class Body {
     invInertia = 0.0;
 
     mass = data.mass;
-    if (mass <= 0.0)
-      mass = 1.0;
+    if (mass <= 0.0) mass = 1.0;
 
     invMass = 1.0 / mass;
 
     if (data.inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
       _inertia = data.inertia - mass * data.center.dot(data.center);
-      assert (_inertia > 0.0);
+      assert(_inertia > 0.0);
       invInertia = 1.0 / _inertia;
     }
 
@@ -507,7 +505,7 @@ class Body {
       return;
     }
 
-    assert (_type == BodyType.DYNAMIC);
+    assert(_type == BodyType.DYNAMIC);
 
     // Accumulate mass over all fixtures.
     tempCenter.setZero();
@@ -537,7 +535,7 @@ class Body {
     if (_inertia > 0.0 && (flags & FIXED_ROTATION_FLAG) == 0) {
       // Center the inertia about the center of mass.
       _inertia -= mass * tempCenter.dot(tempCenter);
-      assert (_inertia > 0.0);
+      assert(_inertia > 0.0);
       invInertia = 1.0 / _inertia;
     } else {
       _inertia = 0.0;
@@ -595,8 +593,7 @@ class Body {
    * given out paramater.
    */
   void getWorldVectorToOut(Vector2 localVector, Vector2 out) {
-    originTransform.rotation.transformed(localVector,
-        out);
+    originTransform.rotation.transformed(localVector, out);
   }
 
   /**
@@ -636,8 +633,7 @@ class Body {
    * out parameter.
    */
   void getLocalVectorToOut(Vector2 worldVector, Vector2 out) {
-    originTransform.rotation.transposed().transformed(worldVector,
-        out);
+    originTransform.rotation.transposed().transformed(worldVector, out);
   }
 
   /**
@@ -844,8 +840,7 @@ class Body {
   void synchronizeFixtures() {
     final Transform xf1 = _pxf;
     xf1.rotation.setRotation(sweep.angleZero);
-    xf1.rotation.transformed(sweep.localCenter,
-        xf1.position);
+    xf1.rotation.transformed(sweep.localCenter, xf1.position);
     xf1.position.scale(-1.0);
     xf1.position.add(sweep.centerZero);
 
@@ -861,7 +856,7 @@ class Body {
     final Matrix2 r = t.rotation;
     final Vector2 p = t.position;
 
-    r.setValues(c,s,-s,c);
+    r.setValues(c, s, -s, c);
 
     p.x = (r.entry(0,0) * sweep.localCenter.x + r.entry(0,1) * sweep.localCenter.y) * -1 +
         sweep.center.x;
