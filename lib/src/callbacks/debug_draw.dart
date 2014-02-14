@@ -78,7 +78,7 @@ abstract class DebugDraw {
    * viewport scale to the given scale.
    */
   void setCamera(num x, num y, num scale) {
-    viewportTransform.setCamera(x,y,scale);
+    viewportTransform.setCamera(x, y, scale);
   }
 
   /**

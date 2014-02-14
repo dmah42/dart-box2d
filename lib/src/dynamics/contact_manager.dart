@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -106,8 +106,7 @@ class ContactManager {
 
     c.edge2.prev = null;
     c.edge2.next = bodyB.contactList;
-    if (bodyB.contactList != null)
-      bodyB.contactList.prev = c.edge2;
+    if (bodyB.contactList != null) bodyB.contactList.prev = c.edge2;
     bodyB.contactList = c.edge2;
 
     ++contactCount;
@@ -126,34 +125,25 @@ class ContactManager {
     }
 
     // Remove from the world.
-    if (c.prev != null)
-      c.prev.next = c.next;
+    if (c.prev != null) c.prev.next = c.next;
 
-    if (c.next != null)
-      c.next.prev = c.prev;
+    if (c.next != null) c.next.prev = c.prev;
 
-    if (c == contactList)
-      contactList = c.next;
+    if (c == contactList) contactList = c.next;
 
     // Remove from body 1
-    if (c.edge1.prev != null)
-      c.edge1.prev.next = c.edge1.next;
+    if (c.edge1.prev != null) c.edge1.prev.next = c.edge1.next;
 
-    if (c.edge1.next != null)
-      c.edge1.next.prev = c.edge1.prev;
+    if (c.edge1.next != null) c.edge1.next.prev = c.edge1.prev;
 
-    if (c.edge1 == bodyA.contactList)
-      bodyA.contactList = c.edge1.next;
+    if (c.edge1 == bodyA.contactList) bodyA.contactList = c.edge1.next;
 
     // Remove from body 2
-    if (c.edge2.prev != null)
-      c.edge2.prev.next = c.edge2.next;
+    if (c.edge2.prev != null) c.edge2.prev.next = c.edge2.next;
 
-    if (c.edge2.next != null)
-      c.edge2.next.prev = c.edge2.prev;
+    if (c.edge2.next != null) c.edge2.next.prev = c.edge2.prev;
 
-    if (c.edge2 == bodyB.contactList)
-      bodyB.contactList = c.edge2.next;
+    if (c.edge2 == bodyB.contactList) bodyB.contactList = c.edge2.next;
 
     // Call the factory.
     pool.pushContact(c);

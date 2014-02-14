@@ -27,7 +27,7 @@ class ContactSolver {
   static const double K_MAX_CONDITION_NUMBER = 100.0;
 
   List<ContactConstraint> constraints = new List<ContactConstraint>.generate(
-        INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint());
+      INITIAL_NUM_CONSTRAINTS, (i) => new ContactConstraint());
   int constraintCount;
 
   /** Pooling */
@@ -44,29 +44,29 @@ class ContactSolver {
   final Vector2 d = new Vector2.zero();
   final Vector2 P1 = new Vector2.zero();
   final Vector2 P2 = new Vector2.zero();
-  final PositionSolverManifold psolver  = new PositionSolverManifold();
+  final PositionSolverManifold psolver = new PositionSolverManifold();
   final Vector2 rA = new Vector2.zero();
   final Vector2 rB = new Vector2.zero();
 
   /** Constructs a new ContactSolver. */
   ContactSolver();
 
-  void init(List<Contact> contacts, int contactCount, double impulseRatio){
+  void init(List<Contact> contacts, int contactCount, double impulseRatio) {
     constraintCount = contactCount;
 
     // dynamic array
-    if(constraints.length < contactCount){
+    if (constraints.length < contactCount) {
       List<ContactConstraint> old = constraints;
       int newLen = Math.max(old.length * 2, constraintCount);
       constraints = new List<ContactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
 
-      for(int i=old.length; i < constraints.length; ++i) {
+      for (int i = old.length; i < constraints.length; ++i) {
         constraints[i] = new ContactConstraint();
       }
     }
 
-    for (int i = 0; i < constraintCount; ++i){
+    for (int i = 0; i < constraintCount; ++i) {
       Contact contact = contacts[i];
 
       Fixture fixtureA = contact.fixtureA;
@@ -110,7 +110,7 @@ class ContactSolver {
       cc.radius = radiusA + radiusB;
       cc.type = manifold.type;
 
-      for (int j = 0; j < cc.pointCount; ++j){
+      for (int j = 0; j < cc.pointCount; ++j) {
         ManifoldPoint cp = manifold.points[j];
         ContactConstraintPoint ccp = cc.points[j];
 
@@ -147,7 +147,7 @@ class ContactSolver {
             + bodyB.invInertia * rtB;
 
         assert(kTangent > Settings.EPSILON);
-        ccp.tangentMass = 1.0 /  kTangent;
+        ccp.tangentMass = 1.0 / kTangent;
 
         // Setup a velocity bias for restitution.
         ccp.velocityBias = 0.0;
@@ -160,13 +160,13 @@ class ContactSolver {
 
         double vRel = a.x * temp1.x + a.y * temp1.y;
 
-        if (vRel < -Settings.VELOCITY_THRESHOLD){
+        if (vRel < -Settings.VELOCITY_THRESHOLD) {
           ccp.velocityBias = -restitution * vRel;
         }
       }
 
       // If we have two points, then prepare the block solver.
-      if (cc.pointCount == 2){
+      if (cc.pointCount == 2) {
         ContactConstraintPoint ccp1 = cc.points[0];
         ContactConstraintPoint ccp2 = cc.points[1];
 
@@ -180,20 +180,20 @@ class ContactSolver {
         double rn2A = ccp2.rA.cross(cc.normal);
         double rn2B = ccp2.rB.cross(cc.normal);
 
-        double k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B
-            * rn1B;
-        double k22 = invMassA + invMassB + invIA * rn2A * rn2A + invIB * rn2B
-            * rn2B;
-        double k12 = invMassA + invMassB + invIA * rn1A * rn2A + invIB * rn1B
-            * rn2B;
+        double k11 = invMassA + invMassB + invIA * rn1A * rn1A + invIB * rn1B *
+            rn1B;
+        double k22 = invMassA + invMassB + invIA * rn2A * rn2A + invIB * rn2B *
+            rn2B;
+        double k12 = invMassA + invMassB + invIA * rn1A * rn2A + invIB * rn1B *
+            rn2B;
 
         // Ensure a reasonable condition number.
         if (k11 * k11 < K_MAX_CONDITION_NUMBER * (k11 * k22 - k12 * k12)) {
           // K is safe to invert.
-          cc.K.setValues(k11,k12,k12,k22);
-          cc.normalMass.setValues(k11,k12,k12,k22);
+          cc.K.setValues(k11, k12, k12, k22);
+          cc.normalMass.setValues(k11, k12, k12, k22);
           cc.normalMass.invert();
-        } else{
+        } else {
           // The constraints are redundant, just use one.
           cc.pointCount = 1;
         }
@@ -215,7 +215,7 @@ class ContactSolver {
       final Vector2 normal = c.normal;
       normal.scaleOrthogonalInto(-1.0, tangent);
 
-      for (int j = 0; j < c.pointCount; ++j){
+      for (int j = 0; j < c.pointCount; ++j) {
         ContactConstraintPoint ccp = c.points[j];
 
         double Px = ccp.normalImpulse * normal.x + ccp.tangentImpulse *
@@ -234,7 +234,7 @@ class ContactSolver {
     }
   }
 
-  void solveVelocityConstraints(){
+  void solveVelocityConstraints() {
     for (int i = 0; i < constraintCount; ++i) {
       final ContactConstraint c = constraints[i];
       final Body bodyA = c.bodyA;
@@ -341,8 +341,8 @@ class ContactSolver {
         double vn2 = dv2.x * c.normal.x + dv2.y * c.normal.y;
 
         Vector2 b = new Vector2(vn1 - cp1.velocityBias, vn2 - cp2.velocityBias);
-        temp2.x = c.K.entry(0,0) * a.x + c.K.entry(0,1) * a.y;
-        temp2.y = c.K.entry(1,0) * a.x + c.K.entry(1,1) * a.y;
+        temp2.x = c.K.entry(0, 0) * a.x + c.K.entry(0, 1) * a.y;
+        temp2.y = c.K.entry(1, 0) * a.x + c.K.entry(1, 1) * a.y;
         b.x -= temp2.x;
         b.y -= temp2.y;
 
@@ -350,7 +350,7 @@ class ContactSolver {
           c.normalMass.transformed(b, x);
           x.scale(-1.0);
 
-          if (x.x >= 0.0 && x.y >= 0.0){
+          if (x.x >= 0.0 && x.y >= 0.0) {
             // Resubstitute for the incremental impulse
             //Vector2 d = x - a;
             d.setFrom(x).sub(a);
@@ -367,10 +367,8 @@ class ContactSolver {
             temp2.setFrom(temp1).scale(invMassB);
             vB.add(temp2);
 
-            wA -= invIA * (cp1.rA.cross(P1) +
-                cp2.rA.cross(P2));
-            wB += invIB * (cp1.rB.cross(P1) +
-                cp2.rB.cross(P2));
+            wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) + cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -379,10 +377,10 @@ class ContactSolver {
             break;
           }
 
-          x.x = - cp1.normalMass * b.x;
+          x.x = -cp1.normalMass * b.x;
           x.y = 0.0;
           vn1 = 0.0;
-          vn2 = c.K.entry(1,0) * x.x + b.y;
+          vn2 = c.K.entry(1, 0) * x.x + b.y;
 
           if (x.x >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
@@ -398,10 +396,8 @@ class ContactSolver {
             temp2.setFrom(temp1).scale(invMassB);
             vB.add(temp2);
 
-            wA -= invIA * (cp1.rA.cross(P1) +
-                cp2.rA.cross(P2));
-            wB += invIB * (cp1.rB.cross(P1) +
-                cp2.rB.cross(P2));
+            wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) + cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -411,8 +407,8 @@ class ContactSolver {
           }
 
           x.x = 0.0;
-          x.y = - cp2.normalMass * b.y;
-          vn1 = c.K.entry(0,1) * x.y + b.x;
+          x.y = -cp2.normalMass * b.y;
+          vn1 = c.K.entry(0, 1) * x.y + b.x;
           vn2 = 0.0;
 
           if (x.y >= 0.0 && vn1 >= 0.0) {
@@ -429,10 +425,8 @@ class ContactSolver {
             temp2.setFrom(temp1).scale(invMassB);
             vB.add(temp2);
 
-            wA -= invIA * (cp1.rA.cross(P1) +
-                cp2.rA.cross(P2));
-            wB += invIB * (cp1.rB.cross(P1) +
-                cp2.rB.cross(P2));
+            wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
+            wB += invIB * (cp1.rB.cross(P1) + cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -446,7 +440,7 @@ class ContactSolver {
           vn1 = b.x;
           vn2 = b.y;
 
-          if (vn1 >= 0.0 && vn2 >= 0.0 ) {
+          if (vn1 >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
             d.setFrom(x).sub(a);
 
@@ -460,10 +454,8 @@ class ContactSolver {
             temp2.setFrom(temp1).scale(invMassB);
             vB.add(temp2);
 
-            wA -= invIA * (cp1.rA.cross(P1) +
-                cp2.rA.cross(P2));
-            wB += invIB * (cp2.rA.cross(P1) +
-                cp2.rB.cross(P2));
+            wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
+            wB += invIB * (cp2.rA.cross(P1) + cp2.rB.cross(P2));
 
             // Accumulate
             cp1.normalImpulse = x.x;
@@ -486,11 +478,11 @@ class ContactSolver {
   }
 
   void storeImpulses() {
-    for( int i=0; i<constraintCount; i++) {
+    for (int i = 0; i < constraintCount; i++) {
       ContactConstraint c = constraints[i];
       Manifold m = c.manifold;
 
-      for(int j=0; j< c.pointCount; j++) {
+      for (int j = 0; j < c.pointCount; j++) {
         m.points[j].normalImpulse = c.points[j].normalImpulse;
         m.points[j].tangentImpulse = c.points[j].tangentImpulse;
       }
@@ -539,7 +531,7 @@ class ContactSolver {
         double K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
-        double impulse = K > 0.0 ? - C / K : 0.0;
+        double impulse = K > 0.0 ? -C / K : 0.0;
 
         P.setFrom(normal).scale(impulse);
 

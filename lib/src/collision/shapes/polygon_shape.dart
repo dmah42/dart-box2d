@@ -103,7 +103,7 @@ class PolygonShape extends Shape {
    * TODO(dominich): Consider removing [count].
    */
   void setFrom(List<Vector2> otherVertices, int count) {
-    assert (2 <= count && count <= Settings.MAX_POLYGON_VERTICES);
+    assert(2 <= count && count <= Settings.MAX_POLYGON_VERTICES);
     vertexCount = count;
 
     // Copy vertices.
@@ -194,8 +194,7 @@ class PolygonShape extends Shape {
 
     for (int i = 0; i < vertexCount; ++i) {
       temp.setFrom(pLocal).sub(vertices[i]);
-      if (normals[i].dot(temp) > 0)
-        return false;
+      if (normals[i].dot(temp) > 0) return false;
     }
 
     return true;
@@ -228,8 +227,7 @@ class PolygonShape extends Shape {
       double denominator = normal.dot(d);
 
       if (denominator == 0.0) {
-        if (numerator < 0.0)
-          return false;
+        if (numerator < 0.0) return false;
       } else {
         if (denominator < 0.0 && numerator < lower * denominator) {
           lower = numerator / denominator;
@@ -239,8 +237,7 @@ class PolygonShape extends Shape {
         }
       }
 
-      if (upper < lower)
-        return false;
+      if (upper < lower) return false;
     }
 
     assert(0.0 <= lower && lower <= input.maxFraction);
@@ -287,7 +284,7 @@ class PolygonShape extends Shape {
    * Compute the centroid and store the value in the given out parameter.
    */
   void computeCentroidToOut(List<Vector2> vs, int count, Vector2 out) {
-    assert (count >= 3);
+    assert(count >= 3);
 
     out.setValues(0.0, 0.0);
     double area = 0.0;
@@ -326,7 +323,7 @@ class PolygonShape extends Shape {
     }
 
     // Centroid
-    assert (area > Settings.EPSILON);
+    assert(area > Settings.EPSILON);
     out.scale(1.0 / area);
   }
 
@@ -358,7 +355,7 @@ class PolygonShape extends Shape {
     //
     // The rest of the derivation is handled by computer algebra.
 
-    assert (vertexCount >= 2);
+    assert(vertexCount >= 2);
 
     // A line segment has zero mass.
     if (vertexCount == 2) {
@@ -424,7 +421,7 @@ class PolygonShape extends Shape {
     massData.mass = density * area;
 
     // Center of mass
-    assert (area > Settings.EPSILON);
+    assert(area > Settings.EPSILON);
     center.scale(1.0 / area);
     massData.center.setFrom(center);
 

@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -130,11 +130,9 @@ class Collision {
     double distance1 = norm.dot(vIn[1].v) - offset;
 
     // If the points are behind the plane
-    if (distance0 <= 0.0)
-      vOut[numOut++].setFrom(vIn[0]);
+    if (distance0 <= 0.0) vOut[numOut++].setFrom(vIn[0]);
 
-    if (distance1 <= 0.0)
-      vOut[numOut++].setFrom(vIn[1]);
+    if (distance1 <= 0.0) vOut[numOut++].setFrom(vIn[1]);
 
     // If the points are on different sides of the plane
     if (distance0 * distance1 < 0.0) {
@@ -170,8 +168,7 @@ class Collision {
     final double distSqr = dx * dx + dy * dy;
 
     final double radius = circle1.radius + circle2.radius;
-    if (distSqr > radius * radius)
-      return;
+    if (distSqr > radius * radius) return;
 
     manifold.type = ManifoldType.CIRCLES;
     manifold.localPoint.setFrom(circle1.position);
@@ -216,8 +213,7 @@ class Collision {
       final double s = norm.dot(temp);
 
       // early out
-      if (s > radius)
-        return;
+      if (s > radius) return;
 
       if (s > separation) {
         separation = s;
@@ -259,8 +255,7 @@ class Collision {
 
     if (u1 <= 0) {
       final Vector2 d = cLocal - v1;
-      if ( d.length2 > radius * radius)
-        return;
+      if (d.length2 > radius * radius) return;
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -271,8 +266,7 @@ class Collision {
       manifold.points[0].id.zero();
     } else if (u2 <= 0.0) {
       final Vector2 d = cLocal - v2;
-      if ( d.length2 > radius * radius)
-        return;
+      if (d.length2 > radius * radius) return;
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -289,8 +283,7 @@ class Collision {
       final Vector2 t = cLocal - fc;
       final Vector2 norm = normals[vertIndex1];
       separation = t.dot(norm);
-      if (separation > radius)
-        return;
+      if (separation > radius) return;
 
       manifold.pointCount = 1;
       manifold.type = ManifoldType.FACE_A;
@@ -314,7 +307,7 @@ class Collision {
     final int count2 = poly2.vertexCount;
     final List<Vector2> vertices2 = poly2.vertices;
 
-    assert (0 <= edge1 && edge1 < count1);
+    assert(0 <= edge1 && edge1 < count1);
     // Convert normal from poly1's frame into poly2's frame.
     final Matrix2 R = xf1.rotation;
     final Vector2 v = normals1[edge1];
@@ -440,7 +433,7 @@ class Collision {
     final List<Vector2> vertices2 = poly2.vertices;
     final List<Vector2> normals2 = poly2.normals;
 
-    assert (0 <= edge1 && edge1 < count1);
+    assert(0 <= edge1 && edge1 < count1);
 
     // Get the normal of the reference edge in poly2's frame.
     xf1.rotation.transformed(normals1[edge1], normal1);
@@ -482,12 +475,10 @@ class Collision {
     double totalRadius = polyA.radius + polyB.radius;
 
     findMaxSeparation(results1, polyA, xfA, polyB, xfB);
-    if (results1.separation > totalRadius)
-      return;
+    if (results1.separation > totalRadius) return;
 
     findMaxSeparation(results2, polyB, xfB, polyA, xfA);
-    if (results2.separation > totalRadius)
-      return;
+    if (results2.separation > totalRadius) return;
 
     PolygonShape poly1; // reference polygon
     PolygonShape poly2; // incident polygon
@@ -563,14 +554,12 @@ class Collision {
     np = clipSegmentToLine(clipPoints1, incidentEdge, tangent, sideOffset1);
     tangent.negate();
 
-    if (np < 2)
-      return;
+    if (np < 2) return;
 
     // Clip to negative box side 1
     np = clipSegmentToLine(clipPoints2, clipPoints1, tangent, sideOffset2);
 
-    if (np < 2)
-      return;
+    if (np < 2) return;
 
     // Now clipPoints2 contains the clipped points.
     manifold.localNormal.setFrom(localNormal);
@@ -603,7 +592,7 @@ class ClipVertex {
 
   ClipVertex();
 
-  void setFrom(ClipVertex cv){
+  void setFrom(ClipVertex cv) {
     v.setFrom(cv.v);
     id.setFrom(cv.id);
   }

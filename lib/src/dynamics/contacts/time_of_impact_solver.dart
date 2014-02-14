@@ -1,11 +1,11 @@
 // Copyright 2012 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,17 +39,17 @@ class TimeOfImpactSolver {
     count = argCount;
     toiBody = argToiBody;
 
-    if(count >= constraints.length){
+    if (count >= constraints.length) {
       List<TimeOfImpactConstraint> old = constraints;
-      int newLen = Math.max(count, old.length*2);
+      int newLen = Math.max(count, old.length * 2);
       constraints = new List<TimeOfImpactConstraint>(newLen);
       constraints.setRange(0, old.length, old);
-      for(int i=old.length; i<constraints.length; i++){
+      for (int i = old.length; i < constraints.length; i++) {
         constraints[i] = new TimeOfImpactConstraint();
       }
     }
 
-    for (int i=0; i<count; i++) {
+    for (int i = 0; i < count; i++) {
       Contact contact = contacts[i];
 
       Fixture fixtureA = contact.fixtureA;
@@ -73,7 +73,7 @@ class TimeOfImpactSolver {
       constraint.pointCount = manifold.pointCount;
       constraint.radius = radiusA + radiusB;
 
-      for (int j = 0; j < constraint.pointCount; ++j){
+      for (int j = 0; j < constraint.pointCount; ++j) {
         ManifoldPoint cp = manifold.points[j];
         constraint.localPoints[j] = cp.localPoint;
       }
@@ -83,10 +83,10 @@ class TimeOfImpactSolver {
   /**
    * Perform one solver iteration. Returns true if converged.
    */
-  bool solve(num baumgarte){
+  bool solve(num baumgarte) {
     num minSeparation = 0;
 
-    for (int i = 0; i < count; ++i){
+    for (int i = 0; i < count; ++i) {
       TimeOfImpactConstraint c = constraints[i];
       Body bodyA = c.bodyA;
       Body bodyB = c.bodyB;
@@ -95,9 +95,9 @@ class TimeOfImpactSolver {
       num massB = bodyB.mass;
 
       // Only the TimeOfImpact body should move.
-      if (bodyA == toiBody){
+      if (bodyA == toiBody) {
         massB = 0.0;
-      } else{
+      } else {
         massA = 0.0;
       }
 
@@ -107,7 +107,7 @@ class TimeOfImpactSolver {
       num invIB = massB * bodyB.invInertia;
 
       // Solve normal constraints
-      for (int j = 0; j < c.pointCount; ++j){
+      for (int j = 0; j < c.pointCount; ++j) {
         psm.initialize(c, j);
         Vector2 normal = psm.normal;
 
@@ -130,7 +130,7 @@ class TimeOfImpactSolver {
         num K = invMassA + invMassB + invIA * rnA * rnA + invIB * rnB * rnB;
 
         // Compute normal impulse
-        num impulse = K > 0.0 ? - C / K : 0.0;
+        num impulse = K > 0.0 ? -C / K : 0.0;
 
         P.setFrom(normal).scale(impulse);
 

@@ -14,7 +14,6 @@
 
 library racer;
 
-import 'dart:async';
 import 'dart:html';
 import 'dart:math';
 import 'package:box2d/box2d_browser.dart';

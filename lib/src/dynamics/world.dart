@@ -66,7 +66,7 @@ class World {
    */
   bool _continuousPhysics = true;
 
-  List<List<ContactRegister>>  _contactStacks =
+  List<List<ContactRegister>> _contactStacks =
       new List<List<ContactRegister>>.generate(ShapeType.TYPE_COUNT, (_) {
         return new List<ContactRegister>(ShapeType.TYPE_COUNT);
       }, growable: false);
@@ -205,7 +205,7 @@ class World {
 
   /** Add a rigid body to the world. */
   void addBody(Body body) {
-    assert (locked == false);
+    assert(locked == false);
     if (locked) {
       return null;
     }
@@ -237,7 +237,7 @@ class World {
    * Warning: This function is locked during callbacks.
    */
   Joint createJoint(JointDef def) {
-    assert (locked == false);
+    assert(locked == false);
     if (locked) {
       return null;
     }
@@ -298,7 +298,7 @@ class World {
    * Warning: This function is locked during callbacks.
    */
   void destroyJoint(Joint joint) {
-    assert (locked == false);
+    assert(locked == false);
     if (locked) {
       return;
     }
@@ -354,7 +354,7 @@ class World {
 
     Joint.destroy(joint);
 
-    assert (_jointCount > 0);
+    assert(_jointCount > 0);
     --_jointCount;
 
     // If the joint prevents collisions, then flag any contacts for filtering.
@@ -380,8 +380,8 @@ class World {
    * warning: This function is locked during callbacks.
    */
   void destroyBody(Body body) {
-    assert (_bodyCount > 0);
-    assert (locked == false);
+    assert(_bodyCount > 0);
+    assert(locked == false);
     if (locked) {
       return;
     }
@@ -544,8 +544,7 @@ class World {
     }
 
     if ((drawFlags & DebugDraw.e_jointBit) == DebugDraw.e_jointBit) {
-      for (Joint j = _jointList; j != null; j = j._next)
-        drawJoint(j);
+      for (Joint j = _jointList; j != null; j = j._next) drawJoint(j);
     }
 
     if ((drawFlags & DebugDraw.e_pairBit) == DebugDraw.e_pairBit) {
@@ -712,7 +711,7 @@ class World {
       while (stackCount > 0) {
         // Grab the next body off the stack and add it to the island.
         Body b = stack[--stackCount];
-        assert (b.active);
+        assert(b.active);
         island.addBody(b);
 
         // Make sure the body is awake.
@@ -755,7 +754,7 @@ class World {
             continue;
           }
 
-          assert (stackCount < stackSize);
+          assert(stackCount < stackSize);
           stack[stackCount++] = other;
           other.flags |= Body.ISLAND_FLAG;
         }
@@ -780,7 +779,7 @@ class World {
             continue;
           }
 
-          assert (stackCount < stackSize);
+          assert(stackCount < stackSize);
           stack[stackCount++] = other;
           other.flags |= Body.ISLAND_FLAG;
         }
@@ -854,8 +853,7 @@ class World {
 
     // Collide bullets.
     for (Body body = _bodyList; body != null; body = body.next) {
-      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG ||
-          !body.bullet) {
+      if ((body.flags & Body.TO_I_FLAG) == Body.TO_I_FLAG || !body.bullet) {
         continue;
       }
 
@@ -1037,7 +1035,7 @@ class World {
         // Vector2 center = Mul(xf, circle.p);
         Transform.mulToOut(xf, circle.position, center);
         double radius = circle.radius;
-        axis.setValues(xf.rotation.entry(0,0), xf.rotation.entry(1,0));
+        axis.setValues(xf.rotation.entry(0, 0), xf.rotation.entry(1, 0));
 
         if (0 != (_debugDraw.flags & DebugDraw.e_lineDrawingBit)) {
           _debugDraw.drawCircle(center, radius, color, axis);
@@ -1088,11 +1086,11 @@ class World {
     Color3 color = new Color3.fromRGBF(0.5, 0.3, 0.3);
 
     switch (joint.type) {
-      case JointType.DISTANCE :
+      case JointType.DISTANCE:
         _debugDraw.drawSegment(p1, p2, color);
         break;
 
-      case JointType.PULLEY :
+      case JointType.PULLEY:
         throw new UnimplementedError();
         //Vector2 s1 = pulley.getGroundAnchorA();
         //Vector2 s2 = pulley.getGroundAnchorB();
@@ -1110,7 +1108,7 @@ class World {
       case JointType.MOUSE :
         // Don't draw anything for mouse. Already have cursor!
         break;
-      default :
+      default:
         Vector2 p1t = new Vector2.copy(p1); // copies since drawSegment modifies
         Vector2 p2t = new Vector2.copy(p2);
         _debugDraw.drawSegment(x1, p1, color);

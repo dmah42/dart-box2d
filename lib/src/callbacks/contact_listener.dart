@@ -63,5 +63,5 @@ abstract class ContactListener {
    * is provided explicitly in a separate data structure.
    * Note: this is only called for contacts that are touching, solid, and awake.
    */
-   void postSolve(Contact contact, ContactImpulse impulse);
+  void postSolve(Contact contact, ContactImpulse impulse);
 }

@@ -55,8 +55,7 @@ class BroadPhase implements TreeCallback {
     // TODO(dominich): Do a benchmark to see how preallocating the pairs
     // performs against allocating them as we go.
     _pairBuffer = new List<Pair>(_pairCapacity);
-    for (int i = 0; i < _pairCapacity; ++i)
-      _pairBuffer[i] = new Pair();
+    for (int i = 0; i < _pairCapacity; ++i) _pairBuffer[i] = new Pair();
   }
 
   /**
@@ -84,8 +83,7 @@ class BroadPhase implements TreeCallback {
    * call UpdatePairs to constize the proxy pairs (for your time step).
    */
   void moveProxy(DynamicTreeNode proxy, Aabb2 box, Vector2 displacement) {
-    if (_tree.moveProxy(proxy, box, displacement))
-      _bufferMove(proxy);
+    if (_tree.moveProxy(proxy, box, displacement)) _bufferMove(proxy);
   }
 
   /**
@@ -109,8 +107,7 @@ class BroadPhase implements TreeCallback {
     // Perform tree queries for all moving proxies.
     for (int i = 0; i < moveBuffer.length; ++i) {
       queryProxy = moveBuffer[i];
-      if (queryProxy == null)
-        continue;
+      if (queryProxy == null) continue;
 
       // We have to query the tree with the fat AABB so that
       // we don't fail to create a pair that may touch later.
@@ -165,8 +162,7 @@ class BroadPhase implements TreeCallback {
    */
   bool treeCallback(DynamicTreeNode proxy) {
     // A proxy cannot form a pair with itself.
-    if (proxy == queryProxy)
-      return true;
+    if (proxy == queryProxy) return true;
 
     // Grow the pair buffer as needed.
     // TODO(dominich): Can this be left up to the underlying SDK?
@@ -176,8 +172,7 @@ class BroadPhase implements TreeCallback {
       _pairBuffer = new List<Pair>(_pairCapacity);
 
       // Copy over the pairs and fill in any remaining spots in the array.
-      for (int i = 0; i < oldBuffer.length; ++i)
-        _pairBuffer[i] = oldBuffer[i];
+      for (int i = 0; i < oldBuffer.length; ++i) _pairBuffer[i] = oldBuffer[i];
 
       for (int i = oldBuffer.length; i < _pairCapacity; ++i)
         _pairBuffer[i] = new Pair();
@@ -215,7 +210,6 @@ class BroadPhase implements TreeCallback {
 
   void _unbufferMove(DynamicTreeNode proxy) {
     int index = moveBuffer.indexOf(proxy);
-    if (index != -1)
-      moveBuffer.removeRange(index, 1);
+    if (index != -1) moveBuffer.removeRange(index, 1);
   }
 }

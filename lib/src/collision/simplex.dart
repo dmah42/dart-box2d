@@ -96,10 +96,10 @@ class Simplex {
 
   void getSearchDirection(Vector2 out) {
     switch (count) {
-      case 1 :
+      case 1:
         out.setFrom(v1.w).negate();
         return;
-      case 2 :
+      case 2:
         e12.setFrom(v2.w).sub(v1.w);
         // use out for a temp variable real quick
         out.setFrom(v1.w).negate();
@@ -108,14 +108,13 @@ class Simplex {
         if (sgn > 0.0) {
           // Origin is left of e12.
           e12.scaleOrthogonalInto(1.0, out);
-        }
-        else {
+        } else {
           // Origin is right of e12.
           e12.scaleOrthogonalInto(1.0, out);
         }
         break;
-      default :
-        assert (false);
+      default:
+        assert(false);
         out.setZero();
         return;
     }
@@ -127,23 +126,23 @@ class Simplex {
    */
   void getClosestPoint(Vector2 out) {
     switch (count) {
-      case 0 :
-        assert (false);
+      case 0:
+        assert(false);
         out.setZero();
         return;
-      case 1 :
+      case 1:
         out.setFrom(v1.w);
         return;
-      case 2 :
+      case 2:
         case22.setFrom(v2.w).scale(v2.a);
         case2.setFrom(v1.w).scale(v1.a).add(case22);
         out.setFrom(case2);
         return;
-      case 3 :
+      case 3:
         out.setZero();
         return;
-      default :
-        assert (false);
+      default:
+        assert(false);
         out.setZero();
         return;
     }
@@ -152,16 +151,16 @@ class Simplex {
 
   void getWitnessPoints(Vector2 pA, Vector2 pB) {
     switch (count) {
-      case 0 :
-        assert (false);
+      case 0:
+        assert(false);
         break;
 
-      case 1 :
+      case 1:
         pA.setFrom(v1.wA);
         pB.setFrom(v1.wB);
         break;
 
-      case 2 :
+      case 2:
         case2.setFrom(v1.wA).scale(v1.a);
         pA.setFrom(v2.wA).scale(v2.a).add(case2);
         case2.setFrom(v1.wB).scale(v1.a);
@@ -169,7 +168,7 @@ class Simplex {
 
         break;
 
-      case 3 :
+      case 3:
         pA.setFrom(v1.wA).scale(v1.a);
         case3.setFrom(v2.wA).scale(v2.a);
         case33.setFrom(v3.wA).scale(v3.a);
@@ -177,31 +176,31 @@ class Simplex {
         pB.setFrom(pA);
         break;
 
-      default :
-        assert (false);
+      default:
+        assert(false);
         break;
     }
   }
 
   double getMetric() {
     switch (count) {
-      case 0 :
-        assert (false);
+      case 0:
+        assert(false);
         return 0.0;
 
-      case 1 :
+      case 1:
         return 0.0;
 
-      case 2 :
+      case 2:
         return MathBox.distance(v1.w, v2.w);
 
-      case 3 :
+      case 3:
         case3.setFrom(v2.w).sub(v1.w);
         case33.setFrom(v3.w).sub(v1.w);
         return case3.cross(case33);
 
-      default :
-        assert (false);
+      default:
+        assert(false);
         return 0.0;
     }
   }
