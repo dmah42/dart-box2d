@@ -105,7 +105,7 @@ abstract class Demo {
         ..width = CANVAS_WIDTH
         ..height = CANVAS_HEIGHT;
     document.body.nodes.add(canvas);
-    ctx = canvas.getContext("2d");
+    ctx = canvas.context2D;
 
     // Create the viewport transform with the center at extents.
     var extents = new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);

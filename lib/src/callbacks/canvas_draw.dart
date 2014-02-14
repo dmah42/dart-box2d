@@ -24,7 +24,7 @@ part of box2d_browser;
 
 class CanvasDraw extends DebugDraw {
   /** The canvas rendering context with which to draw. */
-  CanvasRenderingContext2D ctx;
+  final CanvasRenderingContext2D ctx;
 
   CanvasDraw(ViewportTransform viewport, this.ctx) : super(viewport) {
     assert (null != viewport && null != ctx);
