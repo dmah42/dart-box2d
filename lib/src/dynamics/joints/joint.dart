@@ -18,14 +18,14 @@
 
 part of box2d;
 
-class Joint {
-  int type;
+abstract class Joint {
+  final int type;
+
+  final JointEdge edgeA = new JointEdge();
+  final JointEdge edgeB = new JointEdge();
 
   Joint _prev;
   Joint _next;
-
-  JointEdge edgeA = new JointEdge();
-  JointEdge edgeB = new JointEdge();
 
   Body bodyA;
   Body bodyB;
@@ -100,7 +100,7 @@ class Joint {
   void getReactionForce(num inv_dt, Vector2 argOut) {}
 
   /** Get the reaction torque on body2 in N*m. */
-  double getReactionTorque(num inv_dt) {}
+  double getReactionTorque(num inv_dt);
 
   /** Short-cut function to determine if either body is inactive. */
   bool get active => bodyA.active && bodyB.active;
@@ -110,7 +110,7 @@ class Joint {
   void solveVelocityConstraints(TimeStep step) {}
 
   /** This returns true if the position errors are within tolerance. */
-  bool solvePositionConstraints(num baumgarte) {}
+  bool solvePositionConstraints(num baumgarte);
 
   /** Override to handle destruction of joint. */
   void destructor() {}

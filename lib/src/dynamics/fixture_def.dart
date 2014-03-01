@@ -21,6 +21,11 @@ part of box2d;
 
 class FixtureDef {
   /**
+   * Contact filtering data;
+   */
+  final Filter filter = new Filter();
+
+  /**
    * The shape to use in the fixture. This must be set.
    */
   Shape shape;
@@ -51,10 +56,6 @@ class FixtureDef {
    */
   bool isSensor = false;
 
-  /**
-   * Contact filtering data;
-   */
-  Filter filter = new Filter();
 
   /**
    * Constructs a new FixtureDef with default values.

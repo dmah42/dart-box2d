@@ -26,6 +26,17 @@ abstract class Contact {
   static const int FILTER_FLAG = 0x0008;
   static const int BULLET_HIT_FLAG = 0x0010;
 
+  final DefaultWorldPool pool;
+
+  /** Pool manifold for internal use. */
+  final Manifold _oldManifold = new Manifold();
+
+  /** Nodes for connecting bodies. */
+  final ContactEdge edge1 = new ContactEdge();
+  final ContactEdge edge2 = new ContactEdge();
+
+  final Manifold manifold = new Manifold();
+
   /** The flags for this Contact. */
   int flags;
 
@@ -35,21 +46,10 @@ abstract class Contact {
   Contact prev;
   Contact next;
 
-  /** Nodes for connecting bodies. */
-  ContactEdge edge1 = new ContactEdge();
-  ContactEdge edge2 = new ContactEdge();
-
   Fixture fixtureA;
   Fixture fixtureB;
 
-  Manifold manifold = new Manifold();
-
   int toiCount;
-
-  DefaultWorldPool pool;
-
-  /** Pool manifold for internal use. */
-  final Manifold _oldManifold = new Manifold();
 
   Contact(this.pool);
 

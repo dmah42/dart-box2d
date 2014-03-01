@@ -19,8 +19,6 @@
 part of box2d;
 
 class TimeStep {
-  TimeStep();
-
   /** time step */
   double dt = 0.0;
 

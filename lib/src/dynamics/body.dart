@@ -28,6 +28,25 @@ class Body {
   static const int ACTIVE_FLAG = 0x0020;
   static const int TO_I_FLAG = 0x0040;
 
+  /** Forces applied on the body. */
+  final Vector2 _force = new Vector2.zero();
+
+  /** The linear velocity of this body. */
+  final Vector2 _linearVelocity;
+
+  /** The body origin transform. */
+  final Transform originTransform = new Transform();
+
+  /** The swept motion for CCD. */
+  final Sweep sweep = new Sweep();
+
+  /** Private pool of objects for internal use. */
+  final FixtureDef _fixDef = new FixtureDef();
+  final MassData _pmd = new MassData();
+  final Transform _pxf = new Transform();
+  final Vector2 oldCenter = new Vector2.zero();
+  final Vector2 tempCenter = new Vector2.zero();
+
   World world;
 
   int flags = 0;
@@ -39,8 +58,6 @@ class Body {
   /** User can store what they want in here. */
   Object userData;
 
-  /** The linear velocity of this body. */
-  final Vector2 _linearVelocity;
 
   /** The angular velocity of this body. */
   double _angularVelocity = 0.0;
@@ -60,9 +77,6 @@ class Body {
 
   JointEdge jointList = null;
 
-  /** Forces applied on the body. */
-  final Vector2 _force = new Vector2.zero();
-
   double _torque = 0.0;
 
   /** Rotational intertia about the center of mass. */
@@ -79,19 +93,6 @@ class Body {
   int _type;
 
   int islandIndex;
-
-  /** The body origin transform. */
-  final Transform originTransform = new Transform();
-
-  /** The swept motion for CCD. */
-  final Sweep sweep = new Sweep();
-
-  /** Private pool of objects for internal use. */
-  final FixtureDef _fixDef = new FixtureDef();
-  final MassData _pmd = new MassData();
-  final Transform _pxf = new Transform();
-  final Vector2 oldCenter = new Vector2.zero();
-  final Vector2 tempCenter = new Vector2.zero();
 
   Body(BodyDef bd, this.world)
       : _linearVelocity = new Vector2.copy(bd.linearVelocity),
