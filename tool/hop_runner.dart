@@ -4,7 +4,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:hop/hop.dart';
 import 'package:hop/hop_tasks.dart';
-import 'package:path/path.dart' as pathos;
+import 'package:hop_docgen/hop_docgen.dart';
+import 'package:path/path.dart' as p;
 
 void main(List<String> args) {
   addTask('analyze_libs', createAnalyzerTask(_getLibs));
@@ -17,7 +18,9 @@ void main(List<String> args) {
 
   addTask('dart2js', createDartCompilerTask(_getDemos, liveTypeAnalysis: true));
 
-  addTask('docs', createDartDocTask(_getLibs, linkApi: true));
+  // NOTE: the param to `createDocGenTask` is the path to a built version of
+  // dartdoc-viewer client.
+  addTask('docs', createDocGenTask('../compiled_dartdoc_viewer'));
 
   runHop(args);
 }
@@ -33,6 +36,6 @@ Future<List<String>> _getDemos() =>
     .list()
     .where((FileSystemEntity fse) => fse is File)
     .map((File f) => f.path)
-    .where((String path) => pathos.extension(path) == '.dart')
-    .where((String path) => pathos.basename(path) != 'demo.dart')
+    .where((String path) => p.extension(path) == '.dart')
+    .where((String path) => p.basename(path) != 'demo.dart')
     .toList();
