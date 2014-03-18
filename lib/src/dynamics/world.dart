@@ -30,6 +30,25 @@ class World {
   static const int LOCKED = 0x0002;
   static const int CLEAR_FORCES = 0x0004;
 
+  /** Pooling */
+  final Vector2 center = new Vector2.zero();
+  final Vector2 axis = new Vector2.zero();
+
+  final TimeStep timestep = new TimeStep();
+  final Vector2 cA = new Vector2.zero();
+  final Vector2 cB = new Vector2.zero();
+  final WorldQueryWrapper wqwrapper = new WorldQueryWrapper();
+
+  final TimeOfImpactInput toiInput = new TimeOfImpactInput();
+  final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput();
+  final Sweep backup = new Sweep();
+  final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver();
+  final Island island = new Island();
+
+  final Vector2 _gravity;
+
+  final DefaultWorldPool _pool;
+
   int _flags = CLEAR_FORCES;
 
   ContactManager _contactManager;
@@ -40,15 +59,12 @@ class World {
   int _bodyCount = 0;
   int _jointCount = 0;
 
-  final Vector2 _gravity;
   bool _allowSleep;
 
   DebugDraw _debugDraw;
 
   FixtureDestructionListener _fixtureDestructionListener;
   JointDestructionListener _jointDestructionListener;
-
-  final DefaultWorldPool _pool;
 
   /**
    * This is used to compute the time step ratio to
@@ -71,22 +87,9 @@ class World {
         return new List<ContactRegister>(ShapeType.TYPE_COUNT);
       }, growable: false);
 
-  /** Pooling */
-  final Vector2 center = new Vector2.zero();
-  final Vector2 axis = new Vector2.zero();
-
-  final TimeStep timestep = new TimeStep();
-  final Vector2 cA = new Vector2.zero();
-  final Vector2 cB = new Vector2.zero();
-  final WorldQueryWrapper wqwrapper = new WorldQueryWrapper();
-
-  final TimeOfImpactInput toiInput = new TimeOfImpactInput();
-  final TimeOfImpactOutput toiOutput = new TimeOfImpactOutput();
-  final Sweep backup = new Sweep();
-  final TimeOfImpactSolver toiSolver = new TimeOfImpactSolver();
   List<Contact> contacts =
-    new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
-  final Island island = new Island();
+      new List<Contact>(Settings.MAX_TIME_OF_IMPACT_CONTACTS);
+
   List<Body> stack = new List<Body>(10);
 
   /**

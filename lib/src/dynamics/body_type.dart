@@ -27,8 +27,6 @@
 part of box2d;
 
 class BodyType {
-  BodyType();
-
   static const int STATIC = 0;
   static const int KINEMATIC = 1;
   static const int DYNAMIC = 2;

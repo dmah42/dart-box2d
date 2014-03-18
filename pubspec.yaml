@@ -1,12 +1,13 @@
 name: box2d
-version: 0.1.7
+version: 0.1.8-dev
 author: Dominic Hamon <dominic@google.com>
 description: A port of the popular Box2D physics engine to Dart.
 homepage: http://github.com/dart-lang/dart-box2d
 dependencies:
-  hop: '>=0.28.3+2'
-  path: '>=1.0.0'
-  vector_math: '>= 1.4.2'
+  vector_math: '>=1.4.2 <2.0.0'
 dev_dependencies:
-  args: any
-  browser: any
+  args: '>=0.10.0 <0.11.0'
+  browser: '>=0.10.0 <0.11.0'
+  hop: '>=0.30.0 <0.31.0'
+  hop_docgen: '>=0.1.1 <0.2.0'
+  path: '>=1.0.0 <2.0.0'

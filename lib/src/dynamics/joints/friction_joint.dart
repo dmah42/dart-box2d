@@ -31,11 +31,11 @@ class FrictionJoint extends Joint {
         _maxTorque = def.maxTorque,
         super(def);
 
-  Vector2 getLocalAnchorA(Vector2 argOut) {
+  void getLocalAnchorA(Vector2 argOut) {
     bodyA.getWorldPointToOut(_localAnchorA, argOut);
   }
 
-  Vector2 getLocalAnchorB(Vector2 argOut) {
+  void getLocalAnchorB(Vector2 argOut) {
     bodyB.getWorldPointToOut(_localAnchorB, argOut);
   }
 

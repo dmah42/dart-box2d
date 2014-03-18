@@ -17,13 +17,13 @@
 part of box2d;
 
 class ContactManager {
-  BroadPhase broadPhase = new BroadPhase();
+  final World pool;
+
+  final BroadPhase broadPhase = new BroadPhase();
   Contact contactList = null;
   int contactCount = 0;
   ContactFilter contactFilter = new ContactFilter();
   ContactListener contactListener = null;
-
-  final World pool;
 
   ContactManager(this.pool);
 

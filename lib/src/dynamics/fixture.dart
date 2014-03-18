@@ -20,6 +20,11 @@
 part of box2d;
 
 class Fixture {
+  final Filter filter = new Filter();
+
+  final Aabb2 _poolOne = new Aabb2();
+  final Aabb2 _poolTwo = new Aabb2();
+
   final Aabb2 box = new Aabb2();
 
   double density;
@@ -36,14 +41,9 @@ class Fixture {
 
   DynamicTreeNode proxy;
 
-  final Filter filter = new Filter();
-
   bool isSensor;
 
   dynamic userData;
-
-  final Aabb2 _poolOne = new Aabb2();
-  final Aabb2 _poolTwo = new Aabb2();
 
   /** Constructs a new Fixture with default values. */
   Fixture();
