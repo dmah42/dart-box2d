@@ -1,1 +1,0 @@
-{"name":"dart:","description":"Dart System Libraries","libraries":[{"name":"package:box2d/box2d.dart","refId":"box2d"},{"refId":"box2d_browser"},{"refId":"metadata"},{"name":"package:vector_math/vector_math_64.dart","refId":"vector_math_64"}],"revision":"0","dependencies":[]}
