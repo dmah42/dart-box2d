@@ -152,7 +152,7 @@ class DistanceJoint extends Joint {
     v1.add(b1.linearVelocity);
     v2.add(b2.linearVelocity);
 
-    num Cdot = u.dot(v2.sub(v1));
+    num Cdot = u.dot(v2..sub(v1));
 
     num imp = -mass * (Cdot + bias + gamma * impulse);
     impulse += imp;
