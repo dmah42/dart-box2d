@@ -50,7 +50,7 @@ class CircleShape extends Shape {
     transform.rotation.transformed(position, center);
     center.add(transform.position);
 
-    Vector2 d = center.sub(point).negate();
+    Vector2 d = center..sub(point)..negate();
     return d.dot(d) <= radius * radius;
   }
 
@@ -60,11 +60,11 @@ class CircleShape extends Shape {
     transform.rotation.transformed(position, center);
     center.add(transform.position);
 
-    Vector2 s = input.p1.sub(center);
+    Vector2 s = input.p1..sub(center);
     double b = s.dot(s) - (radius * radius);
 
     // Solve quadratic equation
-    Vector2 r = input.p2.sub(input.p1);
+    Vector2 r = input.p2..sub(input.p1);
     double c = s.dot(r);
     double rr = r.dot(r);
     double sigma = c * c - rr * b;
@@ -76,7 +76,7 @@ class CircleShape extends Shape {
     if (0.0 <= a && a <= input.maxFraction * rr) {
       a /= rr;
       output.fraction = a;
-      output.normal = (r.scale(a)).add(s);
+      output.normal = (r..scale(a))..add(s);
       output.normal.normalize();
       return true;
     }

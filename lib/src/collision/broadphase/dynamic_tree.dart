@@ -231,8 +231,8 @@ class DynamicTree {
         // two children.
         deltaOne.setFrom(childOne.box.center);
         deltaTwo.setFrom(childTwo.box.center);
-        deltaOne.sub(center).absolute();
-        deltaTwo.sub(center).absolute();
+        deltaOne..sub(center)..absolute();
+        deltaTwo..sub(center)..absolute();
 
         num normOne = deltaOne.x + deltaOne.y;
         num normTwo = deltaTwo.x + deltaTwo.y;

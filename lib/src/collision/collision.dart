@@ -139,8 +139,8 @@ class Collision {
       // Find intersection point of edge and plane
       double interp = distance0 / (distance0 - distance1);
       // vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-      vOut[numOut].v.setFrom(vIn[1].v).
-          sub(vIn[0].v).scale(interp).add(vIn[0].v);
+      vOut[numOut].v..setFrom(vIn[1].v)..
+          sub(vIn[0].v)..scale(interp)..add(vIn[0].v);
       final ClipVertex vin = (distance0 > 0.0 ? vIn[0] : vIn[1]);
       vOut[numOut].id.setFrom(vin.id);
       ++numOut;
@@ -278,7 +278,7 @@ class Collision {
     } else {
       // Vector2 faceCenter = 0.5 * (v1 + v2);
       // (temp is faceCenter)
-      final Vector2 fc = (v1 + v2).scale(0.5);
+      final Vector2 fc = (v1 + v2)..scale(0.5);
 
       final Vector2 t = cLocal - fc;
       final Vector2 norm = normals[vertIndex1];
@@ -515,14 +515,14 @@ class Collision {
     v11.setFrom(vertices1[edge1]);
     v12.setFrom(edge1 + 1 < count1 ? vertices1[edge1 + 1] : vertices1[0]);
 
-    localTangent.setFrom(v12).sub(v11);
+    localTangent..setFrom(v12)..sub(v11);
     localTangent.normalize();
 
     // Vector2 localNormal = Cross(dv, 1.0);
     localTangent.scaleOrthogonalInto(-1.0, localNormal);
 
     // Vector2 planePoint = 0.5 * (v11 + v12)
-    planePoint.setFrom(v11).add(v12).scale(.5);
+    planePoint..setFrom(v11)..add(v12)..scale(.5);
 
     // Vector2 sideNormal = Mul(xf1.rotation, v12 - v11);
     xf1.rotation.transformed(localTangent, tangent);

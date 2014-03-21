@@ -67,8 +67,8 @@ class DistanceJoint extends Joint {
     Vector2 r2 = new Vector2.zero();
 
     // Compute the effective mass matrix.
-    r1.setFrom(localAnchor1).sub(b1.localCenter);
-    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    r1..setFrom(localAnchor1)..sub(b1.localCenter);
+    r2..setFrom(localAnchor2)..sub(b2.localCenter);
     b1.originTransform.rotation.transformed(r1, r1);
     b2.originTransform.rotation.transformed(r2, r2);
 
@@ -118,7 +118,7 @@ class DistanceJoint extends Joint {
       impulse *= step.dtRatio;
 
       Vector2 P = new Vector2.zero();
-      P.setFrom(u).scale(impulse);
+      P..setFrom(u)..scale(impulse);
 
       b1.linearVelocity.x -= b1.invMass * P.x;
       b1.linearVelocity.y -= b1.invMass * P.y;
@@ -139,8 +139,8 @@ class DistanceJoint extends Joint {
     final r1 = new Vector2.zero();
     final r2 = new Vector2.zero();
 
-    r1.setFrom(localAnchor1).sub(b1.localCenter);
-    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    r1..setFrom(localAnchor1)..sub(b1.localCenter);
+    r2..setFrom(localAnchor2)..sub(b2.localCenter);
     b1.originTransform.rotation.transformed(r1, r1);
     b2.originTransform.rotation.transformed(r2, r2);
 
@@ -179,8 +179,8 @@ class DistanceJoint extends Joint {
     final r2 = new Vector2.zero();
     final d = new Vector2.zero();
 
-    r1.setFrom(localAnchor1).sub(b1.localCenter);
-    r2.setFrom(localAnchor2).sub(b2.localCenter);
+    r1..setFrom(localAnchor1)..sub(b1.localCenter);
+    r2..setFrom(localAnchor2)..sub(b2.localCenter);
     b1.originTransform.rotation.transformed(r1, r1);
     b2.originTransform.rotation.transformed(r2, r2);
 

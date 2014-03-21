@@ -40,7 +40,7 @@ class FrictionJoint extends Joint {
   }
 
   void getReactionForce(num inv_dt, Vector2 argOut) {
-    argOut.setFrom(_linearImpulse).scale(inv_dt);
+    argOut..setFrom(_linearImpulse)..scale(inv_dt);
   }
 
   double getReactionTorque(num inv_dt) => inv_dt * _angularImpulse;
@@ -64,8 +64,8 @@ class FrictionJoint extends Joint {
     Vector2 r1 = new Vector2.zero();
     Vector2 r2 = new Vector2.zero();
 
-    r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
-    r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+    r1..setFrom(_localAnchorA)..sub(bodyA.localCenter);
+    r2..setFrom(_localAnchorB)..sub(bodyB.localCenter);
     bodyA.originTransform.rotation.transformed(r1, r1);
     bodyB.originTransform.rotation.transformed(r2, r2);
 
@@ -138,8 +138,8 @@ class FrictionJoint extends Joint {
       Vector2 r1 = new Vector2.zero();
       Vector2 r2 = new Vector2.zero();
 
-      r1.setFrom(_localAnchorA).sub(bodyA.localCenter);
-      r2.setFrom(_localAnchorB).sub(bodyB.localCenter);
+      r1..setFrom(_localAnchorA)..sub(bodyA.localCenter);
+      r2..setFrom(_localAnchorB)..sub(bodyB.localCenter);
       bodyA.originTransform.rotation.transformed(r1, r1);
       bodyB.originTransform.rotation.transformed(r2, r2);
 
@@ -149,7 +149,7 @@ class FrictionJoint extends Joint {
       r1.scaleOrthogonalInto(bodyA.angularVelocity, temp);
       r1.scaleOrthogonalInto(bodyB.angularVelocity, Cdot);
 
-      Cdot.add(bodyB.linearVelocity).sub(bodyA.linearVelocity).sub(temp);
+      Cdot..add(bodyB.linearVelocity)..sub(bodyA.linearVelocity)..sub(temp);
 
       Matrix2 K = new Matrix2(
           bodyA.invMass + bodyB.invMass +
@@ -177,7 +177,7 @@ class FrictionJoint extends Joint {
         _linearImpulse.scale(maxImpulse);
       }
 
-      impulse.setFrom(_linearImpulse).sub(oldImpulse);
+      impulse..setFrom(_linearImpulse)..sub(oldImpulse);
 
       bodyA.linearVelocity.x -= impulse.x * bodyA.invMass;
       bodyA.linearVelocity.y -= impulse.y * bodyA.invMass;

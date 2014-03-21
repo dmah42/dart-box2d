@@ -650,7 +650,7 @@ class Body {
   }
 
   void getLinearVelocityFromWorldPointToOut(Vector2 worldPoint, Vector2 out) {
-    out.setFrom(worldPoint).sub(sweep.center);
+    out..setFrom(worldPoint)..sub(sweep.center);
     out.scaleOrthogonalInto(_angularVelocity, out);
     out.add(_linearVelocity);
   }

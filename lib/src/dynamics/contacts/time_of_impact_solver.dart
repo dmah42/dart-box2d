@@ -114,8 +114,8 @@ class TimeOfImpactSolver {
         Vector2 point = psm.point;
         num separation = psm.separation;
 
-        rA.setFrom(point).sub(bodyA.sweep.center);
-        rB.setFrom(point).sub(bodyB.sweep.center);
+        rA..setFrom(point)..sub(bodyA.sweep.center);
+        rB..setFrom(point)..sub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -132,14 +132,14 @@ class TimeOfImpactSolver {
         // Compute normal impulse
         num impulse = K > 0.0 ? -C / K : 0.0;
 
-        P.setFrom(normal).scale(impulse);
+        P..setFrom(normal)..scale(impulse);
 
-        temp.setFrom(P).scale(invMassA);
+        temp..setFrom(P)..scale(invMassA);
         bodyA.sweep.center.sub(temp);
         bodyA.sweep.angle -= invIA * rA.cross(P);
         bodyA.synchronizeTransform();
 
-        temp.setFrom(P).scale(invMassB);
+        temp..setFrom(P)..scale(invMassB);
         bodyB.sweep.center.add(temp);
         bodyB.sweep.angle += invIB * rB.cross(P);
         bodyB.synchronizeTransform();
@@ -176,14 +176,14 @@ class TimeOfImpactSolverManifold {
         pointB.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[0]));
         if (MathBox.distanceSquared(pointA, pointB) > Settings.EPSILON
             * Settings.EPSILON) {
-          normal.setFrom(pointB).sub(pointA);
+          normal..setFrom(pointB)..sub(pointA);
           normal.normalize();
         } else {
           normal.setValues(1.0, 0.0);
         }
 
-        point.setFrom(pointA).add(pointB).scale(.5);
-        temp.setFrom(pointB).sub(pointA);
+        point..setFrom(pointA)..add(pointB)..scale(.5);
+        temp..setFrom(pointB)..sub(pointA);
         separation = temp.dot(normal) - cc.radius;
         break;
 
@@ -192,7 +192,7 @@ class TimeOfImpactSolverManifold {
         planePoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoint));
 
         clipPoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).sub(planePoint);
+        temp..setFrom(clipPoint)..sub(planePoint);
         separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
         break;
@@ -202,7 +202,7 @@ class TimeOfImpactSolverManifold {
         planePoint.setFrom(cc.bodyB.getWorldPoint(cc.localPoint));
 
         clipPoint.setFrom(cc.bodyA.getWorldPoint(cc.localPoints[index]));
-        temp.setFrom(clipPoint).sub(planePoint);
+        temp..setFrom(clipPoint)..sub(planePoint);
         separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
 

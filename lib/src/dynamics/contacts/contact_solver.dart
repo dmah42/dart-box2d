@@ -353,18 +353,18 @@ class ContactSolver {
           if (x.x >= 0.0 && x.y >= 0.0) {
             // Resubstitute for the incremental impulse
             //Vector2 d = x - a;
-            d.setFrom(x).sub(a);
+            d..setFrom(x)..sub(a);
 
             // Apply incremental impulse
             // Vector2 P1 = d.x * normal;
             // Vector2 P2 = d.y * normal;
-            P1.setFrom(c.normal).scale(d.x);
-            P2.setFrom(c.normal).scale(d.y);
+            P1..setFrom(c.normal)..scale(d.x);
+            P2..setFrom(c.normal)..scale(d.y);
 
-            temp1.setFrom(P1).add(P2);
-            temp2.setFrom(temp1).scale(invMassA);
+            temp1..setFrom(P1)..add(P2);
+            temp2..setFrom(temp1)..scale(invMassA);
             vA.sub(temp2);
-            temp2.setFrom(temp1).scale(invMassB);
+            temp2..setFrom(temp1)..scale(invMassB);
             vB.add(temp2);
 
             wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
@@ -384,16 +384,16 @@ class ContactSolver {
 
           if (x.x >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).sub(a);
+            d..setFrom(x)..sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).scale(d.x);
-            P2.setFrom(c.normal).scale(d.y);
+            P1..setFrom(c.normal)..scale(d.x);
+            P2..setFrom(c.normal)..scale(d.y);
 
-            temp1.setFrom(P1).add(P2);
-            temp2.setFrom(temp1).scale(invMassA);
+            temp1..setFrom(P1)..add(P2);
+            temp2..setFrom(temp1)..scale(invMassA);
             vA.sub(temp2);
-            temp2.setFrom(temp1).scale(invMassB);
+            temp2..setFrom(temp1)..scale(invMassB);
             vB.add(temp2);
 
             wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
@@ -413,16 +413,16 @@ class ContactSolver {
 
           if (x.y >= 0.0 && vn1 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).sub(a);
+            d..setFrom(x)..sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).scale(d.x);
-            P2.setFrom(c.normal).scale(d.y);
+            P1..setFrom(c.normal)..scale(d.x);
+            P2..setFrom(c.normal)..scale(d.y);
 
-            temp1.setFrom(P1).add(P2);
-            temp2.setFrom(temp1).scale(invMassA);
+            temp1..setFrom(P1)..add(P2);
+            temp2..setFrom(temp1)..scale(invMassA);
             vA.sub(temp2);
-            temp2.setFrom(temp1).scale(invMassB);
+            temp2..setFrom(temp1)..scale(invMassB);
             vB.add(temp2);
 
             wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
@@ -442,16 +442,16 @@ class ContactSolver {
 
           if (vn1 >= 0.0 && vn2 >= 0.0) {
             // Resubstitute for the incremental impulse
-            d.setFrom(x).sub(a);
+            d..setFrom(x)..sub(a);
 
             // Apply incremental impulse
-            P1.setFrom(c.normal).scale(d.x);
-            P2.setFrom(c.normal).scale(d.y);
+            P1..setFrom(c.normal)..scale(d.x);
+            P2..setFrom(c.normal)..scale(d.y);
 
-            temp1.setFrom(P1).add(P2);
-            temp2.setFrom(temp1).scale(invMassA);
+            temp1..setFrom(P1)..add(P2);
+            temp2..setFrom(temp1)..scale(invMassA);
             vA.sub(temp2);
-            temp2.setFrom(temp1).scale(invMassB);
+            temp2..setFrom(temp1)..scale(invMassB);
             vB.add(temp2);
 
             wA -= invIA * (cp1.rA.cross(P1) + cp2.rA.cross(P2));
@@ -514,8 +514,8 @@ class ContactSolver {
         Vector2 point = psm.point;
         double separation = psm.separation;
 
-        rA.setFrom(point).sub(bodyA.sweep.center);
-        rB.setFrom(point).sub(bodyB.sweep.center);
+        rA..setFrom(point)..sub(bodyA.sweep.center);
+        rB..setFrom(point)..sub(bodyB.sweep.center);
 
         // Track max constraint error.
         minSeparation = Math.min(minSeparation, separation);
@@ -533,14 +533,14 @@ class ContactSolver {
         // Compute normal impulse
         double impulse = K > 0.0 ? -C / K : 0.0;
 
-        P.setFrom(normal).scale(impulse);
+        P..setFrom(normal)..scale(impulse);
 
-        temp1.setFrom(P).scale(invMassA);
+        temp1..setFrom(P)..scale(invMassA);
         bodyA.sweep.center.sub(temp1);;
         bodyA.sweep.angle -= invIA * rA.cross(P);
         bodyA.synchronizeTransform();
 
-        temp1.setFrom(P).scale(invMassB);
+        temp1..setFrom(P)..scale(invMassB);
         bodyB.sweep.center.add(temp1);
         bodyB.sweep.angle += invIB * rB.cross(P);
         bodyB.synchronizeTransform();
@@ -576,14 +576,14 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.points[0].localPoint, pointB);
         if (MathBox.distanceSquared(pointA, pointB) >
             Settings.EPSILON * Settings.EPSILON){
-          normal.setFrom(pointB).sub(pointA);
+          normal..setFrom(pointB)..sub(pointA);
           normal.normalize();
         } else {
           normal.setValues(1.0, 0.0);
         }
 
-        point.setFrom(pointA).add(pointB).scale(.5);
-        temp.setFrom(pointB).sub(pointA);
+        point..setFrom(pointA)..add(pointB)..scale(.5);
+        temp..setFrom(pointB)..sub(pointA);
         separation = temp.dot(normal) - cc.radius;
         break;
 
@@ -593,7 +593,7 @@ class PositionSolverManifold {
 
         cc.bodyB.getWorldPointToOut(cc.points[index].localPoint,
             clipPoint);
-        temp.setFrom(clipPoint).sub(planePoint);
+        temp..setFrom(clipPoint)..sub(planePoint);
         separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
         break;
@@ -603,7 +603,7 @@ class PositionSolverManifold {
         cc.bodyB.getWorldPointToOut(cc.localPoint, planePoint);
 
         cc.bodyA.getWorldPointToOut(cc.points[index].localPoint, clipPoint);
-        temp.setFrom(clipPoint).sub(planePoint);
+        temp..setFrom(clipPoint)..sub(planePoint);
         separation = temp.dot(normal) - cc.radius;
         point.setFrom(clipPoint);
 

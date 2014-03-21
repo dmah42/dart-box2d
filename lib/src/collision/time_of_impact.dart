@@ -276,7 +276,7 @@ class SeparationFunction {
       localPointB.setFrom(proxyB.vertices[cache.indexB[0]]);
       Transform.mulToOut(xfa, localPointA, pointA);
       Transform.mulToOut(xfb, localPointB, pointB);
-      axis.setFrom(pointB).sub(pointA);
+      axis..setFrom(pointB)..sub(pointA);
       double s = axis.normalizeLength();
       return s;
     } else if (cache.indexA[0] == cache.indexA[1]) {
@@ -286,7 +286,7 @@ class SeparationFunction {
       localPointB1.setFrom(proxyB.vertices[cache.indexB[0]]);
       localPointB2.setFrom(proxyB.vertices[cache.indexB[1]]);
 
-      temp.setFrom(localPointB2).sub(localPointB1);
+      temp..setFrom(localPointB2)..sub(localPointB1);
       temp.scaleOrthogonalInto(-1.0, axis);
       axis.normalize();
 
@@ -349,7 +349,7 @@ class SeparationFunction {
     switch (type) {
       case SeparationType.POINTS:
         xfa.rotation.transposed().transformed(axis, axisA);
-        xfb.rotation.transposed().transformed(axis.negate(),
+        xfb.rotation.transposed().transformed(axis..negate(),
             axisB);
         axis.negate();
 
@@ -362,7 +362,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        double separation = pointB.sub(pointA).dot(axis);
+        double separation = (pointB..sub(pointA)).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -379,7 +379,7 @@ class SeparationFunction {
         localPointB.setFrom(proxyB.vertices[indexes[1]]);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        double separation = pointB.sub(pointA).dot(normal);
+        double separation = (pointB..sub(pointA)).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
@@ -387,7 +387,7 @@ class SeparationFunction {
         Transform.mulToOut(xfb, localPoint, pointB);
 
         xfa.rotation.transposed().transformed(
-            normal.negate(), axisA);
+            normal..negate(), axisA);
         normal.negate();
 
         indexes[1] = -1;
@@ -396,7 +396,7 @@ class SeparationFunction {
         localPointA.setFrom(proxyA.vertices[indexes[0]]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        double separation = pointA.sub(pointB).dot(normal);
+        double separation = (pointA..sub(pointB)).dot(normal);
         return separation;
 
       default:
@@ -414,7 +414,7 @@ class SeparationFunction {
     switch (type) {
       case SeparationType.POINTS:
         xfa.rotation.transposed().transformed(axis, axisA);
-        xfb.rotation.transposed().transformed(axis.negate(),
+        xfb.rotation.transposed().transformed(axis..negate(),
             axisB);
         axis.negate();
 
@@ -424,7 +424,7 @@ class SeparationFunction {
         Transform.mulToOut(xfa, localPointA, pointA);
         Transform.mulToOut(xfb, localPointB, pointB);
 
-        double separation = pointB.sub(pointA).dot(axis);
+        double separation = (pointB..sub(pointA)).dot(axis);
         return separation;
 
       case SeparationType.FACE_A:
@@ -437,20 +437,20 @@ class SeparationFunction {
 
         localPointB.setFrom(proxyB.vertices[indexB]);
         Transform.mulToOut(xfb, localPointB, pointB);
-        double separation = pointB.sub(pointA).dot(normal);
+        double separation = (pointB..sub(pointA)).dot(normal);
         return separation;
 
       case SeparationType.FACE_B:
         xfb.rotation.transformed(axis, normal);
         Transform.mulToOut(xfb, localPoint, pointB);
 
-        xfa.rotation.transposed().transformed(normal.negate(), axisA);
+        xfa.rotation.transposed().transformed(normal..negate(), axisA);
         normal.negate();
 
         localPointA.setFrom(proxyA.vertices[indexA]);
         Transform.mulToOut(xfa, localPointA, pointA);
 
-        double separation = pointA.sub(pointB).dot(normal);
+        double separation = (pointA..sub(pointB)).dot(normal);
         return separation;
 
       default:

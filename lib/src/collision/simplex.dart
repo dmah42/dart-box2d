@@ -54,7 +54,7 @@ class Simplex {
       Vector2 wBLocal = proxyB.vertices[v.indexB];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).sub(v.wA);
+      v.w..setFrom(v.wB)..sub(v.wA);
       v.a = 0.0;
     }
 
@@ -79,7 +79,7 @@ class Simplex {
       Vector2 wBLocal = proxyB.vertices[0];
       Transform.mulToOut(transformA, wALocal, v.wA);
       Transform.mulToOut(transformB, wBLocal, v.wB);
-      v.w.setFrom(v.wB).sub(v.wA);
+      v.w..setFrom(v.wB)..sub(v.wA);
       count = 1;
     }
   }
@@ -97,12 +97,12 @@ class Simplex {
   void getSearchDirection(Vector2 out) {
     switch (count) {
       case 1:
-        out.setFrom(v1.w).negate();
+        out..setFrom(v1.w)..negate();
         return;
       case 2:
-        e12.setFrom(v2.w).sub(v1.w);
+        e12..setFrom(v2.w)..sub(v1.w);
         // use out for a temp variable real quick
-        out.setFrom(v1.w).negate();
+        out..setFrom(v1.w)..negate();
         double sgn = e12.cross(out);
 
         if (sgn > 0.0) {
@@ -134,8 +134,8 @@ class Simplex {
         out.setFrom(v1.w);
         return;
       case 2:
-        case22.setFrom(v2.w).scale(v2.a);
-        case2.setFrom(v1.w).scale(v1.a).add(case22);
+        case22..setFrom(v2.w)..scale(v2.a);
+        case2..setFrom(v1.w)..scale(v1.a)..add(case22);
         out.setFrom(case2);
         return;
       case 3:
@@ -161,19 +161,19 @@ class Simplex {
         break;
 
       case 2:
-        case2.setFrom(v1.wA).scale(v1.a);
-        pA.setFrom(v2.wA).scale(v2.a).add(case2);
-        case2.setFrom(v1.wB).scale(v1.a);
-        pB.setFrom(v2.wB).scale(v2.a).add(case2);
+        case2..setFrom(v1.wA)..scale(v1.a);
+        pA..setFrom(v2.wA)..scale(v2.a)..add(case2);
+        case2..setFrom(v1.wB)..scale(v1.a);
+        pB..setFrom(v2.wB)..scale(v2.a)..add(case2);
 
         break;
 
       case 3:
-        pA.setFrom(v1.wA).scale(v1.a);
-        case3.setFrom(v2.wA).scale(v2.a);
-        case33.setFrom(v3.wA).scale(v3.a);
-        pA.add(case3).add(case33);
-        pB.setFrom(pA);
+        pA..setFrom(v1.wA)..scale(v1.a);
+        case3..setFrom(v2.wA)..scale(v2.a);
+        case33..setFrom(v3.wA)..scale(v3.a);
+        pA..add(case3)..add(case33);
+        pB..setFrom(pA);
         break;
 
       default:
@@ -195,8 +195,8 @@ class Simplex {
         return MathBox.distance(v1.w, v2.w);
 
       case 3:
-        case3.setFrom(v2.w).sub(v1.w);
-        case33.setFrom(v3.w).sub(v1.w);
+        case3..setFrom(v2.w)..sub(v1.w);
+        case33..setFrom(v3.w)..sub(v1.w);
         return case3.cross(case33);
 
       default:
@@ -211,7 +211,7 @@ class Simplex {
   void solve2() {
     Vector2 w1 = v1.w;
     Vector2 w2 = v2.w;
-    e12.setFrom(w2).sub(w1);
+    e12..setFrom(w2)..sub(w1);
 
     // w1 region
     double d12_2 = -w1.dot(e12);
@@ -253,21 +253,21 @@ class Simplex {
     Vector2 w3 = v3.w;
 
     // Edge12
-    e12.setFrom(w2).sub(w1);
+    e12..setFrom(w2)..sub(w1);
     double w1e12 = w1.dot(e12);
     double w2e12 = w2.dot(e12);
     double d12_1 = w2e12;
     double d12_2 = -w1e12;
 
     // Edge13
-    e13.setFrom(w3).sub(w1);
+    e13..setFrom(w3)..sub(w1);
     double w1e13 = w1.dot(e13);
     double w3e13 = w3.dot(e13);
     double d13_1 = w3e13;
     double d13_2 = -w1e13;
 
     // Edge23
-    e23.setFrom(w3).sub(w2);
+    e23..setFrom(w3)..sub(w2);
     double w2e23 = w2.dot(e23);
     double w3e23 = w3.dot(e23);
     double d23_1 = w3e23;
